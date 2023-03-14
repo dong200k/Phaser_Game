@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "colyseus.js": "^0.14.13",
     "phaser": "^3.55.2"
   },
   "devDependencies": {

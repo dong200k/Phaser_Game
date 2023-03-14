@@ -1,6 +1,10 @@
 import Phaser from 'phaser';
+import * as Colyseus from 'colyseus.js';
+import ClientManager from '../colyseus/ClientManager';
 
 export default class GameScene extends Phaser.Scene {
+
+    private gameRoom: Colyseus.Room | null = null;
 
     constructor() {
         super('GameScene');
@@ -18,5 +22,7 @@ export default class GameScene extends Phaser.Scene {
             yoyo: true,
             repeat: -1,
         });
+        
+        ClientManager.getClient().joinGameRoom().then()
     }
 }
