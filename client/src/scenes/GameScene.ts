@@ -22,7 +22,7 @@ export default class GameScene extends Phaser.Scene {
             yoyo: true,
             repeat: -1,
         });
-        
+
         ClientManager.getClient().joinGameRoom().then()
     }
 }

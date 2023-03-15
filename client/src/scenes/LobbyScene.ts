@@ -6,21 +6,22 @@ import ClientManager from "../colyseus/ClientManager";
 export default class LobbyScene extends Phaser.Scene {
     
     private lobbyRoom: Colyseus.Room | null = null;
-    private allRooms: any[];
+    private allRooms: any[] = [];
 
     private lobbyConnectionText: Phaser.GameObjects.Text | null = null;
     private waitingRooms: Phaser.GameObjects.Text[] = [];
 
     constructor() {
         super('LobbyScene');
-        this.allRooms = [];
     }
 
     create() {
+        this.lobbyRoom = null;
+        this.allRooms = [];
+        this.waitingRooms = [];
+        this.lobbyConnectionText = null;
         this.joinLobby();
         this.initializeUI();
-    
-        this.events.on("wake", this.joinLobby, this);
     }
 
     private initializeUI() {
@@ -28,8 +29,8 @@ export default class LobbyScene extends Phaser.Scene {
         this.add.text(this.game.scale.width / 2 - 48, 42, "Host Game");
         hostButton.setInteractive();
         hostButton.on(Phaser.Input.Events.POINTER_UP, () => {
-            this.scene.switch("RoomScene");
             this.leaveLobby();
+            this.scene.start("RoomScene");
         }, this);
 
         for(let i = 0; i < 10; i++) {
@@ -38,7 +39,7 @@ export default class LobbyScene extends Phaser.Scene {
             this.waitingRooms[i].on(Phaser.Input.Events.POINTER_UP, () => {
                 if(this.allRooms.length > i) {
                     ClientManager.getClient().setWaitingRoomId(this.allRooms[i].roomId);
-                    this.scene.switch("RoomScene");
+                    this.scene.start("RoomScene");
                 }
             })
         }
@@ -68,7 +69,7 @@ export default class LobbyScene extends Phaser.Scene {
     }
 
     private renderWaitingRoom() {
-        console.log(this.allRooms);
+        //console.log(this.allRooms);
         this.waitingRooms.forEach((text, idx) => {
             text.setText(`Join Room: ${this.allRooms.length > idx ? this.allRooms[idx].roomId : "No Room"}`);
         })
@@ -76,7 +77,7 @@ export default class LobbyScene extends Phaser.Scene {
 
     private onJoin() {
         if(this.lobbyRoom != null) {
-            this.lobbyRoom.onMessage("rooms", (rooms: any[]) => {
+            this.lobbyRoom.onMessage("rooms", (rooms) => {
                 this.allRooms = rooms;
                 this.renderWaitingRoom();
                 console.log("All rooms received: ", rooms);
@@ -84,19 +85,21 @@ export default class LobbyScene extends Phaser.Scene {
 
             this.lobbyRoom.onMessage("+", ([roomId, room]) => {
                 let exist = false;
-                this.allRooms.forEach((r) => {
-                    if(r.id === roomId)
+                this.allRooms.forEach((r, idx) => {
+                    if(r.roomId === roomId) {
+                        this.allRooms[idx] = room;
                         exist = true;
+                    }
                 })
                 if(!exist)
                     this.allRooms.push(room);
                 this.renderWaitingRoom();
-                console.log("Added room: ", room);
+                console.log("Added/Updated room: ", room);
             })
 
             this.lobbyRoom.onMessage("-", (roomId: string) => {
-                this.allRooms = this.allRooms.filter((r: Colyseus.Room) => {
-                    if(r.id === roomId)
+                this.allRooms = this.allRooms.filter((r: any) => {
+                    if(r.roomId === roomId)
                         return false;
                     return true;
                 })
