@@ -10,7 +10,7 @@ export default class MenuScene extends Phaser.Scene {
         this.add.text(this.game.scale.width / 2 - 48, this.game.scale.height / 2 - 6, "Join Lobby");
         lobbyButton.setInteractive();
         lobbyButton.on(Phaser.Input.Events.POINTER_UP, () => {
-            this.scene.switch('LobbyScene');
+            this.scene.start('LobbyScene');
         }, this);
     }
 }

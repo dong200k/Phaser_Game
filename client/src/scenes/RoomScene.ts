@@ -16,12 +16,11 @@ export default class RoomScene extends Phaser.Scene {
     }
 
     create() {
-        this.joinRoom();
+        this.waitingRoom = null;
+        this.playersInRoomText = null;
+        this.playersInRoom = 0;
         this.initializeUI();
-
-        this.events.on("wake", this.joinRoom, this);
-        this.events.on("stop", this.leaveRoom, this);
-        this.events.on("sleep", this.leaveRoom, this);
+        this.joinRoom();
     }
 
     private initializeUI() {
@@ -30,7 +29,8 @@ export default class RoomScene extends Phaser.Scene {
         this.add.text(this.game.scale.width / 2 - 48, 42, "Join Lobby");
         lobbyButton.setInteractive();
         lobbyButton.on(Phaser.Input.Events.POINTER_UP, () => {
-            this.scene.switch('LobbyScene');
+            this.leaveRoom();
+            this.scene.start('LobbyScene');
         }, this);
 
         // start game button
@@ -41,7 +41,7 @@ export default class RoomScene extends Phaser.Scene {
             this.waitingRoom?.send('start');
         }, this);
 
-        // list of players
+        // list of players text
         this.playersInRoomText = this.add.text(this.game.scale.width / 2, 300, "Players in room: 0");
     }
 
@@ -75,13 +75,14 @@ export default class RoomScene extends Phaser.Scene {
             this.waitingRoom.onMessage("joinGame", (message) => {
                 console.log("joinGame message", message);
                 ClientManager.getClient().setGameRoomId(message);
-                this.scene.switch('GameScene');
+                this.scene.start('GameScene');
             })
         }
     }
 
     private leaveRoom() {
         this.waitingRoom?.leave();
+        this.waitingRoom?.removeAllListeners();
     }
 
 }

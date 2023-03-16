@@ -16,23 +16,27 @@ export default class LobbyScene extends Phaser.Scene {
     }
 
     create() {
+        console.log("Running create for lobby scene");
         this.lobbyRoom = null;
         this.allRooms = [];
         this.waitingRooms = [];
         this.lobbyConnectionText = null;
-        this.joinLobby();
         this.initializeUI();
+        this.joinLobby();
     }
 
     private initializeUI() {
+        //Host game button
         let hostButton = this.add.rectangle(this.game.scale.width / 2, 50, 200, 50, 0xAAAAAA);
         this.add.text(this.game.scale.width / 2 - 48, 42, "Host Game");
         hostButton.setInteractive();
         hostButton.on(Phaser.Input.Events.POINTER_UP, () => {
             this.leaveLobby();
+            ClientManager.getClient().clearWaitingRoomId();
             this.scene.start("RoomScene");
         }, this);
 
+        //Make room buttons interactable
         for(let i = 0; i < 10; i++) {
             this.waitingRooms.push(this.add.text(100, i*30 + 100, ""));
             this.waitingRooms[i].setInteractive();
@@ -68,8 +72,11 @@ export default class LobbyScene extends Phaser.Scene {
         });
     }
 
+    update(deltaT:number) {
+        this.renderWaitingRoom();
+    }
+
     private renderWaitingRoom() {
-        //console.log(this.allRooms);
         this.waitingRooms.forEach((text, idx) => {
             text.setText(`Join Room: ${this.allRooms.length > idx ? this.allRooms[idx].roomId : "No Room"}`);
         })
@@ -79,7 +86,6 @@ export default class LobbyScene extends Phaser.Scene {
         if(this.lobbyRoom != null) {
             this.lobbyRoom.onMessage("rooms", (rooms) => {
                 this.allRooms = rooms;
-                this.renderWaitingRoom();
                 console.log("All rooms received: ", rooms);
             });
 
@@ -93,7 +99,6 @@ export default class LobbyScene extends Phaser.Scene {
                 })
                 if(!exist)
                     this.allRooms.push(room);
-                this.renderWaitingRoom();
                 console.log("Added/Updated room: ", room);
             })
 
@@ -103,13 +108,10 @@ export default class LobbyScene extends Phaser.Scene {
                         return false;
                     return true;
                 })
-                this.renderWaitingRoom();
                 console.log("Removed Room: ", roomId);
             })
 
             this.lobbyRoom.onLeave(() => {
-                this.allRooms.splice(0, this.allRooms.length);
-                this.renderWaitingRoom();
                 console.log("You have left the lobby");
             })
         } else {
