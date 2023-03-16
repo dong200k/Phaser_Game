@@ -16,7 +16,6 @@ export default class LobbyScene extends Phaser.Scene {
     }
 
     create() {
-        console.log("Running create for lobby scene");
         this.lobbyRoom = null;
         this.allRooms = [];
         this.waitingRooms = [];
