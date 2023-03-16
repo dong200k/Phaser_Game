@@ -15,6 +15,10 @@ export default class GameScene extends Phaser.Scene {
         super('GameScene');
     }
 
+    preload() {
+        this.load.image("demo_hero", "images/demo_hero.png");
+    }
+
     create() {
         //Initialize fields
         this.gameRoom = null;
