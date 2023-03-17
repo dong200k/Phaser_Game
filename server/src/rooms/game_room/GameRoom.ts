@@ -14,10 +14,18 @@ export default class GameRoom extends Room<State> {
         //If no one joins the game room, dispose it.
         setTimeout(() => this.autoDispose = true, 5000);
         //Setting up state and game manager.
+        this.setPatchRate(33);
         let state = new State();
         this.gameManager = new GameManager(state);
         this.setState(state);
+        this.initListeners();
         this.startGame();
+    }
+
+    initListeners() {
+        this.onMessage("input", (client, mesg) => {
+            this.gameManager?.processPlayerInput(client.sessionId, mesg);
+        })
     }
 
     startGame() {

@@ -95,8 +95,13 @@ export default class GameManager {
             if(data[3])
                 x += 1;
             let mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-            x = x / mag * speed;
-            y = y / mag * speed;
+            if(mag !== 0) {
+                x = x / mag * speed;
+                y = y / mag * speed;
+            }
+            // console.log("speed: ", speed);
+            // console.log("mag: ", mag);
+            // console.log("x: " ,x, " y: ", y);
             Matter.Body.setVelocity(playerBody, {x, y});
         } else {
             console.log("ERROR: received inputs for a player that does not exist. sessionId: ", sessionId);

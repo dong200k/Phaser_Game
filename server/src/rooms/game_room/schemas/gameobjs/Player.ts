@@ -8,5 +8,6 @@ export default class Player extends Entity {
     constructor(name: string) {
         super();
         this.name = name;
+        this.speed = 2;
     }
 }
