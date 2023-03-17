@@ -65,7 +65,7 @@ export default class GameManager {
         let playerBody = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 100, 100, {isStatic:false});
         this.players.set(sessionId, playerBody);
         Matter.Composite.add(this.world, playerBody);
-        Matter.Body.setVelocity(playerBody, {x:1, y:1});
+        // Matter.Body.setVelocity(playerBody, {x:1, y:1});
     }
 
     public removePlayer(sessionId: string) {

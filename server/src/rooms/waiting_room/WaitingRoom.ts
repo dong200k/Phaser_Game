@@ -13,6 +13,7 @@ export default class WaitingRoom extends Room<State> {
             // }
             matchMaker.createRoom('game', {}).then((room) => {
                 this.broadcast("joinGame", room.roomId);
+                this.lock();
             }).catch(e => {
                 console.log(e);
             })
