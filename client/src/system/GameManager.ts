@@ -19,9 +19,12 @@ export default class GameManager {
     }
 
     private playersOnAdd = (player:any, key:string) => {
+        let newPlayer = new Player(this.scene, player);
         if(key === this.gameRoom.sessionId)
-            this.player1 = new Player(this.scene, player);
-        else 
-            this.players.push(new Player(this.scene, player));
+            this.player1 = newPlayer
+        else
+            this.players.push(newPlayer);
+        this.scene.add.existing(newPlayer);
+        newPlayer.initializeListeners(player);
     }
 }

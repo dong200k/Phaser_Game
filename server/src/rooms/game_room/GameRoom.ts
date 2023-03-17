@@ -17,6 +17,17 @@ export default class GameRoom extends Room<State> {
         let state = new State();
         this.gameManager = new GameManager(state);
         this.setState(state);
+        this.startGame();
+    }
+
+    startGame() {
+        this.gameManager?.startGame();
+        // Game Loop
+        this.setSimulationInterval((deltaT) => this.update(deltaT));
+    }
+
+    update(deltaT:number) {
+        this.gameManager?.update(deltaT);
     }
 
     onJoin(client: Client) {
@@ -30,9 +41,5 @@ export default class GameRoom extends Room<State> {
 
     onDispose() {
         console.log(`Disposed: Game room ${this.roomId}`);
-    }
-
-    startGame() {
-
     }
 }

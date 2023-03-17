@@ -5,7 +5,7 @@ export default class Player extends Entity {
     @type('string') name;
     
 
-    constructor(name: string, isOwner: boolean) {
+    constructor(name: string) {
         super();
         this.name = name;
     }
