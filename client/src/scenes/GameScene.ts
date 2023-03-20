@@ -8,13 +8,13 @@ import GameManager from '../system/GameManager';
  */
 export default class GameScene extends Phaser.Scene {
 
-    private gameRoom: Colyseus.Room | null = null;
-    private gameManager: GameManager | null = null;
+    private gameRoom?: Colyseus.Room;
+    private gameManager?: GameManager;
 
-    private upKey: Phaser.Input.Keyboard.Key | null = null;
-    private downKey: Phaser.Input.Keyboard.Key | null = null;
-    private leftKey: Phaser.Input.Keyboard.Key | null = null;
-    private rightKey: Phaser.Input.Keyboard.Key | null = null;
+    private upKey?: Phaser.Input.Keyboard.Key;
+    private downKey?: Phaser.Input.Keyboard.Key;
+    private leftKey?: Phaser.Input.Keyboard.Key;
+    private rightKey?: Phaser.Input.Keyboard.Key;
 
     constructor() {
         super('GameScene');
@@ -26,8 +26,6 @@ export default class GameScene extends Phaser.Scene {
 
     create() {
         //Initialize fields
-        this.gameRoom = null;
-        
         this.initializeUI();
         this.initializeInputs();
         this.joinGameRoom();
@@ -39,7 +37,7 @@ export default class GameScene extends Phaser.Scene {
 
     /** Runs when the player successfully joined the game room */
     private onJoin() {
-        if(this.gameRoom != null) {
+        if(this.gameRoom) {
             this.gameManager = new GameManager(this,this.gameRoom);
         }
         else
