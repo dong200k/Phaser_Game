@@ -34,7 +34,7 @@ export default class LobbyScene extends Phaser.Scene {
         }, textPos, rect)
 
         //Make room buttons interactable
-        for(let i = 0; i < 10; i++) {
+        for(let i = 0; i < 1; i++) {
             this.waitingRooms.push(this.add.text(100, i*30 + 100, ""));
             this.waitingRooms[i].setInteractive();
             this.waitingRooms[i].on(Phaser.Input.Events.POINTER_UP, () => {
@@ -44,6 +44,19 @@ export default class LobbyScene extends Phaser.Scene {
                 }
             })
         }
+    }
+
+    private addWaitingRoom(){
+        console.log("adding waiting room")
+        let i = this.waitingRooms.length 
+        this.waitingRooms.push(this.add.text(100, i*30 + 100, ""));
+        this.waitingRooms[i].setInteractive();
+        this.waitingRooms[i].on(Phaser.Input.Events.POINTER_UP, () => {
+            if(this.allRooms.length > i) {
+                ClientManager.getClient().setWaitingRoomId(this.allRooms[i].roomId);
+                this.scene.start("RoomScene");
+            }
+        })
     }
 
     private leaveLobby() {
@@ -84,6 +97,7 @@ export default class LobbyScene extends Phaser.Scene {
             this.lobbyRoom.onMessage("rooms", (rooms) => {
                 this.allRooms = rooms;
                 console.log("All rooms received: ", rooms);
+                while(this.allRooms.length > this.waitingRooms.length) this.addWaitingRoom()
             });
 
             this.lobbyRoom.onMessage("+", ([roomId, room]) => {
@@ -94,8 +108,10 @@ export default class LobbyScene extends Phaser.Scene {
                         exist = true;
                     }
                 })
-                if(!exist)
+                if(!exist){
                     this.allRooms.push(room);
+                    if(this.allRooms.length>this.waitingRooms.length)this.addWaitingRoom()
+                }
                 console.log("Added/Updated room: ", room);
             })
 
