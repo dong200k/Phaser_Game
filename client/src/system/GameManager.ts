@@ -5,17 +5,17 @@ import * as Colyseus from 'colyseus.js';
 export default class GameManager {
     private scene: Phaser.Scene;
     private gameRoom: Colyseus.Room;
-    private player1: Player | null = null;
+    private player1?: Player;
     private players: Player[] = [];
 
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
-        this.initializeListeners();
+        this.initializeListeners(); 
     }
 
     private initializeListeners() {
-        this.gameRoom.state.players.onAdd = this.playersOnAdd;
+        this.gameRoom.state.gameObjects.onAdd = this.playersOnAdd;
     }
 
     private playersOnAdd = (player:any, key:string) => {

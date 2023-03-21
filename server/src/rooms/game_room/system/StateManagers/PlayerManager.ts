@@ -20,11 +20,11 @@ export default class PlayerManager{
     }
 
     public syncServerStateBasedOnGameState(){
-        // sync player positions
         Matter.Events.on(this.engine, "afterUpdate", () => {
             this.players.forEach((playerModel, key) => {
                 let playerState = this.state.players.get(key);
                 if(playerState) {
+                    //sync player server position 
                     playerState.x = playerModel.position.x;
                     playerState.y = playerModel.position.y;
                 }
@@ -61,7 +61,6 @@ export default class PlayerManager{
     }
 
     public processPlayerInput(sessionId:string, data:number[]) {
-        console.log("process player input")
         //data - array of inputs. [0] up, [1] down, [2] left, [3] right, [4] special, [5] mouse click, [6] mousex, [7] mousey.
         let playerBody = this.players.get(sessionId);
         let playerState = this.state.players.get(sessionId);
