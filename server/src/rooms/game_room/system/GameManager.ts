@@ -82,14 +82,14 @@ export default class GameManager {
         
         if(playerBody && playerState) {
             //calculate new player velocity
-            let speed = playerState.speed;
+            let speed = playerState.stat.speed;
             let x = 0;
             let y = 0;
             if(data[0]) y -= 1;
             if(data[1]) y += 1;
             if(data[2]) x -= 1;
             if(data[3]) x += 1;
-            [x,y] = this.getNormalizedSpeed(x, y, playerState.speed)
+            [x,y] = this.getNormalizedSpeed(x, y, speed)
             Matter.Body.setVelocity(playerBody, {x, y});
 
             //special ability
