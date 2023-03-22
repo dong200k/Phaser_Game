@@ -1,14 +1,16 @@
 import * as Colyseus from 'colyseus.js';
 
+type room = "waiting" | "game" | "lobby" | "none";
+
 export default class ClientManager {
     private static singleton: ClientManager;
     
     private client: Colyseus.Client;
-    private state: "waiting" | "game" | "lobby" | "none" = "none";
-    private lobbyRoom: Colyseus.Room | null = null;
-    private waitingRoom: Colyseus.Room | null = null;
-    private gameRoom: Colyseus.Room | null = null;
+    private lobbyRoom?: Colyseus.Room;
+    private waitingRoom?: Colyseus.Room;
+    private gameRoom?: Colyseus.Room;
 
+    private state: room = "none";
     private waitingRoomId: string = "";
     private gameRoomId: string = "";
 
@@ -17,7 +19,7 @@ export default class ClientManager {
     }
 
     public static getClient(): ClientManager {
-        if(this.singleton == null) {
+        if(!this.singleton) {
             this.singleton = new ClientManager();
         }
         return this.singleton;
@@ -44,10 +46,10 @@ export default class ClientManager {
     
     public joinGameRoom(): Promise<Colyseus.Room> {
         const promise = new Promise<Colyseus.Room>((resolve, reject) => {
-            if(this.gameRoom != null) {
+            if(this.gameRoom) {
                 this.gameRoom.leave();
                 this.gameRoom.removeAllListeners();
-                this.gameRoom = null;
+                this.gameRoom = undefined
             }
             if(this.gameRoomId === "") {
                 this.client.create('game').then((room) => {
@@ -71,12 +73,12 @@ export default class ClientManager {
      */
     public joinWaitingRoom(): Promise<Colyseus.Room> {
         const promise = new Promise<Colyseus.Room>((resolve, reject) => {
-            if(this.waitingRoom != null) {
+            if(this.waitingRoom) {
                 this.waitingRoom.leave();
                 this.waitingRoom.removeAllListeners();
-                this.waitingRoom = null;
+                this.waitingRoom = undefined;
             }
-            if(this.waitingRoomId === "") {
+            if(!this.waitingRoomId) {
                 this.client.create('waiting').then((room) => {
                     this.waitingRoom = room;
                     this.setState('waiting');
@@ -113,23 +115,23 @@ export default class ClientManager {
         switch(state) {
             case 'lobby': {
                 this.state = 'lobby';
-                this.gameRoom = null;
-                this.waitingRoom = null;
+                this.gameRoom = undefined;
+                this.waitingRoom = undefined;
             } break;
             case 'waiting': {
                 this.state = 'waiting';
-                this.lobbyRoom = null;
-                this.gameRoom = null;
+                this.lobbyRoom = undefined;
+                this.gameRoom = undefined;
             } break;
             case 'game': {
                 this.state = 'game';
-                this.lobbyRoom = null;
+                this.lobbyRoom = undefined;
             } break;
             default: {
                 this.state = 'none';
-                this.lobbyRoom = null;
-                this.gameRoom = null;
-                this.waitingRoom = null;
+                this.lobbyRoom = undefined;
+                this.gameRoom = undefined;
+                this.waitingRoom = undefined;
             }
         }
     }

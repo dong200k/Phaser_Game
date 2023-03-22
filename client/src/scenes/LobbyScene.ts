@@ -1,14 +1,15 @@
 import Phaser from "phaser";
 import * as Colyseus from 'colyseus.js';
 import ClientManager from "../colyseus/ClientManager";
+import NavButton from "../UI/NavButton";
 
 
 export default class LobbyScene extends Phaser.Scene {
     
-    private lobbyRoom: Colyseus.Room | null = null;
+    private lobbyRoom?: Colyseus.Room;
     private allRooms: any[] = [];
 
-    private lobbyConnectionText: Phaser.GameObjects.Text | null = null;
+    private lobbyConnectionText?: Phaser.GameObjects.Text;
     private waitingRooms: Phaser.GameObjects.Text[] = [];
 
     constructor() {
@@ -16,27 +17,24 @@ export default class LobbyScene extends Phaser.Scene {
     }
 
     create() {
-        this.lobbyRoom = null;
         this.allRooms = [];
         this.waitingRooms = [];
-        this.lobbyConnectionText = null;
+
         this.initializeUI();
         this.joinLobby();
     }
 
     private initializeUI() {
-        //Host game button
-        let hostButton = this.add.rectangle(this.game.scale.width / 2, 50, 200, 50, 0xAAAAAA);
-        this.add.text(this.game.scale.width / 2 - 48, 42, "Host Game");
-        hostButton.setInteractive();
-        hostButton.on(Phaser.Input.Events.POINTER_UP, () => {
+        let rect = {x: this.game.scale.width / 2, y: 50, width: 200, height: 50, color: 0xAAAAAA}
+        let textPos = {x: this.game.scale.width / 2 - 48, y: 42}
+        NavButton(this, "Host Game", () => {
             this.leaveLobby();
             ClientManager.getClient().clearWaitingRoomId();
             this.scene.start("RoomScene");
-        }, this);
+        }, textPos, rect)
 
         //Make room buttons interactable
-        for(let i = 0; i < 10; i++) {
+        for(let i = 0; i < 1; i++) {
             this.waitingRooms.push(this.add.text(100, i*30 + 100, ""));
             this.waitingRooms[i].setInteractive();
             this.waitingRooms[i].on(Phaser.Input.Events.POINTER_UP, () => {
@@ -46,6 +44,19 @@ export default class LobbyScene extends Phaser.Scene {
                 }
             })
         }
+    }
+
+    private addWaitingRoom(){
+        console.log("adding waiting room")
+        let i = this.waitingRooms.length 
+        this.waitingRooms.push(this.add.text(100, i*30 + 100, ""));
+        this.waitingRooms[i].setInteractive();
+        this.waitingRooms[i].on(Phaser.Input.Events.POINTER_UP, () => {
+            if(this.allRooms.length > i) {
+                ClientManager.getClient().setWaitingRoomId(this.allRooms[i].roomId);
+                this.scene.start("RoomScene");
+            }
+        })
     }
 
     private leaveLobby() {
@@ -82,10 +93,11 @@ export default class LobbyScene extends Phaser.Scene {
     }
 
     private onJoin() {
-        if(this.lobbyRoom != null) {
+        if(this.lobbyRoom) {
             this.lobbyRoom.onMessage("rooms", (rooms) => {
                 this.allRooms = rooms;
                 console.log("All rooms received: ", rooms);
+                while(this.allRooms.length > this.waitingRooms.length) this.addWaitingRoom()
             });
 
             this.lobbyRoom.onMessage("+", ([roomId, room]) => {
@@ -96,8 +108,10 @@ export default class LobbyScene extends Phaser.Scene {
                         exist = true;
                     }
                 })
-                if(!exist)
+                if(!exist){
                     this.allRooms.push(room);
+                    if(this.allRooms.length>this.waitingRooms.length)this.addWaitingRoom()
+                }
                 console.log("Added/Updated room: ", room);
             })
 

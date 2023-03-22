@@ -3,11 +3,12 @@ import Entity from './Entity';
 
 export default class Player extends Entity {
     @type('string') name;
-    
+    @type('string') role;
 
-    constructor(name: string) {
+    constructor(name: string, role?: string) {
         super();
         this.name = name;
         this.speed = 2;
+        this.role = role? role: "ranger"
     }
 }

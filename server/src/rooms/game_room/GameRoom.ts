@@ -5,14 +5,17 @@ import GameManager from "./system/GameManager";
 export default class GameRoom extends Room<State> {
     autoDispose = false;
     
-    private gameManager: GameManager | null = null;
+    private gameManager?: GameManager
 
     onCreate() {
         console.log(`Created: Game room ${this.roomId}`);
+
         //Game rooms are private and can only be joined by id.
         this.setPrivate(true);
+
         //If no one joins the game room, dispose it.
         setTimeout(() => this.autoDispose = true, 5000);
+
         //Setting up state and game manager.
         this.setPatchRate(33);
         let state = new State();
@@ -30,8 +33,9 @@ export default class GameRoom extends Room<State> {
 
     startGame() {
         this.gameManager?.startGame();
+
         // Game Loop
-        this.setSimulationInterval((deltaT) => this.update(deltaT));
+        this.setSimulationInterval((deltaT) => this.gameManager?.update(deltaT));
     }
 
     update(deltaT:number) {
@@ -44,7 +48,8 @@ export default class GameRoom extends Room<State> {
     }
 
     onLeave(client: Client) {
-        this.gameManager?.removePlayer(client.sessionId);
+        // removes player from list of gameobjects
+        this.gameManager?.removeGameObject(client.sessionId);
     }
 
     onDispose() {

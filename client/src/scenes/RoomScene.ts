@@ -1,45 +1,41 @@
 import Phaser from "phaser";
 import * as Colyseus from 'colyseus.js';
 import ClientManager from "../colyseus/ClientManager";
+import NavButton from "../UI/NavButton";
 
 export default class RoomScene extends Phaser.Scene {
     
-    private waitingRoom: Colyseus.Room | null = null;
+    private waitingRoom?: Colyseus.Room;
     //private client: Colyseus.Client;
 
-    private playersInRoomText: Phaser.GameObjects.Text | null = null;
+    private playersInRoomText?: Phaser.GameObjects.Text;
     private playersInRoom: number = 0;
 
     constructor() {
         super('RoomScene');
-        //this.client = Client.getClient().getColyseusClient();
+        // this.client = Client.getClient().getColyseusClient();
     }
 
     create() {
-        this.waitingRoom = null;
-        this.playersInRoomText = null;
         this.playersInRoom = 0;
         this.initializeUI();
         this.joinRoom();
     }
 
     private initializeUI() {
-        // leave button
-        let lobbyButton = this.add.rectangle(this.game.scale.width / 2, 50, 200, 50, 0xAAAAAA);
-        this.add.text(this.game.scale.width / 2 - 48, 42, "Join Lobby");
-        lobbyButton.setInteractive();
-        lobbyButton.on(Phaser.Input.Events.POINTER_UP, () => {
+        let rect = {x: this.game.scale.width / 2, y: 50, width: 200, height: 50, color: 0xAAAAAA}
+        let textPos = {x: this.game.scale.width / 2 - 48, y: 42}
+
+        // leave to lobby button
+        NavButton(this, "Join Lobby", () => {
             this.leaveRoom();
             this.scene.start('LobbyScene');
-        }, this);
+        }, textPos, rect)
 
-        // start game button
-        let startGameButton = this.add.rectangle(this.game.scale.width / 2, 150, 200, 50, 0xAAAAAA);
-        this.add.text(this.game.scale.width / 2 - 48, 142, "Start Game");
-        startGameButton.setInteractive();
-        startGameButton.on(Phaser.Input.Events.POINTER_UP, () => {
-            this.waitingRoom?.send('start');
-        }, this);
+        //start game button
+        NavButton(this, "Start Game", () => {
+            this.waitingRoom?.send('start')
+        }, {...textPos, y: 142}, {...rect, y: 150})
 
         // list of players text
         this.playersInRoomText = this.add.text(this.game.scale.width / 2, 300, "Players in room: 0");
