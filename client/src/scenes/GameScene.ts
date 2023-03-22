@@ -15,6 +15,7 @@ export default class GameScene extends Phaser.Scene {
     private downKey?: Phaser.Input.Keyboard.Key;
     private leftKey?: Phaser.Input.Keyboard.Key;
     private rightKey?: Phaser.Input.Keyboard.Key;
+    private spaceKey?: Phaser.Input.Keyboard.Key;
 
     constructor() {
         super('GameScene');
@@ -49,6 +50,7 @@ export default class GameScene extends Phaser.Scene {
         this.downKey = this.input.keyboard.addKey("S");
         this.rightKey = this.input.keyboard.addKey("D");
         this.leftKey = this.input.keyboard.addKey("A");
+        this.spaceKey = this.input.keyboard.addKey("SPACE")
     }
 
     private initializeUI() {
@@ -58,10 +60,17 @@ export default class GameScene extends Phaser.Scene {
     private sendServerInputMessage() {
         //[0] up, [1] down, [2] left, [3] right, [4] special, [5] mouse click, [6] mousex, [7] mousey.
         let inputMesg = [0, 0, 0, 0, 0, 0, 0, 0];
-        inputMesg[0] = this.upKey?.isDown? 1: 0;
-        inputMesg[1] = this.downKey?.isDown? 1: 0;
-        inputMesg[2] = this.leftKey?.isDown? 1: 0;
-        inputMesg[3] = this.rightKey?.isDown? 1: 0;
+        inputMesg[0] = this.upKey?.isDown? 1 : 0;
+        inputMesg[1] = this.downKey?.isDown? 1 : 0;
+        inputMesg[2] = this.leftKey?.isDown? 1 : 0;
+        inputMesg[3] = this.rightKey?.isDown? 1 : 0;
+        inputMesg[4] = this.spaceKey?.isDown? 1 : 0;
+
+        
+        inputMesg[5] = this.input.mousePointer.isDown? 1 : 0
+        inputMesg[6] = this.input.mousePointer.x
+        inputMesg[7] = this.input.mousePointer.y
+
         this.gameRoom?.send("input", inputMesg);
     }
 
