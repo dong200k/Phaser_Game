@@ -25,8 +25,10 @@ export default class Stat extends Schema {
     @type('number') attackRange;
     @type('number') attackRangePercent;
 
-    @type('number') speed;
     @type('number') attackSpeed;
+    @type('number') attackSpeedPercent;
+
+    @type('number') speed;
 
     @type('number') lifeSteal;
 
@@ -59,8 +61,10 @@ export default class Stat extends Schema {
         this.attackRange = 1;
         this.attackRangePercent = 0;
 
-        this.speed = 1;
         this.attackSpeed = 1;
+        this.attackSpeedPercent = 0
+
+        this.speed = 1;
 
         this.lifeSteal = 0;
 
