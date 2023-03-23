@@ -79,56 +79,57 @@ export default class GameManager {
         //data - array of inputs. [0] up, [1] down, [2] left, [3] right, [4] special, [5] mouse click, [6] mousex, [7] mousey.
         let playerBody = this.gameObjects.get(sessionId);
         let playerState = this.state.gameObjects.get(sessionId) as Player;
-        
-        if(playerBody && playerState) {
-            //calculate new player velocity
-            let speed = playerState.stat.speed;
-            let x = 0;
-            let y = 0;
-            if(data[0]) y -= 1;
-            if(data[1]) y += 1;
-            if(data[2]) x -= 1;
-            if(data[3]) x += 1;
-            [x,y] = this.getNormalizedSpeed(x, y, speed)
-            Matter.Body.setVelocity(playerBody, {x, y});
 
-            //special ability
-            if(data[4]){
-                
-            }
-            
-            //attack
-            if(this.attackCooldown.isUp && data[5]){
-                let mouseX = data[6]
-                let mouseY = data[7]
-                this.attackCooldown.reset()
-                console.log("attack")
-                // spawn new game object/projectile at players position
-                let obj = new GameObject(playerBody.position.x, playerBody.position.y, sessionId)
-
-                // sync with server state
-                this.state.gameObjects.set(obj.id, obj);
-
-                //Create matterjs body for obj
-                let body = Matter.Bodies.rectangle(obj.x, obj.y, 10, 10, {isStatic: false});
-                
-                // so bullet does not collide with player
-                body.collisionFilter = {
-                    'group': -1,
-                    'category': 2,
-                    'mask': 0,
-                };
-                this.gameObjects.set(obj.id, body);
-
-                Matter.Composite.add(this.world, body);
-
-                let [x,y] = this.getNormalizedSpeed(mouseX - obj.x, mouseY - obj.y, 10)
-                Matter.Body.setVelocity(body, {x, y});
-            }
-        } else {
+        if(!playerBody || !playerState){
             console.log("ERROR: received inputs for a player that does not exist. sessionId: ", sessionId);
         }
+
+        this.processPlayerMovement(playerState, playerBody as Matter.Body, data)
+        this.processPlayerAttack(playerState, playerBody as Matter.Body, Boolean(data[5]), data[6], data[7], sessionId)
+
     }
+
+    private processPlayerAttack(playerState: Player, playerBody: Matter.Body, mouseClick: boolean, mouseX: number, mouseY: number, playerId: string){
+        if(this.attackCooldown.isFinished && mouseClick){
+            this.attackCooldown.reset()
+            console.log("attack")
+            // spawn new game object/projectile at players position
+            let obj = new GameObject(playerBody.position.x, playerBody.position.y, playerId)
+
+            // sync with server state
+            this.state.gameObjects.set(obj.id, obj);
+
+            //Create matterjs body for obj
+            let body = Matter.Bodies.rectangle(obj.x, obj.y, 10, 10, {isStatic: false});
+            
+            // so bullet does not collide with player
+            body.collisionFilter = {
+                'group': -1,
+                'category': 2,
+                'mask': 0,
+            };
+            this.gameObjects.set(obj.id, body);
+
+            Matter.Composite.add(this.world, body);
+
+            let [x,y] = this.getNormalizedSpeed(mouseX - obj.x, mouseY - obj.y, 10)
+            Matter.Body.setVelocity(body, {x, y});
+        }
+    }
+
+    private processPlayerMovement(playerState: Player, playerBody: Matter.Body, data: number[]){
+        //calculate new player velocity
+        let speed = playerState.stat.speed;
+        let x = 0;
+        let y = 0;
+        if(data[0]) y -= 1;
+        if(data[1]) y += 1;
+        if(data[2]) x -= 1;
+        if(data[3]) x += 1;
+        [x,y] = this.getNormalizedSpeed(x, y, speed)
+        Matter.Body.setVelocity(playerBody, {x, y});
+    }
+
     public getNormalizedSpeed(x: number, y: number, speed: number){
         let mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         if(mag===0) return [0,0]
