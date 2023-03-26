@@ -23,6 +23,8 @@ export default class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.image("demo_hero", "images/demo_hero.png");
+        this.load.image("dirt_map_tiles", "tilemaps/demo_map/dirt_dungeon_tileset.png");
+        this.load.tilemapTiledJSON("demo_map", "tilemaps/demo_map/demo_map.json");
     }
 
     create() {
@@ -45,16 +47,20 @@ export default class GameScene extends Phaser.Scene {
             console.log("ERROR: Game Room not initialized");
     }
 
+    private initializeUI() {
+        const map = this.add.tilemap("demo_map");
+        const tileset = map.addTilesetImage("dirt_dungeon_tileset", "dirt_map_tiles");
+        map.createLayer("Background", tileset);
+        map.createLayer("Ground", tileset);
+        map.createLayer("Obstacle", tileset);
+    }
+
     private initializeInputs() {
         this.upKey = this.input.keyboard.addKey("W");
         this.downKey = this.input.keyboard.addKey("S");
         this.rightKey = this.input.keyboard.addKey("D");
         this.leftKey = this.input.keyboard.addKey("A");
         this.spaceKey = this.input.keyboard.addKey("SPACE")
-    }
-
-    private initializeUI() {
-        
     }
 
     private sendServerInputMessage() {

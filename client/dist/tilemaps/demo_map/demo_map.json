@@ -46,8 +46,17 @@
  "tileheight":16,
  "tilesets":[
         {
+         "columns":20,
          "firstgid":1,
-         "source":"dirt_dungeon_tileset.tsx"
+         "image":"dirt_dungeon_tileset.png",
+         "imageheight":144,
+         "imagewidth":320,
+         "margin":0,
+         "name":"dirt_dungeon_tileset",
+         "spacing":0,
+         "tilecount":180,
+         "tileheight":16,
+         "tilewidth":16
         }],
  "tilewidth":16,
  "type":"map",
