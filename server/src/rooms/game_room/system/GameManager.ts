@@ -4,12 +4,14 @@ import Player from '../schemas/gameobjs/Player';
 import PlayerManager from './StateManagers/PlayerManager';
 import GameObject from '../schemas/gameobjs/GameObject';
 import Cooldown from '../schemas/gameobjs/Cooldown';
+import TilemapManager from './StateManagers/TilemapManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
     private world: Matter.World;
     private state: State;
     private attackCooldown: Cooldown
+    private tilemapManager: TilemapManager;
 
     public gameObjects: Map<string, Matter.Body> = new Map();
 
@@ -23,7 +25,8 @@ export default class GameManager {
         this.attackCooldown = new Cooldown(1000)
 
         // this.playerManager = new PlayerManager(this.engine, this.world, state)
-
+        this.tilemapManager = new TilemapManager(this.state.tilemap);
+        this.tilemapManager.loadTilemapTiled("");
         this.initUpdateEvents();
         this.initCollisionEvent();
         this.syncServerStateBasedOnGameState();
