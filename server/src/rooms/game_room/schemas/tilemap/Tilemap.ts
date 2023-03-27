@@ -6,7 +6,19 @@ export default class Tilemap extends Schema {
     @type({map: Layer})
     layers = new MapSchema<Layer>();
     @type(Layer) currentLayer: Layer | null = null;
+    @type("number") width: number;
+    @type("number") height: number;
+    @type("number") tileWidth: number;
+    @type("number") tileHeight: number;
 
+    constructor(width:number,height:number,tileWidth:number,tileHeight:number) {
+        super();
+        this.width = width;
+        this.height = height;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+    } 
+ 
     public addExistingLayer(layer:Layer) {
         let layerName = layer.name;
         if(this.layers.has(layerName)) {

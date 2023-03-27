@@ -13,4 +13,10 @@ export default class Layer extends Schema {
         this.height = height;
         this.name = name;
     }
+
+    public populateTiles(tileWidth: number, tileHeight: number, tileIdArray: number[]) {
+        tileIdArray.forEach((tileId) => {
+            this.tiles.push(new Tile(tileId, tileWidth, tileHeight));
+        })
+    }
 }

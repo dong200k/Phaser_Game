@@ -25,8 +25,9 @@ export default class GameManager {
         this.attackCooldown = new Cooldown(1000)
 
         // this.playerManager = new PlayerManager(this.engine, this.world, state)
-        this.tilemapManager = new TilemapManager(this.state.tilemap);
-        this.tilemapManager.loadTilemapTiled("");
+        //Set up the tilemap
+        this.tilemapManager = new TilemapManager(state);
+        this.tilemapManager.loadTilemapTiled("assets/tilemaps/demo_map/demo_map.json");
         this.initUpdateEvents();
         this.initCollisionEvent();
         this.syncServerStateBasedOnGameState();
