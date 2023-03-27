@@ -46,34 +46,28 @@ export default class GameManager {
 
     /**Calls when the tilemap is first created on the server */
     private onChangeTilemap = (currentValue:any) => {
-        //console.log(currentValue);
         let map = this.scene.add.tilemap("", currentValue.tileWidth, currentValue.tileHeight, currentValue.width, currentValue.height);
         let tileset = map.addTilesetImage("dirt_dungeon_tileset", "dirt_map_tiles");
-        // let backgroundLayer = map.createBlankLayer("Background", tileset);
-        // let groundLayer = map.createBlankLayer("Ground", tileset);
-        // let obstacleLayer = map.createBlankLayer("Obstacle", tileset);
-        
-        // map.createLayer("Background", tileset);
-        // map.createLayer("Ground", tileset);
-        // map.createLayer("Obstacle", tileset);
 
+        //Triggers when the server adds a tilemap layer
         currentValue.layers.onAdd = (layer:any, key:string) => {
             let newLayer = map.createBlankLayer(key, tileset);
+            if(key === "Background")
+                newLayer.setDepth(-10);
+            if(key === "Ground")
+                newLayer.setDepth(-5);
+            if(key === "Obstacle")
+                newLayer.setDepth(10);
             let width = layer.width;
             let height = layer.height;
             for(let y = 0; y < height; y++) {
                 for(let x = 0; x < width; x++) {
                     let tileId = layer.tiles[(y * height + x)].tileId;
-                    //console.log(tileId);
                     if(tileId !== 0)
                         newLayer.putTileAt(tileId - 1, x, y);
                 }
             }
         }
-    }
-
-    private onAddLayer = () => {
-        
     }
 
     private addProjectile(projectile: any, key: string): Phaser.GameObjects.Sprite{
