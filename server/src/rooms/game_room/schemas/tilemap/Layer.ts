@@ -15,8 +15,13 @@ export default class Layer extends Schema {
     }
 
     public populateTiles(tileWidth: number, tileHeight: number, tileIdArray: number[]) {
-        tileIdArray.forEach((tileId) => {
-            this.tiles.push(new Tile(tileId, tileWidth, tileHeight));
+        tileIdArray.forEach((tileId, idx) => {
+            this.tiles.push(new Tile(tileId, tileWidth, tileHeight,(idx % this.width) * tileWidth, Math.floor(idx / this.height) * tileHeight));
         })
+    }
+
+    public getTileAt(tileX:number,tileY:number):Tile|null {
+        if(tileX < 0 || tileX >= this.width || tileY < 0 || tileY >= this.height) return null;
+        return this.tiles[(tileY * this.width) + tileX];
     }
 }

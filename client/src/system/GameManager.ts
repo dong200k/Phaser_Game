@@ -62,7 +62,7 @@ export default class GameManager {
             let height = layer.height;
             for(let y = 0; y < height; y++) {
                 for(let x = 0; x < width; x++) {
-                    let tileId = layer.tiles[(y * height + x)].tileId;
+                    let tileId = layer.tiles[(y * width + x)].tileId;
                     if(tileId !== 0)
                         newLayer.putTileAt(tileId - 1, x, y);
                 }

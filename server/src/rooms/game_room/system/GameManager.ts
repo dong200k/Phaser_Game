@@ -27,7 +27,9 @@ export default class GameManager {
         // this.playerManager = new PlayerManager(this.engine, this.world, state)
         //Set up the tilemap
         this.tilemapManager = new TilemapManager(state);
-        this.tilemapManager.loadTilemapTiled("assets/tilemaps/demo_map/demo_map.json");
+        this.tilemapManager.loadTilemapTiled("assets/tilemaps/demo_map/demo_map.json").then(() => {
+            this.tilemapManager.addObstaclesToMatter(this.engine, this.gameObjects);
+        });
         this.initUpdateEvents();
         this.initCollisionEvent();
         this.syncServerStateBasedOnGameState();
@@ -38,7 +40,7 @@ export default class GameManager {
         Matter.Events.on(this.engine, "afterUpdate", () => {
             this.gameObjects.forEach((obj, key) => {
                 let objState = this.state.gameObjects.get(key);
-                if(objState) {
+                if(objState && !obj.isStatic) {
                     objState.x = obj.position.x;
                     objState.y = obj.position.y;
                 }

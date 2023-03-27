@@ -36,6 +36,6 @@ export default class Tilemap extends Schema {
         if(searchLayer == null) 
             return null;
         // TODO: return correct tile.
-        return null;
+        return searchLayer.getTileAt(tileX, tileY);
     }
 }
