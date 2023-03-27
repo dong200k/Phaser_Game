@@ -23,7 +23,7 @@ export default class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.image("demo_hero", "images/demo_hero.png");
-        this.load.image("dirt_map_tiles", "tilemaps/demo_map/dirt_dungeon_tileset.png");
+        this.load.image("dirt_map_tiles", "tilemaps/demo_map/dirt_dungeon_tileset_extruded.png");
         //this.load.tilemapTiledJSON("demo_map", "tilemaps/demo_map/demo_map.json");
     }
 
@@ -48,6 +48,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     private initializeUI() {
+        // this.cameras.main.setZoom(2);
         // const map = this.add.tilemap("demo_map");
         // const tileset = map.addTilesetImage("dirt_dungeon_tileset", "dirt_map_tiles");
         // map.createLayer("Background", tileset);

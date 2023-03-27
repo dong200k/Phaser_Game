@@ -53,7 +53,7 @@ export default class GameManager {
         this.state.gameObjects.set(id, obj);
 
         //Create matterjs body for obj
-        let body = Matter.Bodies.rectangle(obj.x, obj.y, 100, 100, {isStatic: false});
+        let body = Matter.Bodies.rectangle(obj.x, obj.y, 49, 44, {isStatic: false});
         this.gameObjects.set(id, body);
 
         Matter.Composite.add(this.world, body);
@@ -75,8 +75,8 @@ export default class GameManager {
 
         //TODO: get player data from the database
         let newPlayer = new Player("No Name");
-        newPlayer.x = Math.random() * 500;
-        newPlayer.y = Math.random() * 500;
+        newPlayer.x = Math.random() * 200 + 100;
+        newPlayer.y = Math.random() * 200 + 100;
 
         this.addGameObject(sessionId, newPlayer)
     }   

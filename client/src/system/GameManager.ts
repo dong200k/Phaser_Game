@@ -47,7 +47,7 @@ export default class GameManager {
     /**Calls when the tilemap is first created on the server */
     private onChangeTilemap = (currentValue:any) => {
         let map = this.scene.add.tilemap("", currentValue.tileWidth, currentValue.tileHeight, currentValue.width, currentValue.height);
-        let tileset = map.addTilesetImage("dirt_dungeon_tileset", "dirt_map_tiles");
+        let tileset = map.addTilesetImage("dirt_dungeon_tileset", "dirt_map_tiles", 16, 16, 1, 2);
 
         //Triggers when the server adds a tilemap layer
         currentValue.layers.onAdd = (layer:any, key:string) => {
@@ -88,8 +88,10 @@ export default class GameManager {
     private addPlayer(player: any, key: string): Player{
         let newPlayer = new Player(this.scene, player);
         console.log(newPlayer)
-        if(key === this.gameRoom.sessionId)
-            this.player1 = newPlayer
+        if(key === this.gameRoom.sessionId) {
+            this.player1 = newPlayer;
+            this.scene.cameras.main.startFollow(this.player1, false, 0.1);
+        }
         else
             this.players.push(newPlayer);
         this.scene.add.existing(newPlayer);
