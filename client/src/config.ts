@@ -10,4 +10,13 @@ export default {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
+    physics: {
+        default: 'matter',
+        matter: {
+            gravity: {
+                y: 0,
+            },
+            debug: true
+        }
+    }
 };

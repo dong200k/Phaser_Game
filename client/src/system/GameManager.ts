@@ -13,8 +13,7 @@ export default class GameManager {
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
-        this.initializeListeners(); 
-        
+        this.initializeListeners();
     }
 
     private initializeListeners() {
@@ -63,8 +62,15 @@ export default class GameManager {
             for(let y = 0; y < height; y++) {
                 for(let x = 0; x < width; x++) {
                     let tileId = layer.tiles[(y * width + x)].tileId;
-                    if(tileId !== 0)
-                        newLayer.putTileAt(tileId - 1, x, y);
+                    if(tileId !== 0) {
+                        //Add a tile to the tilemap
+                        let newTile = newLayer.putTileAt(tileId - 1, x, y);
+                        //If the tile is a obstacle add it to matter.js
+                        if(key === "Obstacle") {
+                            let tileBody = this.scene.matter.add.tileBody(newTile);
+                            tileBody.setStatic(true);
+                        }
+                    }
                 }
             }
         }
@@ -95,6 +101,7 @@ export default class GameManager {
         else
             this.players.push(newPlayer);
         this.scene.add.existing(newPlayer);
+        this.scene.matter.add.gameObject(newPlayer);
         newPlayer.initializeListeners(player);
         return newPlayer
     }
