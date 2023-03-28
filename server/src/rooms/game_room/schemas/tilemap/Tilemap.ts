@@ -3,8 +3,7 @@ import Layer from './Layer';
 import Tile from '../gameobjs/Tile';
 
 export default class Tilemap extends Schema {
-    @type({map: Layer})
-    layers = new MapSchema<Layer>();
+    @type({map: Layer}) layers = new MapSchema<Layer>();
     @type(Layer) currentLayer: Layer | null = null;
     @type("number") width: number;
     @type("number") height: number;
@@ -19,23 +18,31 @@ export default class Tilemap extends Schema {
         this.tileHeight = tileHeight;
     } 
  
+    /**Adds an existing layer to the tilemap. This layer is set as the tilemap's currentLayer. */
     public addExistingLayer(layer:Layer) {
         let layerName = layer.name;
         if(this.layers.has(layerName)) {
             console.log("Error: Duplicate layer name of ", layerName);
         } else {
             this.layers.set(layerName, layer);
+            this.currentLayer = layer;
         }
     }
 
-    /** Get a tile at location */
-    public getTileAt(tileX:number, tileY:number, layer:Layer|null=null):Tile|null {
+    /**
+     * Gets a tile from the tilemap.
+     * @param tileX The tile's x postion.
+     * @param tileY the tile's y postion.
+     * @param layer The name of the layer to search. Otherwise the tilemap's currentLayer is used.
+     * @returns A tile from the tilemap.
+     */
+    public getTileAt(tileX:number, tileY:number, layer:string=""):Tile|null {
         let searchLayer = this.currentLayer;
-        if(layer != null)
-            searchLayer = layer;
+        let specifiedLayer = this.layers.get(layer);
+        if(specifiedLayer)
+            searchLayer = specifiedLayer;
         if(searchLayer == null) 
             return null;
-        // TODO: return correct tile.
         return searchLayer.getTileAt(tileX, tileY);
     }
 

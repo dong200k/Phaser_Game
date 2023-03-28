@@ -4,13 +4,17 @@ import Tile from '../gameobjs/Tile';
 export default class Layer extends Schema {
     @type("number") width: number;
     @type("number") height: number;
+    @type("number") tileWidth: number;
+    @type("number") tileHeight: number;
     @type("string") name: string;
     @type([Tile]) tiles = new ArraySchema<Tile>();
 
-    constructor(name:string, width:number, height:number) {
+    constructor(name:string, width:number, height:number, tileWidth:number, tileHeight:number) {
         super();
         this.width = width;
         this.height = height;
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
         this.name = name;
     }
 

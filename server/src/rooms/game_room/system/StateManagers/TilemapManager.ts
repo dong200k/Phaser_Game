@@ -33,7 +33,7 @@ export default class TilemapManager {
                     let height = layer.height;
                     let layerName = layer.name;
                     //Create tilemap layers
-                    let newLayer = new Layer(layerName, width, height);
+                    let newLayer = new Layer(layerName, width, height, tileWidth, tileHeight);
                     newLayer.populateTiles(tileWidth, tileHeight, layer.data);
                     this.tilemap?.addExistingLayer(newLayer);
                 })
