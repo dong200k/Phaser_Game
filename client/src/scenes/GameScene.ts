@@ -16,6 +16,7 @@ export default class GameScene extends Phaser.Scene {
     private leftKey?: Phaser.Input.Keyboard.Key;
     private rightKey?: Phaser.Input.Keyboard.Key;
     private spaceKey?: Phaser.Input.Keyboard.Key;
+    private debugKey?: Phaser.Input.Keyboard.Key;
 
     constructor() {
         super('GameScene');
@@ -62,6 +63,13 @@ export default class GameScene extends Phaser.Scene {
         this.rightKey = this.input.keyboard.addKey("D");
         this.leftKey = this.input.keyboard.addKey("A");
         this.spaceKey = this.input.keyboard.addKey("SPACE");
+
+        // Debug controls, not visible by default. Can be disabled in config.ts.
+        this.debugKey = this.input.keyboard.addKey("F3");
+        this.debugKey.on("down", () => {
+            this.matter.world.debugGraphic?.setVisible(!this.matter.world.debugGraphic.visible);
+        })
+        this.matter.world.debugGraphic?.setVisible(false);
     }
 
     private sendServerInputMessage() {
