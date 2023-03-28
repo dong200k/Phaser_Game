@@ -47,7 +47,6 @@ export default class GameManager {
     private onChangeTilemap = (currentValue:any) => {
         let map = this.scene.add.tilemap("", currentValue.tileWidth, currentValue.tileHeight, currentValue.width, currentValue.height);
         let tileset = map.addTilesetImage("dirt_dungeon_tileset", "dirt_map_tiles", 16, 16, 1, 2);
-
         //Triggers when the server adds a tilemap layer
         currentValue.layers.onAdd = (layer:any, key:string) => {
             let newLayer = map.createBlankLayer(key, tileset);
@@ -67,8 +66,9 @@ export default class GameManager {
                         let newTile = newLayer.putTileAt(tileId - 1, x, y);
                         //If the tile is a obstacle add it to matter.js
                         if(key === "Obstacle") {
-                            let tileBody = this.scene.matter.add.tileBody(newTile);
+                            let tileBody = this.scene.matter.add.tileBody(newTile); //adding this tile to matter physics will show debug lines
                             tileBody.setStatic(true);
+                            tileBody.setSensor(true);
                         }
                     }
                 }
@@ -101,8 +101,8 @@ export default class GameManager {
         else
             this.players.push(newPlayer);
         this.scene.add.existing(newPlayer);
-        this.scene.matter.add.gameObject(newPlayer);
+        this.scene.matter.add.gameObject(newPlayer); //adding this game object to matter physics will show debug lines
         newPlayer.initializeListeners(player);
-        return newPlayer
+        return newPlayer;
     }
 }

@@ -61,7 +61,7 @@ export default class GameScene extends Phaser.Scene {
         this.downKey = this.input.keyboard.addKey("S");
         this.rightKey = this.input.keyboard.addKey("D");
         this.leftKey = this.input.keyboard.addKey("A");
-        this.spaceKey = this.input.keyboard.addKey("SPACE")
+        this.spaceKey = this.input.keyboard.addKey("SPACE");
     }
 
     private sendServerInputMessage() {

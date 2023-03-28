@@ -65,7 +65,14 @@ export default class TilemapManager {
                             this.state.gameObjects.set(uid, tile);
     
                             //Create matterjs body for obj
-                            let body = Matter.Bodies.rectangle(tile.x, tile.y, tile.tileWidth, tile.tileHeight, {isStatic: true});
+                            let body = Matter.Bodies.rectangle(tile.x, tile.y, tileWidth, tileHeight, {
+                                isStatic: true,
+                                inertia: Infinity,
+                                inverseInertia: 0,
+                                restitution: 0,
+                                friction: 0,
+                            });
+                            
                             gameObjects.set(uid, body);
     
                             Matter.Composite.add(engine.world, body);

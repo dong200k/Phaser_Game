@@ -30,6 +30,7 @@ export default class GameManager {
         this.tilemapManager.loadTilemapTiled("assets/tilemaps/demo_map/demo_map.json").then(() => {
             this.tilemapManager.addObstaclesToMatter(this.engine, this.gameObjects);
         });
+
         this.initUpdateEvents();
         this.initCollisionEvent();
         this.syncServerStateBasedOnGameState();
@@ -53,7 +54,13 @@ export default class GameManager {
         this.state.gameObjects.set(id, obj);
 
         //Create matterjs body for obj
-        let body = Matter.Bodies.rectangle(obj.x, obj.y, 49, 44, {isStatic: false});
+        let body = Matter.Bodies.rectangle(obj.x, obj.y, 49, 44, {
+            isStatic: false,
+            inertia: Infinity,
+            inverseInertia: 0,
+            restitution: 0,
+            friction: 0,
+        });
         this.gameObjects.set(id, body);
 
         Matter.Composite.add(this.world, body);
@@ -78,7 +85,7 @@ export default class GameManager {
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
 
-        this.addGameObject(sessionId, newPlayer)
+        this.addGameObject(sessionId, newPlayer);
     }   
 
     public processPlayerInput(sessionId:string, data:number[]) {
