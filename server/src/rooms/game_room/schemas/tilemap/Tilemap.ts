@@ -1,6 +1,6 @@
 import { Schema, type, MapSchema } from '@colyseus/schema';
 import Layer from './Layer';
-import Tile from './Tile';
+import Tile from '../gameobjs/Tile';
 
 export default class Tilemap extends Schema {
     @type({map: Layer})
@@ -37,5 +37,13 @@ export default class Tilemap extends Schema {
             return null;
         // TODO: return correct tile.
         return searchLayer.getTileAt(tileX, tileY);
+    }
+
+    public toString() {
+        let string = `Tilemap\nwidth: ${this.width}\nheight: ${this.height}\ntileWidth: ${this.tileWidth}\ntileHeight: ${this.tileHeight}`;
+        this.layers.forEach((layer) => {
+            string += `\n\n\tLayer\n${layer.toString()}`;
+        })
+        return string;
     }
 }

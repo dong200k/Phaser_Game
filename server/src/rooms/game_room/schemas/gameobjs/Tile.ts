@@ -1,5 +1,5 @@
 import { Schema, type, MapSchema } from '@colyseus/schema';
-import GameObject from '../gameobjs/GameObject';
+import GameObject from './GameObject';
 
 export default class Tile extends GameObject {
     /**The tile that is represented on the tilemap png */
