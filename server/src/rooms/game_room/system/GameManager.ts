@@ -4,12 +4,14 @@ import Player from '../schemas/gameobjs/Player';
 import PlayerManager from './StateManagers/PlayerManager';
 import GameObject from '../schemas/gameobjs/GameObject';
 import Cooldown from '../schemas/gameobjs/Cooldown';
+import TilemapManager from './StateManagers/TilemapManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
     private world: Matter.World;
     private state: State;
     private attackCooldown: Cooldown
+    private tilemapManager: TilemapManager;
 
     public gameObjects: Map<string, Matter.Body> = new Map();
 
@@ -23,6 +25,11 @@ export default class GameManager {
         this.attackCooldown = new Cooldown(1000)
 
         // this.playerManager = new PlayerManager(this.engine, this.world, state)
+        //Set up the tilemap
+        this.tilemapManager = new TilemapManager(state);
+        this.tilemapManager.loadTilemapTiled("assets/tilemaps/demo_map/demo_map.json").then(() => {
+            this.tilemapManager.addObstaclesToMatter(this.engine, this.gameObjects);
+        });
 
         this.initUpdateEvents();
         this.initCollisionEvent();
@@ -34,7 +41,7 @@ export default class GameManager {
         Matter.Events.on(this.engine, "afterUpdate", () => {
             this.gameObjects.forEach((obj, key) => {
                 let objState = this.state.gameObjects.get(key);
-                if(objState) {
+                if(objState && !obj.isStatic) {
                     objState.x = obj.position.x;
                     objState.y = obj.position.y;
                 }
@@ -47,7 +54,13 @@ export default class GameManager {
         this.state.gameObjects.set(id, obj);
 
         //Create matterjs body for obj
-        let body = Matter.Bodies.rectangle(obj.x, obj.y, 100, 100, {isStatic: false});
+        let body = Matter.Bodies.rectangle(obj.x, obj.y, 49, 44, {
+            isStatic: false,
+            inertia: Infinity,
+            inverseInertia: 0,
+            restitution: 0,
+            friction: 0,
+        });
         this.gameObjects.set(id, body);
 
         Matter.Composite.add(this.world, body);
@@ -69,10 +82,10 @@ export default class GameManager {
 
         //TODO: get player data from the database
         let newPlayer = new Player("No Name");
-        newPlayer.x = Math.random() * 500;
-        newPlayer.y = Math.random() * 500;
+        newPlayer.x = Math.random() * 200 + 100;
+        newPlayer.y = Math.random() * 200 + 100;
 
-        this.addGameObject(sessionId, newPlayer)
+        this.addGameObject(sessionId, newPlayer);
     }   
 
     public processPlayerInput(sessionId:string, data:number[]) {
