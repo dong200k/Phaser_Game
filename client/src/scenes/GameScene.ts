@@ -16,6 +16,7 @@ export default class GameScene extends Phaser.Scene {
     private leftKey?: Phaser.Input.Keyboard.Key;
     private rightKey?: Phaser.Input.Keyboard.Key;
     private spaceKey?: Phaser.Input.Keyboard.Key;
+    private debugKey?: Phaser.Input.Keyboard.Key;
 
     constructor() {
         super('GameScene');
@@ -23,6 +24,7 @@ export default class GameScene extends Phaser.Scene {
 
     preload() {
         this.load.image("demo_hero", "images/demo_hero.png");
+        this.load.image("dirt_map_tiles", "tilemaps/demo_map/dirt_dungeon_tileset_extruded.png");
     }
 
     create() {
@@ -45,16 +47,23 @@ export default class GameScene extends Phaser.Scene {
             console.log("ERROR: Game Room not initialized");
     }
 
+    private initializeUI() {
+        // this.cameras.main.setZoom(2);
+    }
+
     private initializeInputs() {
         this.upKey = this.input.keyboard.addKey("W");
         this.downKey = this.input.keyboard.addKey("S");
         this.rightKey = this.input.keyboard.addKey("D");
         this.leftKey = this.input.keyboard.addKey("A");
-        this.spaceKey = this.input.keyboard.addKey("SPACE")
-    }
+        this.spaceKey = this.input.keyboard.addKey("SPACE");
 
-    private initializeUI() {
-        
+        // Debug controls, not visible by default. Can be disabled in config.ts.
+        this.debugKey = this.input.keyboard.addKey("F3");
+        this.debugKey.on("down", () => {
+            this.matter.world.debugGraphic?.setVisible(!this.matter.world.debugGraphic.visible);
+        })
+        this.matter.world.debugGraphic?.setVisible(false);
     }
 
     private sendServerInputMessage() {
@@ -67,9 +76,9 @@ export default class GameScene extends Phaser.Scene {
         inputMesg[4] = this.spaceKey?.isDown? 1 : 0;
 
         
-        inputMesg[5] = this.input.mousePointer.isDown? 1 : 0
-        inputMesg[6] = this.input.mousePointer.x
-        inputMesg[7] = this.input.mousePointer.y
+        inputMesg[5] = this.input.mousePointer.isDown? 1 : 0;
+        inputMesg[6] = this.input.mousePointer.worldX;
+        inputMesg[7] = this.input.mousePointer.worldY;
 
         this.gameRoom?.send("input", inputMesg);
     }

@@ -13,12 +13,12 @@ export default class GameManager {
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
-        this.initializeListeners(); 
-        
+        this.initializeListeners();
     }
 
     private initializeListeners() {
         this.gameRoom.state.gameObjects.onAdd = this.onAdd;
+        this.gameRoom.state.listen("tilemap", this.onChangeTilemap);
     }
 
     //TODO Change in future 
@@ -43,6 +43,39 @@ export default class GameManager {
         }   
     }
 
+    /**Calls when the tilemap is first created on the server */
+    private onChangeTilemap = (currentValue:any) => {
+        let map = this.scene.add.tilemap("", currentValue.tileWidth, currentValue.tileHeight, currentValue.width, currentValue.height);
+        let tileset = map.addTilesetImage("dirt_dungeon_tileset", "dirt_map_tiles", 16, 16, 1, 2);
+        //Triggers when the server adds a tilemap layer
+        currentValue.layers.onAdd = (layer:any, key:string) => {
+            let newLayer = map.createBlankLayer(key, tileset);
+            if(key === "Background")
+                newLayer.setDepth(-10);
+            if(key === "Ground")
+                newLayer.setDepth(-5);
+            if(key === "Obstacle")
+                newLayer.setDepth(10);
+            let width = layer.width;
+            let height = layer.height;
+            for(let y = 0; y < height; y++) {
+                for(let x = 0; x < width; x++) {
+                    let tileId = layer.tiles[(y * width + x)].tileId;
+                    if(tileId !== 0) {
+                        //Add a tile to the tilemap
+                        let newTile = newLayer.putTileAt(tileId - 1, x, y);
+                        //If the tile is a obstacle add it to matter.js
+                        if(key === "Obstacle") {
+                            let tileBody = this.scene.matter.add.tileBody(newTile); //adding this tile to matter physics will show debug lines
+                            tileBody.setStatic(true);
+                            tileBody.setSensor(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private addProjectile(projectile: any, key: string): Phaser.GameObjects.Sprite{
         let proj =  new Phaser.GameObjects.Sprite(this.scene, projectile.x, projectile.y, "demo_hero");
         proj.scale = 0.5
@@ -61,12 +94,15 @@ export default class GameManager {
     private addPlayer(player: any, key: string): Player{
         let newPlayer = new Player(this.scene, player);
         console.log(newPlayer)
-        if(key === this.gameRoom.sessionId)
-            this.player1 = newPlayer
+        if(key === this.gameRoom.sessionId) {
+            this.player1 = newPlayer;
+            this.scene.cameras.main.startFollow(this.player1, false, 0.1);
+        }
         else
             this.players.push(newPlayer);
         this.scene.add.existing(newPlayer);
+        this.scene.matter.add.gameObject(newPlayer); //adding this game object to matter physics will show debug lines
         newPlayer.initializeListeners(player);
-        return newPlayer
+        return newPlayer;
     }
 }

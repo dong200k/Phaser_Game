@@ -17,7 +17,7 @@ export default class GameRoom extends Room<State> {
         setTimeout(() => this.autoDispose = true, 5000);
 
         //Setting up state and game manager.
-        this.setPatchRate(33);
+        this.setPatchRate(22);
         let state = new State();
         this.gameManager = new GameManager(state);
         this.setState(state);
