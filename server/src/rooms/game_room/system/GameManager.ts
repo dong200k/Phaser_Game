@@ -54,23 +54,22 @@ export default class GameManager {
         this.state.ownerSessionId = sessionId
     }
 
-    public addGameObject(id: string, obj: GameObject, data?: any) {
-        // sync with server state
+    public addGameObject(id: string, obj: GameObject, body: Matter.Body) {
         this.state.gameObjects.set(id, obj);
+        this.gameObjects.set(id, body);
 
-        //Create matterjs body for obj
-        let body = Matter.Bodies.rectangle(obj.x, obj.y, 49, 44, {
+        Matter.Composite.add(this.world, body);
+    }   
+
+    createMatterObject(){
+        return Matter.Bodies.rectangle(0, 0, 49, 44, {
             isStatic: false,
             inertia: Infinity,
             inverseInertia: 0,
             restitution: 0,
             friction: 0,
-        });
-        this.gameObjects.set(id, body);
-
-        Matter.Composite.add(this.world, body);
-        // Matter.Body.setVelocity(playerBody, {x:1, y:1});
-    }   
+        })
+    }
 
     public removeGameObject(id: string) {
         this.state.gameObjects.delete(id);

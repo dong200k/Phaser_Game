@@ -30,8 +30,8 @@ export default class PlayerManager{
     processPlayerAttack(playerId: string, data: any){
         let [mouseClick, mouseX, mouseY] = data
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
-
-        if(!playerBody || !playerState) return console.log("processPlayerAttack, player does not exist")
+        if(!playerBody || !playerState) return console.log("player does not exist")
+       
         if(!mouseClick || !playerState.attackCooldown.isFinished) return
         playerState.attackCooldown.reset()
 
@@ -60,8 +60,7 @@ export default class PlayerManager{
 
     processPlayerMovement(playerId: string, data: number[]){
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
-
-        if(!playerBody || !playerState) return console.log("processPlayerAttack, player does not exist")
+        if(!playerBody || !playerState) return console.log("player does not exist")
 
         //calculate new player velocity
         let speed = playerState.stat.speed;
@@ -77,8 +76,8 @@ export default class PlayerManager{
 
     processPlayerSpecial(playerId: string, useSpecial: boolean){
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
-
-        if(!playerBody || !playerState) return console.log("processPlayerAttack, player does not exist")
+        if(!playerBody || !playerState) return console.log("player does not exist")
+        
         if(!useSpecial || !playerState.specialCooldown.isFinished) return
         playerState.specialCooldown.reset()
 
@@ -101,6 +100,8 @@ export default class PlayerManager{
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
 
-        this.gameManager.addGameObject(sessionId, newPlayer);
+        let body = this.gameManager.createMatterObject()
+
+        this.gameManager.addGameObject(sessionId, newPlayer, body);
     }   
 }
