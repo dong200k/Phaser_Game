@@ -7,7 +7,7 @@ type Rect = {
 }
 
 const NavButton = (scene: Phaser.Scene, text: string, on: () => void, textPos: {x: number, y: number}, rect?: Rect, setInteractive = true)=>{
-    let button: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Text = scene.add.text(textPos.x, textPos.y, text);
+    let button: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Text = scene.add.text(textPos.x, textPos.y, text, {fontFamily:"pressStart2P, arial"});
     button.setDepth(1) // renders text over button which has depth of default 0
 
     if(rect) button = scene.add.rectangle(rect.x, rect.y, rect.width, rect.height, rect.color)
