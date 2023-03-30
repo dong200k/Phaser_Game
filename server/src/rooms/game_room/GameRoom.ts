@@ -26,8 +26,16 @@ export default class GameRoom extends Room<State> {
     }
 
     initListeners() {
-        this.onMessage("input", (client, mesg) => {
-            this.gameManager?.processPlayerInput(client.sessionId, mesg);
+        this.onMessage("move", (client, msg)=>{
+            this.gameManager?.playerManager.processPlayerMovement(client.sessionId, msg)
+        })
+
+        this.onMessage("attack", (client, msg)=>{
+            this.gameManager?.playerManager.processPlayerAttack(client.sessionId, msg)
+        })
+
+        this.onMessage("special", (client, msg)=>{
+            this.gameManager?.playerManager.processPlayerSpecial(client.sessionId, msg)
         })
     }
 
@@ -44,7 +52,7 @@ export default class GameRoom extends Room<State> {
 
     onJoin(client: Client) {
         // Add a new player to the room state. The first player is the owner of the room.
-        this.gameManager?.createPlayer(client.sessionId, this.gameManager?.playerCount() === 0);
+        this.gameManager?.playerManager.createPlayer(client.sessionId, this.gameManager?.playerCount() === 0);
     }
 
     onLeave(client: Client) {
