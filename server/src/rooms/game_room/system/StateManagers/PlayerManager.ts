@@ -100,7 +100,13 @@ export default class PlayerManager{
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
 
-        let body = this.gameManager.createMatterObject()
+        let body = Matter.Bodies.rectangle(0, 0, 49, 44, {
+            isStatic: false,
+            inertia: Infinity,
+            inverseInertia: 0,
+            restitution: 0,
+            friction: 0,
+        })
 
         this.gameManager.addGameObject(sessionId, newPlayer, body);
     }   

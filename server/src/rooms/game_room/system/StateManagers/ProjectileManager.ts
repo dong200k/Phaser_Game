@@ -24,7 +24,15 @@ export default class ProjectileManager{
    
     public createProjectile(spriteName: string = "demo_hero", owner: Entity, x?: number, y?: number) {
         let projectile = new Projectile(spriteName, x? x : owner.x, y? y : owner.y, owner);
-        let body = this.gameManager.createMatterObject()
+
+        let body = Matter.Bodies.rectangle(0, 0, 49, 44, {
+            isStatic: false,
+            inertia: Infinity,
+            inverseInertia: 0,
+            restitution: 0,
+            friction: 0,
+        })
+        
         this.gameManager.addGameObject(projectile.id, projectile, body);
     }   
 }
