@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { ColorStyle, TextStyle } from "../config";
+import TextBox from "./TextBox";
 
 export default class Button extends Phaser.GameObjects.Container {
     private buttonSize:"regular"|"small"|"large";
@@ -23,7 +24,7 @@ export default class Button extends Phaser.GameObjects.Container {
         },
         large: {
             size: { x: 218, y: 102},
-            textStyle: TextStyle.l3,
+            textStyle: TextStyle.l2,
             textPosition: {x: 0, y: -8},
             textPositionPressed: {x: 0,y: -5}
         }
@@ -35,10 +36,8 @@ export default class Button extends Phaser.GameObjects.Container {
         this.onClick = onClick;
         this.buttonState = "default";
         this.buttonSprite = new Phaser.GameObjects.Sprite(scene, 0, 0, "button_small_default");
-        this.buttonText = new Phaser.GameObjects.Text(scene, 0, 0, text, {});
+        this.buttonText = new TextBox(this.scene, text);
         //this.buttonText.setResolution(2);
-        this.buttonText.setAlign('center');
-        this.buttonText.setOrigin(0.5, 0.5);
         this.buttonSprite.setInteractive();
         this.buttonSprite.on(Phaser.Input.Events.POINTER_DOWN, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('pressed')
@@ -87,23 +86,19 @@ export default class Button extends Phaser.GameObjects.Container {
         let config = this.sizeConfig[this.buttonSize];
         this.buttonSprite.setDisplaySize(config.size.x, config.size.y);
         this.buttonText.setStyle(config.textStyle);
-        this.buttonText.setSize(config.size.x, config.size.y);
         switch(this.buttonState) {
             case 'default': {
                 this.buttonSprite.setTexture("button_small_default");
-                this.setActive(true);
                 this.buttonText.setPosition(config.textPosition.x, config.textPosition.y);
                 this.buttonText.setColor(ColorStyle.neutrals.white);
             } break;
             case 'pressed': {
                 this.buttonSprite.setTexture("button_small_active");
-                this.setActive(true);
                 this.buttonText.setPosition(config.textPositionPressed.x, config.textPositionPressed.y);
                 this.buttonText.setColor(ColorStyle.neutrals.white);
             } break;
             case 'disabled': {
                 this.buttonSprite.setTexture("button_small_deactive");
-                this.setActive(false);
                 this.buttonText.setPosition(config.textPositionPressed.x, config.textPositionPressed.y);
                 this.buttonText.setColor(ColorStyle.neutrals[400]);
             }

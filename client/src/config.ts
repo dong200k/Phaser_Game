@@ -4,6 +4,7 @@ export default {
     type: Phaser.AUTO,
     parent: 'game',
     backgroundColor: `#333333`,
+    pixelArt: true,
     scale: {
         width: 1280,
         height: 800,
@@ -19,78 +20,84 @@ export default {
             debug: true
         }
     },
+
     // resolution: window.devicePixelRatio,
-    antialias: false,
+    // antialias: false,
+    gameTitle: 'Dungeon and Adventurers',
+    gameVersion: 'v0.01',
 };
 
+
+const headerFontFamily = 'pressStart2P';
+const bodyFontFamily = 'aldrich';
 /**Some predefined typestyles to be used with Phaser*/
 export const TextStyle = {
     h1: {
-        fontFamily: 'pressStart2P',
+        fontFamily: headerFontFamily,
         fontSize: '40px',
     },
     h2: {
-        fontFamily: 'pressStart2P',
+        fontFamily: headerFontFamily,
         fontSize: '32px',
     },
     h3: {
-        fontFamily: 'pressStart2P',
+        fontFamily: headerFontFamily,
         fontSize: '24px',
     },
     h4: {
-        fontFamily: 'pressStart2P',
+        fontFamily: headerFontFamily,
         fontSize: '20px',
     },
     h5: {
-        fontFamily: 'pressStart2P',
+        fontFamily: headerFontFamily,
         fontSize: '16px',
     },
     p1: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '32px',
     },
     p2: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '24px',
     },
     p3: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '20px',
     },
     p4: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '16px',
     },
     p5: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '14px',
     },
     p6: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '12px',
     },
     l1: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '32px',
     },
     l2: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '24px',
     },
     l3: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '20px',
     },
     l4: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '16px',
     },
     l5: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '14px',
     },
     l6: {
-        fontFamily: 'aldrich',
+        fontFamily: bodyFontFamily,
         fontSize: '12px',
     },
 }
