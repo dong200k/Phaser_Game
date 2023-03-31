@@ -5,6 +5,7 @@ import Cooldown from '../../schemas/gameobjs/Cooldown';
 import GameManager from '../GameManager';
 import MathUtil from '../../../../util/MathUtil';
 import GameObject from '../../schemas/gameobjs/GameObject';
+import Projectile from '../../schemas/gameobjs/Projectile';
 
 export default class PlayerManager{
     private gameManager: GameManager
@@ -35,27 +36,13 @@ export default class PlayerManager{
         if(!mouseClick || !playerState.attackCooldown.isFinished) return
         playerState.attackCooldown.reset()
 
-        // spawn new game object/projectile at players position
-        let obj = new GameObject(playerBody.position.x, playerBody.position.y, playerId)
+        // ***TODO*** grab projectile info from weapon player is using
+        let spriteName = "demo_hero"
+        let playerX = playerBody.position.x
+        let playerY = playerBody.position.y
+        let velocity = MathUtil.getNormalizedSpeed(mouseX - playerX, mouseY - playerY, 10)
 
-        // sync with server state
-        this.gameManager.state.gameObjects.set(obj.id, obj);
-
-        //Create matterjs body for obj
-        let body = Matter.Bodies.rectangle(obj.x, obj.y, 10, 10, {isStatic: false});
-        
-        // so bullet does not collide with player
-        body.collisionFilter = {
-            'group': -1,
-            'category': 2,
-            'mask': 0,
-        };
-        this.gameManager.gameObjects.set(obj.id, body);
-
-        Matter.Composite.add(this.gameManager.world, body);
-
-        let [x,y] = MathUtil.getNormalizedSpeed(mouseX - obj.x, mouseY - obj.y, 10)
-        Matter.Body.setVelocity(body, {x, y});
+        let body = this.gameManager.projectileManager.spawnProjectile(spriteName, playerState, playerX, playerY, velocity)
     }
 
     processPlayerMovement(playerId: string, data: number[]){
@@ -70,8 +57,8 @@ export default class PlayerManager{
         if(data[1]) y += 1;
         if(data[2]) x -= 1;
         if(data[3]) x += 1;
-        [x,y] = MathUtil.getNormalizedSpeed(x, y, speed)
-        Matter.Body.setVelocity(playerBody, {x, y});
+        let velocity = MathUtil.getNormalizedSpeed(x, y, speed)
+        Matter.Body.setVelocity(playerBody, velocity);
     }
 
     processPlayerSpecial(playerId: string, useSpecial: boolean){

@@ -5,6 +5,7 @@ import PlayerManager from './StateManagers/PlayerManager';
 import GameObject from '../schemas/gameobjs/GameObject';
 import Cooldown from '../schemas/gameobjs/Cooldown';
 import TilemapManager from './StateManagers/TilemapManager';
+import ProjectileManager from './StateManagers/ProjectileManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -13,6 +14,7 @@ export default class GameManager {
     // Managers
     private tilemapManager: TilemapManager;
     public playerManager: PlayerManager
+    public projectileManager: ProjectileManager
 
     // Data
     public gameObjects: Map<string, Matter.Body> = new Map();
@@ -24,7 +26,9 @@ export default class GameManager {
         this.world = this.engine.world;
         this.engine.gravity.y = 0; //no gravity
 
+        // Setup managers
         this.playerManager = new PlayerManager(this)
+        this.projectileManager = new ProjectileManager(this)
 
         //Set up the tilemap
         this.tilemapManager = new TilemapManager(state);
@@ -54,6 +58,12 @@ export default class GameManager {
         this.state.ownerSessionId = sessionId
     }
 
+    /**
+     * Adds obj and body to GameRoom's state, GameManager's gameObjects and the Matter world.
+     * @param id unique identifer of GameObject
+     * @param obj  state/game object for sharing with client
+     * @param body Matter.Body of game object for collision
+     */
     public addGameObject(id: string, obj: GameObject, body: Matter.Body) {
         this.state.gameObjects.set(id, obj);
         this.gameObjects.set(id, body);
@@ -61,16 +71,10 @@ export default class GameManager {
         Matter.Composite.add(this.world, body);
     }   
 
-    createMatterObject(){
-        return Matter.Bodies.rectangle(0, 0, 49, 44, {
-            isStatic: false,
-            inertia: Infinity,
-            inverseInertia: 0,
-            restitution: 0,
-            friction: 0,
-        })
-    }
-
+    /**
+     * removes game object from the server's state, from the GameManager, and from the Matter.Composite
+     * @param id unique identifer for game object
+     */
     public removeGameObject(id: string) {
         this.state.gameObjects.delete(id);
 

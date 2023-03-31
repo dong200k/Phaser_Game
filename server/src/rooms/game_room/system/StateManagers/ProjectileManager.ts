@@ -22,17 +22,34 @@ export default class ProjectileManager{
     //     return {playerBody: this.gameManager.gameObjects.get(sessionId), playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
     // }
    
-    public createProjectile(spriteName: string = "demo_hero", owner: Entity, x?: number, y?: number) {
-        let projectile = new Projectile(spriteName, x? x : owner.x, y? y : owner.y, owner);
-
-        let body = Matter.Bodies.rectangle(0, 0, 49, 44, {
+    public spawnProjectile(spriteName: string = "demo_hero", owner: Entity, x?: number, y?: number, velocity?: {x: number, y:number}) {
+        // ***TODO*** grab width and height from database or based on owner and spriteName
+        let width = 10
+        let height = 10
+        let spawnX = x? x: owner.x
+        let spawnY = y? y: owner.y
+        let projectile = new Projectile(spriteName, owner, spawnX, spawnY, width, height);
+        
+        let body = Matter.Bodies.rectangle(spawnX, spawnY, width, height, {
             isStatic: false,
             inertia: Infinity,
             inverseInertia: 0,
             restitution: 0,
             friction: 0,
         })
-        
+
+        // ***TODO*** set proper collision filter
+        // so bullet does not collide with player
+        body.collisionFilter = {
+            'group': -1,
+            'category': 2,
+            'mask': 0,
+        };
+
+        let projVelocity = velocity? velocity: {x: 1, y: 1}
+        Matter.Body.setVelocity(body, projVelocity);
+
         this.gameManager.addGameObject(projectile.id, projectile, body);
+        return body
     }   
 }
