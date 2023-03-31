@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Button from "../UI/Button";
 import NavButton from "../UI/NavButton";
+import Layout from "../UI/Layout";
 
 export default class MenuScene extends Phaser.Scene {
     constructor() {
@@ -19,13 +20,12 @@ export default class MenuScene extends Phaser.Scene {
         // let rect = {x: this.game.scale.width/2, y: this.game.scale.height/2, width: 200, height: 50, color: 0xAAAAAA}
         // NavButton(this, "Join Lobby", () => this.scene.start('LobbyScene'), textPos, rect)
 
-        let playButton = new Button(this, "Play", this.game.scale.width/2, 100, "large", () => this.scene.start('LobbyScene'));
-        let settingsButton = new Button(this, "Settings", this.game.scale.width/2, 250, "large", () => console.log("Clicked on settings button"));
-        let controlsButton = new Button(this, "Controls", this.game.scale.width/2, 400, "large", () => console.log("Clicked on controls button"));
-        let creditsButton = new Button(this, "Credits", this.game.scale.width/2, 550, "large", () => console.log("Clicked on credits button"));
-        this.add.existing(playButton);
-        this.add.existing(settingsButton);
-        this.add.existing(controlsButton);
-        this.add.existing(creditsButton);
+        let playButton = new Button(this, "Play", 0, 0, "large", () => this.scene.start('LobbyScene'));
+        let settingsButton = new Button(this, "Settings", 0, 0, "large", () => console.log("Clicked on settings button"));
+        let controlsButton = new Button(this, "Controls", 0, 0, "large", () => console.log("Clicked on controls button"));
+        let creditsButton = new Button(this, "Credits", 0, 0, "large", () => console.log("Clicked on credits button"));
+        let layout = new Layout(this, 120, this.game.scale.width/2, 200);
+        layout.add([playButton, settingsButton, controlsButton, creditsButton]);
+        this.add.existing(layout);
     }
 }
