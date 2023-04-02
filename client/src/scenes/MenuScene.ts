@@ -2,10 +2,11 @@ import Phaser from "phaser";
 import Button from "../UI/Button";
 import NavButton from "../UI/NavButton";
 import Layout from "../UI/Layout";
+import { SceneKey } from "../config";
 
 export default class MenuScene extends Phaser.Scene {
     constructor() {
-        super('MenuScene');
+        super(SceneKey.MenuScene);
     }
 
     preload() {

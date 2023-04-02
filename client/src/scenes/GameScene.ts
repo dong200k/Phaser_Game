@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import * as Colyseus from 'colyseus.js';
 import ClientManager from '../colyseus/ClientManager';
 import GameManager from '../system/GameManager';
+import { SceneKey } from '../config';
 
 /**
  * The GameScene will be responsive for rendering the core gameplay. 
@@ -19,7 +20,7 @@ export default class GameScene extends Phaser.Scene {
     private debugKey?: Phaser.Input.Keyboard.Key;
 
     constructor() {
-        super('GameScene');
+        super(SceneKey.GameScene);
     }
 
     preload() {

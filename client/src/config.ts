@@ -1,4 +1,8 @@
 import Phaser from 'phaser';
+import GameScene from './scenes/GameScene';
+import LobbyScene from './scenes/LobbyScene';
+import MenuScene from './scenes/MenuScene';
+import RoomScene from './scenes/RoomScene';
 
 export default {
     type: Phaser.AUTO,
@@ -20,13 +24,20 @@ export default {
             debug: true
         }
     },
-
+    scene: [MenuScene, GameScene, LobbyScene, RoomScene],
     // resolution: window.devicePixelRatio,
     // antialias: false,
     gameTitle: 'Dungeon and Adventurers',
     gameVersion: 'v0.01',
 };
 
+export enum SceneKey {
+    GameScene = "GameScene",
+    LobbyScene = "LobbyScene",
+    MenuScene = "MenuScene",
+    RoomScene = "RoomScene"
+}
+export type SceneKeyType = keyof typeof SceneKey;
 
 const headerFontFamily = 'pressStart2P';
 const bodyFontFamily = 'aldrich';

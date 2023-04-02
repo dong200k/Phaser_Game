@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import * as Colyseus from 'colyseus.js';
 import ClientManager from "../colyseus/ClientManager";
 import NavButton from "../UI/NavButton";
+import { SceneKey } from "../config";
 
 
 export default class LobbyScene extends Phaser.Scene {
@@ -13,7 +14,7 @@ export default class LobbyScene extends Phaser.Scene {
     private waitingRooms: Phaser.GameObjects.Text[] = [];
 
     constructor() {
-        super('LobbyScene');
+        super(SceneKey.LobbyScene);
     }
 
     create() {

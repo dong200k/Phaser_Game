@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import * as Colyseus from 'colyseus.js';
 import ClientManager from "../colyseus/ClientManager";
 import NavButton from "../UI/NavButton";
+import { SceneKey } from "../config";
 
 export default class RoomScene extends Phaser.Scene {
     
@@ -12,7 +13,7 @@ export default class RoomScene extends Phaser.Scene {
     private playersInRoom: number = 0;
 
     constructor() {
-        super('RoomScene');
+        super(SceneKey.RoomScene);
         // this.client = Client.getClient().getColyseusClient();
     }
 
