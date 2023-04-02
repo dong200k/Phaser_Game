@@ -3,6 +3,18 @@ import GameScene from './scenes/GameScene';
 import LobbyScene from './scenes/LobbyScene';
 import MenuScene from './scenes/MenuScene';
 import RoomScene from './scenes/RoomScene';
+import SettingsScene from './scenes/SettingsScene';
+import ControlsScene from './scenes/ControlsScene';
+import CreditsScene from './scenes/CreditsScene';
+import LoginScene from './scenes/LoginScene';
+import SignupScene from './scenes/SignupScene';
+import ShopScene from './scenes/ShopScene';
+import SkillTreeScene from './scenes/SkillTreeScene';
+import RoleScene from './scenes/RoleScene';
+import GameModeScene from './scenes/GameModeScene';
+import JoinWithIDScene from './scenes/JoinWithIDScene';
+import HostGameScene from './scenes/HostGameScene';
+import LoadingScene from './scenes/LoadingScene';
 
 export default {
     type: Phaser.AUTO,
@@ -24,7 +36,9 @@ export default {
             debug: true
         }
     },
-    scene: [MenuScene, GameScene, LobbyScene, RoomScene],
+    scene: [MenuScene, GameScene, LobbyScene, RoomScene, SettingsScene, ControlsScene, CreditsScene,
+            LoginScene, SignupScene, ShopScene, SkillTreeScene, RoleScene, GameModeScene,
+            JoinWithIDScene, HostGameScene, LoadingScene],
     // resolution: window.devicePixelRatio,
     // antialias: false,
     gameTitle: 'Dungeon and Adventurers',
@@ -35,7 +49,19 @@ export enum SceneKey {
     GameScene = "GameScene",
     LobbyScene = "LobbyScene",
     MenuScene = "MenuScene",
-    RoomScene = "RoomScene"
+    RoomScene = "RoomScene",
+    SettingsScene = "SettingsScene",
+    ControlsScene = "ControlsScene",
+    CreditsScene = "CreditsScene",
+    LoginScene = "LoginScene",
+    SignupScene = "SignupScene",
+    ShopScene = "ShopScene",
+    SkillTreeScene = "SkillTreeScene",
+    RoleScene = "RoleScene",
+    GameModeScene = "GameModeScene",
+    JoinWithIDScene = "JoinWithIDScene",
+    HostGameScene = "HostGameScene",
+    LoadingScene = "LoadingScene"
 }
 export type SceneKeyType = keyof typeof SceneKey;
 
