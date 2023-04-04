@@ -21,6 +21,8 @@ export default class MenuScene extends Phaser.Scene {
         let sceneManager = SceneManager.getSceneManager();
         sceneManager.setScene(this);
         sceneManager.showNavbar();
+
+        console.log("Menu created again");
         // let rect = {x: this.game.scale.width/2, y: this.game.scale.height/2, width: 200, height: 50, color: 0xAAAAAA}
         // NavButton(this, "Join Lobby", () => this.scene.start('LobbyScene'), textPos, rect)
 

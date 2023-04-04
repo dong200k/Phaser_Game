@@ -139,7 +139,9 @@ export default class SceneManager {
     private runCurrentScene() {
         if(this.scene) {
             if(this.currentSceneKey) {
+                console.log("Running Current Scene: ", this.currentSceneKey);
                 this.scene.scene.run(this.currentSceneKey);
+                // this.scene.scene.bringToTop(this.currentSceneKey);
             }
         }
     }
