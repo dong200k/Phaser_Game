@@ -15,11 +15,13 @@ import GameModeScene from './scenes/GameModeScene';
 import JoinWithIDScene from './scenes/JoinWithIDScene';
 import HostGameScene from './scenes/HostGameScene';
 import LoadingScene from './scenes/LoadingScene';
+import NavbarScene from './scenes/NavbarScene';
+import MatchmakeScene from './scenes/MatchmakeScene';
 
 export default {
     type: Phaser.AUTO,
     parent: 'game',
-    backgroundColor: `#333333`,
+    backgroundColor: `#736B64`,
     pixelArt: true,
     scale: {
         width: 1280,
@@ -38,7 +40,7 @@ export default {
     },
     scene: [MenuScene, GameScene, LobbyScene, RoomScene, SettingsScene, ControlsScene, CreditsScene,
             LoginScene, SignupScene, ShopScene, SkillTreeScene, RoleScene, GameModeScene,
-            JoinWithIDScene, HostGameScene, LoadingScene],
+            JoinWithIDScene, HostGameScene, LoadingScene, NavbarScene, MatchmakeScene],
     // resolution: window.devicePixelRatio,
     // antialias: false,
     gameTitle: 'Dungeon and Adventurers',
@@ -61,7 +63,9 @@ export enum SceneKey {
     GameModeScene = "GameModeScene",
     JoinWithIDScene = "JoinWithIDScene",
     HostGameScene = "HostGameScene",
-    LoadingScene = "LoadingScene"
+    LoadingScene = "LoadingScene",
+    NavbarScene = "NavbarScene",
+    MatchmakeScene = "MatchmakeScene"
 }
 export type SceneKeyType = keyof typeof SceneKey;
 

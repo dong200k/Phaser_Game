@@ -1,13 +1,16 @@
 import Phaser from "phaser";
 import { ColorStyle, TextStyle } from "../config";
 import TextBox from "./TextBox";
+import Layoutable from "./Layoutable";
 
-export default class Button extends Phaser.GameObjects.Container {
+export default class Button extends Phaser.GameObjects.Container implements Layoutable {
     private buttonSize:"regular"|"small"|"large";
     private buttonState:"default"|"disabled"|"pressed";
     private buttonSprite:Phaser.GameObjects.Sprite;
     private buttonText:Phaser.GameObjects.Text;
     private onClick:Function;
+    layoutWidth: number;
+    layoutHeight: number;
 
     private sizeConfig = {
         regular: {
@@ -45,12 +48,15 @@ export default class Button extends Phaser.GameObjects.Container {
         this.buttonSprite.on(Phaser.Input.Events.POINTER_OUT, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('default')
         });
+        this.layoutWidth = this.buttonSprite.width;
+        this.layoutHeight = this.buttonSprite.height;
         this.add(this.buttonSprite);
         this.add(this.buttonText);
         this.setButtonSize(size);
         this.setOnClick(onClick);
         this.updateButtonDisplay();
     }
+    
 
     private setButtonState(state:"default"|"disabled"|"pressed") {
         this.buttonState = state;

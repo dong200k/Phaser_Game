@@ -23,16 +23,19 @@ export default class LobbyScene extends Phaser.Scene {
 
         this.initializeUI();
         this.joinLobby();
+        console.log("Menu Sleeping", this.scene.isSleeping(SceneKey.MenuScene));
+        console.log("Navbar Sleeping", this.scene.isSleeping(SceneKey.NavbarScene));
+        console.log("Lobby Sleeping", this.scene.isSleeping(SceneKey.LoadingScene));
     }
 
     private initializeUI() {
         let rect = {x: this.game.scale.width / 2, y: 50, width: 200, height: 50, color: 0xAAAAAA}
         let textPos = {x: this.game.scale.width / 2 - 48, y: 42}
-        NavButton(this, "Host Game", () => {
-            this.leaveLobby();
-            ClientManager.getClient().clearWaitingRoomId();
-            this.scene.start("RoomScene");
-        }, textPos, rect)
+        // NavButton(this, "Host Game", () => {
+        //     this.leaveLobby();
+        //     ClientManager.getClient().clearWaitingRoomId();
+        //     this.scene.start("RoomScene");
+        // }, textPos, rect)
 
         //Make room buttons interactable
         for(let i = 0; i < 1; i++) {

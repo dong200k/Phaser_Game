@@ -1,21 +1,69 @@
-import { TextStyle } from "../config";
+import Phaser from "phaser";
+import { ColorStyle, TextStyle } from "../config";
+import TextBox from "./TextBox";
+import Layoutable from "./Layoutable";
 
-type Rect = {
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-    color: number
+type ButtonState = "active"|"disabled"|"default";
+
+export default class NavButton extends Phaser.GameObjects.Container implements Layoutable {
+    private buttonState:ButtonState;
+    private buttonBackground:Phaser.GameObjects.Rectangle;
+    private buttonText:Phaser.GameObjects.Text;
+    private onClick:Function;
+    layoutWidth: number;
+    layoutHeight: number;
+
+    constructor(scene:Phaser.Scene,text:string="",x:number=0,y:number=0,onClick:Function=()=>{}) {
+        super(scene, x, y);
+        this.onClick = onClick;
+        this.buttonState = "default";
+        this.buttonBackground = new Phaser.GameObjects.Rectangle(scene, 0, 0, 87, 87, ColorStyle.primary.hex[900]);
+        this.buttonBackground.setStrokeStyle(2, ColorStyle.neutrals.hex[900]);
+        this.buttonText = new TextBox(this.scene, text, 'l5');
+        this.buttonBackground.setInteractive();
+        this.layoutWidth = this.buttonBackground.width;
+        this.layoutHeight = this.buttonBackground.height;
+        this.add(this.buttonBackground);
+        this.add(this.buttonText);
+        this.setOnClick(onClick);
+        this.updateButtonDisplay();
+    }
+    
+
+    private setButtonState(state:ButtonState) {
+        this.buttonState = state;
+        this.updateButtonDisplay();
+    }
+
+    public setButtonActive(buttonActive:boolean) {
+        if(buttonActive) {
+            this.setButtonState("active");
+        }
+        else {
+            this.setButtonState("default");
+        }   
+    }
+
+    public setOnClick(onClick:Function) {
+        this.buttonBackground.removeListener(Phaser.Input.Events.POINTER_UP);
+        this.onClick = onClick;
+        this.buttonBackground.on(Phaser.Input.Events.POINTER_UP, ()=>{
+            if(this.buttonState !== 'disabled')
+                this.onClick();
+        });
+    }
+
+    private updateButtonDisplay() {
+        switch(this.buttonState) {
+            case 'default': {
+                this.buttonBackground.setFillStyle(ColorStyle.primary.hex[900]);
+            } break;
+            case 'active': {
+                this.buttonBackground.setFillStyle(ColorStyle.primary.hex[500]);
+            } break;
+            case 'disabled': {
+                this.buttonBackground.setFillStyle(ColorStyle.primary.hex[100]);
+            }
+        }
+    }
 }
-
-const NavButton = (scene: Phaser.Scene, text: string, on: () => void, textPos: {x: number, y: number}, rect?: Rect, setInteractive = true)=>{
-    let button: Phaser.GameObjects.Rectangle | Phaser.GameObjects.Text = scene.add.text(textPos.x, textPos.y, text, TextStyle.p4);
-    button.setDepth(1) // renders text over button which has depth of default 0
-
-    if(rect) button = scene.add.rectangle(rect.x, rect.y, rect.width, rect.height, rect.color)
-
-    button.setInteractive()
-    button.on(Phaser.Input.Events.POINTER_UP, on, scene);
-}
-
-export default NavButton

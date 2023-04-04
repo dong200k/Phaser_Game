@@ -27,16 +27,16 @@ export default class RoomScene extends Phaser.Scene {
         let rect = {x: this.game.scale.width / 2, y: 50, width: 200, height: 50, color: 0xAAAAAA}
         let textPos = {x: this.game.scale.width / 2 - 48, y: 42}
 
-        // leave to lobby button
-        NavButton(this, "Join Lobby", () => {
-            this.leaveRoom();
-            this.scene.start('LobbyScene');
-        }, textPos, rect)
+        // // leave to lobby button
+        // NavButton(this, "Join Lobby", () => {
+        //     this.leaveRoom();
+        //     this.scene.start('LobbyScene');
+        // }, textPos, rect)
 
-        //start game button
-        NavButton(this, "Start Game", () => {
-            this.waitingRoom?.send('start')
-        }, {...textPos, y: 142}, {...rect, y: 150})
+        // //start game button
+        // NavButton(this, "Start Game", () => {
+        //     this.waitingRoom?.send('start')
+        // }, {...textPos, y: 142}, {...rect, y: 150})
 
         // list of players text
         this.playersInRoomText = this.add.text(this.game.scale.width / 2, 300, "Players in room: 0");
