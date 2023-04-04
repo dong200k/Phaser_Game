@@ -4,10 +4,15 @@ body {
 
 @font-face {
     font-family: pressStart2P;
+    font-style: normal;
+    font-weight: 400;
     src: url(fonts/press-start-2p/PressStart2P-Regular.ttf);
 }
 
 @font-face {
     font-family: aldrich;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
     src: url(fonts/aldrich/Aldrich-Regular.ttf);
 }

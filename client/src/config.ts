@@ -22,7 +22,7 @@ export default {
     type: Phaser.AUTO,
     parent: 'game',
     backgroundColor: `#736B64`,
-    pixelArt: true,
+    // pixelArt: true,
     scale: {
         width: 1280,
         height: 800,

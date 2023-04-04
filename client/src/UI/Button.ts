@@ -39,6 +39,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         this.onClick = onClick;
         this.buttonState = "default";
         this.buttonSprite = new Phaser.GameObjects.Sprite(scene, 0, 0, "button_small_default");
+        this.buttonSprite.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.buttonText = new TextBox(this.scene, text);
         //this.buttonText.setResolution(2);
         this.buttonSprite.setInteractive();

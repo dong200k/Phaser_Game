@@ -41,23 +41,25 @@ export default class NavbarScene extends Phaser.Scene {
         this.add.existing(navButtonLayout);
 
         //------- Right side of the navbar ---------
-        let navRightSideLayout = new Layout(this, 0, 0, 0);
-        navRightSideLayout.setGap(100);
-        navRightSideLayout.setPosition(this.game.scale.width, 44);
-        navRightSideLayout.setFlexDirection("row-reverse");
+        // let navRightSideLayout = new Layout(this, 0, 0, 0);
+        // navRightSideLayout.setGap(100);
+        // navRightSideLayout.setPosition(this.game.scale.width, 44);
+        // navRightSideLayout.setFlexDirection("row-reverse");
         
-        let logoutButton = new Button(this, "Logout", 0, 0, "small", () => console.log("Logout button onclick"));
+        let logoutButton = new Button(this, "Logout", this.game.scale.width - 80, 45, "small", () => console.log("Logout button onclick"));
+        this.add.existing(logoutButton);
 
-        let statLayout = new Layout(this, 20, 0, -40);
-
+        let statLayout = new Layout(this, 20, this.game.scale.width - 200, 22);
         let levelText = new TextBox(this, `Level: ${this.dummyData.level}`, "l4");
         let coinsText = new TextBox(this, `Coins: ${this.dummyData.coins}`, "l4");
         let gemsText = new TextBox(this, `Gems: ${this.dummyData.gems}`, "l4");
         statLayout.add([levelText, coinsText, gemsText]);
+        this.add.existing(statLayout);
 
 
-        navRightSideLayout.add([statLayout, logoutButton]);
-        this.add.existing(navRightSideLayout);
+
+        // navRightSideLayout.add([statLayout, logoutButton]);
+        // this.add.existing(navRightSideLayout);
     }
 
 }
