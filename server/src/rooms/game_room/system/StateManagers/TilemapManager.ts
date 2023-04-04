@@ -4,6 +4,8 @@ import Layer from "../../schemas/tilemap/Layer";
 import Tilemap from "../../schemas/tilemap/Tilemap";
 import Matter from "matter-js";
 import MathUtil from "../../../../util/MathUtil";
+import { Categories } from "../Collisions/Category";
+import MaskManager from "../Collisions/MaskManager";
 
 export default class TilemapManager {
     private state: State;
@@ -72,6 +74,12 @@ export default class TilemapManager {
                                 restitution: 0,
                                 friction: 0,
                             });
+
+                            body.collisionFilter = {
+                                group: 0,
+                                category: Categories.OBSTACLE,
+                                mask: MaskManager.getMask('OBSTACLE') 
+                            };
                             
                             gameObjects.set(uid, body);
     

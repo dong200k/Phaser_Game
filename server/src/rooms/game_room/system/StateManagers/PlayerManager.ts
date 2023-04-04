@@ -1,97 +1,121 @@
 import Matter, { Bodies } from 'matter-js';
 import State from '../../schemas/State';
 import Player from '../../schemas/gameobjs/Player';
+import Cooldown from '../../schemas/gameobjs/Cooldown';
+import GameManager from '../GameManager';
+import MathUtil from '../../../../util/MathUtil';
+import GameObject from '../../schemas/gameobjs/GameObject';
+import Projectile from '../../schemas/gameobjs/Projectile';
+import { Categories } from '../Collisions/Category';
+import MaskManager from '../Collisions/MaskManager';
 
 export default class PlayerManager{
-    // Server side objects
-    private players: Map<string, Matter.Body> = new Map();
-    private engine: Matter.Engine
-    private world: Matter.World
+    private gameManager: GameManager
 
-    // State shared between client and server
-    private state: State
+    constructor(gameManager: GameManager) {
+        this.gameManager = gameManager
+    }   
 
-    constructor(engine: Matter.Engine, world: Matter.World, state: State) {
-        this.engine = engine;
-        this.state = state;
-        this.world = world
-
-        this.syncServerStateBasedOnGameState()
+    update(deltaT: number){
+        // update special and attack cooldowns for each player
+        this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
+            if(gameObject instanceof Player){
+                gameObject.attackCooldown.tick(deltaT)
+                gameObject.specialCooldown.tick(deltaT)
+            }
+        })
     }
 
-    public syncServerStateBasedOnGameState(){
-        Matter.Events.on(this.engine, "afterUpdate", () => {
-            this.players.forEach((playerModel, key) => {
-                let playerState = this.state.players.get(key);
-                if(playerState) {
-                    //sync player server position 
-                    playerState.x = playerModel.position.x;
-                    playerState.y = playerModel.position.y;
+    getPlayerStateAndBody(sessionId: string){
+        return {playerBody: this.gameManager.gameObjects.get(sessionId), playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
+    }
+
+    processPlayerAttack(playerId: string, data: any){
+        let [mouseClick, mouseX, mouseY] = data
+        let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
+        if(!playerBody || !playerState) return console.log("player does not exist")
+       
+        if(!mouseClick || !playerState.attackCooldown.isFinished) return
+        playerState.attackCooldown.reset()
+
+        // ***TODO*** grab projectile info from weapon player is using
+        let spriteName = "demo_hero"
+        let playerX = playerBody.position.x
+        let playerY = playerBody.position.y
+        let velocity = MathUtil.getNormalizedSpeed(mouseX - playerX, mouseY - playerY, 10)
+
+        let body = this.gameManager.projectileManager.spawnProjectile(spriteName, playerState, playerX, playerY, velocity)
+    }
+
+    processPlayerMovement(playerId: string, data: number[]){
+        let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
+        if(!playerBody || !playerState) return console.log("player does not exist")
+
+        //calculate new player velocity
+        let speed = playerState.stat.speed;
+        let x = 0;
+        let y = 0;
+        if(data[0]) y -= 1;
+        if(data[1]) y += 1;
+        if(data[2]) x -= 1;
+        if(data[3]) x += 1;
+        let velocity = MathUtil.getNormalizedSpeed(x, y, speed)
+        Matter.Body.setVelocity(playerBody, velocity);
+    }
+
+    processPlayerSpecial(playerId: string, useSpecial: boolean){
+        let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
+        if(!playerBody || !playerState) return console.log("player does not exist")
+        
+        if(!useSpecial || !playerState.specialCooldown.isFinished) return
+        playerState.specialCooldown.reset()
+
+        if(playerState.role === "ranger"){
+            console.log("Activating wall hack speed boost for 1 second")
+            playerState.stat.speed *= 5
+            console.log(playerState.stat.speed)
+
+            // set mask to 0 to collide with nothing
+            playerBody.collisionFilter = {
+                ...playerBody.collisionFilter,
+                mask: 0 
+            }
+
+            // revert hacks
+            setTimeout(()=>{
+                playerState.stat.speed = 1
+                if(playerBody){
+                    playerBody.collisionFilter = {
+                        ...playerBody.collisionFilter,
+                        mask: MaskManager.getMask("PLAYER")
+                    }
                 }
-            })
-        });
+
+            }, 1000)
+        }
+       
     }
 
     public createPlayer(sessionId: string, isOwner: boolean) {
-        if(isOwner) this.state.ownerSessionId = sessionId;
+        if(isOwner) this.gameManager.setOwner(sessionId)
 
         //TODO: get player data from the database
         let newPlayer = new Player("No Name");
-        newPlayer.x = Math.random() * 500;
-        newPlayer.y = Math.random() * 500;
+        newPlayer.x = Math.random() * 200 + 100;
+        newPlayer.y = Math.random() * 200 + 100;
 
-        //add player to shared state
-        this.state.players.set(sessionId, newPlayer);
-
-        //Create matterjs body for player
-        let playerBody = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 100, 100, {isStatic: false});
-        this.players.set(sessionId, playerBody);
-        Matter.Composite.add(this.world, playerBody);
-        // Matter.Body.setVelocity(playerBody, {x:1, y:1});
-    }   
-
-    public removePlayer(sessionId: string) {
-        this.state.players.delete(sessionId);
-
-        let playerBody = this.players.get(sessionId);
-        if(playerBody) {
-            Matter.Composite.remove(this.world, playerBody);
-            this.players.delete(sessionId);
-        }
-    }
-
-    public processPlayerInput(sessionId:string, data:number[]) {
-        //data - array of inputs. [0] up, [1] down, [2] left, [3] right, [4] special, [5] mouse click, [6] mousex, [7] mousey.
-        let playerBody = this.players.get(sessionId);
-        let playerState = this.state.players.get(sessionId);
-        if(playerBody && playerState) {
-            //calculate new player velocity
-            let speed = playerState.speed;
-            let x = 0;
-            let y = 0;
-            if(data[0])
-                y -= 1;
-            if(data[1])
-                y += 1;
-            if(data[2])
-                x -= 1;
-            if(data[3])
-                x += 1;
-            let mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-            if(mag !== 0) {
-                x = x / mag * speed;
-                y = y / mag * speed;
+        let body = Matter.Bodies.rectangle(0, 0, 49, 44, {
+            isStatic: false,
+            inertia: Infinity,
+            inverseInertia: 0,
+            restitution: 0,
+            friction: 0,
+            collisionFilter: {
+                category: Categories.PLAYER,
+                mask: MaskManager.getMask("PLAYER")
             }
-            // console.log("speed: ", speed);
-            // console.log("mag: ", mag);
-            // console.log("x: " ,x, " y: ", y);
-            Matter.Body.setVelocity(playerBody, {x, y});
-        } else {
-            console.log("ERROR: received inputs for a player that does not exist. sessionId: ", sessionId);
-        }
-    }
+        })
 
-    public playerCount() {
-        return this.state.players.size;
-    }
+        this.gameManager.addGameObject(sessionId, newPlayer, body);
+    }   
 }

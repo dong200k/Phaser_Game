@@ -1,27 +1,32 @@
-export default class Cooldown{
-    private time: number
-    private remainingTime: number
-    public isUp: boolean
+import { Schema, type } from '@colyseus/schema';
+export default class Cooldown extends Schema{
+    @type('number') time: number
+    @type('number') remainingTime: number
+    @type('boolean') isFinished: boolean
     
-    constructor(time: number, isUp?: boolean){
+    constructor(time: number, isFinished?: boolean){
+        super()
         this.time = time;
         this.remainingTime = time
-        this.isUp = isUp!==undefined? isUp : true
+        this.isFinished = isFinished!==undefined? isFinished : true
     }
 
     public reset(){
         this.remainingTime = this.time;
-        this.isUp = false
+        this.isFinished = false
     }
 
-    public setTime(time: number, isUp?: boolean){
+    public setTime(time: number, isFinished?: boolean){
         this.time = time;
         this.remainingTime = time
-        if(isUp !== undefined) this.isUp = isUp
+        if(isFinished !== undefined) this.isFinished = isFinished
     }
 
     public tick(deltaT: number){
+        if(this.isFinished) return
+
+        // update remaining time
         this.remainingTime -= deltaT;
-        if(this.remainingTime <=0) this.isUp = true
+        if(this.remainingTime <=0) this.isFinished = true
     }
 }

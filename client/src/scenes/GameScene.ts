@@ -48,7 +48,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     private initializeUI() {
-        // this.cameras.main.setZoom(2);
+        this.cameras.main.setZoom(1.5);
     }
 
     private initializeInputs() {
@@ -67,20 +67,24 @@ export default class GameScene extends Phaser.Scene {
     }
 
     private sendServerInputMessage() {
-        //[0] up, [1] down, [2] left, [3] right, [4] special, [5] mouse click, [6] mousex, [7] mousey.
-        let inputMesg = [0, 0, 0, 0, 0, 0, 0, 0];
-        inputMesg[0] = this.upKey?.isDown? 1 : 0;
-        inputMesg[1] = this.downKey?.isDown? 1 : 0;
-        inputMesg[2] = this.leftKey?.isDown? 1 : 0;
-        inputMesg[3] = this.rightKey?.isDown? 1 : 0;
-        inputMesg[4] = this.spaceKey?.isDown? 1 : 0;
+        //[0] up, [1] down, [2] left, [3] right, 
+        let movementData = [0, 0, 0, 0]
+        movementData[0] = this.upKey?.isDown? 1 : 0;
+        movementData[1] = this.downKey?.isDown? 1 : 0;
+        movementData[2] = this.leftKey?.isDown? 1 : 0;
+        movementData[3] = this.rightKey?.isDown? 1 : 0;
+        this.gameRoom?.send("move", movementData)
 
+        let special = this.spaceKey?.isDown? true : false;
+        this.gameRoom?.send("special", special);
         
-        inputMesg[5] = this.input.mousePointer.isDown? 1 : 0;
-        inputMesg[6] = this.input.mousePointer.worldX;
-        inputMesg[7] = this.input.mousePointer.worldY;
 
-        this.gameRoom?.send("input", inputMesg);
+        //[0] mouse click, [1] mousex, [2] mousey.
+        let mouseData = [0, 0, 0]
+        mouseData[0] = this.input.mousePointer.isDown? 1 : 0;
+        mouseData[1] = this.input.mousePointer.worldX;
+        mouseData[2] = this.input.mousePointer.worldY;
+        this.gameRoom?.send("attack", mouseData);
     }
 
     private joinGameRoom() {

@@ -5,15 +5,20 @@ import PlayerManager from './StateManagers/PlayerManager';
 import GameObject from '../schemas/gameobjs/GameObject';
 import Cooldown from '../schemas/gameobjs/Cooldown';
 import TilemapManager from './StateManagers/TilemapManager';
+import ProjectileManager from './StateManagers/ProjectileManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
-    private world: Matter.World;
-    private state: State;
-    private attackCooldown: Cooldown
-    private tilemapManager: TilemapManager;
+    public world: Matter.World;
 
+    // Managers
+    private tilemapManager: TilemapManager;
+    public playerManager: PlayerManager
+    public projectileManager: ProjectileManager
+
+    // Data
     public gameObjects: Map<string, Matter.Body> = new Map();
+    public state: State;
 
     constructor(state: State) {
         this.state = state;
@@ -21,10 +26,10 @@ export default class GameManager {
         this.world = this.engine.world;
         this.engine.gravity.y = 0; //no gravity
 
-        // attack cooldown
-        this.attackCooldown = new Cooldown(1000)
+        // Setup managers
+        this.playerManager = new PlayerManager(this)
+        this.projectileManager = new ProjectileManager(this)
 
-        // this.playerManager = new PlayerManager(this.engine, this.world, state)
         //Set up the tilemap
         this.tilemapManager = new TilemapManager(state);
         this.tilemapManager.loadTilemapTiled("assets/tilemaps/demo_map/demo_map.json").then(() => {
@@ -49,24 +54,27 @@ export default class GameManager {
         });
     }
 
-    public addGameObject(id: string, obj: GameObject, data?: any) {
-        // sync with server state
-        this.state.gameObjects.set(id, obj);
+    public setOwner(sessionId: string){
+        this.state.ownerSessionId = sessionId
+    }
 
-        //Create matterjs body for obj
-        let body = Matter.Bodies.rectangle(obj.x, obj.y, 49, 44, {
-            isStatic: false,
-            inertia: Infinity,
-            inverseInertia: 0,
-            restitution: 0,
-            friction: 0,
-        });
+    /**
+     * Adds obj and body to GameRoom's state, GameManager's gameObjects and the Matter world.
+     * @param id unique identifer of GameObject
+     * @param obj  state/game object for sharing with client
+     * @param body Matter.Body of game object for collision
+     */
+    public addGameObject(id: string, obj: GameObject, body: Matter.Body) {
+        this.state.gameObjects.set(id, obj);
         this.gameObjects.set(id, body);
 
         Matter.Composite.add(this.world, body);
-        // Matter.Body.setVelocity(playerBody, {x:1, y:1});
     }   
 
+    /**
+     * removes game object from the server's state, from the GameManager, and from the Matter.Composite
+     * @param id unique identifer for game object
+     */
     public removeGameObject(id: string) {
         this.state.gameObjects.delete(id);
 
@@ -75,77 +83,6 @@ export default class GameManager {
             Matter.Composite.remove(this.world, body);
             this.gameObjects.delete(id);
         }
-    }
-
-    public createPlayer(sessionId: string, isOwner: boolean) {
-        if(isOwner) this.state.ownerSessionId = sessionId;
-
-        //TODO: get player data from the database
-        let newPlayer = new Player("No Name");
-        newPlayer.x = Math.random() * 200 + 100;
-        newPlayer.y = Math.random() * 200 + 100;
-
-        this.addGameObject(sessionId, newPlayer);
-    }   
-
-    public processPlayerInput(sessionId:string, data:number[]) {
-        //data - array of inputs. [0] up, [1] down, [2] left, [3] right, [4] special, [5] mouse click, [6] mousex, [7] mousey.
-        let playerBody = this.gameObjects.get(sessionId);
-        let playerState = this.state.gameObjects.get(sessionId) as Player;
-        
-        if(playerBody && playerState) {
-            //calculate new player velocity
-            let speed = playerState.speed;
-            let x = 0;
-            let y = 0;
-            if(data[0]) y -= 1;
-            if(data[1]) y += 1;
-            if(data[2]) x -= 1;
-            if(data[3]) x += 1;
-            [x,y] = this.getNormalizedSpeed(x, y, playerState.speed)
-            Matter.Body.setVelocity(playerBody, {x, y});
-
-            //special ability
-            if(data[4]){
-                
-            }
-            
-            //attack
-            if(this.attackCooldown.isUp && data[5]){
-                let mouseX = data[6]
-                let mouseY = data[7]
-                this.attackCooldown.reset()
-                console.log("attack")
-                // spawn new game object/projectile at players position
-                let obj = new GameObject(playerBody.position.x, playerBody.position.y, sessionId)
-
-                // sync with server state
-                this.state.gameObjects.set(obj.id, obj);
-
-                //Create matterjs body for obj
-                let body = Matter.Bodies.rectangle(obj.x, obj.y, 10, 10, {isStatic: false});
-                
-                // so bullet does not collide with player
-                body.collisionFilter = {
-                    'group': -1,
-                    'category': 2,
-                    'mask': 0,
-                };
-                this.gameObjects.set(obj.id, body);
-
-                Matter.Composite.add(this.world, body);
-
-                let [x,y] = this.getNormalizedSpeed(mouseX - obj.x, mouseY - obj.y, 10)
-                Matter.Body.setVelocity(body, {x, y});
-            }
-        } else {
-            console.log("ERROR: received inputs for a player that does not exist. sessionId: ", sessionId);
-        }
-    }
-    public getNormalizedSpeed(x: number, y: number, speed: number){
-        let mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-        if(mag===0) return [0,0]
-        return [x/mag * speed, y/mag * speed]
     }
 
     public playerCount(){
@@ -162,8 +99,9 @@ export default class GameManager {
 
     private initCollisionEvent() {
         Matter.Events.on(this.engine, "collisionStart", (event) => {
-            console.log("collision detected")
+            // console.log("collision detected")
             let pairs = event.pairs;
+            // console.log(event.source)
             pairs.forEach((pair, idx) => {
                 // do something
                 // console.log(pair)
@@ -173,8 +111,8 @@ export default class GameManager {
 
     public update(deltaT:number) {
         Matter.Engine.update(this.engine, deltaT);
-        
-        this.attackCooldown.tick(deltaT)
+
+        this.playerManager.update(deltaT)
 
         // console.log(deltaT)
     }
