@@ -7,6 +7,8 @@ import MathUtil from '../../../../util/MathUtil';
 import GameObject from '../../schemas/gameobjs/GameObject';
 import Projectile from '../../schemas/gameobjs/Projectile';
 import Entity from '../../schemas/gameobjs/Entity';
+import { Categories } from '../Collisions/Category';
+import MaskManager from '../Collisions/MaskManager';
 
 export default class ProjectileManager{
     private gameManager: GameManager
@@ -38,12 +40,9 @@ export default class ProjectileManager{
             friction: 0,
         })
 
-        // ***TODO*** set proper collision filter
-        // so bullet does not collide with player
         body.collisionFilter = {
-            'group': -1,
-            'category': 2,
-            'mask': 0,
+            category: Categories.PLAYER_PROJECTILE,
+            mask: MaskManager.getMask('PLAYER_PROJECTILE') 
         };
 
         let projVelocity = velocity? velocity: {x: 1, y: 1}
