@@ -54,7 +54,7 @@ class MaskManager {
      * @param category
      * @returns 
      */
-     getMask(category: CategoryType){
+    getMask(category: CategoryType){
         return this.masks.get(category)
     }
 }
