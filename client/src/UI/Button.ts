@@ -7,7 +7,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     private buttonSize:"regular"|"small"|"large";
     private buttonState:"default"|"disabled"|"pressed";
     private buttonSprite:Phaser.GameObjects.Sprite;
-    private buttonText:Phaser.GameObjects.Text;
+    private buttonText:TextBox;
     private onClick:Function;
     layoutWidth: number;
     layoutHeight: number;
@@ -15,19 +15,19 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     private sizeConfig = {
         regular: {
             size: { x: 141, y: 66},
-            textStyle: TextStyle.l5,
+            textStyle: "l5",
             textPosition: {x: 0, y: -5},
             textPositionPressed: {x: 0,y: -2}
         },
         small: {
             size: { x: 94, y: 44},
-            textStyle: TextStyle.l6,
+            textStyle: "l6",
             textPosition: {x: 0, y: -4},
             textPositionPressed: {x: 0,y: -2}
         },
         large: {
             size: { x: 218, y: 102},
-            textStyle: TextStyle.l2,
+            textStyle: "l2",
             textPosition: {x: 0, y: -8},
             textPositionPressed: {x: 0,y: -5}
         }
@@ -92,7 +92,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     private updateButtonDisplay() {
         let config = this.sizeConfig[this.buttonSize];
         this.buttonSprite.setDisplaySize(config.size.x, config.size.y);
-        this.buttonText.setStyle(config.textStyle);
+        this.buttonText.setFontType(config.textStyle as "l1"|"l2"|"l3"|"l4"|"l5"|"l6");
         switch(this.buttonState) {
             case 'default': {
                 this.buttonSprite.setTexture("button_small_default");

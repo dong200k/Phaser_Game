@@ -8,7 +8,7 @@ type ButtonState = "active"|"disabled"|"default";
 export default class NavButton extends Phaser.GameObjects.Container implements Layoutable {
     private buttonState:ButtonState;
     private buttonBackground:Phaser.GameObjects.Rectangle;
-    private buttonText:Phaser.GameObjects.Text;
+    private buttonText:TextBox;
     private onClick:Function;
     layoutWidth: number;
     layoutHeight: number;
