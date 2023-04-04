@@ -41,14 +41,17 @@ export default class ProjectileManager{
         })
 
         body.collisionFilter = {
+            group: 0,
             category: Categories.PLAYER_PROJECTILE,
             mask: MaskManager.getMask('PLAYER_PROJECTILE') 
         };
+
+        // console.log(Categories.OBSTACLE & MaskManager.getMask("PLAYER_PROJECTILE") as number)
        
         let projVelocity = velocity? velocity: {x: 1, y: 1}
         Matter.Body.setVelocity(body, projVelocity);
-
-        this.gameManager.addGameObject(projectile.id, projectile, body);
+        console.log(projectile.projectileId)
+        this.gameManager.addGameObject(projectile.projectileId, projectile, body);
         return body
     }   
 }

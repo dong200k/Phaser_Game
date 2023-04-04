@@ -71,11 +71,26 @@ export default class PlayerManager{
         playerState.specialCooldown.reset()
 
         if(playerState.role === "ranger"){
-            playerState.stat.speed *= 3
+            console.log("Activating wall hack speed boost for 1 second")
+            playerState.stat.speed *= 5
             console.log(playerState.stat.speed)
 
+            // set mask to 0 to collide with nothing
+            playerBody.collisionFilter = {
+                ...playerBody.collisionFilter,
+                mask: 0 
+            }
+
+            // revert hacks
             setTimeout(()=>{
                 playerState.stat.speed = 1
+                if(playerBody){
+                    playerBody.collisionFilter = {
+                        ...playerBody.collisionFilter,
+                        mask: MaskManager.getMask("PLAYER")
+                    }
+                }
+
             }, 1000)
         }
        

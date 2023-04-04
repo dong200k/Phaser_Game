@@ -10,6 +10,7 @@ class MaskManager {
         this.initPlayerMasks()
         this.initMonsterMasks()
         this.initPetMasks()
+        this.initObstacleMasks()
     }
 
     private initPlayerMasks(){
@@ -19,18 +20,23 @@ class MaskManager {
         this.setCollideable("PLAYER", "CHEST")
         this.setCollideable("PLAYER", "ITEM")
         this.setCollideable("PLAYER", "NPC")
-        this.setCollideable("PLAYER", "OBSTACLE")
     }
 
     private initMonsterMasks(){
         this.setCollideable("MONSTER", "PLAYER_PROJECTILE")
         this.setCollideable("MONSTER", "MONSTER_PROJECTILE_FRIENDLY_FIRE")
-        this.setCollideable("MONSTER", "OBSTACLE")
     }
 
     private initPetMasks(){
-        this.setCollideable("PET", "OBSTACLE")
         this.setCollideable("PET", "ITEM")
+    }
+
+    private initObstacleMasks(){
+        this.setCollideable("OBSTACLE", "PLAYER")
+        this.setCollideable("OBSTACLE", "PET")
+        this.setCollideable("OBSTACLE", "MONSTER")
+        this.setCollideable("OBSTACLE", "PLAYER_PROJECTILE")
+        this.setCollideable("OBSTACLE", "MONSTER_PROJECTILE")
     }
 
     /**
