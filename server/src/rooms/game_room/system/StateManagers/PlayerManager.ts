@@ -6,6 +6,8 @@ import GameManager from '../GameManager';
 import MathUtil from '../../../../util/MathUtil';
 import GameObject from '../../schemas/gameobjs/GameObject';
 import Projectile from '../../schemas/gameobjs/Projectile';
+import { Categories } from '../Collisions/Category';
+import MaskManager from '../Collisions/MaskManager';
 
 export default class PlayerManager{
     private gameManager: GameManager
@@ -93,6 +95,10 @@ export default class PlayerManager{
             inverseInertia: 0,
             restitution: 0,
             friction: 0,
+            collisionFilter: {
+                category: Categories.PLAYER,
+                mask: MaskManager.getMask("PLAYER")
+            }
         })
 
         this.gameManager.addGameObject(sessionId, newPlayer, body);

@@ -101,9 +101,10 @@ export default class GameManager {
         Matter.Events.on(this.engine, "collisionStart", (event) => {
             console.log("collision detected")
             let pairs = event.pairs;
+            // console.log(event.source)
             pairs.forEach((pair, idx) => {
                 // do something
-                // console.log(pair)
+                console.log(pair)
             })
         })
     }

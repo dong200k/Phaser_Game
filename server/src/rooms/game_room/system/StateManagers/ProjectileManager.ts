@@ -44,7 +44,7 @@ export default class ProjectileManager{
             category: Categories.PLAYER_PROJECTILE,
             mask: MaskManager.getMask('PLAYER_PROJECTILE') 
         };
-
+       
         let projVelocity = velocity? velocity: {x: 1, y: 1}
         Matter.Body.setVelocity(body, projVelocity);
 
