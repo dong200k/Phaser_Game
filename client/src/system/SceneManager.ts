@@ -4,15 +4,13 @@ import { SceneKey, SceneKeyType } from "../config";
 
 export default class SceneManager {
 
-    private static singleton:SceneManager|null;
+    private static singleton:SceneManager = new SceneManager();
 
-    private scene: Phaser.Scene | null;
+    private scene: Phaser.Scene | null = null;
     private historyStack: SceneKeyType[] = [];
     private currentSceneKey: SceneKeyType | "" = "MenuScene";
 
-    private constructor() {
-        this.scene = null;
-    }
+    private constructor() {}
 
     /**
      * Gets the SceneManager singleton.
@@ -20,9 +18,6 @@ export default class SceneManager {
      * @returns 
      */
     public static getSceneManager(): SceneManager {
-        if(this.singleton == null) {
-            this.singleton = new SceneManager();
-        }
         return this.singleton;    
     }
 
