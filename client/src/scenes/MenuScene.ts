@@ -17,16 +17,13 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     create() {
-        let textPos = {x: this.game.scale.width/2, y: this.game.scale.height/2}
+        /** Initialize the SceneManager and sets this scene as the current scene. */
         let sceneManager = SceneManager.getSceneManager();
         sceneManager.setScene(this);
-        sceneManager.showNavbar();
+        sceneManager.switchToScene("MenuScene"); // Lets the SceneManager know the current scene.
 
-        console.log("Menu created again");
-        // let rect = {x: this.game.scale.width/2, y: this.game.scale.height/2, width: 200, height: 50, color: 0xAAAAAA}
-        // NavButton(this, "Join Lobby", () => this.scene.start('LobbyScene'), textPos, rect)
-
-        let playButton = new Button(this, "Play", 0, 0, "large", () => sceneManager.pushScene("LobbyScene"));
+        // Adds Menu Buttons
+        let playButton = new Button(this, "Play", 0, 0, "large", () => SceneManager.getSceneManager().pushScene("LobbyScene"));
         let settingsButton = new Button(this, "Settings", 0, 0, "large", () => console.log("Clicked on settings button"));
         let controlsButton = new Button(this, "Controls", 0, 0, "large", () => console.log("Clicked on controls button"));
         let creditsButton = new Button(this, "Credits", 0, 0, "large", () => console.log("Clicked on credits button"));

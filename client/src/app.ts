@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import config from './config';
 import DataManager from './system/DataManager';
+import SceneManager from './system/SceneManager';
 
 // Create a new Phaser game with predefined config.
 const game = new Phaser.Game(config);

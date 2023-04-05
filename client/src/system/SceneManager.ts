@@ -8,7 +8,7 @@ export default class SceneManager {
 
     private scene: Phaser.Scene | null = null;
     private historyStack: SceneKeyType[] = [];
-    private currentSceneKey: SceneKeyType | "" = "MenuScene";
+    private currentSceneKey: SceneKeyType | "" = "";
 
     private constructor() {}
 
@@ -22,7 +22,7 @@ export default class SceneManager {
     }
 
     /**
-     * Sets the scene for the scene manager. This is necessary for switching scenes.
+     * Sets the scene for the scene manager. This is necessary for switching scenes. This should be called by the first scene that has been created.
      * @param scene 
      */
     public setScene(scene: Phaser.Scene) {
@@ -35,13 +35,16 @@ export default class SceneManager {
      */
     public switchToScene(key:SceneKeyType) {
         if(this.scene) {
-            this.historyStack.splice(0, this.historyStack.length);
-            if(this.currentSceneKey) {
-                this.sleepCurrentScene();
+            if(this.currentSceneKey !== key) {
+                this.historyStack.splice(0, this.historyStack.length);
+                if(this.currentSceneKey) 
+                    this.sleepCurrentScene();
+                this.currentSceneKey = key;
+                this.launchOrWakeCurrentScene();
+                this.showNavbarOnCertainScene(key);
             }
-            this.currentSceneKey = key;
-            this.runCurrentScene();
-            this.showNavbarOnCertainScene(key);
+        } else {
+            console.log("Error: phaser scene does not exist in SceneManager");
         }
     }
 
@@ -50,15 +53,18 @@ export default class SceneManager {
      * @param key The scene key
      */
     public pushScene(key:SceneKeyType) {
-        if(this.scene) {
-            if(this.currentSceneKey) {
-                this.historyStack.push(this.currentSceneKey);
-                this.sleepCurrentScene()
+        if(this.scene && this.currentSceneKey !== key) {
+            if(this.currentSceneKey !== key) {
+                if(this.currentSceneKey) {
+                    this.historyStack.push(this.currentSceneKey);
+                    this.sleepCurrentScene()
+                }
+                this.currentSceneKey = key;
+                this.launchOrWakeCurrentScene();
+                this.showNavbarOnCertainScene(key);
             }
-            this.currentSceneKey = key;
-            this.runCurrentScene();
-            this.showNavbarOnCertainScene(key);
-            // console.log(this.scene.scene.manager.getScenes());
+        } else {
+            console.log("Error: phaser scene does not exist in SceneManager");
         }
     }
 
@@ -69,15 +75,17 @@ export default class SceneManager {
     public popScene():SceneKeyType | "" {
         if(this.scene) {
             let key = this.historyStack.pop();
-            if(key) {
+            if(key && this.currentSceneKey !== key) {
                 if(this.currentSceneKey) {
                     this.sleepCurrentScene();
                 }
                 this.currentSceneKey = key;
-                this.runCurrentScene();
+                this.launchOrWakeCurrentScene();
                 this.showNavbarOnCertainScene(key);
                 return key;
             }
+        } else {
+            console.log("Error: phaser scene does not exist in SceneManager");
         }
         return "";
     }
@@ -102,7 +110,11 @@ export default class SceneManager {
     /** Displays the navbar on top of the current scene. This is called automatically on certain scenes. */
     public showNavbar() {
         if(this.scene) {
-            this.scene.scene.run(SceneKey.NavbarScene);
+            if(!this.scene.scene.isSleeping("NavbarScene") && !this.scene.scene.isActive("NavbarScene"))
+                this.scene.scene.launch("NavbarScene");
+            else {
+                this.scene.scene.wake("NavbarScene");
+            }
             this.scene.scene.bringToTop(SceneKey.NavbarScene);
         }
     }
@@ -116,28 +128,34 @@ export default class SceneManager {
 
     /** Shutdown the current scene, clearing display list, timers, etc. */
     public shutdownCurrentScene() {
-        if(this.scene) 
-            if(this.currentSceneKey)
-                this.scene.scene.stop(this.currentSceneKey);
+        if(this.scene && this.currentSceneKey) 
+            this.scene.scene.stop(this.currentSceneKey);
     }
 
     /** puts the current scene to sleep. */
     private sleepCurrentScene() {
-        if(this.scene) {
-            if(this.currentSceneKey) {
-                this.scene.scene.sleep(this.currentSceneKey);
-            }
-        }
+        if(this.scene && this.currentSceneKey)
+            this.scene.scene.sleep(this.currentSceneKey);
     }
 
-    // wakes the current scene and brings it to the front.
-    private runCurrentScene() {
+    /** Runs the current scene */
+    private launchCurrentScene() {
+        if(this.scene && this.currentSceneKey)
+            this.scene.scene.launch(this.currentSceneKey);
+    }
+
+    /** wakes the current scene */ 
+    private wakeCurrentScene() {
+        if(this.scene && this.currentSceneKey)
+            this.scene.scene.wake(this.currentSceneKey);
+    }
+
+    private launchOrWakeCurrentScene() {
         if(this.scene) {
-            if(this.currentSceneKey) {
-                console.log("Running Current Scene: ", this.currentSceneKey);
-                this.scene.scene.run(this.currentSceneKey);
-                // this.scene.scene.bringToTop(this.currentSceneKey);
-            }
+            if(!this.scene.scene.isSleeping(this.currentSceneKey) && !this.scene.scene.isActive(this.currentSceneKey))
+                this.launchCurrentScene();
+            else
+                this.wakeCurrentScene();
         }
     }
 }
