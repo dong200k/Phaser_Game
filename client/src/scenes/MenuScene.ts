@@ -1,6 +1,5 @@
 import Phaser from "phaser";
 import Button from "../UI/Button";
-import NavButton from "../UI/NavButton";
 import Layout from "../UI/Layout";
 import { SceneKey } from "../config";
 import SceneManager from "../system/SceneManager";
