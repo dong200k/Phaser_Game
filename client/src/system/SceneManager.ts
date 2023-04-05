@@ -93,7 +93,7 @@ export default class SceneManager {
     private showNavbarOnCertainScene(key: SceneKeyType) {
         let navbarScenes = [SceneKey.MenuScene, SceneKey.ControlsScene, SceneKey.CreditsScene, SceneKey.SettingsScene, SceneKey.GameModeScene, 
             SceneKey.ShopScene, SceneKey.SkillTreeScene, SceneKey.RoleScene, SceneKey.HostGameScene, SceneKey.JoinWithIDScene,
-            SceneKey.MatchmakeScene]
+            SceneKey.MatchmakeScene, SceneKey.LobbyScene]
         let navbarShown = false;
         navbarScenes.forEach((sceneKey) => {
             if(sceneKey === key) {
@@ -102,7 +102,6 @@ export default class SceneManager {
             }
         })
         if(navbarShown === false) {
-            //this.scene?.scene.setVisible(false, SceneKey.NavbarScene);
             this.hideNavbar();
         }
     }

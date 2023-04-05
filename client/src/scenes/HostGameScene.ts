@@ -7,5 +7,6 @@ export default class HostGameScene extends Phaser.Scene {
         super(SceneKey.HostGameScene)
     }
 
+    
 
 }
