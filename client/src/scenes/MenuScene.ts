@@ -38,7 +38,7 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     test() {
-        let layout = new Layout(this, 20, this.game.scale.width/2, this.game.scale.height/2);
+        let layout = new Layout(this, 0, this.game.scale.width/2, this.game.scale.height/2);
         let b1 = new Button(this, "Button 1", 0, 0, "small");
         let b2 = new Button(this, "Button 2", 0, 0, "small");
         let b3 = new Button(this, "Hello World", 0, 0, "large");
@@ -46,5 +46,9 @@ export default class MenuScene extends Phaser.Scene {
 
         layout.add([b1, b2, b3, text1]);
         this.add.existing(layout);
+
+        layout.setFlexDirection('row-reverse');
+        layout.setAlignItems('start');
+        layout.setGap(20);
     }
 }
