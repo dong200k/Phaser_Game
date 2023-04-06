@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 import * as Colyseus from 'colyseus.js';
 import ClientManager from "../colyseus/ClientManager";
-import NavButton from "../UI/NavButton";
 import { SceneKey } from "../config";
+import TextBox from "../UI/TextBox";
 
 
 export default class LobbyScene extends Phaser.Scene {
@@ -29,13 +29,13 @@ export default class LobbyScene extends Phaser.Scene {
     }
 
     private initializeUI() {
-        let rect = {x: this.game.scale.width / 2, y: 50, width: 200, height: 50, color: 0xAAAAAA}
-        let textPos = {x: this.game.scale.width / 2 - 48, y: 42}
-        // NavButton(this, "Host Game", () => {
-        //     this.leaveLobby();
-        //     ClientManager.getClient().clearWaitingRoomId();
-        //     this.scene.start("RoomScene");
-        // }, textPos, rect)
+        // ------ Server Location ------
+        let serverLocationText = new TextBox(this, "US Server", "h4");
+        serverLocationText.setPosition(this.game.scale.width / 2, 139);
+        this.add.existing(serverLocationText);
+        // ------ Search Field ------
+
+        // ------ Room List ------
 
         //Make room buttons interactable
         for(let i = 0; i < 1; i++) {
@@ -48,6 +48,12 @@ export default class LobbyScene extends Phaser.Scene {
                 }
             })
         }
+
+        // ------ Back Button ------
+
+
+
+        
     }
 
     private addWaitingRoom(){

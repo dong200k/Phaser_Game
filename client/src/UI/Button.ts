@@ -9,8 +9,6 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     private buttonSprite:Phaser.GameObjects.Sprite;
     private buttonText:TextBox;
     private onClick:Function;
-    layoutWidth: number;
-    layoutHeight: number;
 
     private sizeConfig = {
         regular: {
@@ -41,7 +39,6 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         this.buttonSprite = new Phaser.GameObjects.Sprite(scene, 0, 0, "button_small_default");
         this.buttonSprite.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.buttonText = new TextBox(this.scene, text);
-        //this.buttonText.setResolution(2);
         this.buttonSprite.setInteractive();
         this.buttonSprite.on(Phaser.Input.Events.POINTER_DOWN, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('pressed')
@@ -49,8 +46,6 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         this.buttonSprite.on(Phaser.Input.Events.POINTER_OUT, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('default')
         });
-        this.layoutWidth = this.buttonSprite.width;
-        this.layoutHeight = this.buttonSprite.height;
         this.add(this.buttonSprite);
         this.add(this.buttonText);
         this.setButtonSize(size);
@@ -58,6 +53,25 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         this.updateButtonDisplay();
     }
     
+    public setLayoutPosition(x: number, y: number) {
+        this.setPosition(x, y);
+    }
+
+    public getLayoutWidth(): number {
+        return this.buttonSprite.displayWidth;
+    }
+
+    public getLayoutHeight(): number {
+        return this.buttonSprite.displayHeight;
+    }
+
+    public getLayoutOriginX(): number {
+        return this.buttonSprite.originX;
+    }
+
+    public getLayoutOriginY(): number {
+        return this.buttonSprite.originY;
+    }
 
     private setButtonState(state:"default"|"disabled"|"pressed") {
         this.buttonState = state;

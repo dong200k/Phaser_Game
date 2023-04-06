@@ -10,8 +10,6 @@ export default class NavButton extends Phaser.GameObjects.Container implements L
     private buttonBackground:Phaser.GameObjects.Rectangle;
     private buttonText:TextBox;
     private onClick:Function;
-    layoutWidth: number;
-    layoutHeight: number;
 
     constructor(scene:Phaser.Scene,text:string="",x:number=0,y:number=0,onClick:Function=()=>{}) {
         super(scene, x, y);
@@ -21,14 +19,27 @@ export default class NavButton extends Phaser.GameObjects.Container implements L
         this.buttonBackground.setStrokeStyle(2, ColorStyle.neutrals.hex[900]);
         this.buttonText = new TextBox(this.scene, text, 'l5');
         this.buttonBackground.setInteractive();
-        this.layoutWidth = this.buttonBackground.width;
-        this.layoutHeight = this.buttonBackground.height;
         this.add(this.buttonBackground);
         this.add(this.buttonText);
         this.setOnClick(onClick);
         this.updateButtonDisplay();
     }
     
+    public getLayoutWidth(): number {
+        return this.buttonBackground.displayWidth;
+    }
+
+    public getLayoutHeight(): number {
+        return this.buttonBackground.displayHeight;
+    }
+
+    public getLayoutOriginX(): number {
+        return this.buttonBackground.originX;
+    }
+
+    public getLayoutOriginY(): number {
+        return this.buttonBackground.originY;
+    }
 
     private setButtonState(state:ButtonState) {
         this.buttonState = state;
@@ -65,5 +76,9 @@ export default class NavButton extends Phaser.GameObjects.Container implements L
                 this.buttonBackground.setFillStyle(ColorStyle.primary.hex[100]);
             }
         }
+    }
+
+    public setLayoutPosition(x: number, y: number) {
+        this.setPosition(x, y);
     }
 }

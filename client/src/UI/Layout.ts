@@ -9,7 +9,9 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
     parentLayout:Layout | null = null;
     private flexDirection:FlexDirectionType = 'col';
     private gap: number;
-    //private justifyContent:'flexStart'|'flexEnd'|'space-between'='flexStart'; 
+    //private justifyContent:'flexStart'|'flexEnd'|'space-between'='flexStart';
+
+    private layoutChildren: Layoutable[] = [];
 
     constructor(scene:Phaser.Scene, gap=100, x=0, y=0) {
         super(scene,x,y);
@@ -20,22 +22,38 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
     }
 
     private updateLayoutDisplay() {
-        let childrens = this.getAll();
+        let children = this.layoutChildren;
         let x = 0;
         let y = 0;
-        childrens.forEach((child:any, idx) => {
-            try {
-                child.setPosition(x, y);
-            } catch(e) {
-                console.log(e);
-            }
+        children.forEach((child, idx) => {
+            child.setLayoutPosition(x, y);
             switch(this.flexDirection) {
-                case 'col': y += this.gap; break;
-                case 'col-reverse': y-= this.gap; break;
-                case 'row': x+= this.gap; break;
-                case 'row-reverse': x-= this.gap; 
+                case 'col': y += this.gap+child.getLayoutHeight(); break;
+                case 'col-reverse': y-= this.gap+child.getLayoutHeight(); break;
+                case 'row': x+= this.gap+child.getLayoutWidth(); break;
+                case 'row-reverse': x-= this.gap+child.getLayoutWidth(); 
             }
         })
+    }
+
+    public setLayoutPosition(x: number, y: number) {
+        this.setPosition(x, y);
+    }
+
+    public getLayoutWidth(): number {
+        return this.layoutWidth;
+    }
+
+    public getLayoutHeight(): number {
+        return this.layoutHeight;
+    }
+
+    public getLayoutOriginX(): number {
+        return 0;
+    }
+
+    public getLayoutOriginY(): number {
+        return 0;
     }
 
     // public setJustifyContent(justifyContent:'flexStart'|'flexEnd'|'space-between') {
@@ -61,18 +79,24 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
         this.updateLayoutDisplay();
     }
 
-    public add(child: Phaser.GameObjects.GameObject|Phaser.GameObjects.GameObject[]): this {
+    /**
+     * Adds the given Game Object, or array of Game Objects, to this Container. The Game Object is now layoutable.
+     * Each Game Object must be unique within the Container.
+     * @param child Takes in a child that is both a Phaser Game Object and implements layoutable.
+     */
+    public add(child: (Phaser.GameObjects.GameObject&Layoutable)|(Phaser.GameObjects.GameObject[]&Layoutable[])): this {
         super.add(child);
-        try { //WARNING: bad typescript practice.
-            if(child.hasOwnProperty("parentLayout")) {
-                (child as any).parentLayout = this;
-            }
-        } catch (e) {
-            console.log(e);
-        }
+        this.addLayout(child);
         this.recalculateDimensions();
         this.updateLayoutDisplay();
         return this;
+    }
+
+    private addLayout(child: Layoutable|Layoutable[]) {
+        if(Array.isArray(child)) 
+            this.layoutChildren.push(...child);
+        else
+            this.layoutChildren.push(child);
     }
 
     public recalculateDimensions() {

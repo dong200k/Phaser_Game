@@ -12,8 +12,6 @@ type FontTypeString = keyof typeof FontType;
 export default class TextBox extends Phaser.GameObjects.Text implements Layoutable{
 
     private fontType:FontTypeString;
-    layoutWidth: number;
-    layoutHeight: number;
 
     constructor(scene:Phaser.Scene,text="",fontType:FontTypeString='p3') {
         super(scene, 0, 0, text, {});
@@ -21,9 +19,9 @@ export default class TextBox extends Phaser.GameObjects.Text implements Layoutab
         this.setColor(ColorStyle.neutrals.white);
         this.setAlign('center');
         this.setOrigin(0.5, 0.5);
-        this.layoutWidth = this.width;
-        this.layoutHeight = this.height;
         this.updateTextDisplay();
+        this.setStyle({border:"2px solid black"});
+        this.setBackgroundColor("#222222");
     }
     
 
@@ -39,6 +37,26 @@ export default class TextBox extends Phaser.GameObjects.Text implements Layoutab
     public setFontType(type:FontTypeString) {
         this.fontType=type;
         this.updateTextDisplay();
+    }
+
+    public setLayoutPosition(x: number, y: number) {
+        this.setPosition(x, y);
+    }
+
+    public getLayoutWidth(): number {
+        return this.displayWidth;
+    }
+
+    public getLayoutHeight(): number {
+        return this.displayHeight;
+    }
+
+    public getLayoutOriginX(): number {
+        return this.originX;
+    }
+
+    public getLayoutOriginY(): number {
+        return this.originY;
     }
 } 
 
