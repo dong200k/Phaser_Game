@@ -109,7 +109,7 @@ export default class NavbarScene extends Phaser.Scene {
         // navRightSideLayout.setPosition(this.game.scale.width, 44);
         // navRightSideLayout.setFlexDirection("row-reverse");
         
-        let logoutButton = new Button(this, "Logout", this.game.scale.width - 80, 45, "small", () => console.log("Logout button onclick"));
+        let logoutButton = new Button(this, "Logout", this.game.scale.width - 80, 46, "small", () => console.log("Logout button onclick"));
         this.add.existing(logoutButton);
 
         let statLayout = new Layout(this, 0, this.game.scale.width - 200, 22);
@@ -117,6 +117,7 @@ export default class NavbarScene extends Phaser.Scene {
         let coinsText = new TextBox(this, `Coins: ${this.dummyData.coins}`, "l4");
         let gemsText = new TextBox(this, `Gems: ${this.dummyData.gems}`, "l4");
         statLayout.add([levelText, coinsText, gemsText]);
+        statLayout.setAlignItems('start');
         this.add.existing(statLayout);
 
 

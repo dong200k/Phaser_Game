@@ -21,7 +21,7 @@ export default class TextBox extends Phaser.GameObjects.Text implements Layoutab
         this.setOrigin(0.5, 0.5);
         this.updateTextDisplay();
         this.setStyle({border:"2px solid black"});
-        this.setBackgroundColor("#222222");
+        // this.setBackgroundColor("#222222");
     }
     
 

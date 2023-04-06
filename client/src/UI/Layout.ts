@@ -79,19 +79,31 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
     }
 
     public getLayoutWidth(): number {
-        let max = 0;
-        this.layoutChildren.forEach((child) => {
-            max = Math.max(child.getLayoutWidth(), max);
-        })
-        return max;
+        let width = 0;
+        // If the flexDirection is row or row-reverse the width is equal to all the children width plus the gap between them.
+        if(this.flexDirection === 'row' || this.flexDirection === 'row-reverse') {
+            this.layoutChildren.forEach((child) => width += child.getLayoutWidth());
+            width += this.gap * (this.layoutChildren.length - 1);
+        } else {
+            this.layoutChildren.forEach((child) => {
+                width = Math.max(child.getLayoutWidth(), width);
+            })
+        }
+        return width;
     }
 
     public getLayoutHeight(): number {
-        let max = 0;
-        this.layoutChildren.forEach((child) => {
-            max = Math.max(child.getLayoutHeight(), max);
-        })
-        return max;
+        let height = 0;
+        // If the flexDirection is col or col-reverse the height is equal to all the children height plus the gap between them.
+        if(this.flexDirection === 'col' || this.flexDirection === 'col-reverse') {
+            this.layoutChildren.forEach((child) => height += child.getLayoutHeight());
+            height += this.gap * (this.layoutChildren.length - 1);
+        } else {
+            this.layoutChildren.forEach((child) => {
+                height = Math.max(child.getLayoutHeight(), height);
+            })
+        }
+        return height;
     }
 
     public getLayoutOriginX(): number {
