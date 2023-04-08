@@ -36,12 +36,12 @@ export default class NavbarScene extends Phaser.Scene {
 
         //------- Left side of the navbar ---------
         let homeButton = new NavButton(this, "Home", 0, 0, () => {
-            console.log("Home nav button clicked");
+            // console.log("Home nav button clicked");
             DataManager.getDataManager().setData("navbar", {activeOn: "home"});
             SceneManager.getSceneManager().switchToScene("MenuScene");
         });
         let playButton = new NavButton(this, "Play", 0, 0, () => {
-            console.log("Play nav button clicked") 
+            // console.log("Play nav button clicked") 
             DataManager.getDataManager().setData("navbar", {activeOn: "play"});
             SceneManager.getSceneManager().switchToScene("GameModeScene");
         });

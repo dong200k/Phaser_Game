@@ -38,6 +38,9 @@ export default {
             debug: true
         }
     },
+    dom: {
+        createContainer: true
+    },
     scene: [MenuScene, GameScene, LobbyScene, RoomScene, SettingsScene, ControlsScene, CreditsScene,
             LoginScene, SignupScene, ShopScene, SkillTreeScene, RoleScene, GameModeScene,
             JoinWithIDScene, HostGameScene, LoadingScene, NavbarScene, MatchmakeScene],
@@ -176,6 +179,16 @@ export const ColorStyle = {
             900: 0x2F2B28,
             500: 0x4C4540,
             100: 0x736B64,
+        }
+    },
+    red: {
+        900: "#A21212",
+        500: "#CD3737",
+        100: "#E77162",
+        hex: {
+            900: 0xA21212,
+            500: 0xCD3737,
+            100: 0xE77162,
         }
     }
 }

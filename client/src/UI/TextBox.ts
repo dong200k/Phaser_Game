@@ -39,6 +39,16 @@ export default class TextBox extends Phaser.GameObjects.Text implements Layoutab
         this.updateTextDisplay();
     }
 
+    public setText(text: string) {
+        super.setText(text);
+        return this;
+    }
+
+    public setColor(color: string) {
+        super.setColor(color);
+        return this;
+    }
+
     public setLayoutPosition(x: number, y: number) {
         this.setPosition(x, y);
     }

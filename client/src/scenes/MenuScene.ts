@@ -5,6 +5,7 @@ import { SceneKey } from "../config";
 import SceneManager from "../system/SceneManager";
 import DataManager from "../system/DataManager";
 import TextBox from "../UI/TextBox";
+import TextField from "../UI/TextField";
 
 export default class MenuScene extends Phaser.Scene {
     constructor() {
@@ -34,7 +35,10 @@ export default class MenuScene extends Phaser.Scene {
         let layout = new Layout(this, 24, this.game.scale.width/2, 200);
         layout.add([playButton, settingsButton, controlsButton, creditsButton]);
         this.add.existing(layout);
+
+        
         // this.test();
+        // this.test2();
     }
 
     test() {
@@ -68,5 +72,17 @@ export default class MenuScene extends Phaser.Scene {
         mainLayout.setGap(0);
     
         this.add.existing(mainLayout);
+    }
+
+    test2() {
+        let input = new TextField(this, this.game.scale.width / 2, this.game.scale.height / 2);
+        this.add.existing(input);
+        input.setText('Hello');
+        input.setLabelVisible(true);
+        input.setLabel("Username");
+        input.setAssistTextVisible(true);
+        input.setAssistText('5-16 characters');
+        input.setFeedbackTextVisible(true);
+        input.setFeedbackText("Too little characters!");
     }
 }
