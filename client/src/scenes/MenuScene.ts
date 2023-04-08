@@ -75,7 +75,7 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     test2() {
-        let input = new TextField(this, this.game.scale.width / 2, this.game.scale.height / 2);
+        let input = new TextField(this, this.game.scale.width / 2, this.game.scale.height / 2, "large");
         this.add.existing(input);
         input.setText('Hello');
         input.setLabelVisible(true);

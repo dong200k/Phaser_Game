@@ -22,7 +22,7 @@ export default class TextField extends Phaser.GameObjects.Container implements L
     private textFieldSize: TextFieldSize;
 
 
-    constructor(scene: Phaser.Scene, x=0, y=0, text="", size:TextFieldSize="regular") {
+    constructor(scene: Phaser.Scene, x=0, y=0, size:TextFieldSize="regular") {
         super(scene, x, y);
         this.labelVisible = false;
         this.assistTextVisible = false;
@@ -42,7 +42,7 @@ export default class TextField extends Phaser.GameObjects.Container implements L
             this.text = this.inputDOM.value;
         })
         this.add([this.inputObject, this.labelObject, this.assistTextObject, this.feedbackTextObject]);
-        this.setText(text);
+        this.setText(this.text);
         this.updateTextFieldDisplay();
     }
 

@@ -73,9 +73,9 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         return this.buttonSprite.originY;
     }
 
-    // public setLayoutOriginX(x: number) {
-        
-    // }
+    public setText(text: string) {
+        this.buttonText.setText(text);
+    }
 
     private setButtonState(state:"default"|"disabled"|"pressed") {
         this.buttonState = state;

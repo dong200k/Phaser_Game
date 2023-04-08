@@ -9,27 +9,35 @@ l1 = 'l1',l2 = 'l2',l3 = 'l3',l4 = 'l4',l5 = 'l5',l6 = 'l6'
 }
 type FontTypeString = keyof typeof FontType;
 
-export default class TextBox extends Phaser.GameObjects.DOMElement implements Layoutable{
+/** A Text Object using Phaser's Text Game Object. We are not using this as the text is not rendered in high resolution(gets blurry). */
+export default class TextBoxPhaser extends Phaser.GameObjects.Text implements Layoutable{
 
     private fontType:FontTypeString;
-    private divElement:HTMLDivElement;
 
     constructor(scene:Phaser.Scene,text="",fontType:FontTypeString='p3') {
-        super(scene, 0, 0, 'div');
+        super(scene, 0, 0, text, {});
         this.fontType = fontType;
-        this.divElement = this.node as HTMLDivElement;
-        this.setOrigin(0.5, 0.5);
         this.setColor(ColorStyle.neutrals.white);
-        this.setText(text);
-        this.setFontType(this.fontType);
+        this.setAlign('center');
+        this.setOrigin(0.5, 0.5);
+        this.updateTextDisplay();
+        this.setStyle({border:"2px solid black"});
+        // this.setBackgroundColor("#222222");
+    }
+    
+
+    private updateTextDisplay() {
+        let style = {...TextStyle[this.fontType]};
+        let fontSize = style.fontSize;
+        let fontSizeNumber = parseInt(fontSize.substring(0, fontSize.length - 2));
+        style.fontSize = (fontSizeNumber * 2) + "px";
+        this.setStyle(style);
+        this.setScale(0.5, 0.5);
     }
 
     public setFontType(type:FontTypeString) {
         this.fontType=type;
-        let fontStyle = TextStyle[this.fontType];
-        this.divElement.style.fontFamily = fontStyle.fontFamily;
-        this.divElement.style.fontSize = fontStyle.fontSize;
-        this.updateSize(); // Forces updates of the dom nodes dimensions after font changes.
+        this.updateTextDisplay();
     }
 
     public setText(text: string) {
@@ -38,7 +46,8 @@ export default class TextBox extends Phaser.GameObjects.DOMElement implements La
     }
 
     public setColor(color: string) {
-        this.divElement.style.color = color;
+        super.setColor(color);
+        return this;
     }
 
     public setLayoutPosition(x: number, y: number) {
@@ -46,11 +55,11 @@ export default class TextBox extends Phaser.GameObjects.DOMElement implements La
     }
 
     public getLayoutWidth(): number {
-        return this.width;
+        return this.displayWidth;
     }
 
     public getLayoutHeight(): number {
-        return this.height;
+        return this.displayHeight;
     }
 
     public getLayoutOriginX(): number {
@@ -61,3 +70,4 @@ export default class TextBox extends Phaser.GameObjects.DOMElement implements La
         return this.originY;
     }
 } 
+
