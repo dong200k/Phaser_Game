@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import * as Colyseus from 'colyseus.js';
-import ClientManager from "../colyseus/ClientManager";
+import ClientManager from "../system/ClientManager";
 import { SceneKey } from "../config";
 import TextBox from "../UI/TextBox";
 import Layout from "../UI/Layout";
@@ -15,6 +15,9 @@ export default class LobbyScene extends Phaser.Scene {
     private lobbyRoom?: Colyseus.Room;
     private allRooms: (Colyseus.RoomAvailable | null)[] = [];
     private page: number = 1;
+    private pageText: TextBox | null = null; 
+    private pageNextButton: Button | null = null;
+    private pagePrevButton: Button | null = null;
     private roomPosts: RoomPost[] = [];
 
     //private lobbyConnectionText?: Phaser.GameObjects.Text;
@@ -27,7 +30,6 @@ export default class LobbyScene extends Phaser.Scene {
     create() {
         this.allRooms = [];
         this.page = 1;
-
         this.initializeUI();
         this.joinLobby();
         console.log("Menu Sleeping", this.scene.isSleeping(SceneKey.MenuScene));
@@ -53,15 +55,56 @@ export default class LobbyScene extends Phaser.Scene {
             this.roomPosts.push(roomPost);
             layout.add(roomPost);
         }
-        
 
-        // ------ Back Button ------
-        let backButton = new Button(this, "Back", 0, 0, "regular", () => SceneManager.getSceneManager().popScene());
-        let hostGameButton = new Button(this, "Host Game", 0, 0, "regular", () => SceneManager.getSceneManager().switchToScene("RoomScene"));
-        layout.add([hostGameButton, backButton]);
-
-        
         this.add.existing(layout);
+
+        // ------ Back Button And Host Game Button ------
+        let backButton = new Button(this, "Back to menu", 0, 0, "regular", () => SceneManager.getSceneManager().switchToScene("GameModeScene"));
+        let hostGameButton = new Button(this, "Host Game", 0, 0, "regular", () => SceneManager.getSceneManager().pushScene("RoomScene"));
+        let layout2 = new Layout(this, 18, this.game.scale.width / 2 - layout.getLayoutWidth() / 2 + backButton.getLayoutWidth() / 2, 680);
+        layout2.add([backButton, hostGameButton]);
+        layout2.setFlexDirection("row");
+        
+        this.add.existing(layout2);
+        
+        // ------ Switching pages layout ------
+        this.pageText = new TextBox(this, "Page 1/1000", 'h5');
+        this.pageNextButton = new Button(this, "Next", 0, 0, "small", () => this.switchToNextPage());
+        this.pagePrevButton = new Button(this, "Prev", 0, 0, "small", () => this.switchToPrevPage());
+        let layout3 = new Layout(this, 15, this.game.scale.width / 2 + layout.getLayoutWidth() / 2 - this.pageNextButton.getLayoutWidth() / 2, 691);
+        layout3.setFlexDirection("row-reverse");
+        layout3.add([this.pageNextButton, this.pagePrevButton]);
+        this.pageText.setPosition(this.game.scale.width / 2 + layout.getLayoutWidth() / 2, 650);
+        this.pageText.setOrigin(1, 0.5);
+        this.add.existing(layout3);
+        this.add.existing(this.pageText);
+
+        this.updateLobbyDisplay();
+    }
+
+    private switchToNextPage() {
+        let totalPages = Math.floor(this.allRooms.length / this.roomPosts.length) + 1;
+        if(this.page < totalPages) this.page += 1;
+        this.updateLobbyDisplay();
+    }
+
+    private switchToPrevPage() {
+        if(this.page > 1) this.page -= 1;
+        this.updateLobbyDisplay();
+    }
+
+    private updateLobbyDisplay() {
+        this.updatePageDisplay();
+        this.updateRoomPost();
+    }
+
+    private updatePageDisplay() {
+        let totalPages = Math.floor(this.allRooms.length / this.roomPosts.length) + 1;
+        this.pageText?.setText(`Page ${this.page}/${totalPages}`);
+        if(this.page <= 1) this.pagePrevButton?.setButtonActive(false);
+        else this.pagePrevButton?.setButtonActive(true);
+        if(this.page >= totalPages) this.pageNextButton?.setButtonActive(false);
+        else this.pageNextButton?.setButtonActive(true);
     }
 
     // private addWaitingRoom(){
@@ -133,18 +176,19 @@ export default class LobbyScene extends Phaser.Scene {
                     this.allRooms.push(room);
                 }
                 console.log("Added/Updated room: ", room);
-                this.updateRoomPost();
+                this.updateLobbyDisplay();
             });
 
             this.lobbyRoom.onMessage("-", (roomId: string) => {
-                this.allRooms = this.allRooms.filter((r) => r?.roomId !== roomId); // removed
+                //this.allRooms = this.allRooms.filter((r) => r?.roomId !== roomId); // removed
+                this.allRooms.forEach((r, idx) => {if(r?.roomId === roomId) this.allRooms[idx] = null}); // flagged as null
                 console.log("Removed Room: ", roomId);
-                this.updateRoomPost();
+                this.updateLobbyDisplay();
             });
 
             this.lobbyRoom.onLeave(() => {
                 console.log("You have left the lobby");
-                this.updateRoomPost();
+                this.updateLobbyDisplay();
             });
         } else {
             console.log("Error: Lobby Room is null");

@@ -6,7 +6,7 @@ import { ColorStyle } from '../config';
 import Layoutable from './Layoutable';
 import Button from './Button';
 import SceneManager from '../system/SceneManager';
-import ClientManager from '../colyseus/ClientManager';
+import ClientManager from '../system/ClientManager';
 
 /** RoomPost is the UI for a single room posting in the lobby. This should only be used in the LobbyScene not elsewhere. */
 export default class RoomPost extends Phaser.GameObjects.Container implements Layoutable {

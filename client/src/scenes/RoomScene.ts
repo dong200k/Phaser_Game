@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import * as Colyseus from 'colyseus.js';
-import ClientManager from "../colyseus/ClientManager";
+import ClientManager from "../system/ClientManager";
 import NavButton from "../UI/NavButton";
 import { SceneKey } from "../config";
 import Button from "../UI/Button";

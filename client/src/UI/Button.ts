@@ -52,7 +52,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
             this.hoverGradient.setVisible(false);
         });
         this.buttonSprite.on(Phaser.Input.Events.POINTER_OVER, ()=>{
-            this.hoverGradient.setVisible(true);
+            if(this.buttonState !== 'disabled') this.hoverGradient.setVisible(true);
             console.log("Hovering Button");
         });
         this.hoverGradient = new Phaser.GameObjects.Ellipse(this.scene, 0, 0, 230, 100, ColorStyle.neutrals.hex.white, 0.07);
