@@ -17,6 +17,7 @@ import HostGameScene from './scenes/HostGameScene';
 import LoadingScene from './scenes/LoadingScene';
 import NavbarScene from './scenes/NavbarScene';
 import MatchmakeScene from './scenes/MatchmakeScene';
+import SystemPreloadScene from './scenes/SystemPreloadScene';
 
 export default {
     type: Phaser.AUTO,
@@ -41,7 +42,8 @@ export default {
     dom: {
         createContainer: true
     },
-    scene: [MenuScene, GameScene, LobbyScene, RoomScene, SettingsScene, ControlsScene, CreditsScene,
+    //----- IMPORTANT ------ SystemPreloadScene should always be the first scene. Use StartScene const below to set starting scene.
+    scene: [SystemPreloadScene, MenuScene, GameScene, LobbyScene, RoomScene, SettingsScene, ControlsScene, CreditsScene,
             LoginScene, SignupScene, ShopScene, SkillTreeScene, RoleScene, GameModeScene,
             JoinWithIDScene, HostGameScene, LoadingScene, NavbarScene, MatchmakeScene],
     // resolution: window.devicePixelRatio,
@@ -68,9 +70,13 @@ export enum SceneKey {
     HostGameScene = "HostGameScene",
     LoadingScene = "LoadingScene",
     NavbarScene = "NavbarScene",
-    MatchmakeScene = "MatchmakeScene"
+    MatchmakeScene = "MatchmakeScene",
+    SystemPreloadScene = "SystemPreloadScene"
 }
 export type SceneKeyType = keyof typeof SceneKey;
+
+/** ------------ Change the scene key here to set the starting scene. ---------------*/
+export const StartScene = SceneKey.LobbyScene;
 
 const headerFontFamily = 'pressStart2P';
 const bodyFontFamily = 'aldrich';

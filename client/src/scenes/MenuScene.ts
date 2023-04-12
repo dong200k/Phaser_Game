@@ -13,17 +13,10 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("button_small_active", "images/button/button_small_active.png");
-        this.load.image("button_small_deactive", "images/button/button_small_deactive.png");
-        this.load.image("button_small_default", "images/button/button_small_default.png");
+        
     }
 
     create() {
-        /** Initialize the SceneManager and sets this scene as the current scene. */
-        let sceneManager = SceneManager.getSceneManager();
-        sceneManager.setScene(this);
-        sceneManager.switchToScene("MenuScene"); // Lets the SceneManager know the current scene.
-
         // Lets the dataManager know that the current scene is the main menu
         DataManager.getDataManager().setData("navbar", {activeOn: "home"});
 
@@ -36,7 +29,7 @@ export default class MenuScene extends Phaser.Scene {
         layout.add([playButton, settingsButton, controlsButton, creditsButton]);
         this.add.existing(layout);
 
-        sceneManager.switchToScene("LobbyScene");
+        
 
         // this.test();
         // this.test2();
