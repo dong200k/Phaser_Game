@@ -110,6 +110,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         this.onClick = onClick;
         this.buttonSprite.on(Phaser.Input.Events.POINTER_UP, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState("default");
+            this.hoverGradient.setVisible(false);
             this.onClick();
         });
     }

@@ -22,9 +22,9 @@ export default class MenuScene extends Phaser.Scene {
 
         // Adds Menu Buttons
         let playButton = new Button(this, "Play", 0, 0, "large", () => SceneManager.getSceneManager().switchToScene("GameModeScene"));
-        let settingsButton = new Button(this, "Settings", 0, 0, "large", () => console.log("Clicked on settings button"));
-        let controlsButton = new Button(this, "Controls", 0, 0, "large", () => console.log("Clicked on controls button"));
-        let creditsButton = new Button(this, "Credits", 0, 0, "large", () => console.log("Clicked on credits button"));
+        let settingsButton = new Button(this, "Settings", 0, 0, "large", () => SceneManager.getSceneManager().pushScene("SettingsScene"));
+        let controlsButton = new Button(this, "Controls", 0, 0, "large", () => SceneManager.getSceneManager().pushScene("ControlsScene"));
+        let creditsButton = new Button(this, "Credits", 0, 0, "large", () => SceneManager.getSceneManager().pushScene("CreditsScene"));
         let layout = new Layout(this, 24, this.game.scale.width/2, 200);
         layout.add([playButton, settingsButton, controlsButton, creditsButton]);
         this.add.existing(layout);
