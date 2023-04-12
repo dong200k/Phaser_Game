@@ -9,6 +9,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     private buttonSprite:Phaser.GameObjects.Sprite;
     private buttonText:TextBox;
     private onClick:Function;
+    private hoverGradient:Phaser.GameObjects.Rectangle;
 
     private sizeConfig = {
         regular: {
@@ -39,15 +40,26 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         this.buttonSprite = new Phaser.GameObjects.Sprite(scene, 0, 0, "button_small_default");
         this.buttonSprite.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
         this.buttonText = new TextBox(this.scene, text);
-        this.buttonSprite.setInteractive();
+        // Button Text's pointer is handled by css.
+        (this.buttonText.node as HTMLDivElement).classList.add('button-text');
+        // Button Sprite's pointer is handled by phaser.
+        this.buttonSprite.setInteractive({cursor: "pointer"});
         this.buttonSprite.on(Phaser.Input.Events.POINTER_DOWN, ()=>{
-            if(this.buttonState !== 'disabled') this.setButtonState('pressed')
+            if(this.buttonState !== 'disabled') this.setButtonState('pressed');
         });
         this.buttonSprite.on(Phaser.Input.Events.POINTER_OUT, ()=>{
-            if(this.buttonState !== 'disabled') this.setButtonState('default')
+            if(this.buttonState !== 'disabled') this.setButtonState('default');
+            this.hoverGradient.setVisible(false);
         });
+        this.buttonSprite.on(Phaser.Input.Events.POINTER_OVER, ()=>{
+            this.hoverGradient.setVisible(true);
+            console.log("Hovering Button");
+        });
+        this.hoverGradient = new Phaser.GameObjects.Ellipse(this.scene, 0, 0, 230, 100, ColorStyle.neutrals.hex.white, 0.07);
+        this.hoverGradient.setVisible(false);
         this.add(this.buttonSprite);
         this.add(this.buttonText);
+        this.add(this.hoverGradient);
         this.setButtonSize(size);
         this.setOnClick(onClick);
         this.updateButtonDisplay();
@@ -110,6 +122,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     private updateButtonDisplay() {
         let config = this.sizeConfig[this.buttonSize];
         this.buttonSprite.setDisplaySize(config.size.x, config.size.y);
+        this.hoverGradient.setDisplaySize(config.size.x + 10, config.size.y + 5);
         this.buttonText.setFontType(config.textStyle as "l1"|"l2"|"l3"|"l4"|"l5"|"l6");
         switch(this.buttonState) {
             case 'default': {

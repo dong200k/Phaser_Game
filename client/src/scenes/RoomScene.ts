@@ -3,6 +3,7 @@ import * as Colyseus from 'colyseus.js';
 import ClientManager from "../colyseus/ClientManager";
 import NavButton from "../UI/NavButton";
 import { SceneKey } from "../config";
+import Button from "../UI/Button";
 
 export default class RoomScene extends Phaser.Scene {
     
@@ -37,6 +38,12 @@ export default class RoomScene extends Phaser.Scene {
         // NavButton(this, "Start Game", () => {
         //     this.waitingRoom?.send('start')
         // }, {...textPos, y: 142}, {...rect, y: 150})
+
+        let startButton = new Button(this, "Start", 0, 0, "large", () => {
+            this.waitingRoom?.send('start');
+        })
+
+        this.add.existing(startButton);
 
         // list of players text
         this.playersInRoomText = this.add.text(this.game.scale.width / 2, 300, "Players in room: 0");

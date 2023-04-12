@@ -3,8 +3,8 @@ body {
     background-color: #0F0E0D;
 }
 
-input {
-    
+.button-text:hover {
+    cursor: pointer;
 }
 
 @font-face {

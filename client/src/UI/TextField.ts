@@ -147,7 +147,7 @@ export default class TextField extends Phaser.GameObjects.Container implements L
     }
 
     public getLayoutHeight() {
-        return this.inputObject.height + ((this.labelVisible || this.assistTextVisible)? 18: 0);
+        return this.inputObject.height + ((this.labelVisible || this.assistTextVisible)? 25: 0);
     }
 
     public getLayoutOriginX() {
