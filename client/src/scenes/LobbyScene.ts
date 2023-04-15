@@ -38,8 +38,10 @@ export default class LobbyScene extends Phaser.Scene {
     }
 
     private initializeUI() {
-        let layout = new Layout(this, 10, this.game.scale.width/2, 120);
-        layout.setFlexDirection('col');
+        let layout = new Layout(this, this.game.scale.width/2, 120, {
+            gap: 10,
+            flexDirection: 'col',
+        });
         // ------ Server Location ------
         let serverLocationText = new TextBox(this, "US Server", "h4");
         layout.add(serverLocationText);
@@ -61,9 +63,11 @@ export default class LobbyScene extends Phaser.Scene {
         // ------ Back Button And Host Game Button ------
         let backButton = new Button(this, "Back to menu", 0, 0, "regular", () => SceneManager.getSceneManager().switchToScene("GameModeScene"));
         let hostGameButton = new Button(this, "Host Game", 0, 0, "regular", () => SceneManager.getSceneManager().pushScene("RoomScene"));
-        let layout2 = new Layout(this, 18, this.game.scale.width / 2 - layout.getLayoutWidth() / 2 + backButton.getLayoutWidth() / 2, 680);
+        let layout2 = new Layout(this, this.game.scale.width / 2 - layout.getLayoutWidth() / 2 + backButton.getLayoutWidth() / 2, 680, {
+            gap: 18,
+            flexDirection: 'row',
+        });
         layout2.add([backButton, hostGameButton]);
-        layout2.setFlexDirection("row");
         
         this.add.existing(layout2);
         
@@ -71,8 +75,10 @@ export default class LobbyScene extends Phaser.Scene {
         this.pageText = new TextBox(this, "Page 1/1000", 'h5');
         this.pageNextButton = new Button(this, "Next", 0, 0, "small", () => this.switchToNextPage());
         this.pagePrevButton = new Button(this, "Prev", 0, 0, "small", () => this.switchToPrevPage());
-        let layout3 = new Layout(this, 15, this.game.scale.width / 2 + layout.getLayoutWidth() / 2 - this.pageNextButton.getLayoutWidth() / 2, 691);
-        layout3.setFlexDirection("row-reverse");
+        let layout3 = new Layout(this, this.game.scale.width / 2 + layout.getLayoutWidth() / 2 - this.pageNextButton.getLayoutWidth() / 2, 691, {
+            gap: 20,
+            flexDirection: 'row-reverse',
+        });
         layout3.add([this.pageNextButton, this.pagePrevButton]);
         this.pageText.setPosition(this.game.scale.width / 2 + layout.getLayoutWidth() / 2, 650);
         this.pageText.setOrigin(1, 0.5);

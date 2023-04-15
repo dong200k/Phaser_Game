@@ -25,7 +25,7 @@ export default class MenuScene extends Phaser.Scene {
         let settingsButton = new Button(this, "Settings", 0, 0, "large", () => SceneManager.getSceneManager().pushScene("SettingsScene"));
         let controlsButton = new Button(this, "Controls", 0, 0, "large", () => SceneManager.getSceneManager().pushScene("ControlsScene"));
         let creditsButton = new Button(this, "Credits", 0, 0, "large", () => SceneManager.getSceneManager().pushScene("CreditsScene"));
-        let layout = new Layout(this, 24, this.game.scale.width/2, 200);
+        let layout = new Layout(this, this.game.scale.width/2, 200, {gap:24});
         layout.add([playButton, settingsButton, controlsButton, creditsButton]);
         this.add.existing(layout);
 
@@ -36,8 +36,8 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     test() {
-        let mainLayout = new Layout(this, 0, this.game.scale.width/2, this.game.scale.height/2);
-        let layout1 = new Layout(this, 0, this.game.scale.width/2, this.game.scale.height/2);
+        let mainLayout = new Layout(this, this.game.scale.width/2, this.game.scale.height/2);
+        let layout1 = new Layout(this, this.game.scale.width/2, this.game.scale.height/2);
         let b1 = new Button(this, "L1 BTN", 0, 0, "regular");
         let b2 = new Button(this, "L1 BTN", 0, 0, "small");
         let b3 = new Button(this, "L1 Hello World", 0, 0, "large");
@@ -48,7 +48,7 @@ export default class MenuScene extends Phaser.Scene {
         layout1.setAlignItems('center');
         layout1.setGap(0);
         
-        let layout2 = new Layout(this, 0, 0, 0);
+        let layout2 = new Layout(this, 0, 0);
         let b4 = new Button(this, "L2 BTN", 0, 0, "regular");
         let b5 = new Button(this, "L2 BTN", 0, 0, "small");
         let b6 = new Button(this, "L2 Hello World", 0, 0, "large");

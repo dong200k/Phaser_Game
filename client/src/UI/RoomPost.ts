@@ -41,8 +41,10 @@ export default class RoomPost extends Phaser.GameObjects.Container implements La
         this.add(this.joinButton);
     
 
-        let layout = new Layout(this.scene, 1, 0, 0);
-        layout.setFlexDirection('col');
+        let layout = new Layout(this.scene, 0, 0, {
+            gap: 1,
+            flexDirection: 'col',
+        });
         layout.add([this.roomNameText, this.roomPlayerCountText, this.roomStateText]);
         layout.setPosition(-(this.getLayoutWidth() / 2) + 20, -layout.getLayoutHeight() / 2);
         this.add(layout);

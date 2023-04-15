@@ -29,7 +29,7 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
      * @param y The y position.
      * @param layoutConfig 
      */
-    constructor(scene:Phaser.Scene, x=0, y=0, layoutConfig:LayoutConfig|undefined) {
+    constructor(scene:Phaser.Scene, x=0, y=0, layoutConfig?:LayoutConfig) {
         super(scene,x,y);
         if(layoutConfig) {
             if(layoutConfig.gap) this.gap = layoutConfig.gap;

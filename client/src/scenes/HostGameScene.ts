@@ -63,9 +63,9 @@ export default class HostGameScene extends Phaser.Scene {
         // let roomPost = new RoomPost(this, x, y);
         // let textBox = new TextBox(this, "Where are the cookies now???", "l6");
         // textBox.setPosition(x, y);
-        let layout = new Layout(this, 0, x, y);
-        let layout2 = new Layout(this, 0, x, y);
-        let layout3 = new Layout(this, 0, x, y);
+        let layout = new Layout(this, x, y);
+        let layout2 = new Layout(this, x, y);
+        let layout3 = new Layout(this, x, y);
         layout2.add([text1, text2]);
         layout2.setFlexDirection("col-reverse");
         layout2.setAlignItems("start");
