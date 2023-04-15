@@ -143,19 +143,19 @@ export default class TextField extends Phaser.GameObjects.Container implements L
     }
 
     public getLayoutWidth() {
-        return this.inputObject.width;
+        return this.inputObject.width + 3; //layout width with manual adjustments
     }
 
     public getLayoutHeight() {
-        return this.inputObject.height + ((this.labelVisible || this.assistTextVisible)? 25: 0);
+        return this.inputObject.height + 39; //layout height with manual adjustments
     }
 
     public getLayoutOriginX() {
-        return this.inputObject.originX;
+        return this.inputObject.originX - 0.005; //layout originX with manual adjustments
     }
 
     public getLayoutOriginY() {
-        return this.inputObject.originY;
+        return this.inputObject.originY - 0.005; //layout originY with manual adjustments
     }
 }
 

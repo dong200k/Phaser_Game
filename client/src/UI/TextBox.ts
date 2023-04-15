@@ -56,10 +56,10 @@ export default class TextBox extends Phaser.GameObjects.DOMElement implements La
     }
 
     public getLayoutOriginX(): number {
-        return this.originX;
+        return this.originX + 0.002; //manual adjustments to layout origin X.
     }
 
     public getLayoutOriginY(): number {
-        return this.originY;
+        return this.originY + 0.05; //manual adjustments to layout origin Y.
     }
 } 

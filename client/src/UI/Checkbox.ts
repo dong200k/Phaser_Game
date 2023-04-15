@@ -1,7 +1,8 @@
 import Phaser from "phaser";
 import { ColorStyle } from "../config";
+import Layoutable from "./Layoutable";
 
-export default class Checkbox extends Phaser.GameObjects.Container {
+export default class Checkbox extends Phaser.GameObjects.Container implements Layoutable {
 
     private checked: boolean;
     private outerBorder: Phaser.GameObjects.Graphics;
@@ -26,6 +27,26 @@ export default class Checkbox extends Phaser.GameObjects.Container {
         this.innerRectangle.fillRect(-7, -7, 14, 14);
         this.add([this.innerRectangle, this.outerBorder]);
         this.updateCheckboxDisplay();
+    }
+
+    public setLayoutPosition(x: number, y: number) {
+        this.setPosition(x, y);
+    }
+
+    public getLayoutWidth() {
+        return 24;
+    } 
+
+    public getLayoutHeight() {
+        return 24;
+    }
+
+    public getLayoutOriginX() {
+        return 0.5;
+    }
+
+    public getLayoutOriginY() {
+        return 0.5;
     }
 
     public setChecked(checked: boolean) {
