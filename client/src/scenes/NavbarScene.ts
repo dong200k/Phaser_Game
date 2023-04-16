@@ -97,7 +97,7 @@ export default class NavbarScene extends Phaser.Scene {
             }
         })
 
-        let navButtonLayout = new Layout(this, 0, 0, {
+        let navButtonLayout = new Layout(this, {
             flexDirection:'row',
         });
         navButtonLayout.add([homeButton, playButton, shopButton, skillTreeButton, roleButton]);
@@ -105,7 +105,9 @@ export default class NavbarScene extends Phaser.Scene {
         this.add.existing(navButtonLayout);
 
         //------- Right side of the navbar ---------
-        let navRightSideLayout = new Layout(this, this.game.scale.width - 38, 44, {
+        let navRightSideLayout = new Layout(this, {
+            x:this.game.scale.width - 38,
+            y:44,
             gap: 70, 
             flexDirection: 'row',
             originX: 1, 
@@ -114,13 +116,13 @@ export default class NavbarScene extends Phaser.Scene {
         
         let logoutButton = new Button(this, "Logout", 0, 0, "small", () => console.log("Logout button onclick"));
         let name = new TextBox(this, `${this.dummyData.username}`, 'l4');
-        let logoutLayout = new Layout(this, 0, 0, {
+        let logoutLayout = new Layout(this, {
             gap: 5,
             flexDirection: 'col',
         });
         logoutLayout.add([name, logoutButton]);
 
-        let statLayout = new Layout(this, this.game.scale.width - 200, 22);
+        let statLayout = new Layout(this, {x:this.game.scale.width - 200, y:22});
         let levelText = new TextBox(this, `Level: ${this.dummyData.level}`, "l4");
         let coinsText = new TextBox(this, `Coins: ${this.dummyData.coins}`, "l4");
         let gemsText = new TextBox(this, `Gems: ${this.dummyData.gems}`, "l4");

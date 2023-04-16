@@ -9,6 +9,8 @@ interface LayoutConfig {
     alignItems?:AlignItemsType;
     originX?:number;
     originY?:number;
+    x?:number;
+    y?:number;
 }
 
 export default class Layout extends Phaser.GameObjects.Container implements Layoutable {
@@ -26,22 +28,28 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
      * @param scene The phaser scene this layout will belong to.
      * @param x The x position.
      * @param y The y position.
-     * @param layoutConfig 
+     * @param config 
      */
-    constructor(scene:Phaser.Scene, x=0, y=0, layoutConfig?:LayoutConfig) {
-        super(scene,x,y);
-        if(layoutConfig) {
-            if(layoutConfig.gap !== undefined) this.gap = layoutConfig.gap;
-            if(layoutConfig.alignItems !== undefined) this.alignItems = layoutConfig.alignItems;
-            if(layoutConfig.flexDirection !== undefined) this.flexDirection = layoutConfig.flexDirection;
-            if(layoutConfig.originX !== undefined) this.layoutOriginX = layoutConfig.originX;
-            if(layoutConfig.originY !== undefined) this.layoutOriginY = layoutConfig.originY;
+    constructor(scene:Phaser.Scene, config?:LayoutConfig) {
+        super(scene);
+        if(config) {
+            if(config.gap !== undefined) this.gap = config.gap;
+            if(config.alignItems !== undefined) this.alignItems = config.alignItems;
+            if(config.flexDirection !== undefined) this.flexDirection = config.flexDirection;
+            if(config.originX !== undefined) this.layoutOriginX = config.originX;
+            if(config.originY !== undefined) this.layoutOriginY = config.originY;
+            if(config.x !== undefined) this.setX(config.x);
+            if(config.y !== undefined) this.setY(config.y);
         }
         this.updateLayoutDisplay();
     }
 
-    /** Position each of the layout's children according to the layout's origin, flexdirection, and alignitems. */
-    private updateLayoutDisplay() {
+    /**
+     *  Position each of the layout's children according to the layout's origin, flexdirection, and alignitems.
+     *  This method is called automatically when adding children, setting flexDirection, and setting alignItems.
+     *  It can also be called manually if the layout of the children is directly affected (E.g changing the origin of a child TextBox).
+     */
+    public updateLayoutDisplay() {
         let children = this.layoutChildren;
         let width = this.getLayoutWidth();
         let height = this.getLayoutHeight();

@@ -5,35 +5,52 @@ import TextBox from "./TextBox";
 
 type TextFieldSize = 'small' | 'regular' | 'large';
 
+interface TextFieldConfig {
+    assistText?: string;
+    assistTextVisible?: boolean;
+    text?: string;
+    label?: string;
+    labelVisible?: boolean;
+    feedbackText?: string;
+    feedbackTextVisible?: boolean;
+    textFieldSize?: TextFieldSize;
+    x?:number;
+    y?:number;
+}
+
 export default class TextField extends Phaser.GameObjects.Container implements Layoutable {
 
-    private labelVisible: boolean;
-    private assistTextVisible: boolean;
-    private feedbackTextVisible: boolean;
-    private text: string;
-    private label: string;
-    private assistText: string;
-    private feedbackText: string;
+    private labelVisible: boolean = false;
+    private assistTextVisible: boolean = false;
+    private feedbackTextVisible: boolean = false;
+    private text: string = "";
+    private label: string = "";
+    private assistText: string = "";
+    private feedbackText: string = "";
+    private textFieldSize: TextFieldSize = "regular";
     private inputObject: Phaser.GameObjects.DOMElement;
     private inputDOM: HTMLInputElement;
     private labelObject: TextBox;
     private assistTextObject: TextBox;
     private feedbackTextObject: TextBox;
-    private textFieldSize: TextFieldSize;
 
 
-    constructor(scene: Phaser.Scene, x=0, y=0, size:TextFieldSize="regular") {
-        super(scene, x, y);
-        this.labelVisible = false;
-        this.assistTextVisible = false;
-        this.feedbackTextVisible = false;
-        this.label = "";
-        this.text = "";
-        this.assistText = "";
-        this.feedbackText = "";
-        this.textFieldSize = size;
+    constructor(scene: Phaser.Scene, config?: TextFieldConfig) {
+        super(scene);
+        if(config) { //Apply the custom configuaration if it exists.
+            if(config.labelVisible !== undefined) this.labelVisible = config.labelVisible;
+            if(config.assistTextVisible !== undefined) this.assistTextVisible = config.assistTextVisible;
+            if(config.feedbackTextVisible !== undefined) this.feedbackTextVisible = config.feedbackTextVisible;
+            if(config.label !== undefined) this.label = config.label;
+            if(config.text !== undefined) this.text = config.text;
+            if(config.assistText !== undefined) this.assistText = config.assistText;
+            if(config.feedbackText !== undefined) this.feedbackText = config.feedbackText;
+            if(config.textFieldSize !== undefined) this.textFieldSize = config.textFieldSize;
+            if(config.x !== undefined) this.setX(config.x);
+            if(config.y !== undefined) this.setY(config.y);
+        }
         // Creates a Phaser DOM GameObject
-        this.inputObject = new Phaser.GameObjects.DOMElement(this.scene, 0, 0, "input", getStyle(size).input);
+        this.inputObject = new Phaser.GameObjects.DOMElement(this.scene, 0, 0, "input", getStyle(this.textFieldSize).input);
         this.labelObject = new TextBox(this.scene, this.label, 'l6');
         this.assistTextObject = new TextBox(this.scene, this.assistText, 'l6');
         this.feedbackTextObject = new TextBox(this.scene, this.feedbackText, 'l6');

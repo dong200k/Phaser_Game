@@ -41,7 +41,9 @@ export default class RoomPost extends Phaser.GameObjects.Container implements La
         this.add(this.joinButton);
     
 
-        let layout = new Layout(this.scene, -this.getLayoutWidth() / 2 + 20, 0, {
+        let layout = new Layout(this.scene, {
+            x: -this.getLayoutWidth() / 2 + 20,
+            y: 0,
             gap: 1,
             flexDirection: 'col',
             alignItems: 'start',

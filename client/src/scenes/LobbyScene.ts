@@ -39,7 +39,9 @@ export default class LobbyScene extends Phaser.Scene {
     }
 
     private initializeUI() {
-        let layout = new Layout(this, this.game.scale.width/2, 110, {
+        let layout = new Layout(this, {
+            x:this.game.scale.width/2,
+            y:110,
             gap: 10,
             flexDirection: 'col',
             originY: 0,
@@ -48,9 +50,11 @@ export default class LobbyScene extends Phaser.Scene {
         let serverLocationText = new TextBox(this, "US Server", "h4");
         layout.add(serverLocationText);
         // ------ Search Field ------
-        let searchField = new TextField(this, 0, 0, "small");
-        searchField.setLabel("Search with room name:");
-        searchField.setLabelVisible(true);
+        let searchField = new TextField(this, {
+            textFieldSize: 'small',
+            label: "Search room name:",
+            labelVisible: true,
+        });
         layout.add(searchField);
         // ------ Room List ------
 
@@ -65,7 +69,9 @@ export default class LobbyScene extends Phaser.Scene {
         // ------ Back Button And Host Game Button ------
         let backButton = new Button(this, "Back to menu", 0, 0, "regular", () => SceneManager.getSceneManager().switchToScene("GameModeScene"));
         let hostGameButton = new Button(this, "Host Game", 0, 0, "regular", () => SceneManager.getSceneManager().pushScene("RoomScene"));
-        let layout2 = new Layout(this, this.game.scale.width / 2 - layout.getLayoutWidth() / 2, 720, {
+        let layout2 = new Layout(this, {
+            x:this.game.scale.width / 2 - layout.getLayoutWidth() / 2,
+            y:720,
             gap: 18,
             flexDirection: 'row',
             originX: 0,
@@ -79,14 +85,18 @@ export default class LobbyScene extends Phaser.Scene {
         this.pageText = new TextBox(this, "Page 1/1000", 'h5');
         this.pageNextButton = new Button(this, "Next", 0, 0, "small", () => this.switchToNextPage());
         this.pagePrevButton = new Button(this, "Prev", 0, 0, "small", () => this.switchToPrevPage());
-        let layout3 = new Layout(this, this.game.scale.width / 2 + layout.getLayoutWidth() / 2 - this.pageNextButton.getLayoutWidth() / 2, 691, {
+        let layout3 = new Layout(this, {
+            x:this.game.scale.width / 2 + layout.getLayoutWidth() / 2 - this.pageNextButton.getLayoutWidth() / 2,
+            y:691,
             gap: 20,
             flexDirection: 'row-reverse',
         });
         layout3.add([this.pageNextButton, this.pagePrevButton]);
         this.pageText.setPosition(this.game.scale.width / 2 + layout.getLayoutWidth() / 2, 650);
 
-        let layout4 = new Layout(this, this.game.scale.width / 2 + layout.getLayoutWidth() / 2, 720, {
+        let layout4 = new Layout(this, {
+            x:this.game.scale.width / 2 + layout.getLayoutWidth() / 2,
+            y:720,
             gap: 10,
             flexDirection: 'col',
             alignItems: 'center',

@@ -4,13 +4,12 @@ import Layoutable from "./Layoutable";
 
 export default class Checkbox extends Phaser.GameObjects.Container implements Layoutable {
 
-    private checked: boolean;
+    private checked: boolean = false;
     private outerBorder: Phaser.GameObjects.Graphics;
     private innerRectangle: Phaser.GameObjects.Graphics;
 
-    constructor(scene: Phaser.Scene, x=0, y=0, checked=false) {
+    constructor(scene: Phaser.Scene, x=0, y=0) {
         super(scene, x, y);
-        this.checked = false;
         this.outerBorder = new Phaser.GameObjects.Graphics(this.scene);
         this.outerBorder.lineStyle(4, ColorStyle.primary.hex[900]);
         this.outerBorder.strokeRoundedRect(-12, -12, 24, 24, 5);
