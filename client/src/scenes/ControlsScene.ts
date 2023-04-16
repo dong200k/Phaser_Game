@@ -25,7 +25,7 @@ export default class ControlsScene extends Phaser.Scene {
         let space = new TextBox(this, "Spacebar - special ability", "p2");
         let mouse = new TextBox(this, "Move mouse - aim", "p2");
         let leftClick = new TextBox(this, "Left click - fire weapon", "p2");
-        let controlLayout = new Layout(this, this.game.scale.width / 2, 230, {
+        let controlLayout = new Layout(this, this.game.scale.width / 2, this.game.scale.height / 2 - 80, {
             gap: 12,
         });
         controlLayout.add([w, a, s, d, space, mouse, leftClick]);

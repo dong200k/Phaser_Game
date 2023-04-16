@@ -97,20 +97,28 @@ export default class NavbarScene extends Phaser.Scene {
             }
         })
 
-        let navButtonLayout = new Layout(this, 44, 44, {
+        let navButtonLayout = new Layout(this, 0, 0, {
             flexDirection:'row',
         });
         navButtonLayout.add([homeButton, playButton, shopButton, skillTreeButton, roleButton]);
+        navButtonLayout.setOrigin(0, 0);
         this.add.existing(navButtonLayout);
 
         //------- Right side of the navbar ---------
-        // let navRightSideLayout = new Layout(this, 0, 0, 0);
-        // navRightSideLayout.setGap(100);
-        // navRightSideLayout.setPosition(this.game.scale.width, 44);
-        // navRightSideLayout.setFlexDirection("row-reverse");
+        let navRightSideLayout = new Layout(this, this.game.scale.width - 38, 44, {
+            gap: 70, 
+            flexDirection: 'row',
+            originX: 1, 
+            originY: 0.5,
+        });
         
-        let logoutButton = new Button(this, "Logout", this.game.scale.width - 80, 46, "small", () => console.log("Logout button onclick"));
-        this.add.existing(logoutButton);
+        let logoutButton = new Button(this, "Logout", 0, 0, "small", () => console.log("Logout button onclick"));
+        let name = new TextBox(this, `${this.dummyData.username}`, 'l4');
+        let logoutLayout = new Layout(this, 0, 0, {
+            gap: 5,
+            flexDirection: 'col',
+        });
+        logoutLayout.add([name, logoutButton]);
 
         let statLayout = new Layout(this, this.game.scale.width - 200, 22);
         let levelText = new TextBox(this, `Level: ${this.dummyData.level}`, "l4");
@@ -118,7 +126,10 @@ export default class NavbarScene extends Phaser.Scene {
         let gemsText = new TextBox(this, `Gems: ${this.dummyData.gems}`, "l4");
         statLayout.add([levelText, coinsText, gemsText]);
         statLayout.setAlignItems('start');
-        this.add.existing(statLayout);
+        
+
+        navRightSideLayout.add([statLayout, logoutLayout]);
+        this.add.existing(navRightSideLayout);
 
 
 

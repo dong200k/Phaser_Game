@@ -8,6 +8,7 @@ import TextField from "../UI/TextField";
 import Button from "../UI/Button";
 import SceneManager from "../system/SceneManager";
 import RoomPost from "../UI/RoomPost";
+import { bakeBorderGraphicsFromLayout } from "../UI/Layoutable";
 
 
 export default class LobbyScene extends Phaser.Scene {
@@ -38,9 +39,10 @@ export default class LobbyScene extends Phaser.Scene {
     }
 
     private initializeUI() {
-        let layout = new Layout(this, this.game.scale.width/2, 120, {
+        let layout = new Layout(this, this.game.scale.width/2, 110, {
             gap: 10,
             flexDirection: 'col',
+            originY: 0,
         });
         // ------ Server Location ------
         let serverLocationText = new TextBox(this, "US Server", "h4");
@@ -63,9 +65,11 @@ export default class LobbyScene extends Phaser.Scene {
         // ------ Back Button And Host Game Button ------
         let backButton = new Button(this, "Back to menu", 0, 0, "regular", () => SceneManager.getSceneManager().switchToScene("GameModeScene"));
         let hostGameButton = new Button(this, "Host Game", 0, 0, "regular", () => SceneManager.getSceneManager().pushScene("RoomScene"));
-        let layout2 = new Layout(this, this.game.scale.width / 2 - layout.getLayoutWidth() / 2 + backButton.getLayoutWidth() / 2, 680, {
+        let layout2 = new Layout(this, this.game.scale.width / 2 - layout.getLayoutWidth() / 2, 720, {
             gap: 18,
             flexDirection: 'row',
+            originX: 0,
+            originY: 1,
         });
         layout2.add([backButton, hostGameButton]);
         
@@ -81,9 +85,16 @@ export default class LobbyScene extends Phaser.Scene {
         });
         layout3.add([this.pageNextButton, this.pagePrevButton]);
         this.pageText.setPosition(this.game.scale.width / 2 + layout.getLayoutWidth() / 2, 650);
-        this.pageText.setOrigin(1, 0.5);
-        this.add.existing(layout3);
-        this.add.existing(this.pageText);
+
+        let layout4 = new Layout(this, this.game.scale.width / 2 + layout.getLayoutWidth() / 2, 720, {
+            gap: 10,
+            flexDirection: 'col',
+            alignItems: 'center',
+            originX: 1,
+            originY: 1,
+        })
+        layout4.add([this.pageText, layout3]);
+        this.add.existing(layout4);
 
         this.updateLobbyDisplay();
     }

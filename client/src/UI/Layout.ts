@@ -12,7 +12,6 @@ interface LayoutConfig {
 }
 
 export default class Layout extends Phaser.GameObjects.Container implements Layoutable {
-    parentLayout:Layout | null = null;
     private flexDirection:FlexDirectionType = 'col';
     private gap: number = 0;
     private alignItems: AlignItemsType = 'center';
@@ -32,11 +31,11 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
     constructor(scene:Phaser.Scene, x=0, y=0, layoutConfig?:LayoutConfig) {
         super(scene,x,y);
         if(layoutConfig) {
-            if(layoutConfig.gap) this.gap = layoutConfig.gap;
-            if(layoutConfig.alignItems) this.alignItems = layoutConfig.alignItems;
-            if(layoutConfig.flexDirection) this.flexDirection = layoutConfig.flexDirection;
-            if(layoutConfig.originX) this.layoutOriginX = layoutConfig.originX;
-            if(layoutConfig.originY) this.layoutOriginY = layoutConfig.originY;
+            if(layoutConfig.gap !== undefined) this.gap = layoutConfig.gap;
+            if(layoutConfig.alignItems !== undefined) this.alignItems = layoutConfig.alignItems;
+            if(layoutConfig.flexDirection !== undefined) this.flexDirection = layoutConfig.flexDirection;
+            if(layoutConfig.originX !== undefined) this.layoutOriginX = layoutConfig.originX;
+            if(layoutConfig.originY !== undefined) this.layoutOriginY = layoutConfig.originY;
         }
         this.updateLayoutDisplay();
     }
@@ -62,7 +61,7 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
                     let childY = this.alignHelper(height, y, child.getLayoutHeight(), child.getLayoutOriginY(), this.alignItems);
                     let childX = x + (child.getLayoutOriginX() * childWidth);
                     child.setLayoutPosition(childX, childY);
-                    x += childWidth;
+                    x += childWidth + this.gap;
                 }
             } break;
             case 'row-reverse': {
@@ -75,7 +74,7 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
                     let childY = this.alignHelper(height, y, child.getLayoutHeight(), child.getLayoutOriginY(), this.alignItems);
                     let childX = x - ((1 - child.getLayoutOriginX()) * childWidth);
                     child.setLayoutPosition(childX, childY);
-                    x -= childWidth;
+                    x -= childWidth + this.gap;
                 }
             } break;
             case 'col': {
@@ -88,7 +87,7 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
                     let childX = this.alignHelper(width, x, child.getLayoutWidth(), child.getLayoutOriginX(), this.alignItems);
                     let childY = y + (child.getLayoutOriginY() * childHeight);
                     child.setLayoutPosition(childX, childY);
-                    y += childHeight;
+                    y += childHeight + this.gap;
                 }
             } break;
             case 'col-reverse': {
@@ -101,62 +100,10 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
                     let childX = this.alignHelper(width, x, child.getLayoutWidth(), child.getLayoutOriginX(), this.alignItems);
                     let childY = y - ((1 - child.getLayoutOriginY()) * childHeight);
                     child.setLayoutPosition(childX, childY);
-                    y -= childHeight;
+                    y -= childHeight + this.gap;
                 }
             }
         }
-        
-        // for(let i = 0; i < children.length; i++) {
-        //     let child1 = children[i];
-        //     //calculate align item
-        //     if(this.flexDirection === 'col' || this.flexDirection === 'col-reverse') {
-        //         let maxHalfWidth = this.getLayoutWidth() / 2;
-        //         let childHalfWidth = child1.getLayoutWidth() / 2;
-        //         let shiftDistance = Math.abs(maxHalfWidth - childHalfWidth);
-        //         if(this.alignItems === 'start') {
-        //             x = -shiftDistance;
-        //         } else if(this.alignItems === 'end') {
-        //             x = shiftDistance;
-        //         } else {
-        //             x = 0;
-        //         }
-        //     } else {
-        //         let maxHalfHeight = this.getLayoutHeight() / 2;
-        //         let childHalfHeight = child1.getLayoutHeight() / 2;
-        //         let shiftDistance = Math.abs(maxHalfHeight - childHalfHeight);
-        //         if(this.alignItems === 'start') {
-        //             y = -shiftDistance;
-        //         } else if(this.alignItems === 'end') {
-        //             y = shiftDistance;
-        //         } else {
-        //             y = 0;
-        //         }
-        //     }
-
-        //     child1.setLayoutPosition(x, y);
-        //     if(children.length > i+1) {
-        //         let child2 = children[i+1];
-        //         //calculate gap between two child
-        //         switch(this.flexDirection) {
-        //             case 'col': { // child1.height * (1 - child1.originY) + child2.height * child2.originY;
-        //                 let gapBetween = child1.getLayoutHeight() * (1 - child1.getLayoutOriginY()) + child2.getLayoutHeight() * child2.getLayoutOriginY();
-        //                 y += this.gap+gapBetween;
-        //             } break;
-        //             case 'col-reverse': {
-        //                 let gapBetween = child1.getLayoutHeight() * child1.getLayoutOriginY() + child2.getLayoutHeight() * (1 - child2.getLayoutOriginY());
-        //                 y-= this.gap+gapBetween;
-        //             } break;
-        //             case 'row': {
-        //                 let gapBetween = child1.getLayoutWidth() * (1 - child1.getLayoutOriginX()) + child2.getLayoutWidth() * child2.getLayoutOriginX();
-        //                 x+= this.gap+gapBetween;
-        //             } break;
-        //             case 'row-reverse': {
-        //                 let gapBetween = child1.getLayoutWidth() * child1.getLayoutOriginX() + child2.getLayoutWidth() * (1 - child2.getLayoutOriginX());
-        //                 x-= this.gap+gapBetween;
-        //             } 
-        //         }
-        //     }
-        // }
     }
 
     /** Align helper determines the offset position from the start the child will be placed so that it is aligned properly in the layout. */
@@ -214,42 +161,10 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
 
     /** Gets the layout origin x of this Layout. */
     public getLayoutOriginX(): number {
-        // // To find the layout originX of this layout, we will use the layoutOriginX of the first child.
-        // if(this.layoutChildren.length >= 1) {
-        //     // If the flexDirection is col then we can use the layoutOriginX of the first child directly.
-        //     if(this.flexDirection === 'col' || this.flexDirection === 'col-reverse') {
-        //         return this.layoutChildren[0].getLayoutOriginX();
-        //     } else { // If the flexDirection is row then we need to derive the layout origin from the first child's layout origin and the layout width of this layout.
-        //         let width = this.getLayoutWidth();
-        //         let firstWidth = this.layoutChildren[0].getLayoutWidth();
-        //         let percentWidth = firstWidth / width;
-        //         if(this.flexDirection === 'row') {
-        //             return percentWidth * this.layoutChildren[0].getLayoutOriginX();
-        //         } else {
-        //             return 1 - (percentWidth * this.layoutChildren[0].getLayoutOriginX());
-        //         }
-        //     }
-        // }
-        // return 0;
         return this.layoutOriginX;
     }
 
     public getLayoutOriginY(): number {
-        // if(this.layoutChildren.length >= 1) {
-        //     if(this.flexDirection === 'row' || this.flexDirection === 'row-reverse') {
-        //         return this.layoutChildren[0].getLayoutOriginY();
-        //     } else {
-        //         let height = this.getLayoutHeight();
-        //         let firstHeight = this.layoutChildren[0].getLayoutHeight();
-        //         let percentHeight = firstHeight / height;
-        //         if(this.flexDirection === 'col') {
-        //             return percentHeight * this.layoutChildren[0].getLayoutOriginY();
-        //         } else {
-        //             return 1 - (percentHeight * this.layoutChildren[0].getLayoutOriginY());
-        //         }
-        //     }
-        // }
-        // return 0;
         return this.layoutOriginY;
     }
 
@@ -264,6 +179,7 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
         if(x > 1) this.layoutOriginX = 1;
         if(y < 0) this.layoutOriginY = 0;
         if(y > 1) this.layoutOriginY = 1;
+        this.updateLayoutDisplay();
     }
 
     /**

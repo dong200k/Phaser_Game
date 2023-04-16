@@ -47,7 +47,7 @@ export default class HostGameScene extends Phaser.Scene {
         let y = this.game.scale.height / 2;
         let button = new Button(this, "Text Button 1", x, y, "regular", () => console.log("Lp gain"));
         let button2 = new Button(this, "Text Button 2", x, y, "regular", () => console.log("Lp gain2"));
-        let button3 = new Button(this, "Text Button 3", x, y, "regular", () => console.log("Lp gain"));
+        let button3 = new Button(this, "Text Button 3", x, y, "large", () => console.log("Lp gain"));
         let button4 = new Button(this, "Text Button 4", x, y, "regular", () => console.log("Lp gain2"));
         let text1 = new TextBox(this, "Text 1", "h1");
         let text2 = new TextBox(this, "Text 2", "h1"); 
@@ -67,23 +67,24 @@ export default class HostGameScene extends Phaser.Scene {
         let layout2 = new Layout(this, x, y);
         let layout3 = new Layout(this, x, y);
         layout2.add([text1, text2]);
-        layout2.setFlexDirection("col-reverse");
-        layout2.setAlignItems("start");
-        layout3.add([button3, button4]);
-        layout3.setFlexDirection("col-reverse");
+        layout2.setFlexDirection("row");
+        layout2.setAlignItems("center");
+        layout3.add([button3, button4, button]);
+        layout3.setFlexDirection("col");
         layout3.setAlignItems("start");
+        layout3.setGap(20);
 
-        // layout.add([layout2, layout3]);
-        // layout.setFlexDirection("col-reverse");
-        // layout.setAlignItems("start");
-        this.add.existing(layout2);
+        layout.add([layout2, layout3]);
+        layout.setFlexDirection("row-reverse");
+        layout.setAlignItems("start");
+        this.add.existing(layout);
         // this.add.rectangle(x, y, 10, 10, 0x000000, 0.1);
         
         let debugBorder = new Phaser.GameObjects.Graphics(this);
         debugBorder.setPosition(x, y);
         this.add.existing(debugBorder);
 
-        bakeBorderGraphicsFromLayout(layout2, debugBorder, 0x0000dd);
+        bakeBorderGraphicsFromLayout(layout, debugBorder, 0x0000dd);
     }
 
 }
