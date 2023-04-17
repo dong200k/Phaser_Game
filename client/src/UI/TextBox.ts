@@ -34,6 +34,11 @@ export default class TextBox extends Phaser.GameObjects.DOMElement implements La
         this.updateSize(); // Forces updates of the dom nodes dimensions after font changes.
     }
 
+    /** Gets the Div element of this TextBox. This can be used for more detailed styling of the text. */
+    public getDIVElement() {
+        return this.divElement;
+    }
+
     public setText(text: string) {
         super.setText(text);
         return this;

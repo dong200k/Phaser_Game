@@ -133,6 +133,11 @@ export default class TextField extends Phaser.GameObjects.Container implements L
         return this.feedbackTextVisible;
     } 
 
+    /** Gets the Input element of this TextBox. This can be used for setting the type of input. */
+    public getInputDOM() {
+        return this.inputDOM;
+    }
+
     /** Updates the TextField based on the current configuation details */
     private updateTextFieldDisplay() {
         this.labelObject.setVisible(this.labelVisible);
@@ -164,7 +169,7 @@ export default class TextField extends Phaser.GameObjects.Container implements L
     }
 
     public getLayoutHeight() {
-        return this.inputObject.height + 39; //layout height with manual adjustments
+        return this.inputObject.height + 38; //layout height with manual adjustments
     }
 
     public getLayoutOriginX() {
