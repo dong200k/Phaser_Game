@@ -87,7 +87,7 @@ export default class PlayerManager{
                 if(playerBody){
                     playerBody.collisionFilter = {
                         ...playerBody.collisionFilter,
-                        mask: MaskManager.getMask("PLAYER")
+                        mask: MaskManager.getManager().getMask("PLAYER")
                     }
                 }
 
@@ -112,7 +112,7 @@ export default class PlayerManager{
             friction: 0,
             collisionFilter: {
                 category: Categories.PLAYER,
-                mask: MaskManager.getMask("PLAYER")
+                mask: MaskManager.getManager().getMask("PLAYER")
             }
         })
 

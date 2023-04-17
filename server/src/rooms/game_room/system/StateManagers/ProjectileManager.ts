@@ -43,7 +43,7 @@ export default class ProjectileManager{
         body.collisionFilter = {
             group: 0,
             category: Categories.PLAYER_PROJECTILE,
-            mask: MaskManager.getMask('PLAYER_PROJECTILE') 
+            mask: MaskManager.getManager().getMask('PLAYER_PROJECTILE') 
         };
 
         // console.log(Categories.OBSTACLE & MaskManager.getMask("PLAYER_PROJECTILE") as number)
