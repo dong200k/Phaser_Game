@@ -21,10 +21,13 @@ export default class HostGameScene extends Phaser.Scene {
     }
 
     create() {
+        // -------- Background Box ---------
+        this.add.rectangle(this.game.scale.width / 2, this.game.scale.height / 2 - 12, 550, 490, ColorStyle.neutrals.hex[400]);
 
         // ------- Title --------
         let title = new TextBox(this, "Host Game", "h4");
-        title.setPosition(this.game.scale.width / 2, 150);
+        title.setColor(ColorStyle.neutrals[900]);
+        title.setPosition(this.game.scale.width / 2, 220);
         this.add.existing(title);
 
         // ---------- TextFields -----------
@@ -73,14 +76,14 @@ export default class HostGameScene extends Phaser.Scene {
         let textFieldAndPrivateRoomLayout = new Layout(this, {
             flexDirection: 'col',
             alignItems: 'start',
-            gap: 5,
+            gap: 0,
         });
         textFieldAndPrivateRoomLayout.add([textFieldLayout, privateRoomLayout])
 
         let formLayout = new Layout(this, {
             x:this.game.scale.width / 2,
             y:this.game.scale.height / 2,
-            gap: 24,
+            gap: 28,
             flexDirection: 'col',
             alignItems: 'start',
         });
