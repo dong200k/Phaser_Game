@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { SceneKey } from "../config";
+import { ColorStyle, SceneKey } from "../config";
 import Checkbox from "../UI/Checkbox";
 import TextField from "../UI/TextField";
 import Layout from "../UI/Layout";
@@ -22,35 +22,71 @@ export default class HostGameScene extends Phaser.Scene {
 
     create() {
 
-        // ---------- Form -----------
-        this.roomNameTextField = new TextField(this, {textFieldSize:'large'});
-        this.numberOfPlayersTextField = new TextField(this, {textFieldSize:'large'});
-        this.privateRoomCheckbox = new Checkbox(this, 0, 0);
-        
-        let formLayout = new Layout(this, {
-            x:this.game.scale.width / 2,
-            y:this.game.scale.height / 2 - 100,
-            gap: 10,
-            flexDirection: 'col',
-            alignItems: 'start',
-        });
-        formLayout.add([this.roomNameTextField, this.numberOfPlayersTextField, this.privateRoomCheckbox]);
-        this.add.existing(formLayout);
+        // ------- Title --------
+        let title = new TextBox(this, "Host Game", "h4");
+        title.setPosition(this.game.scale.width / 2, 150);
+        this.add.existing(title);
 
-        // ----------- Form Buttons ------------ 
-        let createRoomButton = new Button(this, "Create room", 0, 0, "regular", () => console.log("Create room onclick"));
+        // ---------- TextFields -----------
+        this.roomNameTextField = new TextField(this, {
+            textFieldSize:'large',
+            label: 'Room name',
+            labelVisible: true,
+            assistText: '6-20 characters',
+            assistTextVisible: true,
+        });
+        this.numberOfPlayersTextField = new TextField(this, {
+            textFieldSize:'large',
+            label: 'Number of players',
+            labelVisible: true,
+            assistText: '1-10 players',
+            assistTextVisible: true,
+        });
+        let textFieldLayout = new Layout(this, {
+            flexDirection: 'col',
+        });
+        textFieldLayout.add([this.roomNameTextField, this.numberOfPlayersTextField]);
+
+        // ---------- Private Checkbox -----------
+        this.privateRoomCheckbox = new Checkbox(this, 0, 0);
+        let privateRoomText = new TextBox(this, "Private room", 'l6');
+        privateRoomText.setColor(ColorStyle.neutrals[900]);
+        let privateRoomLayout = new Layout(this, {
+            flexDirection: 'row',
+            gap: 10,
+        })
+        privateRoomLayout.add([this.privateRoomCheckbox, privateRoomText]);
+        
+        // ----------- Buttons ------------ 
+        let createRoomButton = new Button(this, "Create room", 0, 0, "regular", () => SceneManager.getSceneManager().pushScene("RoomScene"));
         let backButton = new Button(this, "Back", 0, 0, "regular", () => SceneManager.getSceneManager().popScene());
         let buttonLayout = new Layout(this, {
             x:this.game.scale.width / 2,
             y:this.game.scale.height / 2,
+            flexDirection:'row',
+            gap: 55,
         });
-        buttonLayout.add([createRoomButton, backButton]);
-        buttonLayout.setFlexDirection("row");
+        buttonLayout.add([backButton, createRoomButton]);
         
-        formLayout.add(buttonLayout);
+        // ----------- Form ------------ 
 
+        let textFieldAndPrivateRoomLayout = new Layout(this, {
+            flexDirection: 'col',
+            alignItems: 'start',
+            gap: 5,
+        });
+        textFieldAndPrivateRoomLayout.add([textFieldLayout, privateRoomLayout])
 
-       
+        let formLayout = new Layout(this, {
+            x:this.game.scale.width / 2,
+            y:this.game.scale.height / 2,
+            gap: 24,
+            flexDirection: 'col',
+            alignItems: 'start',
+        });
+
+        formLayout.add([textFieldAndPrivateRoomLayout, buttonLayout]);
+        this.add.existing(formLayout);
     }
 
 }
