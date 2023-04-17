@@ -14,14 +14,14 @@ export default class TextBox extends Phaser.GameObjects.DOMElement implements La
     private fontType:FontTypeString;
     private divElement:HTMLDivElement;
 
-    constructor(scene:Phaser.Scene,text="",fontType:FontTypeString='p3') {
+    constructor(scene:Phaser.Scene,text="",fontType:FontTypeString='p3',color:string=ColorStyle.neutrals.white) {
         super(scene, 0, 0, 'div', {
             'user-select': 'none'
         });
         this.fontType = fontType;
         this.divElement = this.node as HTMLDivElement;
         this.setOrigin(0.5, 0.5);
-        this.setColor(ColorStyle.neutrals.white);
+        this.setColor(color);
         this.setText(text);
         this.setFontType(this.fontType);
     }

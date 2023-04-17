@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import * as Colyseus from 'colyseus.js';
 import ClientManager from "../system/ClientManager";
-import { SceneKey } from "../config";
+import { ColorStyle, SceneKey } from "../config";
 import TextBox from "../UI/TextBox";
 import Layout from "../UI/Layout";
 import TextField from "../UI/TextField";
@@ -47,7 +47,8 @@ export default class LobbyScene extends Phaser.Scene {
             originY: 0,
         });
         // ------ Server Location ------
-        let serverLocationText = new TextBox(this, "US Server", "h4");
+        let serverLocationText = new TextBox(this, "US Server", "h3");
+        serverLocationText.setColor(ColorStyle.neutrals[900]);
         layout.add(serverLocationText);
         // ------ Search Field ------
         let searchField = new TextField(this, {
@@ -83,6 +84,7 @@ export default class LobbyScene extends Phaser.Scene {
         
         // ------ Switching pages layout ------
         this.pageText = new TextBox(this, "Page 1/1000", 'h5');
+        this.pageText.setColor(ColorStyle.neutrals[900]);
         this.pageNextButton = new Button(this, "Next", 0, 0, "small", () => this.switchToNextPage());
         this.pagePrevButton = new Button(this, "Prev", 0, 0, "small", () => this.switchToPrevPage());
         let layout3 = new Layout(this, {

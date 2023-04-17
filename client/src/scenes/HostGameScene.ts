@@ -25,7 +25,7 @@ export default class HostGameScene extends Phaser.Scene {
         this.add.rectangle(this.game.scale.width / 2, this.game.scale.height / 2 - 12, 550, 490, ColorStyle.neutrals.hex[400]);
 
         // ------- Title --------
-        let title = new TextBox(this, "Host Game", "h4");
+        let title = new TextBox(this, "Host Game", "h3");
         title.setColor(ColorStyle.neutrals[900]);
         title.setPosition(this.game.scale.width / 2, 220);
         this.add.existing(title);

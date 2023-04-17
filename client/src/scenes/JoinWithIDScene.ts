@@ -19,7 +19,7 @@ export default class JoinWithIDScene extends Phaser.Scene {
         this.add.rectangle(this.game.scale.width / 2, this.game.scale.height / 2 - 12, 500, 400, ColorStyle.neutrals.hex[400]);
 
         // ------- Title --------
-        let title = new TextBox(this, "Join By ID", "h4");
+        let title = new TextBox(this, "Join By ID", "h3");
         title.setColor(ColorStyle.neutrals[900]);
         title.setPosition(this.game.scale.width / 2, 220);
 
@@ -41,7 +41,7 @@ export default class JoinWithIDScene extends Phaser.Scene {
             flexDirection:'row',
             gap: 55,
         });
-        buttonLayout.add([joinRoomButton, backButton]);
+        buttonLayout.add([backButton, joinRoomButton]);
 
         // ----------- Form ------------ 
         let formLayout = new Layout(this, {

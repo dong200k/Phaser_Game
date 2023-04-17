@@ -17,7 +17,7 @@ export default class GameModeScene extends Phaser.Scene {
 
         // Adds Host Game Scene Buttons
         let joinLobbyButton = new Button(this, "Join Lobby", 0, 0, "large", () => SceneManager.getSceneManager().pushScene("LobbyScene"));
-        let quickPlayButton = new Button(this, "Quick Play", 0, 0, "large", () => console.log("Clicked on quick play button"));
+        let quickPlayButton = new Button(this, "Quick Play", 0, 0, "large", () => SceneManager.getSceneManager().pushScene("MatchmakeScene"));
         let hostGameButton = new Button(this, "Host Game", 0, 0, "large", () => SceneManager.getSceneManager().pushScene("HostGameScene"));
         let joinWithIDButton = new Button(this, "Join with ID", 0, 0, "large", () => SceneManager.getSceneManager().pushScene("JoinWithIDScene"));
         

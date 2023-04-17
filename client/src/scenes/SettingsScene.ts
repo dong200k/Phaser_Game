@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import { SceneKey } from "../config";
+import { ColorStyle, SceneKey } from "../config";
 import TextBox from "../UI/TextBox";
 import Button from "../UI/Button";
 import SceneManager from "../system/SceneManager";
@@ -12,13 +12,15 @@ export default class SettingsScene extends Phaser.Scene {
 
     create() {
        // ------- Title --------
-       let title = new TextBox(this, "Settings", "h4");
+       let title = new TextBox(this, "Settings", "h3");
        title.setPosition(this.game.scale.width / 2, 150);
+       title.setColor(ColorStyle.neutrals[900]);
        this.add.existing(title);
 
        // ------- Settings --------
        let temp = new TextBox(this, "There are no settings", "p2");
        temp.setPosition(this.game.scale.width / 2, 230);
+       temp.setColor(ColorStyle.neutrals[900]);
        this.add.existing(temp);
 
        // ------ Back Button --------
