@@ -18,6 +18,7 @@ import LoadingScene from './scenes/LoadingScene';
 import NavbarScene from './scenes/NavbarScene';
 import MatchmakeScene from './scenes/MatchmakeScene';
 import SystemPreloadScene from './scenes/SystemPreloadScene';
+import SplashScene from './scenes/SplashScene';
 
 export default {
     type: Phaser.AUTO,
@@ -45,7 +46,7 @@ export default {
     //----- IMPORTANT ------ SystemPreloadScene should always be the first scene. Use StartScene const below to set starting scene.
     scene: [SystemPreloadScene, MenuScene, GameScene, LobbyScene, RoomScene, SettingsScene, ControlsScene, CreditsScene,
             LoginScene, SignupScene, ShopScene, SkillTreeScene, RoleScene, GameModeScene,
-            JoinWithIDScene, HostGameScene, LoadingScene, NavbarScene, MatchmakeScene],
+            JoinWithIDScene, HostGameScene, LoadingScene, NavbarScene, MatchmakeScene, SplashScene],
     // resolution: window.devicePixelRatio,
     // antialias: false,
     gameTitle: 'Dungeon and Adventurers',
@@ -71,12 +72,13 @@ export enum SceneKey {
     LoadingScene = "LoadingScene",
     NavbarScene = "NavbarScene",
     MatchmakeScene = "MatchmakeScene",
-    SystemPreloadScene = "SystemPreloadScene"
+    SystemPreloadScene = "SystemPreloadScene",
+    SplashScene = "SplashScene",
 }
 export type SceneKeyType = keyof typeof SceneKey;
 
 /** ------------ Change the scene key here to set the starting scene. ---------------*/
-export const StartScene = SceneKey.MenuScene;
+export const StartScene = SceneKey.SplashScene;
 
 const headerFontFamily = 'pressStart2P';
 const bodyFontFamily = 'aldrich';
