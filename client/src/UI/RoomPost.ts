@@ -61,11 +61,13 @@ export default class RoomPost extends Phaser.GameObjects.Container implements La
             this.roomPlayerCountText.setText(`Player count: ${this.room.clients}/${this.room.maxClients}`);
             this.roomStateText.setText(`Open`);
             this.joinButton.setButtonActive(true);
+            this.background.setFillStyle(ColorStyle.primary.hex[500]);
         } else {
-            this.roomNameText.setText("Room name: N/A");
-            this.roomPlayerCountText.setText("Player count: 0/0");
-            this.roomStateText.setText("None");
+            this.roomNameText.setText("Vacant slot");
+            this.roomPlayerCountText.setText("");
+            this.roomStateText.setText("");
             this.joinButton.setButtonActive(false);
+            this.background.setFillStyle(ColorStyle.neutrals.hex[700]);
         }
     }
 
