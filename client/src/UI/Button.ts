@@ -9,7 +9,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     private buttonSprite:Phaser.GameObjects.Sprite;
     private buttonText:TextBox;
     private onClick:Function;
-    private hoverGradient:Phaser.GameObjects.Rectangle;
+    private hoverGradient:Phaser.GameObjects.Sprite;
 
     private sizeConfig = {
         regular: {
@@ -53,9 +53,9 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         });
         this.buttonSprite.on(Phaser.Input.Events.POINTER_OVER, ()=>{
             if(this.buttonState !== 'disabled') this.hoverGradient.setVisible(true);
-            //console.log("Hovering Button");
         });
-        this.hoverGradient = new Phaser.GameObjects.Ellipse(this.scene, 0, 0, 230, 100, ColorStyle.neutrals.hex.white, 0.07);
+        this.hoverGradient = new Phaser.GameObjects.Sprite(this.scene, 0, 0, "button_small_default_hover_texture");
+        this.hoverGradient.setAlpha(0.1);
         this.hoverGradient.setVisible(false);
         this.add(this.buttonSprite);
         this.add(this.buttonText);
@@ -110,7 +110,6 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         this.onClick = onClick;
         this.buttonSprite.on(Phaser.Input.Events.POINTER_UP, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState("default");
-            this.hoverGradient.setVisible(false);
             this.onClick();
         });
     }
@@ -123,7 +122,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     private updateButtonDisplay() {
         let config = this.sizeConfig[this.buttonSize];
         this.buttonSprite.setDisplaySize(config.size.x, config.size.y);
-        this.hoverGradient.setDisplaySize(config.size.x + 10, config.size.y + 5);
+        this.hoverGradient.setDisplaySize(config.size.x, config.size.y);
         this.buttonText.setFontType(config.textStyle as "l1"|"l2"|"l3"|"l4"|"l5"|"l6");
         switch(this.buttonState) {
             case 'default': {

@@ -34,8 +34,6 @@ export default class MenuScene extends Phaser.Scene {
         layout.add([playButton, settingsButton, controlsButton, creditsButton]);
         this.add.existing(layout);
 
-        
-
         // this.test();
         // this.test2();
     }

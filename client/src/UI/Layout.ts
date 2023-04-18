@@ -236,6 +236,10 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
         return this;
     }
 
+    /**
+     * Adds the child to the layout list. This list will contain the children that this Layout will manage the positions of.
+     * @param child a layoutable child or an array of layoutable children.
+     */
     private addLayout(child: Layoutable|Layoutable[]) {
         if(Array.isArray(child)) 
             this.layoutChildren.push(...child);

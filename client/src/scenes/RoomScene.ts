@@ -76,8 +76,9 @@ export default class RoomScene extends Phaser.Scene {
                 this.playersInRoom--;
                 this.updatePlayersInRoom(this.playersInRoom);
             }
+            // ------- JOIN GAME MESSAGE FROM SERVER -----------
             this.waitingRoom.onMessage("joinGame", (message) => {
-                console.log("joinGame message", message);
+                // Sets the game room Id for the client.
                 ClientManager.getClient().setGameRoomId(message);
                 this.scene.start('GameScene');
             })
