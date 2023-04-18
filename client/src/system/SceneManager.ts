@@ -155,6 +155,9 @@ export default class SceneManager {
                 this.launchCurrentScene();
             else
                 this.wakeCurrentScene();
+            // ----- Set the input to poll on the scene on first wake to prevent button unhovers from not registering. Note: This can have performance impacts. ------
+            this.scene.scene.get(this.currentSceneKey).input.setPollAlways();
+            setTimeout(() => {this.scene?.scene.get(this.currentSceneKey).input.setPollOnMove()}, 100);
         }
     }
 }
