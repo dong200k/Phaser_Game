@@ -1,11 +1,13 @@
+import { randomUUID } from "crypto";
 
 export default class MathUtil {
     private static uidCounter = 0;
     
     /**Returns a uniquie id. This id is only unique in this project execution. The uid will reset on project start. */
     public static uid(): string {
-        this.uidCounter + 1;
-        return `UID#${this.uidCounter}`; //TODO: may cause conflicts with colyseus client's sessionId.
+        // this.uidCounter + 1;
+        // return `UID#${this.uidCounter}`; //TODO: may cause conflicts with colyseus client's sessionId.
+        return randomUUID();
     }
 
     /**
