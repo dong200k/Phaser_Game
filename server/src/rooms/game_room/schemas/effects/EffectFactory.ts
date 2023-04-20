@@ -1,3 +1,5 @@
+import Effect from "./Effect";
+import ChainEffect from "./combo/ChainEffect";
 import ContinuousHPEffect from "./continuous/ContinuousHPEffect";
 import InstantHPEffect from "./onetime/InstantHPEffect";
 
@@ -30,6 +32,25 @@ export default class EffectFactory {
      */
     public static createRegenEffect(totalRegenAmount: number, totalTimeToRegen: number, tickRate:number = 1) {
         return new ContinuousHPEffect(totalTimeToRegen, totalRegenAmount / (totalTimeToRegen / tickRate), tickRate);
+    }
+
+    /**
+     * Creates an effect that will apply DOT(damage over time) to the entity.
+     * @param totalDamageAmount The total amount of damage taken.
+     * @param totalTime The total time in seconds that it will take to deal the damage.
+     * @param tickRate How often the DOT is applied in seconds. Changing this wont change the total damage in the end. Defaults to one second.
+     */
+    public static createDamageOverTimeEffect(totalDamageAmount: number, totalTime:number, tickRate:number = 1) {
+        return new ContinuousHPEffect(totalTime, -(totalDamageAmount / (totalTime / tickRate)), tickRate);
+    }
+
+    /**
+     * Creates a chain effect that runs effects sequentially.
+     * @param effect and effect or an array of effect to run sequentually.
+     * @returns A ChainEffect.
+     */
+    public static createChainEffect(effect?: Effect | Effect[]) {
+        return new ChainEffect(effect);
     }
 
 }

@@ -13,8 +13,9 @@ export default class OneTimeEffect extends Effect {
         this.description = "One Time Effect";
     }
 
-    public update(deltaT: number, entity?: Entity | undefined): void {
+    public update(deltaT: number, entity?: Entity | undefined): number {
         if(this.applyEffect(entity))
-            this.completed = true;
+            this.setAsCompleted();
+        return deltaT;
     }
 }

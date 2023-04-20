@@ -29,7 +29,7 @@ let secondsPassed = 0;
 // ---- Print helper which calls printCallback every second ----
 let printCallback = () => {};
 let printInterval = setInterval(() => {
-    secondsPassed++;
+    secondsPassed += 1;
     console.log(`--- after ${secondsPassed}s ---`);
     printCallback();
 }, 1000);
@@ -80,7 +80,41 @@ function testingContinuousEffect() {
     console.log(`Player 1's starting hp: ${player1.stat.hp}`);
     
     //Add effects
-    player1.effects.push(EffectFactory.createRegenEffect(200, 5, 1));
+    //player1.effects.push(EffectFactory.createRegenEffect(200, 5, 1));
+    player1.effects.push(EffectFactory.createDamageOverTimeEffect(200, 5, 1));
+
+    console.log(`player1's effects:`);
+    printEffects(player1);
+
+    printCallback = () => {
+        console.log(`Player 1's new hp: ${player1.stat.hp}`);
+        console.log(`player1's effects: `);
+        printEffects(player1);
+    };
+
+    console.log("----- at 0s -----");
+    printCallback();
+}
+
+function testingChainEffect() {
+    console.log("------Testing chain effect-----")
+    let player1 = new Player("Bob", "warrior");
+    gameManager.addGameObject(MathUtil.uid(), player1, Matter.Bodies.rectangle(0, 0, 0, 0));
+    console.log(`Player 1's starting hp: ${player1.stat.hp}`);
+    
+    //Add effects
+    player1.effects.push(EffectFactory.createChainEffect([
+        EffectFactory.createRegenEffect(100, 0.6, 0.3),
+        EffectFactory.createRegenEffect(100, 0.6, 0.3),
+        EffectFactory.createRegenEffect(100, 0.6, 0.3),
+        EffectFactory.createRegenEffect(100, 0.6, 0.3),
+        EffectFactory.createRegenEffect(100, 0.6, 0.3),
+        EffectFactory.createRegenEffect(100, 0.6, 0.3),
+        EffectFactory.createRegenEffect(100, 0.6, 0.3),
+        EffectFactory.createRegenEffect(100, 0.6, 0.3),
+        EffectFactory.createRegenEffect(100, 0.6, 0.3),
+        EffectFactory.createRegenEffect(100, 0.6, 0.3),
+    ]));
 
     console.log(`player1's effects:`);
     printEffects(player1);
@@ -97,6 +131,7 @@ function testingContinuousEffect() {
 
 
 // testingOneTimeEffect();
-testingContinuousEffect();
+// testingContinuousEffect();
+testingChainEffect();
 
 

@@ -9,7 +9,9 @@ export default class ContinuousHPEffect extends ContinuousEffect {
         super(timeRemaining, tickRate);
         this.name = "ContinuousHPEffect";
         this.description = "Continuous changes hp over time.";
-        if(hpPerTick !== undefined) this.hpPerTick = hpPerTick;
+        if(hpPerTick !== undefined) {
+            this.hpPerTick = hpPerTick;
+        };
     }
 
     public applyEffect(entity?: Entity | undefined): boolean {

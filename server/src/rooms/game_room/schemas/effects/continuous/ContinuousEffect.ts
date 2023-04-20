@@ -30,7 +30,7 @@ export default class ContinuousEffect extends Effect {
      * If no entity is provided it will queue up the effects to be applied later. 
      * This effect will be flagged as completed if timeRemaining reaches zero.
      */
-    public update(deltaT: number, entity?: Entity | undefined): void {
+    public update(deltaT: number, entity?: Entity | undefined): number {
         this.timeRemaining -= deltaT;
         this.timeUntilNextTick -= deltaT;
         // Queue up the effect.
@@ -45,7 +45,9 @@ export default class ContinuousEffect extends Effect {
                 this.ticksQueued--;
             }
         }
-        if(this.timeRemaining <= 0) this.completed = true;
+        if(this.timeRemaining <= 0) this.setAsCompleted();
+        if(this.timeRemaining < 0) return Math.abs(this.timeRemaining);
+        else return 0;
     }
 
     public toString(): string {
