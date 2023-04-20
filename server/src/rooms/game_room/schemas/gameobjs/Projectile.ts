@@ -26,7 +26,7 @@ export default class Projectile extends GameObject {
         this.spawnX = spawnX
         this.spawnY = spawnY
 
-        // projectile shape
+        // projectile shape 
         this.width = width
         this.height = height
 

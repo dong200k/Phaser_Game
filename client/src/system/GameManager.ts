@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Player from "../gameobjs/Player";
 import * as Colyseus from 'colyseus.js';
+import PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -91,7 +92,7 @@ export default class GameManager {
         return proj;
     }
     
-    private addPlayer(player: any, key: string): Player{
+    private addPlayer(player: PlayerState, key: string): Player{
         let newPlayer = new Player(this.scene, player);
         console.log(newPlayer)
         if(key === this.gameRoom.sessionId) {

@@ -1,5 +1,5 @@
 import { Schema, type } from '@colyseus/schema';
-import Stat from '../Stat';
+import Stat from './Stat';
 
 export default class BaseWeapon extends Schema {
     @type(Stat) stat

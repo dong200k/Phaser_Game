@@ -6,6 +6,7 @@ import GameObject from '../schemas/gameobjs/GameObject';
 import Cooldown from '../schemas/gameobjs/Cooldown';
 import TilemapManager from './StateManagers/TilemapManager';
 import ProjectileManager from './StateManagers/ProjectileManager';
+import WeaponManager from './StateManagers/WeaponManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -15,6 +16,7 @@ export default class GameManager {
     private tilemapManager: TilemapManager;
     public playerManager: PlayerManager
     public projectileManager: ProjectileManager
+    public weaponManager: WeaponManager;
 
     // Data
     public gameObjects: Map<string, Matter.Body> = new Map();
@@ -29,6 +31,7 @@ export default class GameManager {
         // Setup managers
         this.playerManager = new PlayerManager(this)
         this.projectileManager = new ProjectileManager(this)
+        this.weaponManager = new WeaponManager(this)
 
         //Set up the tilemap
         this.tilemapManager = new TilemapManager(state);
@@ -53,7 +56,7 @@ export default class GameManager {
             })
         });
     }
-
+        
     public setOwner(sessionId: string){
         this.state.ownerSessionId = sessionId
     }

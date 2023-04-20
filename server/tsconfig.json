@@ -10,7 +10,7 @@
         "skipLibCheck": true,
         "strict": true,
         "rootDir": "./",
-        "outDir": "./build"
+        "outDir": "./build",
     },
     "include": [
         "src"
