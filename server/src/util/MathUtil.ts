@@ -22,4 +22,15 @@ export default class MathUtil {
         if(mag===0) return {x: 0, y: 0}
         return {x: x/mag * speed, y: y/mag * speed}
     }
+
+    /**
+     * Round to the provided decimal place. (E.g. If number = 100.2222 and dp = 2 then return 100.22)
+     * @param number The number to round.
+     * @param dp The decimal place to round to. dp should not be negative.
+     */
+    public static roundDecimal(number:number, dp: number) {
+        if(dp < 0) return number;
+        number = number * Math.pow(10, dp);
+        return Math.round(number) / Math.pow(10, dp);
+    }
 }

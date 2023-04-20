@@ -34,6 +34,6 @@ export default class Effect extends Schema {
     }
 
     public toString(): string {
-        return `Effect [name: ${this.name}]`;
+        return `Effect [name: ${this.name}, completed: ${this.completed}]`;
     }
 }
