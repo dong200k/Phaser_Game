@@ -14,16 +14,25 @@ export default class EffectManager {
         // loop through gameManager's gameObjects.
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Entity){
-                for(let i = gameObject.effects.length - 1; i >= 0; i--) {
-                    let effect = gameObject.effects.at(i);
-                    effect.update(deltaT, gameObject);
-                    if(effect.isCompleted()) gameObject.effects.deleteAt(i);
-                }
+                EffectManager.updateEffectsOn(gameObject, deltaT);
             }
         })
     }
 
-    public addEffectsTo(entity: Entity, effect: Effect) {
+    public static addEffectsTo(entity: Entity, effect: Effect) {
         entity.effects.push(effect);
+    }
+
+    /**
+     * Updates the effects array on an entity. Any completed effects will be automatically removed.
+     * @param entity The entity that should be updated.
+     * @param deltaT The time that is used to step forward the effects.
+     */
+    public static updateEffectsOn(entity: Entity, deltaT: number) {
+        for(let i = entity.effects.length - 1; i >= 0; i--) {
+            let effect = entity.effects.at(i);
+            effect.update(deltaT, entity);
+            if(effect.isCompleted()) entity.effects.deleteAt(i);
+        }
     }
 }

@@ -24,9 +24,10 @@ let intervalID = setInterval(() => {
     gameManager.update((currentTime - prevTime) / 1000);
     prevTime = currentTime;
 }, 33);
-let secondsPassed = 0;
+
 
 // ---- Print helper which calls printCallback every second ----
+let secondsPassed = 0;
 let printCallback = () => {};
 let printInterval = setInterval(() => {
     secondsPassed += 1;
@@ -80,8 +81,8 @@ function testingContinuousEffect() {
     console.log(`Player 1's starting hp: ${player1.stat.hp}`);
     
     //Add effects
-    //player1.effects.push(EffectFactory.createRegenEffect(200, 5, 1));
-    player1.effects.push(EffectFactory.createDamageOverTimeEffect(200, 5, 1));
+    player1.effects.push(EffectFactory.createRegenEffect(200, 5, 1));
+    //player1.effects.push(EffectFactory.createDamageOverTimeEffect(200, 5, 1));
 
     console.log(`player1's effects:`);
     printEffects(player1);

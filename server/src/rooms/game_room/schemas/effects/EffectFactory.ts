@@ -25,7 +25,7 @@ export default class EffectFactory {
     }
 
     /**
-     * Creates an effect that will heal the entity over time.
+     * Creates an effect that will heal the entity over time. Note: Make sure the totalTime is more than and a multiple of tickRate.
      * @param totalRegenAmount The total amount of hp that will be regenerated.
      * @param totalTimeToRegen The total time in seconds that it will take to regen this amount of hp.
      * @param tickRate How often the regen is applied in seconds. Changing this wont change the total amount regenerated in the end. Defaults to one second.
@@ -35,7 +35,7 @@ export default class EffectFactory {
     }
 
     /**
-     * Creates an effect that will apply DOT(damage over time) to the entity.
+     * Creates an effect that will apply DOT(damage over time) to the entity. Note: Make sure the totalTime is more than and a multiple of tickRate.
      * @param totalDamageAmount The total amount of damage taken.
      * @param totalTime The total time in seconds that it will take to deal the damage.
      * @param tickRate How often the DOT is applied in seconds. Changing this wont change the total damage in the end. Defaults to one second.
