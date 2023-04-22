@@ -4,14 +4,15 @@ import { type } from "@colyseus/schema";
 
 export default class ContinuousHPEffect extends ContinuousEffect {
     @type("number") hpPerTick = 1;
+    totalHp;
 
-    constructor(timeRemaining?:number, hpPerTick?:number, tickRate?:number) {
-        super(timeRemaining, tickRate);
+
+    constructor(timeRemaining?:number, tickCount?:number, totalHp:number=100) {
+        super(timeRemaining, tickCount);
         this.name = "ContinuousHPEffect";
         this.description = "Continuous changes hp over time.";
-        if(hpPerTick !== undefined) {
-            this.hpPerTick = hpPerTick;
-        };
+        this.totalHp = totalHp;
+        this.hpPerTick = totalHp / this.tickCount;
     }
 
     public applyEffect(entity?: Entity | undefined): boolean {

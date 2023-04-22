@@ -14,7 +14,7 @@ export default class OneTimeEffect extends Effect {
     }
 
     public update(deltaT: number, entity?: Entity | undefined): number {
-        if(this.applyEffect(entity))
+        if(deltaT > 0 && this.applyEffect(entity))
             this.setAsCompleted();
         return deltaT;
     }

@@ -19,8 +19,14 @@ export default class EffectManager {
         })
     }
 
-    public static addEffectsTo(entity: Entity, effect: Effect) {
-        entity.effects.push(effect);
+    public static addEffectsTo(entity: Entity, effect: Effect | Effect[]) {
+        if(Array.isArray(effect)) {
+            effect.forEach((e) => {
+                entity.effects.push(e);
+            })
+        } else {
+            entity.effects.push(effect);
+        }
     }
 
     /**
