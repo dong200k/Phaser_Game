@@ -172,4 +172,45 @@ describe('Continuous HP Effect', () => {
         EffectManager.updateEffectsOn(player, 1);
         expect(player.stat.hp).toBeCloseTo(0);
     })
+    test("take 10 damage per second", () => {
+        let player = createPlayer(100);
+        EffectManager.addEffectsTo(player, EffectFactory.createDamageOverTimeEffectUntimed(1, 10));
+        EffectManager.updateEffectsOn(player, 20);
+        expect(player.stat.hp).toBeCloseTo(-100);
+    })
+    test("take 10 damage per half a second", () => {
+        let player = createPlayer(100);
+        EffectManager.addEffectsTo(player, EffectFactory.createDamageOverTimeEffectUntimed(0.5, 10));
+        EffectManager.updateEffectsOn(player, 20);
+        expect(player.stat.hp).toBeCloseTo(-300);
+    })
+    test("take 10 damage per second, updates effect every 0.2 seconds", () => {
+        let player = createPlayer(100);
+        EffectManager.addEffectsTo(player, EffectFactory.createDamageOverTimeEffectUntimed(1, 10));
+        EffectManager.updateEffectsOn(player, 0.2);
+        EffectManager.updateEffectsOn(player, 0.2);
+        EffectManager.updateEffectsOn(player, 0.2);
+        EffectManager.updateEffectsOn(player, 0.2);
+        EffectManager.updateEffectsOn(player, 0.2);
+        EffectManager.updateEffectsOn(player, 0.2);
+        EffectManager.updateEffectsOn(player, 0.2);
+        EffectManager.updateEffectsOn(player, 0.2);
+        EffectManager.updateEffectsOn(player, 0.2);
+        EffectManager.updateEffectsOn(player, 0.2001); //adjust for rounded error.
+        expect(player.stat.hp).toBeCloseTo(80);
+    })
+    test("take 10 damage per second stopping after 2 seconds.", () => {
+        let player = createPlayer(100);
+        let effect = EffectFactory.createDamageOverTimeEffectUntimed(1, 10);
+        EffectManager.addEffectsTo(player, effect);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.hp).toBeCloseTo(90);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.hp).toBeCloseTo(80);
+        effect.setAsCompleted();
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.hp).toBeCloseTo(80);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.hp).toBeCloseTo(80);
+    })
 })
