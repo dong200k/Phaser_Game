@@ -19,6 +19,11 @@ export default class EffectManager {
         })
     }
 
+    /**
+     * Adds an effect or an array of effect to an entity.
+     * @param entity The entity.
+     * @param effect A effect or an array or effects.
+     */
     public static addEffectsTo(entity: Entity, effect: Effect | Effect[]) {
         if(Array.isArray(effect)) {
             effect.forEach((e) => {
@@ -26,6 +31,18 @@ export default class EffectManager {
             })
         } else {
             entity.effects.push(effect);
+        }
+    }
+
+    /**
+     * Remove the effect object from the entity array.
+     * @param entity The entity to remove the effect from.
+     * @param effect The effect.
+     */
+    public static removeEffectFrom(entity: Entity, effect: Effect) {
+        for(let i = entity.effects.length - 1; i >=0; i--) {
+            if(entity.effects.at(i) === effect)
+                entity.effects.deleteAt(i);
         }
     }
 

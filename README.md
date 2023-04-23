@@ -31,6 +31,13 @@ npm install
 npm run server
 ```
 
+### Running tests
+To run tests, first head into the server directory, and then run npm test. This will run all jest tests inside files with a .test.ts extension.
+```bash
+cd server
+npm test
+```
+
 ### Running with nodemon
 You can also run with nodemon so that you get realtime updates.
 ```bash

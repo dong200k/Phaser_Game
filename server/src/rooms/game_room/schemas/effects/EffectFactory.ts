@@ -4,6 +4,7 @@ import ContinuousHPEffect from "./continuous/ContinuousHPEffect";
 import ContinuousHPEffectUntimed from "./continuous/ContinuousHPEffectUntimed";
 import InstantHPEffect from "./onetime/InstantHPEffect";
 import SpeedMultiEffect from "./temp/SpeedMultiEffect";
+import StatEffect, { StatConfig } from "./temp/StatEffect";
 
 
 export default class EffectFactory {
@@ -95,4 +96,12 @@ export default class EffectFactory {
         return new SpeedMultiEffect(speedMultiplier, false);
     }
 
+    /**
+     * Creates a stats effect that will apply flat value changes to an entity's stat object.
+     * @param statConfig The stat to change. The values provided will be added to an entity's stat.
+     * @returns A StatEffect.
+     */
+    public static createStatEffect(statConfig?: StatConfig) {
+        return new StatEffect(statConfig);
+    }
 }

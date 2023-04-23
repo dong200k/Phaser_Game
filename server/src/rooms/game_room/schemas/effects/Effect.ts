@@ -3,9 +3,12 @@ import { Schema, type } from '@colyseus/schema';
 
 export default class Effect extends Schema {
 
+    
     @type('string') name:string = "Effect";
     @type('string') description:string = "Base Effect";
     @type('boolean') completed:boolean = false;
+
+    private entity: Entity | null = null;
 
     /**
      * Updates this effect by deltaT. Providing an entity will allow this effect to modify the entity directly.
@@ -45,6 +48,12 @@ export default class Effect extends Schema {
 
     /** Called when this effect is completed. */
     public onComplete() {}
+
+    /** Called when this effect is added to an entity. */
+    public onAddToEntity(entity: Entity) {}
+
+    /** Called when this effect is removed from an entity. */
+    public onRemoveFromEntity(entity: Entity) {}
 
     public toString(): string {
         return `Effect [name: ${this.name}, completed: ${this.completed}]`;
