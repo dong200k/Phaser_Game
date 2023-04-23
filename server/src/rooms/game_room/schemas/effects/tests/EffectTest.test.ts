@@ -214,3 +214,71 @@ describe('Continuous HP Effect', () => {
         expect(player.stat.hp).toBeCloseTo(80);
     })
 })
+
+describe("Speed Multiplier Effect, Temp", () => {
+    const createPlayer = (initialSpeed: number) => {
+        let player = new Player("Dummy Player", "Shoe washer");
+        player.stat.speed = initialSpeed;
+        return player;
+    }
+    test("Boost speed by 2 times for 2 seconds", () => {
+        let player = createPlayer(1);
+        EffectManager.addEffectsTo(player, EffectFactory.createSpeedMultiplierEffectTimed(2, 2));
+        EffectManager.updateEffectsOn(player, 0.99);
+        expect(player.stat.speed).toBeCloseTo(2);
+        EffectManager.updateEffectsOn(player, 0.99);
+        expect(player.stat.speed).toBeCloseTo(2);
+        EffectManager.updateEffectsOn(player, 0.03);
+        expect(player.stat.speed).toBeCloseTo(1);
+    })
+    test("Slow speed to 0.5 for 2 seconds", () => {
+        let player = createPlayer(1);
+        EffectManager.addEffectsTo(player, EffectFactory.createSpeedMultiplierEffectTimed(0.5, 2));
+        EffectManager.updateEffectsOn(player, 0.99);
+        expect(player.stat.speed).toBeCloseTo(0.5);
+        EffectManager.updateEffectsOn(player, 0.99);
+        expect(player.stat.speed).toBeCloseTo(0.5);
+        EffectManager.updateEffectsOn(player, 0.03);
+        expect(player.stat.speed).toBeCloseTo(1);
+    })
+    test("Creating a speed multiplier effect of 0 should throw an error", () => {
+        expect(() => EffectFactory.createSpeedMultiplierEffectTimed(0, 2)).toThrowError();
+    })
+    test("Creating a speed multiplier effect of -1 should throw an error", () => {
+        expect(() => EffectFactory.createSpeedMultiplierEffectTimed(-1, 2)).toThrowError();
+    })
+    test("Untimed speed boost by 2. Manually stopped after 2 seconds", () => {
+        let player = createPlayer(1);
+        let speedEffect = EffectFactory.createSpeedMultiplierEffectUntimed(2)
+        EffectManager.addEffectsTo(player, speedEffect);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.speed).toBeCloseTo(2);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.speed).toBeCloseTo(2);
+        // set speed boost as completed.
+        speedEffect.setAsCompleted();
+        EffectManager.updateEffectsOn(player, 0.1);
+        expect(player.stat.speed).toBeCloseTo(1);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.speed).toBeCloseTo(1);
+    })
+    test("Untimed speed boost by 2. Manually stopped after 2 seconds multiple times. Should not revert effect multiple times.", () => {
+        let player = createPlayer(1);
+        let speedEffect = EffectFactory.createSpeedMultiplierEffectUntimed(2)
+        EffectManager.addEffectsTo(player, speedEffect);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.speed).toBeCloseTo(2);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.speed).toBeCloseTo(2);
+        // set speed boost as completed.
+        speedEffect.setAsCompleted();
+        speedEffect.setAsCompleted();
+        speedEffect.setAsCompleted();
+        speedEffect.setAsCompleted();
+        speedEffect.setAsCompleted();
+        EffectManager.updateEffectsOn(player, 0.1);
+        expect(player.stat.speed).toBeCloseTo(1);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.speed).toBeCloseTo(1);
+    })
+})

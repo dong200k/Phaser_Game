@@ -3,6 +3,7 @@ import ChainEffect from "./combo/ChainEffect";
 import ContinuousHPEffect from "./continuous/ContinuousHPEffect";
 import ContinuousHPEffectUntimed from "./continuous/ContinuousHPEffectUntimed";
 import InstantHPEffect from "./onetime/InstantHPEffect";
+import SpeedMultiEffect from "./temp/SpeedMultiEffect";
 
 
 export default class EffectFactory {
@@ -72,6 +73,26 @@ export default class EffectFactory {
      */
     public static createChainEffect(effect?: Effect | Effect[]) {
         return new ChainEffect(effect);
+    }
+
+    /**
+     * Creates a speed multiplier effect that will change the player's speed by a multiplier.
+     * @param speedMultiplier The multiplier.
+     * @param activeTime The time the effect will last for.
+     * @returns A SpeedMultiEffect
+     */
+    public static createSpeedMultiplierEffectTimed(speedMultiplier: number, activeTime: number) {
+        return new SpeedMultiEffect(speedMultiplier, true, activeTime);
+    }
+
+    /**
+     * Creates a speed multiplier effect that will change the player's speed by a multiplier.
+     * This is untimed so the effect will have to be stopped manually by calling setAsCompleted().
+     * @param speedMultiplier The multiplier.
+     * @returns A SpeedMultiEffect.
+     */
+    public static createSpeedMultiplierEffectUntimed(speedMultiplier: number) {
+        return new SpeedMultiEffect(speedMultiplier, false);
     }
 
 }
