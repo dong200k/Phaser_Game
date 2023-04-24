@@ -16,7 +16,6 @@ export default class GameManager {
     private tilemapManager: TilemapManager;
     public playerManager: PlayerManager
     public projectileManager: ProjectileManager
-    public weaponManager: WeaponManager;
 
     // Data
     public gameObjects: Map<string, Matter.Body> = new Map();
@@ -31,7 +30,6 @@ export default class GameManager {
         // Setup managers
         this.playerManager = new PlayerManager(this)
         this.projectileManager = new ProjectileManager(this)
-        this.weaponManager = new WeaponManager(this)
 
         //Set up the tilemap
         this.tilemapManager = new TilemapManager(state);

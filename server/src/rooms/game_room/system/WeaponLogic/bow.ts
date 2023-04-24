@@ -1,10 +1,13 @@
 import MathUtil from "../../../../util/MathUtil";
 import Player from "../../schemas/gameobjs/Player";
 import GameManager from "../GameManager";
-import { IWeaponLogic } from "./WeaponLogic";
+import { IWeaponLogic } from "./WeaponLogic"; 
+
+const weaponId = "bow-id"
+// const weapon = 
 
 const bow: IWeaponLogic = {
-    weaponId: "bow",
+    weaponId: weaponId,
     useAttack(playerState: Player, gameManager: GameManager, data?: any){
         let {mouseX, mouseY, playerBody} = data 
 

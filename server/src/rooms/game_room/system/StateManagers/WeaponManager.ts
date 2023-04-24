@@ -1,21 +1,46 @@
+import FileUtil from '../../../../util/FileUtil';
 import WeaponData from '../../schemas/Trees/Node/Data/WeaponData';
 import Node from '../../schemas/Trees/Node/Node';
 import Player from '../../schemas/gameobjs/Player';
 import Stat from '../../schemas/gameobjs/Stat';
-import GameManager from '../GameManager';
+
+type weapon = {name: string, description: string, sprite: string, projectile: string}
+type weaponUpgradeTree = Array<{}>
 
 export default class WeaponManager{
-    private gameManager: GameManager
+    static singleton = new WeaponManager()
+    private weapons: Map<string, weapon> = new Map()
+    private upgrades: Map<string, weaponUpgradeTree> = new Map()
 
-    constructor(gameManager: GameManager) {
-        this.gameManager = gameManager
+    constructor() {
+        this.loadWeapons()
+        this.loadUpgrades()
     }   
 
-    update(deltaT: number){
+    /**
+     * Loads weapons frfom assets/weapons/weapons.json into a Map<string, weapon>
+     */
+    async loadWeapons(){
+        let weapons = await FileUtil.readJSONAsync("assets/weapons/weapons.json")
+        for (let [weaponId, weapon] of Object.entries(weapons)) {
+            this.weapons.set(weaponId, weapon as weapon)
+        }
+    }
+
+    async loadUpgrades(){
+    }
+
+    /**
+     * Returns object with basic weapon information such as name, description, sprite, projectile, etc based on the weaponId parameter.
+     * @param weaponId 
+     * @returns 
+     */
+    static getWeapon(weaponId: string){
+        return this.singleton.weapons.get(weaponId)
     }
     
     static getTestUpgradeTreeRoot(){
-        let node = new Node<WeaponData>(new WeaponData('bow'))
+        let node = new Node<WeaponData>(new WeaponData('bow-id'))
         let child1 = new Node<WeaponData>(new WeaponData('child1')) 
         let child2 = new Node<WeaponData>(new WeaponData('child2'))
         
@@ -46,6 +71,8 @@ export default class WeaponManager{
                 dfs(node)
             }
         }
+
+        if(tree.root) dfs(tree.root)
     }
 
     // could make time complexity better
@@ -81,7 +108,9 @@ export default class WeaponManager{
             let node = upgrades[choice]
             node.data.status = "selected"
 
-            // Chase base weapon if node has a weaponId
+            // ****TODO add upgrade to stat total
+
+            // Change base weapon if node has a weaponId
             let weaponId = node.data.weaponId
             if(weaponId) WeaponManager.setCurrentWeapon(playerState, weaponId)
         }
@@ -93,7 +122,7 @@ export default class WeaponManager{
      * @param weaponId id for the new base weapon to equip
      */
     static setCurrentWeapon(playerState: Player, weaponId: string){
-        playerState.weaponUpgradeTree.currentWeaponId = weaponId
+        playerState.weapon.setWeapon(weaponId)
     }   
 
     /**

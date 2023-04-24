@@ -1,5 +1,5 @@
 import Stat from "../../../gameobjs/Stat";
-import BaseWeapon from "../../../gameobjs/BaseWeapon";
+import BaseWeapon from "../../../gameobjs/Weapon";
 import { Data } from "./Data";
 import {type} from "@colyseus/schema"
 

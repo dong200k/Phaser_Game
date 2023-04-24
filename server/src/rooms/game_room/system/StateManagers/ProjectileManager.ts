@@ -23,7 +23,7 @@ export default class ProjectileManager{
     // getProjectileStateAndBody(sessionId: string){
     //     return {playerBody: this.gameManager.gameObjects.get(sessionId), playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
     // }
-   
+
     public spawnProjectile(spriteName: string = "demo_hero", owner: Entity, x?: number, y?: number, velocity?: {x: number, y:number}) {
         // ***TODO*** grab width and height from database or based on owner and spriteName
         let width = 10
@@ -40,6 +40,7 @@ export default class ProjectileManager{
             friction: 0,
         })
 
+        // TODO make it not hard coded to player projectile only
         body.collisionFilter = {
             group: 0,
             category: Categories.PLAYER_PROJECTILE,
@@ -52,6 +53,6 @@ export default class ProjectileManager{
         Matter.Body.setVelocity(body, projVelocity);
         console.log(projectile.projectileId)
         this.gameManager.addGameObject(projectile.projectileId, projectile, body);
-        return body
+        return body 
     }   
 }

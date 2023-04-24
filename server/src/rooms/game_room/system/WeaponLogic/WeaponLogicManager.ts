@@ -8,13 +8,13 @@ export default class WeaponLogicManager{
     weaponLogics: Map<string, IWeaponLogic> = new Map()
 
     constructor(){
-        this.loadWeapons()
+        this.loadWeaponLogics()
     }
 
     /**
      * Loads all weapons logic, attack, etc so that they can be used in Game
      */
-    loadWeapons(){
+    loadWeaponLogics(){
         this.weaponLogics.set(bow.weaponId, bow)
     }
 
@@ -25,13 +25,18 @@ export default class WeaponLogicManager{
      * @returns 
      */
     useAttack(playerState: Player, gameManager: GameManager, data?: any){
-        let weaponId = playerState.weaponUpgradeTree.currentWeaponId
-        if(!weaponId) return console.log(`${Player.name} has no weapon!`)
-        
-        let weapon = this.weaponLogics.get(weaponId)
-        if(!weapon) return console.log(`${weaponId} is not a key for a valid weapon!`)
+        let weapon = playerState.weapon
+        let weaponId = weapon.weaponId
 
-        weapon.useAttack(playerState, gameManager, data)
+        if(weaponId){
+            let weaponLogic = this.weaponLogics.get(weaponId)
+
+            if(weaponLogic){
+                weaponLogic.useAttack(playerState, gameManager, data)
+            }else{
+                throw new Error(`${weaponId} is not a key for a valid weapon!`)
+            }
+        }
     }
 
     static getManager(){

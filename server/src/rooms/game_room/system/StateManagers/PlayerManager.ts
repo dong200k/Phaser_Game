@@ -40,9 +40,7 @@ export default class PlayerManager{
         if(!mouseClick || !playerState.attackCooldown.isFinished) return
         playerState.attackCooldown.reset()
 
-        data = {
-            mouseX, mouseY, playerBody
-        }
+        data = {mouseX, mouseY, playerBody}
 
         WeaponLogicManager.getManager().useAttack(playerState, this.gameManager, data)
     }
