@@ -1,6 +1,10 @@
 import Effect from "../../schemas/effects/Effect";
+import CompoundEffect from "../../schemas/effects/combo/CompoundEffect";
+import StatEffect from "../../schemas/effects/temp/StatEffect";
 import Entity from "../../schemas/gameobjs/Entity";
 import GameManager from "../GameManager";
+
+const statCompoundEffectName = "!Entity Stat Compound Effect!";
 
 export default class EffectManager {
     
@@ -37,6 +41,15 @@ export default class EffectManager {
     }
 
     /**
+     * Adds a StatEffect to the entity. Call this method if you wish to remove the effect later by an key. 
+     * @param entity 
+     * @param statEffect 
+     */
+    public static addStatEffectsTo(entity: Entity, statEffect: StatEffect): string {
+        return "";
+    }
+
+    /**
      * Remove the effect object from the entity array.
      * @param entity The entity to remove the effect from.
      * @param effect The effect.
@@ -61,5 +74,23 @@ export default class EffectManager {
             effect.update(deltaT);
             if(effect.isCompleted()) entity.effects.deleteAt(i);
         }
+    }
+
+    /**
+     * Returns the compound effect from this entity that is responsible for grouping together StatComponents.
+     * If no such compound effect is found it is created, added to the entity, and returned.
+     * @param entity The entity.
+     * @returns A CompoundEffect.
+     */
+    private static getStatCompoundEffectFrom(entity: Entity): CompoundEffect {
+        entity.effects.forEach((effect) => {
+            if(effect.getName() === statCompoundEffectName && effect instanceof CompoundEffect) {
+                return effect;
+            }
+        });
+        let compoundEffect = new CompoundEffect(statCompoundEffectName);
+        entity.effects.unshift(compoundEffect);
+        compoundEffect.addToEntity(entity);
+        return compoundEffect;
     }
 }

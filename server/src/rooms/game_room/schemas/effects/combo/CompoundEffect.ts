@@ -29,6 +29,26 @@ export default class CompoundEffect extends Effect {
         return 0;
     }
 
+    public addToEntity(entityOwner: Entity) {
+        super.addToEntity(entityOwner);
+        this.effectGroups.forEach((effectGroup) => {
+            effectGroup.effects.forEach((e) => {
+                e.addToEntity(entityOwner);
+            })
+        })
+    }
+
+    public removeFromEntity() {
+        if(this.getEntity()) {
+            this.effectGroups.forEach((effectGroup) => {
+                effectGroup.effects.forEach((e) => {
+                    e.removeFromEntity();
+                })
+            })
+            super.removeFromEntity();
+        }
+    }
+
     public addEffect(key:string, effect:Effect) {
         if(!this.effectGroups.has(key)) this.effectGroups.set(key, new EffectGroup());
         this.effectGroups.get(key)?.effects.push(effect);
