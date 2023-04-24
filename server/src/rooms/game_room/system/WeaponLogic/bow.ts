@@ -10,14 +10,14 @@ const bow: IWeaponLogic = {
     weaponId: weaponId,
     useAttack(playerState: Player, gameManager: GameManager, data?: any){
         let {mouseX, mouseY, playerBody} = data 
-
-        // ***TODO*** grab projectile info from weapon player is using
-        let spriteName = "demo_hero"
+        let weapon = playerState.weapon
+        
+        let projectileName = weapon.projectile
         let playerX = playerBody.position.x
         let playerY = playerBody.position.y
         let velocity = MathUtil.getNormalizedSpeed(mouseX - playerX, mouseY - playerY, 10)
 
-        let body = gameManager.projectileManager.spawnProjectile(spriteName, playerState, playerX, playerY, velocity)
+        let body = gameManager.projectileManager.spawnProjectile(projectileName, playerState, playerX, playerY, velocity)
     }
 }
 

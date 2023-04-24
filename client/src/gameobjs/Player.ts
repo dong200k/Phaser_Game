@@ -11,8 +11,9 @@ export default class Player extends Entity
 
     /**Add listeners to connect to the server's player*/
     public initializeListeners(playerState: PlayerState) {
-        console.log(playerState.weaponUpgradeTree.root)
-        console.log(playerState.weaponUpgradeTree.root?.children[0].data.stat)
+        console.log(playerState.weapon)
+        // console.log(playerState.weaponUpgradeTree.root)
+        // console.log(playerState.weaponUpgradeTree.root?.children[0].data.stat)
         playerState.onChange = (changes:any) => {
             changes.forEach(({field, value}: any) => {
                 switch(field) {

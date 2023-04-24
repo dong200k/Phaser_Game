@@ -26,11 +26,13 @@ export default class GameManager {
     private getTypeOfObject(gameObj: any): string{
         if(gameObj.hasOwnProperty('role')) return "player";
         if(gameObj.hasOwnProperty('ownerId')) return "projectile"
+        if(gameObj.hasOwnProperty('tileId')) return "tile"
         else return ""
     }
 
     private onAdd = (gameObj:any, key:string) => {
         if(!gameObj) return;
+        console.log(gameObj)
         let objType = this.getTypeOfObject(gameObj)
         switch (objType){
             case 'player':
@@ -78,8 +80,9 @@ export default class GameManager {
     }
 
     private addProjectile(projectile: any, key: string): Phaser.GameObjects.Sprite{
-        let proj =  new Phaser.GameObjects.Sprite(this.scene, projectile.x, projectile.y, "demo_hero");
+        let proj =  new Phaser.GameObjects.Sprite(this.scene, projectile.x, projectile.y, projectile.sprite);
         proj.scale = 0.5
+        console.log(projectile)
         projectile.onChange = (changes:any) => {
             changes.forEach(({field, value}: any) => {
                 switch(field) {

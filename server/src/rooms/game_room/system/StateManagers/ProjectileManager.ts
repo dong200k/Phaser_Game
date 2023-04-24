@@ -31,7 +31,7 @@ export default class ProjectileManager{
         let spawnX = x? x: owner.x
         let spawnY = y? y: owner.y
         let projectile = new Projectile(spriteName, owner, spawnX, spawnY, width, height);
-        
+
         let body = Matter.Bodies.rectangle(spawnX, spawnY, width, height, {
             isStatic: false,
             inertia: Infinity,
