@@ -1,13 +1,9 @@
 import Phaser from 'phaser';
 import config from './config';
-import GameScene from './scenes/GameScene';
-import LobbyScene from './scenes/LobbyScene';
-import MenuScene from './scenes/MenuScene';
-import RoomScene from './scenes/RoomScene';
+import DataManager from './system/DataManager';
 
-// Create a new Phaser game with predefined config and scene
-new Phaser.Game(
-    Object.assign(config, {
-        scene: [MenuScene, GameScene, LobbyScene, RoomScene]
-    })
-);
+// Create a new Phaser game with predefined config.
+const game = new Phaser.Game(config);
+
+// Runs the data manager on the game's update loop.
+game.events.on("step", () => DataManager.getDataManager().update());
