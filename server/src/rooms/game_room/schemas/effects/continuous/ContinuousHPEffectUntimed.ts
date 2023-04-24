@@ -3,7 +3,7 @@ import { type } from "@colyseus/schema";
 import ContinuousEffectUntimed from "./ContinuousEffectUntimed";
 
 export default class ContinuousHPEffectUntimed extends ContinuousEffectUntimed {
-    @type("number") hpPerTick;
+    @type("number") private hpPerTick;
 
     /**
      * Creates a continusous hp effect that will have to be stopped manually through setAsCompleted().
@@ -12,17 +12,14 @@ export default class ContinuousHPEffectUntimed extends ContinuousEffectUntimed {
      */
     constructor(tickRate?:number, hpPerTick:number=1) {
         super(tickRate);
-        this.name = "ContinuousHPEffect";
-        this.description = "Continuous changes hp over time.";
+        this.setName("ContinuousHPEffect");
+        this.setDescription("Continuous changes hp over time.");
         this.hpPerTick = hpPerTick;
     }
 
-    public applyEffect(entity?: Entity | undefined): boolean {
-        if(entity) {
-            entity.stat.hp += this.hpPerTick;
-            return true;
-        } 
-        return false;
+    public applyEffect(entity: Entity): boolean {
+        entity.stat.hp += this.hpPerTick;
+        return true;
     }
 
     public toString(): string {

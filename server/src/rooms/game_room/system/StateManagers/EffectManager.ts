@@ -28,9 +28,11 @@ export default class EffectManager {
         if(Array.isArray(effect)) {
             effect.forEach((e) => {
                 entity.effects.push(e);
+                e.addToEntity(entity);
             })
         } else {
             entity.effects.push(effect);
+            effect.addToEntity(entity);
         }
     }
 
@@ -41,8 +43,10 @@ export default class EffectManager {
      */
     public static removeEffectFrom(entity: Entity, effect: Effect) {
         for(let i = entity.effects.length - 1; i >=0; i--) {
-            if(entity.effects.at(i) === effect)
+            if(entity.effects.at(i) === effect) {
+                entity.effects.at(i).removeFromEntity();
                 entity.effects.deleteAt(i);
+            }
         }
     }
 
@@ -54,7 +58,7 @@ export default class EffectManager {
     public static updateEffectsOn(entity: Entity, deltaT: number) {
         for(let i = entity.effects.length - 1; i >= 0; i--) {
             let effect = entity.effects.at(i);
-            effect.update(deltaT, entity);
+            effect.update(deltaT);
             if(effect.isCompleted()) entity.effects.deleteAt(i);
         }
     }

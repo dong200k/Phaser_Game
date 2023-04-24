@@ -3,17 +3,18 @@ import Entity from "../../gameobjs/Entity";
 import Effect from "../Effect";
 import { type } from '@colyseus/schema';
 
-export default class ContinuousEffect extends Effect {
+export default abstract class ContinuousEffect extends Effect {
+    
     /** The total time that is left before this effect completes. */
-    @type('number') timeRemaining: number;
+    @type('number') private timeRemaining: number;
     /** The number of seconds before the effect is applied again. */
-    @type('number') tickRate: number = 1;
+    @type('number') private tickRate: number = 1;
     /** The number of seconds before the next tick. */
-    @type('number') timeUntilNextTick: number = 1;
+    @type('number') private timeUntilNextTick: number = 1;
     /** The amount of times this effect will tick. */
-    @type('number') tickCount: number;
+    @type('number') private tickCount: number;
     /** The ticks that have not been processed. This number will increment everytime timeUntilNextTick reaches zero. */
-    ticksQueued: number = 0;
+    private ticksQueued: number = 0;
 
     /**
      * Creates a continuous effect that will apply its effect over a period of time. 
@@ -22,8 +23,8 @@ export default class ContinuousEffect extends Effect {
      */
     constructor(timeRemaining:number=5, tickCount:number=10) {
         super();
-        this.name = "ContinuousEffect";
-        this.description = "Effect that apply continuously";
+        this.setName("ContinuousEffect");
+        this.setDescription("Effect that apply continuously");
         this.timeRemaining = Math.max(1, Math.round(timeRemaining));
         this.tickCount = Math.max(1, Math.round(tickCount));
         // Calculate tick rate 
@@ -45,11 +46,12 @@ export default class ContinuousEffect extends Effect {
      * If no entity is provided it will queue up the effects to be applied later. 
      * This effect will be flagged as completed if timeRemaining reaches zero.
      */
-    public update(deltaT: number, entity?: Entity | undefined): number {
+    public update(deltaT: number): number {
         this.timeRemaining -= deltaT;
         this.timeUntilNextTick -= deltaT;
+        let entity = this.getEntity();
         // Queue up the effect.
-        while(this.timeUntilNextTick <= 0 && !this.completed) {
+        while(this.timeUntilNextTick <= 0 && !this.isCompleted()) {
             this.timeUntilNextTick += this.tickRate;
             this.ticksQueued++;
         }
@@ -75,7 +77,28 @@ export default class ContinuousEffect extends Effect {
         else return 0;
     }
 
+    /** The total time that is left before this effect completes. */
+    public getTimeRemaining() {return this.timeRemaining;}
+    /** The number of seconds before the effect is applied. This will repeat until the timeRemaining reaches zero. */
+    public getTickRate() {return this.tickRate;}
+    /** The number of seconds before the next tick. */
+    public getTimeUntilNextTick() {return this.timeUntilNextTick;}
+    /** The amount of times this effect will tick. */
+    public getTickCount() {return this.tickCount;}
+    /** The ticks that have not been processed. This number will increment everytime timeUntilNextTick reaches zero. */
+    public getTicksQueued() {return this.ticksQueued;}
+
+    
+
+
     public toString(): string {
        return `${super.toString()}(tickRate: ${this.tickRate}, timeLeft: ${MathUtil.roundDecimal(this.timeRemaining, 2)}, timeTillNextTick: ${MathUtil.roundDecimal(this.timeUntilNextTick, 2)})`;
+    }
+
+    public abstract applyEffect(entity: Entity): boolean;
+    protected onComplete(): void {}
+    protected onAddToEntity(entity: Entity): void {}
+    protected onRemoveFromEntity(): void {
+        this.setAsCompleted();
     }
 }

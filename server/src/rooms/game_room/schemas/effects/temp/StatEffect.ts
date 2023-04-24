@@ -32,7 +32,7 @@ export interface StatConfig {
 
 export default class StatEffect extends TempEffect {
     /** The stat of this stat effect. This value should not be changed. It is needed to revert the stat of an entity. */
-    @type(Stat) stat: Stat;
+    @type(Stat) private stat: Stat;
 
     /**
      * Creates a stat object that will be used to change 
@@ -44,8 +44,8 @@ export default class StatEffect extends TempEffect {
         this.stat = new Stat();
         this.clearStat(this.stat);
         if(statConfig) {
-            if(statConfig.name !== undefined) this.name = statConfig.name;
-            if(statConfig.description !== undefined) this.description = statConfig.description;
+            if(statConfig.name !== undefined) this.setName(statConfig.name);
+            if(statConfig.description !== undefined) this.setDescription(statConfig.description);
             if(statConfig.maxHp !== undefined) this.stat.maxHp = statConfig.maxHp;
             if(statConfig.maxMana !== undefined) this.stat.maxMana = statConfig.maxMana;
             if(statConfig.armor !== undefined) this.stat.armor = statConfig.armor;
@@ -160,4 +160,7 @@ export default class StatEffect extends TempEffect {
         stat.level = 0;
     }
 
+    public getStat() {
+        return this.stat;
+    }
 }

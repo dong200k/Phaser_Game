@@ -12,17 +12,18 @@ export class EffectGroup extends Schema {
  */
 export default class CompoundEffect extends Effect {
     
+    
     @type({ map: EffectGroup}) effectGroups = new MapSchema<EffectGroup>();
 
     constructor(name: string) {
         super();
-        this.name = name;
+        this.setName(name);
     }
 
-    public update(deltaT: number, entity?: Entity | undefined): number {
+    public update(deltaT: number): number {
         this.effectGroups.forEach((effectGroup) => {
             effectGroup.effects.forEach((effect) => {
-                effect.update(deltaT, entity);
+                effect.update(deltaT);
             })
         })
         return 0;
@@ -33,5 +34,9 @@ export default class CompoundEffect extends Effect {
         this.effectGroups.get(key)?.effects.push(effect);
     }
 
+    public applyEffect(entity: Entity): boolean {return false;}
+    protected onComplete(): void {}
+    protected onAddToEntity(entity: Entity): void {}
+    protected onRemoveFromEntity(): void {}
 }
 

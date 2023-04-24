@@ -5,17 +5,23 @@ import Effect from "../Effect";
  * A one time effect will apply its effect to the entity once. 
  * If no entity is provided or if the effect is not applied for any other reason, this effect will not be marked as completed.
  */
-export default class OneTimeEffect extends Effect {
-
+export default abstract class OneTimeEffect extends Effect {
+    
     constructor() {
         super();
-        this.name = "OneTimeEffect";
-        this.description = "One Time Effect";
+        this.setName("OneTimeEffect");
+        this.setDescription("One Time Effect");
     }
 
-    public update(deltaT: number, entity?: Entity | undefined): number {
-        if(deltaT > 0 && this.applyEffect(entity))
+    public update(deltaT: number): number {
+        let entity = this.getEntity();
+        if(deltaT > 0 && entity && this.applyEffect(entity))
             this.setAsCompleted();
         return deltaT;
     }
+
+    public abstract applyEffect(entity: Entity): boolean;
+    protected onComplete(): void {}
+    protected onAddToEntity(entity: Entity): void {}
+    protected onRemoveFromEntity(): void {}
 }

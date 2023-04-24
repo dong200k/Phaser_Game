@@ -5,7 +5,7 @@ import TempEffect from "./TempEffect";
 export default class SpeedMultiEffect extends TempEffect {
 
     /** The speed multipler is applied to the entity. */
-    @type('number') speedMultiplier;
+    @type('number') private speedMultiplier;
 
     /**
      * Creates a speed multiplier effect.

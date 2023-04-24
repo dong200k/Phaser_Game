@@ -150,23 +150,23 @@ describe("Stat Effects", () => {
         expect(player.stat.speed).toBe(11);
         expect(player.stat.lifeSteal).toBeCloseTo(0.2);
         EffectManager.removeEffectFrom(player, darkGodRing);
-        expect(player.stat.maxHp).toBe(10100);
-        expect(player.stat.maxMana).toBe(1100);
-        expect(player.stat.armor).toBe(500);
-        expect(player.stat.magicResist).toBe(500);
-        expect(player.stat.damagePercent).toBeCloseTo(1.2);
-        expect(player.stat.attack).toBe(1010);
-        expect(player.stat.attackPercent).toBeCloseTo(1.2);
-        expect(player.stat.armorPen).toBe(100);
-        expect(player.stat.magicAttack).toBe(1000);
-        expect(player.stat.magicAttackPercent).toBeCloseTo(1.2);
-        expect(player.stat.magicPen).toBe(100);
-        expect(player.stat.critRate).toBeCloseTo(0.2);
-        expect(player.stat.critDamage).toBeCloseTo(1.2);
-        expect(player.stat.attackRange).toBe(3);
-        expect(player.stat.attackRangePercent).toBeCloseTo(1.2);
-        expect(player.stat.speed).toBe(11);
-        expect(player.stat.lifeSteal).toBeCloseTo(0.2);
+        expect(player.stat.maxHp).toBe(100);
+        expect(player.stat.maxMana).toBe(100);
+        expect(player.stat.armor).toBe(0);
+        expect(player.stat.magicResist).toBe(0);
+        expect(player.stat.damagePercent).toBeCloseTo(1);
+        expect(player.stat.attack).toBe(10);
+        expect(player.stat.attackPercent).toBeCloseTo(1);
+        expect(player.stat.armorPen).toBe(0);
+        expect(player.stat.magicAttack).toBe(0);
+        expect(player.stat.magicAttackPercent).toBeCloseTo(1);
+        expect(player.stat.magicPen).toBe(0);
+        expect(player.stat.critRate).toBeCloseTo(0);
+        expect(player.stat.critDamage).toBeCloseTo(1);
+        expect(player.stat.attackRange).toBe(1);
+        expect(player.stat.attackRangePercent).toBeCloseTo(1);
+        expect(player.stat.speed).toBe(1);
+        expect(player.stat.lifeSteal).toBeCloseTo(0);
     })
 })
 

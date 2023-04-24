@@ -3,13 +3,14 @@ import Entity from "../../gameobjs/Entity";
 import Effect from "../Effect";
 import { type } from '@colyseus/schema';
 
-export default class ContinuousEffectUntimed extends Effect {
+export default abstract class ContinuousEffectUntimed extends Effect {
+    
     /** The number of seconds before the effect is applied again. */
-    @type('number') tickRate: number;
+    @type('number') private tickRate: number;
     /** The number of seconds before the next tick. */
-    @type('number') timeUntilNextTick: number = 1;
+    @type('number') private timeUntilNextTick: number = 1;
     /** The ticks that have not been processed. This number will increment everytime timeUntilNextTick reaches zero. */
-    ticksQueued: number = 0;
+    private ticksQueued: number = 0;
 
     /**
      * Creates a continuous effect that will apply its effect based on a tickRate until manually stopped through the setAsCompleted() method.
@@ -17,8 +18,8 @@ export default class ContinuousEffectUntimed extends Effect {
      */
     constructor(tickRate:number=1) {
         super();
-        this.name = "ContinuousEffect";
-        this.description = "Effect that apply continuously";
+        this.setName("ContinuousEffect");
+        this.setDescription("Effect that apply continuously");
         if(tickRate < 0.05) throw new RangeError("tickRate out of range, must be >= 0.05");
         this.tickRate = tickRate;
         this.timeUntilNextTick = this.tickRate;
@@ -29,10 +30,11 @@ export default class ContinuousEffectUntimed extends Effect {
      * If no entity is provided it will queue up the effects to be applied later. 
      * This effect will be flagged as completed if timeRemaining reaches zero.
      */
-    public update(deltaT: number, entity?: Entity | undefined): number {
+    public update(deltaT: number): number {
         this.timeUntilNextTick -= deltaT;
+        let entity = this.getEntity();
         // Queue up the effect.
-        while(this.timeUntilNextTick <= 0 && !this.completed) {
+        while(this.timeUntilNextTick <= 0 && !this.isCompleted()) {
             this.timeUntilNextTick += this.tickRate;
             this.ticksQueued++;
         }
@@ -48,5 +50,12 @@ export default class ContinuousEffectUntimed extends Effect {
 
     public toString(): string {
        return `${super.toString()}(tickRate: ${this.tickRate}, timeTillNextTick: ${MathUtil.roundDecimal(this.timeUntilNextTick, 2)})`;
+    }
+
+    public abstract applyEffect(entity: Entity): boolean;
+    protected onComplete(): void {}
+    protected onAddToEntity(entity: Entity): void {}
+    protected onRemoveFromEntity(): void {
+        this.setAsCompleted();
     }
 }
