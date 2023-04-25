@@ -100,12 +100,13 @@ export default class EffectManager {
      * @param entity The entity.
      * @returns A CompoundEffect.
      */
-    public static getStatCompoundEffectFrom(entity: Entity): CompoundEffect {
-        entity.effects.forEach((effect) => {
+    private static getStatCompoundEffectFrom(entity: Entity): CompoundEffect {
+        for(let i = 0; i < entity.effects.length; i++) {
+            let effect = entity.effects.at(i);
             if(effect.getName() === statCompoundEffectName) {
-                return effect;
+                return effect as CompoundEffect;
             }
-        });
+        }
         let compoundEffect = new CompoundEffect(statCompoundEffectName);
         entity.effects.unshift(compoundEffect);
         compoundEffect.addToEntity(entity);
