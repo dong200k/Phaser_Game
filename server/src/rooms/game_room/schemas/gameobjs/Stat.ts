@@ -3,7 +3,9 @@ import GameObject from './GameObject';
 
 export default class Stat extends Schema {
     @type('number') hp;
+    @type('number') maxHp;
     @type('number') mana;
+    @type('number') maxMana;
 
     @type('number') armor;
     @type('number') magicResist;
@@ -39,7 +41,9 @@ export default class Stat extends Schema {
     constructor() {
         super(0, 0);
         this.hp = 100;
+        this.maxHp = 100;
         this.mana = 100;
+        this.maxMana = 100;
 
         this.armor = 10;
         this.magicResist = 10;

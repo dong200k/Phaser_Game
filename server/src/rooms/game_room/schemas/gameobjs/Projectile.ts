@@ -36,5 +36,7 @@ export default class Projectile extends GameObject {
         // for projectile reuse
         this.isHidden = false
         this.isActive = true
+
+        this.type = "Projectile";
     }
 }
