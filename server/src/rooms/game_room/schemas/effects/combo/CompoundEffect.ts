@@ -2,18 +2,14 @@ import Entity from "../../gameobjs/Entity";
 import Effect from "../Effect";
 import { type, MapSchema, ArraySchema, Schema } from "@colyseus/schema";
 
-export class EffectGroup extends Schema {
-    @type([Effect]) effects = new ArraySchema<Effect>();
-}
-
 /**
- * CompoundEffects are used if you want to group together to organize them better. 
+ * CompoundEffects are used if you want to group together effects in a map with a string key.
  * It also provides functionaliy to manage these grouped effects.
  */
 export default class CompoundEffect extends Effect {
     
-    
-    @type({ map: EffectGroup}) effectGroups = new MapSchema<EffectGroup>();
+    /** The effects that are managed by this CompoundEffect. */
+    @type({ map: Effect}) effects = new MapSchema<Effect>();
 
     constructor(name: string) {
         super();
@@ -21,37 +17,53 @@ export default class CompoundEffect extends Effect {
     }
 
     public update(deltaT: number): number {
-        this.effectGroups.forEach((effectGroup) => {
-            effectGroup.effects.forEach((effect) => {
-                effect.update(deltaT);
-            })
+        this.effects.forEach((effect) => {
+            effect.update(deltaT);
         })
         return 0;
     }
 
     public addToEntity(entityOwner: Entity) {
         super.addToEntity(entityOwner);
-        this.effectGroups.forEach((effectGroup) => {
-            effectGroup.effects.forEach((e) => {
-                e.addToEntity(entityOwner);
-            })
+        this.effects.forEach((effect) => {
+            effect.addToEntity(entityOwner);
         })
     }
 
     public removeFromEntity() {
         if(this.getEntity()) {
-            this.effectGroups.forEach((effectGroup) => {
-                effectGroup.effects.forEach((e) => {
-                    e.removeFromEntity();
-                })
+            this.effects.forEach((effect) => {
+                effect.removeFromEntity();
             })
             super.removeFromEntity();
         }
     }
 
-    public addEffect(key:string, effect:Effect) {
-        if(!this.effectGroups.has(key)) this.effectGroups.set(key, new EffectGroup());
-        this.effectGroups.get(key)?.effects.push(effect);
+    /**
+     * Adds an effect to the compound effect with a specified key and effect.
+     * If an effect with the same key already exist, then remove the previous effect. The previous effect
+     * will have removeFromEntity() called on it.
+     * @param key The key; used to query the effect later on.
+     * @param effect The effect.
+     */
+    public addEffect(key:string, effect:Effect): void {
+        let previousEffect = this.effects.get(key);
+        if(previousEffect) previousEffect.removeFromEntity();
+        this.effects.set(key, effect);
+        let entity = this.getEntity();
+        if(entity) effect.addToEntity(entity);
+    }
+
+    /**
+     * Removes an effect from this CompoundEffect. The removed effect will have removeFromEntity()
+     * called on it.
+     * @param key The key.
+     */
+    public removeEffect(key:string): Effect | undefined {
+        let effect = this.effects.get(key);
+        if(effect) effect.removeFromEntity();
+        this.effects.delete(key);
+        return effect;
     }
 
     public applyEffect(entity: Entity): boolean {return false;}

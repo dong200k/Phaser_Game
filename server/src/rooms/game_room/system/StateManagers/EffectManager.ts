@@ -3,6 +3,7 @@ import CompoundEffect from "../../schemas/effects/combo/CompoundEffect";
 import StatEffect from "../../schemas/effects/temp/StatEffect";
 import Entity from "../../schemas/gameobjs/Entity";
 import GameManager from "../GameManager";
+import MathUtil from "../../../../util/MathUtil";
 
 const statCompoundEffectName = "!Entity Stat Compound Effect!";
 
@@ -42,11 +43,28 @@ export default class EffectManager {
 
     /**
      * Adds a StatEffect to the entity. Call this method if you wish to remove the effect later by an key. 
-     * @param entity 
-     * @param statEffect 
+     * Note: This is a helper method that uses CompoundEffect to store the StatEffect.
+     * @param entity The entity.
+     * @param statEffect The statEffect.
+     * @returns A uuid key that is used to reference the added StatEffect.
      */
     public static addStatEffectsTo(entity: Entity, statEffect: StatEffect): string {
-        return "";
+        let compoundEffect = EffectManager.getStatCompoundEffectFrom(entity);
+        let newUUID = MathUtil.uid();
+        compoundEffect.addEffect(newUUID, statEffect);
+        return newUUID;
+    }
+
+    /**
+     * Removes a StatEffect from the entity.
+     * Note: This is a helper method that uses CompoundEffect to store the StatEffect.
+     * @param entity The entity.
+     * @param key The key.
+     * @returns A StatEffect or undefined if the key doesn't exist.
+     */
+    public static removeStatEffectFrom(entity: Entity, key: string): StatEffect | undefined {
+        let compoundEffect = EffectManager.getStatCompoundEffectFrom(entity);
+        return compoundEffect.removeEffect(key) as StatEffect;
     }
 
     /**
@@ -82,9 +100,9 @@ export default class EffectManager {
      * @param entity The entity.
      * @returns A CompoundEffect.
      */
-    private static getStatCompoundEffectFrom(entity: Entity): CompoundEffect {
+    public static getStatCompoundEffectFrom(entity: Entity): CompoundEffect {
         entity.effects.forEach((effect) => {
-            if(effect.getName() === statCompoundEffectName && effect instanceof CompoundEffect) {
+            if(effect.getName() === statCompoundEffectName) {
                 return effect;
             }
         });

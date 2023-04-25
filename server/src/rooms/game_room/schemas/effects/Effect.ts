@@ -24,7 +24,7 @@ export default abstract class Effect extends Schema {
 
     /**
      * Initialize this effect to prep it for updates on an entity.
-     * Note: This should be called by the EffectManager. Afterwards the update
+     * Note: This should be called by the EffectManager (you can also call this if you know what you are doing). Afterwards the update
      * method will be repeatly called.
      * @param entityOwner The entity that this effect will be added to.
      */

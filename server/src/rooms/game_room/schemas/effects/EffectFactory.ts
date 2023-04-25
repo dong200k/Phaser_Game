@@ -5,6 +5,7 @@ import ContinuousHPEffectUntimed from "./continuous/ContinuousHPEffectUntimed";
 import InstantHPEffect from "./onetime/InstantHPEffect";
 import SpeedMultiEffect from "./temp/SpeedMultiEffect";
 import StatEffect, { StatConfig } from "./temp/StatEffect";
+import CompoundEffect from "./combo/CompoundEffect";
 
 
 export default class EffectFactory {
@@ -103,5 +104,14 @@ export default class EffectFactory {
      */
     public static createStatEffect(statConfig?: StatConfig) {
         return new StatEffect(statConfig);
+    }
+
+    /**
+     * Creates a CompoundEffects that are used to group effects in a map with a string key.
+     * @param name The name of the CompoundEffect.
+     * @returns A CompoundEffect.
+     */
+    public static createCompoundEffect(name: string) {
+        return new CompoundEffect(name);
     }
 }
