@@ -15,6 +15,9 @@ export default abstract class ContinuousEffect extends Effect {
     @type('number') private tickCount: number;
     /** The ticks that have not been processed. This number will increment everytime timeUntilNextTick reaches zero. */
     private ticksQueued: number = 0;
+    private defaultTimeRemaining: number;
+    private defaultTickCount: number;
+
 
     /**
      * Creates a continuous effect that will apply its effect over a period of time. 
@@ -27,6 +30,8 @@ export default abstract class ContinuousEffect extends Effect {
         this.setDescription("Effect that apply continuously");
         this.timeRemaining = Math.max(1, Math.round(timeRemaining));
         this.tickCount = Math.max(1, Math.round(tickCount));
+        this.defaultTimeRemaining = this.timeRemaining;
+        this.defaultTickCount = this.tickCount;
         // Calculate tick rate 
         this.tickRate = this.calculateTickRate(this.timeRemaining, this.tickCount);
         this.timeUntilNextTick = this.tickRate;
@@ -88,7 +93,16 @@ export default abstract class ContinuousEffect extends Effect {
     /** The ticks that have not been processed. This number will increment everytime timeUntilNextTick reaches zero. */
     public getTicksQueued() {return this.ticksQueued;}
 
-    
+    public reset(): boolean {
+        if(this.getEntity() !== null) return false;
+        this.timeRemaining = this.defaultTimeRemaining;
+        this.tickCount = this.defaultTickCount;
+        this.tickRate = this.calculateTickRate(this.timeRemaining, this.tickCount);
+        this.timeUntilNextTick = this.tickRate;
+        this.ticksQueued = 0;
+        super.reset();
+        return true;
+    }
 
 
     public toString(): string {
@@ -101,4 +115,5 @@ export default abstract class ContinuousEffect extends Effect {
     protected onRemoveFromEntity(): void {
         this.setAsCompleted();
     }
+    protected onReset(): void {}
 }

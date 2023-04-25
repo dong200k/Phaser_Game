@@ -48,6 +48,14 @@ export default abstract class ContinuousEffectUntimed extends Effect {
         return 0;
     }
 
+    public reset(): boolean {
+        if(this.getEntity() !== null) return false;
+        this.ticksQueued = 0;
+        this.timeUntilNextTick = this.tickRate;
+        super.reset();
+        return true;
+    }
+
     public toString(): string {
        return `${super.toString()}(tickRate: ${this.tickRate}, timeTillNextTick: ${MathUtil.roundDecimal(this.timeUntilNextTick, 2)})`;
     }
@@ -57,5 +65,8 @@ export default abstract class ContinuousEffectUntimed extends Effect {
     protected onAddToEntity(entity: Entity): void {}
     protected onRemoveFromEntity(): void {
         this.setAsCompleted();
+    }
+    protected onReset(): void {
+        //TODO
     }
 }

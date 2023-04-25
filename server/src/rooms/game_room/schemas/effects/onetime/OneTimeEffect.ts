@@ -24,4 +24,5 @@ export default abstract class OneTimeEffect extends Effect {
     protected onComplete(): void {}
     protected onAddToEntity(entity: Entity): void {}
     protected onRemoveFromEntity(): void {}
+    protected onReset(): void {}
 }

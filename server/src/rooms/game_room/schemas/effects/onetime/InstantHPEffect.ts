@@ -22,4 +22,16 @@ export default class InstantHPEffect extends OneTimeEffect {
     public toString(): string {
         return `${super.toString()}(hp: ${this.hp})`;
     }
+
+    /**
+     * Sets the hp that will be applied to the entity.
+     * @param hp The hp.
+     */
+    public setHp(hp: number) {
+        this.hp = hp;
+    }
+
+    public getHp() {
+        return this.hp;
+    }
 }

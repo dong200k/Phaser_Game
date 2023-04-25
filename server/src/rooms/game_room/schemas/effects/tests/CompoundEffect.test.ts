@@ -91,6 +91,10 @@ describe('CompoundEffect tests', () => {
 
         EffectManager.removeStatEffectFrom(player, lsid);
         expect(player.stat.attack).toBe(10);
+
+        EffectManager.addStatEffectsTo(player, bfSword);
+        EffectManager.updateEffectsOn(player, 0.1);
+        expect(player.stat.attack).toBe(40);
     })
 })
 

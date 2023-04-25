@@ -13,6 +13,9 @@ export default abstract class TempEffect extends Effect {
     /** The state the effect is in. Either the effect hasn't been applied, it is currently being applied, or it has finished applied and is reverted. */
     @type("string") private effectState: EffectStateType = "Haven't Applied";
 
+    private defaultTimeRemaining: number;
+    private defaultIsTimed: boolean;
+
     /**
      * Creates a temp effect.
      * @param isTimed Is this effect timed or not. Non timed effects needs to be reverted manually, by calling setAsCompleted().
@@ -22,6 +25,8 @@ export default abstract class TempEffect extends Effect {
         super();
         this.isTimed = isTimed;
         this.timeRemaining = Math.max(1, Math.round(totalTime));
+        this.defaultTimeRemaining = this.timeRemaining;
+        this.defaultIsTimed = this.isTimed;
     }
 
     public update(deltaT: number): number {
@@ -66,6 +71,15 @@ export default abstract class TempEffect extends Effect {
         return false;
     }
 
+    public reset(): boolean {
+        if(this.getEntity() !== null) return false;
+        this.timeRemaining = this.defaultTimeRemaining;
+        this.isTimed = this.defaultIsTimed;
+        this.effectState = "Haven't Applied";
+        super.reset();
+        return true;
+    }
+
     protected onComplete(): void {}
     protected onAddToEntity(entity: Entity): void {}
     protected onRemoveFromEntity(): void {
@@ -73,4 +87,5 @@ export default abstract class TempEffect extends Effect {
             this.setAsCompleted();
         }
     }
+    protected onReset(): void {}
 }

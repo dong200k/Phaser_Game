@@ -18,6 +18,30 @@ describe("Speed Multiplier Effect, Temp", () => {
         EffectManager.updateEffectsOn(player, 0.03);
         expect(player.stat.speed).toBeCloseTo(1);
     })
+    test("Boost speed by 2 times for 2 seconds, reset and do it again.", () => {
+        let player = createPlayer(1);
+        let effect = EffectFactory.createSpeedMultiplierEffectTimed(2, 2);
+        // Apply effect.
+        EffectManager.addEffectsTo(player, effect);
+        EffectManager.updateEffectsOn(player, 0.99);
+        expect(player.stat.speed).toBeCloseTo(2);
+        EffectManager.updateEffectsOn(player, 0.99);
+        expect(player.stat.speed).toBeCloseTo(2);
+        EffectManager.updateEffectsOn(player, 0.03);
+        expect(player.stat.speed).toBeCloseTo(1);
+        // Remove and reset.
+        EffectManager.removeEffectFrom(player, effect);
+        expect(effect.getEntity()).toBeNull();
+        // Apply effect.
+        EffectManager.addEffectsTo(player, effect);
+        expect(effect.getEntity()).toBeTruthy();
+        EffectManager.updateEffectsOn(player, 0.99);
+        expect(player.stat.speed).toBeCloseTo(2);
+        EffectManager.updateEffectsOn(player, 0.99);
+        expect(player.stat.speed).toBeCloseTo(2);
+        EffectManager.updateEffectsOn(player, 0.03);
+        expect(player.stat.speed).toBeCloseTo(1);
+    })
     test("Slow speed to 0.5 for 2 seconds", () => {
         let player = createPlayer(1);
         EffectManager.addEffectsTo(player, EffectFactory.createSpeedMultiplierEffectTimed(0.5, 2));
@@ -103,6 +127,22 @@ describe("Stat Effects", () => {
             description: 'A sword that ADCs like to build',
             attack: 15,
         });
+        EffectManager.addEffectsTo(player, basicSwordEffect);
+        EffectManager.updateEffectsOn(player, 0.1);
+        expect(player.stat.attack).toBe(25);
+    })
+    test("Long Sword Stats, Removed and added again.", () => {
+        let player = createPlayer();
+        let basicSwordEffect = EffectFactory.createStatEffect({
+            name: 'long sword',
+            description: 'A sword that ADCs like to build',
+            attack: 15,
+        });
+        EffectManager.addEffectsTo(player, basicSwordEffect);
+        EffectManager.updateEffectsOn(player, 0.1);
+        expect(player.stat.attack).toBe(25);
+        EffectManager.removeEffectFrom(player, basicSwordEffect);
+        expect(player.stat.attack).toBe(10);
         EffectManager.addEffectsTo(player, basicSwordEffect);
         EffectManager.updateEffectsOn(player, 0.1);
         expect(player.stat.attack).toBe(25);

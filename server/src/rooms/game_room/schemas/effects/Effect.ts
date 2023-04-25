@@ -34,12 +34,12 @@ export default abstract class Effect extends Schema {
     }
 
     /**
-     * Called when removing an effect from an entity. Doing so, setAsCompleted() and 
-     * onRemoveFromEntity() would be called automatically.
+     * Called to remove this effect from its assigned entity (this is the entity that was used when calling addToEntity()). 
+     * Doing so, setAsCompleted() and onRemoveFromEntity() would be called automatically.
      * Note: This should be called by the EffectManager. 
      */
     public removeFromEntity() {
-        if(this.entity) {
+        if(this.entity !== null) {
             this.onRemoveFromEntity();
             this.entity = null;
         }
@@ -80,6 +80,20 @@ export default abstract class Effect extends Schema {
         return this.description;
     }
 
+    /**
+     * Called when you want to reuse an effect. Only works if this effect has no entity assigned to it.
+     * 
+     * Resets this effect to its original state. removeFromEntity() is automatically called 
+     * to remove the entity this effect is connected to. The completed flag will reset to false.
+     * @returns True if this effect has been sucessfully reset. False otherwise.
+     */
+    public reset(): boolean {
+        if(this.entity !== null) return false;
+        this.completed = false;
+        this.onReset();
+        return true;
+    }
+
     // -------- Effect lifecycle methods -------- //
     /** Called when this effect is completed. */
     protected abstract onComplete(): void;
@@ -87,6 +101,8 @@ export default abstract class Effect extends Schema {
     protected abstract onAddToEntity(entity: Entity): void;
     /** Called just before this effect is removed from an entity. */
     protected abstract onRemoveFromEntity(): void;
+    /** Called after this effect has been reset and its entity has been removed. */
+    protected abstract onReset(): void;
 
 
     public toString(): string {

@@ -64,11 +64,13 @@ export default class EffectManager {
      */
     public static removeStatEffectFrom(entity: Entity, key: string): StatEffect | undefined {
         let compoundEffect = EffectManager.getStatCompoundEffectFrom(entity);
-        return compoundEffect.removeEffect(key) as StatEffect;
+        let statEffect = compoundEffect.removeEffect(key) as StatEffect;
+        statEffect.reset();
+        return statEffect;
     }
 
     /**
-     * Remove the effect object from the entity array.
+     * Remove the effect object from the entity array. When the effect is removed it is reseted.
      * @param entity The entity to remove the effect from.
      * @param effect The effect.
      */
@@ -76,13 +78,14 @@ export default class EffectManager {
         for(let i = entity.effects.length - 1; i >=0; i--) {
             if(entity.effects.at(i) === effect) {
                 entity.effects.at(i).removeFromEntity();
+                entity.effects.at(i).reset();
                 entity.effects.deleteAt(i);
             }
         }
     }
 
     /**
-     * Updates the effects array on an entity. Any completed effects will be automatically removed.
+     * Updates the effects array on an entity. Any completed effects will be automatically removed and reseted.
      * @param entity The entity that should be updated.
      * @param deltaT The time that is used to step forward the effects.
      */
@@ -90,7 +93,11 @@ export default class EffectManager {
         for(let i = entity.effects.length - 1; i >= 0; i--) {
             let effect = entity.effects.at(i);
             effect.update(deltaT);
-            if(effect.isCompleted()) entity.effects.deleteAt(i);
+            if(effect.isCompleted()) {
+                entity.effects.deleteAt(i);
+                effect.removeFromEntity();
+                effect.reset();
+            }
         }
     }
 

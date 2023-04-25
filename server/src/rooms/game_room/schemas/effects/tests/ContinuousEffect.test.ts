@@ -24,11 +24,31 @@ describe('Continuous HP Effect', () => {
     })
     test("heal 100 hp over 2 second, 3 total ticks", () => {
         let player = createPlayer(100);
-        EffectManager.addEffectsTo(player, EffectFactory.createRegenEffect(100, 2, 3));
+        let regen = EffectFactory.createRegenEffect(100, 2, 3)
+        EffectManager.addEffectsTo(player, regen);
         EffectManager.updateEffectsOn(player, 1);
         expect(player.stat.hp).toBeCloseTo(100 + 1 * (100/3));
         EffectManager.updateEffectsOn(player, 1);
         expect(player.stat.hp).toBeCloseTo(200);
+    })
+    test("heal 100 hp over 2 second, 2 total ticks, reset effect and use again.", () => {
+        let player = createPlayer(100);
+        let regen = EffectFactory.createRegenEffect(100, 2, 3)
+        EffectManager.addEffectsTo(player, regen);
+        EffectManager.updateEffectsOn(player, 1.01);
+        expect(player.stat.hp).toBeCloseTo(100 + 1 * (100/3));
+        EffectManager.updateEffectsOn(player, 1.01);
+        expect(player.stat.hp).toBeCloseTo(200);
+        EffectManager.updateEffectsOn(player, 1.01);
+        expect(player.stat.hp).toBeCloseTo(200);
+        regen.reset();
+        EffectManager.addEffectsTo(player, regen);
+        EffectManager.updateEffectsOn(player, 1.01);
+        expect(player.stat.hp).toBeCloseTo(200 + 1 * (100/3));
+        EffectManager.updateEffectsOn(player, 1.01);
+        expect(player.stat.hp).toBeCloseTo(300);
+        EffectManager.updateEffectsOn(player, 1.01);
+        expect(player.stat.hp).toBeCloseTo(300);
     })
     test("take 100 damage over 5 seconds, 5 total ticks", () => {
         let player = createPlayer(100);
@@ -156,5 +176,20 @@ describe('Continuous HP Effect', () => {
         expect(player.stat.hp).toBeCloseTo(80);
         EffectManager.updateEffectsOn(player, 1);
         expect(player.stat.hp).toBeCloseTo(80);
+    })
+    test("take 10 damage per second. removing and testing again.", () => {
+        let player = createPlayer(100);
+        let effect = EffectFactory.createDamageOverTimeEffectUntimed(1, 10);
+        EffectManager.addEffectsTo(player, effect);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.hp).toBeCloseTo(90);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.hp).toBeCloseTo(80);
+        EffectManager.removeEffectFrom(player, effect);
+        EffectManager.updateEffectsOn(player,1);
+        expect(player.stat.hp).toBeCloseTo(80);
+        EffectManager.addEffectsTo(player, effect);
+        EffectManager.updateEffectsOn(player, 1);
+        expect(player.stat.hp).toBeCloseTo(70);
     })
 })

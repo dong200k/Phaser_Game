@@ -19,19 +19,13 @@ export default class SpeedMultiEffect extends TempEffect {
         this.speedMultiplier = speedMultiplier;
     }
 
-    public applyEffect(entity?: Entity | undefined): boolean {
-        if(entity) {
-            entity.stat.speed *= this.speedMultiplier;
-            return true;
-        }
-        return false;
+    public applyEffect(entity:Entity): boolean {
+        entity.stat.speed *= this.speedMultiplier;
+        return true;
     }
 
-    protected unapplyEffect(entity?: Entity | undefined): boolean {
-        if(entity) {
-            entity.stat.speed *= 1 / this.speedMultiplier;
-            return true;
-        }
-        return false;
+    protected unapplyEffect(entity:Entity): boolean {
+        entity.stat.speed *= 1 / this.speedMultiplier;
+        return true;
     }
 }
