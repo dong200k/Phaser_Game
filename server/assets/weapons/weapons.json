@@ -3,7 +3,7 @@
         "name": "bow",
         "description": "The first weapon",
         "sprite": "demo_hero",
-        "projectile": "button_small_default_hover_texture"
+        "projectile": "demo_hero"
     },
     "sword-id": {
         "name": "bow",
