@@ -69,6 +69,7 @@ export default class GameManager {
      */
     public addGameObject(id: string, obj: GameObject, body: Matter.Body) {
         this.state.gameObjects.set(id, obj);
+        obj.setBody(body);
         this.gameObjects.set(id, body);
 
         Matter.Composite.add(this.world, body);

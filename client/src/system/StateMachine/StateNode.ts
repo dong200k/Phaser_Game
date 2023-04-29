@@ -1,21 +1,18 @@
-import Entity from "../../../schemas/gameobjs/Entity.js";
 import StateMachine from "./StateMachine.js";
 
-export default abstract class StateNode<Data>
+export default abstract class StateNode
 {
     private stateName: string;
-    private stateMachine: StateMachine<Data>;
-    private entity: Entity;
+    private stateMachine: StateMachine<unknown>;
+    
     /**
      * Creates a new state. Some examples states include, idle, walk, aggro, etc.
      * @param stateName The name of the state.
      * @param stateMachine The StateMachine that this state will belong to.
-     * @param entity The entity.
      */
-    constructor(stateName: string, stateMachine: StateMachine<Data>, entity: Entity) {
+    constructor(stateName: string, stateMachine: StateMachine<unknown>) {
         this.stateName = stateName;
         this.stateMachine = stateMachine;
-        this.entity = entity;
     }
 
     /**
@@ -25,15 +22,7 @@ export default abstract class StateNode<Data>
     public getStateName() {
         return this.stateName;
     }
-
-    /**
-     * Gets the entity that this state is attatched to.
-     * @returns The entity.
-     */
-    public getEntity() {
-        return this.entity;
-    }
-
+    
     /**
      * Gets the StateMachine that this state is attatched to.
      * Can be used to change the state.

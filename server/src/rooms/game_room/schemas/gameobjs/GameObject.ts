@@ -7,6 +7,7 @@ export default class GameObject extends Schema {
     @type('string') id;
     @type('string') ownerId;
     @type('string') type;
+    private body: Matter.Body | null = null;
 
     constructor(x: number, y: number, ownerId?: string) {
         super();
@@ -15,5 +16,18 @@ export default class GameObject extends Schema {
         this.y = y;
         this.ownerId = ownerId;
         this.type = 'GameObject';
+    }
+
+    /** 
+     * Sets the Matter.Body for this GameObject.
+     * @param body The matter body.
+     */
+    public setBody(body: Matter.Body) {
+        this.body = body;
+    }
+
+    /** Gets the Matter.Body associated with this GameObject. */
+    public getBody() {
+        return this.body;
     }
 }
