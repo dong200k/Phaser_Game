@@ -1,3 +1,4 @@
+import { Cloneable } from "../../../../util/PoolUtil";
 import Entity from "../gameobjs/Entity";
 import { Schema, type } from '@colyseus/schema';
 
@@ -5,7 +6,7 @@ import { Schema, type } from '@colyseus/schema';
  * Effect are used to manipulate the Entity object. Effects themselves contain the logic to 
  * manipluate the entity; they are updated via the update() method.
  */
-export default abstract class Effect extends Schema {
+export default abstract class Effect extends Schema implements Cloneable {
     @type('string') private name:string = "Effect";
     @type('string') private description:string = "Base Effect";
     @type('boolean') private completed:boolean = false;

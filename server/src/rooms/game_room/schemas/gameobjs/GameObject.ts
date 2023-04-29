@@ -1,7 +1,8 @@
 import { Schema, type } from '@colyseus/schema';
 import MathUtil from '../../../../util/MathUtil';
+import { Cloneable } from '../../../../util/PoolUtil';
 
-export default class GameObject extends Schema {
+export default class GameObject extends Schema implements Cloneable {
     @type('number') x;
     @type('number') y;
     @type('string') id;

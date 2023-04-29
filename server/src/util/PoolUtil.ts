@@ -1,9 +1,9 @@
 
-export interface Cloneable<T> {
-    clone:() => T;
+export interface Cloneable {
+    clone:() => this;
 }
 
-export class ObjectPool<T extends Cloneable<T>> {
+export class ObjectPool<T extends Cloneable> {
     private poolQueue: Array<T>;
     private objectsCreated: number;
     private prototype: T;
