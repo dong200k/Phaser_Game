@@ -1,6 +1,7 @@
 import Entity from "../../../../schemas/gameobjs/Entity";
 import StateMachine from "../../../StateMachine/StateMachine";
 import PlayerManager from "../../../StateManagers/PlayerManager";
+import Idle from "./Idle";
 
 export interface MonsterControllerData {
     playerManager: PlayerManager;
@@ -16,6 +17,11 @@ export default class MonsterController extends StateMachine<MonsterControllerDat
         this.playerManager = data.playerManager;
         this.monster = data.monster;
 
+        //Idle state
+        let idle = new Idle("Idle", this);
+        this.addState(idle);
+        //Follow state
+        //let follow = new F
         
     }
 
