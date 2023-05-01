@@ -5,7 +5,7 @@ import { Cloneable } from '../../../../util/PoolUtil';
 export default class GameObject extends Schema implements Cloneable {
     @type('number') x;
     @type('number') y;
-    @type('string') id;
+    @type('string') private id: string;
     @type('string') ownerId;
     @type('string') type;
     private body: Matter.Body | null = null;
@@ -30,5 +30,15 @@ export default class GameObject extends Schema implements Cloneable {
     /** Gets the Matter.Body associated with this GameObject. */
     public getBody() {
         return this.body;
+    }
+
+    /** Returns an uuid of this gameObject that's been assigned on construction.*/
+    public getId() {
+        return this.id;
+    }
+
+    /** Give this gameObject an new ID. You should only call this if you want to assign your own ID. */
+    public setId(id: string) {
+        this.id = id;
     }
 }

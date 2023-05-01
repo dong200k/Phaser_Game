@@ -1,7 +1,10 @@
 import Phaser from "phaser";
 
-export default class Entity extends Phaser.GameObjects.Sprite
+export default abstract class Entity extends Phaser.GameObjects.Sprite
 {
-    
+
+    constructor(scene: Phaser.Scene) {
+        super(scene, 0, 0, "");
+    }
 
 }

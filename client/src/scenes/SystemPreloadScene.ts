@@ -13,10 +13,11 @@ export default class SystemPreloadScene extends Phaser.Scene {
     }
 
     preload() {
+        // ------- Loading UI -------- //
         this.load.image("button_small_active", "images/button/button_small_active.png");
         this.load.image("button_small_deactive", "images/button/button_small_deactive.png");
         this.load.image("button_small_default", "images/button/button_small_default.png");
-        this.load.image("button_small_default_hover_texture", "images/button/button_small_default_hover_texture.png")
+        this.load.image("button_small_default_hover_texture", "images/button/button_small_default_hover_texture.png");
     }
 
     create() {

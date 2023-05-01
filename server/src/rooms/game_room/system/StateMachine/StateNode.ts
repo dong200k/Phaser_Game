@@ -1,8 +1,9 @@
 import StateMachine from "./StateMachine.js";
+import { type, Schema } from "@colyseus/schema";
 
-export default abstract class StateNode
+export default abstract class StateNode extends Schema
 {
-    private stateName: string;
+    @type("string") private stateName: string;
     private stateMachine: StateMachine<unknown>;
     
     /**
@@ -11,6 +12,7 @@ export default abstract class StateNode
      * @param stateMachine The StateMachine that this state will belong to.
      */
     constructor(stateName: string, stateMachine: StateMachine<unknown>) {
+        super();
         this.stateName = stateName;
         this.stateMachine = stateMachine;
     }

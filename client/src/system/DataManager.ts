@@ -1,6 +1,6 @@
 
 /**
- * The DataManager provides a nice and easy way to store data and listen for data changes. 
+ * The DataManager provides a nice and easy way to store data and listen for data changes.
  * It is useful when you want an UI element to update whenever a data changes. 
  * It is also useful for sharing data between different scenes (E.g. When the NavbarScene wants to know which Scene is currently displayed so it can update it's buttons).
  */

@@ -116,6 +116,7 @@ export default class PlayerManager{
             }
         })
 
+        newPlayer.setId(sessionId);
         this.gameManager.addGameObject(sessionId, newPlayer, body);
     }   
 }

@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Player from "../gameobjs/Player";
 import * as Colyseus from 'colyseus.js';
+import Monster from "../gameobjs/Monster";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -39,6 +40,9 @@ export default class GameManager {
                 // console.log("projectile spawned")
                 // console.log(gameObj)
                 this.gameObjects?.push(this.addProjectile(gameObj, key));
+                break;
+            case 'Monster': 
+                this.gameObjects?.push(this.addMonster(gameObj, key));
                 break;
         }   
     }
@@ -104,5 +108,12 @@ export default class GameManager {
         this.scene.matter.add.gameObject(newPlayer); //adding this game object to matter physics will show debug lines
         newPlayer.initializeListeners(player);
         return newPlayer;
+    }
+
+    private addMonster(monster:any, key: string): Monster {
+        let newMonster = new Monster(this.scene, monster);
+        this.scene.add.existing(newMonster);
+        this.scene.matter.add.gameObject(newMonster);
+        return newMonster;
     }
 }

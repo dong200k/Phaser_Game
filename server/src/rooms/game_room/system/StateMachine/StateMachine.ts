@@ -1,15 +1,16 @@
 import StateNode from "./StateNode.js";
+import { type, Schema } from "@colyseus/schema";
 
 /**
  * The StateMachine will store all the state of a particular Mob. It will provide 
  * methods to change the state, as well as revert to a previous state. The 
  * creator of this class will need to call update() to update the StateMachine.
  */
-export default abstract class StateMachine<Data> {
+export default abstract class StateMachine<Data> extends Schema{
     /** stores the states of this stateMachine. */
     private states: StateNode[];
     /** stores the current state of this stateMachine. */
-    private currentState: StateNode | null;
+    @type(StateNode) private currentState: StateNode | null;
     /** stores the previous state of this stateMachine. */
     private previousState: StateNode | null;
     /** A flag that marks if the create() methods had been called yet or not. */
@@ -25,6 +26,7 @@ export default abstract class StateMachine<Data> {
      * @param data - some extra data you can pass in for your convinence. This will be passed to the create method.
      */
     constructor(data: Data) {
+        super();
         this.states = [];
         this.currentState = null;
         this.previousState = null;

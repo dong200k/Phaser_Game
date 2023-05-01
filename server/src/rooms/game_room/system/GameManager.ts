@@ -7,6 +7,7 @@ import Cooldown from '../schemas/gameobjs/Cooldown';
 import TilemapManager from './StateManagers/TilemapManager';
 import ProjectileManager from './StateManagers/ProjectileManager';
 import EffectManager from './StateManagers/EffectManager';
+import MonsterManager from './StateManagers/MonsterManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -17,6 +18,7 @@ export default class GameManager {
     public playerManager: PlayerManager
     public projectileManager: ProjectileManager;
     private effectManager: EffectManager;
+    private monsterManager: MonsterManager;
 
     // Data
     public gameObjects: Map<string, Matter.Body> = new Map();
@@ -32,6 +34,7 @@ export default class GameManager {
         this.playerManager = new PlayerManager(this)
         this.projectileManager = new ProjectileManager(this)
         this.effectManager = new EffectManager(this);
+        this.monsterManager = new MonsterManager(this);
 
         //Set up the tilemap
         this.tilemapManager = new TilemapManager(state);
@@ -118,6 +121,7 @@ export default class GameManager {
 
         this.playerManager.update(deltaT);
         this.effectManager.update(deltaT);
+        this.monsterManager.update(deltaT);
 
         // console.log(deltaT)
     }
