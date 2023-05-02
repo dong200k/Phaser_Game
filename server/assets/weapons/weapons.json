@@ -1,0 +1,14 @@
+{
+    "bow-id": {
+        "name": "bow",
+        "description": "The first weapon",
+        "sprite": "demo_hero",
+        "projectile": "demo_hero"
+    },
+    "sword-id": {
+        "name": "bow",
+        "description": "The second weapon",
+        "sprite": "demo_hero",
+        "projectile": "demo_hero"
+    }    
+}

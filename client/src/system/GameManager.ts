@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Player from "../gameobjs/Player";
 import * as Colyseus from 'colyseus.js';
+import PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -77,8 +78,9 @@ export default class GameManager {
     }
 
     private addProjectile(projectile: any, key: string): Phaser.GameObjects.Sprite{
-        let proj =  new Phaser.GameObjects.Sprite(this.scene, projectile.x, projectile.y, "demo_hero");
+        let proj =  new Phaser.GameObjects.Sprite(this.scene, projectile.x, projectile.y, projectile.sprite);
         proj.scale = 0.5
+        console.log(projectile)
         projectile.onChange = (changes:any) => {
             changes.forEach(({field, value}: any) => {
                 switch(field) {
@@ -91,7 +93,7 @@ export default class GameManager {
         return proj;
     }
     
-    private addPlayer(player: any, key: string): Player{
+    private addPlayer(player: PlayerState, key: string): Player{
         let newPlayer = new Player(this.scene, player);
         console.log(newPlayer)
         if(key === this.gameRoom.sessionId) {

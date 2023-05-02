@@ -1,0 +1,166 @@
+{
+    "upgrades": [
+        {
+            "id": "1",
+            "upgradeName": "bow-upgrade",
+            "root":{
+                "nodeId": "node-1",
+                "children":[
+                    {
+                        "nodeId": "node-2",
+                        "children":[
+                            {
+                                "nodeId": "node-3",
+                                "children":[
+                            
+                                ],
+                                "data":{
+                                    "name": "Crit Enhancement 2",
+                                    "description": "increase crit rate by 10%",
+                                    "stat":{
+                                        "critRate": 0.1
+                                    }
+                                }
+                            }
+                        ],
+                        "data":{
+                            "name": "Crit Enhancement",
+                            "description": "increase crit rate by 5%",
+                            "stat":{
+                                "critRate": 0.05
+                            }
+                        }
+                    },
+                    {
+                        "nodeId": "node-4",
+                        "children":[
+                            {
+                                "nodeId": "node-5",
+                                "children":[
+                            
+                                ],
+                                "data":{
+                                    "name": "Attack Enhancement 2",
+                                    "description": "increase attack by 20 points",
+                                    "stat":{
+                                        "attack": 20
+                                    }
+                                }
+                            }
+                        ],
+                        "data":{
+                            "name": "Attack Enhancement",
+                            "description": "increase attack by 5 points",
+                            "stat":{
+                                "attack": 5
+                            }
+                        }
+                    },
+                    {
+                        "nodeId": "node-6",
+                        "children":[
+                            
+                        ],
+                        "data":{
+                            "name": "Penetration",
+                            "description": "increase armor penetration by 5%",
+                            "stat":{
+                                "armorPen": 0.05
+                            }
+                        }
+                    }
+                ],
+                "data":{
+                    "weaponId": "bow-id",
+                    "name": "Wooden Bow",
+                    "description": "A sturdy wooden bow commonly seen with novice adventurers",
+                    "stat":{
+                        "attack": 10,
+                        "critRate": 0.01,
+                        "critDamage": 0.1
+                    }
+                }
+            }
+        },
+        {
+            "id": "2",
+            "upgradeName": "sword-upgrade",
+            "root":{
+                "nodeId": "node-1",
+                "children":[
+                    {
+                        "nodeId": "node-2",
+                        "children":[
+                            {
+                                "nodeId": "node-3",
+                                "children":[
+                            
+                                ],
+                                "data":{
+                                    "name": "Crit Enhancement 2",
+                                    "description": "increase crit rate by 10%",
+                                    "stat":{
+                                        "critRate": 0.1
+                                    }
+                                }
+                            }
+                        ],
+                        "data":{
+                            "name": "Crit Enhancement",
+                            "description": "increase crit rate by 5%",
+                            "stat":{
+                                "critRate": 0.05
+                            }
+                        }
+                    },
+                    {
+                        "nodeId": "node-4",
+                        "children":[
+                            {
+                                "nodeId": "node-5",
+                                "children":[
+                            
+                                ],
+                                "data":{
+                                    "name": "Attack Enhancement 2",
+                                    "description": "increase attack by 20 points",
+                                    "stat":{
+                                        "attack": 20
+                                    }
+                                }
+                            }
+                        ],
+                        "data":{
+                            "name": "Attack Enhancement",
+                            "description": "increase attack by 5 points",
+                            "stat":{
+                                "attack": 5
+                            }
+                        }
+                    },
+                    {
+                        "nodeId": "node-6",
+                        "children":[
+                    
+                        ],
+                        "data":{
+                            "name": "Penetration",
+                            "description": "increase armor penetration by 5%",
+                            "stat":{
+                                "armorPen": 0.05
+                            }
+                        }
+                    }
+                ],
+                "data":{
+                    "weaponId": "sword-id",
+                    "name": "Wooden Sword",
+                    "description": "A dull wooden sword commonly seen with novice adventurers",
+                    "stat":{
+                        "attack": 15
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -78,7 +78,7 @@ export default class TilemapManager {
                             body.collisionFilter = {
                                 group: 0,
                                 category: Categories.OBSTACLE,
-                                mask: MaskManager.getMask('OBSTACLE') 
+                                mask: MaskManager.getManager().getMask('OBSTACLE') 
                             };
                             
                             gameObjects.set(uid, body);

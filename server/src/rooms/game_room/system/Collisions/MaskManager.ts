@@ -1,5 +1,6 @@
 import {Categories, CategoryType } from "./Category"
-class MaskManager {
+export default class MaskManager {
+    static singleton = new MaskManager()
     private masks: Map<CategoryType, number> = new Map()
 
     constructor(){
@@ -11,6 +12,10 @@ class MaskManager {
         this.initMonsterMasks()
         this.initPetMasks()
         this.initObstacleMasks()
+    }
+
+    static getManager(){
+        return MaskManager.singleton
     }
 
     private initPlayerMasks(){
@@ -58,5 +63,3 @@ class MaskManager {
         return this.masks.get(category)
     }
 }
-
-export default new MaskManager()

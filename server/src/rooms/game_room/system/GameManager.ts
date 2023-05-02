@@ -7,6 +7,7 @@ import Cooldown from '../schemas/gameobjs/Cooldown';
 import TilemapManager from './StateManagers/TilemapManager';
 import ProjectileManager from './StateManagers/ProjectileManager';
 import EffectManager from './StateManagers/EffectManager';
+import WeaponManager from './StateManagers/WeaponManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -56,7 +57,7 @@ export default class GameManager {
             })
         });
     }
-
+        
     public setOwner(sessionId: string){
         this.state.ownerSessionId = sessionId
     }
@@ -70,7 +71,7 @@ export default class GameManager {
     public addGameObject(id: string, obj: GameObject, body: Matter.Body) {
         this.state.gameObjects.set(id, obj);
         this.gameObjects.set(id, body);
-
+        
         Matter.Composite.add(this.world, body);
     }   
 
