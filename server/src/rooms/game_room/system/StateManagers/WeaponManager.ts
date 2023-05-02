@@ -5,12 +5,16 @@ import Player from '../../schemas/gameobjs/Player';
 import Stat from '../../schemas/gameobjs/Stat';
 
 type weapon = {name: string, description: string, sprite: string, projectile: string}
-type weaponUpgradeTree = Array<{}>
+type upgrade = {
+    id: string,
+    upgradeName: string,
+    root: Node<WeaponData>
+}
 
 export default class WeaponManager{
     static singleton = new WeaponManager()
     private weapons: Map<string, weapon> = new Map()
-    private upgrades: Map<string, weaponUpgradeTree> = new Map()
+    private upgrades: Map<string, upgrade> = new Map()
 
     constructor() {
         this.loadWeapons()
@@ -21,13 +25,18 @@ export default class WeaponManager{
      * Loads weapons frfom assets/weapons/weapons.json into a Map<string, weapon>
      */
     async loadWeapons(){
+        let db = await FileUtil.readJSONAsync("assets/db.json")
+        for (let upgrade of db.upgrades) {
+            this.upgrades.set(upgrade.id, upgrade as upgrade)
+        }
+        console.log(this.upgrades.get('1')?.root)
+    }
+
+    async loadUpgrades(){
         let weapons = await FileUtil.readJSONAsync("assets/weapons/weapons.json")
         for (let [weaponId, weapon] of Object.entries(weapons)) {
             this.weapons.set(weaponId, weapon as weapon)
         }
-    }
-
-    async loadUpgrades(){
     }
 
     /**

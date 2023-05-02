@@ -37,9 +37,9 @@ export default function Upgrades(){
                 <div>No upgrades or json server is down</div> 
                 : 
                 upgrades.map(upgrade => 
-                    <div>
+                    <div className="flex-row">
                         <UpgradeContainer key={upgrade.id} upgrade={upgrade}/>
-                        <button style={{display: "inline-block"}} className="btn btn-danger" onClick={deleteUpgrade(upgrade.id)}>delete</button>
+                        <button  className="btn btn-danger" onClick={deleteUpgrade(upgrade.id)}>delete</button>
                     </div>
                 )
             }
