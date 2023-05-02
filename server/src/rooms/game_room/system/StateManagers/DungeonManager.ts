@@ -7,6 +7,7 @@ import MaskManager from "../Collisions/MaskManager"
 import Dungeon from "../../schemas/dungeon/Dungeon"
 import Wave from "../../schemas/dungeon/Wave"
 import DungeonEvent from "../../schemas/dungeon/DungeonEvent"
+import MonsterController from "../AI/MonsterAI/simplemonster/MonsterController"
 
 export default class DungeonManager {
     //Spawn different monsters 
@@ -35,7 +36,7 @@ export default class DungeonManager {
     private createDungeon() {
         this.dungeon = new Dungeon();
         let wave = new Wave();
-        wave.addMonsterId(["TinyZombie", "TinyZombie", "TinyZombie", "TinyZombie", "TinyZombie"]);
+        wave.addMonsterId(["TinyZombie"]);
         this.dungeon.addWave(wave);
     }
 
@@ -47,6 +48,10 @@ export default class DungeonManager {
 
     public spawnMonster(monsterName: string): Monster {
         let monster = MonsterFactory.createMonster("TinyZombie");
+        monster.setController(new MonsterController({
+            playerManager: this.gameManager.getPlayerManager(),
+            monster: monster,
+        }));
         let width = 12;
         let height = 18;
         let spawnX = 200;

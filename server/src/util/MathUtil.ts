@@ -33,4 +33,26 @@ export default class MathUtil {
         number = number * Math.pow(10, dp);
         return Math.round(number) / Math.pow(10, dp);
     }
+    
+    /**
+     * @param x1 The x1 value.
+     * @param y1 The y1 value.
+     * @param x2 The x2 value.
+     * @param y2 The y2 value.
+     * @returns Returns the distance squared of two points.
+     */
+    public static distanceSquared(x1:number, y1:number, x2:number, y2:number) {
+        return Math.pow(x1 - y1, 2) + Math.pow(x2 - y2, 2);
+    }
+
+    /**
+     * @param x1 The x1 value.
+     * @param y1 The y1 value.
+     * @param x2 The x2 value.
+     * @param y2 The y2 value.
+     * @returns Returns the distance of two points.
+     */
+    public static distance(x1:number, y1:number, x2:number, y2:number) {
+        return Math.sqrt(this.distanceSquared(x1,y1,x2,y2));
+    }
 }

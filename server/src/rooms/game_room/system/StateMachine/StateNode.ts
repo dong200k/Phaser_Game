@@ -1,5 +1,5 @@
-import StateMachine from "./StateMachine.js";
 import { type, Schema } from "@colyseus/schema";
+import StateMachine from "./StateMachine";
 
 export default abstract class StateNode extends Schema
 {

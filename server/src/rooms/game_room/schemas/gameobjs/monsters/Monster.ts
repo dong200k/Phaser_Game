@@ -1,4 +1,5 @@
 import MonsterController from "../../../system/AI/MonsterAI/simplemonster/MonsterController";
+import StateMachine from "../../../system/StateMachine/StateMachine";
 import Entity from "../Entity";
 import { type } from "@colyseus/schema";
 
@@ -7,6 +8,7 @@ export default class Monster extends Entity {
 
     @type("string") private monsterName: string;
     @type(MonsterController) private controller: MonsterController | null = null;
+    private aggroTarget: Entity | null = null;
 
 
     constructor(monsterName: string, controller?:MonsterController) {
@@ -22,6 +24,18 @@ export default class Monster extends Entity {
 
     public getMonsterName() {
         return this.monsterName;
+    }
+
+    /**
+     * Sets a new aggroTarget for this monster.
+     * @param aggroTarget The aggroTarget.
+     */
+    public setAggroTarget(aggroTarget: Entity) {
+        this.aggroTarget = aggroTarget;
+    }
+
+    public getAggroTarget() {
+        return this.aggroTarget;
     }
 
     /**

@@ -1,5 +1,5 @@
-import StateNode from "./StateNode.js";
 import { type, Schema } from "@colyseus/schema";
+import StateNode from "./StateNode";
 
 /**
  * The StateMachine will store all the state of a particular Mob. It will provide 

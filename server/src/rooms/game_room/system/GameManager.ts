@@ -133,4 +133,8 @@ export default class GameManager {
     public getEngine() {
         return this.engine;
     }
+
+    public getPlayerManager() {
+        return this.playerManager;
+    }
 }

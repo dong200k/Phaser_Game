@@ -119,4 +119,26 @@ export default class PlayerManager{
         newPlayer.setId(sessionId);
         this.gameManager.addGameObject(sessionId, newPlayer, body);
     }   
+
+    /**
+     * Gets the nearest player to the given x and y position.
+     * @param x The x value.
+     * @param y The y value.
+     */
+    public getNearestPlayer(x: number, y: number): Player | undefined {
+        let players = new Array<Player>;
+        this.gameManager.state.gameObjects.forEach((value) => {if(value instanceof Player) players.push(value)});
+        if(players.length === 0) return undefined;
+        let nearestPlayer = players[0];
+        let nearestDistance = MathUtil.distanceSquared(x, y, nearestPlayer.x, nearestPlayer.y);
+        for(let i = 1; i < players.length; i++) {
+            let player = players[i];
+            let distance = MathUtil.distanceSquared(x, y, player.x, player.y);
+            if(distance < nearestDistance) {
+                nearestDistance = distance;
+                nearestPlayer = player;
+            }
+        }
+        return nearestPlayer;
+    }
 }
