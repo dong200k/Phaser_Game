@@ -1,5 +1,5 @@
 import { Schema, type, ArraySchema } from '@colyseus/schema';
-import Tile from '../gameobjs/Tile';
+import Tile from '../../gameobjs/Tile';
 
 export default class Layer extends Schema {
     @type("number") width: number;

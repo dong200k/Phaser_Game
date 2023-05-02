@@ -1,7 +1,7 @@
 import FileUtil from "../../../../util/FileUtil";
 import State from "../../schemas/State";
-import Layer from "../../schemas/dungeon/Layer";
-import Tilemap from "../../schemas/dungeon/Tilemap";
+import Layer from "../../schemas/dungeon/tilemap/Layer";
+import Tilemap from "../../schemas/dungeon/tilemap/Tilemap";
 import Matter from "matter-js";
 import MathUtil from "../../../../util/MathUtil";
 import { Categories } from "../Collisions/Category";

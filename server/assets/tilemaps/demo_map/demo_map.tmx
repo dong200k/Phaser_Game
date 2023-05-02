@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="34" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="1">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="34" height="32" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="4">
+ <editorsettings>
+  <export target="demo_map.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" name="dirt_dungeon_tileset" tilewidth="16" tileheight="16" tilecount="180" columns="20">
   <image source="../dirt_dungeon_tileset.png" width="320" height="144"/>
  </tileset>
@@ -111,4 +114,15 @@
 129,173,177,177,177,36,37,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,177,175,129
 </data>
  </layer>
+ <objectgroup id="4" name="SpawnPoints">
+  <object id="1" x="465" y="30.5">
+   <point/>
+  </object>
+  <object id="2" x="512" y="384.5">
+   <point/>
+  </object>
+  <object id="3" x="96.5" y="479.5">
+   <point/>
+  </object>
+ </objectgroup>
 </map>

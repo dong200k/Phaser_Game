@@ -1,6 +1,6 @@
 import { Schema, type } from "@colyseus/schema";
-import Wave from "./Wave";
-import Tilemap from "./Tilemap";
+import Wave from "./wave/Wave";
+import Tilemap from "./tilemap/Tilemap";
 
 /**
  * The Dungeon class contains information about the waves of monsters that will spawn, spawn

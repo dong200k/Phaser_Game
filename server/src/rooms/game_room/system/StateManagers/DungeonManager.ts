@@ -5,9 +5,10 @@ import GameManager from "../GameManager"
 import { Categories } from "../Collisions/Category"
 import MaskManager from "../Collisions/MaskManager"
 import Dungeon from "../../schemas/dungeon/Dungeon"
-import Wave from "../../schemas/dungeon/Wave"
+import Wave from "../../schemas/dungeon/wave/Wave"
 import DungeonEvent from "../../schemas/dungeon/DungeonEvent"
 import MonsterController from "../AI/MonsterAI/simplemonster/MonsterController"
+import AIFactory from "../AI/AIFactory"
 
 export default class DungeonManager {
     //Spawn different monsters 
@@ -48,10 +49,7 @@ export default class DungeonManager {
 
     public spawnMonster(monsterName: string): Monster {
         let monster = MonsterFactory.createMonster("TinyZombie");
-        monster.setController(new MonsterController({
-            playerManager: this.gameManager.getPlayerManager(),
-            monster: monster,
-        }));
+        monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
         let width = 12;
         let height = 18;
         let spawnX = 200;

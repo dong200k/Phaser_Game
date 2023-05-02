@@ -1,5 +1,12 @@
 import { Schema, type } from "@colyseus/schema";
-import DungeonEvent from "./DungeonEvent";
+import DungeonEvent from "../DungeonEvent";
+
+// A wave will continue to spawn monsters at its own pace. 
+// A wave can spawn monsters at random locations on the map. Or at fixed locations.
+// A wave can choose how many monsters it wants to spawn. 
+// Methods can be called on the wave to increase its agressiveness or decrease it.
+// Methods can be called on the wave to pause it. 
+// Methods can be called on the wave to add monsters to the wave's queue.
 
 export default class Wave {
     private monsterQueue: string[];
@@ -17,7 +24,6 @@ export default class Wave {
         let monsterId = this.monsterQueue.shift();
         if(monsterId === undefined) return true;
         DungeonEvent.getInstance().emit("SPAWN_MONSTER", monsterId);
-        // monsterManager.spawnMonster(monsterId);
         return false;
     }
 
