@@ -105,7 +105,10 @@ export default class GameManager {
         else
             this.players.push(newPlayer);
         this.scene.add.existing(newPlayer);
-        this.scene.matter.add.gameObject(newPlayer); //adding this game object to matter physics will show debug lines
+        this.scene.matter.add.gameObject(newPlayer, {
+            isStatic: true,
+            isSensor: true,
+        }); //adding this game object to matter physics will show debug lines
         newPlayer.initializeListeners(player);
         return newPlayer;
     }
@@ -113,7 +116,10 @@ export default class GameManager {
     private addMonster(monster:any, key: string): Monster {
         let newMonster = new Monster(this.scene, monster);
         this.scene.add.existing(newMonster);
-        this.scene.matter.add.gameObject(newMonster);
+        this.scene.matter.add.gameObject(newMonster, {
+            isSensor: true,
+            isStatic: true,
+        });
         return newMonster;
     }
 }

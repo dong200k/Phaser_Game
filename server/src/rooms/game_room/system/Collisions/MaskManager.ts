@@ -25,6 +25,7 @@ class MaskManager {
     private initMonsterMasks(){
         this.setCollideable("MONSTER", "PLAYER_PROJECTILE")
         this.setCollideable("MONSTER", "MONSTER_PROJECTILE_FRIENDLY_FIRE")
+        this.setCollideable("MONSTER", "MONSTER")
     }
 
     private initPetMasks(){

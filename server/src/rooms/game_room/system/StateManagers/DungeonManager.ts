@@ -36,7 +36,7 @@ export default class DungeonManager {
     private createDungeon() {
         this.dungeon = new Dungeon();
         let wave = new Wave();
-        wave.addMonsterId(["TinyZombie"]);
+        wave.addMonsterId(["TinyZombie", "TinyZombie", "TinyZombie"]);
         this.dungeon.addWave(wave);
     }
 
@@ -57,13 +57,7 @@ export default class DungeonManager {
         let spawnX = 200;
         let spawnY = 200;
 
-        let body = Matter.Bodies.rectangle(spawnX, spawnY, width, height, {
-            isStatic: false,
-            inertia: Infinity,
-            inverseInertia: 0,
-            restitution: 0,
-            friction: 0,
-        });
+        let body = Matter.Bodies.rectangle(spawnX, spawnY, width, height, {isStatic: false});
 
         body.collisionFilter = {
             group: 0,
