@@ -28,6 +28,8 @@ export function getDefaultNode(){
       name: "auto-generated",
       description: "auto-generated",
       stat: {
+        maxHp: 0,
+        maxMana: 0,
         hp:0,
         mana:0,
         armor:0,
