@@ -37,7 +37,7 @@ export default class DungeonManager {
     private createDungeon() {
         this.dungeon = new Dungeon();
         let wave = new Wave();
-        wave.addMonsterId(["TinyZombie", "TinyZombie", "TinyZombie"]);
+        wave.addMonster("TinyZombie", 3);
         this.dungeon.addWave(wave);
     }
 

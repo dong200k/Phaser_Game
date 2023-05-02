@@ -1,18 +1,20 @@
-import MonsterController from "../../../system/AI/MonsterAI/simplemonster/MonsterController";
 import Monster from "./Monster";
 import TinyZombie from "./zombie/TinyZombie";
 
-type MonsterName = "TinyZombie";
-type BrainType = "Simple";
+export type MonsterId = "TinyZombie";
 
 export default class MonsterFactory {
 
-    public static createMonster(name: MonsterName): Monster {
+    /**
+     * Creates a new monster based on the monster's id.
+     * @param id The id of the monster. Can be accessed through MonsterId.
+     * @returns A monster.
+     */
+    public static createMonster(id: MonsterId): Monster {
         let monster = new TinyZombie();
-        // let ai = new MonsterController({
-        //     monster: monster,
-        //     playerManager: 
-        // });
+        switch(id) {
+            case "TinyZombie": monster = new TinyZombie(); break;
+        }
         return monster;
     }
 

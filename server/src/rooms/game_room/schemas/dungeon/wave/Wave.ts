@@ -8,11 +8,26 @@ import DungeonEvent from "../DungeonEvent";
 // Methods can be called on the wave to pause it. 
 // Methods can be called on the wave to add monsters to the wave's queue.
 
+interface MonsterQueueItem {
+    count: number;
+    monsterId: string;
+}
+
+type AggressionLevelType = 1|2|3|4|5;
+
 export default class Wave {
-    private monsterQueue: string[];
+    private monsterQueue: MonsterQueueItem[];
+    private aggressionLevel: AggressionLevelType;
+    private timeUntilNextSpawn: number;
+    private defaultTimeUntilNextSpawn: number;
+    private spawnsQueued: number;
 
     constructor() {
         this.monsterQueue = [];
+        this.aggressionLevel = 3;
+        this.timeUntilNextSpawn = 1;
+        this.defaultTimeUntilNextSpawn = 1;
+        this.spawnsQueued = 0;
     }
 
     /**
@@ -21,15 +36,62 @@ export default class Wave {
      * @returns True if this wave is completed, false otherwise.
      */
     public update(deltaT: number): boolean {
-        let monsterId = this.monsterQueue.shift();
-        if(monsterId === undefined) return true;
-        DungeonEvent.getInstance().emit("SPAWN_MONSTER", monsterId);
+        // updates this wave's spawn timing.
+        this.timeUntilNextSpawn -= deltaT;
+        if(this.timeUntilNextSpawn <= 0) {
+            this.spawnsQueued++;
+            this.timeUntilNextSpawn += this.defaultTimeUntilNextSpawn;
+        }
+        console.log(deltaT);
+        let monsterQueueItem = this.monsterQueue.shift();
+        if(monsterQueueItem === undefined) return true;
+        // Sends out an event to spawn a monster.
+        while(this.spawnsQueued > 0) {
+            let monsterId = this.getNextMonsterId();
+            if(monsterId === undefined) return true;
+            DungeonEvent.getInstance().emit("SPAWN_MONSTER", monsterId);
+            this.spawnsQueued--; 
+        }
         return false;
     }
 
-    /** Adds a monster's id to this wave's queue. */
-    public addMonsterId(monsterId: string | string[]) {
+    /** Adds a monster to this wave's queue.
+     * @param monsterId The id of the monster.
+     * @param count The count of monster (defaults to 1).
+     */
+    public addMonster(monsterId: string, count: number = 1) {
         if(Array.isArray(monsterId)) monsterId.forEach((id) => this.monsterQueue.push(id));
-        else this.monsterQueue.push(monsterId);
+        else this.monsterQueue.push({monsterId: monsterId, count: count});
+    }
+
+    /**
+     * Sets this wave's aggression level, which will determine how agressive the wave is at spawning monsters.
+     * @param aggressionLevel 1-chill, 2-easy, 3-normal, 4-hard, 5-nightmare.
+     */
+    public setAgressionLevel(aggressionLevel: AggressionLevelType) {
+        this.aggressionLevel = aggressionLevel;
+        switch(this.aggressionLevel) {
+            case 1: this.defaultTimeUntilNextSpawn = 2; break;
+            case 2: this.defaultTimeUntilNextSpawn = 1.5; break;
+            case 3: this.defaultTimeUntilNextSpawn = 1; break;
+            case 4: this.defaultTimeUntilNextSpawn = 0.5; break;
+            case 5: this.defaultTimeUntilNextSpawn = 0.25; break;
+        }
+    }
+
+    protected getNextMonsterId(): string | undefined {
+        let monsterIdFound = false;
+        let monsterId = undefined;
+        while(!monsterIdFound && this.monsterQueue.length > 0) {
+            if(this.monsterQueue[0].count === 0) {
+                this.monsterQueue.shift();
+            } else {
+                this.monsterQueue[0].count--;
+                monsterId = this.monsterQueue[0].monsterId;
+                if(this.monsterQueue[0].count === 0) this.monsterQueue.shift();
+                monsterIdFound = true;
+            }
+        }
+        return monsterId;
     }
 }

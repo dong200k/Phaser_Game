@@ -34,10 +34,16 @@ export default class TilemapManager {
                     let width = layer.width;
                     let height = layer.height;
                     let layerName = layer.name;
+                    let layerType = layer.type;
                     //Create tilemap layers
-                    let newLayer = new Layer(layerName, width, height, tileWidth, tileHeight);
-                    newLayer.populateTiles(tileWidth, tileHeight, layer.data);
-                    this.tilemap?.addExistingLayer(newLayer);
+                    if(layerType === "tilelayer") {
+                        let newLayer = new Layer(layerName, width, height, tileWidth, tileHeight);
+                        newLayer.populateTiles(tileWidth, tileHeight, layer.data);
+                        this.tilemap?.addExistingLayer(newLayer);
+                    } else if(layerType === "objectgroup") {
+                        // Spawn points
+                    }
+                    
                 })
                 resolve(null);
             })
