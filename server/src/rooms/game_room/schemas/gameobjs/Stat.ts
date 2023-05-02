@@ -5,7 +5,9 @@ export type statType = typeof Stat.defaultStatObject
 
 export default class Stat extends Schema {
     @type('number') hp;
+    @type('number') maxHp;
     @type('number') mana;
+    @type('number') maxMana;
 
     @type('number') armor;
     @type('number') magicResist;
@@ -50,7 +52,9 @@ export default class Stat extends Schema {
     constructor(stat: statType = Stat.defaultStatObject) {
         super(0, 0);
         this.hp = stat.hp;
+        this.maxHp = stat.maxHp;
         this.mana = stat.mana;
+        this.maxMana = stat.maxMana;
 
         this.armor = stat.armor;
         this.magicResist = stat.magicResist;

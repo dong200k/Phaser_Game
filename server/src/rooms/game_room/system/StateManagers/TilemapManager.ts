@@ -64,7 +64,7 @@ export default class TilemapManager {
                         if(tile && tile.tileId !== 0) {
                             let uid = MathUtil.uid();
                             // sync with server state
-                            this.state.gameObjects.set(uid, tile);
+                            // this.state.gameObjects.set(uid, tile);
     
                             //Create matterjs body for obj
                             let body = Matter.Bodies.rectangle(tile.x, tile.y, tileWidth, tileHeight, {

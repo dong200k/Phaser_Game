@@ -22,23 +22,21 @@ export default class GameManager {
         this.gameRoom.state.listen("tilemap", this.onChangeTilemap);
     }
 
-    //TODO Change in future 
-    private getTypeOfObject(gameObj: any): string{
-        if(gameObj.hasOwnProperty('role')) return "player";
-        if(gameObj.hasOwnProperty('ownerId')) return "projectile"
-        if(gameObj.hasOwnProperty('tileId')) return "tile"
-        else return ""
-    }
+    
+    // private getTypeOfObject(gameObj: any): string{
+    //     if(gameObj.hasOwnProperty('role')) return "player";
+    //     if(gameObj.hasOwnProperty('ownerId')) return "projectile"
+    //     else return ""
+    // }
 
     private onAdd = (gameObj:any, key:string) => {
         if(!gameObj) return;
-        console.log(gameObj)
-        let objType = this.getTypeOfObject(gameObj)
+        let objType = gameObj.type;
         switch (objType){
-            case 'player':
+            case 'Player':
                 this.gameObjects?.push(this.addPlayer(gameObj, key));
                 break;
-            case 'projectile':
+            case 'Projectile':
                 // console.log("projectile spawned")
                 // console.log(gameObj)
                 this.gameObjects?.push(this.addProjectile(gameObj, key));

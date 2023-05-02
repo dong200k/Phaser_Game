@@ -1,11 +1,13 @@
+import { randomUUID } from "crypto";
 
 export default class MathUtil {
     private static uidCounter = 0;
     
     /**Returns a uniquie id. This id is only unique in this project execution. The uid will reset on project start. */
     public static uid(): string {
-        this.uidCounter += 1;
-        return `UID#${this.uidCounter}`; //TODO: may cause conflicts with colyseus client's sessionId.
+        // this.uidCounter + 1;
+        // return `UID#${this.uidCounter}`; //TODO: may cause conflicts with colyseus client's sessionId.
+        return randomUUID();
     }
 
     /**
@@ -19,5 +21,16 @@ export default class MathUtil {
         let mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         if(mag===0) return {x: 0, y: 0}
         return {x: x/mag * speed, y: y/mag * speed}
+    }
+
+    /**
+     * Round to the provided decimal place. (E.g. If number = 100.2222 and dp = 2 then return 100.22)
+     * @param number The number to round.
+     * @param dp The decimal place to round to. dp should not be negative.
+     */
+    public static roundDecimal(number:number, dp: number) {
+        if(dp < 0) return number;
+        number = number * Math.pow(10, dp);
+        return Math.round(number) / Math.pow(10, dp);
     }
 }
