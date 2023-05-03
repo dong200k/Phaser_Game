@@ -41,4 +41,8 @@ export default class Dungeon extends Schema {
     public setTilemap(tilemap: Tilemap) {
         this.tilemap = tilemap;
     }
+
+    public getTilemap() {
+        return this.tilemap;
+    }
 }

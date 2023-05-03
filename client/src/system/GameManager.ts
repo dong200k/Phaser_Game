@@ -19,7 +19,7 @@ export default class GameManager {
 
     private initializeListeners() {
         this.gameRoom.state.gameObjects.onAdd = this.onAdd;
-        this.gameRoom.state.listen("tilemap", this.onChangeTilemap);
+        this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
     }
 
     
@@ -45,6 +45,11 @@ export default class GameManager {
                 this.gameObjects?.push(this.addMonster(gameObj, key));
                 break;
         }   
+    }
+
+     /**Calls when the dungeon is first created on the server */
+    private onChangeDungeon = (currentValue: any) => {
+        currentValue.listen("tilemap", this.onChangeTilemap);
     }
 
     /**Calls when the tilemap is first created on the server */

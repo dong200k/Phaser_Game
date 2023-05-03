@@ -8,6 +8,11 @@ import Dungeon from "../../schemas/dungeon/Dungeon"
 import Wave from "../../schemas/dungeon/wave/Wave"
 import DungeonEvent from "../../schemas/dungeon/DungeonEvent"
 import AIFactory from "../AI/AIFactory"
+import FileUtil from "../../../../util/FileUtil"
+import { TiledJSON } from "../interfaces"
+import Tilemap from "../../schemas/dungeon/tilemap/Tilemap"
+import Layer from "../../schemas/dungeon/tilemap/Layer"
+import MathUtil from "../../../../util/MathUtil"
 
 const dungeonURLMap = {
     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -46,13 +51,28 @@ export default class DungeonManager {
 
     /** Creates a new Dungeon. The Dungeon will have an update method that should be called every frame. */
     private createDungeon() {
+        let dungeonName = "Demo Map";
+        let dungeonFileLocation = dungeonURLMap["Demo Map"];
+        // Load the tiled json file ... 
+        FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
+            // Fill in the dungeons information based on the json file... 
+            this.dungeon = new Dungeon(dungeonName);
+            this.gameManager.state.dungeon = this.dungeon;
 
-        
+            // Tilemap 
+            let newTilemap = this.createTilemap(tiled);
+            this.dungeon.setTilemap(newTilemap);
 
-        this.dungeon = new Dungeon("");
-        let wave = new Wave();
-        wave.addMonster("TinyZombie", 10);
-        this.dungeon.addWave(wave);
+            // Waves
+            let wave = new Wave();
+            wave.addMonster("TinyZombie", 10);
+            this.dungeon.addWave(wave);
+
+            // Make the obstables collidable by adding them to matter.
+            this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.gameObjects, newTilemap);
+        }).catch((err) => {
+            console.log(err);
+        })
     }
 
     private initializeListeners() {
@@ -90,4 +110,75 @@ export default class DungeonManager {
 
     }
 
+    /**
+     * Create and return a Tilemap based on a TiledJSON object.
+     * @param data A TiledJSON object.
+     * @returns A Tilemap.
+     */
+    private createTilemap(data: TiledJSON) {
+        let tileWidth = data.tilewidth;
+        let tileHeight = data.tileheight;
+        let layers = data.layers;
+        //Create tilemap
+        let tilemap = new Tilemap(data.width, data.height, tileWidth, tileHeight);
+        layers.forEach((layer) => {
+            let width = layer.width;
+            let height = layer.height;
+            let layerName = layer.name;
+            let layerType = layer.type;
+            //Create tilemap layers
+            if(layerType === "tilelayer") {
+                let newLayer = new Layer(layerName, width, height, tileWidth, tileHeight);
+                newLayer.populateTiles(tileWidth, tileHeight, layer.data);
+                tilemap.addExistingLayer(newLayer);
+            }
+        })
+
+        return tilemap;
+    }
+
+    private addObstaclesToMatter(engine:Matter.Engine, gameObjects:Map<string, Matter.Body>, tilemap: Tilemap) {
+        let obstacleLayer = tilemap.layers.get("Obstacle");
+        if(obstacleLayer) {
+            let width = obstacleLayer.width;
+            let height = obstacleLayer.height;
+            let tileWidth = tilemap.tileWidth;
+            let tileHeight = tilemap.tileHeight;
+
+            if(tileWidth && tileHeight) {
+                for(let y = 0; y < height; y++) {
+                    for(let x = 0; x < width; x++) {
+                        let tile = obstacleLayer.getTileAt(x, y);
+                        if(tile && tile.tileId !== 0) {
+                            let uid = MathUtil.uid();
+                            // sync with server state
+                            // this.state.gameObjects.set(uid, tile);
+    
+                            //Create matterjs body for obj
+                            let body = Matter.Bodies.rectangle(tile.x, tile.y, tileWidth, tileHeight, {
+                                isStatic: true,
+                                inertia: Infinity,
+                                inverseInertia: 0,
+                                restitution: 0,
+                                friction: 0,
+                            });
+
+                            body.collisionFilter = {
+                                group: 0,
+                                category: Categories.OBSTACLE,
+                                mask: MaskManager.getMask('OBSTACLE') 
+                            };
+                            
+                            gameObjects.set(uid, body);
+    
+                            Matter.Composite.add(engine.world, body);
+                        }
+                    }
+                }
+            } else {
+                console.log("Error: tileWidth and tileHeight is not defined");
+            }
+            
+        }
+    }
 }

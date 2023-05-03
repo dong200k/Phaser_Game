@@ -4,7 +4,6 @@ import Player from '../schemas/gameobjs/Player';
 import PlayerManager from './StateManagers/PlayerManager';
 import GameObject from '../schemas/gameobjs/GameObject';
 import Cooldown from '../schemas/gameobjs/Cooldown';
-import TilemapManager from './StateManagers/TilemapManager';
 import ProjectileManager from './StateManagers/ProjectileManager';
 import EffectManager from './StateManagers/EffectManager';
 import DungeonManager from './StateManagers/DungeonManager';
@@ -14,7 +13,6 @@ export default class GameManager {
     public world: Matter.World;
 
     // Managers
-    private tilemapManager: TilemapManager;
     public playerManager: PlayerManager
     public projectileManager: ProjectileManager;
     private effectManager: EffectManager;
@@ -35,12 +33,6 @@ export default class GameManager {
         this.projectileManager = new ProjectileManager(this)
         this.effectManager = new EffectManager(this);
         this.dungeonManager = new DungeonManager(this);
-
-        //Set up the tilemap
-        this.tilemapManager = new TilemapManager(state);
-        this.tilemapManager.loadTilemapTiled("assets/tilemaps/demo_map/demo_map.json").then(() => {
-            this.tilemapManager.addObstaclesToMatter(this.engine, this.gameObjects);
-        });
 
         this.initUpdateEvents();
         this.initCollisionEvent();
