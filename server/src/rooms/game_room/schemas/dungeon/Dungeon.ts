@@ -8,14 +8,16 @@ import Tilemap from "./tilemap/Tilemap";
  */
 export default class Dungeon extends Schema {
 
+    @type("string") private dungeonName: string;
     @type("number") private currentWave: number;
     @type("boolean") private conquered: boolean;
+    @type(Tilemap) private tilemap: Tilemap | null = null;
     private waves: Wave[];
-    private tilemap: Tilemap | null = null;
 
-    constructor() {
+    constructor(dungeonName: string) {
         super();
         this.currentWave = 0;
+        this.dungeonName = dungeonName;
         this.conquered = false;
         this.waves = [];
     }
@@ -24,9 +26,19 @@ export default class Dungeon extends Schema {
         this.waves.push(wave);
     }
 
+    /**
+     * Updates the dungeon.
+     * @param deltaT Time passed in seconds.
+     */
     public update(deltaT: number) {
         if(this.currentWave < this.waves.length) {
-            this.waves[this.currentWave].update(deltaT);
+            if(this.waves[this.currentWave].update(deltaT)) {
+                this.currentWave ++;
+            }
         }
+    }
+
+    public setTilemap(tilemap: Tilemap) {
+        this.tilemap = tilemap;
     }
 }

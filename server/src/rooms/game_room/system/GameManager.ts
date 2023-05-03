@@ -117,11 +117,12 @@ export default class GameManager {
     }
 
     public update(deltaT:number) {
+        let deltaTSeconds = deltaT / 1000;
         Matter.Engine.update(this.engine, deltaT);
 
         this.playerManager.update(deltaT);
-        this.effectManager.update(deltaT);
-        this.dungeonManager.update(deltaT);
+        this.effectManager.update(deltaTSeconds);
+        this.dungeonManager.update(deltaTSeconds);
 
         // console.log(deltaT)
     }

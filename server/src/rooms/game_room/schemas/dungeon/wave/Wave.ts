@@ -42,9 +42,7 @@ export default class Wave {
             this.spawnsQueued++;
             this.timeUntilNextSpawn += this.defaultTimeUntilNextSpawn;
         }
-        console.log(deltaT);
-        let monsterQueueItem = this.monsterQueue.shift();
-        if(monsterQueueItem === undefined) return true;
+
         // Sends out an event to spawn a monster.
         while(this.spawnsQueued > 0) {
             let monsterId = this.getNextMonsterId();
@@ -79,16 +77,20 @@ export default class Wave {
         }
     }
 
-    protected getNextMonsterId(): string | undefined {
+    /**
+     * Gets the next monster's id, removing it from this wave's queue in the process.
+     * @returns A string representing the next monster that will be spawned. undefined if there will be none.
+     */
+    public getNextMonsterId(): string | undefined {
         let monsterIdFound = false;
         let monsterId = undefined;
         while(!monsterIdFound && this.monsterQueue.length > 0) {
-            if(this.monsterQueue[0].count === 0) {
+            if(this.monsterQueue[0].count <= 0) {
                 this.monsterQueue.shift();
             } else {
                 this.monsterQueue[0].count--;
                 monsterId = this.monsterQueue[0].monsterId;
-                if(this.monsterQueue[0].count === 0) this.monsterQueue.shift();
+                if(this.monsterQueue[0].count <= 0) this.monsterQueue.shift();
                 monsterIdFound = true;
             }
         }

@@ -7,9 +7,16 @@ import MaskManager from "../Collisions/MaskManager"
 import Dungeon from "../../schemas/dungeon/Dungeon"
 import Wave from "../../schemas/dungeon/wave/Wave"
 import DungeonEvent from "../../schemas/dungeon/DungeonEvent"
-import MonsterController from "../AI/MonsterAI/simplemonster/MonsterController"
 import AIFactory from "../AI/AIFactory"
 
+const dungeonURLMap = {
+    "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
+    "Dirt Map": "assets/tilemaps/dirt_map/dirt_map.json"
+}
+
+// The dungeon manager will be responsible for holding the dungeon.
+// The dungeon object will contain the tilemap.
+// Merge the tilemap manager into the dungeon manager.
 export default class DungeonManager {
     //Spawn different monsters 
     //Reuse monsters
@@ -22,7 +29,11 @@ export default class DungeonManager {
         this.initializeListeners();
     }   
 
-    update(deltaT: number){
+    /**
+     * Updates this DungeonManager.
+     * @param deltaT The time that passed in seconds.
+     */
+    public update(deltaT: number){
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Monster){
@@ -35,15 +46,19 @@ export default class DungeonManager {
 
     /** Creates a new Dungeon. The Dungeon will have an update method that should be called every frame. */
     private createDungeon() {
-        this.dungeon = new Dungeon();
+
+        
+
+        this.dungeon = new Dungeon("");
         let wave = new Wave();
-        wave.addMonster("TinyZombie", 3);
+        wave.addMonster("TinyZombie", 10);
         this.dungeon.addWave(wave);
     }
 
     private initializeListeners() {
         DungeonEvent.getInstance().on("SPAWN_MONSTER", (monsterId) => {
             this.spawnMonster(monsterId);
+            // console.log("MONSTER SPAWNED!!!");
         })
     }
 

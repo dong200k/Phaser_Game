@@ -15,7 +15,7 @@ export default abstract class Effect extends Schema implements Cloneable {
 
     /**
      * Updates this effect by deltaT. Providing an entity will allow this effect to modify the entity directly.
-     * @param deltaT The time that passed since the last update.
+     * @param deltaT The time that passed since the last update in seconds.
      * @returns The deltaT that was not used to process this effect. (E.g. If a regen effect has only 0.003s left but deltaT was 0.016s, then 0.013s is returned.)
      */
     public abstract update(deltaT: number): number;
