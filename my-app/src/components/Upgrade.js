@@ -6,6 +6,7 @@ import UpgradeService from "../services/UpgradeService.js";
 import EditNode from "./EditNode.js";
 import NodeDetails from "./NodeDetails.js";
 import { getDeepCopy } from "../util.js";
+import SkillService from "../services/SkillService.js";
 
 const containerStyles = {
   width: "100vw",
@@ -18,7 +19,8 @@ const renderForeignObjectNode = ({
   foreignObjectProps,
   setEdit,
   addChild, 
-  deleteNode
+  deleteNode,
+  type
 }) => {
   return (
     <g>
@@ -26,11 +28,11 @@ const renderForeignObjectNode = ({
       <circle r={15}></circle>
       <foreignObject {...foreignObjectProps}>
         <div style={{ border: "1px solid black", backgroundColor: "#dedede" }}>
-          <NodeDetails nodeDatum = {nodeDatum} />
+          <NodeDetails nodeDatum = {nodeDatum} type={type}/>
 
           <button className="btn btn-warning" style={{ width: "100%" }} onClick={setEdit(nodeDatum)}>Edit</button>
           <button className="btn btn-light" style={{ width: "100%" }} onClick={()=>addChild(nodeDatum)}>Add children</button>
-          <button className="btn btn-danger" style={{ width: "100%" }} onClick={()=>deleteNode(nodeDatum)}>Delete</button>
+          <button className="btn btn-danger" style={{ width: "100%"}} onClick={()=>deleteNode(nodeDatum)}>Delete</button>
         </div>
       </foreignObject>
     </g>
@@ -47,11 +49,19 @@ export default function Upgrade(props) {
   let [editNode, setEditNode] = useState(undefined)
 
   useEffect(()=>{
-    UpgradeService.getUpgrade(id)
+    if(props.type === "upgrade"){
+      UpgradeService.getUpgrade(id)
       .then((data)=>{
         setUpgrade(data)
       })
-  }, [id])
+    }else if(props.type === "skill"){
+      SkillService.getSkill(id)
+      .then((data)=>{
+        setUpgrade(data)
+      })
+    }
+    
+  }, [id, props])
 
   const setEdit = (node)=>{
     return () => {
@@ -90,12 +100,19 @@ export default function Upgrade(props) {
   }
 
   function onChange(e){
-    setUpgrade(prevUpgrade=>({...prevUpgrade, upgradeName: e.target.value}))
+    setUpgrade(prevUpgrade=>({...prevUpgrade, name: e.target.value}))
   }
 
   async function saveUpgrade(){
-    let success = await UpgradeService.saveUpgrade(upgrade)
-    if(success) alert("saved")
+    let success
+    if(props.type === "upgrade"){
+      success = await UpgradeService.saveUpgrade(upgrade)
+    }else if(props.type==="skill"){
+      success = await SkillService.saveSkill(upgrade)
+    }
+
+    
+    if(success) alert(`saved ${props.type} successfully!`)
   }
 
   function addChild(node){
@@ -139,7 +156,7 @@ export default function Upgrade(props) {
       }
 
       if(newUpgrade.root.nodeId === node.nodeId){
-        alert("cannot delete the root node")
+        alert(`Cannot delete the root node! To delete this whole tree do it from the ${props.type} page`)
       }else{
         dfs(newUpgrade.root)
       }
@@ -151,18 +168,18 @@ export default function Upgrade(props) {
   return (
     <div>
       {!upgrade? 
-        <div>invalid upgrade id!</div>
+        <div>invalid {props.type} id!</div>
         :
         <div>
           <button className="btn btn-success" style={{width: "30%", height: "50px", marginLeft: "auto"}} onClick={saveUpgrade}>SAVE TO DATABASE!!!</button>
 
           <div className="text-center">
-            <h1 className="text-center" style={{display:"inline-block"}}>Upgrade Name:</h1>
-            <h1 style={{display:"inline-block"}}><input type="text" value={upgrade.upgradeName} onChange={onChange}/></h1>
+            <h1 className="text-center" style={{display:"inline-block"}}>{props.type} Name:</h1>
+            <h1 style={{display:"inline-block"}}><input type="text" value={upgrade.name} onChange={onChange}/></h1>
             <h1 className="text-center">id: {upgrade.id}</h1>
           </div>
 
-          {editNode && <EditNode node={editNode} updateUpgrade={updateUpgrade} setEditNode={setEditNode}/>}
+          {editNode && <EditNode type={props.type} node={editNode} updateUpgrade={updateUpgrade} setEditNode={setEditNode}/>}
 
           <div style={containerStyles} ref={containerRef}>
             <Tree
@@ -170,7 +187,7 @@ export default function Upgrade(props) {
               translate={translate}
               nodeSize={nodeSize}
               renderCustomNodeElement={(rd3tProps) =>
-                renderForeignObjectNode({ ...rd3tProps, foreignObjectProps, setEdit, addChild, deleteNode})
+                renderForeignObjectNode({ ...rd3tProps, foreignObjectProps, setEdit, addChild, deleteNode, type: props.type})
               }
               orientation="vertical"
             />

@@ -1,27 +1,28 @@
-import { getDefaultUpgrade, padUpgradeStat } from "../helpers.js"
+import { getDefaultSkill, getDefaultUpgrade, padUpgradeStat } from "../helpers.js"
 
-class UpgradeService{
+class SkillService{
     BASEURL = "http://localhost:3010"
-    async getUpgrade(id){
+    async getSkill(id){
         try{
-            let upgrade = await fetch(this.BASEURL + `/upgrades/${id}`)
-            if(upgrade.status !== 200) throw new Error()
-            return await upgrade.json()
+            let skill = await fetch(this.BASEURL + `/skills/${id}`)
+            console.log(skill)
+            if(skill.status !== 200) throw new Error()
+            return await skill.json()
         }catch{
-            console.log(`error getting upgrade with the id: ${id}`)
+            console.log(`error getting skill with the id: ${id}`)
             return null
         }
         
     }
-    async saveUpgrade(upgrade){
+    async saveSkill(skill){
         // let paddedUpgrade = padUpgradeStat(upgrade)
         try {
-            let result = await fetch(this.BASEURL + `/upgrades/${upgrade.id}`, {
+            let result = await fetch(this.BASEURL + `/skills/${skill.id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(upgrade)
+                body: JSON.stringify(skill)
             })
             return result.status === 200
             
@@ -30,15 +31,15 @@ class UpgradeService{
         }
     
     }
-    async createUpgrade(){
-        let upgrade = getDefaultUpgrade()
+    async createSkill(){
+        let skill = getDefaultSkill()
         try {
-            let result = await fetch(this.BASEURL + `/upgrades`, {
+            let result = await fetch(this.BASEURL + `/skills`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(upgrade)
+                body: JSON.stringify(skill)
             })
             return result
             
@@ -47,9 +48,9 @@ class UpgradeService{
         }
     }
 
-    async deleteUpgrade(id){
+    async deleteSkill(id){
         try {
-            let result = await fetch(this.BASEURL + `/upgrades/${id}`, {
+            let result = await fetch(this.BASEURL + `/skills/${id}`, {
                 method: "delete",
                 headers: {
                     'Content-Type': 'application/json'
@@ -61,9 +62,9 @@ class UpgradeService{
         }
     }
 
-    async getAllUpgrades(){
+    async getAllSkills(){
         try{
-            let res = await fetch(this.BASEURL + "/upgrades")
+            let res = await fetch(this.BASEURL + "/skills")
             console.log(res)
             if(res.status !== 200) throw new Error()
             return await res.json()
@@ -75,4 +76,4 @@ class UpgradeService{
     }
 }
 
-export default new UpgradeService()
+export default new SkillService()

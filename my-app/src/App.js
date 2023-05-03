@@ -10,9 +10,10 @@ function App() {
         <NavigationBar/>
         <Routes>
           <Route path="/" element={<Home/>}/>
-          <Route path="/upgrade/:id" element={<Upgrade/>}/>
-          <Route path="upgrade" element={<Upgrades/>} />
-          <Route path="skill" element={<div>skills</div>} />
+          <Route path="/upgrade/:id" element={<Upgrade type="upgrade"/>}/>
+          <Route path="/upgrade" element={<Upgrades type="upgrade"/>} />
+          <Route path="/skill/:id" element={<Upgrade type="skill"/>}/>
+          <Route path="/skill" element={<Upgrades type="skill"/>} />
           <Route path="*" element={<div>404 NOT FOUND</div>} />
         </Routes>
     </BrowserRouter>

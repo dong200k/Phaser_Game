@@ -2,7 +2,7 @@
   "upgrades": [
     {
       "id": "1",
-      "upgradeName": "bow-upgrade",
+      "name": "bow-upgrade",
       "root": {
         "nodeId": "node-1",
         "children": [
@@ -16,6 +16,8 @@
                   "name": "Crit Enhancement 2",
                   "description": "increase crit rate by 10%",
                   "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
                     "hp": 0,
                     "mana": 0,
                     "armor": 0,
@@ -39,7 +41,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "a22e1570-6f34-47e2-aa7c-1c52eb076e56",
+                  "id": "8d6d9e5e-9cc0-459f-a7eb-04a9c5f98e86",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -49,6 +51,8 @@
               "name": "Crit Enhancement",
               "description": "increase crit rate by 5%",
               "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
                 "hp": 0,
                 "mana": 0,
                 "armor": 0,
@@ -72,7 +76,7 @@
               }
             },
             "__rd3t": {
-              "id": "3875bd59-fe4d-456d-9a40-3366ffad2956",
+              "id": "290e1b68-7a92-4115-87b8-9368f1b271d2",
               "depth": 1,
               "collapsed": false
             }
@@ -82,11 +86,52 @@
             "children": [
               {
                 "nodeId": "node-5",
-                "children": [],
+                "children": [
+                  {
+                    "nodeId": "node-5d02d994-aa36-49df-ab63-a31d19643dbd",
+                    "children": [],
+                    "data": {
+                      "name": "auto-generated",
+                      "description": "auto-generated",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": "1",
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "level": 0
+                      },
+                      "weaponId": "1"
+                    },
+                    "__rd3t": {
+                      "id": "0c60b612-76b3-402d-a69f-be027cf81ecf",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
                 "data": {
                   "name": "Attack Enhancement 2",
                   "description": "increase attack by 20 points",
                   "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
                     "hp": 0,
                     "mana": 0,
                     "armor": 0,
@@ -110,7 +155,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "ae4b5dce-c43b-448a-ae07-9a47d30c17d6",
+                  "id": "63c8d29b-5cab-4d25-97a1-8a5fe8bc0369",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -120,6 +165,8 @@
               "name": "Attack Enhancement",
               "description": "increase attack by 5 points",
               "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
                 "hp": 0,
                 "mana": 0,
                 "armor": 0,
@@ -143,7 +190,7 @@
               }
             },
             "__rd3t": {
-              "id": "4c908ae6-d903-4596-8176-adab64874ae5",
+              "id": "3bcc3671-df0b-45f1-b2cd-a52b9f2d28ec",
               "depth": 1,
               "collapsed": false
             }
@@ -155,6 +202,8 @@
               "name": "Penetration",
               "description": "increase armor penetration by 5%",
               "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
                 "hp": 0,
                 "mana": 0,
                 "armor": 0,
@@ -178,7 +227,7 @@
               }
             },
             "__rd3t": {
-              "id": "7106ad21-640e-4ddb-8a3a-53044f9f7609",
+              "id": "97c56ef4-fd19-40ef-9876-6aaf2d9efe3c",
               "depth": 1,
               "collapsed": false
             }
@@ -189,12 +238,14 @@
           "name": "Wooden Bow 2",
           "description": "A sturdy wooden bow commonly seen with novice adventurers",
           "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
             "hp": 0,
             "mana": 0,
             "armor": 0,
             "magicResist": 0,
             "damagePercent": 0,
-            "attack": "15",
+            "attack": 15,
             "attackPercent": 0,
             "armorPen": 0,
             "magicAttack": 0,
@@ -212,7 +263,7 @@
           }
         },
         "__rd3t": {
-          "id": "608a421e-b868-4755-a109-dccf164cb428",
+          "id": "7f87570c-328d-49b3-b99e-cb9c81963ca6",
           "depth": 0,
           "collapsed": false
         }
@@ -220,7 +271,7 @@
     },
     {
       "id": "2",
-      "upgradeName": "sword-upgrade-edited",
+      "name": "sword-upgrade",
       "root": {
         "nodeId": "node-1",
         "children": [
@@ -255,6 +306,11 @@
                     "lifeSteal": 0,
                     "level": 0
                   }
+                },
+                "__rd3t": {
+                  "id": "5e56eb76-1f4b-46f1-adbb-c1cb27654776",
+                  "depth": 2,
+                  "collapsed": false
                 }
               }
             ],
@@ -283,6 +339,11 @@
                 "lifeSteal": 0,
                 "level": 0
               }
+            },
+            "__rd3t": {
+              "id": "4e66484c-9085-4228-860b-f54cbcc9c214",
+              "depth": 1,
+              "collapsed": false
             }
           },
           {
@@ -316,6 +377,11 @@
                     "lifeSteal": 0,
                     "level": 0
                   }
+                },
+                "__rd3t": {
+                  "id": "a22d5271-a25c-46a7-b7c0-c238ed663187",
+                  "depth": 2,
+                  "collapsed": false
                 }
               }
             ],
@@ -344,6 +410,11 @@
                 "lifeSteal": 0,
                 "level": 0
               }
+            },
+            "__rd3t": {
+              "id": "be74af01-4bd7-4b67-af6e-b2f1aec15610",
+              "depth": 1,
+              "collapsed": false
             }
           },
           {
@@ -374,6 +445,11 @@
                 "lifeSteal": 0,
                 "level": 0
               }
+            },
+            "__rd3t": {
+              "id": "9fdfe3b0-da49-46b9-b882-891ad25b72a3",
+              "depth": 1,
+              "collapsed": false
             }
           }
         ],
@@ -382,12 +458,14 @@
           "name": "Wooden Sword",
           "description": "A dull wooden sword commonly seen with novice adventurers",
           "stat": {
+            "maxHp": "",
+            "maxMana": 0,
             "hp": 0,
             "mana": 0,
             "armor": 0,
             "magicResist": 0,
             "damagePercent": 0,
-            "attack": 15,
+            "attack": "16",
             "attackPercent": 0,
             "armorPen": 0,
             "magicAttack": 0,
@@ -403,12 +481,17 @@
             "lifeSteal": 0,
             "level": 0
           }
+        },
+        "__rd3t": {
+          "id": "59eda03e-d7f8-4052-bf0d-17ccab422f33",
+          "depth": 0,
+          "collapsed": false
         }
       }
     },
     {
       "id": "upgrade-292ffa18-14c1-4133-a53d-bafc2d135cb3",
-      "upgradeName": "demo upgrade",
+      "name": "demo upgrade",
       "root": {
         "nodeId": "node-29a569f0-f2fa-4149-adfe-0de8bbab7768",
         "children": [
@@ -670,6 +753,87 @@
         },
         "__rd3t": {
           "id": "1d6544c1-4a2f-4de9-aaf5-06f3266600d9",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
+    }
+  ],
+  "skills": [
+    {
+      "id": "skill-a63779a4-c357-4c62-a17d-d3d3606b1b4b",
+      "name": "auto-generated",
+      "root": {
+        "nodeId": "node-a141b8ba-7468-46a2-b4c7-c3551fe45f12",
+        "children": [
+          {
+            "nodeId": "node-90c152fd-1f76-4a75-9c54-498993c5b1dd",
+            "children": [],
+            "data": {
+              "name": "auto-generated",
+              "description": "auto-generated",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "level": 0
+              }
+            },
+            "__rd3t": {
+              "id": "aef3206d-7a77-4cf7-9278-0dbe594d1007",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "name": "auto-generated",
+          "description": "auto-generated",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 1,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "level": 0
+          }
+        },
+        "__rd3t": {
+          "id": "4e70158a-a042-4347-96e0-322234a51955",
           "depth": 0,
           "collapsed": false
         }

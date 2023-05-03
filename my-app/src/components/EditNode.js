@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { getDeepCopy } from "../util.js"
+import { getEditForm } from "../helpers.js"
 
-export default function EditNode({node, updateUpgrade, setEditNode}){
-    let [form, setForm] = useState(getDeepCopy(node))
+export default function EditNode({node, updateUpgrade, setEditNode, type}){
+    let [form, setForm] = useState(getEditForm(node))
 
     function onChange(type, key){
         return (e)=>{
@@ -10,14 +10,16 @@ export default function EditNode({node, updateUpgrade, setEditNode}){
                 setForm(prevForm=>{
                     let newForm = {...prevForm}
                     newForm.data.stat = {...prevForm.data.stat}
-                    newForm.data.stat[key] = e.target.value
+
+                    newForm.data.stat[key] = Number(e.target.value)
+
                     return newForm
                 })
             }else{
                 setForm(prevForm=>{
                     let newForm = {...prevForm}
                     newForm.data = {...prevForm.data}
-                    newForm.data[key] = e.target.value
+                    newForm.data[key] = String(e.target.value)
                     return newForm
                 })
             }
@@ -46,15 +48,18 @@ export default function EditNode({node, updateUpgrade, setEditNode}){
                 <h3 className="text-primary" style={{display: "inline-block", marginTop: 0}}>description</h3>
                 <textarea value={form.data.description} onChange={onChange("other", "description")}/>
             </div>
-                        
-            <label style={{display:"block"}}>
-               <span className="text-danger">weaponId:</span><input type="text" value={form.data.weaponId} onChange={onChange("other", "weaponId")}/>
-            </label>
+            
+            {type === "upgrade" &&
+                <label style={{display:"block"}}>
+                    <span className="text-danger">weaponId:</span><input type="text" value={form.data.weaponId} onChange={onChange("other", "weaponId")}/>
+                </label>
+            }
+            
 
             {
                 Object.keys(form.data.stat).map(function(key) {
                    return <label style={{display:"block"}}>
-                        <span className="text-danger">{key}:</span><input type="text" value={form.data.stat[key]} onChange={onChange("stat",key)}/>
+                        <span className="text-danger">{key}:</span><input type="number" value={form.data.stat[key]} onChange={onChange("stat",key)}/>
                     </label>
                 })
             }  

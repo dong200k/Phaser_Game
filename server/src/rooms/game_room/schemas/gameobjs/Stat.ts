@@ -35,10 +35,12 @@ export default class Stat extends Schema {
     @type('number') speed;
 
     @type('number') lifeSteal;
+    @type('number') lifeStealPercent;
 
     @type('number') level;
 
     static defaultStatObject = {
+        maxHp: 100, maxMana: 100,
         hp: 100, mana: 100, 
         armor: 10, magicResist: 10,
         damagePercent: 0, attack: 10, armorPen: 0, attackPercent: 0.5, 
@@ -46,7 +48,7 @@ export default class Stat extends Schema {
         critRate: 0.5, critDamage: 1, 
         attackRange: 1, attackRangePercent: 0,
         attackSpeed: 1, attackSpeedPercent: 0, 
-        speed: 1, lifeSteal: 0, level: 1
+        speed: 1, lifeSteal: 0, lifeStealPercent: 0, level: 1
     }
 
     constructor(stat: statType = Stat.defaultStatObject) {
@@ -82,6 +84,7 @@ export default class Stat extends Schema {
         this.speed = stat.speed;
 
         this.lifeSteal = stat.lifeSteal;
+        this.lifeStealPercent = stat.lifeStealPercent
 
         this.level = stat.level;
     }

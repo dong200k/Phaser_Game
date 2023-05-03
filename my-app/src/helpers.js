@@ -15,7 +15,15 @@ export const useCenteredTree = () => {
 export function getDefaultUpgrade(){
   return {
     id: "upgrade-" + window.crypto.randomUUID(),
-    upgradeName: "auto-generated",
+    name: "auto-generated",
+    root: getDefaultNode()
+  }
+}
+
+export function getDefaultSkill(){
+  return {
+    id: "skill-" + window.crypto.randomUUID(),
+    name: "auto-generated",
     root: getDefaultNode()
   }
 }
@@ -49,10 +57,23 @@ export function getDefaultNode(){
         attackSpeedPercent:0,
         speed:0,
         lifeSteal:0,
+        lifeStealPercent: 0,
         level:0,
       }
     }
   }
+}
+
+export function getEditForm(node){
+  let nodeCopy = getDeepCopy(node)
+  let defaultNodeStat = getDefaultNode().data.stat
+
+  // set node's stat to defaultNodeStat stat, 
+  //if nodeCopy's stat has extra properties that default does not have add them to the obj
+  //if nodeCopy's stat has the properties that default has overwrite the default ones
+  nodeCopy.data.stat = {...defaultNodeStat, ...nodeCopy.data.stat}
+
+  return nodeCopy 
 }
 
 export function padUpgradeStat(upgrade){
@@ -78,3 +99,16 @@ export function padUpgradeStat(upgrade){
 
   return newUpgrade
 }
+
+// export default function isValidStat(stat){
+//   let message = ""
+//   Object.entries(stat).forEach(([key, val])=>{
+//     switch(key){
+//       case "critRate":
+//         break;
+//       default: 
+//         break;
+//     }        
+
+//   })
+// }
