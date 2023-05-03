@@ -762,7 +762,7 @@
   "skills": [
     {
       "id": "skill-a63779a4-c357-4c62-a17d-d3d3606b1b4b",
-      "name": "auto-generated",
+      "name": "Adventurer Skill Tree",
       "root": {
         "nodeId": "node-a141b8ba-7468-46a2-b4c7-c3551fe45f12",
         "children": [
@@ -798,24 +798,123 @@
               }
             },
             "__rd3t": {
-              "id": "aef3206d-7a77-4cf7-9278-0dbe594d1007",
+              "id": "c1cd3ec5-d4c9-4c98-a73c-3e4cdae4c09d",
               "depth": 1,
               "collapsed": false
+            }
+          },
+          {
+            "nodeId": "node-ef888992-ab35-44ed-ac49-810f20040573",
+            "children": [],
+            "data": {
+              "name": "auto-generated",
+              "description": "auto-generated",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              }
+            }
+          },
+          {
+            "nodeId": "node-e90b6495-9ba3-4677-98d3-7d27c4a113d5",
+            "children": [],
+            "data": {
+              "name": "auto-generated",
+              "description": "auto-generated",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              }
+            }
+          },
+          {
+            "nodeId": "node-55aed6b7-fda0-4a79-9a51-74c87dd80c50",
+            "children": [],
+            "data": {
+              "name": "auto-generated",
+              "description": "auto-generated",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              }
             }
           }
         ],
         "data": {
-          "name": "auto-generated",
-          "description": "auto-generated",
+          "name": "Adventurer's Stat",
+          "description": "Default stats that all adventurer's have.",
           "stat": {
-            "maxHp": 0,
-            "maxMana": 0,
-            "hp": 1,
+            "maxHp": 100,
+            "maxMana": 100,
+            "hp": 0,
             "mana": 0,
             "armor": 0,
             "magicResist": 0,
             "damagePercent": 0,
-            "attack": 0,
+            "attack": 10,
             "attackPercent": 0,
             "armorPen": 0,
             "magicAttack": 0,
@@ -825,15 +924,16 @@
             "critDamage": 0,
             "attackRange": 0,
             "attackRangePercent": 0,
-            "attackSpeed": 0,
+            "attackSpeed": 1,
             "attackSpeedPercent": 0,
-            "speed": 0,
+            "speed": 1,
             "lifeSteal": 0,
-            "level": 0
+            "lifeStealPercent": 0,
+            "level": 1
           }
         },
         "__rd3t": {
-          "id": "4e70158a-a042-4347-96e0-322234a51955",
+          "id": "916d2755-11e2-4875-9653-60bf701e2130",
           "depth": 0,
           "collapsed": false
         }

@@ -171,13 +171,13 @@ export default function Upgrade(props) {
         <div>invalid {props.type} id!</div>
         :
         <div>
-          <button className="btn btn-success" style={{width: "30%", height: "50px", marginLeft: "auto"}} onClick={saveUpgrade}>SAVE TO DATABASE!!!</button>
-
-          <div className="text-center">
+          <div className="text-center" style={{backgroundColor: props.type==="upgrade"? "lightgreen": "lightblue"}}>
             <h1 className="text-center" style={{display:"inline-block"}}>{props.type} Name:</h1>
             <h1 style={{display:"inline-block"}}><input type="text" value={upgrade.name} onChange={onChange}/></h1>
             <h1 className="text-center">id: {upgrade.id}</h1>
           </div>
+
+          <button className="btn btn-success" style={{width: "30%", height: "50px", marginLeft: "35%"}} onClick={saveUpgrade}>SAVE TO DATABASE!!!</button>
 
           {editNode && <EditNode type={props.type} node={editNode} updateUpgrade={updateUpgrade} setEditNode={setEditNode}/>}
 

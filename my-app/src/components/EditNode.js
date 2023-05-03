@@ -11,7 +11,7 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
                     let newForm = {...prevForm}
                     newForm.data.stat = {...prevForm.data.stat}
 
-                    newForm.data.stat[key] = Number(e.target.value)
+                    newForm.data.stat[key] = e.target.value
 
                     return newForm
                 })
@@ -28,6 +28,10 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
 
     function save(e){
         e.preventDefault()
+        Object.entries(form.data.stat).forEach(([key,val])=>{
+            form.data.stat[key] = Number(val)
+        })
+
         let success = updateUpgrade(form)
 
         if(success){
@@ -39,35 +43,38 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
 
     return (
       <div className="text-center bg-light">
-         <form onSubmit={save}>
-            <label style={{display:"inline-block"}}>
-                <span className="text-primary">node name:</span><input type="text" value={form.data.name} onChange={onChange("other", "name")}/>
+         <form onSubmit={save} className="pt-5 mx-auto">
+            <label className="d-flex justify-content-center">
+                <span className="text-primary">node name:</span><input style={{width: "25%"}} type="text" value={form.data.name} onChange={onChange("other", "name")}/>
             </label>
 
-            <div className="flex-row">
-                <h3 className="text-primary" style={{display: "inline-block", marginTop: 0}}>description</h3>
-                <textarea value={form.data.description} onChange={onChange("other", "description")}/>
+            <div className="d-flex justify-content-center">
+                <span className="text-primary" style={{display: "inline-block", verticalAlign:"top"}}>description:</span>
+                <textarea value={form.data.description} style={{width: "25%"}}  onChange={onChange("other", "description")}/>
             </div>
             
             {type === "upgrade" &&
-                <label style={{display:"block"}}>
-                    <span className="text-danger">weaponId:</span><input type="text" value={form.data.weaponId} onChange={onChange("other", "weaponId")}/>
+                <label className="d-flex justify-content-center">
+                    <span className="text-primary">weaponId:</span><input type="text" style={{width: "25%"}}  value={form.data.weaponId} onChange={onChange("other", "weaponId")}/>
                 </label>
             }
             
-
+            <h3>Stats</h3>
+            <div>
             {
                 Object.keys(form.data.stat).map(function(key) {
-                   return <label style={{display:"block"}}>
-                        <span className="text-danger">{key}:</span><input type="number" value={form.data.stat[key]} onChange={onChange("stat",key)}/>
+                   return <label>
+                        <div className="text-danger">{key}:</div>
+                        <input type="number" value={form.data.stat[key]} onChange={onChange("stat",key)}/>
                     </label>
                 })
-            }  
+            } 
+            </div> 
 
-            
-            <input className="btn btn-success" type="submit" value="Save" />
+            <br/><br/>
+            <input className="btn btn-success" style={{display: "block", margin: "auto", width: "100px"}} type="submit" value="Save" />
         </form>
-        <button className="btn btn-danger" onClick={()=>setEditNode(undefined)}>Discard</button>
+        <button className="btn btn-danger" style={{width: "100px"}} onClick={()=>setEditNode(undefined)}>Discard</button>
       </div>
     )
   }
