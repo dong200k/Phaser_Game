@@ -4,8 +4,8 @@ import MonsterController from "./MonsterController";
 
 export default class Idle extends StateNode {
 
-    private searchForNewTargetDefaultCooldown: number = 5;
-    private searchForNewTargetCooldown: number = 5;
+    private searchForNewTargetDefaultCooldown: number = 2;
+    private searchForNewTargetCooldown: number = 2;
 
     public onEnter(): void {
         this.searchForNewTargetCooldown = this.searchForNewTargetDefaultCooldown;

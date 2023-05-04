@@ -21,7 +21,6 @@ export default class GameManager {
         this.gameRoom.state.gameObjects.onAdd = this.onAdd;
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
     }
-
     
     // private getTypeOfObject(gameObj: any): string{
     //     if(gameObj.hasOwnProperty('role')) return "player";
@@ -111,7 +110,7 @@ export default class GameManager {
             this.players.push(newPlayer);
         this.scene.add.existing(newPlayer);
         this.scene.matter.add.gameObject(newPlayer, {
-            isStatic: true,
+            //isStatic: true,
             isSensor: true,
         }); //adding this game object to matter physics will show debug lines
         newPlayer.initializeListeners(player);
@@ -123,8 +122,22 @@ export default class GameManager {
         this.scene.add.existing(newMonster);
         this.scene.matter.add.gameObject(newMonster, {
             isSensor: true,
-            isStatic: true,
+            //isStatic: true,
         });
         return newMonster;
     }
+
+    /**
+     * What we need: 
+     * 1. A concrete concept of time. We will use a tick.
+     * 
+     * 
+     * 
+     * Doing client side prediction.
+     * Client: Send movement input to the server.
+     * Client: Start moving the entity.
+     * Server: Receives movement input from client and process movement.
+     * Server: Sends updated entity position to client.
+     * Client: Compares entity's position with the authrotiative entity potition of the server.
+     */
 }

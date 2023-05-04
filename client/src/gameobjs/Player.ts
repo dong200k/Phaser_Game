@@ -10,16 +10,16 @@ export default class Player extends Entity
         this.playerState = playerState;
     }
 
-    /**Add listeners to connect to the server's player*/
-    public initializeListeners(playerState:any) {
-        playerState.onChange = (changes:any) => {
-            changes.forEach(({field, value}: any) => {
-                switch(field) {
-                    case "x": this.x = value; break;
-                    case "y": this.y = value; break;
-                }
-            })
-        }
-    }
+    // /**Add listeners to connect to the server's player*/
+    // public initializeListeners(playerState:any) {
+    //     playerState.onChange = (changes:any) => {
+    //         changes.forEach(({field, value}: any) => {
+    //             switch(field) {
+    //                 case "x": this.x = value; break;
+    //                 case "y": this.y = value; break;
+    //             }
+    //         })
+    //     }
+    // }
 
 }

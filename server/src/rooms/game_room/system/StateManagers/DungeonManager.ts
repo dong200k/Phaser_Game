@@ -63,6 +63,9 @@ export default class DungeonManager {
             let newTilemap = this.createTilemap(tiled);
             this.dungeon.setTilemap(newTilemap);
 
+            // Set spawnpoints 
+            this.setDungeonSpawnPoints(this.dungeon, tiled);
+
             // Waves
             let wave = new Wave();
             wave.addMonster("TinyZombie", 10);
@@ -87,10 +90,18 @@ export default class DungeonManager {
         monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
         let width = 12;
         let height = 18;
+
+        let randomSpawnPoint = this.dungeon.getRandomMonsterSpawnPoint();
         let spawnX = 200;
         let spawnY = 200;
+        if(randomSpawnPoint !== null) {
+            spawnX = randomSpawnPoint.x;
+            spawnY = randomSpawnPoint.y;
+        }
 
         let body = Matter.Bodies.rectangle(spawnX, spawnY, width, height, {isStatic: false});
+        monster.x = spawnX;
+        monster.y = spawnY;
 
         body.collisionFilter = {
             group: 0,
@@ -108,6 +119,20 @@ export default class DungeonManager {
 
     public getTotalMonstersSpawned() {
 
+    }
+
+    private setDungeonSpawnPoints(dungeon: Dungeon, data: TiledJSON) {
+        data.layers.forEach((value) => {
+            if(value.type === "objectgroup") {
+                value.objects.forEach((spawnPoint) => {
+                    if(spawnPoint.type === "player") {
+                        dungeon.addPlayerSpawnPoint(spawnPoint.x, spawnPoint.y);
+                    } else if(spawnPoint.type === "monster") {
+                        dungeon.addMonsterSpawnPoint(spawnPoint.x, spawnPoint.y);
+                    }
+                })
+            }
+        });
     }
 
     /**
