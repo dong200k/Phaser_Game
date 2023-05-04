@@ -35,6 +35,7 @@ export default class LobbyScene extends Phaser.Scene {
             this.leaveLobby();
         });
         this.events.on("wake", (sys: Phaser.Scenes.Systems) => {
+            this.page = 1;
             this.joinLobby();
         });
     }
@@ -137,18 +138,6 @@ export default class LobbyScene extends Phaser.Scene {
         else this.pageNextButton?.setButtonActive(true);
     }
 
-    // private addWaitingRoom(){
-    //     console.log("adding waiting room")
-    //     let i = this.waitingRooms.length 
-    //     this.waitingRooms.push(this.add.text(100, i*30 + 100, ""));
-    //     this.waitingRooms[i].setInteractive();
-    //     this.waitingRooms[i].on(Phaser.Input.Events.POINTER_UP, () => {
-    //         if(this.allRooms.length > i) {
-    //             ClientManager.getClient().setWaitingRoomId(this.allRooms[i].roomId);
-    //             this.scene.start("RoomScene");
-    //         }
-    //     })
-    // }
 
     private leaveLobby() {
         this.lobbyRoom?.leave();
@@ -159,9 +148,6 @@ export default class LobbyScene extends Phaser.Scene {
 
     private joinLobby() {
         // Connecting to the server
-        // console.log("connecting to the lobby...");
-        // this.lobbyConnectionText = this.add.text(this.game.scale.width / 2 - 48, 80, "");
-        // this.lobbyConnectionText.setText("connecting to the lobby...");
         ClientManager.getClient().joinLobby().then((room) => {
             this.lobbyRoom = room;
             this.onJoin();
@@ -172,14 +158,8 @@ export default class LobbyScene extends Phaser.Scene {
     }
 
     update(deltaT:number) {
-        //this.renderWaitingRoom();
+        
     }
-
-    // private renderWaitingRoom() {
-    //     this.waitingRooms.forEach((text, idx) => {
-    //         text.setText(`Join Room: ${this.allRooms.length > idx ? this.allRooms[idx].roomId : "No Room"}`);
-    //     })
-    // }
 
     private updateRoomPost() {
         let numberOfRoomPostPerPage = this.roomPosts.length;
@@ -195,23 +175,32 @@ export default class LobbyScene extends Phaser.Scene {
             this.lobbyRoom.onMessage("rooms", (rooms) => {
                 this.allRooms = rooms;
                 console.log("All rooms received: ", rooms);
-                //while(this.allRooms.length > this.waitingRooms.length) this.addWaitingRoom()
                 this.updateLobbyDisplay();
             });
 
             this.lobbyRoom.onMessage("+", ([roomId, room]) => {
+                // First make sure that a room with the same id is not added twice.
                 let idx = this.allRooms.findIndex((r) => r?.roomId === roomId);
                 if(idx !== -1) {
                     this.allRooms[idx] = room;
                 } else {
-                    this.allRooms.push(room);
+                    // Add new room, seaching for empty slots first.
+                    let added = false;
+                    for(let i = 0; i < this.allRooms.length; i++) {
+                        if(this.allRooms[i] === null) {
+                            this.allRooms[i] = room;
+                            added = true;
+                            i = this.allRooms.length;
+                        }
+                    }
+                    if(!added) this.allRooms.push(room);
                 }
                 console.log("Added/Updated room: ", room);
                 this.updateLobbyDisplay();
             });
 
             this.lobbyRoom.onMessage("-", (roomId: string) => {
-                //this.allRooms = this.allRooms.filter((r) => r?.roomId !== roomId); // removed
+                // Removed Rooms are marked as null and becomes a vacant slot.
                 this.allRooms.forEach((r, idx) => {if(r?.roomId === roomId) this.allRooms[idx] = null}); // flagged as null
                 console.log("Removed Room: ", roomId);
                 this.updateLobbyDisplay();
