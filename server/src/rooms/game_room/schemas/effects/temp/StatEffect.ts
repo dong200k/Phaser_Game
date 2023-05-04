@@ -69,58 +69,36 @@ export default class StatEffect extends TempEffect {
         }
     }
 
-    public applyEffect(entity?: Entity | undefined): boolean {
-        if(entity) {
-            entity.stat.maxHp += this.stat.maxHp;
-            entity.stat.maxMana += this.stat.maxMana;
-            entity.stat.armor += this.stat.armor;
-            entity.stat.magicResist += this.stat.magicResist;
-            entity.stat.damagePercent += this.stat.damagePercent;
-            entity.stat.attack += this.stat.attack;
-            entity.stat.attackPercent += this.stat.attackPercent;
-            entity.stat.armorPen += this.stat.armorPen;
-            entity.stat.magicAttack += this.stat.magicAttack;
-            entity.stat.magicAttackPercent += this.stat.magicAttackPercent;
-            entity.stat.magicPen += this.stat.magicPen;
-            entity.stat.critRate += this.stat.critRate;
-            entity.stat.critDamage += this.stat.critDamage;
-            entity.stat.attackRange += this.stat.attackRange;
-            entity.stat.attackRangePercent += this.stat.attackRangePercent;
-            entity.stat.attackSpeed += this.stat.attackSpeed;
-            entity.stat.attackSpeedPercent += this.stat.attackSpeedPercent;
-            entity.stat.speed += this.stat.speed;
-            entity.stat.lifeSteal += this.stat.lifeSteal;
-            //entity.stat.level += this.stat.level;
-            return true;
-        }
-        return false;
+    public applyEffect(entity: Entity): boolean {
+        this.applyStatToEntity(entity, this.stat, 1);
+        return true;
     }
 
-    protected unapplyEffect(entity?: Entity | undefined): boolean {
-        if(entity) {
-            entity.stat.maxHp -= this.stat.maxHp;
-            entity.stat.maxMana -= this.stat.maxMana;
-            entity.stat.armor -= this.stat.armor;
-            entity.stat.magicResist -= this.stat.magicResist;
-            entity.stat.damagePercent -= this.stat.damagePercent;
-            entity.stat.attack -= this.stat.attack;
-            entity.stat.attackPercent -= this.stat.attackPercent;
-            entity.stat.armorPen -= this.stat.armorPen;
-            entity.stat.magicAttack -= this.stat.magicAttack;
-            entity.stat.magicAttackPercent -= this.stat.magicAttackPercent;
-            entity.stat.magicPen -= this.stat.magicPen;
-            entity.stat.critRate -= this.stat.critRate;
-            entity.stat.critDamage -= this.stat.critDamage;
-            entity.stat.attackRange -= this.stat.attackRange;
-            entity.stat.attackRangePercent -= this.stat.attackRangePercent;
-            entity.stat.attackSpeed -= this.stat.attackSpeed;
-            entity.stat.attackSpeedPercent -= this.stat.attackSpeedPercent;
-            entity.stat.speed -= this.stat.speed;
-            entity.stat.lifeSteal -= this.stat.lifeSteal;
-            //entity.stat.level -= this.stat.level;
-            return true;
-        }
-        return false;
+    protected unapplyEffect(entity: Entity): boolean {
+        this.applyStatToEntity(entity, this.stat, -1);
+        return true;
+    }
+
+    private applyStatToEntity(entity: Entity, stat: Stat, multiplier: number) {
+        entity.stat.maxHp += stat.maxHp * multiplier;
+        entity.stat.maxMana += stat.maxMana * multiplier;
+        entity.stat.armor += stat.armor * multiplier;
+        entity.stat.magicResist += stat.magicResist * multiplier;
+        entity.stat.damagePercent += stat.damagePercent * multiplier;
+        entity.stat.attack += stat.attack * multiplier;
+        entity.stat.attackPercent += stat.attackPercent * multiplier;
+        entity.stat.armorPen += stat.armorPen * multiplier;
+        entity.stat.magicAttack += stat.magicAttack * multiplier;
+        entity.stat.magicAttackPercent += stat.magicAttackPercent * multiplier;
+        entity.stat.magicPen += stat.magicPen * multiplier;
+        entity.stat.critRate += stat.critRate * multiplier;
+        entity.stat.critDamage += stat.critDamage * multiplier;
+        entity.stat.attackRange += stat.attackRange * multiplier;
+        entity.stat.attackRangePercent += stat.attackRangePercent * multiplier;
+        entity.stat.attackSpeed += stat.attackSpeed * multiplier;
+        entity.stat.attackSpeedPercent += stat.attackSpeedPercent * multiplier;
+        entity.stat.speed += stat.speed * multiplier;
+        entity.stat.lifeSteal += stat.lifeSteal * multiplier;
     }
 
     /**

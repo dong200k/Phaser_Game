@@ -1,7 +1,12 @@
+import { Cloneable } from "../../../../util/PoolUtil";
 import Entity from "../gameobjs/Entity";
 import { Schema, type } from '@colyseus/schema';
 
-export default abstract class Effect extends Schema {
+/**
+ * Effect are used to manipulate the Entity object. Effects themselves contain the logic to 
+ * manipluate the entity; they are updated via the update() method.
+ */
+export default abstract class Effect extends Schema implements Cloneable {
     @type('string') private name:string = "Effect";
     @type('string') private description:string = "Base Effect";
     @type('boolean') private completed:boolean = false;
@@ -10,7 +15,7 @@ export default abstract class Effect extends Schema {
 
     /**
      * Updates this effect by deltaT. Providing an entity will allow this effect to modify the entity directly.
-     * @param deltaT The time that passed since the last update.
+     * @param deltaT The time that passed since the last update in seconds.
      * @returns The deltaT that was not used to process this effect. (E.g. If a regen effect has only 0.003s left but deltaT was 0.016s, then 0.013s is returned.)
      */
     public abstract update(deltaT: number): number;

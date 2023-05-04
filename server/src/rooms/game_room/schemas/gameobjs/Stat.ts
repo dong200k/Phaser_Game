@@ -39,7 +39,7 @@ export default class Stat extends Schema {
     @type('number') level;
 
     static defaultStatObject = {
-        hp: 100, mana: 100, 
+        hp: 100, mana: 100, maxHp: 100, maxMana: 100,
         armor: 10, magicResist: 10,
         damagePercent: 0, attack: 10, armorPen: 0, attackPercent: 0.5, 
         magicAttack: 0, magicAttackPercent: 0, magicPen: 0,
