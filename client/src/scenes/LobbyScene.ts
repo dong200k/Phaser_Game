@@ -8,8 +8,6 @@ import TextField from "../UI/TextField";
 import Button from "../UI/Button";
 import SceneManager from "../system/SceneManager";
 import RoomPost from "../UI/RoomPost";
-import { bakeBorderGraphicsFromLayout } from "../UI/Layoutable";
-
 
 export default class LobbyScene extends Phaser.Scene {
     
@@ -20,9 +18,6 @@ export default class LobbyScene extends Phaser.Scene {
     private pageNextButton: Button | null = null;
     private pagePrevButton: Button | null = null;
     private roomPosts: RoomPost[] = [];
-
-    //private lobbyConnectionText?: Phaser.GameObjects.Text;
-    //private waitingRooms: Phaser.GameObjects.Text[] = [];
 
     constructor() {
         super(SceneKey.LobbyScene);
@@ -36,6 +31,12 @@ export default class LobbyScene extends Phaser.Scene {
         console.log("Menu Sleeping", this.scene.isSleeping(SceneKey.MenuScene));
         console.log("Navbar Sleeping", this.scene.isSleeping(SceneKey.NavbarScene));
         console.log("Lobby Sleeping", this.scene.isSleeping(SceneKey.LoadingScene));
+        this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
+            this.leaveLobby();
+        });
+        this.events.on("wake", (sys: Phaser.Scenes.Systems) => {
+            this.joinLobby();
+        });
     }
 
     private initializeUI() {
@@ -195,6 +196,7 @@ export default class LobbyScene extends Phaser.Scene {
                 this.allRooms = rooms;
                 console.log("All rooms received: ", rooms);
                 //while(this.allRooms.length > this.waitingRooms.length) this.addWaitingRoom()
+                this.updateLobbyDisplay();
             });
 
             this.lobbyRoom.onMessage("+", ([roomId, room]) => {
