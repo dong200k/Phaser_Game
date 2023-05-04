@@ -19,6 +19,7 @@ export let Categories = Object.freeze({
 
     // Terrain
     'OBSTACLE': 0x0400,
+    'PLAYER_BARRIER': 0x0800,
 })
 
 export type CategoryType = keyof typeof Categories

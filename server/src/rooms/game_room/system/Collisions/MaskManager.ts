@@ -20,6 +20,7 @@ class MaskManager {
         this.setCollideable("PLAYER", "CHEST")
         this.setCollideable("PLAYER", "ITEM")
         this.setCollideable("PLAYER", "NPC")
+        this.setCollideable("PLAYER", "PLAYER_BARRIER")
     }
 
     private initMonsterMasks(){

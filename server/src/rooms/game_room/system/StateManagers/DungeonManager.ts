@@ -47,6 +47,9 @@ export default class DungeonManager {
         })
 
         this.dungeon.update(deltaT);
+
+        // SPAM THE WAVES!!!
+        this.dungeon.startNextWave();
     }
 
     /** Creates a new Dungeon. The Dungeon will have an update method that should be called every frame. */
@@ -66,14 +69,24 @@ export default class DungeonManager {
             // Set spawnpoints 
             this.setDungeonSpawnPoints(this.dungeon, tiled);
 
+            // Make the obstables collidable by adding them to matter.
+            this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.gameObjects, newTilemap);
+
             // Waves
             let wave = new Wave();
             wave.setAgressionLevel(1);
             wave.addMonster("TinyZombie", 10);
             this.dungeon.addWave(wave);
 
-            // Make the obstables collidable by adding them to matter.
-            this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.gameObjects, newTilemap);
+            let wave2 = new Wave();
+            wave2.setAgressionLevel(2);
+            wave2.addMonster("TinyZombie", 20);
+            this.dungeon.addWave(wave2);
+
+            let wave3 = new Wave();
+            wave3.setAgressionLevel(5);
+            wave3.addMonster("TinyZombie", 100);
+            this.dungeon.addWave(wave3);
         }).catch((err) => {
             console.log(err);
         })
@@ -82,7 +95,6 @@ export default class DungeonManager {
     private initializeListeners() {
         DungeonEvent.getInstance().on("SPAWN_MONSTER", (monsterId) => {
             this.spawnMonster(monsterId);
-            // console.log("MONSTER SPAWNED!!!");
         })
     }
 
@@ -96,11 +108,13 @@ export default class DungeonManager {
         let spawnX = 200;
         let spawnY = 200;
         if(randomSpawnPoint !== null) {
-            spawnX = randomSpawnPoint.x;
-            spawnY = randomSpawnPoint.y;
+            spawnX = randomSpawnPoint.x + Math.floor((Math.random() * 10) - 5);
+            spawnY = randomSpawnPoint.y + Math.floor((Math.random() * 10) - 5);
         }
 
-        let body = Matter.Bodies.rectangle(spawnX, spawnY, width, height, {isStatic: false});
+        let body = Matter.Bodies.rectangle(spawnX, spawnY, width, height, {
+            isStatic: false,
+        });
         monster.x = spawnX;
         monster.y = spawnY;
 
@@ -127,9 +141,15 @@ export default class DungeonManager {
         return this.dungeon.getPlayerSpawnPoints().at(0);
     }
 
+    /**
+     * Sets the spawn points for the given dungeon. Spawnpoints can be added with Tiled. To add create a point 
+     * inside the objectlayer called 'SpawnPoints'. Then give it a type of either 'player' or 'monster'
+     * @param dungeon The dungeon.
+     * @param data The Tiled tilemap jsonfile.
+     */
     private setDungeonSpawnPoints(dungeon: Dungeon, data: TiledJSON) {
         data.layers.forEach((value) => {
-            if(value.type === "objectgroup") {
+            if(value.type === "objectgroup" && value.name === "SpawnPoints") {
                 value.objects.forEach((spawnPoint) => {
                     if(spawnPoint.type === "player") {
                         dungeon.addPlayerSpawnPoint(spawnPoint.x, spawnPoint.y);
@@ -168,6 +188,12 @@ export default class DungeonManager {
         return tilemap;
     }
 
+    /**
+     * Registers the obstacle layer to the matter engine for collision. 
+     * @param engine The matter engine.
+     * @param gameObjects The gameObjects array to add the matter body of the tile to.
+     * @param tilemap The tilemap that contains the objectlayer.
+     */
     private addObstaclesToMatter(engine:Matter.Engine, gameObjects:Map<string, Matter.Body>, tilemap: Tilemap) {
         let obstacleLayer = tilemap.layers.get("Obstacle");
         if(obstacleLayer) {
@@ -188,9 +214,6 @@ export default class DungeonManager {
                             //Create matterjs body for obj
                             let body = Matter.Bodies.rectangle(tile.x, tile.y, tileWidth, tileHeight, {
                                 isStatic: true,
-                                inertia: Infinity,
-                                inverseInertia: 0,
-                                restitution: 0,
                                 friction: 0,
                             });
 
@@ -209,7 +232,6 @@ export default class DungeonManager {
             } else {
                 console.log("Error: tileWidth and tileHeight is not defined");
             }
-            
         }
     }
 }
