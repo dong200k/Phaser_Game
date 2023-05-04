@@ -103,8 +103,12 @@ export default class PlayerManager{
         let newPlayer = new Player("No Name");
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
-
-        let body = Matter.Bodies.rectangle(0, 0, 49, 44, {
+        let playerSpawnPoint = this.gameManager.getDungeonManager().getPlayerSpawnPoint();
+        if(playerSpawnPoint !== null) {
+            newPlayer.x = playerSpawnPoint.x + (Math.random() * 20 - 10);
+            newPlayer.y = playerSpawnPoint.y + (Math.random() * 20 - 10);
+        }
+        let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {
             isStatic: false,
             inertia: Infinity,
             inverseInertia: 0,

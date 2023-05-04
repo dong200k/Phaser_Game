@@ -15,4 +15,7 @@ export default class State extends Schema {
     dungeon:Dungeon|null = null;
 
     ownerSessionId = "";
+
+    @type("number") 
+    serverTickCount = 0;
 }

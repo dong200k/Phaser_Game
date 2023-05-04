@@ -132,4 +132,8 @@ export default class GameManager {
     public getPlayerManager() {
         return this.playerManager;
     }
+
+    public getDungeonManager() {
+        return this.dungeonManager;
+    }
 }

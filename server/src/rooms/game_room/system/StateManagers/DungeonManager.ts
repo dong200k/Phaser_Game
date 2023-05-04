@@ -4,7 +4,7 @@ import MonsterFactory from "../../schemas/gameobjs/monsters/MonsterFactory"
 import GameManager from "../GameManager"
 import { Categories } from "../Collisions/Category"
 import MaskManager from "../Collisions/MaskManager"
-import Dungeon from "../../schemas/dungeon/Dungeon"
+import Dungeon, { SpawnPoint } from "../../schemas/dungeon/Dungeon"
 import Wave from "../../schemas/dungeon/wave/Wave"
 import DungeonEvent from "../../schemas/dungeon/DungeonEvent"
 import AIFactory from "../AI/AIFactory"
@@ -68,6 +68,7 @@ export default class DungeonManager {
 
             // Waves
             let wave = new Wave();
+            wave.setAgressionLevel(1);
             wave.addMonster("TinyZombie", 10);
             this.dungeon.addWave(wave);
 
@@ -119,6 +120,11 @@ export default class DungeonManager {
 
     public getTotalMonstersSpawned() {
 
+    }
+
+    public getPlayerSpawnPoint(): SpawnPoint | null {
+        if(this.dungeon.getPlayerSpawnPoints().length === 0) return null;
+        return this.dungeon.getPlayerSpawnPoints().at(0);
     }
 
     private setDungeonSpawnPoints(dungeon: Dungeon, data: TiledJSON) {
