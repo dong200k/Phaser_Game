@@ -121,7 +121,7 @@ export default class DungeonManager {
         body.collisionFilter = {
             group: 0,
             category: Categories.MONSTER,
-            mask: MaskManager.getMask('MONSTER'),
+            mask: MaskManager.getManager().getMask('MONSTER'),
         }
         
         this.gameManager.addGameObject(monster.getId(), monster, body);
@@ -220,7 +220,7 @@ export default class DungeonManager {
                             body.collisionFilter = {
                                 group: 0,
                                 category: Categories.OBSTACLE,
-                                mask: MaskManager.getMask('OBSTACLE') 
+                                mask: MaskManager.getManager().getMask('OBSTACLE') 
                             };
                             
                             gameObjects.set(uid, body);

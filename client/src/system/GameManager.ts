@@ -85,8 +85,9 @@ export default class GameManager {
     }
 
     private addProjectile(projectile: any, key: string): Phaser.GameObjects.Sprite{
-        let proj =  new Phaser.GameObjects.Sprite(this.scene, projectile.x, projectile.y, "demo_hero");
+        let proj =  new Phaser.GameObjects.Sprite(this.scene, projectile.x, projectile.y, projectile.sprite);
         proj.scale = 0.5
+        console.log(projectile)
         projectile.onChange = (changes:any) => {
             changes.forEach(({field, value}: any) => {
                 switch(field) {

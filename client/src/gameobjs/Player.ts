@@ -1,5 +1,4 @@
 import Entity from "./Entity";
-
 export default class Player extends Entity
 {
     private playerState: any;

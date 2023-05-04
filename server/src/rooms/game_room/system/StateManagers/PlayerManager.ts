@@ -8,6 +8,8 @@ import GameObject from '../../schemas/gameobjs/GameObject';
 import Projectile from '../../schemas/gameobjs/Projectile';
 import { Categories } from '../Collisions/Category';
 import MaskManager from '../Collisions/MaskManager';
+import WeaponManager from './WeaponManager';
+import WeaponLogicManager from '../WeaponLogic/WeaponLogicManager';
 
 export default class PlayerManager{
     private gameManager: GameManager
@@ -38,13 +40,9 @@ export default class PlayerManager{
         if(!mouseClick || !playerState.attackCooldown.isFinished) return
         playerState.attackCooldown.reset()
 
-        // ***TODO*** grab projectile info from weapon player is using
-        let spriteName = "demo_hero"
-        let playerX = playerBody.position.x
-        let playerY = playerBody.position.y
-        let velocity = MathUtil.getNormalizedSpeed(mouseX - playerX, mouseY - playerY, 10)
+        data = {mouseX, mouseY, playerBody}
 
-        let body = this.gameManager.projectileManager.spawnProjectile(spriteName, playerState, playerX, playerY, velocity)
+        WeaponLogicManager.getManager().useAttack(playerState, this.gameManager, data)
     }
 
     processPlayerMovement(playerId: string, data: number[]){
@@ -87,7 +85,7 @@ export default class PlayerManager{
                 if(playerBody){
                     playerBody.collisionFilter = {
                         ...playerBody.collisionFilter,
-                        mask: MaskManager.getMask("PLAYER")
+                        mask: MaskManager.getManager().getMask("PLAYER")
                     }
                 }
 
@@ -107,7 +105,11 @@ export default class PlayerManager{
         if(playerSpawnPoint !== null) {
             newPlayer.x = playerSpawnPoint.x + (Math.random() * 20 - 10);
             newPlayer.y = playerSpawnPoint.y + (Math.random() * 20 - 10);
-        }
+        } 
+        //Set weaponupgrade tree for player with a test weapon
+        let tree = WeaponManager.getTestUpgradeTreeRoot()
+        WeaponManager.setWeaponUpgradeTree(newPlayer, tree)
+
         let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {
             isStatic: false,
             inertia: Infinity,
@@ -116,7 +118,7 @@ export default class PlayerManager{
             friction: 0,
             collisionFilter: {
                 category: Categories.PLAYER,
-                mask: MaskManager.getMask("PLAYER")
+                mask: MaskManager.getManager().getMask("PLAYER")
             }
         })
 

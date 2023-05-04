@@ -1,0 +1,679 @@
+{
+  "upgrades": [
+    {
+      "id": "1",
+      "upgradeName": "bow-upgrade",
+      "root": {
+        "nodeId": "node-1",
+        "children": [
+          {
+            "nodeId": "node-2",
+            "children": [
+              {
+                "nodeId": "node-3",
+                "children": [],
+                "data": {
+                  "name": "Crit Enhancement 2",
+                  "description": "increase crit rate by 10%",
+                  "stat": {
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0.1,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "level": 0
+                  }
+                },
+                "__rd3t": {
+                  "id": "a22e1570-6f34-47e2-aa7c-1c52eb076e56",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Crit Enhancement",
+              "description": "increase crit rate by 5%",
+              "stat": {
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0.05,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "level": 0
+              }
+            },
+            "__rd3t": {
+              "id": "3875bd59-fe4d-456d-9a40-3366ffad2956",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "nodeId": "node-4",
+            "children": [
+              {
+                "nodeId": "node-5",
+                "children": [],
+                "data": {
+                  "name": "Attack Enhancement 2",
+                  "description": "increase attack by 20 points",
+                  "stat": {
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 20,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "level": 0
+                  }
+                },
+                "__rd3t": {
+                  "id": "ae4b5dce-c43b-448a-ae07-9a47d30c17d6",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Attack Enhancement",
+              "description": "increase attack by 5 points",
+              "stat": {
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 5,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "level": 0
+              }
+            },
+            "__rd3t": {
+              "id": "4c908ae6-d903-4596-8176-adab64874ae5",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "nodeId": "node-6",
+            "children": [],
+            "data": {
+              "name": "Penetration",
+              "description": "increase armor penetration by 5%",
+              "stat": {
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0.05,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "level": 0
+              }
+            },
+            "__rd3t": {
+              "id": "7106ad21-640e-4ddb-8a3a-53044f9f7609",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "weaponId": "bow-id",
+          "name": "Wooden Bow 2",
+          "description": "A sturdy wooden bow commonly seen with novice adventurers",
+          "stat": {
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": "15",
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0.01,
+            "critDamage": 0.1,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "level": 0
+          }
+        },
+        "__rd3t": {
+          "id": "608a421e-b868-4755-a109-dccf164cb428",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
+    },
+    {
+      "id": "2",
+      "upgradeName": "sword-upgrade-edited",
+      "root": {
+        "nodeId": "node-1",
+        "children": [
+          {
+            "nodeId": "node-2",
+            "children": [
+              {
+                "nodeId": "node-3",
+                "children": [],
+                "data": {
+                  "name": "Crit Enhancement 2",
+                  "description": "increase crit rate by 10%",
+                  "stat": {
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0.1,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "level": 0
+                  }
+                }
+              }
+            ],
+            "data": {
+              "name": "Crit Enhancement",
+              "description": "increase crit rate by 5%",
+              "stat": {
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0.05,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "level": 0
+              }
+            }
+          },
+          {
+            "nodeId": "node-4",
+            "children": [
+              {
+                "nodeId": "node-5",
+                "children": [],
+                "data": {
+                  "name": "Attack Enhancement 2",
+                  "description": "increase attack by 20 points",
+                  "stat": {
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 20,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "level": 0
+                  }
+                }
+              }
+            ],
+            "data": {
+              "name": "Attack Enhancement",
+              "description": "increase attack by 5 points",
+              "stat": {
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 5,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "level": 0
+              }
+            }
+          },
+          {
+            "nodeId": "node-6",
+            "children": [],
+            "data": {
+              "name": "Penetration",
+              "description": "increase armor penetration by 5%",
+              "stat": {
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0.05,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "level": 0
+              }
+            }
+          }
+        ],
+        "data": {
+          "weaponId": "sword-id",
+          "name": "Wooden Sword",
+          "description": "A dull wooden sword commonly seen with novice adventurers",
+          "stat": {
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 15,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "level": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "upgrade-292ffa18-14c1-4133-a53d-bafc2d135cb3",
+      "upgradeName": "demo upgrade",
+      "root": {
+        "nodeId": "node-29a569f0-f2fa-4149-adfe-0de8bbab7768",
+        "children": [
+          {
+            "nodeId": "node-02e9fe6c-30eb-48c0-9254-0083844bfdf7",
+            "children": [
+              {
+                "nodeId": "node-64de03ca-2aef-45b5-b1b2-0b2e19d917ed",
+                "children": [],
+                "data": {
+                  "name": "auto-generated",
+                  "description": "auto-generated",
+                  "stat": {
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "level": 0
+                  }
+                }
+              }
+            ],
+            "data": {
+              "name": "auto-generated",
+              "description": "auto-generated",
+              "stat": {
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "level": 0
+              }
+            }
+          },
+          {
+            "nodeId": "node-21d018a3-f3b7-4f10-b8cf-b6ded7342f84",
+            "children": [
+              {
+                "nodeId": "node-74bc8f56-936b-4d89-8707-f1674a563a8f",
+                "children": [
+                  {
+                    "nodeId": "node-e4f781a8-df7c-4b77-a9f9-80e262e7ea20",
+                    "children": [],
+                    "data": {
+                      "name": "auto-generated",
+                      "description": "auto-generated",
+                      "stat": {
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "level": 0
+                      }
+                    },
+                    "__rd3t": {
+                      "id": "50872946-20f4-4dcd-966b-26dc011dbf10",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  },
+                  {
+                    "nodeId": "node-56264747-c4ca-4e2e-b697-64bcb0e0b663",
+                    "children": [],
+                    "data": {
+                      "name": "auto-generated",
+                      "description": "auto-generated",
+                      "stat": {
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "level": 0
+                      }
+                    },
+                    "__rd3t": {
+                      "id": "1d9d26a1-a02a-4993-8656-d43df0b8c45a",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "demo",
+                  "description": "demo",
+                  "stat": {
+                    "hp": 0,
+                    "mana": "100",
+                    "armor": "10",
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": "1",
+                    "lifeSteal": "1",
+                    "level": "50"
+                  }
+                },
+                "__rd3t": {
+                  "id": "d59202ad-3f29-482c-8227-c2fd194b52c3",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              },
+              {
+                "nodeId": "node-5e232259-01d6-4285-a3b8-f47c8dad77a7",
+                "children": [],
+                "data": {
+                  "name": "auto-generated",
+                  "description": "auto-generated",
+                  "stat": {
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "level": 0
+                  }
+                }
+              }
+            ],
+            "data": {
+              "name": "auto-generated",
+              "description": "auto-generated",
+              "stat": {
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "level": 0
+              }
+            }
+          }
+        ],
+        "data": {
+          "name": "demo",
+          "description": "demo",
+          "stat": {
+            "hp": "100",
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": "100",
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": "0.5",
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "level": 0
+          },
+          "weaponId": "bow-id"
+        },
+        "__rd3t": {
+          "id": "1d6544c1-4a2f-4de9-aaf5-06f3266600d9",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
+    }
+  ]
+}
