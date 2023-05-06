@@ -26,7 +26,7 @@ export default class DungeonManager {
     //Spawn different monsters 
     //Reuse monsters
     private gameManager: GameManager;
-    private dungeon!: Dungeon;
+    private dungeon?: Dungeon;
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager;
@@ -46,10 +46,10 @@ export default class DungeonManager {
             }
         })
 
-        this.dungeon.update(deltaT);
+        this.dungeon?.update(deltaT);
 
         // SPAM THE WAVES!!!
-        this.dungeon.startNextWave();
+        this.dungeon?.startNextWave();
     }
 
     /** Creates a new Dungeon. The Dungeon will have an update method that should be called every frame. */
@@ -58,16 +58,15 @@ export default class DungeonManager {
         let dungeonFileLocation = dungeonURLMap["Demo Map"];
         // Load the tiled json file ... 
         FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
-            // Fill in the dungeons information based on the json file... 
-            this.dungeon = new Dungeon(dungeonName);
-            this.gameManager.state.dungeon = this.dungeon;
+            // ----- Fill in the dungeons information based on the json file ------
+            let newDungeon = new Dungeon(dungeonName);
 
             // Tilemap 
             let newTilemap = this.createTilemap(tiled);
-            this.dungeon.setTilemap(newTilemap);
+            newDungeon.setTilemap(newTilemap);
 
             // Set spawnpoints 
-            this.setDungeonSpawnPoints(this.dungeon, tiled);
+            this.setDungeonSpawnPoints(newDungeon, tiled);
 
             // Make the obstables collidable by adding them to matter.
             this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.gameObjects, newTilemap);
@@ -76,17 +75,21 @@ export default class DungeonManager {
             let wave = new Wave();
             wave.setAgressionLevel(1);
             wave.addMonster("TinyZombie", 10);
-            this.dungeon.addWave(wave);
+            newDungeon.addWave(wave);
 
             let wave2 = new Wave();
             wave2.setAgressionLevel(2);
             wave2.addMonster("TinyZombie", 20);
-            this.dungeon.addWave(wave2);
+            newDungeon.addWave(wave2);
 
             let wave3 = new Wave();
             wave3.setAgressionLevel(5);
             wave3.addMonster("TinyZombie", 100);
-            this.dungeon.addWave(wave3);
+            newDungeon.addWave(wave3);
+
+            // ---- Setting new dungeon to state -----
+            this.dungeon = newDungeon;
+            this.gameManager.state.dungeon = this.dungeon;
         }).catch((err) => {
             console.log(err);
         })
@@ -103,8 +106,10 @@ export default class DungeonManager {
         monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
         let width = 12;
         let height = 18;
-
-        let randomSpawnPoint = this.dungeon.getRandomMonsterSpawnPoint();
+        
+        let randomSpawnPoint = null;
+        if(this.dungeon !== undefined)
+            randomSpawnPoint = this.dungeon.getRandomMonsterSpawnPoint();
         let spawnX = 200;
         let spawnY = 200;
         if(randomSpawnPoint !== null) {
@@ -137,6 +142,7 @@ export default class DungeonManager {
     }
 
     public getPlayerSpawnPoint(): SpawnPoint | null {
+        if(this.dungeon === undefined) return null;
         if(this.dungeon.getPlayerSpawnPoints().length === 0) return null;
         return this.dungeon.getPlayerSpawnPoints().at(0);
     }
