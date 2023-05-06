@@ -1,17 +1,30 @@
 import Phaser from "phaser";
 import * as Colyseus from 'colyseus.js';
 import ClientManager from "../system/ClientManager";
-import NavButton from "../UI/NavButton";
 import { ColorStyle, SceneKey } from "../config";
 import Button from "../UI/Button";
 import TextBox from "../UI/TextBox";
 import Layout from "../UI/Layout";
 import SceneManager from "../system/SceneManager";
 
+/*
+Planning: 
+    role section
+    - the avatar of the role should be shown.
+    - the avatar of the role can be shown in its idle animation.
+    - next to the avatar there should be a short description about the avatar. It's base stats and its weapon.
+    - the weapon should also be displayed with a short description and stats as well. 
+    - there should be a select button to select the role. 
+    - there should be multiple pages that will display all the roles.
+    pet selection
+    - the player can select their pets as well. 
+    - if the player has no pets then they cannot select one.
+    - they would be able to purchase a pet directly from the pet selection screen.
+*/
+
 export default class RoomScene extends Phaser.Scene {
     
     private waitingRoom?: Colyseus.Room;
-    //private client: Colyseus.Client;
 
     private playersInRoomText?: Phaser.GameObjects.Text;
     private playersInRoom: number = 0;
@@ -19,7 +32,6 @@ export default class RoomScene extends Phaser.Scene {
 
     constructor() {
         super(SceneKey.RoomScene);
-        // this.client = Client.getClient().getColyseusClient();
     }
 
     create() {
@@ -35,19 +47,6 @@ export default class RoomScene extends Phaser.Scene {
     }
 
     private initializeUI() {
-        // let rect = {x: this.game.scale.width / 2, y: 50, width: 200, height: 50, color: 0xAAAAAA}
-        // let textPos = {x: this.game.scale.width / 2 - 48, y: 42}
-
-        // // leave to lobby button
-        // NavButton(this, "Join Lobby", () => {
-        //     this.leaveRoom();
-        //     this.scene.start('LobbyScene');
-        // }, textPos, rect)
-
-        // //start game button
-        // NavButton(this, "Start Game", () => {
-        //     this.waitingRoom?.send('start')
-        // }, {...textPos, y: 142}, {...rect, y: 150})
 
         // ---------- Room ID -----------
         this.roomIDText = new TextBox(this, "", "p4", ColorStyle.neutrals[900]);
