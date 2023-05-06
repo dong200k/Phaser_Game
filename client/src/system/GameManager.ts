@@ -2,12 +2,14 @@ import Phaser from "phaser";
 import Player from "../gameobjs/Player";
 import * as Colyseus from 'colyseus.js';
 import Monster from "../gameobjs/Monster";
+import Entity from "../gameobjs/Entity";
+import Projectile from "../gameobjs/Projectile";
 
 export default class GameManager {
     private scene: Phaser.Scene;
     private gameRoom: Colyseus.Room;
 
-    private gameObjects?: Phaser.GameObjects.Sprite[] = [];
+    private gameObjects?: Entity[] = [];
     private player1?: Player;
     private players: Player[] = [];
 
@@ -15,6 +17,14 @@ export default class GameManager {
         this.scene = scene;
         this.gameRoom = room;
         this.initializeListeners();
+    }
+
+    public update(deltaT: number) {
+        // perform linear interpolation.
+        this.gameObjects?.forEach((obj) => {
+            obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, 0.15));
+            obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, 0.15));
+        })
     }
 
     private initializeListeners() {
@@ -84,18 +94,20 @@ export default class GameManager {
         }
     }
 
-    private addProjectile(projectile: any, key: string): Phaser.GameObjects.Sprite{
-        let proj =  new Phaser.GameObjects.Sprite(this.scene, projectile.x, projectile.y, projectile.sprite);
+    private addProjectile(projectile: any, key: string): Projectile{
+        // let proj =  new Phaser.Physics.Matter.Sprite(this.scene.matter.world, projectile.x, projectile.y, projectile.sprite);
+        let proj = new Projectile(this.scene, projectile);
         proj.scale = 0.5
-        console.log(projectile)
-        projectile.onChange = (changes:any) => {
-            changes.forEach(({field, value}: any) => {
-                switch(field) {
-                    case "x": proj.x = value; break;
-                    case "y": proj.y = value; break;
-                }
-            })
-        }
+        // console.log(projectile)
+        // projectile.onChange = (changes:any) => {
+        //     changes.forEach(({field, value}: any) => {
+        //         switch(field) {
+        //             case "x": proj.x = value; break;
+        //             case "y": proj.y = value; break;
+        //         }
+        //     })
+        // }
+        this.addListenersToEntity(proj, projectile);
         this.scene.add.existing(proj)
         return proj;
     }
@@ -110,22 +122,23 @@ export default class GameManager {
         else
             this.players.push(newPlayer);
         this.scene.add.existing(newPlayer);
-        this.scene.matter.add.gameObject(newPlayer, {
-            //isStatic: true,
-            isSensor: true,
-        }); //adding this game object to matter physics will show debug lines
-        newPlayer.initializeListeners(player);
+        this.addListenersToEntity(newPlayer, player);
         return newPlayer;
     }
 
     private addMonster(monster:any, key: string): Monster {
         let newMonster = new Monster(this.scene, monster);
         this.scene.add.existing(newMonster);
-        this.scene.matter.add.gameObject(newMonster, {
-            isSensor: true,
-            //isStatic: true,
-        });
+        this.addListenersToEntity(newMonster, monster);
         return newMonster;
+    }
+
+    /** Adds a listener to an entity to respond to server updates on that entity. */
+    private addListenersToEntity(entity: Entity, entityState: any) {
+        entityState.onChange = (changes:any) => {
+            entity.serverX = entityState.x;
+            entity.serverY = entityState.y;
+        }
     }
 
     /**

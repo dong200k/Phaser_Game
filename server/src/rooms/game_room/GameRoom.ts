@@ -9,7 +9,7 @@ export default class GameRoom extends Room<State> {
     /** The time for our gameloop to update once in milliseconds. */
     private gameLoopInterval: number = 16.6;
     /** The time for the server to synchronize(send updates) with the client in milliseconds. */
-    private patchRateInterval: number = 22;
+    private patchRateInterval: number = 33.3;
 
     onCreate() {
         console.log(`Created: Game room ${this.roomId}`);

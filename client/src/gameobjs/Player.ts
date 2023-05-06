@@ -4,8 +4,7 @@ export default class Player extends Entity
     private playerState: any;
 
     constructor(scene:Phaser.Scene,playerState:any) {
-        super(scene);
-        this.setTexture("demo_hero");
+        super(scene, playerState.x, playerState.y, "demo_hero");
         this.playerState = playerState;
     }
 

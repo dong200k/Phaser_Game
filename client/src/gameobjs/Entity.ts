@@ -2,30 +2,26 @@ import Phaser from "phaser";
 
 export default abstract class Entity extends Phaser.Physics.Matter.Sprite
 {
+    serverX: number;
+    serverY: number;
 
-    constructor(scene: Phaser.Scene) {
-        super(scene.matter.world, 0, 0, "");
+    constructor(scene: Phaser.Scene, x: number, y: number, texture: string|Phaser.Textures.Texture) {
+        super(scene.matter.world, x, y, texture);
+        this.setSensor(true);
+        this.serverX = x;
+        this.serverY = y;
     }
 
-    public initializeListeners(entityState:any) {
-        entityState.onChange = (changes:any) => {
-            changes.forEach(({field, value}: any) => {
-                switch(field) {
-                    case "x": this.x = value; break;
-                    case "y": this.y = value; break;
-                    // case "velocity": {
-                    //     this.setVelocity(value.x, value.y);
-                    // }; break;
-                }
-            })
-        }
-        // entityState.velocity.onChange = (changes: any) => {
-        //     changes.forEach(({field, value}: any) => {
-        //         switch(field) {
-        //             case "x": this.setVelocityX(value); break;
-        //             case "y": this.setVelocityY(value); break;
-        //         }
-        //     })
-        // }
-    }
+    // public initializeListeners(entityState:any) {
+    //     entityState.onChange = (changes:any) => {
+    //         // changes.forEach(({field, value}: any) => {
+    //         //     switch(field) {
+    //         //         case "x": this.x = value; break;
+    //         //         case "y": this.y = value; break;
+    //         //     }
+    //         // })
+    //         this.serverX = entityState.x;
+    //         this.serverY = entityState.y;
+    //     }
+    // }
 }

@@ -36,8 +36,9 @@ export default class GameScene extends Phaser.Scene {
         this.joinGameRoom();
     }
 
-    update() {
+    update(deltaT: number) {
         this.sendServerInputMessage();
+        this.gameManager?.update(deltaT);
     }
 
     /** Runs when the player successfully joined the game room */
