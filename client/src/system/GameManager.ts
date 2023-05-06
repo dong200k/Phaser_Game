@@ -13,23 +13,75 @@ export default class GameManager {
     private player1?: Player;
     private players: Player[] = [];
 
+    // ------- Inputs ---------
+    private upKey?: Phaser.Input.Keyboard.Key;
+    private downKey?: Phaser.Input.Keyboard.Key;
+    private leftKey?: Phaser.Input.Keyboard.Key;
+    private rightKey?: Phaser.Input.Keyboard.Key;
+    private spaceKey?: Phaser.Input.Keyboard.Key;
+    private debugKey?: Phaser.Input.Keyboard.Key;
+
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
+        this.initializeInputs();
         this.initializeListeners();
     }
 
-    public update(deltaT: number) {
+    /**
+     * Updates the gameManager.
+     * @param time The current time in ms.
+     * @param deltaT The time that passed in ms.
+     */
+    public update(time: number, deltaT: number) {
         // perform linear interpolation.
         this.gameObjects?.forEach((obj) => {
             obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, 0.15));
             obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, 0.15));
         })
+
+        this.sendServerInputMessage();
+    }
+
+    private initializeInputs() {
+        this.upKey = this.scene.input.keyboard.addKey("W");
+        this.downKey = this.scene.input.keyboard.addKey("S");
+        this.rightKey = this.scene.input.keyboard.addKey("D");
+        this.leftKey = this.scene.input.keyboard.addKey("A");
+        this.spaceKey = this.scene.input.keyboard.addKey("SPACE");
+
+        // Debug controls, not visible by default. Can be disabled in config.ts.
+        this.debugKey = this.scene.input.keyboard.addKey("F3");
+        this.debugKey.on("down", () => {
+            this.scene.matter.world.debugGraphic?.setVisible(!this.scene.matter.world.debugGraphic.visible);
+        })
+        this.scene.matter.world.debugGraphic?.setVisible(false);
     }
 
     private initializeListeners() {
         this.gameRoom.state.gameObjects.onAdd = this.onAdd;
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
+    }
+
+    private sendServerInputMessage() {
+        //[0] up, [1] down, [2] left, [3] right, 
+        let movementData = [0, 0, 0, 0]
+        movementData[0] = this.upKey?.isDown? 1 : 0;
+        movementData[1] = this.downKey?.isDown? 1 : 0;
+        movementData[2] = this.leftKey?.isDown? 1 : 0;
+        movementData[3] = this.rightKey?.isDown? 1 : 0;
+        this.gameRoom?.send("move", movementData)
+
+        let special = this.spaceKey?.isDown? true : false;
+        this.gameRoom?.send("special", special);
+        
+
+        //[0] mouse click, [1] mousex, [2] mousey.
+        let mouseData = [0, 0, 0]
+        mouseData[0] = this.scene.input.mousePointer.isDown? 1 : 0;
+        mouseData[1] = this.scene.input.mousePointer.worldX;
+        mouseData[2] = this.scene.input.mousePointer.worldY;
+        this.gameRoom?.send("attack", mouseData);
     }
     
     // private getTypeOfObject(gameObj: any): string{
@@ -95,18 +147,8 @@ export default class GameManager {
     }
 
     private addProjectile(projectile: any, key: string): Projectile{
-        // let proj =  new Phaser.Physics.Matter.Sprite(this.scene.matter.world, projectile.x, projectile.y, projectile.sprite);
         let proj = new Projectile(this.scene, projectile);
         proj.scale = 0.5
-        // console.log(projectile)
-        // projectile.onChange = (changes:any) => {
-        //     changes.forEach(({field, value}: any) => {
-        //         switch(field) {
-        //             case "x": proj.x = value; break;
-        //             case "y": proj.y = value; break;
-        //         }
-        //     })
-        // }
         this.addListenersToEntity(proj, projectile);
         this.scene.add.existing(proj)
         return proj;
