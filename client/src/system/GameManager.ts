@@ -4,6 +4,7 @@ import * as Colyseus from 'colyseus.js';
 import Monster from "../gameobjs/Monster";
 import Entity from "../gameobjs/Entity";
 import Projectile from "../gameobjs/Projectile";
+import MathUtil from "../util/MathUtil";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -21,9 +22,14 @@ export default class GameManager {
     private spaceKey?: Phaser.Input.Keyboard.Key;
     private debugKey?: Phaser.Input.Keyboard.Key;
 
+    // ------- fixed tick --------
+    private timePerTick = 1000 / 60; // 60 ticks per second.
+    private timeTillNextTick: number;
+
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
+        this.timeTillNextTick = this.timePerTick;
         this.initializeInputs();
         this.initializeListeners();
     }
@@ -34,10 +40,20 @@ export default class GameManager {
      * @param deltaT The time that passed in ms.
      */
     public update(time: number, deltaT: number) {
+        this.timeTillNextTick -= deltaT;
+        while(this.timeTillNextTick <= 0) {
+            this.timeTillNextTick += this.timePerTick;
+            this.fixedTick(time, this.timePerTick);
+        }
+    }
+
+    private fixedTick(time: number, deltaT: number) {
         // perform linear interpolation.
         this.gameObjects?.forEach((obj) => {
-            obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, 0.15));
-            obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, 0.15));
+            //if(obj !== this.player1) {
+                obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, 0.20));
+                obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, 0.20));
+            //}
         })
 
         this.sendServerInputMessage();
@@ -82,6 +98,26 @@ export default class GameManager {
         mouseData[1] = this.scene.input.mousePointer.worldX;
         mouseData[2] = this.scene.input.mousePointer.worldY;
         this.gameRoom?.send("attack", mouseData);
+
+        // Client-side prediction.
+        // this.updatePlayer1(movementData, special, mouseData);
+    }
+
+    private updatePlayer1(movementData: number[], special: boolean, mouseData: number[]) {
+        if(this.player1 !== undefined) {
+            let playerState = this.player1?.getPlayerState();
+
+            //calculate new player velocity
+            let speed = playerState.stat.speed;
+            let x = 0;
+            let y = 0;
+            if(movementData[0]) y -= 1;
+            if(movementData[1]) y += 1;
+            if(movementData[2]) x -= 1;
+            if(movementData[3]) x += 1;
+            let velocity = MathUtil.getNormalizedSpeed(x, y, speed)
+            this.player1.setVelocity(velocity.x, velocity.y);
+        }
     }
     
     // private getTypeOfObject(gameObj: any): string{

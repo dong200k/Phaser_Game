@@ -20,4 +20,8 @@ export default class Player extends Entity
     //     }
     // }
 
+    public getPlayerState() {
+        return this.playerState;
+    }
+
 }
