@@ -67,9 +67,7 @@ export default abstract class TempEffect extends Effect {
      * @param entity The entity that will be reverted.
      * @returns True if the effect is unapplied. False otherwise.
      */
-    protected unapplyEffect(entity: Entity): boolean {
-        return false;
-    }
+    protected abstract unapplyEffect(entity: Entity): boolean;
 
     public reset(): boolean {
         if(this.getEntity() !== null) return false;

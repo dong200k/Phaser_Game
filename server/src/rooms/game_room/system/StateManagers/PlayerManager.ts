@@ -101,12 +101,16 @@ export default class PlayerManager{
         let newPlayer = new Player("No Name");
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
- 
+        let playerSpawnPoint = this.gameManager.getDungeonManager().getPlayerSpawnPoint();
+        if(playerSpawnPoint !== null) {
+            newPlayer.x = playerSpawnPoint.x + (Math.random() * 20 - 10);
+            newPlayer.y = playerSpawnPoint.y + (Math.random() * 20 - 10);
+        } 
         //Set weaponupgrade tree for player with a test weapon
         // let tree = factory.get
         // WeaponManager.setWeaponUpgradeTree(newPlayer, undefined)
 
-        let body = Matter.Bodies.rectangle(0, 0, 49, 44, {
+        let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {
             isStatic: false,
             inertia: Infinity,
             inverseInertia: 0,
@@ -118,6 +122,29 @@ export default class PlayerManager{
             }
         })
 
+        newPlayer.setId(sessionId);
         this.gameManager.addGameObject(sessionId, newPlayer, body);
     }   
+
+    /**
+     * Gets the nearest player to the given x and y position.
+     * @param x The x value.
+     * @param y The y value.
+     */
+    public getNearestPlayer(x: number, y: number): Player | undefined {
+        let players = new Array<Player>;
+        this.gameManager.state.gameObjects.forEach((value) => {if(value instanceof Player) players.push(value)});
+        if(players.length === 0) return undefined;
+        let nearestPlayer = players[0];
+        let nearestDistance = MathUtil.distanceSquared(x, y, nearestPlayer.x, nearestPlayer.y);
+        for(let i = 1; i < players.length; i++) {
+            let player = players[i];
+            let distance = MathUtil.distanceSquared(x, y, player.x, player.y);
+            if(distance < nearestDistance) {
+                nearestDistance = distance;
+                nearestPlayer = player;
+            }
+        }
+        return nearestPlayer;
+    }
 }

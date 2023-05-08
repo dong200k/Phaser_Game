@@ -1,6 +1,6 @@
 import { Schema, type, MapSchema } from '@colyseus/schema';
 import Layer from './Layer';
-import Tile from '../gameobjs/Tile';
+import Tile from '../../gameobjs/Tile';
 
 export default class Tilemap extends Schema {
     @type({map: Layer}) layers = new MapSchema<Layer>();

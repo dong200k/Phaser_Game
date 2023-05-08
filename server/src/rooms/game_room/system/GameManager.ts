@@ -4,9 +4,9 @@ import Player from '../schemas/gameobjs/Player';
 import PlayerManager from './StateManagers/PlayerManager';
 import GameObject from '../schemas/gameobjs/GameObject';
 import Cooldown from '../schemas/gameobjs/Cooldown';
-import TilemapManager from './StateManagers/TilemapManager';
 import ProjectileManager from './StateManagers/ProjectileManager';
 import EffectManager from './StateManagers/EffectManager';
+import DungeonManager from './StateManagers/DungeonManager';
 import WeaponManager from './StateManagers/WeaponManager';
 
 export default class GameManager {
@@ -14,10 +14,10 @@ export default class GameManager {
     public world: Matter.World;
 
     // Managers
-    private tilemapManager: TilemapManager;
     public playerManager: PlayerManager
     public projectileManager: ProjectileManager;
     private effectManager: EffectManager;
+    private dungeonManager: DungeonManager;
 
     // Data
     public gameObjects: Map<string, Matter.Body> = new Map();
@@ -33,12 +33,7 @@ export default class GameManager {
         this.playerManager = new PlayerManager(this)
         this.projectileManager = new ProjectileManager(this)
         this.effectManager = new EffectManager(this);
-
-        //Set up the tilemap
-        this.tilemapManager = new TilemapManager(state);
-        this.tilemapManager.loadTilemapTiled("assets/tilemaps/demo_map/demo_map.json").then(() => {
-            this.tilemapManager.addObstaclesToMatter(this.engine, this.gameObjects);
-        });
+        this.dungeonManager = new DungeonManager(this);
 
         this.initUpdateEvents();
         this.initCollisionEvent();
@@ -53,6 +48,8 @@ export default class GameManager {
                 if(objState && !obj.isStatic) {
                     objState.x = obj.position.x;
                     objState.y = obj.position.y;
+                    objState.velocity.x = obj.velocity.x;
+                    objState.velocity.y = obj.velocity.y;
                 }
             })
         });
@@ -70,6 +67,7 @@ export default class GameManager {
      */
     public addGameObject(id: string, obj: GameObject, body: Matter.Body) {
         this.state.gameObjects.set(id, obj);
+        obj.setBody(body);
         this.gameObjects.set(id, body);
         
         Matter.Composite.add(this.world, body);
@@ -114,10 +112,12 @@ export default class GameManager {
     }
 
     public update(deltaT:number) {
+        let deltaTSeconds = deltaT / 1000;
         Matter.Engine.update(this.engine, deltaT);
 
         this.playerManager.update(deltaT);
-        this.effectManager.update(deltaT);
+        this.effectManager.update(deltaTSeconds);
+        this.dungeonManager.update(deltaTSeconds);
 
         // console.log(deltaT)
     }
@@ -128,5 +128,13 @@ export default class GameManager {
 
     public getEngine() {
         return this.engine;
+    }
+
+    public getPlayerManager() {
+        return this.playerManager;
+    }
+
+    public getDungeonManager() {
+        return this.dungeonManager;
     }
 }

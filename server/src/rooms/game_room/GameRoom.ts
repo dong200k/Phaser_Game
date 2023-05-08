@@ -5,7 +5,11 @@ import GameManager from "./system/GameManager";
 export default class GameRoom extends Room<State> {
     autoDispose = false;
     
-    private gameManager?: GameManager
+    private gameManager?: GameManager;
+    /** The time for our gameloop to update once in milliseconds. */
+    private gameLoopInterval: number = 16.6;
+    /** The time for the server to synchronize(send updates) with the client in milliseconds. */
+    private patchRateInterval: number = 22;
 
     onCreate() {
         console.log(`Created: Game room ${this.roomId}`);
@@ -14,10 +18,10 @@ export default class GameRoom extends Room<State> {
         this.setPrivate(true);
 
         //If no one joins the game room, dispose it.
-        setTimeout(() => this.autoDispose = true, 5000);
+        setTimeout(() => this.autoDispose = true, 30000);
 
         //Setting up state and game manager.
-        this.setPatchRate(22);
+        this.setPatchRate(this.patchRateInterval);
         let state = new State();
         this.gameManager = new GameManager(state);
         this.setState(state);
@@ -43,12 +47,15 @@ export default class GameRoom extends Room<State> {
         this.gameManager?.startGame();
 
         // Game Loop
-        this.setSimulationInterval((deltaT) => this.gameManager?.update(deltaT));
+        this.setSimulationInterval((deltaT) => {
+            this.gameManager?.update(deltaT);
+            this.state.serverTickCount++;
+        }, this.gameLoopInterval);
     }
 
-    update(deltaT:number) {
-        this.gameManager?.update(deltaT);
-    }
+    // update(deltaT:number) {
+    //     this.gameManager?.update(deltaT);
+    // }
 
     onJoin(client: Client) {
         // Add a new player to the room state. The first player is the owner of the room.

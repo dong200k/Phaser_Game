@@ -26,6 +26,12 @@ export default class RoomScene extends Phaser.Scene {
         this.playersInRoom = 0;
         this.initializeUI();
         this.joinRoom();
+        this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
+            this.leaveRoom();
+        });
+        this.events.on("wake", (sys: Phaser.Scenes.Systems) => {
+            this.joinRoom();
+        });
     }
 
     private initializeUI() {

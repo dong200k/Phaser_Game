@@ -15,7 +15,11 @@ export default class EffectManager {
         this.gameManager = gameManager
     }  
 
-    update(deltaT: number): void {
+    /**
+     * Updates this EffectManager, which updates all effects on entities.
+     * @param deltaT The time that passed in seconds.
+     */
+    public update(deltaT: number): void {
         // loop through gameManager's gameObjects.
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Entity){
@@ -87,7 +91,7 @@ export default class EffectManager {
     /**
      * Updates the effects array on an entity. Any completed effects will be automatically removed and reseted.
      * @param entity The entity that should be updated.
-     * @param deltaT The time that is used to step forward the effects.
+     * @param deltaT The time that is used to step forward the effects in seconds.
      */
     public static updateEffectsOn(entity: Entity, deltaT: number) {
         for(let i = entity.effects.length - 1; i >= 0; i--) {
