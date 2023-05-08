@@ -9,7 +9,7 @@ import Projectile from '../../schemas/gameobjs/Projectile';
 import { Categories } from '../Collisions/Category';
 import MaskManager from '../Collisions/MaskManager';
 import WeaponManager from './WeaponManager';
-import WeaponLogicManager from '../WeaponLogic/WeaponLogicManager';
+import WeaponLogicManager from '../Weapons/WeaponLogic/WeaponLogicManager';
 
 export default class PlayerManager{
     private gameManager: GameManager
@@ -103,8 +103,8 @@ export default class PlayerManager{
         newPlayer.y = Math.random() * 200 + 100;
  
         //Set weaponupgrade tree for player with a test weapon
-        let tree = WeaponManager.getTestUpgradeTreeRoot()
-        WeaponManager.setWeaponUpgradeTree(newPlayer, tree)
+        // let tree = factory.get
+        // WeaponManager.setWeaponUpgradeTree(newPlayer, undefined)
 
         let body = Matter.Bodies.rectangle(0, 0, 49, 44, {
             isStatic: false,

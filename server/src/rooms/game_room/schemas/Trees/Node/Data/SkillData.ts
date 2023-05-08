@@ -3,19 +3,17 @@ import BaseWeapon from "../../../gameobjs/Weapon";
 import { Data } from "./Data";
 import {type} from "@colyseus/schema"
 
-export default class WeaponData extends Data{
+export default class SkillData extends Data{
     @type(Stat) stat: Stat
     @type('string') name
     @type('string') description
-    @type('string') weaponId?
-
-    constructor(weaponId?: string, stat?: Stat, name: string = "Upgrade Name", description: string = "Upgrade Description"){
+    @type('number') coinCost
+ 
+    constructor(stat?: Stat, name: string = "Name", description: string = "Description", coinCost: number = 0){
         super()
         this.stat = stat? stat : Stat.getZeroStat()
         this.name = name
         this.description = description
-
-        // ***TODO*** create weapon corresponding to this weaponId
-        this.weaponId = weaponId
+        this.coinCost = coinCost
     }
 }

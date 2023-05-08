@@ -5,34 +5,19 @@ import Player from '../../schemas/gameobjs/Player';
 import Stat from '../../schemas/gameobjs/Stat';
 
 type weapon = {name: string, description: string, sprite: string, projectile: string}
-type upgrade = {
-    id: string,
-    upgradeName: string,
-    root: Node<WeaponData>
-}
 
 export default class WeaponManager{
     static singleton = new WeaponManager()
     private weapons: Map<string, weapon> = new Map()
-    private upgrades: Map<string, upgrade> = new Map()
 
     constructor() {
         this.loadWeapons()
-        this.loadUpgrades()
     }   
 
     /**
-     * Loads weapons frfom assets/weapons/weapons.json into a Map<string, weapon>
+     * Loads weapons from assets/weapons/weapons.json into a Map<string, weapon>
      */
     async loadWeapons(){
-        let db = await FileUtil.readJSONAsync("assets/db.json")
-        for (let upgrade of db.upgrades) {
-            this.upgrades.set(upgrade.id, upgrade as upgrade)
-        }
-        console.log(this.upgrades.get('1')?.root)
-    }
-
-    async loadUpgrades(){
         let weapons = await FileUtil.readJSONAsync("assets/weapons/weapons.json")
         for (let [weaponId, weapon] of Object.entries(weapons)) {
             this.weapons.set(weaponId, weapon as weapon)
@@ -46,17 +31,6 @@ export default class WeaponManager{
      */
     static getWeapon(weaponId: string){
         return this.singleton.weapons.get(weaponId)
-    }
-    
-    static getTestUpgradeTreeRoot(){
-        let node = new Node<WeaponData>(new WeaponData('bow-id'))
-        let child1 = new Node<WeaponData>(new WeaponData('child1')) 
-        let child2 = new Node<WeaponData>(new WeaponData('child2'))
-        
-        node.children.push(child1)
-        node.children.push(child2)
-
-        return node
     }
 
     /**

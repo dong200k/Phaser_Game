@@ -1,5 +1,5 @@
-import Player from "../../schemas/gameobjs/Player"
-import GameManager from "../GameManager"
+import Player from "../../../schemas/gameobjs/Player"
+import GameManager from "../../GameManager"
 
 export type IWeaponLogic = {
     weaponId: string,

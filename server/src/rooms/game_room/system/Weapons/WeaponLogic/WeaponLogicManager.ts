@@ -1,14 +1,19 @@
-import Player from "../../schemas/gameobjs/Player"
-import GameManager from "../GameManager"
+import Player from "../../../schemas/gameobjs/Player"
+import GameManager from "../../GameManager"
 import { IWeaponLogic } from "./WeaponLogic"
 import bow from "./bow"
 
 export default class WeaponLogicManager{
     static singleton = new WeaponLogicManager()
     weaponLogics: Map<string, IWeaponLogic> = new Map()
+    gameManager!: GameManager
 
     constructor(){
         this.loadWeaponLogics()
+    }
+
+    setGameManager(gameManager: GameManager){
+        this.gameManager = gameManager
     }
 
     /**
@@ -21,10 +26,9 @@ export default class WeaponLogicManager{
     /**
      * Use the player's weapons attack
      * @param playerState Player who wants to use their weapon's attack
-     * @param gameManager GameManager for the game the player is currently in
      * @returns 
      */
-    useAttack(playerState: Player, gameManager: GameManager, data?: any){
+    useAttack(playerState: Player, data?: any){
         let weapon = playerState.weapon
         let weaponId = weapon.weaponId
 
@@ -32,7 +36,7 @@ export default class WeaponLogicManager{
             let weaponLogic = this.weaponLogics.get(weaponId)
 
             if(weaponLogic){
-                weaponLogic.useAttack(playerState, gameManager, data)
+                weaponLogic.useAttack(playerState, this.gameManager, data)
             }else{
                 throw new Error(`${weaponId} is not a key for a valid weapon!`)
             }
