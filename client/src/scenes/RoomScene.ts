@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { Dialog, Slider } from "phaser3-rex-plugins/templates/ui/ui-components";
 import * as Colyseus from 'colyseus.js';
 import ClientManager from "../system/ClientManager";
 import { ColorStyle, SceneKey } from "../config";
@@ -79,10 +80,42 @@ export default class RoomScene extends Phaser.Scene {
 
         // list of players text
         this.playersInRoomText = this.add.text(this.game.scale.width / 2 - 50, 100, "Players in room: 0");
+
+        // Rectangle modal
+        let rectModal = new Phaser.GameObjects.Rectangle(this, 200, 200, 50, 50, ColorStyle.neutrals.hex[400]);
+
+        // Dialog
+        let dialog = new Dialog(this, {
+            // content: rectModal,
+            // actions: [new Button(this, "Finish Selection", 0, 0, "large", () => {
+            //     dialogue.modalClose();
+            // })],
+        })
+
+        //let dialog = new Dialog(this);
+        // let slider = new Slider(this);
+        // this.add.existing(slider);
+
+        // this.rexUI.add.dialog();
+
+        // this.add.existing(dialog);
+        
+        // dialogue.modal({
+        //     manualClose: true,
+        //     anyTouchClose: false,
+        //     cover: {
+        //         color: ColorStyle.neutrals.hex[700],
+        //         alpha: 0.2,
+        //     }
+        // });
     }
 
     private updatePlayersInRoom(count: number) {
         this.playersInRoomText?.setText(`Players in room: ${count}`)
+    }
+
+    private showChooseRolePopup() {
+
     }
 
     private joinRoom() {
