@@ -26,7 +26,6 @@ export default class Weapon extends Schema {
             this.description = weapon.description
             this.sprite = weapon.sprite
             this.projectile = weapon.projectile
-            console.log(weapon)
         }
         // else{
         //     throw new Error(`${weaponId} is not a valid weaponId`)

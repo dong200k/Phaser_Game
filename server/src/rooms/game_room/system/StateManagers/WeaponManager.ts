@@ -11,7 +11,6 @@ export default class WeaponManager{
     private weapons: Map<string, weapon> = new Map()
 
     constructor() {
-        this.loadWeapons()
     }   
 
     /**
@@ -105,7 +104,7 @@ export default class WeaponManager{
      * @param weaponId id for the new base weapon to equip
      */
     static setCurrentWeapon(playerState: Player, weaponId: string){
-        playerState.weapon.setWeapon(weaponId)
+        playerState.weaponUpgradeTree.setWeapon(weaponId)
     }   
 
     /**
@@ -120,5 +119,9 @@ export default class WeaponManager{
         if(root.data.weaponId){
             WeaponManager.setCurrentWeapon(playerState, root.data.weaponId)
         }
+    }
+
+    static getManager(){
+        return WeaponManager.singleton
     }
 }

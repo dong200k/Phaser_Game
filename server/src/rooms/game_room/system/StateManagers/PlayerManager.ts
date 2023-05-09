@@ -10,6 +10,7 @@ import { Categories } from '../Collisions/Category';
 import MaskManager from '../Collisions/MaskManager';
 import WeaponManager from './WeaponManager';
 import WeaponLogicManager from '../Weapons/WeaponLogic/WeaponLogicManager';
+import WeaponUpgradeFactory from '../Weapons/factories/WeaponUpgradeFactory';
 
 export default class PlayerManager{
     private gameManager: GameManager
@@ -29,7 +30,7 @@ export default class PlayerManager{
     }
 
     getPlayerStateAndBody(sessionId: string){
-        return {playerBody: this.gameManager.gameObjects.get(sessionId), playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
+        return {playerBody: this.gameManager.gameObjects.get(sessionId) as Matter.Body, playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
     }
 
     processPlayerAttack(playerId: string, data: any){
@@ -42,7 +43,7 @@ export default class PlayerManager{
 
         data = {mouseX, mouseY, playerBody}
 
-        WeaponLogicManager.getManager().useAttack(playerState, this.gameManager, data)
+        WeaponLogicManager.getManager().useAttack(playerState, data)
     }
 
     processPlayerMovement(playerId: string, data: number[]){
@@ -94,7 +95,7 @@ export default class PlayerManager{
        
     }
 
-    public createPlayer(sessionId: string, isOwner: boolean) {
+    public async createPlayer(sessionId: string, isOwner: boolean) {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
         //TODO: get player data from the database
@@ -106,9 +107,11 @@ export default class PlayerManager{
             newPlayer.x = playerSpawnPoint.x + (Math.random() * 20 - 10);
             newPlayer.y = playerSpawnPoint.y + (Math.random() * 20 - 10);
         } 
+
+        //*** TODO *** initialize weapon upgrade tree based on role
         //Set weaponupgrade tree for player with a test weapon
-        // let tree = factory.get
-        // WeaponManager.setWeaponUpgradeTree(newPlayer, undefined)
+        let root = WeaponUpgradeFactory.createBowUpgrade()
+        if(root) WeaponManager.setWeaponUpgradeTree(newPlayer, root)
 
         let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {
             isStatic: false,

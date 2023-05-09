@@ -14,7 +14,6 @@ export default class WeaponUpgradeFactory{
     private upgrades: Map<string, upgrade> = new Map()
 
     constructor(){
-        this.loadUpgrades()
     }
 
     /**
@@ -26,26 +25,49 @@ export default class WeaponUpgradeFactory{
             this.upgrades.set(upgrade.id, upgrade)
         }
     }
+    /**
+     * Creates a Node with data from database upgrade
+     * @param id id of upgrade from database to create Node from 
+     * @returns
+     */
+    static createUpgrade(id: string){
+        let upgrade = WeaponUpgradeFactory.getManager().upgrades.get(id)
 
-    private createTreeFromUpgrade(upgrade: upgrade){
-        let upgradeTree = new StatTree<WeaponData>
+        if(!upgrade) return
+
+        let root = new Node<WeaponData>(upgrade.root.data)
         
-        function dfs(){
-             
+        // copy upgrade's data and children into StatTree
+        function dfs(node: Node<WeaponData>, nodeToCopy: Node<WeaponData>){
+            nodeToCopy.children.forEach(childToCopy=>{
+                let child = new Node<WeaponData>({...childToCopy.data} as WeaponData)
+                node.children.push(child)
+
+                dfs(child, childToCopy)
+            })
         }
 
-
+        dfs(root, upgrade.root)
+        return root
     }
 
     /**
      * 
-     * @returns returns a bow upgrade tree to be used by a single player
+     * @returns returns a bow upgrade tree's root to be used by a single player
      */
-    createBowUpgradeTree(){
-        return this.createTreeFromUpgrade(this.upgrades.get("bow-upgrade") as upgrade)
+    static createBowUpgrade(){
+        return WeaponUpgradeFactory.createUpgrade('1')
     }
 
-    getManager(){
+    /**
+     * 
+     * @returns returns a sword upgrade tree's root to be used by a single player
+     */
+    static createSwordUpgrade(){
+        return WeaponUpgradeFactory.createUpgrade('2')
+    }
+
+    static getManager(){
         return WeaponUpgradeFactory.singleton
     }
 }

@@ -5,13 +5,13 @@ import bow from "./bow"
 
 export default class WeaponLogicManager{
     static singleton = new WeaponLogicManager()
-    weaponLogics: Map<string, IWeaponLogic> = new Map()
+    private weaponLogics: Map<string, IWeaponLogic> = new Map()
     gameManager!: GameManager
 
     constructor(){
         this.loadWeaponLogics()
     }
-
+    
     setGameManager(gameManager: GameManager){
         this.gameManager = gameManager
     }
@@ -29,9 +29,9 @@ export default class WeaponLogicManager{
      * @returns 
      */
     useAttack(playerState: Player, data?: any){
-        let weapon = playerState.weapon
-        let weaponId = weapon.weaponId
-
+        if(! this.gameManager) return
+        
+        let weaponId = playerState.weaponUpgradeTree.weaponId
         if(weaponId){
             let weaponLogic = this.weaponLogics.get(weaponId)
 
@@ -41,6 +41,10 @@ export default class WeaponLogicManager{
                 throw new Error(`${weaponId} is not a key for a valid weapon!`)
             }
         }
+    }
+
+    getWeaponLogic(weaponId: string){
+        return this.weaponLogics.get(weaponId)
     }
 
     static getManager(){
