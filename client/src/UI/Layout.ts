@@ -13,6 +13,10 @@ interface LayoutConfig {
     y?:number;
 }
 
+interface GameObject extends Layoutable {
+
+}
+
 export default class Layout extends Phaser.GameObjects.Container implements Layoutable {
     private flexDirection:FlexDirectionType = 'col';
     private gap: number = 0;
@@ -229,7 +233,7 @@ export default class Layout extends Phaser.GameObjects.Container implements Layo
      * Each Game Object must be unique within the Container.
      * @param child Takes in a child that is both a Phaser Game Object and implements layoutable.
      */
-    public add(child: (Phaser.GameObjects.GameObject&Layoutable)|(Phaser.GameObjects.GameObject[]&Layoutable[])): this {
+    public add<T extends Phaser.GameObjects.GameObject>(child: T & Layoutable | (T & Layoutable)[]): this {
         super.add(child);
         this.addLayout(child);
         this.updateLayoutDisplay();
