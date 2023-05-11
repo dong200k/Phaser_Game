@@ -1,13 +1,13 @@
 import Phaser from "phaser";
 import { ColorStyle, TextStyle } from "../config";
-import TextBox from "./TextBox";
 import Layoutable from "./Layoutable";
+import TextBoxPhaser from "./TextBoxPhaser";
 
 export default class Button extends Phaser.GameObjects.Container implements Layoutable {
     private buttonSize:"regular"|"small"|"large";
     private buttonState:"default"|"disabled"|"pressed";
     private buttonSprite:Phaser.GameObjects.Sprite;
-    private buttonText:TextBox;
+    private buttonText:TextBoxPhaser;
     private onClick:Function;
     private hoverGradient:Phaser.GameObjects.Sprite;
 
@@ -39,9 +39,9 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         this.buttonState = "default";
         this.buttonSprite = new Phaser.GameObjects.Sprite(scene, 0, 0, "button_small_default");
         this.buttonSprite.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
-        this.buttonText = new TextBox(this.scene, text);
+        this.buttonText = new TextBoxPhaser(this.scene, text);
         // Button Text's pointer is handled by css.
-        (this.buttonText.node as HTMLDivElement).classList.add('button-text');
+        // (this.buttonText.node as HTMLDivElement).classList.add('button-text');
         // Button Sprite's pointer is handled by phaser.
         this.buttonSprite.setInteractive({cursor: "pointer"});
         this.buttonSprite.on(Phaser.Input.Events.POINTER_DOWN, ()=>{
