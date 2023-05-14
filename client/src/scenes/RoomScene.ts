@@ -42,6 +42,13 @@ export default class RoomScene extends Phaser.Scene {
         super(SceneKey.RoomScene);
     }
 
+    preload() {
+        let iconBorder = new Phaser.GameObjects.Graphics(this);
+        iconBorder.lineStyle(10, ColorStyle.neutrals.hex[100]);
+        iconBorder.strokeRoundedRect(0, 0, 128, 128, 10);
+        iconBorder.generateTexture("RoleModalIconBorder", 128, 128);
+    }
+
     create() {
         this.playersInRoom = 0;
         this.initializeUI();
@@ -212,10 +219,12 @@ interface RoleModalData {
     selected: number;
 }
 
+
 class RoomSceneRoleModal {
 
     private roleModalData: RoleModalData;
     private detailsPanel?: GridSizer;
+    private iconBorders: Phaser.GameObjects.Image[] = [];
     scene: RoomScene;
 
     constructor(scene: RoomScene, finishSelectionCallback: (roleName: string) => void, roleModalData: RoleModalData) {
@@ -226,6 +235,7 @@ class RoomSceneRoleModal {
 
      /** Creates and shows the role modal. A new role modal is created whenever the user presses the role button. */
      private initialize(finishSelectionCallback: (roleName: string) => void) {
+        // ------ Create Modal --------
         let modal = this.scene.rexUI.add.dialog({
             background: this.scene.rexUI.add.roundRectangle(0,0,720,800,5,ColorStyle.neutrals.hex[400]),
             space: {
@@ -255,6 +265,7 @@ class RoomSceneRoleModal {
                 column: 50,
             }
         });
+        // -------- Left icons ------------
         content.add(this.scene.rexUI.add.gridSizer({
             row: this.roleModalData.roles.length,
             column: 1,
@@ -263,45 +274,48 @@ class RoomSceneRoleModal {
                 let idx = config.row? config.row : 0;
                 let iconName = this.roleModalData.roles[idx].name;
                 let icon = this.createRoleIcons(this.roleModalData.roles[idx].spriteKey, iconName);
+                // ------ Create a border for the icon --------
+                let iconBorder = this.scene.add.image(0, 0, "RoleModalIconBorder");
+                iconBorder.setVisible(false);
+                this.iconBorders.push(iconBorder);
+                icon.add(iconBorder);
+
+                if(this.roleModalData.selected === idx)
+                    iconBorder.setVisible(true);
+                
                 icon.onClick(() => {
                     this.roleModalData.selected = idx;
                     if(this.detailsPanel)
                         this.updateRoleModalRoleDetails(this.detailsPanel, this.roleModalData.roles[this.roleModalData.selected]);
+                    // Display icon border for selected icon.
+                    this.iconBorders.forEach((ib) => ib.setVisible(false));
+                    iconBorder.setVisible(true);
                 });
                 return icon;
             },
             space: {
                 row: 5,
             }
-        }), 0, 0);
+        }));
+        // --------- Role Details and Finish Button ------------
         content.add(this.scene.rexUI.add.gridSizer({
-                row: 3,
+                row: 2,
                 column: 1,
                 space: {
-                    row: 20,
+                    row: 70,
                 }
             })
-            .add(this.scene.add.existing(new TextBoxPhaser(this.scene, "Ranger", "h3")), {column: 0, row: 0, expand: false, align: "center"})
-            .add(this.scene.rexUI.add.gridSizer({
-                    row: 2,
-                    column: 1,
-                    space: {
-                        row: 70,
-                    }
-                })
-                .add(this.createRoleModalRoleDetails(this.roleModalData.roles[this.roleModalData.selected]), 0, 0)
-                .add(this.scene.add.existing(new Button(this.scene, "Finish Selection", 0, 0, "large", () => {
-                    finishSelectionCallback(this.roleModalData.roles[this.roleModalData.selected].name);
-                })), {column: 0, row: 1, expand: false})
-                .layout(), 0, 1)
-            .layout()
+            .add(this.createRoleModalRoleDetails(this.roleModalData.roles[this.roleModalData.selected]), {row: 0, column: 0})
+            .add(this.scene.add.existing(new Button(this.scene, "Finish Selection", 0, 0, "large", () => {
+                finishSelectionCallback(this.roleModalData.roles[this.roleModalData.selected].name);
+            })), {row: 1, column: 0})
         );
         return content;
     }
 
     private createRoleModalRoleDetails(data: RoleData) {
         let detailPanel = this.scene.rexUI.add.gridSizer({
-            row: 4,
+            row: 5,
             column: 1,
             space: {
                 top: 20,
@@ -319,6 +333,7 @@ class RoomSceneRoleModal {
 
     private updateRoleModalRoleDetails(detailPanel: GridSizer, roleData: RoleData) {
         detailPanel.removeAll(true)
+        .add(this.scene.add.existing(new TextBoxPhaser(this.scene, roleData.name, "h3")), {column: 0, row: 0, expand: false, align: "center"})
         .add(this.createRoleModalImageDescription(roleData.spriteKey, roleData.roleDescription))
         .add(this.createRoleModalStatDescription(roleData.roleStats))
         .add(this.createRoleModalImageDescription(roleData.spriteKeyWeapon, roleData.roleWeaponDescription))
@@ -364,14 +379,9 @@ class RoomSceneRoleModal {
 
     private createRoleIcons(spriteKey: string, name: string) {
         let icon = this.scene.rexUI.add.overlapSizer({
-            space: {
-                top: 5,
-                bottom: 5,
-                left: 10,
-                right: 10,
-            }
+            
         });
-        icon.addBackground(this.scene.rexUI.add.roundRectangle(0, 0, 128, 128, 5, ColorStyle.primary.hex[900]));
+        icon.add(this.scene.rexUI.add.roundRectangle(0, 0, 128, 128, 5, ColorStyle.primary.hex[900]));
 
         // Create icon content.
         let content = this.scene.rexUI.add.gridSizer({
@@ -379,6 +389,9 @@ class RoomSceneRoleModal {
             column: 1,
             space: {
                 row: 0,
+                
+                top: 10,
+                left: 20,
             }
         })
         content.add(this.scene.add.sprite(0, 0, spriteKey).setDisplaySize(88, 88), 0, 0);
@@ -387,7 +400,13 @@ class RoomSceneRoleModal {
         content.add(roleName);
 
         icon.add(content);
-        icon.layout();
+
+        // iconBorder.strokeRoundedRect(0, 0, 128, 128, 3);
+        //iconBorder.setVisible(false);
+        //this.scene.add.existing(iconBorder);
+        //this.iconBorders.push(iconBorder);
+        //icon.add(this.scene.rexUI.add.);
+        // icon.add(this.scene.add.image(0, 0, "RoleModalIconBorder"));
 
         return icon;
     }
