@@ -19,6 +19,7 @@ import NavbarScene from './scenes/NavbarScene';
 import MatchmakeScene from './scenes/MatchmakeScene';
 import SystemPreloadScene from './scenes/SystemPreloadScene';
 import SplashScene from './scenes/SplashScene';
+import UIPlugins from 'phaser3-rex-plugins/templates/ui/ui-plugin';
 
 export default {
     type: Phaser.AUTO,
@@ -30,6 +31,13 @@ export default {
         height: 800,
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
+    plugins: {
+        scene: [{
+            key: 'rexUI',
+            plugin: UIPlugins,
+            mapping: 'rexUI'
+        }]
     },
     physics: {
         default: 'matter',
@@ -78,7 +86,7 @@ export enum SceneKey {
 export type SceneKeyType = keyof typeof SceneKey;
 
 /** ------------ Change the scene key here to set the starting scene. ---------------*/
-export const StartScene = SceneKey.MenuScene;
+export const StartScene = SceneKey.RoomScene;
 
 const headerFontFamily = 'pressStart2P';
 const bodyFontFamily = 'aldrich';
