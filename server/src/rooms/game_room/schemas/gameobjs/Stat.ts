@@ -2,42 +2,42 @@ import { Schema, type } from '@colyseus/schema';
 import GameObject from './GameObject';
 
 export type statType = typeof Stat.defaultStatObject
-
+type keyStat = keyof statType
 export default class Stat extends Schema {
-    @type('number') hp;
-    @type('number') maxHp;
-    @type('number') mana;
-    @type('number') maxMana;
+    @type('number') hp!: number;
+    @type('number') maxHp!: number;
+    @type('number') mana!: number;
+    @type('number') maxMana!: number;
 
-    @type('number') armor;
-    @type('number') magicResist;
+    @type('number') armor!: number;
+    @type('number') magicResist!: number;
 
-    @type('number') damagePercent;
+    @type('number') damagePercent!: number;
 
-    @type('number') attack;
-    @type('number') attackPercent;
-    @type('number') armorPen;
+    @type('number') attack!: number;
+    @type('number') attackPercent!: number;
+    @type('number') armorPen!: number;
 
 
-    @type('number') magicAttack;
-    @type('number') magicAttackPercent;
-    @type('number') magicPen;
+    @type('number') magicAttack!: number;
+    @type('number') magicAttackPercent!: number;
+    @type('number') magicPen!: number;
 
-    @type('number') critRate;
-    @type('number') critDamage;
+    @type('number') critRate!: number;
+    @type('number') critDamage!: number;
 
-    @type('number') attackRange;
-    @type('number') attackRangePercent;
+    @type('number') attackRange!: number;
+    @type('number') attackRangePercent!: number;
 
-    @type('number') attackSpeed;
-    @type('number') attackSpeedPercent;
+    @type('number') attackSpeed!: number;
+    @type('number') attackSpeedPercent!: number;
 
-    @type('number') speed;
+    @type('number') speed!: number;
 
-    @type('number') lifeSteal;
-    @type('number') lifeStealPercent;
+    @type('number') lifeSteal!: number;
+    @type('number') lifeStealPercent!: number;
 
-    @type('number') level;
+    @type('number') level!: number;
 
     static defaultStatObject = {
         maxHp: 100, maxMana: 100,
@@ -53,53 +53,83 @@ export default class Stat extends Schema {
 
     constructor(stat: statType = Stat.defaultStatObject) {
         super(0, 0);
-        this.hp = stat.hp;
-        this.maxHp = stat.maxHp;
-        this.mana = stat.mana;
-        this.maxMana = stat.maxMana;
+        let zeroStat = Stat.getZeroStatObject()
+        let zeroPaddedStat = {...zeroStat, ...stat}
+        Object.entries(zeroPaddedStat).forEach(([key, val])=>{
+            if(val && !isNaN(val)) this[key as keyStat] = val
+            else this[key as keyStat] = 0
+        })
+        // this.hp = stat.hp;
+        // this.maxHp = stat.maxHp;
+        // this.mana = stat.mana;
+        // this.maxMana = stat.maxMana;
 
-        this.armor = stat.armor;
-        this.magicResist = stat.magicResist;
+        // this.armor = stat.armor;
+        // this.magicResist = stat.magicResist;
 
-        this.damagePercent = stat.damagePercent
+        // this.damagePercent = stat.damagePercent
 
-        this.attack = stat.attack;
-        this.attackPercent = stat.attackPercent;
-        this.armorPen = stat.armorPen;
+        // this.attack = stat.attack;
+        // this.attackPercent = stat.attackPercent;
+        // this.armorPen = stat.armorPen;
 
 
-        this.magicAttack = stat.magicAttack;
-        this.magicAttackPercent = stat.magicAttackPercent;
-        this.magicPen = stat.magicPen;
+        // this.magicAttack = stat.magicAttack;
+        // this.magicAttackPercent = stat.magicAttackPercent;
+        // this.magicPen = stat.magicPen;
 
-        this.critRate = stat.critRate;
-        this.critDamage = stat.critDamage;
+        // this.critRate = stat.critRate;
+        // this.critDamage = stat.critDamage;
 
-        this.attackRange = stat.attackRange;
-        this.attackRangePercent = stat.attackRangePercent;
+        // this.attackRange = stat.attackRange;
+        // this.attackRangePercent = stat.attackRangePercent;
 
-        this.attackSpeed = stat.attackSpeed;
-        this.attackSpeedPercent = stat.attackSpeedPercent;
+        // this.attackSpeed = stat.attackSpeed;
+        // this.attackSpeedPercent = stat.attackSpeedPercent;
 
-        this.speed = stat.speed;
+        // this.speed = stat.speed;
 
-        this.lifeSteal = stat.lifeSteal;
-        this.lifeStealPercent = stat.lifeStealPercent
+        // this.lifeSteal = stat.lifeSteal;
+        // this.lifeStealPercent = stat.lifeStealPercent
 
-        this.level = stat.level;
+        // this.level = stat.level;
+    }
+
+    /**
+     * Takes in 2 stats and return a new stat with the sum of the 2 stats values
+     * @param stat1 
+     * @param stat2 
+     */
+    static add(stat1: statType, stat2: statType){
+        let sum = Stat.getZeroStat()
+        Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
+            sum[key as keyStat] += stat1[key as keyStat] + stat2[key as keyStat]
+        })
+
+        return sum
     }
 
     static getDefaultPlayerStat(){
         return new Stat()
     }
 
+    /**
+     * 
+     * @returns new Stat initialized with zero
+     */
     static getZeroStat(){
+        let zeroStatObject = Stat.getZeroStatObject()
+        
+        return new Stat(zeroStatObject)
+    }
+
+    static getZeroStatObject(){
         let zeroStatObject = Object.assign({}, Stat.defaultStatObject)
 
         Object.keys(zeroStatObject).forEach(key=>{
             zeroStatObject[key as keyof statType] = 0
         })
         
-        return new Stat(zeroStatObject)
+        return zeroStatObject
     }
 }

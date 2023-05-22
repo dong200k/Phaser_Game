@@ -3,13 +3,13 @@ import State from "../schemas/State";
 import Player from '../schemas/gameobjs/Player';
 import PlayerManager from './StateManagers/PlayerManager';
 import GameObject from '../schemas/gameobjs/GameObject';
-import Cooldown from '../schemas/gameobjs/Cooldown';
 import ProjectileManager from './StateManagers/ProjectileManager';
 import EffectManager from './StateManagers/EffectManager';
 import DungeonManager from './StateManagers/DungeonManager';
 import WeaponManager from './StateManagers/WeaponManager';
 import WeaponLogicManager from './Weapons/WeaponLogic/WeaponLogicManager';
 import WeaponUpgradeFactory from './Weapons/factories/WeaponUpgradeFactory';
+import SkillTreeFactory from './StatTree/SkillTreeFactory';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -44,12 +44,14 @@ export default class GameManager {
     }
 
     /**
-     * preloads asynchronous tasks such as getting upgrades and weapons from database.
+     * Preloads asynchronous tasks such as getting upgrades and weapons from database.
      * so that they are available before other things are done.
+     * *** TODO: Call this function and await it in GameRoom before game starts. ***
      */
     async preload(){
         await WeaponUpgradeFactory.getManager().loadUpgrades()
         await WeaponManager.getManager().loadWeapons()
+        await SkillTreeFactory.getManager().loadStatTrees()
     }
 
     public syncServerStateBasedOnGameState(){

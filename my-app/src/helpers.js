@@ -16,7 +16,17 @@ export function getDefaultUpgrade(){
   return {
     id: "upgrade-" + window.crypto.randomUUID(),
     name: "auto-generated",
-    root: getDefaultNode()
+    type: "weapon",
+    root: getDefaultUpgradeNode()
+  }
+}
+
+export function getDefaultArtifact(){
+  return {
+    id: "upgrade-" + window.crypto.randomUUID(),
+    name: "auto-generated",
+    type: "artifact",
+    root: getDefaultUpgradeNode()
   }
 }
 
@@ -24,7 +34,7 @@ export function getDefaultSkill(){
   return {
     id: "skill-" + window.crypto.randomUUID(),
     name: "auto-generated",
-    root: getDefaultNode()
+    root: getDefaultSkillNode()
   }
 }
 
@@ -64,14 +74,43 @@ export function getDefaultNode(){
   }
 }
 
-export function getEditForm(node){
-  let nodeCopy = getDeepCopy(node)
-  let defaultNodeStat = getDefaultNode().data.stat
+export function getDefaultUpgradeNode(){
+  let node = {
+    ...getDefaultNode(),
+  }
+  // If there needs to be Additional key add them below
+  return node
+}
+
+export function getDefaultSkillNode(){
+  let node = {
+    ...getDefaultNode(),
+  }
+  // If there needs to be Additional key add them below
+  node.data.coinCost = 0
+  return node
+}
+
+export function getEditForm(node, type){
+  let nodeCopy = structuredClone(node)
+  let defaultNode
+  if(type === "skill"){
+    defaultNode = getDefaultSkillNode()
+  }else if(type === "upgrade"){
+    defaultNode = getDefaultUpgradeNode()
+  }else{
+    defaultNode = getDefaultNode()
+  }
 
   // set node's stat to defaultNodeStat stat, 
   //if nodeCopy's stat has extra properties that default does not have add them to the obj
   //if nodeCopy's stat has the properties that default has overwrite the default ones
-  nodeCopy.data.stat = {...defaultNodeStat, ...nodeCopy.data.stat}
+  nodeCopy.data.stat = {...defaultNode.data.stat, ...nodeCopy.data.stat}
+
+  // Same for the other categories of nodeCopy.data
+  // use the categories from nodeCopy.data if both has the category
+  // else include the other/additional categories from defaultNode
+  nodeCopy.data = {...defaultNode.data, ...nodeCopy.data}
 
   return nodeCopy 
 }
@@ -99,6 +138,7 @@ export function padUpgradeStat(upgrade){
 
   return newUpgrade
 }
+
 
 // export default function isValidStat(stat){
 //   let message = ""

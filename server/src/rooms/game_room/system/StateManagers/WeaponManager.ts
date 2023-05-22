@@ -1,6 +1,9 @@
 import FileUtil from '../../../../util/FileUtil';
+import SkillData from '../../schemas/Trees/Node/Data/SkillData';
 import WeaponData from '../../schemas/Trees/Node/Data/WeaponData';
 import Node from '../../schemas/Trees/Node/Node';
+import StatTree from '../../schemas/Trees/StatTree';
+import WeaponUpgradeTree from '../../schemas/Trees/WeaponUpgradeTree';
 import Player from '../../schemas/gameobjs/Player';
 import Stat from '../../schemas/gameobjs/Stat';
 
@@ -33,18 +36,19 @@ export default class WeaponManager{
     }
 
     /**
-     * Computes total stat a player's weapon tree provides
-     * @param playerState 
+     * Takes in a weapon or skill tree and computes the total stats the tree provides based on selected upgrades
+     * @param tree
+     * @returns 
      */
-    static getTotalWeaponStat(playerState: Player){
-        let tree = playerState.weaponUpgradeTree
+    static getTotalTreeStat(tree: WeaponUpgradeTree | StatTree<SkillData>){
         let totalStats = Stat.getZeroStat()
 
         //dfs traversal to get stats that have been selected
-        function dfs(root: Node<WeaponData>){
+        function dfs(root: Node<WeaponData> | Node<SkillData>){
             switch(root.data.status){
                 case "selected":
-                    // TODO add stat to total
+                    totalStats = Stat.add(totalStats, root.data.stat)
+                    break
                 case "none":
                     return
             }
@@ -55,18 +59,18 @@ export default class WeaponManager{
         }
 
         if(tree.root) dfs(tree.root)
+
+        return totalStats
     }
 
     // could make time complexity better
-    static getAvailableUpgrades(playerState: Player){
-        let tree = playerState.weaponUpgradeTree
+    static getAvailableUpgrades(tree: WeaponUpgradeTree | StatTree<SkillData>){
         let root = tree.root
-        if(!root) return
+        if(!root) return []
 
-        let upgrades: Array<Node<WeaponData>> = []
-
+        let upgrades: Array<Node<WeaponData> | Node<SkillData>> = []
         //dfs traversal to get next upgrades
-        function dfs(root: Node<WeaponData>){
+        function dfs(root: Node<WeaponData> | Node<SkillData>){
             if(root.data.status === "none")
                 return upgrades.push(root)
 
@@ -85,16 +89,25 @@ export default class WeaponManager{
      * @param upgrades list of available upgrades to choose from
      * @param choice choice of upgrade, zero indexed
      */
-    static selectUpgrade(playerState: Player, upgrades: Array<Node<WeaponData>>, choice: number){
+    static selectUpgrade(playerState: Player, upgrades: Array<Node<WeaponData> | Node<SkillData>>, choice: number){
         if(choice < upgrades.length){
-            let node = upgrades[choice]
-            node.data.status = "selected"
+            //Select upgrade
+            let selectedUpgrade = upgrades[choice]
+            selectedUpgrade.data.setStatus("selected")
+            
+            // Mark upgrades on the same level as skipped if its a weapon upgrade tree
+            if(upgrades[0].data instanceof WeaponData){
+                upgrades.forEach((upgrade, i)=>{
+                    if(i!==choice) upgrade.data.setStatus("skipped")
+                })
 
+                // Change base weapon if node has a weaponId
+                let data = selectedUpgrade.data as WeaponData
+                let weaponId = data.weaponId
+                if(weaponId) WeaponManager.setCurrentWeapon(playerState, weaponId)
+            }
+            
             // ****TODO add upgrade to stat total
-
-            // Change base weapon if node has a weaponId
-            let weaponId = node.data.weaponId
-            if(weaponId) WeaponManager.setCurrentWeapon(playerState, weaponId)
         }
     }
 
@@ -108,7 +121,7 @@ export default class WeaponManager{
     }   
 
     /**
-     * Sets the player's weapon upgrade tree to a copy of the given tree
+     * Sets the player's weapon upgrade tree with root
      * @param playerState
      * @param root root node of weapon upgrade tree to equip
      */
@@ -119,6 +132,9 @@ export default class WeaponManager{
         if(root.data.weaponId){
             WeaponManager.setCurrentWeapon(playerState, root.data.weaponId)
         }
+
+        // Select this upgrade by default
+        root.data.setStatus("selected")
     }
 
     static getManager(){

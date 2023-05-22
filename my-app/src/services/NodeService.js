@@ -1,26 +1,28 @@
-import { getDefaultArtifact, getDefaultUpgrade, padUpgradeStat } from "../helpers.js"
+import { getDefaultNode, getDefaultSkill, getDefaultSkillNode, getDefaultUpgrade, padUpgradeStat } from "../helpers.js"
 
-class UpgradeService{
+class NodeService{
     BASEURL = "http://localhost:3010"
-    async getUpgrade(id){
+    async getNode(id){
         try{
-            let upgrade = await fetch(this.BASEURL + `/upgrades/${id}`)
-            if(upgrade.status !== 200) throw new Error()
-            return await upgrade.json()
+            let node = await fetch(this.BASEURL + `/nodes/${id}`)
+            console.log(node)
+            if(node.status !== 200) throw new Error()
+            return await node.json()
         }catch{
-            console.log(`error getting upgrade with the id: ${id}`)
+            console.log(`error getting node with the id: ${id}`)
             return null
         }
+        
     }
-    async saveUpgrade(upgrade){
+    async saveNode(node){
         // let paddedUpgrade = padUpgradeStat(upgrade)
         try {
-            let result = await fetch(this.BASEURL + `/upgrades/${upgrade.id}`, {
+            let result = await fetch(this.BASEURL + `/nodes/${node.id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(upgrade)
+                body: JSON.stringify(node)
             })
             return result.status === 200
             
@@ -29,18 +31,18 @@ class UpgradeService{
         }
     
     }
-    async createUpgrade(type){
-        let upgrade
-        if(type === "artifact") upgrade = getDefaultArtifact()
-        else upgrade = getDefaultUpgrade()
-        console.log("create upgrade ", upgrade.type, type)
+    async createNode(){
+        let node = {
+            ...getDefaultNode(), ...getDefaultSkillNode(),
+            id: "default-node-" + window.crypto.randomUUID(),
+        }
         try {
-            let result = await fetch(this.BASEURL + `/upgrades`, {
+            let result = await fetch(this.BASEURL + `/nodes`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(upgrade)
+                body: JSON.stringify(node)
             })
             return result
             
@@ -49,9 +51,9 @@ class UpgradeService{
         }
     }
 
-    async deleteUpgrade(id){
+    async deleteNode(id){
         try {
-            let result = await fetch(this.BASEURL + `/upgrades/${id}`, {
+            let result = await fetch(this.BASEURL + `/nodes/${id}`, {
                 method: "delete",
                 headers: {
                     'Content-Type': 'application/json'
@@ -63,9 +65,9 @@ class UpgradeService{
         }
     }
 
-    async getAllUpgrades(){
+    async getAllNodes(){
         try{
-            let res = await fetch(this.BASEURL + "/upgrades")
+            let res = await fetch(this.BASEURL + "/nodes")
             console.log(res)
             if(res.status !== 200) throw new Error()
             return await res.json()
@@ -77,4 +79,4 @@ class UpgradeService{
     }
 }
 
-export default new UpgradeService()
+export default new NodeService()

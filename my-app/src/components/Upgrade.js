@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Tree from "react-d3-tree";
-import { getDefaultNode, useCenteredTree } from "../helpers.js";
+import { getDefaultNode, getDefaultSkillNode, getDefaultUpgradeNode, useCenteredTree } from "../helpers.js";
 import { useParams } from "react-router";
 import UpgradeService from "../services/UpgradeService.js";
 import EditNode from "./EditNode.js";
@@ -123,7 +123,10 @@ export default function Upgrade(props) {
         if(!root) return
 
         if(root.nodeId === node.nodeId){
-          let newNode = getDefaultNode()
+          let newNode 
+          if(props.type === "upgrade") newNode = getDefaultUpgradeNode()
+          else newNode = getDefaultSkillNode()
+
           root.children.push(newNode)
           return
         }
@@ -171,7 +174,7 @@ export default function Upgrade(props) {
         <div>invalid {props.type} id!</div>
         :
         <div>
-          <div className="text-center" style={{backgroundColor: props.type==="upgrade"? "lightgreen": "lightblue"}}>
+          <div className="text-center" style={{backgroundColor: props.type==="upgrade"? upgrade.type==="weapon"? "lightgreen":"lightpink" : "lightblue"}}>
             <h1 className="text-center" style={{display:"inline-block"}}>{props.type} Name:</h1>
             <h1 style={{display:"inline-block"}}><input type="text" value={upgrade.name} onChange={onChange}/></h1>
             <h1 className="text-center">id: {upgrade.id}</h1>

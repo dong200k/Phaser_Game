@@ -3,6 +3,7 @@
     {
       "id": "1",
       "name": "bow-upgrade",
+      "type": "weapon",
       "root": {
         "nodeId": "node-1",
         "children": [
@@ -120,7 +121,7 @@
                       "weaponId": "1"
                     },
                     "__rd3t": {
-                      "id": "0c60b612-76b3-402d-a69f-be027cf81ecf",
+                      "id": "e21e7363-72a1-44f3-a19f-67fbe0182a20",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -155,7 +156,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "63c8d29b-5cab-4d25-97a1-8a5fe8bc0369",
+                  "id": "94f14a36-6747-413c-83d8-28c0cf6f3930",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -186,11 +187,13 @@
                 "attackSpeedPercent": 0,
                 "speed": 0,
                 "lifeSteal": 0,
+                "lifeStealPercent": 0,
                 "level": 0
-              }
+              },
+              "weaponId": "sword-id"
             },
             "__rd3t": {
-              "id": "3bcc3671-df0b-45f1-b2cd-a52b9f2d28ec",
+              "id": "03f320e8-0afe-47f4-b24f-7fd24b43b16d",
               "depth": 1,
               "collapsed": false
             }
@@ -272,6 +275,7 @@
     {
       "id": "2",
       "name": "sword-upgrade",
+      "type": "weapon",
       "root": {
         "nodeId": "node-1",
         "children": [
@@ -492,6 +496,7 @@
     {
       "id": "upgrade-292ffa18-14c1-4133-a53d-bafc2d135cb3",
       "name": "demo upgrade",
+      "type": "weapon",
       "root": {
         "nodeId": "node-29a569f0-f2fa-4149-adfe-0de8bbab7768",
         "children": [
@@ -2197,6 +2202,81 @@
           "collapsed": false
         }
       }
+    },
+    {
+      "id": "skill-a1d641ec-5560-47d6-af95-89e6e1ef4dc6",
+      "name": "Test",
+      "root": {
+        "nodeId": "node-ced161f7-6c66-40c3-9529-1a4d64b8636f",
+        "children": [],
+        "data": {
+          "name": "auto-generated",
+          "description": "auto-generated",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0
+          },
+          "coinCost": 0
+        }
+      }
+    }
+  ],
+  "nodes": [
+    {
+      "nodeId": "node-40204dfe-8d16-491f-b92b-92de8eea4dc4",
+      "children": [],
+      "data": {
+        "name": "auto-generated",
+        "description": "auto-generated",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "coinCost": 0
+      },
+      "id": "default-node-e33889ff-e1c4-48be-a48d-cbbb51bb7f62"
     }
   ]
 }

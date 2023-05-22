@@ -12,8 +12,9 @@ export default function NavigationBar(){
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
-                    <Link to="/upgrade"><Nav.Link href="skill">Upgrades</Nav.Link></Link>
+                    <Link to="/upgrade"><Nav.Link href="upgrade">Upgrades</Nav.Link></Link>
                     <Link to="/skill"><Nav.Link href="skill">Skills</Nav.Link></Link>
+                    <Link to="/node"><Nav.Link href="node">Reusable nodes</Nav.Link></Link>
                 </Nav>
                 </Navbar.Collapse>
             </Container>
