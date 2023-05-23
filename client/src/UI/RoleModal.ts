@@ -38,20 +38,25 @@ interface SceneWithRexUI extends Phaser.Scene {
 
 interface RoleModalConfig {
     roleModalData: RoleModalData;
-    confirmOnClick: (roleName: string) => void
+    type: "Pet" | "Dungeon" | "Role";
+    confirmOnClick: (roleName: string) => void;
 }
 
+/**
+ * RoleModal is a helpful UI Modal that can be used to choose roles, dungeons, and pets.
+ */
 export default class RoleModal {
 
     scene: SceneWithRexUI;
     private roleModalData: RoleModalData;
     private modalContent: Sizer;
     private dialog: Dialog;
+    private type: "Pet" | "Dungeon" | "Role";
 
     constructor(scene: SceneWithRexUI, config: RoleModalConfig) {
         this.scene = scene;
         this.roleModalData = config.roleModalData;
-
+        this.type = config.type;
         this.dialog = this.scene.rexUI.add.dialog({
             background: scene.rexUI.add.roundRectangle(0, 0, 100, 100, 0, ColorStyle.primary.hex[900]),
             content: this.createRoleModalContent(() => {this.dialog.modalClose()}, (roleName: string) => {
@@ -92,7 +97,7 @@ export default class RoleModal {
         roleAndButtonsSizer.add(this.createOptions(this.roleModalData.roles));
         roleAndButtonsSizer.add(this.createConfirmButtons({
             cancelText: "Cancel",
-            confirmText: "Select Role",
+            confirmText: `Select ${this.type}`,
             cancelOnclick: cancelOnClick,
             confirmOnclick: () => {confirmOnClick(this.roleModalData.roles[this.roleModalData.selected].name)}
         }), {align: "right"});
@@ -135,11 +140,12 @@ export default class RoleModal {
         detailsSizer.addNewLine();
         detailsSizer.add(this.scene.add.image(0, 0, imageKey).setDisplaySize(128, 128));
         detailsSizer.add(UIFactory.createTextBoxPhaser(this.scene, roleDescription, "p5").setWordWrapWidth(700).setAlign("left"));
-        detailsSizer.addNewLine();
-        detailsSizer.add(UIFactory.createTextBoxPhaser(this.scene, "STATS", "h5"), {padding: {top: 20}})
-        detailsSizer.addNewLine();
-        detailsSizer.add(this.createStatsDisplay(stats));
-
+        if(roleData.stats !== undefined) {
+            detailsSizer.addNewLine();
+            detailsSizer.add(UIFactory.createTextBoxPhaser(this.scene, "STATS", "h5"), {padding: {top: 20}})
+            detailsSizer.addNewLine();
+            detailsSizer.add(this.createStatsDisplay(stats));
+        }
         return detailsSizer;
     }
 

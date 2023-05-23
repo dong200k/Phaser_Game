@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import { Buttons, Dialog, GridSizer, OverlapSizer, ScrollablePanel, Sizer, Slider } from "phaser3-rex-plugins/templates/ui/ui-components";
 import * as Colyseus from 'colyseus.js';
 import ClientManager from "../system/ClientManager";
 import { ColorStyle, SceneKey } from "../config";
@@ -8,8 +7,6 @@ import TextBox from "../UI/TextBox";
 import Layout from "../UI/Layout";
 import SceneManager from "../system/SceneManager";
 import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
-import TextBoxPhaser from "../UI/TextBoxPhaser";
-import UIFactory from "../UI/UIFactory";
 import RoleModal from "../UI/RoleModal";
 
 /*
@@ -187,7 +184,8 @@ export default class RoomScene extends Phaser.Scene {
                 roleModalData: {
                     roles: this.roomModalData.roleData, 
                     selected: this.selectedRole,
-                }
+                },
+                type: "Role",
              });
             modal.getDialog().setPosition(this.game.scale.width/2, this.game.scale.height/2);
             modal.getDialog().layout();
@@ -197,7 +195,23 @@ export default class RoomScene extends Phaser.Scene {
                 modal.getDialog().destroy();
             });
         });
-        let selectDungeonButton = new Button(this, "Select dungeon", 0, 0, "regular", () => {console.log("select dungeon onclick")});
+        let selectDungeonButton = new Button(this, "Select dungeon", 0, 0, "regular", () => {
+            let modal = new RoleModal(this, {
+                confirmOnClick: (roleName) => this.selectDungeon(roleName), 
+                roleModalData: {
+                    roles: this.roomModalData.dungeonData, 
+                    selected: this.selectedDungeon,
+                },
+                type: "Dungeon",
+             });
+            modal.getDialog().setPosition(this.game.scale.width/2, this.game.scale.height/2);
+            modal.getDialog().layout();
+            modal.getDialog().modalPromise({
+                manualClose: true, 
+            }).then(() => {
+                modal.getDialog().destroy();
+            });
+        });
         let startButton = new Button(this, "Start", 0, 0, "large", () => {
             this.waitingRoom?.send('start');
         });
@@ -221,6 +235,14 @@ export default class RoomScene extends Phaser.Scene {
         console.log("selected: ", roleName);
         this.roomModalData.roleData.forEach((data, idx) => {
             if(data.name === roleName) this.selectedRole = idx;
+        })
+    }
+
+    /** Called when the user selects a new dungeon from the dungeon modal. */
+    private selectDungeon(dungeonName: string) {
+        console.log("selected: ", dungeonName);
+        this.roomModalData.dungeonData.forEach((data, idx) => {
+            if(data.name === dungeonName) this.selectedDungeon = idx;
         })
     }
 
