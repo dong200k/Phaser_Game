@@ -197,12 +197,29 @@ export default class RoomScene extends Phaser.Scene {
         });
         let selectDungeonButton = new Button(this, "Select dungeon", 0, 0, "regular", () => {
             let modal = new RoleModal(this, {
-                confirmOnClick: (roleName) => this.selectDungeon(roleName), 
+                confirmOnClick: (dungeonName) => this.selectDungeon(dungeonName), 
                 roleModalData: {
                     roles: this.roomModalData.dungeonData, 
                     selected: this.selectedDungeon,
                 },
                 type: "Dungeon",
+             });
+            modal.getDialog().setPosition(this.game.scale.width/2, this.game.scale.height/2);
+            modal.getDialog().layout();
+            modal.getDialog().modalPromise({
+                manualClose: true, 
+            }).then(() => {
+                modal.getDialog().destroy();
+            });
+        });
+        let selectPetButton = new Button(this, "Select pet", 0, 0, "regular", () => {
+            let modal = new RoleModal(this, {
+                confirmOnClick: (petName) => this.selectPet(petName), 
+                roleModalData: {
+                    roles: this.roomModalData.petData, 
+                    selected: this.selectedPet,
+                },
+                type: "Pet",
              });
             modal.getDialog().setPosition(this.game.scale.width/2, this.game.scale.height/2);
             modal.getDialog().layout();
@@ -219,11 +236,11 @@ export default class RoomScene extends Phaser.Scene {
         let otherButtonLayout = new Layout(this, {
             flexDirection: 'row', 
             alignItems: 'center', 
-            gap: 100,
+            gap: 70,
             x: this.game.scale.width / 2,
             y: this.game.scale.height / 2 + 200,
         });
-        otherButtonLayout.add([selectRoleButton, startButton, selectDungeonButton]);
+        otherButtonLayout.add([selectRoleButton, selectPetButton, selectDungeonButton, startButton]);
         this.add.existing(otherButtonLayout);
 
         // list of players text
@@ -243,6 +260,13 @@ export default class RoomScene extends Phaser.Scene {
         console.log("selected: ", dungeonName);
         this.roomModalData.dungeonData.forEach((data, idx) => {
             if(data.name === dungeonName) this.selectedDungeon = idx;
+        })
+    }
+
+    private selectPet(petName: string) {
+        console.log("selected: ", petName);
+        this.roomModalData.petData.forEach((data, idx) => {
+            if(data.name === petName) this.selectedPet = idx;
         })
     }
 
