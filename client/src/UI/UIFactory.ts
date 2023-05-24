@@ -1,5 +1,6 @@
 import Button from "./Button";
 import ButtonRex, { ButtonRexConfig } from "./ButtonRex";
+import TextBox from "./TextBox";
 import TextBoxPhaser, { FontTypeString } from "./TextBoxPhaser";
 
 export default class UIFactory {
@@ -12,6 +13,12 @@ export default class UIFactory {
 
     public static createTextBoxPhaser(scene:Phaser.Scene,text="",fontType:FontTypeString='p3') {
         let textBox = new TextBoxPhaser(scene, text, fontType);
+        scene.add.existing(textBox);
+        return textBox;
+    }
+
+    public static createTextBoxDOM(scene:Phaser.Scene,text="",fontType:FontTypeString='p3') {
+        let textBox = new TextBox(scene, text, fontType);
         scene.add.existing(textBox);
         return textBox;
     }

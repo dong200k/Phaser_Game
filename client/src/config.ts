@@ -86,7 +86,7 @@ export enum SceneKey {
 export type SceneKeyType = keyof typeof SceneKey;
 
 /** ------------ Change the scene key here to set the starting scene. ---------------*/
-export const StartScene = SceneKey.RoomScene;
+export const StartScene = SceneKey.SkillTreeScene;
 
 const headerFontFamily = 'pressStart2P';
 const bodyFontFamily = 'aldrich';
