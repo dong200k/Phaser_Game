@@ -29,7 +29,7 @@ export default class RoleScene extends Phaser.Scene {
             scrollMode: "vertical",
             slider: {
                 track: this.rexUI.add.roundRectangle(0, 0, 20, 10, 0, ColorStyle.primary.hex[500]),
-                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, ColorStyle.neutrals.hex[900]),
+                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, ColorStyle.neutrals.hex[800]),
                 adaptThumbSize: true,
             },
             mouseWheelScroller: {
@@ -48,14 +48,15 @@ export default class RoleScene extends Phaser.Scene {
         let sizer = this.rexUI.add.sizer({
             orientation: "vertical",
             space: {
-                top: 20,
-                bottom: 20,
+                top: 50,
+                bottom: 50,
                 item: 20,
             }
         })
 
         // ----- Title ------
         let title = UIFactory.createTextBoxPhaser(this, "Roles", "h3");
+        title.setColor(ColorStyle.neutrals[900]);
         sizer.add(title);
 
         // ----- Content ------
