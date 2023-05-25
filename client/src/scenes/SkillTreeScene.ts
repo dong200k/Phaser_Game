@@ -3,6 +3,7 @@ import { ColorStyle, SceneKey } from "../config";
 import TextBox from "../UI/TextBox";
 import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import UIFactory from "../UI/UIFactory";
+import { RoundRectangle, ScrollablePanel, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 
 interface SkillItemLevel {
     value: string;
@@ -23,6 +24,8 @@ export default class SkillTreeScene extends Phaser.Scene {
 
     rexUI!: UIPlugins;
     private skillTreeData: SkillTreeData;
+    private panelSizer?: Sizer;
+    private scrollablePanel?: ScrollablePanel;
 
     constructor() {
         super(SceneKey.SkillTreeScene);
@@ -36,7 +39,7 @@ export default class SkillTreeScene extends Phaser.Scene {
                 {
                     name: "Attack",
                     currentLevel: 0,
-                    levels: [{cost: 100, value: "5"}, {cost: 200, value: "5"}, {cost: 300, value: "5"}, {cost: 500, value: "5"}, {cost: 1000, value: "10"}, {cost: 3000, value: "20"}]
+                    levels: [{cost: 100, value: "5"}, {cost: 200, value: "10"}, {cost: 300, value: "15"}, {cost: 500, value: "20"}, {cost: 1000, value: "30"}, {cost: 3000, value: "40"}]
                 },
                 {
                     name: "Movement speed",
@@ -56,7 +59,7 @@ export default class SkillTreeScene extends Phaser.Scene {
             width: this.game.scale.width,
             height: this.game.scale.height - 90,
             panel: {
-                child: this.createPanel(),
+                child: this.createOrUpdatePanel(),
                 mask: {
                     padding: 1,
                 }
@@ -73,27 +76,51 @@ export default class SkillTreeScene extends Phaser.Scene {
             },
             space: {
                 panel: 5
-            }
+            },
         })
         scrollablePanel.layout();
+
+        this.scrollablePanel = scrollablePanel;
+        this.input.setTopOnly(false);
     }
 
-    private createPanel() {
-        let sizer = this.rexUI.add.sizer({
-            orientation: "vertical",
-            space: {
-                top: 50,
-                bottom: 50,
-                item: 20,
+    private skillItemOnClick(itemName: string) {
+
+        this.skillTreeData.skillItems.forEach((item) => {
+            if(item.name === itemName && item.levels.length > item.currentLevel) {
+                console.log(`Player spent ${item.levels[item.currentLevel].cost} coins to level up ${itemName}`);
+                item.currentLevel++;
             }
         })
 
-        // ----- Title ------
-        let title = UIFactory.createTextBoxPhaser(this, "Skills", "h3");
-        title.setColor(ColorStyle.neutrals[900]);
-        sizer.add(title);
+        this.createOrUpdatePanel();
+        if(this.scrollablePanel) this.scrollablePanel.layout();
+    }
 
-        // // ----- Content ------
+    private createOrUpdatePanel() {
+        if(this.panelSizer === undefined) {
+            this.panelSizer = this.rexUI.add.sizer({
+                orientation: "vertical",
+                space: {
+                    top: 50,
+                    bottom: 50,
+                    item: 20,
+                }
+            });
+
+            // ----- Title ------
+            let title = UIFactory.createTextBoxPhaser(this, "Skills", "h3");
+            title.setColor(ColorStyle.neutrals[900]);
+            this.panelSizer.add(title);
+            this.panelSizer.add(this.createPanelContent());
+        } else {
+            this.panelSizer.remove(this.panelSizer.getByName("panelContent"), true);
+            this.panelSizer.add(this.createPanelContent());
+        }
+        return this.panelSizer;
+    }
+
+    private createPanelContent() {
         let content = this.rexUI.add.fixWidthSizer({
             width: 1058,
             space: {
@@ -105,21 +132,43 @@ export default class SkillTreeScene extends Phaser.Scene {
                 item: 35,
             },
             align: "center"
-            
         });
         content.addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 0, ColorStyle.primary.hex[900]));
+        content.setName("panelContent");
 
         let totalItems = this.skillTreeData.skillItems.length;
         for(let i = 0; i < totalItems; i++) {
-            content.add(this.createSkillItem(this.skillTreeData.skillItems[i]));
+            let skillItemData = this.skillTreeData.skillItems[i];
+            let skillItemUI = this.createSkillItem(skillItemData);
+            skillItemUI.layout();
+            skillItemUI.setInteractive()
+                .on(Phaser.Input.Events.POINTER_UP, () => {
+                    if(skillItemData.levels.length > skillItemData.currentLevel)
+                        this.skillItemOnClick(skillItemData.name);
+                })
+                .on(Phaser.Input.Events.POINTER_OVER, () => {
+                    if(skillItemData.levels.length > skillItemData.currentLevel)
+                        (skillItemUI.getByName("background") as RoundRectangle).setStrokeStyle(5, ColorStyle.neutrals.hex.white);
+                })
+                .on(Phaser.Input.Events.POINTER_OUT, () => {
+                    (skillItemUI.getByName("background") as RoundRectangle).setStrokeStyle(0, ColorStyle.neutrals.hex.white);
+                })
+            content.add(skillItemUI);
             if(i % 3 == 2 && i + 1 < totalItems) content.addNewLine();
         }
 
-        sizer.add(content);
+        // content.setChildrenInteractive({
+        //     click: {
+        //         enable: true,
+        //         clickInterval: 0.2
+        //     },
+        //     over: true,
+        // });
+        // content.on("child.over", () => {
+        //     console.log("over");
+        // })
 
-
-        sizer.layout();
-        return sizer;
+        return content;
     }
 
     private createSkillItem(skillItem: SkillItem) {
@@ -128,8 +177,9 @@ export default class SkillTreeScene extends Phaser.Scene {
             width: 290,
             height: 150,
             orientation: 'vertical',
+            name: "skillItem"
         })
-        verticalSizer.addBackground(this.rexUI.add.roundRectangle(0,0,100,100,0,ColorStyle.primary.hex[500]));
+        verticalSizer.addBackground(this.rexUI.add.roundRectangle(0,0,100,100,0,ColorStyle.primary.hex[500]).setName("background"));
 
         let sizer = this.rexUI.add.fixWidthSizer({
             width: 290,
