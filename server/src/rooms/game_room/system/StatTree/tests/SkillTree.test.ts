@@ -77,7 +77,7 @@ describe("Skill Tree Tests", ()=>{
         let actualStat = WeaponManager.getTotalTreeStat(playerState.skillTree)
         expect(stat).toEqual(actualStat)
 
-        //get upgrade and select 1st upgrade
+        //get upgrade and select 1st upgrade (+ 1 attack)
         let upgrades = WeaponManager.getAvailableUpgrades(playerState.skillTree)
         WeaponManager.selectUpgrade(playerState, upgrades, 0)
         Object.entries(upgrades[0].data.stat).forEach(([key,val])=>{
@@ -89,6 +89,7 @@ describe("Skill Tree Tests", ()=>{
         actualStat = WeaponManager.getTotalTreeStat(playerState.skillTree)
         expect(stat).toEqual(actualStat)
 
+        // Get next upgrade (+ 2 attack)
         upgrades = WeaponManager.getAvailableUpgrades(playerState.skillTree)
         WeaponManager.selectUpgrade(playerState, upgrades, 0)
 

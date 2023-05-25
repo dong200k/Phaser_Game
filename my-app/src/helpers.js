@@ -79,6 +79,7 @@ export function getDefaultUpgradeNode(){
     ...getDefaultNode(),
   }
   // If there needs to be Additional key add them below
+  node.data.useAttackId = ""
   return node
 }
 

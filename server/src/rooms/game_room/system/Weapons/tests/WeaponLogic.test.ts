@@ -2,7 +2,7 @@ import { before } from "node:test"
 import State from "../../../schemas/State"
 import GameManager from "../../GameManager"
 import WeaponLogicManager from "../WeaponLogic/WeaponLogicManager"
-import bow from "../WeaponLogic/bow"
+import bow from "../WeaponLogic/Logics/bow"
 
 describe("Weapon Logic Tests", ()=>{
     let gameManager: GameManager

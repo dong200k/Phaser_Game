@@ -1,7 +1,7 @@
 import Player from "../../../schemas/gameobjs/Player"
 import GameManager from "../../GameManager"
 import { IWeaponLogic } from "./WeaponLogic"
-import bow from "./bow"
+import bow from "./Logics/bow"
 
 export default class WeaponLogicManager{
     static singleton = new WeaponLogicManager()
@@ -9,7 +9,7 @@ export default class WeaponLogicManager{
     gameManager!: GameManager
 
     constructor(){
-        this.loadWeaponLogics()
+        this.initWeaponLogics()
     }
     
     setGameManager(gameManager: GameManager){
@@ -17,10 +17,10 @@ export default class WeaponLogicManager{
     }
 
     /**
-     * Loads all weapons logic, attack, etc so that they can be used in Game
+     * Loads/inits all weapons logic, attack, etc so that they can be used in Game
      */
-    loadWeaponLogics(){
-        this.weaponLogics.set(bow.weaponId, bow)
+    initWeaponLogics(){
+        this.weaponLogics.set(bow.weaponId!, bow)
     }
 
     /**

@@ -1,4 +1,4 @@
-import { getDefaultNode, getDefaultSkill, getDefaultSkillNode, getDefaultUpgrade, padUpgradeStat } from "../helpers.js"
+import { getDefaultNode, getDefaultSkill, getDefaultSkillNode, getDefaultUpgrade, getDefaultUpgradeNode, padUpgradeStat } from "../helpers.js"
 
 class NodeService{
     BASEURL = "http://localhost:3010"
@@ -33,9 +33,10 @@ class NodeService{
     }
     async createNode(){
         let node = {
-            ...getDefaultNode(), ...getDefaultSkillNode(),
-            id: "default-node-" + window.crypto.randomUUID(),
+            id: "default-node-" + window.crypto.randomUUID(), ...getDefaultNode(), ...getDefaultSkillNode(), ...getDefaultUpgradeNode(),
         }
+        // set nodeId to same value as id or else deleting one node by id will delete everynode for some reason
+        node.nodeId = node.id
         try {
             let result = await fetch(this.BASEURL + `/nodes`, {
                 method: "POST",

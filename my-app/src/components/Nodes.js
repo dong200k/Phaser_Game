@@ -19,6 +19,7 @@ export default function Nodes(props){
         
         if(result.status === 201){
             let node = await result.json()
+            console.log(node)
             setNodes(prevNodes=>[...prevNodes, node])
         }
     }
@@ -29,7 +30,7 @@ export default function Nodes(props){
 
             if(window.confirm(`are you sure you want to delete "${name}"`)){
                 let result = await NodeService.deleteNode(id)
-                
+                console.log(result.status)
                 if(result.status === 200) {
                     alert(`deleted ${name} successfully`)
                     setNodes(prevNodes=>prevNodes.filter((node)=>node.id !== id))
@@ -39,7 +40,7 @@ export default function Nodes(props){
     }
 
     function renderNode(node){  
-        return <div className="d-flex justify-content-between mb-3" style={{width: "50%"}}>
+        return <div key={node.id} className="d-flex justify-content-between mb-3" style={{width: "50%"}}>
             <div style={{textAlign: "center", display: "inline-block"}}>
                 <h3 style={{display: "inline-block", marginRight: "10px"}}>{node.data.name}</h3> 
                 <Link to={`/node/${node.id}`}><button className="btn btn-warning">edit</button></Link>

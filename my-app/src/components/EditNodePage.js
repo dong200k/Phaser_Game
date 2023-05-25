@@ -7,8 +7,8 @@ export default function EditNodePage(){
     let id = useParams().id
     let [form, setForm] = useState(undefined)
     let [showZeroStat, setShowZeroStat] = useState(false)
-    let dataKeys = ["name", "description", "stat", "weaponId"]
-
+    let dataKeys = ["name", "description", "stat", "weaponId", "useAttackId"]
+    
     useEffect(()=>{
         console.log("hello world ", id)
         NodeService.getNode(id)
@@ -66,13 +66,23 @@ export default function EditNodePage(){
                     <textarea value={form.data.description} style={{width: "25%"}}  onChange={onChange("other", "description")}/>
                 </div>
 
+                <br/><br/>
                 <div>
                     <h3>BaseWeapon</h3>
                     <label className="d-flex justify-content-center">
                         <span className="text-danger">weaponId:</span><input type="text" style={{width: "25%"}}  value={form.data.weaponId} onChange={onChange("other", "weaponId")}/>
                     </label>
                 </div>
+
+                <br/><br/>
+                <div>
+                    <h3>Attack Logic</h3>
+                    <label className="d-flex justify-content-center">
+                        <span className="text-danger">useAttackId:</span><input type="text" style={{width: "25%"}}  value={form.data.useAttackId} onChange={onChange("other", "useAttackId")}/>
+                    </label>
+                </div>
                 
+                <br/><br/>
                 <div className="d-flex flex-row justify-content-center">
                     <h3>Stats</h3>
                     <label className="d-flex justify-content-center">
@@ -80,6 +90,7 @@ export default function EditNodePage(){
                         <input type="checkbox" onChange={()=>setShowZeroStat((prev)=>!prev)}></input>
                     </label>
                 </div>
+                
                 <div>
                 {
                     Object.keys(form.data.stat).filter(key=>showZeroStat || form.data.stat[key]!=0).map(function(key) {
@@ -92,6 +103,8 @@ export default function EditNodePage(){
                     })
                 } 
                 </div> 
+
+
 
                 <br/><br/>
                 <h3>Other:</h3>
