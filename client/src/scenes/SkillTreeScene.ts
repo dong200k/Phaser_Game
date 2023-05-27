@@ -4,6 +4,7 @@ import TextBox from "../UI/TextBox";
 import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import UIFactory from "../UI/UIFactory";
 import { RoundRectangle, ScrollablePanel, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
+import ConfirmModal from "../UI/ConfirmModal";
 
 interface SkillItemLevel {
     value: string;
@@ -86,6 +87,8 @@ export default class SkillTreeScene extends Phaser.Scene {
 
     private skillItemOnClick(itemName: string) {
 
+        //TODO: UNLOCKING SKILLS
+
         this.skillTreeData.skillItems.forEach((item) => {
             if(item.name === itemName && item.levels.length > item.currentLevel) {
                 console.log(`Player spent ${item.levels[item.currentLevel].cost} coins to level up ${itemName}`);
@@ -143,8 +146,15 @@ export default class SkillTreeScene extends Phaser.Scene {
             skillItemUI.layout();
             skillItemUI.setInteractive()
                 .on(Phaser.Input.Events.POINTER_UP, () => {
-                    if(skillItemData.levels.length > skillItemData.currentLevel)
-                        this.skillItemOnClick(skillItemData.name);
+                    if(skillItemData.levels.length > skillItemData.currentLevel){
+                        let desc = `Do you want to upgrade ${skillItemData.name} to ${skillItemData.levels[skillItemData.currentLevel].value} for ${skillItemData.levels[skillItemData.currentLevel].cost} coins?`
+                        new ConfirmModal(this, {
+                            cancelButtonText: "Cancel",
+                            confirmButtonText: "Upgrade",
+                            confirmButtonOnclick: () => {this.skillItemOnClick(skillItemData.name)},
+                            description: desc,
+                        })
+                    }
                 })
                 .on(Phaser.Input.Events.POINTER_OVER, () => {
                     if(skillItemData.levels.length > skillItemData.currentLevel)
