@@ -57,29 +57,37 @@ export default class GameManager {
         let tileset = map.addTilesetImage("dirt_dungeon_tileset", "dirt_map_tiles", 16, 16, 1, 2);
         //Triggers when the server adds a tilemap layer
         currentValue.layers.onAdd = (layer:any, key:string) => {
-            let newLayer = map.createBlankLayer(key, tileset);
-            if(key === "Background")
-                newLayer.setDepth(-10);
-            if(key === "Ground")
-                newLayer.setDepth(-5);
-            if(key === "Obstacle")
-                newLayer.setDepth(10);
-            let width = layer.width;
-            let height = layer.height;
-            for(let y = 0; y < height; y++) {
-                for(let x = 0; x < width; x++) {
-                    let tileId = layer.tiles[(y * width + x)].tileId;
-                    if(tileId !== 0) {
-                        //Add a tile to the tilemap
-                        let newTile = newLayer.putTileAt(tileId - 1, x, y);
-                        //If the tile is a obstacle add it to matter.js
-                        if(key === "Obstacle") {
-                            let tileBody = this.scene.matter.add.tileBody(newTile); //adding this tile to matter physics will show debug lines
-                            tileBody.setStatic(true);
-                            tileBody.setSensor(true);
+            if(tileset !== null) {
+                let newLayer = map.createBlankLayer(key, tileset);
+                if(newLayer !== null) {
+                    if(key === "Background")
+                        newLayer.setDepth(-10);
+                    if(key === "Ground")
+                        newLayer.setDepth(-5);
+                    if(key === "Obstacle")
+                        newLayer.setDepth(10);
+                    let width = layer.width;
+                    let height = layer.height;
+                    for(let y = 0; y < height; y++) {
+                        for(let x = 0; x < width; x++) {
+                            let tileId = layer.tiles[(y * width + x)].tileId;
+                            if(tileId !== 0) {
+                                //Add a tile to the tilemap
+                                let newTile = newLayer.putTileAt(tileId - 1, x, y);
+                                //If the tile is a obstacle add it to matter.js
+                                if(key === "Obstacle") {
+                                    let tileBody = this.scene.matter.add.tileBody(newTile); //adding this tile to matter physics will show debug lines
+                                    tileBody.setStatic(true);
+                                    tileBody.setSensor(true);
+                                }
+                            }
                         }
                     }
+                } else {
+                    console.log(`ERROR: failed to create a blank layer of key: ${key}`);
                 }
+            } else {
+                console.log("ERROR: Failed to load tileset.");
             }
         }
     }
