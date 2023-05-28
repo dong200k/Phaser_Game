@@ -1,14 +1,19 @@
-import Phaser from "phaser";
-import { ColorStyle, TextStyle } from "../config";
-import Layoutable from "./Layoutable";
+import { OverlapSizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 import TextBoxPhaser from "./TextBoxPhaser";
+import { ColorStyle } from "../config";
 
-export default class Button extends Phaser.GameObjects.Container implements Layoutable {
-    private buttonSize:"regular"|"small"|"large";
+export interface ButtonRexConfig extends OverlapSizer.IConfig {
+    buttonSize?: "regular"|"small"|"large";
+    text?:string;
+}
+
+export default class ButtonRex extends OverlapSizer {
+
     private buttonState:"default"|"disabled"|"pressed";
+    private buttonSize:"regular"|"small"|"large";
     private buttonSprite:Phaser.GameObjects.Sprite;
     private buttonText:TextBoxPhaser;
-    private onClick:Function;
+    //private onClick:Function;
     private hoverGradient:Phaser.GameObjects.Sprite;
 
     private sizeConfig = {
@@ -32,57 +37,50 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         }
     }
     
-    constructor(scene:Phaser.Scene,text:string="",x:number=0,y:number=0, size:"regular"|"small"|"large"="regular",onClick:Function=()=>{}) {
-        super(scene, x, y);
-        this.buttonSize = size;
-        this.onClick = onClick;
+    constructor(scene: Phaser.Scene, config?: ButtonRexConfig) {
+        super(scene, config);
+        this.buttonSize = config?.buttonSize ?? "regular";
+        let sizeData = this.sizeConfig[this.buttonSize];
         this.buttonState = "default";
+
+        // ----- Button Sprite Image -----
         this.buttonSprite = new Phaser.GameObjects.Sprite(scene, 0, 0, "button_small_default");
         this.buttonSprite.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
-        this.buttonText = new TextBoxPhaser(this.scene, text);
-        // Button Text's pointer is handled by css.
-        // (this.buttonText.node as HTMLDivElement).classList.add('button-text');
-        // Button Sprite's pointer is handled by phaser.
-        this.buttonSprite.setInteractive({cursor: "pointer"});
-        this.buttonSprite.on(Phaser.Input.Events.POINTER_DOWN, ()=>{
+
+        // ----- Button Text Image -----
+        this.buttonText = new TextBoxPhaser(this.scene, config?.text, sizeData.textStyle as "l1"|"l2"|"l3"|"l4"|"l5"|"l6");
+        
+        this.buttonSprite.setDisplaySize(sizeData.size.x, sizeData.size.y);
+        this.setMinSize(sizeData.size.x, sizeData.size.y);
+
+        this.setInteractive({cursor: "pointer"});
+        this.on(Phaser.Input.Events.POINTER_DOWN, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('pressed');
         });
-        this.buttonSprite.on(Phaser.Input.Events.POINTER_OUT, ()=>{
+        this.on(Phaser.Input.Events.POINTER_UP, ()=>{
+            if(this.buttonState !== 'disabled') this.setButtonState('default');
+        });
+        this.on(Phaser.Input.Events.POINTER_OUT, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('default');
             this.hoverGradient.setVisible(false);
         });
-        this.buttonSprite.on(Phaser.Input.Events.POINTER_OVER, ()=>{
+        this.on(Phaser.Input.Events.POINTER_OVER, ()=>{
             if(this.buttonState !== 'disabled') this.hoverGradient.setVisible(true);
         });
+
         this.hoverGradient = new Phaser.GameObjects.Sprite(this.scene, 0, 0, "button_small_default_hover_texture");
         this.hoverGradient.setAlpha(0.1);
         this.hoverGradient.setVisible(false);
+        
+        scene.add.existing(this.buttonSprite);
+        scene.add.existing(this.buttonText);
+        scene.add.existing(this.hoverGradient);
+
         this.add(this.buttonSprite);
-        this.add(this.buttonText);
+        this.add(this.buttonText, {expand: false, offsetX: sizeData.textPosition.x, offsetY: sizeData.textPosition.y});
         this.add(this.hoverGradient);
-        this.setButtonSize(size);
-        this.setOnClick(onClick);
+
         this.updateButtonDisplay();
-    }
-
-    public setLayoutPosition(x: number, y: number) {
-        this.setPosition(x, y);
-    }
-
-    public getLayoutWidth(): number {
-        return this.buttonSprite.displayWidth;
-    }
-
-    public getLayoutHeight(): number {
-        return this.buttonSprite.displayHeight;
-    }
-
-    public getLayoutOriginX(): number {
-        return this.buttonSprite.originX;
-    }
-
-    public getLayoutOriginY(): number {
-        return this.buttonSprite.originY;
     }
 
     public setText(text: string) {
@@ -105,41 +103,26 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         }   
     }
 
-    public setOnClick(onClick:Function) {
-        this.buttonSprite.removeListener(Phaser.Input.Events.POINTER_UP);
-        this.onClick = onClick;
-        this.buttonSprite.on(Phaser.Input.Events.POINTER_UP, ()=>{
-            if(this.buttonState !== 'disabled') this.setButtonState("default");
-            this.onClick();
-        });
-    }
-
-    public setButtonSize(size:"regular"|"small"|"large") {
-        this.buttonSize = size;
-        this.updateButtonDisplay();
-    }
-
     private updateButtonDisplay() {
         let config = this.sizeConfig[this.buttonSize];
-        this.buttonSprite.setDisplaySize(config.size.x, config.size.y);
-        this.hoverGradient.setDisplaySize(config.size.x, config.size.y);
-        this.buttonText.setFontType(config.textStyle as "l1"|"l2"|"l3"|"l4"|"l5"|"l6");
         switch(this.buttonState) {
             case 'default': {
                 this.buttonSprite.setTexture("button_small_default");
-                this.buttonText.setPosition(config.textPosition.x, config.textPosition.y);
+                //this.buttonText.setPosition(config.textPosition.x, config.textPosition.y);
                 this.buttonText.setColor(ColorStyle.neutrals.white);
             } break;
             case 'pressed': {
                 this.buttonSprite.setTexture("button_small_active");
-                this.buttonText.setPosition(config.textPositionPressed.x, config.textPositionPressed.y);
+                
+                //this.buttonText.setPosition(config.textPositionPressed.x, config.textPositionPressed.y);
                 this.buttonText.setColor(ColorStyle.neutrals.white);
             } break;
             case 'disabled': {
                 this.buttonSprite.setTexture("button_small_deactive");
-                this.buttonText.setPosition(config.textPositionPressed.x, config.textPositionPressed.y);
+                //this.buttonText.setPosition(config.textPositionPressed.x, config.textPositionPressed.y);
                 this.buttonText.setColor(ColorStyle.neutrals[400]);
             }
         }
     }
+
 }
