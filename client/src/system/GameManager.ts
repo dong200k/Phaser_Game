@@ -5,12 +5,13 @@ import Monster from "../gameobjs/Monster";
 import Entity from "../gameobjs/Entity";
 import Projectile from "../gameobjs/Projectile";
 import MathUtil from "../util/MathUtil";
+import GameObject from "../gameobjs/GameObject";
 
 export default class GameManager {
     private scene: Phaser.Scene;
     private gameRoom: Colyseus.Room;
 
-    private gameObjects?: Entity[] = [];
+    private gameObjects?: GameObject[] = [];
     private player1?: Player;
     private players: Player[] = [];
 
@@ -55,8 +56,10 @@ export default class GameManager {
                 obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, 0.20));
             //}
         })
+        this.scene.input.mousePointer.updateWorldPoint(this.scene.cameras.main);
+        let movementData = this.getPlayerMovementData();
 
-        this.sendServerInputMessage();
+        this.sendServerInputMessage(movementData);
     }
 
     private initializeInputs() {
@@ -81,13 +84,8 @@ export default class GameManager {
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
     }
 
-    private sendServerInputMessage() {
-        //[0] up, [1] down, [2] left, [3] right, 
-        let movementData = [0, 0, 0, 0]
-        movementData[0] = this.upKey?.isDown? 1 : 0;
-        movementData[1] = this.downKey?.isDown? 1 : 0;
-        movementData[2] = this.leftKey?.isDown? 1 : 0;
-        movementData[3] = this.rightKey?.isDown? 1 : 0;
+    private sendServerInputMessage(movementData: number[]) {
+        
         this.gameRoom?.send("move", movementData)
 
         let special = this.spaceKey?.isDown? true : false;
@@ -103,6 +101,16 @@ export default class GameManager {
 
         // Client-side prediction.
         // this.updatePlayer1(movementData, special, mouseData);
+    }
+
+    private getPlayerMovementData() {
+        //[0] up, [1] down, [2] left, [3] right, 
+        let movementData = [0, 0, 0, 0]
+        movementData[0] = this.upKey?.isDown? 1 : 0;
+        movementData[1] = this.downKey?.isDown? 1 : 0;
+        movementData[2] = this.leftKey?.isDown? 1 : 0;
+        movementData[3] = this.rightKey?.isDown? 1 : 0;
+        return movementData;
     }
 
     private updatePlayer1(movementData: number[], special: boolean, mouseData: number[]) {
@@ -195,7 +203,7 @@ export default class GameManager {
     private addProjectile(projectile: any, key: string): Projectile{
         let proj = new Projectile(this.scene, projectile);
         proj.scale = 0.5
-        this.addListenersToEntity(proj, projectile);
+        this.addListenersToGameObject(proj, projectile);
         this.scene.add.existing(proj)
         return proj;
     }
@@ -210,22 +218,22 @@ export default class GameManager {
         else
             this.players.push(newPlayer);
         this.scene.add.existing(newPlayer);
-        this.addListenersToEntity(newPlayer, player);
+        this.addListenersToGameObject(newPlayer, player);
         return newPlayer;
     }
 
     private addMonster(monster:any, key: string): Monster {
         let newMonster = new Monster(this.scene, monster);
         this.scene.add.existing(newMonster);
-        this.addListenersToEntity(newMonster, monster);
+        this.addListenersToGameObject(newMonster, monster);
         return newMonster;
     }
 
     /** Adds a listener to an entity to respond to server updates on that entity. */
-    private addListenersToEntity(entity: Entity, entityState: any) {
-        entityState.onChange = (changes:any) => {
-            entity.serverX = entityState.x;
-            entity.serverY = entityState.y;
+    private addListenersToGameObject(gameObject: GameObject, gameObjectState: any) {
+        gameObjectState.onChange = (changes:any) => {
+            gameObject.serverX = gameObjectState.x;
+            gameObject.serverY = gameObjectState.y;
         }
     }
 

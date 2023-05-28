@@ -1,6 +1,7 @@
 import Entity from "./Entity";
+import GameObject from "./GameObject";
 
-export default class Projectile extends Entity
+export default class Projectile extends GameObject
 {
     private projectileState: any;
 
