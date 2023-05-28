@@ -48,8 +48,6 @@ export default class GameManager {
                 if(objState && !obj.isStatic) {
                     objState.x = obj.position.x;
                     objState.y = obj.position.y;
-                    objState.velocity.x = obj.velocity.x;
-                    objState.velocity.y = obj.velocity.y;
                 }
             })
         });

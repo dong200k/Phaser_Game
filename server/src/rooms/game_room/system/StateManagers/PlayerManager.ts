@@ -24,8 +24,6 @@ export default class PlayerManager{
             if(gameObject instanceof Player){
                 gameObject.attackCooldown.tick(deltaT)
                 gameObject.specialCooldown.tick(deltaT)
-                let body = gameObject.getBody();
-                if(body) Matter.Body.setPosition(body, {x: 100 + deltaT, y: 100});
             }
         })
     }
@@ -113,7 +111,7 @@ export default class PlayerManager{
         WeaponManager.setWeaponUpgradeTree(newPlayer, tree)
 
         let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {
-            isStatic: true,
+            isStatic: false,
             inertia: Infinity,
             inverseInertia: 0,
             restitution: 0,

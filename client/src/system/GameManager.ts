@@ -60,15 +60,17 @@ export default class GameManager {
     }
 
     private initializeInputs() {
-        this.upKey = this.scene.input.keyboard.addKey("W");
-        this.downKey = this.scene.input.keyboard.addKey("S");
-        this.rightKey = this.scene.input.keyboard.addKey("D");
-        this.leftKey = this.scene.input.keyboard.addKey("A");
-        this.spaceKey = this.scene.input.keyboard.addKey("SPACE");
+        this.upKey = this.scene.input.keyboard?.addKey("W");
+        this.downKey = this.scene.input.keyboard?.addKey("S");
+        this.rightKey = this.scene.input.keyboard?.addKey("D");
+        this.leftKey = this.scene.input.keyboard?.addKey("A");
+        this.spaceKey = this.scene.input.keyboard?.addKey("SPACE");
+
+        //console.log("Keyboard---------------", this.scene.input.keyboard);
 
         // Debug controls, not visible by default. Can be disabled in config.ts.
-        this.debugKey = this.scene.input.keyboard.addKey("F3");
-        this.debugKey.on("down", () => {
+        this.debugKey = this.scene.input.keyboard?.addKey("F3");
+        this.debugKey?.on("down", () => {
             this.scene.matter.world.debugGraphic?.setVisible(!this.scene.matter.world.debugGraphic.visible);
         })
         this.scene.matter.world.debugGraphic?.setVisible(false);
