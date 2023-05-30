@@ -9,7 +9,11 @@ export default class GameRoom extends Room<State> {
     /** The time for our gameloop to update once in milliseconds. */
     private gameLoopInterval: number = 16.6;
     /** The time for the server to synchronize(send updates) with the client in milliseconds. */
-    private patchRateInterval: number = 33.3;
+    private patchRateInterval: number = 50;
+
+    // ------- fixed tick --------
+    private timePerTick = 50; // 20 ticks per second.
+    private timeTillNextTick = 50;
 
     onCreate() {
         console.log(`Created: Game room ${this.roomId}`);
@@ -45,12 +49,25 @@ export default class GameRoom extends Room<State> {
 
     startGame() {
         this.gameManager?.startGame();
-
         // Game Loop
         this.setSimulationInterval((deltaT) => {
-            this.gameManager?.update(deltaT);
-            this.state.serverTickCount++;
-        }, this.gameLoopInterval);
+            this.timeTillNextTick -= deltaT;
+            let tick = 0;
+            while(this.timeTillNextTick <= 0) {
+                if(this.timeTillNextTick < -this.timePerTick * 5) {
+                    console.warn(`Game Room: ${this.roomId} is more than 5 ticks behind, dropping ticks`);
+                    this.timeTillNextTick = this.timePerTick;
+                }
+                this.timeTillNextTick += this.timePerTick;
+                this.fixedTick(this.timePerTick);
+                tick++;
+            }
+        });
+    }
+
+    fixedTick(deltaT: number) {
+        this.gameManager?.update(deltaT);
+        this.state.serverTickCount++;
     }
 
     // update(deltaT:number) {

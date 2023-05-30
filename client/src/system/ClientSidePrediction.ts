@@ -31,6 +31,9 @@ export default class ClientSidePrediction {
     private engine: Matter.Engine;
     private gameObjectPairs: GameObjectAndBodyPair[] = [];
 
+    private serverTickCount: number = 0;
+    private clientTickCount: number = 0;
+
     constructor() {
         this.engine = Matter.Engine.create();
         this.engine.gravity.y = 0;
@@ -42,7 +45,7 @@ export default class ClientSidePrediction {
         this.player1 = player1;
         this.player1State = player1State;
         serverState.onChange = (changes: any) => {
-            console.log(serverState.serverTickCount);
+            this.serverTickCount = serverState.serverTickCount;
         }
     }
 
@@ -58,6 +61,9 @@ export default class ClientSidePrediction {
     public update(deltaT: number, playerMovementData: number[]) {
         this.processPlayerMovement(playerMovementData);
         Matter.Engine.update(this.engine, deltaT);
+        this.clientTickCount++;
+
+        console.log(this.clientTickCount - this.serverTickCount);
     }
 
     private initializeEvents() {

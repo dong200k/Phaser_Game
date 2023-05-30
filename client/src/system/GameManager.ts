@@ -25,7 +25,7 @@ export default class GameManager {
     private debugKey?: Phaser.Input.Keyboard.Key;
 
     // ------- fixed tick --------
-    private timePerTick = 1000 / 60; // 60 ticks per second.
+    private timePerTick = 50; // 20 ticks per second.
     private timeTillNextTick: number;
 
     private csp!: ClientSidePrediction;
@@ -50,16 +50,19 @@ export default class GameManager {
             this.timeTillNextTick += this.timePerTick;
             this.fixedTick(time, this.timePerTick);
         }
-    }
-
-    private fixedTick(time: number, deltaT: number) {
         // perform linear interpolation.
         this.gameObjects?.forEach((obj) => {
-            //if(obj !== this.player1) {
-                obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, 0.20));
-                obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, 0.20));
-            //}
+            obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, .10));
+            obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, .10));
         })
+    }
+
+    /**
+     * Runs at a frame rate equivalent to the server's frame rate.
+     * @param time The current time in ms.
+     * @param deltaT The time that passed in ms.
+     */
+    private fixedTick(time: number, deltaT: number) {
         this.scene.input.mousePointer.updateWorldPoint(this.scene.cameras.main);
         let movementData = this.getPlayerMovementData();
         this.csp.update(deltaT, movementData);
