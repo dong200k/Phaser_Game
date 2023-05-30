@@ -49,4 +49,11 @@ export default abstract class Entity extends GameObject
     public getStat() {
         return this.stat;
     }
+
+    /** Updates the stat by copying provided values to the stat.
+     *  @param stat new Stat values.
+     */
+    public updateStat(stat: Stat) {
+        Object.assign(this.stat, stat);
+    }
 }

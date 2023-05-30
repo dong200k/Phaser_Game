@@ -6,6 +6,7 @@ import Entity from "../gameobjs/Entity";
 import Projectile from "../gameobjs/Projectile";
 import MathUtil from "../util/MathUtil";
 import GameObject from "../gameobjs/GameObject";
+import ClientSidePrediction from "./ClientSidePrediction";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -27,10 +28,13 @@ export default class GameManager {
     private timePerTick = 1000 / 60; // 60 ticks per second.
     private timeTillNextTick: number;
 
+    private csp!: ClientSidePrediction;
+
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
         this.timeTillNextTick = this.timePerTick;
+        this.initializeClientSidePrediction();
         this.initializeInputs();
         this.initializeListeners();
     }
@@ -58,7 +62,7 @@ export default class GameManager {
         })
         this.scene.input.mousePointer.updateWorldPoint(this.scene.cameras.main);
         let movementData = this.getPlayerMovementData();
-
+        this.csp.update(deltaT, movementData);
         this.sendServerInputMessage(movementData);
     }
 
@@ -82,6 +86,10 @@ export default class GameManager {
     private initializeListeners() {
         this.gameRoom.state.gameObjects.onAdd = this.onAdd;
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
+    }
+
+    private initializeClientSidePrediction() {
+        this.csp = new ClientSidePrediction();
     }
 
     private sendServerInputMessage(movementData: number[]) {
@@ -139,19 +147,22 @@ export default class GameManager {
     private onAdd = (gameObj:any, key:string) => {
         if(!gameObj) return;
         let objType = gameObj.type;
+        let newGameObject: GameObject | undefined = undefined;
         switch (objType){
             case 'Player':
-                this.gameObjects?.push(this.addPlayer(gameObj, key));
+                newGameObject = this.addPlayer(gameObj, key)
                 break;
             case 'Projectile':
-                // console.log("projectile spawned")
-                // console.log(gameObj)
-                this.gameObjects?.push(this.addProjectile(gameObj, key));
+                newGameObject = this.addProjectile(gameObj, key);
                 break;
             case 'Monster': 
-                this.gameObjects?.push(this.addMonster(gameObj, key));
+                newGameObject = this.addMonster(gameObj, key);
                 break;
-        }   
+        }
+        if(newGameObject) {
+            this.gameObjects?.push(newGameObject);
+            this.csp.addGameObject(newGameObject);
+        }
     }
 
      /**Calls when the dungeon is first created on the server */
@@ -214,26 +225,37 @@ export default class GameManager {
         if(key === this.gameRoom.sessionId) {
             this.player1 = newPlayer;
             this.scene.cameras.main.startFollow(this.player1, false, 0.1);
+            this.csp.addPlayer1(newPlayer, player, this.gameRoom.state);
         }
         else
             this.players.push(newPlayer);
         this.scene.add.existing(newPlayer);
-        this.addListenersToGameObject(newPlayer, player);
+        this.addListenersToEntity(newPlayer, player);
         return newPlayer;
     }
 
     private addMonster(monster:any, key: string): Monster {
         let newMonster = new Monster(this.scene, monster);
         this.scene.add.existing(newMonster);
-        this.addListenersToGameObject(newMonster, monster);
+        this.addListenersToEntity(newMonster, monster);
         return newMonster;
     }
 
     /** Adds a listener to an entity to respond to server updates on that entity. */
     private addListenersToGameObject(gameObject: GameObject, gameObjectState: any) {
-        gameObjectState.onChange = (changes:any) => {
-            gameObject.serverX = gameObjectState.x;
-            gameObject.serverY = gameObjectState.y;
+        // Player1 would be excluded from receiving position updates from server directly. It's position will be updated by ClientSidePrediction.
+        if(gameObject !== this.player1) {
+            gameObjectState.onChange = (changes:any) => {
+                gameObject.serverX = gameObjectState.x;
+                gameObject.serverY = gameObjectState.y;
+            }
+        }
+    }
+
+    private addListenersToEntity(entity: Entity, entityState: any) {
+        this.addListenersToGameObject(entity, entityState);
+        entityState.stat.onChange = (changes: any) => {
+            entity.updateStat(entityState.stat);
         }
     }
 
