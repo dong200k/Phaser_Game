@@ -6,10 +6,11 @@ export default class GameRoom extends Room<State> {
     autoDispose = false;
     
     private gameManager?: GameManager;
-    /** The time for our gameloop to update once in milliseconds. */
-    private gameLoopInterval: number = 16.6;
-    /** The time for the server to synchronize(send updates) with the client in milliseconds. */
-    private patchRateInterval: number = 50;
+
+    /** The time for our gameRoom to update once in milliseconds. 
+     * Note: this is different from the server tick rate. 
+     */
+    private simulationInterval: number = 16.6;
 
     // ------- fixed tick --------
     private timePerTick = 50; // 20 ticks per second.
@@ -24,8 +25,10 @@ export default class GameRoom extends Room<State> {
         //If no one joins the game room, dispose it.
         setTimeout(() => this.autoDispose = true, 30000);
 
+        //Disable automatically sending patches.
+        this.setPatchRate(0);
+
         //Setting up state and game manager.
-        this.setPatchRate(this.patchRateInterval);
         let state = new State();
         this.gameManager = new GameManager(state);
         this.setState(state);
@@ -52,22 +55,21 @@ export default class GameRoom extends Room<State> {
         // Game Loop
         this.setSimulationInterval((deltaT) => {
             this.timeTillNextTick -= deltaT;
-            let tick = 0;
             while(this.timeTillNextTick <= 0) {
                 if(this.timeTillNextTick < -this.timePerTick * 5) {
-                    console.warn(`Game Room: ${this.roomId} is more than 5 ticks behind, dropping ticks`);
+                    console.warn(`Game Room: ${this.roomId} is more than 5 ticks behind, dropping ticks.`);
                     this.timeTillNextTick = this.timePerTick;
                 }
                 this.timeTillNextTick += this.timePerTick;
                 this.fixedTick(this.timePerTick);
-                tick++;
             }
-        });
+        }, this.simulationInterval);
     }
 
     fixedTick(deltaT: number) {
         this.gameManager?.update(deltaT);
         this.state.serverTickCount++;
+        this.broadcastPatch(); //send patch updates to clients.
     }
 
     // update(deltaT:number) {
