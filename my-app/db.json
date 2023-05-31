@@ -42,7 +42,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "8d6d9e5e-9cc0-459f-a7eb-04a9c5f98e86",
+                  "id": "9ba6421c-1ae9-4b26-a2cf-8fe41afe2a15",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -77,7 +77,7 @@
               }
             },
             "__rd3t": {
-              "id": "290e1b68-7a92-4115-87b8-9368f1b271d2",
+              "id": "69ef3d42-ab65-4cc3-992f-a8c5baabcec1",
               "depth": 1,
               "collapsed": false
             }
@@ -121,7 +121,7 @@
                       "weaponId": "1"
                     },
                     "__rd3t": {
-                      "id": "e21e7363-72a1-44f3-a19f-67fbe0182a20",
+                      "id": "5a33309b-ee4d-4b97-a139-832a460c795b",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -156,7 +156,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "94f14a36-6747-413c-83d8-28c0cf6f3930",
+                  "id": "73d1f622-4e5e-4307-80cb-4a2aa62ac052",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -193,7 +193,7 @@
               "weaponId": "sword-id"
             },
             "__rd3t": {
-              "id": "03f320e8-0afe-47f4-b24f-7fd24b43b16d",
+              "id": "4dd67f9d-ae3b-4158-88b7-23f93b43d247",
               "depth": 1,
               "collapsed": false
             }
@@ -230,14 +230,13 @@
               }
             },
             "__rd3t": {
-              "id": "97c56ef4-fd19-40ef-9876-6aaf2d9efe3c",
+              "id": "865dc40b-9424-43a1-8e41-b442eb13af12",
               "depth": 1,
               "collapsed": false
             }
           }
         ],
         "data": {
-          "weaponId": "bow-id",
           "name": "Wooden Bow 2",
           "description": "A sturdy wooden bow commonly seen with novice adventurers",
           "stat": {
@@ -262,11 +261,18 @@
             "attackSpeedPercent": 0,
             "speed": 0,
             "lifeSteal": 0,
+            "lifeStealPercent": 0,
             "level": 0
-          }
+          },
+          "effect": {
+            "effectId": "",
+            "doesStack": 1,
+            "cooldown": 1000
+          },
+          "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
         },
         "__rd3t": {
-          "id": "7f87570c-328d-49b3-b99e-cb9c81963ca6",
+          "id": "8beabb7e-e2d5-498c-9940-7c10276477a1",
           "depth": 0,
           "collapsed": false
         }

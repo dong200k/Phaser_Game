@@ -2,17 +2,25 @@ import { useEffect, useState } from "react"
 import { getEditForm } from "../helpers.js"
 import Dropdown from 'react-bootstrap/Dropdown';
 import NodeService from "../services/NodeService.js";
+import WeaponService from "../services/WeaponService.js"
 
 export default function EditNode({node, updateUpgrade, setEditNode, type}){
     let [form, setForm] = useState(getEditForm(node, type))
     let [nodes, setNodes] = useState([])
+    let [weapons, setWeapons] = useState([])
     let dataKeys = ["name", "description", "stat", "weaponId", "effect"]
     let [showZeroStat, setShowZeroStat] = useState(false)
+    
 
     useEffect(()=>{
         NodeService.getAllNodes()
         .then(nodes=>setNodes(nodes))
     },[])
+
+    useEffect(()=>{
+        WeaponService.getAllWeapons()
+            .then(weapons=>setWeapons(weapons))
+    }, [])
 
     function loadDefaultNode(node){
         setForm(prevForm=>{
@@ -106,6 +114,23 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
         </Dropdown.Menu>
     </Dropdown>
 
+    let weaponDropDown = 
+    <Dropdown className="mb-5">
+        <Dropdown.Toggle variant="info" id="dropdown-basic">
+            Weapon: {weapons.find((weapon)=>weapon.id===form.data.weaponId)?.name}
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+            {weapons.map(weapon=>{
+                return <Dropdown.Item onClick={()=>setForm(prev=>{
+                    let newForm = {...prev}
+                    newForm.data['weaponId'] = weapon.id
+                    return newForm
+                })}>{weapon.name}</Dropdown.Item>
+            })}
+        </Dropdown.Menu>
+    </Dropdown>
+
     return (
       <div className="text-center bg-light">
          <form onSubmit={save} className="pt-5 mx-auto">
@@ -122,9 +147,7 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
             {type === "upgrade" &&
                 <div>
                     <h3>BaseWeapon</h3>
-                    <label className="d-flex justify-content-center">
-                        <span className="text-danger">weaponId:</span><input type="text" style={{width: "25%"}}  value={form.data.weaponId} onChange={onChange("other", "weaponId")}/>
-                    </label>
+                    {weaponDropDown}
 
                     <h3>Effect</h3>
                     <label className="d-flex justify-content-center">

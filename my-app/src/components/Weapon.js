@@ -36,13 +36,13 @@ export default function Weapon(){
         {
             weapon &&
             <form onSubmit={save}>
-                <label key={id} className="d-flex justify-content-center">
+                <h3 className="text-center">
                     <span className="text-primary">id:<span className="text-dark">{weapon.id}</span> </span>
-                </label>
+                </h3>
                 {
                     Object.entries(weapon).filter(([key, val])=>key!=="id").map(([key, val])=>
                         <label key={key} className="d-flex justify-content-center">
-                            <span className="text-primary">{key}:</span><input style={{width: "25%"}} type="text" value={val} onChange={onChange(key)}/>
+                            <span className="text-danger">{key}:</span><input style={{width: "25%"}} type="text" value={val} onChange={onChange(key)}/>
                         </label>
                     )
                 }
