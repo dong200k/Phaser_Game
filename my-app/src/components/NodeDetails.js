@@ -1,10 +1,10 @@
 export default function NodeDetails({nodeDatum: node, type}){
-    let {data, children, nodeId} = node
-    let dataKeys = ["name", "description", "stat", "weaponId"]
+    let {data, children, id} = node
+    let dataKeys = ["name", "description", "stat", "weaponId", "effect"]
     return (
       <div>
         <h5><span className="text-primary">Name: </span>{data.name}</h5>
-        <div><span className="text-primary">id:</span> {nodeId}</div>
+        <div><span className="text-primary">id:</span> {id}</div>
         <p><span className="text-primary">description:</span> {data.description}</p>
 
         
@@ -23,6 +23,28 @@ export default function NodeDetails({nodeDatum: node, type}){
             return <div><span className="text-danger">{key}:</span> {data.stat[key]}</div>
           })
         }  
+
+        <br/><br/>
+        {
+          type === "upgrade" && node.data.effect && node.data.effect.effectId &&
+          <div>
+            <h3>Effect</h3>
+              <div className="">
+                  <span className="text-danger">effectId: <span className="text-dark">{node.data.effect.effectId}</span></span>
+              </div>
+              {
+                node.data.effect.cooldown &&
+                <div>
+                  <span className="text-danger">cooldown(ms): <span className="text-dark">{node.data.effect.cooldown}</span> </span>
+                </div>
+              }
+              
+              <div>
+                  <span className="text-danger">doesStack: <span className="text-dark">{node.data.effect.doesStack}</span> </span>
+              </div>
+              <br></br>
+          </div>
+        }
         
         <br/><br/>
         <h5>Other:</h5>

@@ -77,10 +77,10 @@ export default function Upgrade(props) {
       function dfs(root){
         if(!root) return
 
-        console.log(root.nodeId)
+        console.log(root.id)
 
         root.children.forEach((child, i)=>{
-          if(child.nodeId === node.nodeId) {
+          if(child.id === node.id) {
             root.children[i] = node
             return
           }
@@ -88,7 +88,7 @@ export default function Upgrade(props) {
         })
       }
 
-      if(newUpgrade.root.nodeId === node.nodeId){
+      if(newUpgrade.root.id === node.id){
         newUpgrade.root = node
       }else{
         dfs(newUpgrade.root)
@@ -122,7 +122,7 @@ export default function Upgrade(props) {
       function dfs(root){
         if(!root) return
 
-        if(root.nodeId === node.nodeId){
+        if(root.id === node.id){
           let newNode 
           if(props.type === "upgrade") newNode = getDefaultUpgradeNode()
           else newNode = getDefaultSkillNode()
@@ -149,7 +149,7 @@ export default function Upgrade(props) {
         if(!root) return
 
         root.children.forEach((child, i)=>{
-          if(child.nodeId === node.nodeId) {
+          if(child.id === node.id) {
             //remove node
             root.children.splice(i, 1)
             return
@@ -158,7 +158,7 @@ export default function Upgrade(props) {
         })
       }
 
-      if(newUpgrade.root.nodeId === node.nodeId){
+      if(newUpgrade.root.id === node.id){
         alert(`Cannot delete the root node! To delete this whole tree do it from the ${props.type} page`)
       }else{
         dfs(newUpgrade.root)
@@ -175,7 +175,7 @@ export default function Upgrade(props) {
         :
         <div>
           <div className="text-center" style={{backgroundColor: props.type==="upgrade"? upgrade.type==="weapon"? "lightgreen":"lightpink" : "lightblue"}}>
-            <h1 className="text-center" style={{display:"inline-block"}}>{props.type} Name:</h1>
+            <h1 className="text-center" style={{display:"inline-block"}}>{props.type==="upgrade"? upgrade.type==="weapon"? "Weapon":"Artifact" : "Skill"} Name:</h1>
             <h1 style={{display:"inline-block"}}><input type="text" value={upgrade.name} onChange={onChange}/></h1>
             <h1 className="text-center">id: {upgrade.id}</h1>
           </div>

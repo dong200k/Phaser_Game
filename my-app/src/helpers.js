@@ -40,7 +40,7 @@ export function getDefaultSkill(){
 
 export function getDefaultNode(){
   return {
-    nodeId: "node-" + window.crypto.randomUUID(),
+    id: "node-" + window.crypto.randomUUID(),
     children: [],
     data: {
       name: "auto-generated",
@@ -79,7 +79,11 @@ export function getDefaultUpgradeNode(){
     ...getDefaultNode(),
   }
   // If there needs to be Additional key add them below
-  node.data.useAttackId = ""
+  node.data.effect = {
+    effectId: "",
+    doesStack: 1, // whether it stacks (1) or overwrites (0) other useAttacks
+    cooldown: 1000
+  }
   return node
 }
 
@@ -90,6 +94,16 @@ export function getDefaultSkillNode(){
   // If there needs to be Additional key add them below
   node.data.coinCost = 0
   return node
+}
+
+export function getDefaultWeapon(){
+  return {
+    id: "weapon-" + window.crypto.randomUUID(),
+    name: "name",
+    description: "description",
+    sprite: "demo_hero",
+    projectile: "demo_hero"
+  }
 }
 
 export function getEditForm(node, type){

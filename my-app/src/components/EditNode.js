@@ -6,7 +6,7 @@ import NodeService from "../services/NodeService.js";
 export default function EditNode({node, updateUpgrade, setEditNode, type}){
     let [form, setForm] = useState(getEditForm(node, type))
     let [nodes, setNodes] = useState([])
-    let dataKeys = ["name", "description", "stat", "weaponId"]
+    let dataKeys = ["name", "description", "stat", "weaponId", "effect"]
     let [showZeroStat, setShowZeroStat] = useState(false)
 
     useEffect(()=>{
@@ -14,29 +14,56 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
         .then(nodes=>setNodes(nodes))
     },[])
 
-    useEffect(()=>{
-        console.log(nodes)
-    }, [nodes])
-
     function loadDefaultNode(node){
         setForm(prevForm=>{
             let newForm = getEditForm(node, type)
-            setForm({...newForm, children: prevForm.children, nodeId: prevForm.nodeId})
+            
+            if(type === "upgrade"){
+                delete newForm.data.coinCost
+            }else if(type === "skill"){
+                delete newForm.data.effect
+            }
+
+            newForm.id = prevForm.id
+
+            return newForm
         })
     }
 
+    useEffect(()=>{
+        console.log(form)
+    }, [form])
+
     function onChange(type, key){
         return (e)=>{
+            console.log(key)
             if(type === "stat"){
                 setForm(prevForm=>{
                     let newForm = {...prevForm}
+                    newForm.data = {...prevForm.data}
                     newForm.data.stat = {...prevForm.data.stat}
 
                     newForm.data.stat[key] = e.target.value
 
                     return newForm
                 })
-            }else{
+            }else if(type === "effect"){
+                setForm(prevForm=>{
+                    let newForm = {...prevForm}
+                    newForm.data = {...prevForm.data}
+                    newForm.data.effect = {...prevForm.data.effect}
+
+                    if(key === "doesStack"){
+                        let val = prevForm.data.effect[key] === 1? 0 : 1
+                        newForm.data.effect[key] = val
+                    }else{
+                        newForm.data.effect[key] = e.target.value
+                    }
+
+                    return newForm
+                })
+            }
+            else{
                 setForm(prevForm=>{
                     let newForm = {...prevForm}
                     newForm.data = {...prevForm.data}
@@ -52,6 +79,10 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
         Object.entries(form.data.stat).forEach(([key,val])=>{
             form.data.stat[key] = Number(val)
         })
+
+        if(typeof form.data.effect.cooldown !== typeof number){
+            form.data.effect.cooldown = Number(form.data.effect.cooldown)
+        }
 
         let success = updateUpgrade(form)
 
@@ -70,7 +101,7 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
 
         <Dropdown.Menu>
             {nodes.map(node=>{
-                <Dropdown.Item onClick={()=>loadDefaultNode(node)}>{node.data.name}</Dropdown.Item>
+                return <Dropdown.Item onClick={()=>loadDefaultNode(node)}>{node.data.name}</Dropdown.Item>
             })}
         </Dropdown.Menu>
     </Dropdown>
@@ -94,6 +125,20 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
                     <label className="d-flex justify-content-center">
                         <span className="text-danger">weaponId:</span><input type="text" style={{width: "25%"}}  value={form.data.weaponId} onChange={onChange("other", "weaponId")}/>
                     </label>
+
+                    <h3>Effect</h3>
+                    <label className="d-flex justify-content-center">
+                        <span className="text-danger">effectId:</span><input type="text" style={{width: "25%"}}  value={form.data.effect.effectId} onChange={onChange("effect", "effectId")}/>
+                    </label>
+                    <label className="d-flex justify-content-center">
+                        <span className="text-danger">cooldown(ms):</span>
+                        <input type="number" value={form.data.effect.cooldown} onChange={onChange("effect", "cooldown")}></input>
+                    </label>
+                    <label className="d-flex justify-content-center">
+                        <span className="text-danger">doesStack: {form.data.effect.doesStack} </span>
+                        <input type="checkbox" checked={form.data.effect.doesStack} onChange={onChange("effect", "doesStack")}></input>
+                    </label>
+                    <br></br>
                 </div>
             }
             

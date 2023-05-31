@@ -5,7 +5,6 @@ class NodeService{
     async getNode(id){
         try{
             let node = await fetch(this.BASEURL + `/nodes/${id}`)
-            console.log(node)
             if(node.status !== 200) throw new Error()
             return await node.json()
         }catch{
@@ -32,11 +31,13 @@ class NodeService{
     
     }
     async createNode(){
-        let node = {
-            id: "default-node-" + window.crypto.randomUUID(), ...getDefaultNode(), ...getDefaultSkillNode(), ...getDefaultUpgradeNode(),
-        }
-        // set nodeId to same value as id or else deleting one node by id will delete everynode for some reason
-        node.nodeId = node.id
+        let node = getDefaultNode()
+
+        // Give node data of both skill and upgrade nodes
+        let upgradeNodeData = getDefaultUpgradeNode().data
+        let skillNodeData = getDefaultSkillNode().data
+        node.data = {...node.data, ...upgradeNodeData, ...skillNodeData}
+
         try {
             let result = await fetch(this.BASEURL + `/nodes`, {
                 method: "POST",
@@ -69,7 +70,6 @@ class NodeService{
     async getAllNodes(){
         try{
             let res = await fetch(this.BASEURL + "/nodes")
-            console.log(res)
             if(res.status !== 200) throw new Error()
             return await res.json()
         }catch(e){

@@ -762,6 +762,346 @@
           "collapsed": false
         }
       }
+    },
+    {
+      "id": "upgrade-f1e6ac5a-4f58-4935-a846-c8d734e26c07",
+      "name": "Doubow",
+      "type": "weapon",
+      "root": {
+        "id": "node-e99a9042-34f0-44ef-beb2-cc0e5477d585",
+        "children": [
+          {
+            "id": "node-f0d09c50-5cbe-4665-b4cc-f12809c684c7",
+            "children": [
+              {
+                "id": "node-45a1b775-8c46-47a8-a9ac-b266d21d4401",
+                "children": [],
+                "data": {
+                  "name": "Godly Attack Enhancement ",
+                  "description": "Increases Attack by 100 points",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 100,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "effect": {
+                    "effectId": "",
+                    "doesStack": 0
+                  },
+                  "weaponId": ""
+                },
+                "__rd3t": {
+                  "id": "dc34833e-aa06-482b-b686-ba137c65cf03",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Attack Enhancement",
+              "description": "Increases Attack by 20 points",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 20,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "effect": {
+                "effectId": "",
+                "doesStack": 0
+              }
+            },
+            "__rd3t": {
+              "id": "573500dc-c44f-4b41-8ba8-65a721e82f4c",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "name": "Doubow",
+          "description": "Legend has it that the Doubow fires double the shots of a regular bow.",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 5,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0
+          },
+          "effect": {
+            "effectId": "Doubow-attack",
+            "doesStack": 1,
+            "cooldown": 1000
+          },
+          "weaponId": "bow-id"
+        },
+        "__rd3t": {
+          "id": "e6907461-2e4c-4dc4-8a2b-2fceeaa48eeb",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
+    },
+    {
+      "id": "upgrade-a4275241-dc56-4ea3-88cc-775c58bd64ce",
+      "name": "Hermes Boots",
+      "type": "artifact",
+      "root": {
+        "id": "node-a4e88134-7d9a-4a58-be8a-1db4c9be8a71",
+        "children": [
+          {
+            "id": "node-4678a92b-d563-4e4b-88a8-dff71d4b2c1a",
+            "children": [
+              {
+                "id": "node-8ffd42fa-44b4-43c8-9772-d1aae380ac50",
+                "children": [
+                  {
+                    "id": "node-aee2cb31-8cff-4c02-b52e-4476264c4085",
+                    "children": [
+                      {
+                        "id": "node-5c5c5640-8a2e-4684-b5a4-414766406242",
+                        "children": [],
+                        "data": {
+                          "name": "Awakened Hermes Boots",
+                          "description": "Though these boots have not recovered their godly powers, they can occasionally react to an adventurer's skill to grant a burst of incredible speed.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0.05,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "effect": {
+                            "effectId": "hermes-awaken-effect",
+                            "doesStack": 1
+                          }
+                        },
+                        "__rd3t": {
+                          "id": "47530976-2b29-4da5-89d3-95cfc88afbe2",
+                          "depth": 4,
+                          "collapsed": false
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Speed Enhancement",
+                      "description": "Increases movement speed by 5 percent.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0.05,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "effect": {
+                        "effectId": "",
+                        "doesStack": 0
+                      }
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Speed Enhancement",
+                  "description": "Increases movement speed by 5 percent.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0.05,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "effect": {
+                    "effectId": "",
+                    "doesStack": 0
+                  }
+                }
+              }
+            ],
+            "data": {
+              "name": "Speed Enhancement",
+              "description": "Increases movement speed by 5 percent.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0.05,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "effect": {
+                "effectId": "",
+                "doesStack": 0
+              }
+            }
+          }
+        ],
+        "data": {
+          "name": "Hermes Boots",
+          "description": "Legend has it that these boots were once worn by Hermes, although it looks dusty and broken now.",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0.05,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0
+          },
+          "effect": {
+            "effectId": "",
+            "doesStack": 1
+          }
+        },
+        "__rd3t": {
+          "id": "97fd7993-21bd-480f-8c50-a6620a2fbe23",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
     }
   ],
   "skills": [
@@ -2204,5 +2544,210 @@
       }
     }
   ],
-  "nodes": []
+  "nodes": [
+    {
+      "id": "default-node-5a9fd4fb-a947-4324-8eeb-b76ed374f305",
+      "nodeId": "default-node-5a9fd4fb-a947-4324-8eeb-b76ed374f305",
+      "children": [],
+      "data": {
+        "name": "Name",
+        "description": "Description",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 1,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "effect": {
+          "effectId": "For Testing Effect",
+          "doesStack": 1,
+          "cooldown": 1000
+        },
+        "coinCost": "100",
+        "weaponId": "For Testing Weapon"
+      }
+    },
+    {
+      "id": "node-1367c2ad-fd25-4c3a-a2db-746cea2a09c6",
+      "children": [],
+      "data": {
+        "name": "Doubow",
+        "description": "Legend has it that the Doubow fires double the shots of a regular bow.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 5,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "effect": {
+          "effectId": "1",
+          "doesStack": 1
+        },
+        "coinCost": 0,
+        "weaponId": "bow-id"
+      }
+    },
+    {
+      "id": "node-06705a93-ab94-4f50-a10a-aca6a89471c8",
+      "children": [],
+      "data": {
+        "name": "Attack Enhancement",
+        "description": "Increases Attack by 20 points",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 20,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "effect": {
+          "effectId": "",
+          "doesStack": 0
+        },
+        "coinCost": 0
+      }
+    },
+    {
+      "id": "node-8d8500c8-e878-4de3-bc48-d4cd63fa6230",
+      "children": [],
+      "data": {
+        "name": "Godly Attack Enhancement ",
+        "description": "Increases Attack by 100 points",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 100,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "effect": {
+          "effectId": "",
+          "doesStack": 0
+        },
+        "coinCost": 0,
+        "weaponId": ""
+      }
+    },
+    {
+      "id": "node-49d8b11c-0d18-49ed-bca3-14febf50ec0f",
+      "children": [],
+      "data": {
+        "name": "Speed Enhancement",
+        "description": "Increases movement speed by 5 percent.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0.05,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "effect": {
+          "effectId": "",
+          "doesStack": 0
+        },
+        "coinCost": 0
+      }
+    }
+  ],
+  "weapons": [
+    {
+      "id": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
+      "name": "bow",
+      "description": "description",
+      "sprite": "demo_hero",
+      "projectile": "demo_hero"
+    }
+  ]
 }
