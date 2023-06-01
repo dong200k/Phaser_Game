@@ -7,9 +7,10 @@ interface PlayerInput {
 
 }
 
-interface GameObjectAndBodyPair {
+interface GameObjectItem {
     gameObject: GameObject;
     body: Matter.Body;
+    debugGraphic: Phaser.GameObjects.Graphics;
 }
 
 /**
@@ -29,12 +30,34 @@ export default class ClientSidePrediction {
     private history: Matter.World[] = [];
     private historyStartTick: number = 0;
     private engine: Matter.Engine;
-    private gameObjectPairs: GameObjectAndBodyPair[] = [];
+    private scene: Phaser.Scene;
+    private gameObjectItems: GameObjectItem[] = [];
 
     private serverTickCount: number = 0;
     private clientTickCount: number = 0;
 
-    constructor() {
+    private debugGraphicsVisible: boolean = false;
+
+    private matterBodyConfig = {
+        Player: {
+            isStatic: false,
+            isSensor: false,
+            inertia: Infinity,
+            inverseInertia: 0,
+            restitution: 0,
+            friction: 0,
+        },
+        Tile: {
+            isStatic: true,
+            isSensor: false,
+            inverseInertia: 0,
+            restitution: 0,
+            friction: 0,
+        }
+    }
+
+    constructor(scene: Phaser.Scene) {
+        this.scene = scene;
         this.engine = Matter.Engine.create();
         this.engine.gravity.y = 0;
         // let worldClone = Matter.Common.clone(this.engine.world, true);
@@ -51,8 +74,8 @@ export default class ClientSidePrediction {
 
     public getPlayer1AndBody() {
         if(this.player1Body === undefined) {
-            this.gameObjectPairs.forEach((pair) => {
-                if(pair.gameObject === this.player1) this.player1Body = pair.body;
+            this.gameObjectItems.forEach((item) => {
+                if(item.gameObject === this.player1) this.player1Body = item.body;
             })
         }
         return {player1: this.player1, body: this.player1Body};
@@ -61,9 +84,8 @@ export default class ClientSidePrediction {
     public update(deltaT: number, playerMovementData: number[]) {
         this.processPlayerMovement(playerMovementData);
         Matter.Engine.update(this.engine, deltaT);
+        if(this.debugGraphicsVisible) this.updateDebugGraphics();
         this.clientTickCount++;
-
-        console.log(this.clientTickCount - this.serverTickCount);
     }
 
     private initializeEvents() {
@@ -75,8 +97,20 @@ export default class ClientSidePrediction {
                 player1.serverY = body.position.y;
             }
         });
+
+        Matter.Events.on(this.engine, "collisionStart", () => {
+            console.log("collision");
+        })
     }
 
+    private updateDebugGraphics() {
+        this.gameObjectItems.forEach((item) => {
+            let graphics = item.debugGraphic;
+            let gameObj = item.gameObject;
+            graphics.setX(gameObj.serverX);
+            graphics.setY(gameObj.serverY);
+        })
+    }
     
     private processPlayerMovement(data: number[]) {
         let {player1, body} = this.getPlayer1AndBody();
@@ -92,24 +126,47 @@ export default class ClientSidePrediction {
         if(body) Matter.Body.setVelocity(body, velocity);
     }
 
+    public setDebugGraphicsVisible(value: boolean) {
+        if(value === true) {
+            this.updateDebugGraphics();
+            this.gameObjectItems.forEach(item => item.debugGraphic.setVisible(true));
+        }
+        else this.gameObjectItems.forEach(item => item.debugGraphic.setVisible(false));
+        this.debugGraphicsVisible = value;
+    }
+
+    public getDebugGraphicsVisible() {
+        return this.debugGraphicsVisible;
+    }
+
     public processTick() {
 
     }
 
     public addGameObject(gameObject: GameObject) {
-        let gameObjectAndBodyPair = {
-            gameObject: gameObject,
-            body: Matter.Bodies.rectangle(gameObject.serverX, gameObject.serverY, gameObject.width, gameObject.height, {
-                isStatic: false,
-                isSensor: true,
-                inverseInertia: 0,
-                restitution: 0,
-                friction: 0,
-            })
-        }
 
-        this.gameObjectPairs.push(gameObjectAndBodyPair);
-        Matter.Composite.add(this.engine.world, gameObjectAndBodyPair.body);
+        let matterConfig = {
+            isStatic: false,
+            isSensor: true,
+            inverseInertia: 0,
+            restitution: 0,
+            friction: 0,
+        };
+
+        if(gameObject.serverState.type === "Tile") matterConfig = this.matterBodyConfig["Tile"];
+        if(gameObject.serverState.type === "Player") matterConfig = this.matterBodyConfig["Player"];
+
+        let gameObjectItem = {
+            gameObject: gameObject,
+            body: Matter.Bodies.rectangle(gameObject.serverX, gameObject.serverY, gameObject.width, gameObject.height, matterConfig),
+            debugGraphic: this.scene.add.graphics({lineStyle: {width: 1, color: 0x0000cc}})
+                .strokeRect(-gameObject.width / 2,-gameObject.height / 2, gameObject.width, gameObject.height)
+                .setVisible(this.debugGraphicsVisible)
+                .setDepth(10),
+        }            
+
+        this.gameObjectItems.push(gameObjectItem);
+        Matter.Composite.add(this.engine.world, gameObjectItem.body);
     }
 
     public serverReconciliation() {

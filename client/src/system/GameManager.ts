@@ -7,6 +7,7 @@ import Projectile from "../gameobjs/Projectile";
 import MathUtil from "../util/MathUtil";
 import GameObject from "../gameobjs/GameObject";
 import ClientSidePrediction from "./ClientSidePrediction";
+import Tile from "../gameobjs/Tile";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -81,9 +82,8 @@ export default class GameManager {
         // Debug controls, not visible by default. Can be disabled in config.ts.
         this.debugKey = this.scene.input.keyboard?.addKey("F3");
         this.debugKey?.on("down", () => {
-            this.scene.matter.world.debugGraphic?.setVisible(!this.scene.matter.world.debugGraphic.visible);
+            this.csp.setDebugGraphicsVisible(!this.csp.getDebugGraphicsVisible());
         })
-        this.scene.matter.world.debugGraphic?.setVisible(false);
     }
 
     private initializeListeners() {
@@ -92,7 +92,7 @@ export default class GameManager {
     }
 
     private initializeClientSidePrediction() {
-        this.csp = new ClientSidePrediction();
+        this.csp = new ClientSidePrediction(this.scene);
     }
 
     private sendServerInputMessage(movementData: number[]) {
@@ -124,22 +124,22 @@ export default class GameManager {
         return movementData;
     }
 
-    private updatePlayer1(movementData: number[], special: boolean, mouseData: number[]) {
-        if(this.player1 !== undefined) {
-            let playerState = this.player1?.getPlayerState();
+    // private updatePlayer1(movementData: number[], special: boolean, mouseData: number[]) {
+    //     if(this.player1 !== undefined) {
+    //         let playerState = this.player1?.getPlayerState();
 
-            //calculate new player velocity
-            let speed = playerState.stat.speed;
-            let x = 0;
-            let y = 0;
-            if(movementData[0]) y -= 1;
-            if(movementData[1]) y += 1;
-            if(movementData[2]) x -= 1;
-            if(movementData[3]) x += 1;
-            let velocity = MathUtil.getNormalizedSpeed(x, y, speed)
-            this.player1.setVelocity(velocity.x, velocity.y);
-        }
-    }
+    //         //calculate new player velocity
+    //         let speed = playerState.stat.speed;
+    //         let x = 0;
+    //         let y = 0;
+    //         if(movementData[0]) y -= 1;
+    //         if(movementData[1]) y += 1;
+    //         if(movementData[2]) x -= 1;
+    //         if(movementData[3]) x += 1;
+    //         let velocity = MathUtil.getNormalizedSpeed(x, y, speed)
+    //         this.player1.setVelocity(velocity.x, velocity.y);
+    //     }
+    // }
     
     // private getTypeOfObject(gameObj: any): string{
     //     if(gameObj.hasOwnProperty('role')) return "player";
@@ -161,8 +161,12 @@ export default class GameManager {
             case 'Monster': 
                 newGameObject = this.addMonster(gameObj, key);
                 break;
+            case 'Tile':
+                newGameObject = new Tile(this.scene, gameObj);
+                break;
         }
         if(newGameObject) {
+            newGameObject.setServerState(gameObj);
             this.gameObjects?.push(newGameObject);
             this.csp.addGameObject(newGameObject);
         }
@@ -195,13 +199,7 @@ export default class GameManager {
                             let tileId = layer.tiles[(y * width + x)].tileId;
                             if(tileId !== 0) {
                                 //Add a tile to the tilemap
-                                let newTile = newLayer.putTileAt(tileId - 1, x, y);
-                                //If the tile is a obstacle add it to matter.js
-                                if(key === "Obstacle") {
-                                    let tileBody = this.scene.matter.add.tileBody(newTile); //adding this tile to matter physics will show debug lines
-                                    tileBody.setStatic(true);
-                                    tileBody.setSensor(true);
-                                }
+                                newLayer.putTileAt(tileId - 1, x, y);
                             }
                         }
                     }
