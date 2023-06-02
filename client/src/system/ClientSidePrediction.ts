@@ -28,13 +28,14 @@ export default class ClientSidePrediction {
     private player1State?: any;
     private player1Body?: Matter.Body;
     private history: Matter.World[] = [];
+    private inputHistory: number[] = [];
     private historyStartTick: number = 0;
     private engine: Matter.Engine;
     private scene: Phaser.Scene;
     private gameObjectItems: GameObjectItem[] = [];
 
     private serverTickCount: number = 0;
-    private clientTickCount: number = 0;
+    private clientTickCount: number = 8;
 
     private debugGraphicsVisible: boolean = false;
 
@@ -98,9 +99,9 @@ export default class ClientSidePrediction {
             }
         });
 
-        Matter.Events.on(this.engine, "collisionStart", () => {
-            console.log("collision");
-        })
+        // Matter.Events.on(this.engine, "collisionStart", () => {
+        //     //console.log("collision");
+        // })
     }
 
     private updateDebugGraphics() {
@@ -141,6 +142,10 @@ export default class ClientSidePrediction {
 
     public processTick() {
 
+    }
+
+    public getClientTickCount() {
+        return this.clientTickCount;
     }
 
     public addGameObject(gameObject: GameObject) {

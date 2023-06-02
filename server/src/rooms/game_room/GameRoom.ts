@@ -1,11 +1,12 @@
 import { Client, Room, matchMaker } from "colyseus";
 import State from "./schemas/State";
 import GameManager from "./system/GameManager";
+import ReconciliationInfo from "./schemas/ReconciliationInfo";
 
 export default class GameRoom extends Room<State> {
     autoDispose = false;
     
-    private gameManager?: GameManager;
+    private gameManager!: GameManager;
 
     /** The time for our gameRoom to update once in milliseconds. 
      * Note: this is different from the server tick rate. 
@@ -38,27 +39,32 @@ export default class GameRoom extends Room<State> {
 
     initListeners() {
         this.onMessage("move", (client, msg)=>{
-            this.gameManager?.playerManager.processPlayerMovement(client.sessionId, msg)
+            //this.gameManager?.playerManager.processPlayerMovement(client.sessionId, msg)
+            this.gameManager.playerManager.queuePlayerMovement(client.sessionId, msg);
         })
 
         this.onMessage("attack", (client, msg)=>{
-            this.gameManager?.playerManager.processPlayerAttack(client.sessionId, msg)
+            this.gameManager.playerManager.processPlayerAttack(client.sessionId, msg)
         })
 
         this.onMessage("special", (client, msg)=>{
-            this.gameManager?.playerManager.processPlayerSpecial(client.sessionId, msg)
+            this.gameManager.playerManager.processPlayerSpecial(client.sessionId, msg)
         })
+
+        // this.onMessage("input", (client, msg) => {
+
+        // })
     }
 
     startGame() {
-        this.gameManager?.startGame();
+        this.gameManager.startGame();
         // Game Loop
         this.setSimulationInterval((deltaT) => {
             this.timeTillNextTick -= deltaT;
             while(this.timeTillNextTick <= 0) {
                 if(this.timeTillNextTick < -this.timePerTick * 5) {
                     console.warn(`Game Room: ${this.roomId} is more than 5 ticks behind, dropping ticks.`);
-                    this.timeTillNextTick = this.timePerTick;
+                    this.timeTillNextTick = 0;
                 }
                 this.timeTillNextTick += this.timePerTick;
                 this.fixedTick(this.timePerTick);
@@ -67,7 +73,7 @@ export default class GameRoom extends Room<State> {
     }
 
     fixedTick(deltaT: number) {
-        this.gameManager?.update(deltaT);
+        this.gameManager.update(deltaT);
         this.state.serverTickCount++;
         this.broadcastPatch(); //send patch updates to clients.
     }
@@ -78,12 +84,16 @@ export default class GameRoom extends Room<State> {
 
     onJoin(client: Client) {
         // Add a new player to the room state. The first player is the owner of the room.
-        this.gameManager?.playerManager.createPlayer(client.sessionId, this.gameManager?.playerCount() === 0);
+        this.gameManager.playerManager.createPlayer(client.sessionId, this.gameManager.playerCount() === 0);
+        this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
     }
 
     onLeave(client: Client) {
         // removes player from list of gameobjects
-        this.gameManager?.removeGameObject(client.sessionId);
+        this.gameManager.playerManager.removePlayer(client.sessionId);
+        for(let i = this.state.reconciliationInfos.length - 1; i >= 0; i--) {
+            if(this.state.reconciliationInfos[i].clientId === client.sessionId) this.state.reconciliationInfos.deleteAt(i);
+        }
     }
 
     onDispose() {

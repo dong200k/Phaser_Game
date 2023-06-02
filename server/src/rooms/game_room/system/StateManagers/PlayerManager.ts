@@ -10,9 +10,18 @@ import { Categories } from '../Collisions/Category';
 import MaskManager from '../Collisions/MaskManager';
 import WeaponManager from './WeaponManager';
 import WeaponLogicManager from '../WeaponLogic/WeaponLogicManager';
+import ReconciliationInfo from '../../schemas/ReconciliationInfo';
+
+interface InputPlayload {
+    payload: number[];
+    playerId: string;
+}
 
 export default class PlayerManager{
     private gameManager: GameManager
+
+    private inputPayloads: InputPlayload[] = [];
+
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
@@ -26,6 +35,10 @@ export default class PlayerManager{
                 gameObject.specialCooldown.tick(deltaT)
             }
         })
+
+        this.updatePlayerMovement();
+        if(this.gameManager.state.serverTickCount % 10 === 0)
+            console.log("Input payload size: ", this.inputPayloads.length);
     }
 
     getPlayerStateAndBody(sessionId: string){
@@ -43,6 +56,55 @@ export default class PlayerManager{
         data = {mouseX, mouseY, playerBody}
 
         WeaponLogicManager.getManager().useAttack(playerState, this.gameManager, data)
+    }
+
+    queuePlayerMovement(playerId: string, data: number[]) {
+        let inputPlayload = {
+            playerId: playerId,
+            payload: data,
+        }
+        this.inputPayloads.push(inputPlayload);
+    }
+
+    private updatePlayerMovement() {
+        let loopCount = this.inputPayloads.length;
+        while(loopCount > 0) {
+            let item = this.inputPayloads.shift();
+            if(item) {
+                let clientTick = item.payload[4];
+                let serverTick = this.gameManager.state.serverTickCount;
+                let playerId = item.playerId;
+                let reconciliationInfo = this.gameManager.state.reconciliationInfos.reduce<ReconciliationInfo>((prev, current, idx, arr) => {
+                    if(prev.clientId === playerId) return prev;
+                    else return current;
+                })
+                if(clientTick < serverTick) {
+                    // Drop package and ask player to catch up.
+                    console.log(`Client ${playerId} is ${serverTick - clientTick} ticks behind. Asking client to speed up.`);
+                    if(reconciliationInfo.adjectmentConfirmId >= reconciliationInfo.adjustmentId) {
+                        reconciliationInfo.adjustmentId++;
+                        reconciliationInfo.adjustmentAmount = 2;
+                    }
+                } else if(clientTick > serverTick + 3) {
+                    // Save packet and tell client to slow down.
+                    console.log(`Client ${playerId} is ${clientTick - serverTick} ticks ahead. Asking client to slow down.`);
+                    if(reconciliationInfo.adjectmentConfirmId >= reconciliationInfo.adjustmentId) {
+                        reconciliationInfo.adjustmentId++;
+                        reconciliationInfo.adjustmentAmount = -2;
+                    }
+                    this.inputPayloads.push(item);
+                }
+                else if(clientTick === serverTick) {
+                    // Process client payload.
+                    this.processPlayerMovement(playerId, item.payload);
+
+                } else {
+                    // Save packet for future ticks.
+                    this.inputPayloads.push(item);
+                }
+            }
+            loopCount--;
+        }
     }
 
     processPlayerMovement(playerId: string, data: number[]){
@@ -124,7 +186,11 @@ export default class PlayerManager{
 
         newPlayer.setId(sessionId);
         this.gameManager.addGameObject(sessionId, newPlayer, body);
-    }   
+    } 
+
+    public removePlayer(sessionId: string) {
+        this.gameManager.removeGameObject(sessionId);
+    }
 
     /**
      * Gets the nearest player to the given x and y position.
