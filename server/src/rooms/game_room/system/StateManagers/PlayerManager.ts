@@ -36,9 +36,7 @@ export default class PlayerManager{
             }
         })
 
-        this.updatePlayerMovement();
-        if(this.gameManager.state.serverTickCount % 10 === 0)
-            console.log("Input payload size: ", this.inputPayloads.length);
+        this.processMovementInputPayload();
     }
 
     getPlayerStateAndBody(sessionId: string){
@@ -66,11 +64,17 @@ export default class PlayerManager{
         this.inputPayloads.push(inputPlayload);
     }
 
-    private updatePlayerMovement() {
+    private processMovementInputPayload() {
         let loopCount = this.inputPayloads.length;
+
+        if(this.inputPayloads.length > 100) {
+            console.warn("Input payloads exceed 100, dropping payloads.");
+            while(this.inputPayloads.length > 50) this.inputPayloads.shift();
+        }
+
         while(loopCount > 0) {
             let item = this.inputPayloads.shift();
-            if(item) {
+            if(item && this.gameManager.state.reconciliationInfos.length > 0) {
                 let clientTick = item.payload[4];
                 let serverTick = this.gameManager.state.serverTickCount;
                 let playerId = item.playerId;
@@ -78,17 +82,19 @@ export default class PlayerManager{
                     if(prev.clientId === playerId) return prev;
                     else return current;
                 })
+                reconciliationInfo.adjectmentConfirmId = item.payload[5];
+
                 if(clientTick < serverTick) {
                     // Drop package and ask player to catch up.
-                    console.log(`Client ${playerId} is ${serverTick - clientTick} ticks behind. Asking client to speed up.`);
-                    if(reconciliationInfo.adjectmentConfirmId >= reconciliationInfo.adjustmentId) {
+                    // console.log(`Client ${playerId} is ${serverTick - clientTick} ticks behind. Asking client to speed up.`);
+                    if(reconciliationInfo.adjectmentConfirmId === reconciliationInfo.adjustmentId) {
                         reconciliationInfo.adjustmentId++;
                         reconciliationInfo.adjustmentAmount = 2;
                     }
                 } else if(clientTick > serverTick + 3) {
                     // Save packet and tell client to slow down.
-                    console.log(`Client ${playerId} is ${clientTick - serverTick} ticks ahead. Asking client to slow down.`);
-                    if(reconciliationInfo.adjectmentConfirmId >= reconciliationInfo.adjustmentId) {
+                    // console.log(`Client ${playerId} is ${clientTick - serverTick} ticks ahead. Asking client to slow down.`);
+                    if(reconciliationInfo.adjectmentConfirmId === reconciliationInfo.adjustmentId) {
                         reconciliationInfo.adjustmentId++;
                         reconciliationInfo.adjustmentAmount = -2;
                     }

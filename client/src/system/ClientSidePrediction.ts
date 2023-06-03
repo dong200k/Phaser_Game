@@ -34,8 +34,14 @@ export default class ClientSidePrediction {
     private scene: Phaser.Scene;
     private gameObjectItems: GameObjectItem[] = [];
 
+    private reconciliationInfo: any;
     private serverTickCount: number = 0;
     private clientTickCount: number = 8;
+
+    // The adjustmentId that the client has processed.
+    private adjustmentId: number = 0;
+    private currentlyAdjusting: boolean = false;
+    private ticksToProcess: number = 0;
 
     private debugGraphicsVisible: boolean = false;
 
@@ -71,6 +77,9 @@ export default class ClientSidePrediction {
         serverState.onChange = (changes: any) => {
             this.serverTickCount = serverState.serverTickCount;
         }
+        serverState.reconciliationInfos.onAdd = (item: any, key: any) => {
+            this.reconciliationInfo = item; 
+        }
     }
 
     public getPlayer1AndBody() {
@@ -83,10 +92,80 @@ export default class ClientSidePrediction {
     }
 
     public update(deltaT: number, playerMovementData: number[]) {
-        this.processPlayerMovement(playerMovementData);
-        Matter.Engine.update(this.engine, deltaT);
-        if(this.debugGraphicsVisible) this.updateDebugGraphics();
-        this.clientTickCount++;
+
+        // ------- Server Tick Sync -------
+
+        let adjustmentAmount = this.reconciliationInfo?.adjustmentAmount ?? 0;
+        let serverAdjustmentId = this.reconciliationInfo?.adjustmentId ?? 0;
+
+        // Checks if server sent adjustment request.
+        if(!this.currentlyAdjusting && serverAdjustmentId !== this.adjustmentId) {
+            if(Math.abs(this.clientTickCount - this.serverTickCount) > 20) {
+                this.hugeLagSpikeReconciliation();
+                this.adjustmentId = serverAdjustmentId;
+                this.currentlyAdjusting = false;
+            } else {
+                this.ticksToProcess = adjustmentAmount;
+                this.currentlyAdjusting = true;
+            }
+        }
+
+        if(this.serverTickCount % 20 === 0) {
+            console.log(`Adjusting: ${this.currentlyAdjusting}, Amount: ${this.ticksToProcess}`);
+            console.log(`AdjustId: ${this.adjustmentId}, ServerAdjustId: ${serverAdjustmentId}`);
+            console.log(this.reconciliationInfo);
+        }
+        
+
+        // Skip ticks.
+        if(this.currentlyAdjusting && this.ticksToProcess < 0) {
+            this.ticksToProcess++;
+            if(this.ticksToProcess >= 0) {
+                this.adjustmentId = serverAdjustmentId;
+                this.currentlyAdjusting = false;
+            }
+            return;
+        } 
+
+        do {
+            // ------ Tick Logic below -------
+
+            this.processPlayerMovement(playerMovementData);
+            Matter.Engine.update(this.engine, deltaT);
+            if(this.debugGraphicsVisible) this.updateDebugGraphics();
+            this.clientTickCount++;
+
+            // ------ Tick Logic above -------
+
+            if(this.currentlyAdjusting) {
+                this.ticksToProcess--;
+                if(this.ticksToProcess <= 0) {
+                    this.adjustmentId = serverAdjustmentId;
+                    this.currentlyAdjusting = false;
+                }
+            }
+        } while(this.ticksToProcess > 0 && this.currentlyAdjusting);
+    }
+
+    /**
+     * Gets the adjustmentId that represents which adjustment the client has completed.
+     * @returns The adjustmentId.
+     */
+    public getAdjustmentId() {
+        return this.adjustmentId;
+    }
+
+    /**
+     * Recover from a lag spike where the client's and server's tick count 
+     * differ massively. 
+    */
+    private hugeLagSpikeReconciliation() {
+        this.clientTickCount = this.serverTickCount + 5;
+        let {player1, body} = this.getPlayer1AndBody();
+        if(player1 && body) {
+            player1.serverX = this.player1State.x;
+            player1.serverY = this.player1State.y;
+        }
     }
 
     private initializeEvents() {

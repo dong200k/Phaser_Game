@@ -67,6 +67,7 @@ export default class GameManager {
         this.scene.input.mousePointer.updateWorldPoint(this.scene.cameras.main);
         let movementData = this.getPlayerMovementData();
         this.csp.update(deltaT, movementData);
+        movementData.push(this.csp.getAdjustmentId()); // Adds adjustmentId to payload.
         this.sendServerInputMessage(movementData);
     }
 
@@ -97,7 +98,7 @@ export default class GameManager {
 
     private sendServerInputMessage(movementData: number[]) {
         
-        this.gameRoom?.send("move", movementData)
+        this.gameRoom?.send("move", movementData);
 
         let special = this.spaceKey?.isDown? true : false;
         this.gameRoom?.send("special", special);
@@ -116,11 +117,12 @@ export default class GameManager {
 
     private getPlayerMovementData() {
         //[0] up, [1] down, [2] left, [3] right, 
-        let movementData = [0, 0, 0, 0]
+        let movementData = [0, 0, 0, 0, 0];
         movementData[0] = this.upKey?.isDown? 1 : 0;
         movementData[1] = this.downKey?.isDown? 1 : 0;
         movementData[2] = this.leftKey?.isDown? 1 : 0;
         movementData[3] = this.rightKey?.isDown? 1 : 0;
+        movementData[4] = this.csp.getClientTickCount();
         return movementData;
     }
 
