@@ -1,16 +1,18 @@
-import Matter, { Common } from "matter-js";
+import Matter from "matter-js";
 import Player from "../gameobjs/Player";
 import MathUtil from "../util/MathUtil";
 import GameObject from "../gameobjs/GameObject";
-
-interface PlayerInput {
-
-}
 
 interface GameObjectItem {
     gameObject: GameObject;
     body: Matter.Body;
     debugGraphic: Phaser.GameObjects.Graphics;
+}
+
+interface ServerStateQueueItem {
+    tickCount: number;
+    positionX: number;
+    positionY: number;
 }
 
 /**
@@ -24,25 +26,33 @@ interface GameObjectItem {
  */
 export default class ClientSidePrediction {
     
+    // Player1 info. Player1 is the player on the client. Other players are peers.
     private player1?: Player;
     private player1State?: any;
     private player1Body?: Matter.Body;
+
+    // History information for server reconciliation.
     private history: Matter.World[] = [];
-    private inputHistory: number[] = [];
-    private historyStartTick: number = 0;
+    private inputHistory: number[][] = [];
+    // private historyStartTick: number = 0;
+
     private engine: Matter.Engine;
     private scene: Phaser.Scene;
     private gameObjectItems: GameObjectItem[] = [];
 
+    // Client and server reconciliation information.
     private reconciliationInfo: any;
     private serverTickCount: number = 0;
     private clientTickCount: number = 8;
 
-    // The adjustmentId that the client has processed.
     private adjustmentId: number = 0;
     private currentlyAdjusting: boolean = false;
     private ticksToProcess: number = 0;
 
+    private serverStateQueue: ServerStateQueueItem[] = [];
+
+
+    // Debugging rectangles
     private debugGraphicsVisible: boolean = false;
 
     private matterBodyConfig = {
@@ -79,6 +89,17 @@ export default class ClientSidePrediction {
         }
         serverState.reconciliationInfos.onAdd = (item: any, key: any) => {
             this.reconciliationInfo = item; 
+        }
+        player1State.onChange = (changes: any) => {
+            //Add changes to queue to be processed later.
+            let queueItem: ServerStateQueueItem;
+            queueItem = {
+                tickCount: serverState.serverTickCount,
+                positionX: player1State.x,
+                positionY: player1State.y,
+            }
+            this.serverStateQueue.push(queueItem);
+            while(this.serverStateQueue.length > 1) this.serverStateQueue.shift();
         }
     }
 
@@ -129,14 +150,13 @@ export default class ClientSidePrediction {
 
         do {
             // ------ Tick Logic below -------
-
             this.processPlayerMovement(playerMovementData);
             Matter.Engine.update(this.engine, deltaT);
             if(this.debugGraphicsVisible) this.updateDebugGraphics();
             this.clientTickCount++;
+            this.saveToInputHistory(this.clientTickCount, playerMovementData);
 
             // ------ Tick Logic above -------
-
             if(this.currentlyAdjusting) {
                 this.ticksToProcess--;
                 if(this.ticksToProcess <= 0) {
@@ -145,6 +165,80 @@ export default class ClientSidePrediction {
                 }
             }
         } while(this.ticksToProcess > 0 && this.currentlyAdjusting);
+
+        // ------- Server Reconciliation -------
+
+        // For server reconciliation we will process the state from the server.
+        // To process we will take the server's player position and simulate it again with our input history.
+
+        // Process server queue items.
+        while(this.serverStateQueue.length > 0) {
+            let queueItem = this.serverStateQueue.shift();
+            // Store the current player position.
+            if(this.player1Body && this.player1 && queueItem) {
+                // let currentX = this.player1Body?.position.x;
+                // let currentY = this.player1Body?.position.y;
+
+                // Get the server's tick.
+                let serverTick = queueItem.tickCount;
+                let serverX = queueItem.positionX;
+                let serverY = queueItem.positionY;
+                
+                // play back the simulation.
+                let ticksToRun = this.clientTickCount - serverTick;
+                if(ticksToRun <= 0) {
+                    // do nothing.
+                } else {
+                    // Update player position with that serverState's player position.
+                    Matter.Body.setPosition(this.player1Body, {x: serverX, y: serverY});
+                    
+                    // Rerun the ticks starting from the serverTick all the way to clientTick.
+                    while(ticksToRun > 0) {
+                        let inputHistory = this.getInputHistoryAt(serverTick);
+                        if(inputHistory) {
+                            this.processPlayerMovement(inputHistory);
+                            Matter.Engine.update(this.engine, deltaT);
+                        }
+                        ticksToRun--;
+                        serverTick++;
+                    }
+
+                    // // Compare new and old state.
+                    // let oldState = {x: currentX, y: currentY};
+                    // let newState = {x: this.player1Body.position.x, y: this.player1Body.position.y};
+                    // if(this.compareStates(oldState, newState)) {
+                    //     // If the states match then we are good.
+                    //     console.log("States matched!!!");
+                    // } else {
+                    //     // If the states dont match then we predicted incorrectly.
+                    //     console.log("States dont match!!!");
+                    // }
+                }
+
+            }
+        }
+        
+
+    }
+
+    private saveToInputHistory(clientTickCount: number, inputData: number[]) {
+        let idx = clientTickCount % 1000;
+        this.inputHistory[idx] = inputData;
+    }
+
+    private getInputHistoryAt(clientTickCount: number) {
+        let idx = clientTickCount % 1000;
+        return this.inputHistory[idx];
+    }
+
+    /**
+     * Compares two states.
+     * @param state1 The first state
+     * @param state2 The second state
+     * @returns True if the two states are close to the same. False otherwise.
+     */
+    private compareStates(state1: {x:number, y:number}, state2: {x:number,y:number}) {
+        return Math.abs(state1.x - state2.x) < 0.001 && Math.abs(state1.y - state2.y) < 0.001;
     }
 
     /**
@@ -160,7 +254,7 @@ export default class ClientSidePrediction {
      * differ massively. 
     */
     private hugeLagSpikeReconciliation() {
-        this.clientTickCount = this.serverTickCount + 5;
+        this.clientTickCount = this.serverTickCount;
         let {player1, body} = this.getPlayer1AndBody();
         if(player1 && body) {
             player1.serverX = this.player1State.x;
@@ -177,10 +271,6 @@ export default class ClientSidePrediction {
                 player1.serverY = body.position.y;
             }
         });
-
-        // Matter.Events.on(this.engine, "collisionStart", () => {
-        //     //console.log("collision");
-        // })
     }
 
     private updateDebugGraphics() {
