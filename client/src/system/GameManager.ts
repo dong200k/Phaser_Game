@@ -51,7 +51,23 @@ export default class GameManager {
             this.timeTillNextTick += this.timePerTick;
             this.fixedTick(time, this.timePerTick);
         }
-        // perform linear interpolation.
+        this.interpolateGameObjects();
+    }
+
+    /**
+     * Updates the gameObject's position to match the server's gameObject position.
+     */
+    public syncGameObjectsWithServer() {
+        this.gameObjects?.forEach((obj) => {
+            obj.setX(obj.serverX);
+            obj.setY(obj.serverY);
+        })
+    }
+
+    /**
+     * Updates the gameObject's position to be closer to the server's gameObject position.
+     */
+    private interpolateGameObjects() {
         this.gameObjects?.forEach((obj) => {
             obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, .10));
             obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, .10));
@@ -83,7 +99,7 @@ export default class GameManager {
         // Debug controls, not visible by default. Can be disabled in config.ts.
         this.debugKey = this.scene.input.keyboard?.addKey("F3");
         this.debugKey?.on("down", () => {
-            this.csp.setDebugGraphicsVisible(!this.csp.getDebugGraphicsVisible());
+            this.csp.setDebugGraphicsVisible(!this.csp.isDebugGraphicsVisible());
         })
     }
 
@@ -125,29 +141,6 @@ export default class GameManager {
         movementData[4] = this.csp.getClientTickCount();
         return movementData;
     }
-
-    // private updatePlayer1(movementData: number[], special: boolean, mouseData: number[]) {
-    //     if(this.player1 !== undefined) {
-    //         let playerState = this.player1?.getPlayerState();
-
-    //         //calculate new player velocity
-    //         let speed = playerState.stat.speed;
-    //         let x = 0;
-    //         let y = 0;
-    //         if(movementData[0]) y -= 1;
-    //         if(movementData[1]) y += 1;
-    //         if(movementData[2]) x -= 1;
-    //         if(movementData[3]) x += 1;
-    //         let velocity = MathUtil.getNormalizedSpeed(x, y, speed)
-    //         this.player1.setVelocity(velocity.x, velocity.y);
-    //     }
-    // }
-    
-    // private getTypeOfObject(gameObj: any): string{
-    //     if(gameObj.hasOwnProperty('role')) return "player";
-    //     if(gameObj.hasOwnProperty('ownerId')) return "projectile"
-    //     else return ""
-    // }
 
     private onAdd = (gameObj:any, key:string) => {
         if(!gameObj) return;

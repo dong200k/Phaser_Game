@@ -42,7 +42,7 @@ export default class MathUtil {
      * @returns Returns the distance squared of two points.
      */
     public static distanceSquared(x1:number, y1:number, x2:number, y2:number) {
-        return Math.pow(x1 - y1, 2) + Math.pow(x2 - y2, 2);
+        return Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2);
     }
 
     /**

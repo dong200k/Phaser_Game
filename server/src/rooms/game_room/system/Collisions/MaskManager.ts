@@ -19,7 +19,7 @@ export default class MaskManager {
     }
 
     private initPlayerMasks(){
-        this.setCollideable("PLAYER", "MONSTER")
+        // this.setCollideable("PLAYER", "MONSTER")
         this.setCollideable("PLAYER", "PLAYER_PROJECTILE_FRIENDLY_FIRE")
         this.setCollideable("PLAYER", "MONSTER_PROJECTILE")
         this.setCollideable("PLAYER", "CHEST")

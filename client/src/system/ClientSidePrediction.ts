@@ -2,6 +2,7 @@ import Matter from "matter-js";
 import Player from "../gameobjs/Player";
 import MathUtil from "../util/MathUtil";
 import GameObject from "../gameobjs/GameObject";
+import GameManager from "./GameManager";
 
 interface GameObjectItem {
     gameObject: GameObject;
@@ -32,9 +33,7 @@ export default class ClientSidePrediction {
     private player1Body?: Matter.Body;
 
     // History information for server reconciliation.
-    private history: Matter.World[] = [];
     private inputHistory: number[][] = [];
-    // private historyStartTick: number = 0;
 
     private engine: Matter.Engine;
     private scene: Phaser.Scene;
@@ -86,12 +85,6 @@ export default class ClientSidePrediction {
         this.player1State = player1State;
         serverState.onChange = (changes: any) => {
             this.serverTickCount = serverState.serverTickCount;
-        }
-        serverState.reconciliationInfos.onAdd = (item: any, key: any) => {
-            this.reconciliationInfo = item; 
-        }
-        player1State.onChange = (changes: any) => {
-            //Add changes to queue to be processed later.
             let queueItem: ServerStateQueueItem;
             queueItem = {
                 tickCount: serverState.serverTickCount,
@@ -100,6 +93,9 @@ export default class ClientSidePrediction {
             }
             this.serverStateQueue.push(queueItem);
             while(this.serverStateQueue.length > 1) this.serverStateQueue.shift();
+        }
+        serverState.reconciliationInfos.onAdd = (item: any, key: any) => {
+            this.reconciliationInfo = item; 
         }
     }
 
@@ -114,8 +110,9 @@ export default class ClientSidePrediction {
 
     public update(deltaT: number, playerMovementData: number[]) {
 
-        // ------- Server Tick Sync -------
+        if(this.debugGraphicsVisible) this.updateDebugGraphics();
 
+        // ------- Server Tick Sync -------
         let adjustmentAmount = this.reconciliationInfo?.adjustmentAmount ?? 0;
         let serverAdjustmentId = this.reconciliationInfo?.adjustmentId ?? 0;
 
@@ -129,16 +126,9 @@ export default class ClientSidePrediction {
                 this.ticksToProcess = adjustmentAmount;
                 this.currentlyAdjusting = true;
             }
-        }
+        } 
 
-        if(this.serverTickCount % 20 === 0) {
-            console.log(`Adjusting: ${this.currentlyAdjusting}, Amount: ${this.ticksToProcess}`);
-            console.log(`AdjustId: ${this.adjustmentId}, ServerAdjustId: ${serverAdjustmentId}`);
-            console.log(this.reconciliationInfo);
-        }
-        
-
-        // Skip ticks.
+        // Skip ticks. (Server asking client to slow down.)
         if(this.currentlyAdjusting && this.ticksToProcess < 0) {
             this.ticksToProcess++;
             if(this.ticksToProcess >= 0) {
@@ -152,7 +142,6 @@ export default class ClientSidePrediction {
             // ------ Tick Logic below -------
             this.processPlayerMovement(playerMovementData);
             Matter.Engine.update(this.engine, deltaT);
-            if(this.debugGraphicsVisible) this.updateDebugGraphics();
             this.clientTickCount++;
             this.saveToInputHistory(this.clientTickCount, playerMovementData);
 
@@ -164,21 +153,22 @@ export default class ClientSidePrediction {
                     this.currentlyAdjusting = false;
                 }
             }
-        } while(this.ticksToProcess > 0 && this.currentlyAdjusting);
+        } while(this.ticksToProcess > 0 && this.currentlyAdjusting); // process more ticks. (Server asking client to speed up.)
 
-        // ------- Server Reconciliation -------
 
-        // For server reconciliation we will process the state from the server.
-        // To process we will take the server's player position and simulate it again with our input history.
+        this.serverReconciliation(deltaT);
+    }
 
+    /**
+     * Called to match up the client's position with the server's position.
+     * @param deltaT The deltaT.
+     */
+    private serverReconciliation(deltaT: number) {
         // Process server queue items.
         while(this.serverStateQueue.length > 0) {
             let queueItem = this.serverStateQueue.shift();
             // Store the current player position.
             if(this.player1Body && this.player1 && queueItem) {
-                // let currentX = this.player1Body?.position.x;
-                // let currentY = this.player1Body?.position.y;
-
                 // Get the server's tick.
                 let serverTick = queueItem.tickCount;
                 let serverX = queueItem.positionX;
@@ -202,32 +192,28 @@ export default class ClientSidePrediction {
                         ticksToRun--;
                         serverTick++;
                     }
-
-                    // // Compare new and old state.
-                    // let oldState = {x: currentX, y: currentY};
-                    // let newState = {x: this.player1Body.position.x, y: this.player1Body.position.y};
-                    // if(this.compareStates(oldState, newState)) {
-                    //     // If the states match then we are good.
-                    //     console.log("States matched!!!");
-                    // } else {
-                    //     // If the states dont match then we predicted incorrectly.
-                    //     console.log("States dont match!!!");
-                    // }
                 }
-
             }
         }
-        
-
     }
 
+    /**
+     * Saves the input data to the history circular buffer.
+     * @param clientTickCount The client tick count.
+     * @param inputData The input data.
+     */
     private saveToInputHistory(clientTickCount: number, inputData: number[]) {
-        let idx = clientTickCount % 1000;
+        let idx = clientTickCount % 100;
         this.inputHistory[idx] = inputData;
     }
 
+    /**
+     * Gets the input data at a clientTickCount.
+     * @param clientTickCount The clientTickCount.
+     * @returns The input data.
+     */
     private getInputHistoryAt(clientTickCount: number) {
-        let idx = clientTickCount % 1000;
+        let idx = clientTickCount % 100;
         return this.inputHistory[idx];
     }
 
@@ -251,7 +237,7 @@ export default class ClientSidePrediction {
 
     /**
      * Recover from a lag spike where the client's and server's tick count 
-     * differ massively. 
+     * differs massively. 
     */
     private hugeLagSpikeReconciliation() {
         this.clientTickCount = this.serverTickCount;
@@ -305,18 +291,19 @@ export default class ClientSidePrediction {
         this.debugGraphicsVisible = value;
     }
 
-    public getDebugGraphicsVisible() {
+    public isDebugGraphicsVisible() {
         return this.debugGraphicsVisible;
-    }
-
-    public processTick() {
-
     }
 
     public getClientTickCount() {
         return this.clientTickCount;
     }
 
+    /**
+     * Adds a gameobject to this ClientSidePrediction. 
+     * The gameobject is used to better predict the player's movement (E.g. walls should stop the player).
+     * @param gameObject A gameobject.
+     */
     public addGameObject(gameObject: GameObject) {
 
         let matterConfig = {
@@ -341,9 +328,5 @@ export default class ClientSidePrediction {
 
         this.gameObjectItems.push(gameObjectItem);
         Matter.Composite.add(this.engine.world, gameObjectItem.body);
-    }
-
-    public serverReconciliation() {
-
     }
 }
