@@ -39,15 +39,6 @@ export default {
             mapping: 'rexUI'
         }]
     },
-    physics: {
-        default: 'matter',
-        matter: {
-            gravity: {
-                y: 0,
-            },
-            debug: true
-        }
-    },
     dom: {
         createContainer: true
     },
