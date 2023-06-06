@@ -13,7 +13,7 @@ export default class GameManager {
     private scene: Phaser.Scene;
     private gameRoom: Colyseus.Room;
 
-    private gameObjects?: GameObject[] = [];
+    private gameObjects: GameObject[] = [];
     private player1?: Player;
     private players: Player[] = [];
 
@@ -58,7 +58,7 @@ export default class GameManager {
      * Updates the gameObject's position to match the server's gameObject position.
      */
     public syncGameObjectsWithServer() {
-        this.gameObjects?.forEach((obj) => {
+        this.gameObjects.forEach((obj) => {
             obj.setX(obj.serverX);
             obj.setY(obj.serverY);
         })
@@ -68,7 +68,7 @@ export default class GameManager {
      * Updates the gameObject's position to be closer to the server's gameObject position.
      */
     private interpolateGameObjects() {
-        this.gameObjects?.forEach((obj) => {
+        this.gameObjects.forEach((obj) => {
             obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, .10));
             obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, .10));
         })
@@ -162,7 +162,7 @@ export default class GameManager {
         }
         if(newGameObject) {
             newGameObject.setServerState(gameObj);
-            this.gameObjects?.push(newGameObject);
+            this.gameObjects.push(newGameObject);
             this.csp.addGameObject(newGameObject);
         }
     }
@@ -254,18 +254,4 @@ export default class GameManager {
             entity.updateStat(entityState.stat);
         }
     }
-
-    /**
-     * What we need: 
-     * 1. A concrete concept of time. We will use a tick.
-     * 
-     * 
-     * 
-     * Doing client side prediction.
-     * Client: Send movement input to the server.
-     * Client: Start moving the entity.
-     * Server: Receives movement input from client and process movement.
-     * Server: Sends updated entity position to client.
-     * Client: Compares entity's position with the authrotiative entity potition of the server.
-     */
 }

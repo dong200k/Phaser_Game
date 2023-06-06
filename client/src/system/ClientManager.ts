@@ -36,6 +36,11 @@ export default class ClientManager {
                 this.client.joinOrCreate('lobby').then((room) => {
                     this.lobbyRoom = room;
                     this.setState('lobby');
+                    this.lobbyRoom.onLeave((code) => {
+                        console.log(`---Leaving Lobby, Code: ${code}---`);
+                        this.setState("none");
+                    })
+                    console.log("---Joined Lobby!---");
                     resolve(this.lobbyRoom);
                 })
             }
@@ -53,21 +58,32 @@ export default class ClientManager {
             }
             if(this.gameRoomId === "") {
                 this.client.create('game').then((room) => {
-                    this.gameRoom = room;
-                    this.setState('game');
-                    resolve(this.gameRoom);
+                    this.onJoinGameRoom(room);
+                    resolve(room);
+                }).catch((err) => {
+                    reject(err);
                 })
             } else {
                 this.client.joinById(this.gameRoomId).then((room) => {
-                    this.gameRoom = room;
-                    this.setState('game');
-                    resolve(this.gameRoom);
+                    this.onJoinGameRoom(room);
+                    resolve(room);
+                }).catch((err) => {
+                    reject(err);
                 })
             }
         })
         return promise;
     }
     
+    private onJoinGameRoom(room:Colyseus.Room) {
+        this.gameRoom = room;
+        this.setState('game');
+        this.gameRoom.onLeave((code) => {
+            console.log(`---Leaving Game Room, Code: ${code}---`);
+        })
+        console.log("---Joined Game Room!---");
+    }
+
     /**
      * Joins the waiting room provided by waitingRoomId. If waitingRoomId === "", create a new waiting room. If a waiting room already exists, leave that room.
      */
@@ -80,19 +96,30 @@ export default class ClientManager {
             }
             if(!this.waitingRoomId) {
                 this.client.create('waiting').then((room) => {
-                    this.waitingRoom = room;
-                    this.setState('waiting');
-                    resolve(this.waitingRoom);
+                    this.onJoinWaitingRoom(room);
+                    resolve(room);
+                }).catch((err) => {
+                    reject(err);
                 })
             } else {
                 this.client.joinById(this.waitingRoomId).then((room) => {
-                    this.waitingRoom = room;
-                    this.setState('waiting');
-                    resolve(this.waitingRoom);
+                    this.onJoinWaitingRoom(room);
+                    resolve(room);
+                }).catch((err) => {
+                    reject(err);
                 })
             }
         })
         return promise;
+    }
+
+    private onJoinWaitingRoom(room: Colyseus.Room) {
+        this.waitingRoom = room;
+        this.setState('waiting');
+        this.waitingRoom.onLeave((code) => {
+            console.log(`---Leaving Waiting Room, Code: ${code}---`);
+        })
+        console.log("---Joined Waiting Room!---");
     }
 
     public setWaitingRoomId(id:string): void {

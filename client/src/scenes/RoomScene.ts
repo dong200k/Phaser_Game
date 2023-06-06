@@ -277,7 +277,6 @@ export default class RoomScene extends Phaser.Scene {
     private joinRoom() {
         ClientManager.getClient().joinWaitingRoom().then((room) => {
             this.waitingRoom = room;
-            console.log("Joined waiting room");
             this.roomIDText?.setText(`Room ID: ${room.id}`);
             this.onJoin();
         }).catch(e => {
@@ -289,12 +288,12 @@ export default class RoomScene extends Phaser.Scene {
         this.playersInRoom = 0;
         if(this.waitingRoom) {
             this.waitingRoom.state.players.onAdd = (player:any, key:string) => {
-                console.log(player, "added at ", key);
+                //console.log(player, "added at ", key);
                 this.playersInRoom++;
                 this.updatePlayersInRoom(this.playersInRoom);
             }
             this.waitingRoom.state.players.onRemove = (player:any, key:string) => {
-                console.log(player, "removed at ", key);
+                //console.log(player, "removed at ", key);
                 this.playersInRoom--;
                 this.updatePlayersInRoom(this.playersInRoom);
             }
@@ -303,6 +302,10 @@ export default class RoomScene extends Phaser.Scene {
                 // Sets the game room Id for the client.
                 ClientManager.getClient().setGameRoomId(message);
                 this.scene.start('GameScene');
+            })
+
+            this.waitingRoom.onError((code, message) => {
+                console.log(`code: ${code}, message: ${message}`);
             })
         }
     }

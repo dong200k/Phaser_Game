@@ -1,23 +1,42 @@
 import { Client, Room, matchMaker } from "colyseus";
 import State from "./schemas/State";
 
+interface WaitingRoomMetadata {
+    inGame: boolean;
+    passwordProtected: boolean;
+    roomName: string;
+}
+
 export default class WaitingRoom extends Room<State> {
     maxClients = 4;
 
     onCreate() {
         console.log(`Created: Waiting room ${this.roomId}`);
         this.setState(new State());
+
+        this.updateMetadata({
+            inGame: false,
+            passwordProtected: false,
+            roomName: "A Room",
+        })
+
         this.onMessage("start", (client: Client, message: any) => {
-            // if(client.sessionId === this.state.ownerSessionId) {
-            //     this.broadcast("joinRoom", message.roomId);
-            // }
             matchMaker.createRoom('game', {}).then((room) => {
                 this.broadcast("joinGame", room.roomId);
                 this.lock();
+                this.updateMetadata({
+                    inGame: true,
+                    passwordProtected: false,
+                    roomName: "A Room",
+                })
             }).catch(e => {
                 console.log(e);
             })
         })
+    }
+
+    updateMetadata(metadata: WaitingRoomMetadata) {
+        this.setMetadata(metadata);
     }
     
     onJoin(client: Client) {

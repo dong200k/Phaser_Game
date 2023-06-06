@@ -32,8 +32,6 @@ export default class NavbarScene extends Phaser.Scene {
         let navbarBackground = this.add.rectangle(0, 0, this.game.scale.width, 89, ColorStyle.primary.hex[900]);
         navbarBackground.setOrigin(0, 0);
 
-        console.log("Navbar created again");
-
         //------- Left side of the navbar ---------
         let homeButton = new NavButton(this, "Home", 0, 0, () => {
             // console.log("Home nav button clicked");

@@ -28,9 +28,6 @@ export default class LobbyScene extends Phaser.Scene {
         this.page = 1;
         this.initializeUI();
         this.joinLobby();
-        console.log("Menu Sleeping", this.scene.isSleeping(SceneKey.MenuScene));
-        console.log("Navbar Sleeping", this.scene.isSleeping(SceneKey.NavbarScene));
-        console.log("Lobby Sleeping", this.scene.isSleeping(SceneKey.LoadingScene));
         this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
             this.leaveLobby();
         });
@@ -141,9 +138,7 @@ export default class LobbyScene extends Phaser.Scene {
 
     private leaveLobby() {
         this.lobbyRoom?.leave();
-        this.lobbyRoom?.removeAllListeners();
         this.allRooms.splice(0, this.allRooms.length);
-        console.log("---Leaving lobby---");
     }
 
     private joinLobby() {
@@ -151,7 +146,6 @@ export default class LobbyScene extends Phaser.Scene {
         ClientManager.getClient().joinLobby().then((room) => {
             this.lobbyRoom = room;
             this.onJoin();
-            console.log("Joined Lobby Room!");
         }).catch((e) => {
             console.log("Join Lobby Error: ", e);
         });
@@ -174,11 +168,11 @@ export default class LobbyScene extends Phaser.Scene {
         if(this.lobbyRoom) {
             this.lobbyRoom.onMessage("rooms", (rooms) => {
                 this.allRooms = rooms;
-                console.log("All rooms received: ", rooms);
                 this.updateLobbyDisplay();
             });
 
             this.lobbyRoom.onMessage("+", ([roomId, room]) => {
+                // Added/Updated room.
                 // First make sure that a room with the same id is not added twice.
                 let idx = this.allRooms.findIndex((r) => r?.roomId === roomId);
                 if(idx !== -1) {
@@ -195,23 +189,20 @@ export default class LobbyScene extends Phaser.Scene {
                     }
                     if(!added) this.allRooms.push(room);
                 }
-                console.log("Added/Updated room: ", room);
                 this.updateLobbyDisplay();
             });
 
             this.lobbyRoom.onMessage("-", (roomId: string) => {
                 // Removed Rooms are marked as null and becomes a vacant slot.
                 this.allRooms.forEach((r, idx) => {if(r?.roomId === roomId) this.allRooms[idx] = null}); // flagged as null
-                console.log("Removed Room: ", roomId);
                 this.updateLobbyDisplay();
             });
 
-            this.lobbyRoom.onLeave(() => {
-                console.log("You have left the lobby");
+            this.lobbyRoom.onLeave((code) => {
                 this.updateLobbyDisplay();
             });
         } else {
-            console.log("Error: Lobby Room is null");
+            console.log("Error: Lobby Room is undefined");
         }
     }
 }
