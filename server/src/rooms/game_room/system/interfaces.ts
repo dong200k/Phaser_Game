@@ -1,3 +1,9 @@
+import { type } from "os";
+import WeaponData from "../schemas/Trees/Node/Data/WeaponData";
+import Node from "../schemas/Trees/Node/Node";
+import SkillData from "../schemas/Trees/Node/Data/SkillData";
+import GameManager from "./GameManager";
+import Entity from "../schemas/gameobjs/Entity";
 
 
 // ------------ interfaces for the Tiled json file -------------- //
@@ -47,3 +53,26 @@ export interface TiledJSON {
     version: number;
     width: number;
 }
+
+// ------------ interfaces for the Database Manager -------------- //
+export type upgrade = {
+    id: string,
+    upgradeName: string,
+    root: Node<WeaponData>,
+    type: "artifact" | "weapon"
+}
+
+export type skillTree = {
+    id: string,
+    upgradeName: string,
+    root: Node<SkillData>
+}
+
+export type weapon = {
+    name: string, 
+    description: string, 
+    sprite: string, 
+    projectile: string
+}
+
+// ------------ interfaces for the EffectLogic Manager -------------- //

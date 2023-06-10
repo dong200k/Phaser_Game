@@ -1,29 +1,10 @@
 import FileUtil from "../../../../util/FileUtil"
 import SkillData from "../../schemas/Trees/Node/Data/SkillData"
 import Node from "../../schemas/Trees/Node/Node"
-import StatTree from "../../schemas/Trees/StatTree"
 import Stat from "../../schemas/gameobjs/Stat"
-type skillTree = {
-    id: string,
-    upgradeName: string,
-    root: Node<SkillData>
-}
+import DatabaseManager from "../Database/DatabaseManager"
+
 export default class SkillTreeFactory{
-    static singleton = new SkillTreeFactory()
-    private skillTrees: Map<string, skillTree> = new Map()
-
-    /**
-     * Loads skill trees from assets/db.json
-     */
-    async loadStatTrees(){
-        let db = await FileUtil.readJSONAsync("assets/db.json")
-        let skillTrees = db.skills
-
-        for (let skills of skillTrees) {
-            this.skillTrees.set(skills.id, skills)
-        }
-    }
-
     /**
      * Creates a Node class from a single node from an skill from db formatted as a json (does not copy children)
      * @param copy single node from a skill in db.json formatted as json
@@ -44,7 +25,7 @@ export default class SkillTreeFactory{
      * @returns
      */
     static createSkill(id: string, selectRoot: boolean = true){
-        let skill = SkillTreeFactory.getManager().skillTrees.get(id)
+        let skill = DatabaseManager.getManager().getSkill(id)
         if(!skill) return
 
         let root = SkillTreeFactory.createNode(skill.root)
@@ -79,9 +60,5 @@ export default class SkillTreeFactory{
 
     static createTestSkill(){
         return SkillTreeFactory.createSkill("skill-a1d641ec-5560-47d6-af95-89e6e1ef4dc6")
-    }
-
-    static getManager(){
-        return SkillTreeFactory.singleton
     }
 }

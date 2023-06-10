@@ -1,4 +1,3 @@
-import FileUtil from '../../../../util/FileUtil';
 import SkillData from '../../schemas/Trees/Node/Data/SkillData';
 import WeaponData from '../../schemas/Trees/Node/Data/WeaponData';
 import Node from '../../schemas/Trees/Node/Node';
@@ -7,34 +6,7 @@ import WeaponUpgradeTree from '../../schemas/Trees/WeaponUpgradeTree';
 import Player from '../../schemas/gameobjs/Player';
 import Stat from '../../schemas/gameobjs/Stat';
 
-type weapon = {name: string, description: string, sprite: string, projectile: string}
-
 export default class WeaponManager{
-    static singleton = new WeaponManager()
-    private weapons: Map<string, weapon> = new Map()
-
-    constructor() {
-    }   
-
-    /**
-     * Loads weapons from assets/weapons/weapons.json into a Map<string, weapon>
-     */
-    async loadWeapons(){
-        let weapons = await FileUtil.readJSONAsync("assets/weapons/weapons.json")
-        for (let [weaponId, weapon] of Object.entries(weapons)) {
-            this.weapons.set(weaponId, weapon as weapon)
-        }
-    }
-
-    /**
-     * Returns object with basic weapon information such as name, description, sprite, projectile, etc based on the weaponId parameter.
-     * @param weaponId 
-     * @returns 
-     */
-    static getWeapon(weaponId: string){
-        return this.singleton.weapons.get(weaponId)
-    }
-
     /**
      * Takes in a weapon or skill tree and computes the total stats the tree provides based on selected upgrades
      * @param tree
@@ -135,9 +107,5 @@ export default class WeaponManager{
 
         // Select this upgrade by default
         root.data.setStatus("selected")
-    }
-
-    static getManager(){
-        return WeaponManager.singleton
     }
 }

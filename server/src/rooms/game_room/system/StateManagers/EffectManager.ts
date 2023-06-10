@@ -4,6 +4,7 @@ import StatEffect from "../../schemas/effects/temp/StatEffect";
 import Entity from "../../schemas/gameobjs/Entity";
 import GameManager from "../GameManager";
 import MathUtil from "../../../../util/MathUtil";
+import TriggerEffect from "../../schemas/effects/trigger/TriggerEffect";
 
 const statCompoundEffectName = "!Entity Stat Compound Effect!";
 
@@ -13,7 +14,7 @@ export default class EffectManager {
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
-    }  
+    }   
 
     /**
      * Updates this EffectManager, which updates all effects on entities.
@@ -106,6 +107,19 @@ export default class EffectManager {
     }
 
     /**
+     * uses all the TriggerEffects in the effects array on an entity with the corresponding type. 
+     * @param entity The entity that should be updated.
+     * @param args Any extra args/data needed
+     */
+    public static useTriggerEffectsOn(type: string, entity: Entity, ...args: any) {
+        entity.effects.map(effect=>{
+            if(effect instanceof TriggerEffect && effect.type === type){
+                effect.onTrigger(entity, ...args)
+            }
+        })
+    }
+
+    /**
      * Returns the compound effect from this entity that is responsible for grouping together StatComponents.
      * If no such compound effect is found it is created, added to the entity, and returned.
      * @param entity The entity.
@@ -123,4 +137,6 @@ export default class EffectManager {
         compoundEffect.addToEntity(entity);
         return compoundEffect;
     }
+
+    
 }

@@ -5,22 +5,10 @@ import bow from "./Logics/bow"
 
 export default class WeaponLogicManager{
     static singleton = new WeaponLogicManager()
-    private weaponLogics: Map<string, IWeaponLogic> = new Map()
     gameManager!: GameManager
-
-    constructor(){
-        this.initWeaponLogics()
-    }
     
     setGameManager(gameManager: GameManager){
         this.gameManager = gameManager
-    }
-
-    /**
-     * Loads/inits all weapons logic, attack, etc so that they can be used in Game
-     */
-    initWeaponLogics(){
-        this.weaponLogics.set(bow.weaponId!, bow)
     }
 
     /**

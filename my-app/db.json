@@ -2754,6 +2754,13 @@
       "description": "description",
       "sprite": "demo_hero",
       "projectile": "demo_hero"
+    },
+    {
+      "id": "weapon-7e2805d3-9214-4b9b-b474-8e060e7a5133",
+      "name": "name",
+      "description": "description",
+      "sprite": "demo_hero",
+      "projectile": "demo_hero"
     }
   ]
 }

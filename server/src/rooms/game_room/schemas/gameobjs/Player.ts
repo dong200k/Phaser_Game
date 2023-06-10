@@ -16,7 +16,6 @@ export default class Player extends Entity {
     @type(StatTree) skillTree;
     @type(Weapon) weapon;
 
-
     constructor(name: string, role?: string) {
         super();
         this.name = name;
