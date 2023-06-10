@@ -1,5 +1,4 @@
 import {Schema, type} from "@colyseus/schema"
-import { stat } from "fs"
 
 export type status = "selected" | "skipped" | "none"
 

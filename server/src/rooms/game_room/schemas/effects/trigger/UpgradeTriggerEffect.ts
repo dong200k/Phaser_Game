@@ -13,13 +13,22 @@ export default class UpgradeTriggerEffect extends TriggerEffect {
     private cooldown: Cooldown
     /** Id of effectLogic to use */
     private effectLogicId: string
+    /** Whether the UpgradeTriggerEffect stacks with other UpgradeTriggerEffects on a single Entity with the same collisionGroup besides a collisionGroup of -1*/
+    private doesStack: boolean
+    /** holds collision info, if any pair of UpgradeTriggerEffect on a single Entity has doesStack = false,
+     * if either collisionGroup === -1 or they are different nothing happens,
+     * if their collisionGroups are the same the old one is removed from the Entity,
+    */
+    private collisionGroup: number
 
-    constructor(effectLogicId: string, cooldown:number=1000, type: string) {
+    constructor(effectLogicId: string, cooldown:number=1000, type: string, doesStack: boolean, collisionGroup: number) {
         super(type);
         this.setName("UpgradeTriggerEffect");
         this.setDescription("TriggerEffect but with a cooldown. Used for Weapon/Artifact Upgrade logic that are triggered by player input. ");
         this.cooldown = new Cooldown(cooldown)
         this.effectLogicId = effectLogicId
+        this.doesStack = doesStack
+        this.collisionGroup = collisionGroup
     }
 
     /**
@@ -30,9 +39,13 @@ export default class UpgradeTriggerEffect extends TriggerEffect {
         return 0
     }
 
-    /** Uses the effect referenced by effectLogicId if cooldown is finished*/
+    /** Uses the effect referenced by effectLogicId if cooldown is finished */
     public onTrigger(entity: Entity, ...args: any): boolean {
+        // cooldown not finished return
         if(!this.cooldown.isFinished) return false
+
+        // restart cooldown and use corresponding effect logic
+        this.cooldown.reset()
         return EffectLogicManager.getManager().useEffect(this.effectLogicId, entity, ...args)
     }
 

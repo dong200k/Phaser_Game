@@ -11,6 +11,8 @@ import MaskManager from '../Collisions/MaskManager';
 import WeaponManager from './WeaponManager';
 import WeaponLogicManager from '../Weapons/WeaponLogic/WeaponLogicManager';
 import WeaponUpgradeFactory from '../Weapons/factories/WeaponUpgradeFactory';
+import EffectLogicManager from '../EffectLogic/EffectLogicManager';
+import EffectManager from './EffectManager';
 
 export default class PlayerManager{
     private gameManager: GameManager
@@ -37,13 +39,11 @@ export default class PlayerManager{
         let [mouseClick, mouseX, mouseY] = data
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
-       
-        if(!mouseClick || !playerState.attackCooldown.isFinished) return
-        playerState.attackCooldown.reset()
-
-        data = {mouseX, mouseY, playerBody}
-
-        WeaponLogicManager.getManager().useAttack(playerState, data)
+        
+        // trigger all player attack effect logics if there is a mouseclick
+        if(mouseClick){
+            EffectManager.useTriggerEffectsOn("player attack", playerState, playerBody, {mouseX, mouseY})
+        }
     }
 
     processPlayerMovement(playerId: string, data: number[]){
