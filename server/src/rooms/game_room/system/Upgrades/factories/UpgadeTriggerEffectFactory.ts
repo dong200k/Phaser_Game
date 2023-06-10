@@ -13,5 +13,6 @@ export default class UpgradeTriggerEffectFactory{
      */
     static createUpgradeEffect(effectLogicId: string, ms: number = 1000, doesStack: boolean = true, collisionGroup: number = -1, type=""){
         return new UpgradeTriggerEffect(effectLogicId, ms, type)
+        //
     }
 }
