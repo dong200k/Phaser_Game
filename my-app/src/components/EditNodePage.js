@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
-import { getDefaultNode, getEditForm } from "../helpers.js"
+import { getDefaultNode, getDefaultUpgradeNode, getEditForm } from "../helpers.js"
 import NodeService from "../services/NodeService.js"
 import { useParams } from "react-router-dom"
 import Dropdown from 'react-bootstrap/Dropdown';
+import effectTypes from "../effectTypes.js";
 
 export default function EditNodePage(){
     let id = useParams().id
-    let [form, setForm] = useState(undefined)
+    let [form, setForm] = useState(getDefaultUpgradeNode())
     let [showZeroStat, setShowZeroStat] = useState(false)
     let dataKeys = ["name", "description", "stat", "weaponId", "effect"]
     let [nodes, setNodes] = useState([])
@@ -14,7 +15,7 @@ export default function EditNodePage(){
     // Load node to edit by id
     useEffect(()=>{
         NodeService.getNode(id)
-            .then((data)=>setForm(getEditForm(data)))
+            .then((data)=>setForm(getEditForm(data, "upgrade")))
     }, [id])
 
     // Load reusable nodes to copy
@@ -99,6 +100,23 @@ export default function EditNodePage(){
         </Dropdown.Menu>
     </Dropdown>
 
+    let effectTypeDropDown = 
+    <Dropdown className="mb-5">
+        <Dropdown.Toggle variant="info" id="dropdown-basic">
+            Type: {form.data.effect.type}
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+            {effectTypes.map(type=>{
+                return <Dropdown.Item onClick={()=>setForm(prev=>{
+                    let newForm = {...prev}
+                    newForm.data.effect.type = type
+                    return newForm
+                })}>{type}</Dropdown.Item>
+            })}
+        </Dropdown.Menu>
+    </Dropdown>
+
     return (
       <div className="text-center bg-light">
         {
@@ -128,16 +146,20 @@ export default function EditNodePage(){
 
                 <h3>Effect</h3>
                 <label className="d-flex justify-content-center">
-                    <span className="text-danger">effectId:</span><input type="text" style={{width: "25%"}}  value={form.data.effect.effectId} onChange={onChange("effect", "effectId")}/>
+                    <span className="text-danger">effectLogicId:</span><input type="text" style={{width: "25%"}}  value={form.data.effect.effectLogicId} onChange={onChange("effect", "effectLogicId")}/>
                 </label>
                 <label className="d-flex justify-content-center">
                     <span className="text-danger">cooldown(ms):</span>
                     <input type="number" value={form.data.effect.cooldown} onChange={onChange("effect", "cooldown")}></input>
                 </label>
                 <label className="d-flex justify-content-center">
+                    <span className="text-danger">collisionGroup:</span><input type="number" style={{width: "25%"}}  value={form.data.effect.collisionGroup} onChange={onChange("effect", "collisionGroup")}/>
+                </label>
+                <label className="d-flex justify-content-center">
                     <span className="text-danger">doesStack: {form.data.effect.doesStack} </span>
                     <input type="checkbox" checked={form.data.effect.doesStack} onChange={onChange("effect", "doesStack")}></input>
                 </label>
+                {effectTypeDropDown}
                 <br></br>
 
                 <div className="d-flex flex-row justify-content-center">

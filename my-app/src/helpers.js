@@ -80,9 +80,11 @@ export function getDefaultUpgradeNode(){
   }
   // If there needs to be Additional key add them below
   node.data.effect = {
-    effectId: "",
+    effectLogicId: "",
     doesStack: 1, // whether it stacks (1) or overwrites (0) other useAttacks
-    cooldown: 1000
+    cooldown: 1000,
+    collisionGroup: -1,
+    type: "none"
   }
   return node
 }
@@ -153,7 +155,6 @@ export function padUpgradeStat(upgrade){
 
   return newUpgrade
 }
-
 
 // export default function isValidStat(stat){
 //   let message = ""

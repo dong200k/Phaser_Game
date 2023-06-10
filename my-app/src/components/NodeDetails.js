@@ -30,7 +30,10 @@ export default function NodeDetails({nodeDatum: node, type}){
           <div>
             <h3>Effect</h3>
               <div className="">
-                  <span className="text-danger">effectId: <span className="text-dark">{node.data.effect.effectId}</span></span>
+                  <span className="text-danger">effectLogicId: <span className="text-dark">{node.data.effect.effectLogicId}</span></span>
+              </div>
+              <div>
+                  <span className="text-danger">type: <span className="text-dark">{node.data.effect.type}</span> </span>
               </div>
               {
                 node.data.effect.cooldown &&
@@ -38,10 +41,16 @@ export default function NodeDetails({nodeDatum: node, type}){
                   <span className="text-danger">cooldown(ms): <span className="text-dark">{node.data.effect.cooldown}</span> </span>
                 </div>
               }
+
+              <div>
+                  <span className="text-danger">collisionGroup: <span className="text-dark">{node.data.effect.collisionGroup}</span> </span>
+              </div>
               
               <div>
                   <span className="text-danger">doesStack: <span className="text-dark">{node.data.effect.doesStack}</span> </span>
               </div>
+
+              
               <br></br>
           </div>
         }

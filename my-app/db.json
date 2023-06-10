@@ -1108,6 +1108,56 @@
           "collapsed": false
         }
       }
+    },
+    {
+      "id": "upgrade-67e73a74-0be9-4743-b3e7-39b657c39492",
+      "name": "auto-generated",
+      "type": "weapon",
+      "root": {
+        "id": "node-903cebe1-e12f-4a22-b45d-0e6ec2a4fe4c",
+        "children": [],
+        "data": {
+          "name": "auto-generated",
+          "description": "auto-generated",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0
+          },
+          "effect": {
+            "effectId": "1",
+            "doesStack": 1,
+            "cooldown": 1000,
+            "collisionGroup": -1,
+            "type": "none"
+          }
+        },
+        "__rd3t": {
+          "id": "7122c0f3-fdbc-4d91-bf38-9ed494a6bbb5",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
     }
   ],
   "skills": [
@@ -2585,8 +2635,11 @@
         },
         "effect": {
           "effectId": "For Testing Effect",
-          "doesStack": 1,
-          "cooldown": 1000
+          "doesStack": 0,
+          "cooldown": 1000,
+          "type": "none",
+          "collisionGroup": "9",
+          "effectLogicId": "1"
         },
         "coinCost": "100",
         "weaponId": "For Testing Weapon"
