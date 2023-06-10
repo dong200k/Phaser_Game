@@ -1,5 +1,6 @@
 import Button from "./Button";
 import ButtonRex, { ButtonRexConfig } from "./ButtonRex";
+import CircleImage from "./CircleImage";
 import TextBox from "./TextBox";
 import TextBoxPhaser, { FontTypeString } from "./TextBoxPhaser";
 
@@ -27,5 +28,11 @@ export default class UIFactory {
         let buttonRex = new ButtonRex(scene, config);
         scene.add.existing(buttonRex);
         return buttonRex;
+    }
+
+    public static createCircleImage(scene: Phaser.Scene, x: number, y: number, texture: string | Phaser.Textures.Texture, radius: number) {
+        let circleImage = new CircleImage(scene, x, y, texture, radius);
+        scene.add.existing(circleImage);
+        return circleImage;
     }
 }

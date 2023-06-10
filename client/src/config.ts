@@ -20,6 +20,7 @@ import MatchmakeScene from './scenes/MatchmakeScene';
 import SystemPreloadScene from './scenes/SystemPreloadScene';
 import SplashScene from './scenes/SplashScene';
 import UIPlugins from 'phaser3-rex-plugins/templates/ui/ui-plugin';
+import HUDScene from './scenes/HUDScene';
 
 export default {
     type: Phaser.AUTO,
@@ -45,7 +46,7 @@ export default {
     //----- IMPORTANT ------ SystemPreloadScene should always be the first scene. Use StartScene const below to set starting scene.
     scene: [SystemPreloadScene, MenuScene, GameScene, LobbyScene, RoomScene, SettingsScene, ControlsScene, CreditsScene,
             LoginScene, SignupScene, ShopScene, SkillTreeScene, RoleScene, GameModeScene,
-            JoinWithIDScene, HostGameScene, LoadingScene, NavbarScene, MatchmakeScene, SplashScene],
+            JoinWithIDScene, HostGameScene, LoadingScene, NavbarScene, MatchmakeScene, SplashScene, HUDScene],
     // resolution: window.devicePixelRatio,
     // antialias: false,
     gameTitle: 'Dungeon and Adventurers',
@@ -73,11 +74,12 @@ export enum SceneKey {
     MatchmakeScene = "MatchmakeScene",
     SystemPreloadScene = "SystemPreloadScene",
     SplashScene = "SplashScene",
+    HUDScene = "HUDScene",
 }
 export type SceneKeyType = keyof typeof SceneKey;
 
 /** ------------ Change the scene key here to set the starting scene. ---------------*/
-export const StartScene = SceneKey.MenuScene;
+export const StartScene = SceneKey.GameScene;
 
 const headerFontFamily = 'pressStart2P';
 const bodyFontFamily = 'aldrich';
