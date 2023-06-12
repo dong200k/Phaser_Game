@@ -4,9 +4,9 @@ import Node from "../../../schemas/Trees/Node/Node"
 import Player from "../../../schemas/gameobjs/Player"
 import Stat from "../../../schemas/gameobjs/Stat"
 import GameManager from "../../GameManager"
-import WeaponManager from "../../StateManagers/WeaponManager"
-import SkillTreeFactory from "../SkillTreeFactory"
-import SkillTreeManager from "../SkillTreeManager"
+import SkillTreeFactory from "../factory/SkillTreeFactory"
+import SkillTreeManager from "../../StateManagers/SkillTreeManager"
+import TreeUtil from "../../../../../util/TreeUtil"
 
 describe("Skill Tree Tests", ()=>{
     let gameManager: GameManager
@@ -46,7 +46,7 @@ describe("Skill Tree Tests", ()=>{
         let skillTree = SkillTreeFactory.createAdventurerSkill()
         SkillTreeManager.setSkillTree(playerState, skillTree as Node<SkillData>)
         
-        let upgrades = WeaponManager.getAvailableUpgrades(playerState.skillTree)
+        let upgrades = TreeUtil.getAvailableUpgrades(playerState.skillTree)
         expect(upgrades?.length).toBe(9)
     })
     test("Player can select a skill upgrade", ()=>{
@@ -54,8 +54,8 @@ describe("Skill Tree Tests", ()=>{
         SkillTreeManager.setSkillTree(playerState, skillTree as Node<SkillData>)
         
         //get upgrade and select 2nd upgrade
-        let upgrades = WeaponManager.getAvailableUpgrades(playerState.skillTree)
-        WeaponManager.selectUpgrade(playerState, upgrades, 1)
+        let upgrades = TreeUtil.getAvailableUpgrades(playerState.skillTree)
+        TreeUtil.selectUpgrade(playerState, playerState.skillTree, upgrades, 1)
 
         expect(skillTree?.children[1].data.status).toBe("selected")
     })
@@ -74,27 +74,27 @@ describe("Skill Tree Tests", ()=>{
             level: 1,
         }
         let stat = new Stat(statObject)
-        let actualStat = WeaponManager.getTotalTreeStat(playerState.skillTree)
+        let actualStat = TreeUtil.getTotalTreeStat(playerState.skillTree)
         expect(stat).toEqual(actualStat)
 
         //get upgrade and select 1st upgrade (+ 1 attack)
-        let upgrades = WeaponManager.getAvailableUpgrades(playerState.skillTree)
-        WeaponManager.selectUpgrade(playerState, upgrades, 0)
+        let upgrades = TreeUtil.getAvailableUpgrades(playerState.skillTree)
+        TreeUtil.selectUpgrade(playerState, upgrades, 0)
         Object.entries(upgrades[0].data.stat).forEach(([key,val])=>{
             if(val>0)console.log(key, val)
         })
 
         //Check stats are correct after upgrade
         stat.attack += 1
-        actualStat = WeaponManager.getTotalTreeStat(playerState.skillTree)
+        actualStat = TreeUtil.getTotalTreeStat(playerState.skillTree)
         expect(stat).toEqual(actualStat)
 
         // Get next upgrade (+ 2 attack)
-        upgrades = WeaponManager.getAvailableUpgrades(playerState.skillTree)
-        WeaponManager.selectUpgrade(playerState, upgrades, 0)
+        upgrades = TreeUtil.getAvailableUpgrades(playerState.skillTree)
+        TreeUtil.selectUpgrade(playerState, upgrades, 0)
 
         stat.attack += 2
-        actualStat = WeaponManager.getTotalTreeStat(playerState.skillTree)
+        actualStat = TreeUtil.getTotalTreeStat(playerState.skillTree)
         expect(stat).toEqual(actualStat)
     })
 })

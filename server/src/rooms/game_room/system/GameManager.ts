@@ -6,10 +6,8 @@ import GameObject from '../schemas/gameobjs/GameObject';
 import ProjectileManager from './StateManagers/ProjectileManager';
 import EffectManager from './StateManagers/EffectManager';
 import DungeonManager from './StateManagers/DungeonManager';
-import WeaponManager from './StateManagers/WeaponManager';
-import WeaponLogicManager from './Weapons/WeaponLogic/WeaponLogicManager';
-import WeaponUpgradeFactory from './Weapons/factories/WeaponUpgradeFactory';
-import SkillTreeFactory from './StatTree/SkillTreeFactory';
+import DatabaseManager from './Database/DatabaseManager';
+import EffectLogicManager from './EffectLogic/EffectLogicManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -36,7 +34,7 @@ export default class GameManager {
         this.projectileManager = new ProjectileManager(this)
         this.effectManager = new EffectManager(this);
         this.dungeonManager = new DungeonManager(this);
-        WeaponLogicManager.getManager().setGameManager(this)
+        EffectLogicManager.getManager().setGameManager(this)
 
         this.initUpdateEvents();
         this.initCollisionEvent();
@@ -49,9 +47,7 @@ export default class GameManager {
      * *** TODO: Call this function and await it in GameRoom before game starts. ***
      */
     async preload(){
-        await WeaponUpgradeFactory.getManager().loadUpgrades()
-        await WeaponManager.getManager().loadWeapons()
-        await SkillTreeFactory.getManager().loadStatTrees()
+        await DatabaseManager.getManager().loadData()
     }
 
     public syncServerStateBasedOnGameState(){

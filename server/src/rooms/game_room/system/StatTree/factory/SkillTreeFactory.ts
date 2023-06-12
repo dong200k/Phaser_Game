@@ -1,8 +1,8 @@
-import FileUtil from "../../../../util/FileUtil"
-import SkillData from "../../schemas/Trees/Node/Data/SkillData"
-import Node from "../../schemas/Trees/Node/Node"
-import Stat from "../../schemas/gameobjs/Stat"
-import DatabaseManager from "../Database/DatabaseManager"
+import FileUtil from "../../../../../util/FileUtil"
+import SkillData from "../../../schemas/Trees/Node/Data/SkillData"
+import Node from "../../../schemas/Trees/Node/Node"
+import Stat from "../../../schemas/gameobjs/Stat"
+import DatabaseManager from "../../Database/DatabaseManager"
 
 export default class SkillTreeFactory{
     /**

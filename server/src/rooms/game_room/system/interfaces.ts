@@ -75,4 +75,10 @@ export type weapon = {
     projectile: string
 }
 
-// ------------ interfaces for the EffectLogic Manager -------------- //
+// export type dbUpgradeEffect = {
+//     effectLogicId: string,
+//     cooldown: number,
+//     doesStack: boolean,
+//     collisionGroup: number,
+//     type: "player attack" | "none"
+// }

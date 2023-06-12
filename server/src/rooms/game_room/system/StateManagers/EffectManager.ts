@@ -5,6 +5,9 @@ import Entity from "../../schemas/gameobjs/Entity";
 import GameManager from "../GameManager";
 import MathUtil from "../../../../util/MathUtil";
 import TriggerEffect from "../../schemas/effects/trigger/TriggerEffect";
+import Player from "../../schemas/gameobjs/Player";
+import UpgradeTriggerEffect from "../../schemas/effects/trigger/UpgradeTriggerEffect";
+import ContinuousUpgradeEffect from "../../schemas/effects/continuous/ContinuousUpgradeEffect";
 
 const statCompoundEffectName = "!Entity Stat Compound Effect!";
 
@@ -117,6 +120,55 @@ export default class EffectManager {
                 effect.onTrigger(entity, ...args)
             }
         })
+    }
+
+    /**
+     * Adds an UpgradeTriggerEffect | ContinuousUpgradeEffect or Array<UpgradeTriggerEffect | ContinuousUpgradeEffect> to the entity
+     * Removes all UpgradeTriggerEffect | ContinuousUpgradeEffect on the entity that collides with the effect to add.
+     * Note: if effect is an Array, effects will be applied starting from the front of the array.
+     * @param entity The entity.
+     * @param effect A effect or an array or effects.
+     */
+    public static addUpgradeEffectsTo(entity: Entity, effect: UpgradeTriggerEffect | ContinuousUpgradeEffect | Array<UpgradeTriggerEffect | ContinuousUpgradeEffect>) {
+        /**
+         * Takes in 2 effects and checks if there is a collision between them and only one of them can exist on an Entity at once.
+         * If either effect is not an UpgradeTriggerEffect | ContinuousUgpradeEffect there is no collision
+         * If either effect has a collision group of -1 there is no collision and both can exist.
+         * If they both have the same collision group then if either does stack is false then there is a collision
+         * else no collision
+         * @param effect1
+         * @param effect2 
+         * @returns true if there is a collision else false
+         */
+        function collides(effect1: Effect, effect2: Effect){
+            if((effect1 instanceof UpgradeTriggerEffect || effect1 instanceof ContinuousUpgradeEffect) && (effect2 instanceof UpgradeTriggerEffect || effect2 instanceof ContinuousUpgradeEffect)){
+                return effect1.collisionGroup === effect2.collisionGroup 
+                && effect1.collisionGroup !== -1 && (!effect1.doesStack || !effect2.doesStack)
+            }
+
+            return false
+        }
+
+        /** Adds one upgrade effect to the entity and replaces any upgrade effect that collides with this effect*/
+        function addOneUpgradeEffect(effect: UpgradeTriggerEffect | ContinuousUpgradeEffect){
+            // remove old effects the collide with new effect
+            entity.effects.forEach(oldEffect=>{
+                if(collides(oldEffect, effect)){
+                    EffectManager.removeEffectFrom(entity, oldEffect)
+                } 
+            })
+            
+            // add new effect
+            EffectManager.addEffectsTo(entity, effect)
+        }
+        
+        if(Array.isArray(effect)) {
+            effect.forEach((e) => {
+                addOneUpgradeEffect(e)
+            })
+        } else {
+            addOneUpgradeEffect(effect)
+        }
     }
 
     /**

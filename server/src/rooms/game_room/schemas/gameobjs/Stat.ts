@@ -96,17 +96,52 @@ export default class Stat extends Schema {
     }
 
     /**
-     * Takes in 2 stats and return a new stat with the sum of the 2 stats values
+     * Takes in 2 stats and return a new stat with the addition of the 2 stats values
      * @param stat1 
      * @param stat2 
      */
-    static add(stat1: statType, stat2: statType){
+    static add(stat1: Stat, stat2: statType){
         let sum = Stat.getZeroStat()
         Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
             sum[key as keyStat] += stat1[key as keyStat] + stat2[key as keyStat]
         })
 
         return sum
+    }
+
+    /**
+     * Takes in a stat and a scalar/integer and returns a new stat with every attribute of the stat multipied by the scalar
+     * @param stat
+     * @param scalar 
+     */
+    static mul(stat: Stat, scalar: number){
+        let newStat = Stat.getZeroStat()
+
+        Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
+            newStat[key as keyStat] = stat[key as keyStat] * scalar
+        })
+
+        return newStat
+    }
+
+    /**
+     * Multiplies stat by scalar in place
+     * @param scalar number to scale/multiply stat by
+     */
+    public mul(scalar: number){
+        Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
+            this[key as keyStat] = this[key as keyStat] * scalar
+        })
+    }
+
+    /**
+     * Adds the stat by another stat in place
+     * @param scalar number to scale/multiply stat by
+     */
+    public add(stat: Stat){
+        Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
+            this[key as keyStat] = this[key as keyStat] + stat[key as keyStat]
+        })
     }
 
     static getDefaultPlayerStat(){

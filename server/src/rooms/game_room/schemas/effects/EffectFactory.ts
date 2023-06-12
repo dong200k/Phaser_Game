@@ -7,6 +7,8 @@ import SpeedMultiEffect from "./temp/SpeedMultiEffect";
 import StatEffect, { StatConfig } from "./temp/StatEffect";
 import CompoundEffect from "./combo/CompoundEffect";
 import UpgradeTriggerEffect from "./trigger/UpgradeTriggerEffect";
+import UpgradeEffect from "../gameobjs/UpgradeEffect";
+import ContinuousUpgradeEffect from "./continuous/ContinuousUpgradeEffect";
 
 
 export default class EffectFactory {
@@ -117,7 +119,7 @@ export default class EffectFactory {
     }
 
     /**
-     * Creates a new UpgradeTriggerEffect with the effectLogic corresponding to effectLogicId
+     * Creates a new UpgradeTriggerEffect or ContinuousUpgradeEffect from an UpgradeEffect
      * @param effectLogicId effect's logic to use, must be initialized in EffectLogicManager
      * @param ms cooldown in miliseconds
      * @param doesStack if two UpgradeEffects on one upgrade tree have the same collisionGroup and either one has doesStack === false, old one gets overwritten. Unless collisionGroup === -1 in that case no collision.
@@ -125,7 +127,23 @@ export default class EffectFactory {
      * @param type string that represents the type of the TriggerEffect. 
      * @returns 
      */
-    static createUpgradeEffect(effectLogicId: string, ms: number = 1000, type="", doesStack: boolean = true, collisionGroup: number = -1){
-        return new UpgradeTriggerEffect(effectLogicId, ms, type, doesStack, collisionGroup)
+    static createEffectFromUpgradeEffect(upgradeEffect: UpgradeEffect){
+        let effectLogicId = upgradeEffect.effectLogicId
+        let cooldown = upgradeEffect.cooldown
+        let type = upgradeEffect.type
+        let doesStack = upgradeEffect.doesStack
+        let collisionGroup = upgradeEffect.collisionGroup
+
+        // Creates appropriate effect based on type
+        switch(upgradeEffect.type){
+            case "player attack":
+                // Creates a UpgradeTriggerEffect which uses the effect when the EffectManager.useOnTriggerEffectsOn is called with the corresponding type, "player attack" in this case
+                return new UpgradeTriggerEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
+            case "none":
+                // Creates a ContinuousUpgradeEffect which uses the effect's logic automatically
+                return new ContinuousUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
+            default:
+                return new ContinuousUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
+        }
     }
 }

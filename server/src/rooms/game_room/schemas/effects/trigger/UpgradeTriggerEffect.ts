@@ -10,16 +10,15 @@ import EffectLogicManager from "../../../system/EffectLogic/EffectLogicManager";
 export default class UpgradeTriggerEffect extends TriggerEffect {
     
     /** Cooldown of the effectLogic */
-    private cooldown: Cooldown
+    cooldown: Cooldown
     /** Id of effectLogic to use */
-    private effectLogicId: string
+    effectLogicId: string
     /** Whether the UpgradeTriggerEffect stacks with other UpgradeTriggerEffects on a single Entity with the same collisionGroup besides a collisionGroup of -1*/
-    private doesStack: boolean
+    doesStack: boolean
     /** holds collision info, if any pair of UpgradeTriggerEffect on a single Entity has doesStack = false,
      * if either collisionGroup === -1 or they are different nothing happens,
-     * if their collisionGroups are the same the old one is removed from the Entity,
-    */
-    private collisionGroup: number
+     * if their collisionGroups are the same the old one is removed from the Entity */
+    collisionGroup: number
 
     constructor(effectLogicId: string, cooldown:number=1000, type: string, doesStack: boolean, collisionGroup: number) {
         super(type);

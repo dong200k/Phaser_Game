@@ -1,28 +1,12 @@
 import FileUtil from "../../../../../util/FileUtil"
-import SkillData from "../../../schemas/Trees/Node/Data/SkillData"
 import WeaponData from "../../../schemas/Trees/Node/Data/WeaponData"
 import Node from "../../../schemas/Trees/Node/Node"
-import StatTree from "../../../schemas/Trees/StatTree"
 import Stat from "../../../schemas/gameobjs/Stat"
+import DatabaseManager from "../../Database/DatabaseManager"
+import { upgrade } from "../../interfaces"
 
-type upgrade = {
-    id: string,
-    upgradeName: string,
-    root: Node<WeaponData>
-}
 export default class WeaponUpgradeFactory{
     static singleton = new WeaponUpgradeFactory()
-    private upgrades: Map<string, upgrade> = new Map()
-
-    /**
-     * Loads weapon upgrades from db.json
-     */
-    async loadUpgrades(){
-        let db = await FileUtil.readJSONAsync("assets/db.json")
-        for (let upgrade of db.upgrades) {
-            this.upgrades.set(upgrade.id, upgrade)
-        }
-    }
 
     /**
      * Creates a Node class from a single node from an upgrade from db formatted as a json (does not copy children)
@@ -30,9 +14,9 @@ export default class WeaponUpgradeFactory{
      * @returns 
      */
     private static createNode(copy: Node<WeaponData>){
-        let {weaponId, name, description, stat} = copy.data
+        let {weaponId, name, description, stat, upgradeEffect} = copy.data
         stat = new Stat(stat)
-        let weaponData = new WeaponData(weaponId, stat, name, description)
+        let weaponData = new WeaponData(weaponId, stat, upgradeEffect, name, description)
         let node = new Node<WeaponData>(weaponData)
 
         return node
@@ -44,7 +28,7 @@ export default class WeaponUpgradeFactory{
      * @returns
      */
     static createUpgrade(id: string, selectRoot: boolean = true){
-        let upgrade = WeaponUpgradeFactory.getManager().upgrades.get(id)
+        let upgrade = DatabaseManager.getManager().getUpgrade(id)
         if(!upgrade) return
 
         let root = WeaponUpgradeFactory.createNode(upgrade.root)

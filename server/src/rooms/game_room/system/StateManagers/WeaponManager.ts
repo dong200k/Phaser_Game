@@ -1,31 +1,28 @@
+import TreeUtil from '../../../../util/TreeUtil';
 import WeaponData from '../../schemas/Trees/Node/Data/WeaponData';
 import Node from '../../schemas/Trees/Node/Node';
 import Player from '../../schemas/gameobjs/Player';
 
 export default class WeaponManager{
     /**
-     * Sets the base weapon the player is equiping
-     * @param playerState
-     * @param weaponId id for the new base weapon to equip
-     */
-    static setCurrentWeapon(playerState: Player, weaponId: string){
-        playerState.weaponUpgradeTree.setWeapon(weaponId)
-    }   
-
-    /**
-     * Sets the player's weapon upgrade tree with root
-     * @param playerState
+     * Takes in player and root of a WeaponUpgradeTree equips the tree onto the player and also adds whatever effects the tree has
+     * onto the player.
+     * @param playerState player who is equiping the WeaponUpgradeTree
      * @param root root node of weapon upgrade tree to equip
      */
-    static setWeaponUpgradeTree(playerState: Player, root: Node<WeaponData>){
-        let weaponTree = playerState.weaponUpgradeTree
-        weaponTree.root = root
+    static equipWeaponUpgrade(playerState: Player, root: Node<WeaponData>){
+        playerState.weaponUpgradeTree.root = root
+        playerState.weaponUpgradeTree.setOwner(playerState)
         
-        if(root.data.weaponId){
-            WeaponManager.setCurrentWeapon(playerState, root.data.weaponId)
-        }
-
         // Select this upgrade by default
-        root.data.setStatus("selected")
+        TreeUtil.selectUpgrade(playerState, playerState.weaponUpgradeTree, [root], 0)
+    }
+
+    /**
+     * Takes in player and unequips their WeaponUpgradeTree
+     * @param playerState player who is unequiping the WeaponUpgradeTree
+     */
+    static unEquipWeaponUpgrade(playerState: Player){
+        playerState.weaponUpgradeTree.reset()
     }
 }

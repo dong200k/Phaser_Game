@@ -1,6 +1,7 @@
 import { Schema, type } from '@colyseus/schema';
 import Stat from './Stat';
 import WeaponManager from '../../system/StateManagers/WeaponManager';
+import DatabaseManager from '../../system/Database/DatabaseManager';
 
 export default class Weapon extends Schema {
     @type(Stat) stat
@@ -18,7 +19,7 @@ export default class Weapon extends Schema {
     }
 
     setWeapon(weaponId: string){
-        let weapon = WeaponManager.getWeapon(weaponId)
+        let weapon = DatabaseManager.getManager().getWeapon(weaponId)
 
         if(weapon){
             this.weaponId = weaponId

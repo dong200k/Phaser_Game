@@ -75,6 +75,18 @@ export default class DatabaseManager{
     getWeaponUpgrade(id: string){
         return DatabaseManager.getManager().weaponUpgrades.get(id)
     }
+
+    /**
+     * Returns json object with either weapon or artifact upgrade tree information based on id
+     * @param id id of weapon/artifact upgrade tree to retrieve, look at the my-app frontend to get ids
+     */
+    getUpgrade(id: string){
+        let weaponUpgradeTree = DatabaseManager.getManager().getWeaponUpgrade(id)
+        let artifactUpgradeTree = DatabaseManager.getManager().getArtifactUpgrade(id)
+
+        if(weaponUpgradeTree) return weaponUpgradeTree
+        else return artifactUpgradeTree
+    }
     
 }
 

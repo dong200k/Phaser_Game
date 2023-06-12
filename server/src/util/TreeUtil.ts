@@ -3,9 +3,11 @@ import WeaponData from "../rooms/game_room/schemas/Trees/Node/Data/WeaponData"
 import Node from "../rooms/game_room/schemas/Trees/Node/Node"
 import StatTree from "../rooms/game_room/schemas/Trees/StatTree"
 import WeaponUpgradeTree from "../rooms/game_room/schemas/Trees/WeaponUpgradeTree"
+import EffectFactory from "../rooms/game_room/schemas/effects/EffectFactory"
 import Player from "../rooms/game_room/schemas/gameobjs/Player"
 import Stat from "../rooms/game_room/schemas/gameobjs/Stat"
-import WeaponManager from "../rooms/game_room/system/StateManagers/WeaponManager"
+import UpgradeEffect from "../rooms/game_room/schemas/gameobjs/UpgradeEffect"
+import EffectManager from "../rooms/game_room/system/StateManagers/EffectManager"
 
 export default class TreeUtil{
     /**
@@ -20,7 +22,8 @@ export default class TreeUtil{
         function dfs(root: Node<WeaponData> | Node<SkillData>){
             switch(root.data.status){
                 case "selected":
-                    totalStats = Stat.add(totalStats, root.data.stat)
+                    // Increase total in place
+                    totalStats.add(root.data.stat)
                     break
                 case "none":
                     return
@@ -36,14 +39,51 @@ export default class TreeUtil{
         return totalStats
     }
 
+    /**
+     * Takes in a weapon tree and returns a list of UpgradeEffect that is selected on the tree in order of when the node was choosen. 
+     * Effects that players selected first will be first in the list.
+     * Note: UpgradeEffect holds database json information, it is not an intanceof Effect
+     * @param tree
+     * @returns UpgradeEffect[] sorted in order their nodes were selected
+     */
+    static getSelectedTreeEffects(tree: WeaponUpgradeTree){
+        let upgradeEffectsWithOrder: Array<{effect: UpgradeEffect, order: number}> = []
+
+        //dfs traversal to get upgradeEffects of nodes that have been selected and have upgradeEffects
+        function dfs(root: Node<WeaponData>){
+            switch(root.data.status){
+                case "selected":
+                    // Selected nodes definitely have a selectionIndex
+                    if(root.data.upgradeEffect){
+                        upgradeEffectsWithOrder.push({effect: root.data.upgradeEffect, order: root.data.selectionIndex as number})
+                    }
+                case "none":
+                    return
+            }
+            
+            for(let node of root.children){
+                dfs(node)
+            }
+        }
+
+        if(tree.root) dfs(tree.root)
+
+        // Sort the upgradeEffects to the ones selected first/with smaller order comes first then
+        // Return the upgradeEffects only without order
+        return upgradeEffectsWithOrder
+            .sort((u1: {effect: UpgradeEffect, order: number}, u2: {effect: UpgradeEffect, order: number})=>{
+                return u1.order - u2.order})
+            .map((u: {effect: UpgradeEffect, order: number})=>u.effect)
+    }
+
     // could make time complexity better
-    static getAvailableUpgrades(tree: WeaponUpgradeTree | StatTree<SkillData>){
+    static getAvailableUpgrades <T extends StatTree<U>, U extends WeaponData | SkillData>(tree: T): Node<U>[]{
         let root = tree.root
         if(!root) return []
 
-        let upgrades: Array<Node<WeaponData> | Node<SkillData>> = []
+        let upgrades: Array<Node<U>> = []
         //dfs traversal to get next upgrades
-        function dfs(root: Node<WeaponData> | Node<SkillData>){
+        function dfs(root: Node<U>){
             if(root.data.status === "none")
                 return upgrades.push(root)
 
@@ -54,39 +94,118 @@ export default class TreeUtil{
 
         dfs(root)
         return upgrades
+        
     }
 
     /**
-     * Selects/activates the upgrade of a player based on player's choice.
-     * @param playerState 
-     * @param upgrades list of available upgrades to choose from
+     * Selects and activates the upgrade of a player's tree (skill or weapon/artifact) based on player's choice. This will automatically add the upgrade's effects to the player.
+     * Note: WeaponUpgradeTree covers artifact and weapon tree while StatTree<SkillData> covers the skill tree. The type of a upgrade is deterimined by whether we use WeaponUpgradeTree or StatTree<SkillData>.
+     * @param playerState player who is selecting the upgrade
+     * @param tree upgrade tree (Weapon or Artifact or Skill) that upgrade is being selected for. WeaponUpgradeTree is used for both aritfact and weapon upgrade
+     * @param upgrades list of available upgrades to choose from.
      * @param choice choice of upgrade, zero indexed non negative integer
      */
-    static selectUpgrade(playerState: Player, upgrades: Array<Node<WeaponData> | Node<SkillData>>, choice: number){
-        if(choice < upgrades.length){
-            //Select upgrade
-            let selectedUpgrade = upgrades[choice]
-            selectedUpgrade.data.setStatus("selected")
-            
-            // Mark upgrades on the same level as skipped if its a weapon upgrade tree
-            if(upgrades[0].data instanceof WeaponData){
-                upgrades.forEach((upgrade, i)=>{
-                    if(i!==choice) upgrade.data.setStatus("skipped")
-                })
+    static selectUpgrade<T extends WeaponUpgradeTree|StatTree<SkillData>, U extends Exclude<T["root"], undefined>>
+    (playerState: Player, tree: T, upgrades: U[], choice: number){
+        // Choice out of bounds
+        if(choice >= upgrades.length) return
 
-                // Change base weapon if node has a weaponId
-                let data = selectedUpgrade.data as WeaponData
-                let weaponId = data.weaponId
-                if(weaponId) WeaponManager.setCurrentWeapon(playerState, weaponId)
+        // Mark upgrade as selected
+        let selectedUpgrade = upgrades[choice]
+
+        selectedUpgrade.data.setStatus("selected")
+        
+        // Special Logic for selecting Weapon/Artifact Upgrade Tree node
+        if(selectedUpgrade.data instanceof WeaponData){
+            // Mark nodes on same depth as selected
+            if(upgrades.length > 1)
+            upgrades.forEach((upgrade, i)=>{
+                if(i!==choice) upgrade.data.setStatus("skipped")
+            })
+
+            // Change base weapon which provides sprites if node has a weaponId
+            let data = selectedUpgrade.data as WeaponData
+            let weaponId = data.weaponId
+            if(weaponId) TreeUtil.setTreeWeapon(tree as WeaponUpgradeTree, weaponId)
+ 
+            // If node has an UpgradeEffect then convert it to an Effect and apply it to the player
+            if(selectedUpgrade.data.upgradeEffect){
+                let effect = EffectFactory.createEffectFromUpgradeEffect(selectedUpgrade.data.upgradeEffect)
+
+                // Add effect to player
+                EffectManager.addUpgradeEffectsTo(playerState, effect)
+                
+                if(tree instanceof WeaponUpgradeTree){
+                    // Store the effect so it can be removed when the tree is unequipped
+                    tree.effects.push(effect)
+                }
             }
-            
-            // for weapon/artifact upgrade trees add attack/artifact effects to the effect manager
-            if(upgrades[0].data instanceof WeaponData){
-
-            }
-
-            
-            // ****TODO add upgrade to stat total
         }
+
+        // Add selected upgrade node's stat bonus to player
+        let stat = selectedUpgrade.data.stat
+        let statEffect = EffectFactory.createStatEffect(stat)
+        let UUID = EffectManager.addStatEffectsTo(playerState, statEffect)
+        tree.statEffectIds.push(UUID) // Store selected stat effect's key so it can be removed when the tree is unequipped
+
+        // Change total tree stat inplace to reflect changes
+        tree.totalStat.add(stat)
+    }
+
+    /** Compute an Effect[] based on the UpgradeEffects of selected nodes on the tree and applies them to the player (applies them based on selectionIndex order aka when they were selected). 
+     * Also stores these effects inside the tree so that they can be removed when the tree is unequipped
+     * @param playerState player who is receiving the effects
+     * @param tree tree that effects are coming from
+    */
+    static addTreeUpgradeEffectsToPlayer(playerState: Player, tree: WeaponUpgradeTree){
+        // Convert upgradeEffects (which are sorted in order they were selected first at the front of the list) to Effects
+        // then apply them to the player from first to last
+        let orderedUpgradeEffects = TreeUtil.getSelectedTreeEffects(tree)
+        let effects = orderedUpgradeEffects.map((upgradeEffect: UpgradeEffect)=>EffectFactory.createEffectFromUpgradeEffect(upgradeEffect))
+        EffectManager.addUpgradeEffectsTo(playerState, effects)
+        
+        // store effects so they can be removed when the artifact is unequipped
+        effects.forEach((effect)=>tree.effects.push(effect))
+    }
+
+    /**
+     * Computes total stats on the tree based on nodes selected and applies them to the player. Also stores the UUID for the stat effects inside the tree so
+     * they can be removed when the tree is unequipped.
+     * @param playerState player who is receiving the stats
+     * @param tree tree to get the stats from
+     */
+    static addTreeStatsToPlayer(playerState: Player, tree: WeaponUpgradeTree | StatTree<SkillData>){
+        let totalStat = TreeUtil.getTotalTreeStat(tree)
+        let statEffect = EffectFactory.createStatEffect(totalStat)
+        let UUID = EffectManager.addStatEffectsTo(playerState, statEffect)
+        tree.statEffectIds.push(UUID) // Add id to artifact tree so it can be removed when tree is unequipped
+    }
+
+    /**
+     * Remove all upgrade effects that the input tree provides to the player
+     * @param playerState player who is getting effects removed
+     * @param tree tree with the effects to be removed from player
+     */
+    static removeTreeUpgradeEffects(playerState: Player, tree: WeaponUpgradeTree){
+        tree.effects.forEach((effect)=>EffectManager.removeEffectFrom(playerState, effect))
+    }
+
+    /**
+     * Removes all stats that the input tree provides to the player
+     * @param playerState player who is getting the stats removed
+     * @param tree tree with stats to be removed from player
+     */
+    static removeTreeStats(playerState: Player, tree: WeaponUpgradeTree | StatTree<SkillData>){
+        tree.statEffectIds.forEach((id)=>EffectManager.removeStatEffectFrom(playerState, id))
+    }
+
+    /**
+     * Sets the base weapon(determines sprite, projectile sprite etc.) for a Weapon/Artifact Upgrade Tree
+     * @description Note: this should be called inside of TreeUtil.selectUpgrade()
+     * @param tree tree to change weapon
+     * @param weaponId id for the new base weapon to equip
+     */
+    static setTreeWeapon(tree: WeaponUpgradeTree, weaponId: string){
+        tree.setWeapon(weaponId)
     }
 }
