@@ -4,7 +4,7 @@ import TextBox from "../UI/TextBox";
 import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import UIFactory from "../UI/UIFactory";
 import { RoundRectangle, ScrollablePanel, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
-import ConfirmModal from "../UI/ConfirmModal";
+import ConfirmModal from "../UI/modals/ConfirmModal";
 
 interface SkillItemLevel {
     value: string;

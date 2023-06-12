@@ -5,6 +5,9 @@ import CircleImage from "../UI/CircleImage";
 import ProgressBar from "../UI/ProgressBar";
 import CircleImageProgress from "../UI/CircleImageProgress";
 import { Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
+import MenuModal from "../UI/modals/MenuModal";
+import DataManager from "../system/DataManager";
+import eventsManager from "../system/EventManager";
 
 export default class HUDScene extends Phaser.Scene {
 
@@ -22,7 +25,13 @@ export default class HUDScene extends Phaser.Scene {
 
     private initializeUI() {
         // ----- Menu Button ------
-        let menuButton = UIFactory.createButton(this, "Menu", 50, 50, "small", () => {console.log("menu onclick")});
+        let menuButton = UIFactory.createButton(this, "Menu", 50, 50, "small", () => {
+            new MenuModal(this, {
+                leaveGameOnclick: () => {
+                    eventsManager.emit("GameScene.LeaveGame");
+                }
+            });
+        });
         menuButton.setPosition(60, 30);
 
         // ----- Artifacts Display -------
@@ -91,7 +100,7 @@ export default class HUDScene extends Phaser.Scene {
         
 
         // ----- Menu popup -----
-
+        
 
         // ----- Weapon Upgrades popup -----
 

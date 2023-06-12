@@ -4,6 +4,8 @@ import ClientManager from '../system/ClientManager';
 import GameManager from '../system/GameManager';
 import { SceneKey } from '../config';
 import SceneManager from '../system/SceneManager';
+import DataManager from '../system/DataManager';
+import eventsManager from '../system/EventManager';
 
 /**
  * The GameScene will be responsive for rendering the core gameplay. 
@@ -26,11 +28,20 @@ export default class GameScene extends Phaser.Scene {
     create() {
         //Initialize fields
         this.initializeUI();
+        this.initializeListeners();
         this.joinGameRoom();
-        this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
+        
+        this.showHUD();
+        this.cameras.main.setZoom(2);
+    }
+
+    public initializeListeners() {
+        eventsManager.on('GameScene.LeaveGame', this.leaveGame, this);
+        this.events.on("shutdown", () => {
+            eventsManager.removeListener('GameScene.LeaveGame', this.leaveGame, this);
             this.hideHUD();
         });
-        this.events.on("shutdown", (sys: Phaser.Scenes.Systems) => {
+        this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
             this.hideHUD();
         });
         this.events.on("destroy", (sys: Phaser.Scenes.Systems) => {
@@ -39,10 +50,11 @@ export default class GameScene extends Phaser.Scene {
         this.events.on("wake", (sys: Phaser.Scenes.Systems) => {
             this.showHUD();
         });
-        this.showHUD();
-        this.cameras.main.setZoom(2);
+    }
 
-        //this.scene.pause(SceneKey.GameScene);
+    public leaveGame() {
+        this.leaveRoom();
+        SceneManager.getSceneManager().switchToScene("MenuScene");
     }
 
     update(time: number, deltaT: number) {
@@ -77,5 +89,10 @@ export default class GameScene extends Phaser.Scene {
         }).catch((e) => {
             console.log("Join Game Error: ", e);
         });
+    }
+
+    private leaveRoom() {
+        this.gameRoom?.leave();
+        this.gameRoom?.removeAllListeners();
     }
 }
