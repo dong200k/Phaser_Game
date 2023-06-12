@@ -8,6 +8,7 @@ import ProjectileManager from './StateManagers/ProjectileManager';
 import EffectManager from './StateManagers/EffectManager';
 import DungeonManager from './StateManagers/DungeonManager';
 import WeaponManager from './StateManagers/WeaponManager';
+import EventEmitter from 'events';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -22,6 +23,9 @@ export default class GameManager {
     // Data
     public gameObjects: Map<string, Matter.Body> = new Map();
     public state: State;
+
+    // Events
+    public eventEmitter: EventEmitter = new EventEmitter();
 
     constructor(state: State) {
         this.state = state;
