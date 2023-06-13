@@ -10,6 +10,7 @@ interface WaitingRoomMetadata {
 
 export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
     maxClients = 4;
+    waitingRoomDisposed = false;
 
     onCreate() {
         console.log(`Created: Waiting room ${this.roomId}`);
@@ -40,6 +41,7 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
     }
 
     onDispose() {
+        this.waitingRoomDisposed = true;
         console.log(`Disposed: Waiting room ${this.roomId}`);
     }
 
@@ -51,7 +53,10 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
     }
 
     public onGameRoomDispose() {
-        this.unlock();
-        this.setMetadata({ inGame: false });
+        // If the waiting room is already disposed don't change its state (causes null pointer).
+        if(!this.waitingRoomDisposed) {
+            this.unlock();
+            this.setMetadata({ inGame: false });
+        }
     }
 }

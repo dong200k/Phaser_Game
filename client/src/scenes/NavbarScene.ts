@@ -44,17 +44,14 @@ export default class NavbarScene extends Phaser.Scene {
             SceneManager.getSceneManager().switchToScene("GameModeScene");
         });
         let shopButton = new NavButton(this, "Shop", 0, 0, () => {
-            console.log("Shop nav button clicked")
             DataManager.getDataManager().setData("navbar", {activeOn: "shop"});
             SceneManager.getSceneManager().switchToScene("ShopScene");
         });
         let skillTreeButton = new NavButton(this, "Skill Tree", 0, 0, () => {
-            console.log("Skill Tree nav button clicked")
             DataManager.getDataManager().setData("navbar", {activeOn: "skill tree"});
             SceneManager.getSceneManager().switchToScene("SkillTreeScene");
         });
         let roleButton = new NavButton(this, "Role", 0, 0, () => {
-            console.log("Role nav button clicked")
             DataManager.getDataManager().setData("navbar", {activeOn: "role"});
             SceneManager.getSceneManager().switchToScene("RoleScene");
         });
