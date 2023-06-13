@@ -34,9 +34,9 @@ export default class CircleImageProgress extends OverlapSizer {
         this.circularProgress = new CircularProgress(this.scene, {
             radius: this.radius,
             valuechangeCallback: (newValue, oldValue, circularProgress) => {
-                console.log("newValue", newValue);
-                console.log("oldValue", oldValue);
-                console.log(circularProgress);
+                // console.log("newValue", newValue);
+                // console.log("oldValue", oldValue);
+                // console.log(circularProgress);
             },
             
             // trackColor: 0,

@@ -47,6 +47,7 @@ export default class MenuModal extends BaseModal {
         modalContent.add(UIFactory.createButton(this.scene, "Leave Game", 0, 0, "large", () => {
             if(config.leaveGameOnclick) {
                 this.closeModal();
+                this.dialog.setVisible(false);
                 config.leaveGameOnclick(); 
             }
             else console.log("Leave game onclick");

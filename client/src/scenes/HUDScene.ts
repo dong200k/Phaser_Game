@@ -13,7 +13,6 @@ export default class HUDScene extends Phaser.Scene {
 
     // Plugin for UI elements that will be injected at scene creation.
     rexUI!: UIPlugins;
-    circleImages: CircleImage[] = [];
 
     constructor() {
         super(SceneKey.HUDScene);
@@ -97,15 +96,36 @@ export default class HUDScene extends Phaser.Scene {
         playerInfoSizer.layout();
         
         circleImageProgress.layoutCircleImageProgress();
-        
-
-        // ----- Menu popup -----
-        
 
         // ----- Weapon Upgrades popup -----
 
+        let upgradeButton = UIFactory.createButton(this, "Upgrade", this.game.scale.width - 60, this.game.scale.height - 30, "small", () => {
+            console.log("Upgrade onclick");
+        });
 
         // ----- Party Info popup -----
+
+        let partyPopup = this.createPartyInfoPopup();
+        partyPopup.setPosition(this.game.scale.width / 2, this.game.scale.height / 2);
+        partyPopup.layout();
+        partyPopup.setDepth(100);
+        partyPopup.setVisible(false);
+
+        this.input.keyboard?.on("keydown-E", () => partyPopup.setVisible(true));
+        this.input.keyboard?.on("keyup-E", () => partyPopup.setVisible(false));
+    }
+
+    private createPartyInfoPopup() {
+        let fixedWidthSizer = this.rexUI.add.fixWidthSizer({
+            width: 500,
+        })
+        fixedWidthSizer.addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 10, ColorStyle.primary.hex[900]));
+        fixedWidthSizer.add(this.createStatusBars());
+        return fixedWidthSizer;
+    }
+
+    private createPlayerInfoDisplay() {
+
     }
 
     private createStatusBars() {

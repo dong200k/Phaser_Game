@@ -25,6 +25,8 @@ export default class GameManager {
     private spaceKey?: Phaser.Input.Keyboard.Key;
     private debugKey?: Phaser.Input.Keyboard.Key;
 
+    private mouseDown: boolean = false;
+
     // ------- fixed tick --------
     private timePerTick = 50; // 20 ticks per second.
     private timeTillNextTick: number;
@@ -101,6 +103,14 @@ export default class GameManager {
         this.debugKey?.on("down", () => {
             this.csp.setDebugGraphicsVisible(!this.csp.isDebugGraphicsVisible());
         })
+
+        this.scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+            if(pointer.leftButtonDown()) this.mouseDown = true;
+        })
+
+        this.scene.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
+            if(pointer.leftButtonReleased()) this.mouseDown = false;
+        })
     }
 
     private initializeListeners() {
@@ -122,7 +132,7 @@ export default class GameManager {
 
         //[0] mouse click, [1] mousex, [2] mousey.
         let mouseData = [0, 0, 0]
-        mouseData[0] = this.scene.input.mousePointer.isDown? 1 : 0;
+        mouseData[0] = this.mouseDown? 1 : 0;
         mouseData[1] = this.scene.input.mousePointer.worldX;
         mouseData[2] = this.scene.input.mousePointer.worldY;
         this.gameRoom?.send("attack", mouseData);
@@ -217,7 +227,7 @@ export default class GameManager {
     
     private addPlayer(player: any, key: string): Player{
         let newPlayer = new Player(this.scene, player);
-        console.log(newPlayer)
+        // console.log(newPlayer)
         if(key === this.gameRoom.sessionId) {
             this.player1 = newPlayer;
             this.scene.cameras.main.startFollow(this.player1, false, 0.1);

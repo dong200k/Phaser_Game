@@ -27,7 +27,6 @@ export default class GameScene extends Phaser.Scene {
 
     create() {
         //Initialize fields
-        this.initializeUI();
         this.initializeListeners();
         this.joinGameRoom();
         
@@ -39,22 +38,30 @@ export default class GameScene extends Phaser.Scene {
         eventsManager.on('GameScene.LeaveGame', this.leaveGame, this);
         this.events.on("shutdown", () => {
             eventsManager.removeListener('GameScene.LeaveGame', this.leaveGame, this);
+            this.events.removeAllListeners();
             this.hideHUD();
         });
-        this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
+        this.events.on("sleep", () => {
             this.hideHUD();
-        });
-        this.events.on("destroy", (sys: Phaser.Scenes.Systems) => {
-            this.hideHUD();
-        });
-        this.events.on("wake", (sys: Phaser.Scenes.Systems) => {
+        })
+        // When waking this scene (When sceneManager switches back to this scene) join game room and show hud.
+        this.events.on("wake", () => {
+            this.joinGameRoom();
             this.showHUD();
-        });
+        })
     }
 
     public leaveGame() {
-        this.leaveRoom();
-        SceneManager.getSceneManager().switchToScene("MenuScene");
+        this.gameRoom?.leave();
+        this.children.getAll().forEach((obj) => {
+            obj.destroy();
+        })
+        this.gameManager = undefined;
+        this.gameRoom = undefined;
+        let switchToSceneKey = SceneKey.MenuScene;
+        if(ClientManager.getClient().isConnectedToWaitingRoom())
+            switchToSceneKey = SceneKey.RoomScene;
+        SceneManager.getSceneManager().switchToScene(switchToSceneKey);
     }
 
     update(time: number, deltaT: number) {
@@ -69,30 +76,15 @@ export default class GameScene extends Phaser.Scene {
         SceneManager.getSceneManager().hideHUD();
     }
 
-    /** Runs when the player successfully joined the game room */
-    private onJoin() {
-        if(this.gameRoom) {
-            this.gameManager = new GameManager(this,this.gameRoom);
-        }
-        else
-            console.log("ERROR: Game Room not initialized");
-    }
-
-    private initializeUI() {
-        this.cameras.main.setZoom(1.5);
-    }
-
     private joinGameRoom() {
         ClientManager.getClient().joinGameRoom().then((room) => {
             this.gameRoom = room;
-            this.onJoin();
+            this.gameRoom.onLeave(() => {
+                this.gameRoom = undefined;
+            });
+            this.gameManager = new GameManager(this,this.gameRoom);
         }).catch((e) => {
             console.log("Join Game Error: ", e);
         });
-    }
-
-    private leaveRoom() {
-        this.gameRoom?.leave();
-        this.gameRoom?.removeAllListeners();
     }
 }

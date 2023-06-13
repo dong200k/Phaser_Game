@@ -153,9 +153,9 @@ export default class RoomScene extends Phaser.Scene {
         this.playersInRoom = 0;
         this.initializeUI();
         this.joinRoom();
-        this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
-            this.leaveRoom();
-        });
+        // this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
+        //     // this.leaveRoom();
+        // });
         this.events.on("wake", (sys: Phaser.Scenes.Systems) => {
             this.joinRoom();
         });
@@ -170,7 +170,13 @@ export default class RoomScene extends Phaser.Scene {
         this.add.existing(this.roomIDText);
 
         // --------- Leave Room Button ----------
-        let leaveButton = new Button(this, "Leave room", 0, 0, "regular", () => SceneManager.getSceneManager().popScene());
+        let leaveButton = new Button(this, "Leave room", 0, 0, "regular", () => {
+            if(SceneManager.getSceneManager().popScene() === "") {
+                // If there is no scene to pop return to the main menu.
+                SceneManager.getSceneManager().switchToScene(SceneKey.MenuScene);
+            }
+            this.leaveRoom();
+        });
         let leaveButtonLayout = new Layout(this, {originX: 0, originY: 1, x: 48, y: this.game.scale.height - 48});
         leaveButtonLayout.add(leaveButton);
         this.add.existing(leaveButtonLayout);
@@ -275,13 +281,15 @@ export default class RoomScene extends Phaser.Scene {
     }
 
     private joinRoom() {
-        ClientManager.getClient().joinWaitingRoom().then((room) => {
-            this.waitingRoom = room;
-            this.roomIDText?.setText(`Room ID: ${room.id}`);
-            this.onJoin();
-        }).catch(e => {
-            console.log("Failed to join waiting room ", e);
-        });
+        if(!this.waitingRoom) {
+            ClientManager.getClient().joinWaitingRoom().then((room) => {
+                this.waitingRoom = room;
+                this.roomIDText?.setText(`Room ID: ${room.id}`);
+                this.onJoin();
+            }).catch(e => {
+                console.log("Failed to join waiting room ", e);
+            });
+        }
     }
 
     private onJoin() {
@@ -301,7 +309,7 @@ export default class RoomScene extends Phaser.Scene {
             this.waitingRoom.onMessage("joinGame", (message) => {
                 // Sets the game room Id for the client.
                 ClientManager.getClient().setGameRoomId(message);
-                this.scene.start('GameScene');
+                SceneManager.getSceneManager().pushScene("GameScene");
             })
 
             this.waitingRoom.onError((code, message) => {
@@ -312,7 +320,7 @@ export default class RoomScene extends Phaser.Scene {
 
     private leaveRoom() {
         this.waitingRoom?.leave();
-        this.waitingRoom?.removeAllListeners();
+        this.waitingRoom = undefined;
     }
 
 }

@@ -120,7 +120,7 @@ export default class SceneManager {
 
     /** Shutsdown the navbar. */
     public hideNavbar() {
-        if(this.scene) {
+        if(this.scene && !this.scene.scene.isSleeping(SceneKey.NavbarScene) && this.scene.scene.isActive(SceneKey.NavbarScene)) {
             this.scene.scene.sleep(SceneKey.NavbarScene);
         }
     }
