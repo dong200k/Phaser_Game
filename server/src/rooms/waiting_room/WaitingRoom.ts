@@ -1,5 +1,6 @@
-import { Client, Room, matchMaker } from "colyseus";
+import { Client, Room, RoomListingData, matchMaker } from "colyseus";
 import State from "./schemas/State";
+import globalEventEmitter from "../../util/EventUtil";
 
 interface WaitingRoomMetadata {
     inGame: boolean;
@@ -7,14 +8,14 @@ interface WaitingRoomMetadata {
     roomName: string;
 }
 
-export default class WaitingRoom extends Room<State> {
+export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
     maxClients = 4;
 
     onCreate() {
         console.log(`Created: Waiting room ${this.roomId}`);
         this.setState(new State());
 
-        this.updateMetadata({
+        this.setMetadata({
             inGame: false,
             passwordProtected: false,
             roomName: "A Room",
@@ -22,21 +23,11 @@ export default class WaitingRoom extends Room<State> {
 
         this.onMessage("start", (client: Client, message: any) => {
             matchMaker.createRoom('game', {}).then((room) => {
-                this.broadcast("joinGame", room.roomId);
-                this.lock();
-                this.updateMetadata({
-                    inGame: true,
-                    passwordProtected: false,
-                    roomName: "A Room",
-                })
+                this.onCreateGameRoom(room);
             }).catch(e => {
                 console.log(e);
             })
         })
-    }
-
-    updateMetadata(metadata: WaitingRoomMetadata) {
-        this.setMetadata(metadata);
     }
     
     onJoin(client: Client) {
@@ -52,7 +43,15 @@ export default class WaitingRoom extends Room<State> {
         console.log(`Disposed: Waiting room ${this.roomId}`);
     }
 
-    startGame() {
+    public onCreateGameRoom(room: RoomListingData) {
+        this.lock();
+        this.broadcast("joinGame", room.roomId);
+        this.setMetadata({ inGame: true })
+        globalEventEmitter.once(`GameFinished${room.roomId}`, () => this.onGameRoomDispose());
+    }
 
+    public onGameRoomDispose() {
+        this.unlock();
+        this.setMetadata({ inGame: false });
     }
 }

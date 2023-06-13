@@ -2,6 +2,7 @@ import { Client, Room, matchMaker } from "colyseus";
 import State from "./schemas/State";
 import GameManager from "./system/GameManager";
 import ReconciliationInfo from "./schemas/ReconciliationInfo";
+import globalEventEmitter from "../../util/EventUtil";
 
 export default class GameRoom extends Room<State> {
     //autoDispose = false;
@@ -98,5 +99,6 @@ export default class GameRoom extends Room<State> {
 
     onDispose() {
         console.log(`Disposed: Game room ${this.roomId}`);
+        globalEventEmitter.emit(`GameFinished${this.roomId}`);
     }
 }
