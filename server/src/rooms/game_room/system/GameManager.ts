@@ -35,7 +35,6 @@ export default class GameManager {
         this.effectManager = new EffectManager(this);
         this.dungeonManager = new DungeonManager(this);
         EffectLogicManager.getManager().setGameManager(this)
-
         this.initUpdateEvents();
         this.initCollisionEvent();
         this.syncServerStateBasedOnGameState();

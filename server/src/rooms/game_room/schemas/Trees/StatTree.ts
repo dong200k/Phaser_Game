@@ -1,13 +1,8 @@
-import { ArraySchema, Schema, type } from "@colyseus/schema";
+import { Schema, type } from "@colyseus/schema";
 import Node from "./Node/Node";
 import Stat from "../gameobjs/Stat";
-import Effect from "../effects/Effect";
 
 export default class StatTree<DataType> extends Schema{
-    /** Used to track order nodes were selected. 
-     *  @description Note: this is Static because only relative order matters, so as long as later selected nodes 
-     *  have higher selectionIndex its all good. This allows the counter to be used for multiple trees */
-    static selectionCounter = 0
 
     @type(Node) root
     @type(Stat) totalStat: Stat

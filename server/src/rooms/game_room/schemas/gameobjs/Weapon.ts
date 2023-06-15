@@ -1,6 +1,5 @@
 import { Schema, type } from '@colyseus/schema';
 import Stat from './Stat';
-import WeaponManager from '../../system/StateManagers/WeaponManager';
 import DatabaseManager from '../../system/Database/DatabaseManager';
 
 export default class Weapon extends Schema {

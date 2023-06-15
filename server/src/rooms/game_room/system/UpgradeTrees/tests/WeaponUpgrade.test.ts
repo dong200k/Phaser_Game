@@ -1,3 +1,4 @@
+import TreeUtil from "../../../../../util/TreeUtil"
 import State from "../../../schemas/State"
 import WeaponData from "../../../schemas/Trees/Node/Data/WeaponData"
 import Node from "../../../schemas/Trees/Node/Node"
@@ -5,7 +6,6 @@ import Player from "../../../schemas/gameobjs/Player"
 import Stat from "../../../schemas/gameobjs/Stat"
 import GameManager from "../../GameManager"
 import WeaponManager from "../../StateManagers/WeaponManager"
-import WeaponLogicManager from "../WeaponLogic/WeaponLogicManager"
 import WeaponUpgradeFactory from "../factories/WeaponUpgradeFactory"
 
 describe("Weapon Upgrade Tests", ()=>{
@@ -37,7 +37,7 @@ describe("Weapon Upgrade Tests", ()=>{
         let swordUpgrade = WeaponUpgradeFactory.createSwordUpgrade()
         expect(swordUpgrade).toBeTruthy()
 
-        WeaponManager.setWeaponUpgradeTree(playerState, swordUpgrade as Node<WeaponData>)
+        WeaponManager.equipWeaponUpgrade(playerState, swordUpgrade as Node<WeaponData>)
         
         // Check that player's upgradeTree's root has same structure as sword upgrade
         expect(upgradeTree.root).toEqual(WeaponUpgradeFactory.createSwordUpgrade())
@@ -48,18 +48,18 @@ describe("Weapon Upgrade Tests", ()=>{
     test("Player can receive next available upgrades in the tree", ()=>{
         // Equip bow upgrade tree
         let bowUpgrade = WeaponUpgradeFactory.createBowUpgrade()
-        WeaponManager.setWeaponUpgradeTree(playerState, bowUpgrade as Node<WeaponData>)
+        WeaponManager.equipWeaponUpgrade(playerState, bowUpgrade as Node<WeaponData>)
         
-        let upgrades = WeaponManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
+        let upgrades = TreeUtil.getAvailableUpgrades(playerState.weaponUpgradeTree)
         expect(upgrades?.length).toBe(3)
     })
     test("Player can select a weapon upgrade, which skips upgrades on same level", ()=>{
         // Equip bow upgrade tree
         let bowUpgrade = WeaponUpgradeFactory.createBowUpgrade()
-        WeaponManager.setWeaponUpgradeTree(playerState, bowUpgrade as Node<WeaponData>)
+        WeaponManager.equipWeaponUpgrade(playerState, bowUpgrade as Node<WeaponData>)
         
         // Select 1st upgrade
-        let upgrades = WeaponManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
+        let upgrades = TreeUtil.getAvailableUpgrades(playerState.weaponUpgradeTree)
         
         WeaponManager.selectUpgrade(playerState, upgrades as any, 1)
         
@@ -73,26 +73,26 @@ describe("Weapon Upgrade Tests", ()=>{
     test("Selecting weapon upgrades will invalidate/skip upgrades at the same depth when upgrades are choosen again", ()=>{
         // Equip bow upgrade tree
         let bowUpgrade = WeaponUpgradeFactory.createBowUpgrade()
-        WeaponManager.setWeaponUpgradeTree(playerState, bowUpgrade as Node<WeaponData>)
+        WeaponManager.equipWeaponUpgrade(playerState, bowUpgrade as Node<WeaponData>)
         
         // Select 1st upgrade
-        let upgrades = WeaponManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
+        let upgrades = WeaponManager.getAvailableUpgrades(playerState)
         WeaponManager.selectUpgrade(playerState, upgrades as any, 1)
 
         // Get new list of upgrades which should be from depth 2, which has 2 upgrades there
-        upgrades = WeaponManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
+        upgrades = WeaponManager.getAvailableUpgrades(playerState)
 
         expect(upgrades.length).toBe(2)
     })
     test("Selecting a weapon upgrade with a weaponId changes the base weapon/weaponId of the weapon tree", ()=>{
         // Equip bow upgrade tree
         let bowUpgrade = WeaponUpgradeFactory.createBowUpgrade()
-        WeaponManager.setWeaponUpgradeTree(playerState, bowUpgrade as Node<WeaponData>)
+        WeaponManager.equipWeaponUpgrade(playerState, bowUpgrade as Node<WeaponData>)
         
         expect(playerState.weaponUpgradeTree.weaponId).toBe('bow-id')
 
         // Select 1st upgrade which has a sword-id
-        let upgrades = WeaponManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
+        let upgrades = WeaponManager.getAvailableUpgrades(playerState)
         WeaponManager.selectUpgrade(playerState, upgrades as any, 1)
 
         //Check that the weapon changes
@@ -101,17 +101,17 @@ describe("Weapon Upgrade Tests", ()=>{
     test("Selecting multiple upgrades correctly change total stat and player weapon", ()=>{
         // Equip bow upgrade tree
         let bowUpgrade = WeaponUpgradeFactory.createBowUpgrade()
-        WeaponManager.setWeaponUpgradeTree(playerState, bowUpgrade as Node<WeaponData>)
+        WeaponManager.equipWeaponUpgrade(playerState, bowUpgrade as Node<WeaponData>)
         
         expect(playerState.weaponUpgradeTree.weaponId).toBe('bow-id')
 
         // Select 1st upgrade which has a sword-id
-        let upgrades = WeaponManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
-        WeaponManager.selectUpgrade(playerState, upgrades as any, 1)
+        let upgrades = WeaponManager.getAvailableUpgrades(playerState)
+        WeaponManager.selectUpgrade(playerState, upgrades, 1)
 
-         // Get new uprades at next depth and select 1st upgrade
-        upgrades = WeaponManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
-        WeaponManager.selectUpgrade(playerState, upgrades as any, 0)
+         // Get new upgrades at next depth and select 1st upgrade
+        upgrades = WeaponManager.getAvailableUpgrades(playerState)
+        WeaponManager.selectUpgrade(playerState, upgrades, 0)
 
         // compute total stat manually 
         let statObject = {
@@ -121,7 +121,7 @@ describe("Weapon Upgrade Tests", ()=>{
             critDamage: 0.1
         }
         let stat = new Stat(statObject)
-        let actualStat = WeaponManager.getTotalTreeStat(playerState.weaponUpgradeTree)
+        let actualStat = WeaponManager.getTotalStat(playerState)
         
         // check manual and actual are the same
         expect(stat).toEqual(actualStat)

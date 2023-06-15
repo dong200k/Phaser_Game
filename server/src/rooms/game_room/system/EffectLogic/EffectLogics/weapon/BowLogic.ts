@@ -1,5 +1,4 @@
 import MathUtil from "../../../../../../util/MathUtil";
-import Entity from "../../../../schemas/gameobjs/Entity";
 import Player from "../../../../schemas/gameobjs/Player";
 import GameManager from "../../../GameManager";
 import EffectLogic from "../../EffectLogic";

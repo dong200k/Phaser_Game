@@ -14,25 +14,29 @@ export default class DatabaseManager{
      * Loads weapon upgrades, artifact upgrades, and weapons from server/assets/db.json
      */
     async loadData(){
-        let db = await FileUtil.readJSONAsync("assets/db.json")
+        try {
+            let db = await FileUtil.readJSONAsync("assets/db.json")
 
-        //Load artifact and weapon upgrades
-        for (let upgrade of db.upgrades) {
-            if(upgrade.type === "weapon"){
-                this.weaponUpgrades.set(upgrade.id, upgrade)
-            }else{
-                this.artifactUpgrades.set(upgrade.id, upgrade)
+            //Load artifact and weapon upgrades
+            for (let upgrade of db.upgrades) {
+                if(upgrade.type === "weapon"){
+                    this.weaponUpgrades.set(upgrade.id, upgrade)
+                }else{
+                    this.artifactUpgrades.set(upgrade.id, upgrade)
+                }
             }
-        }
 
-        //Load skill trees
-        for (let skillTree of db.skills) {
-            this.skillTrees.set(skillTree.id, skillTree)
-        }
+            //Load skill trees
+            for (let skillTree of db.skills) {
+                this.skillTrees.set(skillTree.id, skillTree)
+            }
 
-        //Load weapons
-        for (let weapon of db.skills) {
-            this.weapons.set(weapon.id, weapon)
+            //Load weapons
+            for (let weapon of db.skills) {
+                this.weapons.set(weapon.id, weapon)
+            }
+        } catch (error: any) {
+            console.log(error.message)
         }
     }
 

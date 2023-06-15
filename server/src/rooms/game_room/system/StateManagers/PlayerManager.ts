@@ -1,17 +1,11 @@
 import Matter, { Bodies } from 'matter-js';
-import State from '../../schemas/State';
 import Player from '../../schemas/gameobjs/Player';
-import Cooldown from '../../schemas/gameobjs/Cooldown';
 import GameManager from '../GameManager';
 import MathUtil from '../../../../util/MathUtil';
-import GameObject from '../../schemas/gameobjs/GameObject';
-import Projectile from '../../schemas/gameobjs/Projectile';
 import { Categories } from '../Collisions/Category';
 import MaskManager from '../Collisions/MaskManager';
 import WeaponManager from './WeaponManager';
-import WeaponLogicManager from '../Weapons/WeaponLogic/WeaponLogicManager';
-import WeaponUpgradeFactory from '../Weapons/factories/WeaponUpgradeFactory';
-import EffectLogicManager from '../EffectLogic/EffectLogicManager';
+import WeaponUpgradeFactory from '../UpgradeTrees/factories/WeaponUpgradeFactory';
 import EffectManager from './EffectManager';
 
 export default class PlayerManager{
@@ -25,7 +19,7 @@ export default class PlayerManager{
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Player){
-                gameObject.attackCooldown.tick(deltaT)
+                // gameObject.attackCooldown.tick(deltaT)
                 gameObject.specialCooldown.tick(deltaT)
             }
         })
@@ -42,7 +36,7 @@ export default class PlayerManager{
         
         // trigger all player attack effect logics if there is a mouseclick
         if(mouseClick){
-            EffectManager.useTriggerEffectsOn("player attack", playerState, playerBody, {mouseX, mouseY})
+            EffectManager.useTriggerEffectsOn(playerState, "player attack", playerBody, {mouseX, mouseY})
         }
     }
 
@@ -111,7 +105,7 @@ export default class PlayerManager{
         //*** TODO *** initialize weapon upgrade tree based on role
         //Set weaponupgrade tree for player with a test weapon
         let root = WeaponUpgradeFactory.createBowUpgrade()
-        if(root) WeaponManager.setWeaponUpgradeTree(newPlayer, root)
+        if(root) WeaponManager.equipWeaponUpgrade(newPlayer, root)
 
         let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {
             isStatic: false,

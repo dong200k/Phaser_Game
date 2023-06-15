@@ -1,5 +1,4 @@
 import { Schema, type, MapSchema } from '@colyseus/schema';
-import Player from './gameobjs/Player';
 import GameObject from './gameobjs/GameObject';
 import Tilemap from './dungeon/tilemap/Tilemap';
 import Dungeon from './dungeon/Dungeon';

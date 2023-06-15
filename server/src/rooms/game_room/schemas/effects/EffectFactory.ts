@@ -6,9 +6,10 @@ import InstantHPEffect from "./onetime/InstantHPEffect";
 import SpeedMultiEffect from "./temp/SpeedMultiEffect";
 import StatEffect, { StatConfig } from "./temp/StatEffect";
 import CompoundEffect from "./combo/CompoundEffect";
-import UpgradeTriggerEffect from "./trigger/UpgradeTriggerEffect";
+import TriggerUpgradeEffect from "./trigger/TriggerUpgradeEffect";
 import UpgradeEffect from "../gameobjs/UpgradeEffect";
 import ContinuousUpgradeEffect from "./continuous/ContinuousUpgradeEffect";
+import OneTimeUpgradeEffect from "./onetime/OneTimeUpgradeEffect";
 
 
 export default class EffectFactory {
@@ -134,11 +135,15 @@ export default class EffectFactory {
         let doesStack = upgradeEffect.doesStack
         let collisionGroup = upgradeEffect.collisionGroup
 
-        // Creates appropriate effect based on type
+        // Creates appropriate effect based on type. To add types change logic here and also add a type to my-app/src/effectTypes.js
         switch(upgradeEffect.type){
             case "player attack":
+            case "player skill":
                 // Creates a UpgradeTriggerEffect which uses the effect when the EffectManager.useOnTriggerEffectsOn is called with the corresponding type, "player attack" in this case
-                return new UpgradeTriggerEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
+                return new TriggerUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
+            case "one time":
+                // Creates a onetime upgrade effect that is used once
+                return new OneTimeUpgradeEffect(effectLogicId, cooldown, doesStack, collisionGroup)
             case "none":
                 // Creates a ContinuousUpgradeEffect which uses the effect's logic automatically
                 return new ContinuousUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)

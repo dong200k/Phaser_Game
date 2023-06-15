@@ -8,9 +8,10 @@ import { type, ArraySchema } from '@colyseus/schema';
 /** Currently acts as a weapon upgrade and artifact upgrade tree */
 export default class WeaponUpgradeTree extends StatTree<WeaponData>{
     @type('string') weaponId
-    @type(Player) owner!: Player
     /** List of effects that are selected (not all of these are active, for active effects look on the entity who is equiping this tree) */
-    @type([Effect]) effects = new ArraySchema<Effect>
+    @type([Effect]) effects = new ArraySchema<Effect>();
+
+    owner!: Player
 
     constructor(owner?: Player, root?: Node<WeaponData>, name: string = "name", description: string = "description"){
         super(root, name, description)

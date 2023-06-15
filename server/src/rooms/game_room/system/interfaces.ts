@@ -1,10 +1,9 @@
-import { type } from "os";
 import WeaponData from "../schemas/Trees/Node/Data/WeaponData";
 import Node from "../schemas/Trees/Node/Node";
 import SkillData from "../schemas/Trees/Node/Data/SkillData";
-import GameManager from "./GameManager";
-import Entity from "../schemas/gameobjs/Entity";
-
+import ContinuousUpgradeEffect from "../schemas/effects/continuous/ContinuousUpgradeEffect";
+import OneTimeUpgradeEffect from "../schemas/effects/onetime/OneTimeUpgradeEffect";
+import TriggerUpgradeEffect from "../schemas/effects/trigger/TriggerUpgradeEffect";
 
 // ------------ interfaces for the Tiled json file -------------- //
 interface TiledObjectJSON {
@@ -82,3 +81,6 @@ export type weapon = {
 //     collisionGroup: number,
 //     type: "player attack" | "none"
 // }
+
+// ------------ interfaces for Upgrade Effects -------------- //
+export type IUpgradeEffect = TriggerUpgradeEffect | ContinuousUpgradeEffect | OneTimeUpgradeEffect

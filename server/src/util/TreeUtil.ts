@@ -10,12 +10,23 @@ import UpgradeEffect from "../rooms/game_room/schemas/gameobjs/UpgradeEffect"
 import EffectManager from "../rooms/game_room/system/StateManagers/EffectManager"
 
 export default class TreeUtil{
+
     /**
-     * Takes in a weapon or skill tree and computes the total stats the tree provides based on selected upgrades
+     * Takes in a weapon or skill tree and gets the total stats the tree provides based on selected upgrades.
+     * Warning: Do not modify the returned stat
+     * @param tree
+     * @returns returns a Stat class with the trees total stats, do not modify
+     */
+    static getTotalStat(tree: WeaponUpgradeTree | StatTree<SkillData>){
+        return tree.totalStat
+    }
+
+    /**
+     * Takes in a weapon or skill tree and computes the total stats the tree provides based on selected upgrades.
      * @param tree
      * @returns 
      */
-    static getTotalTreeStat(tree: WeaponUpgradeTree | StatTree<SkillData>){
+    static computeTotalStat(tree: WeaponUpgradeTree | StatTree<SkillData>){
         let totalStats = Stat.getZeroStat()
 
         //dfs traversal to get stats that have been selected
@@ -53,9 +64,9 @@ export default class TreeUtil{
         function dfs(root: Node<WeaponData>){
             switch(root.data.status){
                 case "selected":
-                    // Selected nodes definitely have a selectionIndex
+                    // Selected nodes definitely have a selectionTime
                     if(root.data.upgradeEffect){
-                        upgradeEffectsWithOrder.push({effect: root.data.upgradeEffect, order: root.data.selectionIndex as number})
+                        upgradeEffectsWithOrder.push({effect: root.data.upgradeEffect, order: root.data.selectionTime as number})
                     }
                 case "none":
                     return
@@ -76,29 +87,35 @@ export default class TreeUtil{
             .map((u: {effect: UpgradeEffect, order: number})=>u.effect)
     }
 
-    // could make time complexity better
-    static getAvailableUpgrades <T extends StatTree<U>, U extends WeaponData | SkillData>(tree: T): Node<U>[]{
+    /**
+     * Takes in a WeaponUpgradeTree (artifact/weapon upgrades) or a StatTree and returns the list of available upgrades in the tree with DFS.
+     * The available upgrades are the nodes with status = "none" that are immediately connected to a node with status = "skipped" | "selected" or the root node if that has status = "none".
+     * @param tree to get upgrades from
+     * @returns a list of available upgrades
+     */
+    static getAvailableUpgrades <T extends WeaponUpgradeTree|StatTree<SkillData>, U extends Exclude<T["root"], undefined>>
+    (tree: T): U[]{
         let root = tree.root
         if(!root) return []
 
-        let upgrades: Array<Node<U>> = []
-        //dfs traversal to get next upgrades
-        function dfs(root: Node<U>){
+        let upgrades: U[] = []
+        //dfs traversal to get next upgrades    
+        function dfs(root: U){
             if(root.data.status === "none")
                 return upgrades.push(root)
 
             for(let node of root.children){
-                dfs(node)
+                dfs(node as U) // Node will definitely be same type as tree's root
             }
         }
 
-        dfs(root)
+        dfs(root as U) // Typescript doesn't catch it, but obviously the tree root is same type U since U extends the tree root
         return upgrades
         
     }
 
     /**
-     * Selects and activates the upgrade of a player's tree (skill or weapon/artifact) based on player's choice. This will automatically add the upgrade's effects to the player.
+     * Selects and activates the upgrade of a player's tree (skill or weapon/artifact) based on player's choice.  This will automatically add the tree's selected node's effects to the player.
      * Note: WeaponUpgradeTree covers artifact and weapon tree while StatTree<SkillData> covers the skill tree. The type of a upgrade is deterimined by whether we use WeaponUpgradeTree or StatTree<SkillData>.
      * @param playerState player who is selecting the upgrade
      * @param tree upgrade tree (Weapon or Artifact or Skill) that upgrade is being selected for. WeaponUpgradeTree is used for both aritfact and weapon upgrade
@@ -175,7 +192,7 @@ export default class TreeUtil{
      * @param tree tree to get the stats from
      */
     static addTreeStatsToPlayer(playerState: Player, tree: WeaponUpgradeTree | StatTree<SkillData>){
-        let totalStat = TreeUtil.getTotalTreeStat(tree)
+        let totalStat = TreeUtil.computeTotalStat(tree)
         let statEffect = EffectFactory.createStatEffect(totalStat)
         let UUID = EffectManager.addStatEffectsTo(playerState, statEffect)
         tree.statEffectIds.push(UUID) // Add id to artifact tree so it can be removed when tree is unequipped

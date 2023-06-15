@@ -1,13 +1,10 @@
-import MathUtil from "../../../../../util/MathUtil";
 import Cooldown from "../../gameobjs/Cooldown";
 import Entity from "../../gameobjs/Entity";
-import Effect from "../Effect";
-import { type } from '@colyseus/schema';
 import TriggerEffect from "./TriggerEffect";
 import EffectLogicManager from "../../../system/EffectLogic/EffectLogicManager";
 
 /** TriggerEffect, but with cooldown. Used for Weapon Upgrade and Artifact Upgrade trees logics that are triggered by player input. */
-export default class UpgradeTriggerEffect extends TriggerEffect {
+export default class TriggerUpgradeEffect extends TriggerEffect {
     
     /** Cooldown of the effectLogic */
     cooldown: Cooldown
@@ -47,12 +44,14 @@ export default class UpgradeTriggerEffect extends TriggerEffect {
         this.cooldown.reset()
         return EffectLogicManager.getManager().useEffect(this.effectLogicId, entity, ...args)
     }
-
+    
     public toString(): string {
-       return `${super.toString()}(cooldown finished?: ${this.cooldown.isFinished}, original time: ${this.cooldown.time}, time remaining: ${this.cooldown.remainingTime})`;
+       return `${super.toString()}(effectLogicId: ${this.effectLogicId}, does stack?: ${this.doesStack}, collisionGroup: ${this.collisionGroup}, cooldown finished?: ${this.cooldown.isFinished}, original time: ${this.cooldown.time}, time remaining: ${this.cooldown.remainingTime})`;
     }
 
     public applyEffect(entity: Entity): boolean {
-        throw new Error("Method not implemented.");
+        // throw new Error("Method not implemented.");
+        return true
     }
+    
 }

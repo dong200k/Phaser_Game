@@ -1,9 +1,7 @@
-import FileUtil from "../../../../../util/FileUtil"
 import WeaponData from "../../../schemas/Trees/Node/Data/WeaponData"
 import Node from "../../../schemas/Trees/Node/Node"
 import Stat from "../../../schemas/gameobjs/Stat"
 import DatabaseManager from "../../Database/DatabaseManager"
-import { upgrade } from "../../interfaces"
 
 export default class WeaponUpgradeFactory{
     static singleton = new WeaponUpgradeFactory()
