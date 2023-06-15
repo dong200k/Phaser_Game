@@ -41,7 +41,7 @@ const renderForeignObjectNode = ({
 
 export default function Upgrade(props) {
   const [translate, containerRef] = useCenteredTree();
-  const nodeSize = { x: 500, y: 700 };
+  const nodeSize = { x: 500, y: 1000 };
   const foreignObjectProps = { width: nodeSize.x, height: nodeSize.y };
   
   const id = useParams().id

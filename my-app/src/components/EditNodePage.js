@@ -4,6 +4,7 @@ import NodeService from "../services/NodeService.js"
 import { useParams } from "react-router-dom"
 import Dropdown from 'react-bootstrap/Dropdown';
 import effectTypes from "../effectTypes.js";
+import WeaponService from "../services/WeaponService.js";
 
 export default function EditNodePage(){
     let id = useParams().id
@@ -11,6 +12,9 @@ export default function EditNodePage(){
     let [showZeroStat, setShowZeroStat] = useState(false)
     let dataKeys = ["name", "description", "stat", "weaponId", "effect"]
     let [nodes, setNodes] = useState([])
+    let [weapons, setWeapons] = useState([])
+    let nodeStatuses = ["none", "selected", "skipped"]
+
 
     // Load node to edit by id
     useEffect(()=>{
@@ -23,6 +27,11 @@ export default function EditNodePage(){
         NodeService.getAllNodes()
         .then(nodes=>setNodes(nodes))
     },[])
+
+    useEffect(()=>{
+        WeaponService.getAllWeapons()
+            .then(weapons=>setWeapons(weapons))
+    }, [])
 
     function onChange(type, key){
         return (e)=>{
@@ -117,6 +126,45 @@ export default function EditNodePage(){
         </Dropdown.Menu>
     </Dropdown>
 
+    let weaponDropDown = 
+    <Dropdown className="mb-5">
+        <Dropdown.Toggle variant="info" id="dropdown-basic">
+            Weapon: {weapons.find((weapon)=>weapon.id===form.data.weaponId)?.name}
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+            {weapons.map(weapon=>{
+                return <Dropdown.Item onClick={()=>setForm(prev=>{
+                    let newForm = {...prev}
+                    newForm.data['weaponId'] = weapon.id
+                    return newForm
+                })}>{weapon.name}</Dropdown.Item>
+            })}
+            <Dropdown.Item onClick={()=>setForm(prev=>{
+                    let newForm = {...prev}
+                    newForm.data['weaponId'] = ""
+                    return newForm
+                })}>none</Dropdown.Item>
+        </Dropdown.Menu>
+    </Dropdown>
+
+    let statusDropDown = 
+    <Dropdown className="mb-5">
+        <Dropdown.Toggle variant="info" id="dropdown-basic">
+            Status: {form.data.status}
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+            {nodeStatuses.map(status=>{
+                return <Dropdown.Item onClick={()=>setForm(prev=>{
+                    let newForm = {...prev}
+                    newForm.data.status = status
+                    return newForm
+                })}>{status}</Dropdown.Item>
+            })}
+        </Dropdown.Menu>
+    </Dropdown>
+
     return (
       <div className="text-center bg-light">
         {
@@ -135,12 +183,21 @@ export default function EditNodePage(){
                     <textarea value={form.data.description} style={{width: "25%"}}  onChange={onChange("other", "description")}/>
                 </div>
 
+                <h3>Selection Status: <span className="">{form.data.status}</span></h3>
+                {statusDropDown}
+
+                {
+                    form.data.status === "selected" &&
+                    <label className="d-flex justify-content-center">
+                        <span className="text-danger">Selection Time/Order</span>
+                        <input type="number" value={form.data.selectionTime} onChange={onChange("other", "selectionTime")}></input>
+                    </label> 
+                }
+
                 <br/><br/>
                 <div>
                     <h3>BaseWeapon</h3>
-                    <label className="d-flex justify-content-center">
-                        <span className="text-danger">weaponId:</span><input type="text" style={{width: "25%"}}  value={form.data.weaponId} onChange={onChange("other", "weaponId")}/>
-                    </label>
+                    {weaponDropDown}
                 </div>
                 <br/><br/>
 

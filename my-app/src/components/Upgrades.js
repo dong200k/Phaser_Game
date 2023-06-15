@@ -3,7 +3,7 @@ import UpgradeContainer from "./UpgradeContainer.js";
 import UpgradeService from "../services/UpgradeService.js";
 import SkillService from "../services/SkillService.js";
 import SkillContainer from "./SkillContainer.js";
-import NodeService from "../services/NodeService.js";
+import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function Upgrades(props){
     let [upgrades, setUpgrades] = useState([])
@@ -69,22 +69,79 @@ export default function Upgrades(props){
         </div>
     }
 
+    async function createTreeCopy(tree, type){
+        let result
+
+        // Create new tree in db
+        if(props.type === "upgrade"){
+          result = await UpgradeService.createUpgrade(type)  
+        }else if(props.type==="skill"){
+            result = await SkillService.createSkill() 
+        }
+        
+        if(result.status === 201){
+            let upgrade = await result.json()
+
+            // Init tree info
+            upgrade.name = "copy of " + tree.name
+            upgrade.description = tree.description
+            if(tree.type) upgrade.type = tree.type
+            upgrade.root = tree.root
+
+            // Save tree to database
+            let success
+            if(props.type === "upgrade"){
+                success = UpgradeService.saveUpgrade(upgrade)
+            }else{
+                success = SkillService.saveSkill(upgrade)
+            }
+            
+            if(success) setUpgrades(prevUpgrade=>[...prevUpgrade, upgrade])
+        }
+    }
+
+    let copyDropDown = (type) =>
+    <Dropdown className="mb-5">
+        <Dropdown.Toggle variant="info" id="dropdown-basic">
+            Make Copy
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+            {upgrades.filter(upgrade=>{
+                return !upgrade.type || upgrade.type === type
+            }).map(upgrade=>{
+                return <Dropdown.Item onClick={()=>createTreeCopy(upgrade, type)}>
+                    {upgrade.name}, {upgrade.id}
+                </Dropdown.Item>
+            })}
+        </Dropdown.Menu>
+    </Dropdown>
+
     return(
         <div style={{backgroundColor: props.type==="upgrade"? "lightgreen":"lightblue"}}> 
             <h1>{props.type}s</h1> 
             {upgrades.length===0? 
                 <div>No upgrades or json server is down</div> 
                 : 
-                props.type==="skill"?
+                <div>
+                    {props.type==="skill"?
                     <div>
-                        <button className="btn btn-success" onClick={createTree}>Create New {props.type}</button>
+                        <div className="d-flex" style={{height: "40px"}}>
+                            <button className="btn btn-success" onClick={createTree}>Create New {props.type}</button>
+                            {copyDropDown()}
+                        </div>
+                       
                         {upgrades.map(renderUpgrade)}
                     </div>
                     :
                     <div>
                         <div style={{backgroundColor: "lightgreen"}}>
                             <h3>Weapon Upgrades</h3>
-                            <button className="btn btn-success" onClick={()=>createTree("weapon")}>Create New Weapon Upgrade</button>
+                            <div className="d-flex" style={{height: "40px"}}>
+                                <button className="btn btn-success" onClick={()=>createTree("weapon")}>Create New Weapon Upgrade</button>
+                                {copyDropDown("weapon")}
+                            </div>
+                            
                             {upgrades.filter(upgrade=>upgrade.type==="weapon").map(renderUpgrade)}
                         </div>
 
@@ -92,10 +149,15 @@ export default function Upgrades(props){
                         
                         <div style={{backgroundColor: "lightpink"}}>
                             <h3>Artifact Upgrades</h3>
-                            <button className="btn btn-success" onClick={()=>createTree("artifact")}>Create New Artifact Upgrade</button>
+                            <div className="d-flex" style={{height: "40px"}}>
+                                <button className="btn btn-success" onClick={()=>createTree("artifact")}>Create New Artifact Upgrade</button>
+                                {copyDropDown("artifact")}
+                            </div>
                             {upgrades.filter(upgrade=>upgrade.type!=="weapon").map(renderUpgrade)}
                         </div>
                     </div>
+                    }
+                </div>
                     
             }
         </div>

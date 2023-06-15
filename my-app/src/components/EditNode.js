@@ -9,7 +9,8 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
     let [form, setForm] = useState(getEditForm(node, type))
     let [nodes, setNodes] = useState([])
     let [weapons, setWeapons] = useState([])
-    let dataKeys = ["name", "description", "stat", "weaponId", "effect"]
+    let dataKeys = ["name", "description", "stat", "weaponId", "effect", "status"]
+    let nodeStatuses = ["none", "selected", "skipped"]
     let [showZeroStat, setShowZeroStat] = useState(false)
 
     useEffect(()=>{
@@ -128,6 +129,11 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
                     return newForm
                 })}>{weapon.name}</Dropdown.Item>
             })}
+            <Dropdown.Item onClick={()=>setForm(prev=>{
+                    let newForm = {...prev}
+                    newForm.data['weaponId'] = ""
+                    return newForm
+                })}>none</Dropdown.Item>
         </Dropdown.Menu>
     </Dropdown>
 
@@ -148,6 +154,23 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
         </Dropdown.Menu>
     </Dropdown>
 
+    let statusDropDown = 
+    <Dropdown className="mb-5">
+        <Dropdown.Toggle variant="info" id="dropdown-basic">
+            Status: {form.data.status}
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+            {nodeStatuses.map(status=>{
+                return <Dropdown.Item onClick={()=>setForm(prev=>{
+                    let newForm = {...prev}
+                    newForm.data.status = status
+                    return newForm
+                })}>{status}</Dropdown.Item>
+            })}
+        </Dropdown.Menu>
+    </Dropdown>
+
     return (
       <div className="text-center bg-light">
          <form onSubmit={save} className="pt-5 mx-auto">
@@ -161,9 +184,24 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
                 <textarea value={form.data.description} style={{width: "25%"}}  onChange={onChange("other", "description")}/>
             </div>
 
+            <h3>Selection Status: <span className="">{form.data.status}</span></h3>
+            {statusDropDown}
+
+            {
+                form.data.status === "selected" &&
+                <label className="d-flex justify-content-center">
+                    <span className="text-danger">Selection Time/Order</span>
+                    <input type="number" value={form.data.selectionTime} onChange={onChange("other", "selectionTime")}></input>
+                </label> 
+            }
+            
+
+            <br/><br/>
+
             {type === "upgrade" &&
                 <div>
                     <h3>BaseWeapon</h3>
+                    {form.data.weaponId? <div>WeaponId: {form.data.weaponId}</div>: <></>}
                     {weaponDropDown}
 
                     <h3>Effect</h3>

@@ -1,6 +1,6 @@
 export default function NodeDetails({nodeDatum: node, type}){
     let {data, children, id} = node
-    let dataKeys = ["name", "description", "stat", "weaponId", "effect"]
+    let dataKeys = ["name", "description", "stat", "weaponId", "effect", ]
     return (
       <div>
         <h5><span className="text-primary">Name: </span>{data.name}</h5>
@@ -19,14 +19,18 @@ export default function NodeDetails({nodeDatum: node, type}){
         <br/><br/>
         <h5>Stats:</h5>
         {
-          Object.keys(data.stat).filter((key)=>data.stat[key]!==0).map(function(key) {
+          Object.keys(data.stat).filter((key)=>data.stat[key]!==0).slice(0, 5).map(function(key) {
             return <div><span className="text-danger">{key}:</span> {data.stat[key]}</div>
           })
         }  
+        {
+          Object.keys(data.stat).filter((key)=>data.stat[key]!==0).length < 5 ||
+          <div>. . . . .</div>
+        }
 
         <br/><br/>
         {
-          type === "upgrade" && node.data.effect && node.data.effect.effectId &&
+          type === "upgrade" && node.data.effect && node.data.effect.effectLogicId &&
           <div>
             <h3>Effect</h3>
               <div className="">
@@ -36,7 +40,7 @@ export default function NodeDetails({nodeDatum: node, type}){
                   <span className="text-danger">type: <span className="text-dark">{node.data.effect.type}</span> </span>
               </div>
               {
-                node.data.effect.cooldown &&
+                node.data.effect.cooldown !== undefined &&
                 <div>
                   <span className="text-danger">cooldown(ms): <span className="text-dark">{node.data.effect.cooldown}</span> </span>
                 </div>
@@ -59,7 +63,7 @@ export default function NodeDetails({nodeDatum: node, type}){
         <h5>Other:</h5>
         {
           Object.keys(data)
-            .filter((key)=>!dataKeys.includes(key) && data[key]!== 0)
+            .filter((key)=>!dataKeys.includes(key) && data[key]!= 0)
             .map(key=> <div><span className="text-danger">{key}:</span> {data[key]}</div>)
         }
       </div>

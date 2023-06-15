@@ -69,7 +69,9 @@ export function getDefaultNode(){
         lifeSteal:0,
         lifeStealPercent: 0,
         level:0,
-      }
+      },
+      status: "none",
+      selectionTime: ""
     }
   }
 }
