@@ -8,6 +8,7 @@ import MathUtil from "../util/MathUtil";
 import GameObject from "../gameobjs/GameObject";
 import ClientSidePrediction from "./ClientSidePrediction";
 import Tile from "../gameobjs/Tile";
+import EventManager from "./EventManager";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -262,6 +263,27 @@ export default class GameManager {
         this.addListenersToGameObject(entity, entityState);
         entityState.stat.onChange = (changes: any) => {
             entity.updateStat(entityState.stat);
+        }
+        if(entity === this.player1) {
+            // entityState.attackCooldown.onChange = () => {
+            //     console.log(entityState.attackCooldown.time);
+            //     console.log(entityState.attackCooldown.remainingTime);
+            // }
+            // EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_ARTIFACT_DISPLAY, {
+            //     items: [
+            //         {imageKey: "demo_hero", level: 20},
+            //     ]
+            // })
+
+            entityState.specialCooldown.onChange = () => {
+                let time = entityState.specialCooldown.time;
+                let remainingTime = entityState.specialCooldown.remainingTime;
+                let isFinished = entityState.specialCooldown.isFinished;
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
+                    specialCooldownCounter: Math.round(remainingTime / 1000),
+                    specialCooldownPercent: isFinished? 0 : remainingTime / time,
+                });
+            }
         }
     }
 }

@@ -1,9 +1,9 @@
-import { CircularProgress, OverlapSizer, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
+import { CircularProgress, OverlapSizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import CircleImage from "./CircleImage";
 import UIFactory from "./UIFactory";
-import TextBox from "./TextBox";
 import { ColorStyle } from "../config";
+import TextBoxPhaser from "./TextBoxPhaser";
 
 
 interface CircleImageProgressConfig extends OverlapSizer.IConfig {
@@ -22,7 +22,7 @@ export default class CircleImageProgress extends OverlapSizer {
     private backgroundCircle: CircleImage | null = null;
     private circularProgress: CircularProgress;
     private radius: number;
-    private text: TextBox;
+    private text: TextBoxPhaser;
 
     constructor(scene: SceneWithRexUI, config: CircleImageProgressConfig) {
         super(scene, config);
@@ -46,12 +46,12 @@ export default class CircleImageProgress extends OverlapSizer {
             value: 0.3,
             anticlockwise: true,
         })
-        this.circularProgress.setAlpha(0.8);
+        //this.circularProgress.setAlpha(0.9);
 
         this.scene.add.existing(this.circularProgress);
         this.add(this.circularProgress);
-        this.text = UIFactory.createTextBoxDOM(this.scene, "20", "l1")
-        this.add(this.text);
+        this.text = UIFactory.createTextBoxPhaser(this.scene, "20", "l1")
+        this.add(this.text, {expand: false});
     }
 
     public layoutCircleImageProgress() {
@@ -73,8 +73,24 @@ export default class CircleImageProgress extends OverlapSizer {
      * Sets the text that is displayed on the CircleImageProgress.
      * @param text A string.
      */
-    public setProgressNumber(value: string) {
+    public setProgressText(value: string) {
         this.text.setText(value);
+    }
+
+    /**
+     * Sets if the text is visible.
+     * @param value True or False.
+     */
+    public setProgressTextVisible(value: boolean) {
+        this.text.setVisible(value);
+    }
+
+    /**
+     * Sets the image for this circle progress.
+     * @param key The texture key.
+     */
+    public setProgressImage(key: string) {
+        this.backgroundCircle?.setTexture(key);
     }
 
 }

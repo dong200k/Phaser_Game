@@ -4,8 +4,7 @@ import ClientManager from '../system/ClientManager';
 import GameManager from '../system/GameManager';
 import { SceneKey } from '../config';
 import SceneManager from '../system/SceneManager';
-import DataManager from '../system/DataManager';
-import eventsManager from '../system/EventManager';
+import EventManager from '../system/EventManager';
 
 /**
  * The GameScene will be responsive for rendering the core gameplay. 
@@ -35,9 +34,10 @@ export default class GameScene extends Phaser.Scene {
     }
 
     public initializeListeners() {
-        eventsManager.on('GameScene.LeaveGame', this.leaveGame, this);
+        
+        EventManager.eventEmitter.on(EventManager.GameEvents.LEAVE_GAME, this.leaveGame, this);
         this.events.on("shutdown", () => {
-            eventsManager.removeListener('GameScene.LeaveGame', this.leaveGame, this);
+            EventManager.eventEmitter.off(EventManager.GameEvents.LEAVE_GAME, this.leaveGame, this);
             this.events.removeAllListeners();
             this.hideHUD();
         });
@@ -52,16 +52,18 @@ export default class GameScene extends Phaser.Scene {
     }
 
     public leaveGame() {
-        this.gameRoom?.leave();
-        this.children.getAll().forEach((obj) => {
-            obj.destroy();
-        })
-        this.gameManager = undefined;
-        this.gameRoom = undefined;
-        let switchToSceneKey = SceneKey.MenuScene;
-        if(ClientManager.getClient().isConnectedToWaitingRoom())
-            switchToSceneKey = SceneKey.RoomScene;
-        SceneManager.getSceneManager().switchToScene(switchToSceneKey);
+        if(this.scene.isActive(SceneKey.GameScene)) {
+            this.gameRoom?.leave();
+            this.children.getAll().forEach((obj) => {
+                obj.destroy();
+            })
+            this.gameManager = undefined;
+            this.gameRoom = undefined;
+            let switchToSceneKey = SceneKey.MenuScene;
+            if(ClientManager.getClient().isConnectedToWaitingRoom())
+                switchToSceneKey = SceneKey.RoomScene;
+            SceneManager.getSceneManager().switchToScene(switchToSceneKey);
+        }
     }
 
     update(time: number, deltaT: number) {

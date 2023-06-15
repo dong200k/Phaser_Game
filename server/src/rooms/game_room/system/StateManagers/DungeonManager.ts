@@ -81,10 +81,10 @@ export default class DungeonManager {
             wave2.addMonster("TinyZombie", 20);
             newDungeon.addWave(wave2);
 
-            let wave3 = this.createNewWave();
-            wave3.setAgressionLevel(5);
-            wave3.addMonster("TinyZombie", 100);
-            newDungeon.addWave(wave3);
+            // let wave3 = this.createNewWave();
+            // wave3.setAgressionLevel(5);
+            // wave3.addMonster("TinyZombie", 100);
+            // newDungeon.addWave(wave3);
 
             // ---- Setting new dungeon to state -----
             this.dungeon = newDungeon;

@@ -1,3 +1,4 @@
+import { ColorStyle } from "../config";
 
 export default class CircleImage extends Phaser.GameObjects.Image {
 
@@ -8,6 +9,7 @@ export default class CircleImage extends Phaser.GameObjects.Image {
         super(scene, x, y, texture);
         this.radius = radius,
         this.circle = new Phaser.GameObjects.Graphics(this.scene);
+        this.circle.fillStyle(ColorStyle.primary.hex[900]);
         this.circle.setPosition(x, y).fillCircle(0, 0, radius);
         this.scene.add.existing(this.circle);
         this.setMask(this.circle.createGeometryMask());
@@ -16,6 +18,10 @@ export default class CircleImage extends Phaser.GameObjects.Image {
 
     public updateMaskPosition() {
         if(this.circle) this.circle.setPosition(this.x, this.y);
+    }
+
+    public updateMaskVisible() {
+        this.circle.setVisible(this.visible);
     }
 
     public getCircleMask() {
