@@ -11,6 +11,14 @@ export default class WeaponManager{
      * @param root root node of weapon upgrade tree to equip
      */
     static equipWeaponUpgrade(playerState: Player, root: Node<WeaponData>){
+        // Already equipped a weapon
+        if(playerState.weaponUpgradeTree.root){
+            // Equip weapon is what we are trying to equip
+            if(playerState.weaponUpgradeTree.root === root) return
+
+            WeaponManager.unEquipWeaponUpgrade(playerState)
+        }
+        
         playerState.weaponUpgradeTree.root = root
         playerState.weaponUpgradeTree.setOwner(playerState)
         

@@ -22,12 +22,13 @@ const renderForeignObjectNode = ({
   deleteNode,
   type
 }) => {
+  let bgColor = nodeDatum.data.status==="selected"? "lightgreen" : nodeDatum.data.status==="skipped"? "lightyellow" : ""
   return (
     <g>
       
       <circle r={15}></circle>
       <foreignObject {...foreignObjectProps}>
-        <div style={{ border: "1px solid black", backgroundColor: "#dedede" }}>
+        <div style={{ border: "1px solid black", backgroundColor: bgColor}}>
           <NodeDetails nodeDatum = {nodeDatum} type={type}/>
 
           <button className="btn btn-warning" style={{ width: "100%" }} onClick={setEdit(nodeDatum)}>Edit</button>

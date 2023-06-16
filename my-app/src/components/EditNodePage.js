@@ -10,7 +10,7 @@ export default function EditNodePage(){
     let id = useParams().id
     let [form, setForm] = useState(getDefaultUpgradeNode())
     let [showZeroStat, setShowZeroStat] = useState(false)
-    let dataKeys = ["name", "description", "stat", "weaponId", "effect"]
+    let dataKeys = ["name", "description", "stat", "weaponId", "effect", "status", "selectionTime"]
     let [nodes, setNodes] = useState([])
     let [weapons, setWeapons] = useState([])
     let nodeStatuses = ["none", "selected", "skipped"]

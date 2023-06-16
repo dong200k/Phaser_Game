@@ -111,7 +111,7 @@ export default function Upgrades(props){
                 return !upgrade.type || upgrade.type === type
             }).map(upgrade=>{
                 return <Dropdown.Item onClick={()=>createTreeCopy(upgrade, type)}>
-                    {upgrade.name}, {upgrade.id}
+                    {upgrade.name}, <span className="text-danger">id: {upgrade.id}</span>
                 </Dropdown.Item>
             })}
         </Dropdown.Menu>

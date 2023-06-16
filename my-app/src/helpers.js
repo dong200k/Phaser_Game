@@ -71,7 +71,7 @@ export function getDefaultNode(){
         level:0,
       },
       status: "none",
-      selectionTime: ""
+      selectionTime: 0
     }
   }
 }

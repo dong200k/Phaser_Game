@@ -5,13 +5,13 @@
       "name": "deprecated-bow-upgrade",
       "type": "weapon",
       "root": {
-        "nodeId": "node-1",
+        "id": "node-1",
         "children": [
           {
-            "nodeId": "node-2",
+            "id": "node-2",
             "children": [
               {
-                "nodeId": "node-3",
+                "id": "node-3",
                 "children": [],
                 "data": {
                   "name": "Crit Enhancement 2",
@@ -83,13 +83,13 @@
             }
           },
           {
-            "nodeId": "node-4",
+            "id": "node-4",
             "children": [
               {
-                "nodeId": "node-5",
+                "id": "node-5",
                 "children": [
                   {
-                    "nodeId": "node-5d02d994-aa36-49df-ab63-a31d19643dbd",
+                    "id": "node-5d02d994-aa36-49df-ab63-a31d19643dbd",
                     "children": [],
                     "data": {
                       "name": "auto-generated",
@@ -199,7 +199,7 @@
             }
           },
           {
-            "nodeId": "node-6",
+            "id": "node-6",
             "children": [],
             "data": {
               "name": "Penetration",
@@ -283,13 +283,13 @@
       "name": "deprecated-sword-upgrade",
       "type": "weapon",
       "root": {
-        "nodeId": "node-1",
+        "id": "node-1",
         "children": [
           {
-            "nodeId": "node-2",
+            "id": "node-2",
             "children": [
               {
-                "nodeId": "node-3",
+                "id": "node-3",
                 "children": [],
                 "data": {
                   "name": "Crit Enhancement 2",
@@ -357,10 +357,10 @@
             }
           },
           {
-            "nodeId": "node-4",
+            "id": "node-4",
             "children": [
               {
-                "nodeId": "node-5",
+                "id": "node-5",
                 "children": [],
                 "data": {
                   "name": "Attack Enhancement 2",
@@ -428,7 +428,7 @@
             }
           },
           {
-            "nodeId": "node-6",
+            "id": "node-6",
             "children": [],
             "data": {
               "name": "Penetration",
@@ -1130,7 +1130,7 @@
                     "level": 0
                   },
                   "status": "selected",
-                  "selectionTime": "3",
+                  "selectionTime": 3,
                   "effect": {
                     "effectLogicId": "test-effect3",
                     "doesStack": 0,
@@ -1140,7 +1140,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "769b47bd-9285-4f60-b40f-a86d6cdeffcc",
+                  "id": "6a6a0e9e-2bc1-43f5-8b5f-d1906d049332",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -1175,7 +1175,7 @@
                 "level": 0
               },
               "status": "skipped",
-              "selectionTime": "",
+              "selectionTime": 0,
               "effect": {
                 "effectLogicId": "",
                 "doesStack": 1,
@@ -1186,7 +1186,7 @@
               "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
             },
             "__rd3t": {
-              "id": "95e5d5a7-8da7-4a8d-afb1-3ef1851c5d32",
+              "id": "87eac20f-4c0f-43c7-8dc5-4472c79a2d69",
               "depth": 1,
               "collapsed": false
             }
@@ -1226,7 +1226,7 @@
                     "level": 0
                   },
                   "status": "skipped",
-                  "selectionTime": "",
+                  "selectionTime": 0,
                   "effect": {
                     "effectLogicId": "",
                     "doesStack": 1,
@@ -1236,7 +1236,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "1f8e2ca6-0eb9-4932-b5a1-9d218c03600c",
+                  "id": "65a439bb-8419-4bd9-9a1d-cbe842f051e8",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -1271,7 +1271,7 @@
                 "level": 0
               },
               "status": "selected",
-              "selectionTime": "2",
+              "selectionTime": 2,
               "effect": {
                 "effectLogicId": "test-effect2",
                 "doesStack": 1,
@@ -1282,7 +1282,7 @@
               "weaponId": "weapon-4933503f-cd70-4076-8a99-8d90de74ab73"
             },
             "__rd3t": {
-              "id": "68eb4f47-57bf-41d5-b14b-c934d4a20a83",
+              "id": "51da00a2-55ab-4e6b-9ad4-95883769d2b6",
               "depth": 1,
               "collapsed": false
             }
@@ -1322,7 +1322,7 @@
                     "level": 0
                   },
                   "status": "skipped",
-                  "selectionTime": "",
+                  "selectionTime": 0,
                   "effect": {
                     "effectLogicId": "",
                     "doesStack": 1,
@@ -1332,7 +1332,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "6f6e1e3e-db0b-4acb-9334-776d9b081279",
+                  "id": "67412e6f-5d49-45bc-8561-9a8d92650720",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -1367,7 +1367,7 @@
                 "level": 0
               },
               "status": "skipped",
-              "selectionTime": "",
+              "selectionTime": 0,
               "effect": {
                 "effectLogicId": "",
                 "doesStack": 1,
@@ -1377,15 +1377,15 @@
               }
             },
             "__rd3t": {
-              "id": "28b89371-6d48-460c-b161-20a0b25bb792",
+              "id": "7740aec5-931e-4631-a4b5-c9f7616b57b8",
               "depth": 1,
               "collapsed": false
             }
           }
         ],
         "data": {
-          "name": "auto-generated",
-          "description": "auto-generated",
+          "name": "test",
+          "description": "1 for every stat",
           "stat": {
             "maxHp": 1,
             "maxMana": 1,
@@ -1412,7 +1412,7 @@
             "level": 1
           },
           "status": "selected",
-          "selectionTime": "1",
+          "selectionTime": 1,
           "effect": {
             "effectLogicId": "test-effect1",
             "doesStack": 0,
@@ -1423,486 +1423,30 @@
           "weaponId": "weapon-e8bd96d2-315e-4aa2-b583-b502c68b100f"
         },
         "__rd3t": {
-          "id": "0c0096e5-45ed-43e0-876d-753e7e88639a",
+          "id": "1a3b9090-3691-4a22-8be8-e8473ee8af4d",
           "depth": 0,
           "collapsed": false
         }
       }
     },
     {
-      "id": "upgrade-b3c35b0c-892d-4aab-aa31-dcd58bd2782a",
-      "name": "auto-generated",
+      "id": "upgrade-f7beeffa-d852-4581-b323-fb389511dfd2",
+      "name": "un-upgraded-test-weapon",
       "type": "weapon",
       "root": {
-        "id": "node-9c864382-17e4-44c8-b7f1-bf3881abbf48",
-        "children": [],
-        "data": {
-          "name": "auto-generated",
-          "description": "auto-generated",
-          "stat": {
-            "maxHp": 0,
-            "maxMana": 0,
-            "hp": 0,
-            "mana": 0,
-            "armor": 0,
-            "magicResist": 0,
-            "damagePercent": 0,
-            "attack": 0,
-            "attackPercent": 0,
-            "armorPen": 0,
-            "magicAttack": 0,
-            "magicAttackPercent": 0,
-            "magicPen": 0,
-            "critRate": 0,
-            "critDamage": 0,
-            "attackRange": 0,
-            "attackRangePercent": 0,
-            "attackSpeed": 0,
-            "attackSpeedPercent": 0,
-            "speed": 0,
-            "lifeSteal": 0,
-            "lifeStealPercent": 0,
-            "level": 0
-          },
-          "status": "none",
-          "effect": {
-            "effectLogicId": "",
-            "doesStack": 1,
-            "cooldown": 1000,
-            "collisionGroup": -1,
-            "type": "none"
-          }
-        }
-      }
-    },
-    {
-      "id": "upgrade-6727d23d-4b20-40da-bacd-f5342014c66e",
-      "name": "auto-generated",
-      "type": "artifact",
-      "root": {
-        "id": "node-56207a6b-27ee-4cc5-ac00-71d3816707c5",
-        "children": [],
-        "data": {
-          "name": "auto-generated",
-          "description": "auto-generated",
-          "stat": {
-            "maxHp": 0,
-            "maxMana": 0,
-            "hp": 0,
-            "mana": 0,
-            "armor": 0,
-            "magicResist": 0,
-            "damagePercent": 0,
-            "attack": 0,
-            "attackPercent": 0,
-            "armorPen": 0,
-            "magicAttack": 0,
-            "magicAttackPercent": 0,
-            "magicPen": 0,
-            "critRate": 0,
-            "critDamage": 0,
-            "attackRange": 0,
-            "attackRangePercent": 0,
-            "attackSpeed": 0,
-            "attackSpeedPercent": 0,
-            "speed": 0,
-            "lifeSteal": 0,
-            "lifeStealPercent": 0,
-            "level": 0
-          },
-          "status": "none",
-          "selectionTime": "",
-          "effect": {
-            "effectLogicId": "",
-            "doesStack": 1,
-            "cooldown": 1000,
-            "collisionGroup": -1,
-            "type": "none"
-          }
-        }
-      }
-    },
-    {
-      "id": "upgrade-fb7fb5df-d804-48fe-b6da-5c13f335e34f",
-      "name": "copy of deprecated-bow-upgrade",
-      "type": "weapon",
-      "root": {
-        "nodeId": "node-1",
+        "id": "node-25e048c1-5bc1-49f1-ae69-5000f2838ff7",
         "children": [
           {
-            "nodeId": "node-2",
+            "id": "node-910fcaee-3d3a-42d4-9b20-c92afae5d29b",
             "children": [
               {
-                "nodeId": "node-3",
+                "id": "node-5a5714a7-a425-4c96-97bd-defc4f48065b",
                 "children": [],
                 "data": {
-                  "name": "Crit Enhancement 2",
-                  "description": "increase crit rate by 10%",
+                  "name": "auto-generated",
+                  "description": "auto-generated",
                   "stat": {
-                    "maxHp": 0,
-                    "maxMana": 0,
-                    "hp": 0,
-                    "mana": 0,
-                    "armor": 0,
-                    "magicResist": 0,
-                    "damagePercent": 0,
-                    "attack": 0,
-                    "attackPercent": 0,
-                    "armorPen": 0,
-                    "magicAttack": 0,
-                    "magicAttackPercent": 0,
-                    "magicPen": 0,
-                    "critRate": 0.1,
-                    "critDamage": 0,
-                    "attackRange": 0,
-                    "attackRangePercent": 0,
-                    "attackSpeed": 0,
-                    "attackSpeedPercent": 0,
-                    "speed": 0,
-                    "lifeSteal": 0,
-                    "level": 0
-                  }
-                },
-                "__rd3t": {
-                  "id": "9ba6421c-1ae9-4b26-a2cf-8fe41afe2a15",
-                  "depth": 2,
-                  "collapsed": false
-                }
-              }
-            ],
-            "data": {
-              "name": "Crit Enhancement",
-              "description": "increase crit rate by 5%",
-              "stat": {
-                "maxHp": 0,
-                "maxMana": 0,
-                "hp": 0,
-                "mana": 0,
-                "armor": 0,
-                "magicResist": 0,
-                "damagePercent": 0,
-                "attack": 0,
-                "attackPercent": 0,
-                "armorPen": 0,
-                "magicAttack": 0,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0.05,
-                "critDamage": 0,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0,
-                "lifeSteal": 0,
-                "level": 0
-              }
-            },
-            "__rd3t": {
-              "id": "69ef3d42-ab65-4cc3-992f-a8c5baabcec1",
-              "depth": 1,
-              "collapsed": false
-            }
-          },
-          {
-            "nodeId": "node-4",
-            "children": [
-              {
-                "nodeId": "node-5",
-                "children": [
-                  {
-                    "nodeId": "node-5d02d994-aa36-49df-ab63-a31d19643dbd",
-                    "children": [],
-                    "data": {
-                      "name": "auto-generated",
-                      "description": "auto-generated",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": "1",
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0,
-                        "lifeSteal": 0,
-                        "level": 0
-                      },
-                      "weaponId": "1"
-                    },
-                    "__rd3t": {
-                      "id": "5a33309b-ee4d-4b97-a139-832a460c795b",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
-                "data": {
-                  "name": "Attack Enhancement 2",
-                  "description": "increase attack by 20 points",
-                  "stat": {
-                    "maxHp": 0,
-                    "maxMana": 0,
-                    "hp": 0,
-                    "mana": 0,
-                    "armor": 0,
-                    "magicResist": 0,
-                    "damagePercent": 0,
-                    "attack": 20,
-                    "attackPercent": 0,
-                    "armorPen": 0,
-                    "magicAttack": 0,
-                    "magicAttackPercent": 0,
-                    "magicPen": 0,
-                    "critRate": 0,
-                    "critDamage": 0,
-                    "attackRange": 0,
-                    "attackRangePercent": 0,
-                    "attackSpeed": 0,
-                    "attackSpeedPercent": 0,
-                    "speed": 0,
-                    "lifeSteal": 0,
-                    "level": 0
-                  }
-                },
-                "__rd3t": {
-                  "id": "73d1f622-4e5e-4307-80cb-4a2aa62ac052",
-                  "depth": 2,
-                  "collapsed": false
-                }
-              }
-            ],
-            "data": {
-              "name": "Attack Enhancement",
-              "description": "increase attack by 5 points",
-              "stat": {
-                "maxHp": 0,
-                "maxMana": 0,
-                "hp": 0,
-                "mana": 0,
-                "armor": 0,
-                "magicResist": 0,
-                "damagePercent": 0,
-                "attack": 5,
-                "attackPercent": 0,
-                "armorPen": 0,
-                "magicAttack": 0,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0,
-                "critDamage": 0,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0,
-                "lifeSteal": 0,
-                "lifeStealPercent": 0,
-                "level": 0
-              },
-              "weaponId": "sword-id"
-            },
-            "__rd3t": {
-              "id": "4dd67f9d-ae3b-4158-88b7-23f93b43d247",
-              "depth": 1,
-              "collapsed": false
-            }
-          },
-          {
-            "nodeId": "node-6",
-            "children": [],
-            "data": {
-              "name": "Penetration",
-              "description": "increase armor penetration by 5%",
-              "stat": {
-                "maxHp": 0,
-                "maxMana": 0,
-                "hp": 0,
-                "mana": 0,
-                "armor": 0,
-                "magicResist": 0,
-                "damagePercent": 0,
-                "attack": 0,
-                "attackPercent": 0,
-                "armorPen": 0.05,
-                "magicAttack": 0,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0,
-                "critDamage": 0,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0,
-                "lifeSteal": 0,
-                "level": 0
-              }
-            },
-            "__rd3t": {
-              "id": "865dc40b-9424-43a1-8e41-b442eb13af12",
-              "depth": 1,
-              "collapsed": false
-            }
-          }
-        ],
-        "data": {
-          "name": "Wooden Bow 2",
-          "description": "A sturdy wooden bow commonly seen with novice adventurers",
-          "stat": {
-            "maxHp": 0,
-            "maxMana": 0,
-            "hp": 0,
-            "mana": 0,
-            "armor": 0,
-            "magicResist": 0,
-            "damagePercent": 0,
-            "attack": 15,
-            "attackPercent": 0,
-            "armorPen": 0,
-            "magicAttack": 0,
-            "magicAttackPercent": 0,
-            "magicPen": 0,
-            "critRate": 0.01,
-            "critDamage": 0.1,
-            "attackRange": 0,
-            "attackRangePercent": 0,
-            "attackSpeed": 0,
-            "attackSpeedPercent": 0,
-            "speed": 0,
-            "lifeSteal": 0,
-            "lifeStealPercent": 0,
-            "level": 0
-          },
-          "effect": {
-            "effectId": "",
-            "doesStack": 1,
-            "cooldown": 1000
-          },
-          "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
-        },
-        "__rd3t": {
-          "id": "8beabb7e-e2d5-498c-9940-7c10276477a1",
-          "depth": 0,
-          "collapsed": false
-        }
-      }
-    },
-    {
-      "id": "upgrade-91fd3725-41eb-4743-9fba-e08408103dc4",
-      "name": "copy of Hermes Boots",
-      "type": "artifact",
-      "root": {
-        "id": "node-a4e88134-7d9a-4a58-be8a-1db4c9be8a71",
-        "children": [
-          {
-            "id": "node-4678a92b-d563-4e4b-88a8-dff71d4b2c1a",
-            "children": [
-              {
-                "id": "node-8ffd42fa-44b4-43c8-9772-d1aae380ac50",
-                "children": [
-                  {
-                    "id": "node-aee2cb31-8cff-4c02-b52e-4476264c4085",
-                    "children": [
-                      {
-                        "id": "node-5c5c5640-8a2e-4684-b5a4-414766406242",
-                        "children": [],
-                        "data": {
-                          "name": "Awakened Hermes Boots",
-                          "description": "Though these boots have not recovered their godly powers, they can occasionally react to an adventurer's skill to grant a momentary burst of incredible speed.",
-                          "stat": {
-                            "maxHp": 0,
-                            "maxMana": 0,
-                            "hp": 0,
-                            "mana": 0,
-                            "armor": 0,
-                            "magicResist": 0,
-                            "damagePercent": 0,
-                            "attack": 0,
-                            "attackPercent": 0,
-                            "armorPen": 0,
-                            "magicAttack": 0,
-                            "magicAttackPercent": 0,
-                            "magicPen": 0,
-                            "critRate": 0,
-                            "critDamage": 0,
-                            "attackRange": 0,
-                            "attackRangePercent": 0,
-                            "attackSpeed": 0,
-                            "attackSpeedPercent": 0,
-                            "speed": 0.05,
-                            "lifeSteal": 0,
-                            "lifeStealPercent": 0,
-                            "level": 0
-                          },
-                          "effect": {
-                            "effectId": "hermes-awaken-effect",
-                            "doesStack": 1,
-                            "effectLogicId": "Hermes-Boots",
-                            "cooldown": 2000,
-                            "type": "none",
-                            "collisionGroup": "-1"
-                          }
-                        },
-                        "__rd3t": {
-                          "id": "76c481ff-3a9f-4b4a-b7b9-6fc6f6a461a2",
-                          "depth": 4,
-                          "collapsed": false
-                        }
-                      }
-                    ],
-                    "data": {
-                      "name": "Speed Enhancement",
-                      "description": "Increases movement speed by 5 percent.",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": 0,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0.05,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0
-                      },
-                      "effect": {
-                        "effectId": "",
-                        "doesStack": 0
-                      }
-                    }
-                  }
-                ],
-                "data": {
-                  "name": "Speed Enhancement",
-                  "description": "Increases movement speed by 5 percent.",
-                  "stat": {
-                    "maxHp": 0,
+                    "maxHp": 100,
                     "maxMana": 0,
                     "hp": 0,
                     "mana": 0,
@@ -1921,21 +1465,31 @@
                     "attackRangePercent": 0,
                     "attackSpeed": 0,
                     "attackSpeedPercent": 0,
-                    "speed": 0.05,
+                    "speed": 0,
                     "lifeSteal": 0,
                     "lifeStealPercent": 0,
                     "level": 0
                   },
+                  "status": "none",
+                  "selectionTime": 0,
                   "effect": {
-                    "effectId": "",
-                    "doesStack": 0
+                    "effectLogicId": "test-effect3",
+                    "doesStack": 0,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "none"
                   }
+                },
+                "__rd3t": {
+                  "id": "0de901c6-a876-4cde-876a-a68d9732617e",
+                  "depth": 2,
+                  "collapsed": false
                 }
               }
             ],
             "data": {
-              "name": "Speed Enhancement",
-              "description": "Increases movement speed by 5 percent.",
+              "name": "auto-generated",
+              "description": "auto-generated",
               "stat": {
                 "maxHp": 0,
                 "maxMana": 0,
@@ -1956,53 +1510,561 @@
                 "attackRangePercent": 0,
                 "attackSpeed": 0,
                 "attackSpeedPercent": 0,
-                "speed": 0.05,
+                "speed": 0,
                 "lifeSteal": 0,
                 "lifeStealPercent": 0,
                 "level": 0
               },
+              "status": "none",
+              "selectionTime": 0,
               "effect": {
-                "effectId": "",
-                "doesStack": 0
+                "effectLogicId": "",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "none"
+              },
+              "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
+            },
+            "__rd3t": {
+              "id": "4061cebf-3b61-47bb-b5bc-14826d8961b2",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-0ea90beb-b911-447b-aa74-365df7bc4418",
+            "children": [
+              {
+                "id": "node-91198aa4-5e36-4653-ad61-c98d7e9af9b2",
+                "children": [],
+                "data": {
+                  "name": "auto-generated",
+                  "description": "auto-generated",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "effect": {
+                    "effectLogicId": "",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "none"
+                  }
+                },
+                "__rd3t": {
+                  "id": "56bfb2a1-d2ca-47f9-bc4f-5873d74ca9ea",
+                  "depth": 2,
+                  "collapsed": false
+                }
               }
+            ],
+            "data": {
+              "name": "auto-generated",
+              "description": "auto-generated",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 1,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "effect": {
+                "effectLogicId": "test-effect2",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": "1",
+                "type": "none"
+              },
+              "weaponId": "weapon-4933503f-cd70-4076-8a99-8d90de74ab73"
+            },
+            "__rd3t": {
+              "id": "0f9ed3dd-f86d-429b-845e-524fed0d9268",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-90bef13d-bb42-47c1-b183-66fd9edb6bfb",
+            "children": [
+              {
+                "id": "node-c0c47faf-4a5d-4ada-95c7-8237bc21346e",
+                "children": [],
+                "data": {
+                  "name": "auto-generated",
+                  "description": "auto-generated",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "effect": {
+                    "effectLogicId": "",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "none"
+                  }
+                },
+                "__rd3t": {
+                  "id": "1ee1068f-229c-4037-9f46-c8c301661793",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "auto-generated",
+              "description": "auto-generated",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "effect": {
+                "effectLogicId": "",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "none"
+              }
+            },
+            "__rd3t": {
+              "id": "764c1ff9-e242-408c-997a-2357af02a9f9",
+              "depth": 1,
+              "collapsed": false
             }
           }
         ],
         "data": {
-          "name": "Hermes Boots",
-          "description": "Legend has it that these boots were once worn by Hermes, although it looks dusty and broken now.",
+          "name": "test",
+          "description": "1 for every stat",
           "stat": {
-            "maxHp": 0,
-            "maxMana": 0,
-            "hp": 0,
-            "mana": 0,
-            "armor": 0,
-            "magicResist": 0,
-            "damagePercent": 0,
-            "attack": 0,
-            "attackPercent": 0,
-            "armorPen": 0,
-            "magicAttack": 0,
-            "magicAttackPercent": 0,
-            "magicPen": 0,
-            "critRate": 0,
-            "critDamage": 0,
-            "attackRange": 0,
-            "attackRangePercent": 0,
-            "attackSpeed": 0,
-            "attackSpeedPercent": 0,
-            "speed": 0.05,
-            "lifeSteal": 0,
-            "lifeStealPercent": 0,
-            "level": 0
+            "maxHp": 1,
+            "maxMana": 1,
+            "hp": 1,
+            "mana": 1,
+            "armor": 1,
+            "magicResist": 1,
+            "damagePercent": 0.1,
+            "attack": 1,
+            "attackPercent": 0.1,
+            "armorPen": 1,
+            "magicAttack": 1,
+            "magicAttackPercent": 1,
+            "magicPen": 1,
+            "critRate": 0.1,
+            "critDamage": 0.1,
+            "attackRange": 1,
+            "attackRangePercent": 0.1,
+            "attackSpeed": 1,
+            "attackSpeedPercent": 0.1,
+            "speed": 1,
+            "lifeSteal": 1,
+            "lifeStealPercent": 0.1,
+            "level": 1
           },
+          "status": "none",
+          "selectionTime": 0,
           "effect": {
-            "effectId": "",
-            "doesStack": 1
-          }
+            "effectLogicId": "test-effect1",
+            "doesStack": 0,
+            "cooldown": 1000,
+            "collisionGroup": "1",
+            "type": "none"
+          },
+          "weaponId": "weapon-e8bd96d2-315e-4aa2-b583-b502c68b100f"
         },
         "__rd3t": {
-          "id": "97fd7993-21bd-480f-8c50-a6620a2fbe23",
+          "id": "b03ef89b-9e4a-459b-bd42-93a26a729ebd",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
+    },
+    {
+      "id": "upgrade-9bfcad21-2b9a-408a-ad5d-91ecb5f2914b",
+      "name": "un-upgraded-test-artifact",
+      "type": "artifact",
+      "root": {
+        "id": "node-295a2e28-d891-4d76-a55f-9e0292334ff6",
+        "children": [
+          {
+            "id": "node-30f05f1f-e061-4293-9496-02a0adfc8dc3",
+            "children": [
+              {
+                "id": "node-82d6c117-791d-44b2-b131-c2bead62dc72",
+                "children": [],
+                "data": {
+                  "name": "auto-generated",
+                  "description": "auto-generated",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "effect": {
+                    "effectLogicId": "test-effect2",
+                    "doesStack": 0,
+                    "cooldown": 1000,
+                    "collisionGroup": "1",
+                    "type": "none"
+                  },
+                  "weaponId": "weapon-4933503f-cd70-4076-8a99-8d90de74ab73"
+                },
+                "__rd3t": {
+                  "id": "d7832f9b-e28a-45b3-9d28-1ed8adb6fd62",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "auto-generated",
+              "description": "auto-generated",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "effect": {
+                "effectLogicId": "test-effect2",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": "0",
+                "type": "none"
+              }
+            },
+            "__rd3t": {
+              "id": "4a30fc9c-9bbc-4d7b-a0c0-fdb5fefe0d8d",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "name": "auto-generated",
+          "description": "auto-generated",
+          "stat": {
+            "maxHp": 1,
+            "maxMana": 1,
+            "hp": 1,
+            "mana": 1,
+            "armor": 1,
+            "magicResist": 1,
+            "damagePercent": 1,
+            "attack": 1,
+            "attackPercent": 1,
+            "armorPen": 1,
+            "magicAttack": 1,
+            "magicAttackPercent": 1,
+            "magicPen": 1,
+            "critRate": 1,
+            "critDamage": 1,
+            "attackRange": 1,
+            "attackRangePercent": 1,
+            "attackSpeed": 1,
+            "attackSpeedPercent": 1,
+            "speed": 1,
+            "lifeSteal": 1,
+            "lifeStealPercent": 1,
+            "level": 1
+          },
+          "status": "none",
+          "selectionTime": 1,
+          "effect": {
+            "effectLogicId": "test-effect1",
+            "doesStack": 1,
+            "cooldown": 1000,
+            "collisionGroup": -1,
+            "type": "none"
+          },
+          "weaponId": "weapon-e8bd96d2-315e-4aa2-b583-b502c68b100f"
+        },
+        "__rd3t": {
+          "id": "d309f478-a1fe-415f-b5f2-1f55ea8034ec",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
+    },
+    {
+      "id": "upgrade-d251298f-b878-4a95-8864-d2a7e53fb098",
+      "name": "fully-upgraded-test-artifact",
+      "type": "artifact",
+      "root": {
+        "id": "node-295a2e28-d891-4d76-a55f-9e0292334ff6",
+        "children": [
+          {
+            "id": "node-30f05f1f-e061-4293-9496-02a0adfc8dc3",
+            "children": [
+              {
+                "id": "node-82d6c117-791d-44b2-b131-c2bead62dc72",
+                "children": [],
+                "data": {
+                  "name": "auto-generated",
+                  "description": "auto-generated",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "selected",
+                  "selectionTime": 2,
+                  "effect": {
+                    "effectLogicId": "test-effect2",
+                    "doesStack": 0,
+                    "cooldown": 1000,
+                    "collisionGroup": "1",
+                    "type": "none"
+                  },
+                  "weaponId": "weapon-4933503f-cd70-4076-8a99-8d90de74ab73"
+                },
+                "__rd3t": {
+                  "id": "e12875c7-da3c-424a-8594-a3200c0b32ea",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "auto-generated",
+              "description": "auto-generated",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "selected",
+              "selectionTime": 2,
+              "effect": {
+                "effectLogicId": "test-effect2",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": "0",
+                "type": "none"
+              }
+            },
+            "__rd3t": {
+              "id": "4c2a4f8d-af7f-4410-862d-80adeca74b9d",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "name": "auto-generated",
+          "description": "auto-generated",
+          "stat": {
+            "maxHp": 1,
+            "maxMana": 1,
+            "hp": 1,
+            "mana": 1,
+            "armor": 1,
+            "magicResist": 1,
+            "damagePercent": 1,
+            "attack": 1,
+            "attackPercent": 1,
+            "armorPen": 1,
+            "magicAttack": 1,
+            "magicAttackPercent": 1,
+            "magicPen": 1,
+            "critRate": 1,
+            "critDamage": 1,
+            "attackRange": 1,
+            "attackRangePercent": 1,
+            "attackSpeed": 1,
+            "attackSpeedPercent": 1,
+            "speed": 1,
+            "lifeSteal": 1,
+            "lifeStealPercent": 1,
+            "level": 1
+          },
+          "status": "selected",
+          "selectionTime": 1,
+          "effect": {
+            "effectLogicId": "test-effect1",
+            "doesStack": 1,
+            "cooldown": 1000,
+            "collisionGroup": -1,
+            "type": "none"
+          },
+          "weaponId": "weapon-e8bd96d2-315e-4aa2-b583-b502c68b100f"
+        },
+        "__rd3t": {
+          "id": "fd2c8af4-2708-462b-9266-0af7b40d6c1b",
           "depth": 0,
           "collapsed": false
         }
@@ -2014,19 +2076,19 @@
       "id": "skill-a63779a4-c357-4c62-a17d-d3d3606b1b4b",
       "name": "Adventurer Skill Tree",
       "root": {
-        "nodeId": "node-a141b8ba-7468-46a2-b4c7-c3551fe45f12",
+        "id": "node-a141b8ba-7468-46a2-b4c7-c3551fe45f12",
         "children": [
           {
-            "nodeId": "node-90c152fd-1f76-4a75-9c54-498993c5b1dd",
+            "id": "node-90c152fd-1f76-4a75-9c54-498993c5b1dd",
             "children": [
               {
-                "nodeId": "node-f035a5a9-5499-4da6-87b2-ca3010270694",
+                "id": "node-f035a5a9-5499-4da6-87b2-ca3010270694",
                 "children": [
                   {
-                    "nodeId": "node-5b4e2051-17ab-48e3-83d2-40891ee11007",
+                    "id": "node-5b4e2051-17ab-48e3-83d2-40891ee11007",
                     "children": [
                       {
-                        "nodeId": "node-1c1794d7-dc13-427c-927e-7576980260a4",
+                        "id": "node-1c1794d7-dc13-427c-927e-7576980260a4",
                         "children": [],
                         "data": {
                           "name": "Attack Enhancement",
@@ -2058,7 +2120,7 @@
                           }
                         },
                         "__rd3t": {
-                          "id": "e88806ea-09cf-4a58-b7d7-8af76c627f3e",
+                          "id": "40ec83ae-2177-458b-8d73-0d8bd7660811",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -2094,7 +2156,7 @@
                       }
                     },
                     "__rd3t": {
-                      "id": "b9949eaa-cc59-4bd5-84c9-6bf36f4744ad",
+                      "id": "a7512c37-8f39-4e47-ab5a-58038ad3d1a7",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -2130,7 +2192,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "8fd32a90-e3e4-425c-ac3b-3cab70c0986a",
+                  "id": "fbf10b05-ac12-474a-af32-d653862d0a54",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -2163,25 +2225,28 @@
                 "lifeSteal": 0,
                 "lifeStealPercent": 0,
                 "level": 0
-              }
+              },
+              "status": "selected",
+              "selectionTime": 0,
+              "coinCost": 0
             },
             "__rd3t": {
-              "id": "8ec3b957-4890-4bcf-90e9-6743eff3c46d",
+              "id": "7add0584-c434-4d1a-95d3-0df72383c1d7",
               "depth": 1,
               "collapsed": false
             }
           },
           {
-            "nodeId": "node-ef888992-ab35-44ed-ac49-810f20040573",
+            "id": "node-ef888992-ab35-44ed-ac49-810f20040573",
             "children": [
               {
-                "nodeId": "node-44657fe7-318d-4cb4-a13f-6eed27aa173f",
+                "id": "node-44657fe7-318d-4cb4-a13f-6eed27aa173f",
                 "children": [
                   {
-                    "nodeId": "node-315bdf7a-42e2-4977-8a1c-a68739680de8",
+                    "id": "node-315bdf7a-42e2-4977-8a1c-a68739680de8",
                     "children": [
                       {
-                        "nodeId": "node-c37f9cf0-7450-419e-b9f9-dd0ec8ff5915",
+                        "id": "node-c37f9cf0-7450-419e-b9f9-dd0ec8ff5915",
                         "children": [],
                         "data": {
                           "name": "Armor Enhancement",
@@ -2213,7 +2278,7 @@
                           }
                         },
                         "__rd3t": {
-                          "id": "dec1ab65-c28d-42ea-bca6-535dc4aac192",
+                          "id": "121b75ed-a4b7-4dd9-af00-af098dcb642f",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -2249,7 +2314,7 @@
                       }
                     },
                     "__rd3t": {
-                      "id": "86c2ed42-6bed-4488-b842-b6af3a0045cc",
+                      "id": "5d385630-4e0c-444c-a9fb-310a7dd04ed4",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -2285,7 +2350,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "1cc0ab2a-df03-4a9f-a28f-a311b0472528",
+                  "id": "ba92896b-e34e-4a72-9514-c1e6b1808aae",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -2318,25 +2383,28 @@
                 "lifeSteal": 0,
                 "lifeStealPercent": 0,
                 "level": 0
-              }
+              },
+              "status": "skipped",
+              "selectionTime": 0,
+              "coinCost": 0
             },
             "__rd3t": {
-              "id": "aa5383b8-78ea-4b7a-b0e4-a4ac5e0bda7d",
+              "id": "bf900111-f77f-4cad-af82-6ea7499fbbbd",
               "depth": 1,
               "collapsed": false
             }
           },
           {
-            "nodeId": "node-e90b6495-9ba3-4677-98d3-7d27c4a113d5",
+            "id": "node-e90b6495-9ba3-4677-98d3-7d27c4a113d5",
             "children": [
               {
-                "nodeId": "node-769b16b1-bb11-4336-af24-6efd0d378bd5",
+                "id": "node-769b16b1-bb11-4336-af24-6efd0d378bd5",
                 "children": [
                   {
-                    "nodeId": "node-648fb567-6ce1-4226-b2e3-64b9c5df9e60",
+                    "id": "node-648fb567-6ce1-4226-b2e3-64b9c5df9e60",
                     "children": [
                       {
-                        "nodeId": "node-ce8c3be3-2aa5-4c6e-8e4e-a2025909924a",
+                        "id": "node-ce8c3be3-2aa5-4c6e-8e4e-a2025909924a",
                         "children": [],
                         "data": {
                           "name": "Magic Resist",
@@ -2368,7 +2436,7 @@
                           }
                         },
                         "__rd3t": {
-                          "id": "99ea392c-ab25-43d5-b0ab-b7394ee792b5",
+                          "id": "d0f3a51b-1a10-4558-8d54-47b52d3fb1c4",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -2404,7 +2472,7 @@
                       }
                     },
                     "__rd3t": {
-                      "id": "16efb889-75ea-4bfd-bede-5b58c50a4020",
+                      "id": "6fadcead-6a51-40f9-9ff8-6bcbf0ad8656",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -2440,7 +2508,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "1a96d257-17a2-498d-ab27-5b8c4b175a2d",
+                  "id": "bdac579f-5b4c-454b-ab40-c84f4594b9b0",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -2473,25 +2541,28 @@
                 "lifeSteal": 0,
                 "lifeStealPercent": 0,
                 "level": 0
-              }
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 0
             },
             "__rd3t": {
-              "id": "39653fdb-1f86-40bd-9bb9-4902caaecd70",
+              "id": "24245655-3277-467d-b9df-bde54ae9e0e4",
               "depth": 1,
               "collapsed": false
             }
           },
           {
-            "nodeId": "node-55aed6b7-fda0-4a79-9a51-74c87dd80c50",
+            "id": "node-55aed6b7-fda0-4a79-9a51-74c87dd80c50",
             "children": [
               {
-                "nodeId": "node-1ffecd34-a048-46f6-9d44-b726c340a98a",
+                "id": "node-1ffecd34-a048-46f6-9d44-b726c340a98a",
                 "children": [
                   {
-                    "nodeId": "node-e0728448-e3d6-4271-be3a-86268c468e07",
+                    "id": "node-e0728448-e3d6-4271-be3a-86268c468e07",
                     "children": [
                       {
-                        "nodeId": "node-45c5b41d-6bff-4d27-bcff-5fb7c095d378",
+                        "id": "node-45c5b41d-6bff-4d27-bcff-5fb7c095d378",
                         "children": [],
                         "data": {
                           "name": "Max Health",
@@ -2523,7 +2594,7 @@
                           }
                         },
                         "__rd3t": {
-                          "id": "0cb8a1e2-8cdc-4a12-a0d0-e9d46408bfe0",
+                          "id": "38f99de3-df9c-4dd7-a182-57b06c8f20c5",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -2559,7 +2630,7 @@
                       }
                     },
                     "__rd3t": {
-                      "id": "817c2ea5-55fc-4576-8e68-b663f59f1165",
+                      "id": "7f59f035-02ca-4efe-976d-637012ed03e7",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -2595,7 +2666,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "bd1b9bac-fab5-45a0-8367-ffdd073a36ce",
+                  "id": "82344ecd-6512-45ef-9961-30a490fb6e75",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -2631,22 +2702,22 @@
               }
             },
             "__rd3t": {
-              "id": "5c62e979-3234-426f-bd85-955815b4a001",
+              "id": "81444ed5-81e5-459b-8bb7-d6c9588354dd",
               "depth": 1,
               "collapsed": false
             }
           },
           {
-            "nodeId": "node-42d9aeb5-2402-415a-9d0d-248a878277d5",
+            "id": "node-42d9aeb5-2402-415a-9d0d-248a878277d5",
             "children": [
               {
-                "nodeId": "node-22973146-4835-495c-8125-5fba82a779d1",
+                "id": "node-22973146-4835-495c-8125-5fba82a779d1",
                 "children": [
                   {
-                    "nodeId": "node-1de824cb-2374-4a8b-a20f-c42b81457fe2",
+                    "id": "node-1de824cb-2374-4a8b-a20f-c42b81457fe2",
                     "children": [
                       {
-                        "nodeId": "node-70b9a3dd-716a-482b-b4a0-4c77ea503c70",
+                        "id": "node-70b9a3dd-716a-482b-b4a0-4c77ea503c70",
                         "children": [],
                         "data": {
                           "name": "Max Mana",
@@ -2678,7 +2749,7 @@
                           }
                         },
                         "__rd3t": {
-                          "id": "82ba4533-72e3-42ab-b781-0cc50e2ee750",
+                          "id": "20548d01-fd2b-45ab-a2a8-1530131ad611",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -2714,7 +2785,7 @@
                       }
                     },
                     "__rd3t": {
-                      "id": "56d9d116-a08e-4a40-ac1d-f9744ccf13d1",
+                      "id": "dda7f084-ec5c-4d88-a94c-293c3d9fedc1",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -2750,7 +2821,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "4aedd0be-2074-4cd9-9161-7e0c2eb8bc60",
+                  "id": "1d0ff5a6-2e66-45f6-9d1e-23e65bf029ac",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -2786,22 +2857,22 @@
               }
             },
             "__rd3t": {
-              "id": "bbee15cd-1d3b-4d4c-a044-c4c7aff759f7",
+              "id": "2af415b9-e5d2-4743-a319-1d5062ae2f52",
               "depth": 1,
               "collapsed": false
             }
           },
           {
-            "nodeId": "node-d44c1c21-5832-42e8-8253-3595d499c156",
+            "id": "node-d44c1c21-5832-42e8-8253-3595d499c156",
             "children": [
               {
-                "nodeId": "node-c066e5fc-3b82-4ba3-86ec-3fd6e0c02bf0",
+                "id": "node-c066e5fc-3b82-4ba3-86ec-3fd6e0c02bf0",
                 "children": [
                   {
-                    "nodeId": "node-fc510315-56c3-40b2-840b-bc41dbabaf43",
+                    "id": "node-fc510315-56c3-40b2-840b-bc41dbabaf43",
                     "children": [
                       {
-                        "nodeId": "node-d19cfefe-28d5-438b-819a-49d6f61213c3",
+                        "id": "node-d19cfefe-28d5-438b-819a-49d6f61213c3",
                         "children": [],
                         "data": {
                           "name": "Magic Attack",
@@ -2833,7 +2904,7 @@
                           }
                         },
                         "__rd3t": {
-                          "id": "959e5419-3635-4658-bdc0-cc9526eed297",
+                          "id": "903abc8e-6cdb-497d-bb31-20d5630efe8c",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -2869,7 +2940,7 @@
                       }
                     },
                     "__rd3t": {
-                      "id": "b80ae0bc-314a-4380-9975-4a3eae1b1b74",
+                      "id": "744607c1-cfe5-49a1-a590-e522874dfd1f",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -2905,7 +2976,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "9dc30625-fa58-41cc-b832-eb4d5129fb1b",
+                  "id": "15254c8d-c967-44d3-8413-bab043e3c2cd",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -2941,22 +3012,22 @@
               }
             },
             "__rd3t": {
-              "id": "5d2a26c8-68b9-45c6-b6c8-f3c653e0bf11",
+              "id": "f83bddb1-5ed7-4c17-87d6-43fd1d0a3083",
               "depth": 1,
               "collapsed": false
             }
           },
           {
-            "nodeId": "node-2d223e46-943d-41ba-957a-3ff05b7bd82e",
+            "id": "node-2d223e46-943d-41ba-957a-3ff05b7bd82e",
             "children": [
               {
-                "nodeId": "node-d89d3dce-31bf-44ca-9496-b42f721bcab6",
+                "id": "node-d89d3dce-31bf-44ca-9496-b42f721bcab6",
                 "children": [
                   {
-                    "nodeId": "node-2d4710a8-3d4e-4635-bfdf-4d7c2b4eff31",
+                    "id": "node-2d4710a8-3d4e-4635-bfdf-4d7c2b4eff31",
                     "children": [
                       {
-                        "nodeId": "node-edcc48f0-db2e-46ec-9f6a-a47dcfbdf3a8",
+                        "id": "node-edcc48f0-db2e-46ec-9f6a-a47dcfbdf3a8",
                         "children": [],
                         "data": {
                           "name": "Critical Rate",
@@ -2988,7 +3059,7 @@
                           }
                         },
                         "__rd3t": {
-                          "id": "091888d6-12c4-4d68-9672-f7de56382390",
+                          "id": "991bdcc5-38f3-407f-9bd9-e0b7d1102177",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -3024,7 +3095,7 @@
                       }
                     },
                     "__rd3t": {
-                      "id": "18e36a63-e6f7-460a-8d60-e7589e72c9c0",
+                      "id": "e8ac9fdd-3322-4520-ba05-1847a1b514c3",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -3060,7 +3131,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "8402b3a2-c56e-4ed3-94bd-38ba5b6d1738",
+                  "id": "54d71fb1-3aae-4d89-83a2-8f3f925aeeb0",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -3096,22 +3167,22 @@
               }
             },
             "__rd3t": {
-              "id": "7699b039-6758-4d16-b7ca-54381a53a17f",
+              "id": "f4ab9a35-0c27-4994-b54f-1c2582aa1b2a",
               "depth": 1,
               "collapsed": false
             }
           },
           {
-            "nodeId": "node-84356ff8-2170-491a-8f1c-59715c56b1f7",
+            "id": "node-84356ff8-2170-491a-8f1c-59715c56b1f7",
             "children": [
               {
-                "nodeId": "node-f0da1e22-bb0e-430d-b983-48c440c376df",
+                "id": "node-f0da1e22-bb0e-430d-b983-48c440c376df",
                 "children": [
                   {
-                    "nodeId": "node-a5a6c9cb-7b23-4916-bd3e-5f68bd3c8d91",
+                    "id": "node-a5a6c9cb-7b23-4916-bd3e-5f68bd3c8d91",
                     "children": [
                       {
-                        "nodeId": "node-acf33d78-c5e5-4d32-9343-0b0a30232e74",
+                        "id": "node-acf33d78-c5e5-4d32-9343-0b0a30232e74",
                         "children": [],
                         "data": {
                           "name": "Critical Damage",
@@ -3143,7 +3214,7 @@
                           }
                         },
                         "__rd3t": {
-                          "id": "f3bfade8-b6dd-48d5-96f5-ef710f05f0d5",
+                          "id": "2662705c-d33a-4ad4-a3f9-b1c1038dfa70",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -3179,7 +3250,7 @@
                       }
                     },
                     "__rd3t": {
-                      "id": "bc0c68ee-94bb-4e7f-b5da-0274723bab29",
+                      "id": "b3e90fc5-f8d3-4d33-9a31-be5305bf3e55",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -3215,7 +3286,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "c07cfcc2-eb73-48c8-a8bc-694137157be0",
+                  "id": "0c378aeb-bea5-4cf3-b2f5-cbbea845f7ac",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -3251,22 +3322,22 @@
               }
             },
             "__rd3t": {
-              "id": "bac4bd1d-c3ec-40f2-bb97-320a1b0521af",
+              "id": "d9bd2474-d751-428d-aa02-57c15ce4bf2b",
               "depth": 1,
               "collapsed": false
             }
           },
           {
-            "nodeId": "node-e10b6b70-7b71-4199-8c3b-5c3dc8da465f",
+            "id": "node-e10b6b70-7b71-4199-8c3b-5c3dc8da465f",
             "children": [
               {
-                "nodeId": "node-e45edc99-14b8-4931-b243-d1ac3b91292a",
+                "id": "node-e45edc99-14b8-4931-b243-d1ac3b91292a",
                 "children": [
                   {
-                    "nodeId": "node-2f72e2b0-b6dd-4e95-b867-e108880d7556",
+                    "id": "node-2f72e2b0-b6dd-4e95-b867-e108880d7556",
                     "children": [
                       {
-                        "nodeId": "node-51a1a8bc-8bc7-4aae-9da7-64f742f0b64e",
+                        "id": "node-51a1a8bc-8bc7-4aae-9da7-64f742f0b64e",
                         "children": [],
                         "data": {
                           "name": "Speed",
@@ -3298,7 +3369,7 @@
                           }
                         },
                         "__rd3t": {
-                          "id": "5cd258c1-db1f-4142-a52b-ed4a8f04fe08",
+                          "id": "b941d9eb-9c02-47e5-9a2f-fd1dd4c14c71",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -3334,7 +3405,7 @@
                       }
                     },
                     "__rd3t": {
-                      "id": "1f8e6475-bad6-4095-b986-5d7cb3dcf4ed",
+                      "id": "ddcd35e7-a1e5-4180-bdd9-bdfabb9eea11",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -3370,7 +3441,7 @@
                   }
                 },
                 "__rd3t": {
-                  "id": "32588699-b06f-405c-89e3-4a10dfd2b2ec",
+                  "id": "abf832b3-cb04-48d8-a28b-33785814344f",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -3406,7 +3477,7 @@
               }
             },
             "__rd3t": {
-              "id": "9da665f1-ccae-4c15-9efb-8d8a12d8e7bc",
+              "id": "40a5b84e-fab8-4eb0-bec2-2d0b48bea320",
               "depth": 1,
               "collapsed": false
             }
@@ -3439,1448 +3510,13 @@
             "lifeSteal": 0,
             "lifeStealPercent": 0,
             "level": 1
-          }
+          },
+          "status": "selected",
+          "selectionTime": 0,
+          "coinCost": 0
         },
         "__rd3t": {
-          "id": "916d2755-11e2-4875-9653-60bf701e2130",
-          "depth": 0,
-          "collapsed": false
-        }
-      }
-    },
-    {
-      "id": "skill-27fe59b3-e222-4e31-b1e3-534b7b7cbcbb",
-      "name": "copy of Adventurer Skill Tree",
-      "root": {
-        "nodeId": "node-a141b8ba-7468-46a2-b4c7-c3551fe45f12",
-        "children": [
-          {
-            "nodeId": "node-90c152fd-1f76-4a75-9c54-498993c5b1dd",
-            "children": [
-              {
-                "nodeId": "node-f035a5a9-5499-4da6-87b2-ca3010270694",
-                "children": [
-                  {
-                    "nodeId": "node-5b4e2051-17ab-48e3-83d2-40891ee11007",
-                    "children": [
-                      {
-                        "nodeId": "node-1c1794d7-dc13-427c-927e-7576980260a4",
-                        "children": [],
-                        "data": {
-                          "name": "Attack Enhancement",
-                          "description": "Increases attack by 8 points",
-                          "stat": {
-                            "maxHp": 0,
-                            "maxMana": 0,
-                            "hp": 0,
-                            "mana": 0,
-                            "armor": 0,
-                            "magicResist": 0,
-                            "damagePercent": 0,
-                            "attack": 8,
-                            "attackPercent": 0,
-                            "armorPen": 0,
-                            "magicAttack": 0,
-                            "magicAttackPercent": 0,
-                            "magicPen": 0,
-                            "critRate": 0,
-                            "critDamage": 0,
-                            "attackRange": 0,
-                            "attackRangePercent": 0,
-                            "attackSpeed": 0,
-                            "attackSpeedPercent": 0,
-                            "speed": 0,
-                            "lifeSteal": 0,
-                            "lifeStealPercent": 0,
-                            "level": 0
-                          }
-                        },
-                        "__rd3t": {
-                          "id": "e88806ea-09cf-4a58-b7d7-8af76c627f3e",
-                          "depth": 4,
-                          "collapsed": false
-                        }
-                      }
-                    ],
-                    "data": {
-                      "name": "Attack Enhancement",
-                      "description": "Increases attack by 4 points.",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": 0,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 4,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0
-                      }
-                    },
-                    "__rd3t": {
-                      "id": "b9949eaa-cc59-4bd5-84c9-6bf36f4744ad",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
-                "data": {
-                  "name": "Attack Enhancement",
-                  "description": "Increases attack by 2 points.",
-                  "stat": {
-                    "maxHp": 0,
-                    "maxMana": 0,
-                    "hp": 0,
-                    "mana": 0,
-                    "armor": 0,
-                    "magicResist": 0,
-                    "damagePercent": 0,
-                    "attack": 2,
-                    "attackPercent": 0,
-                    "armorPen": 0,
-                    "magicAttack": 0,
-                    "magicAttackPercent": 0,
-                    "magicPen": 0,
-                    "critRate": 0,
-                    "critDamage": 0,
-                    "attackRange": 0,
-                    "attackRangePercent": 0,
-                    "attackSpeed": 0,
-                    "attackSpeedPercent": 0,
-                    "speed": 0,
-                    "lifeSteal": 0,
-                    "lifeStealPercent": 0,
-                    "level": 0
-                  }
-                },
-                "__rd3t": {
-                  "id": "8fd32a90-e3e4-425c-ac3b-3cab70c0986a",
-                  "depth": 2,
-                  "collapsed": false
-                }
-              }
-            ],
-            "data": {
-              "name": "Attack Enhancement",
-              "description": "Increases attack by 1 points",
-              "stat": {
-                "maxHp": 0,
-                "maxMana": 0,
-                "hp": 0,
-                "mana": 0,
-                "armor": 0,
-                "magicResist": 0,
-                "damagePercent": 0,
-                "attack": 1,
-                "attackPercent": 0,
-                "armorPen": 0,
-                "magicAttack": 0,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0,
-                "critDamage": 0,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0,
-                "lifeSteal": 0,
-                "lifeStealPercent": 0,
-                "level": 0
-              }
-            },
-            "__rd3t": {
-              "id": "8ec3b957-4890-4bcf-90e9-6743eff3c46d",
-              "depth": 1,
-              "collapsed": false
-            }
-          },
-          {
-            "nodeId": "node-ef888992-ab35-44ed-ac49-810f20040573",
-            "children": [
-              {
-                "nodeId": "node-44657fe7-318d-4cb4-a13f-6eed27aa173f",
-                "children": [
-                  {
-                    "nodeId": "node-315bdf7a-42e2-4977-8a1c-a68739680de8",
-                    "children": [
-                      {
-                        "nodeId": "node-c37f9cf0-7450-419e-b9f9-dd0ec8ff5915",
-                        "children": [],
-                        "data": {
-                          "name": "Armor Enhancement",
-                          "description": "Increases armor by 8 points.",
-                          "stat": {
-                            "maxHp": 0,
-                            "maxMana": 0,
-                            "hp": 0,
-                            "mana": 0,
-                            "armor": 8,
-                            "magicResist": 0,
-                            "damagePercent": 0,
-                            "attack": 0,
-                            "attackPercent": 0,
-                            "armorPen": 0,
-                            "magicAttack": 0,
-                            "magicAttackPercent": 0,
-                            "magicPen": 0,
-                            "critRate": 0,
-                            "critDamage": 0,
-                            "attackRange": 0,
-                            "attackRangePercent": 0,
-                            "attackSpeed": 0,
-                            "attackSpeedPercent": 0,
-                            "speed": 0,
-                            "lifeSteal": 0,
-                            "lifeStealPercent": 0,
-                            "level": 0
-                          }
-                        },
-                        "__rd3t": {
-                          "id": "dec1ab65-c28d-42ea-bca6-535dc4aac192",
-                          "depth": 4,
-                          "collapsed": false
-                        }
-                      }
-                    ],
-                    "data": {
-                      "name": "Armor Enhancement",
-                      "description": "Increases armor by 4 points.",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": 0,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 4,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0
-                      }
-                    },
-                    "__rd3t": {
-                      "id": "86c2ed42-6bed-4488-b842-b6af3a0045cc",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
-                "data": {
-                  "name": "Armor Enhancement",
-                  "description": "Increases armor by 2 points.",
-                  "stat": {
-                    "maxHp": 0,
-                    "maxMana": 0,
-                    "hp": 0,
-                    "mana": 0,
-                    "armor": 2,
-                    "magicResist": 0,
-                    "damagePercent": 0,
-                    "attack": 0,
-                    "attackPercent": 0,
-                    "armorPen": 0,
-                    "magicAttack": 0,
-                    "magicAttackPercent": 0,
-                    "magicPen": 0,
-                    "critRate": 0,
-                    "critDamage": 0,
-                    "attackRange": 0,
-                    "attackRangePercent": 0,
-                    "attackSpeed": 0,
-                    "attackSpeedPercent": 0,
-                    "speed": 0,
-                    "lifeSteal": 0,
-                    "lifeStealPercent": 0,
-                    "level": 0
-                  }
-                },
-                "__rd3t": {
-                  "id": "1cc0ab2a-df03-4a9f-a28f-a311b0472528",
-                  "depth": 2,
-                  "collapsed": false
-                }
-              }
-            ],
-            "data": {
-              "name": "Armor Enhancement",
-              "description": "Increases armor by 1 points.",
-              "stat": {
-                "maxHp": 0,
-                "maxMana": 0,
-                "hp": 0,
-                "mana": 0,
-                "armor": 1,
-                "magicResist": 0,
-                "damagePercent": 0,
-                "attack": 0,
-                "attackPercent": 0,
-                "armorPen": 0,
-                "magicAttack": 0,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0,
-                "critDamage": 0,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0,
-                "lifeSteal": 0,
-                "lifeStealPercent": 0,
-                "level": 0
-              }
-            },
-            "__rd3t": {
-              "id": "aa5383b8-78ea-4b7a-b0e4-a4ac5e0bda7d",
-              "depth": 1,
-              "collapsed": false
-            }
-          },
-          {
-            "nodeId": "node-e90b6495-9ba3-4677-98d3-7d27c4a113d5",
-            "children": [
-              {
-                "nodeId": "node-769b16b1-bb11-4336-af24-6efd0d378bd5",
-                "children": [
-                  {
-                    "nodeId": "node-648fb567-6ce1-4226-b2e3-64b9c5df9e60",
-                    "children": [
-                      {
-                        "nodeId": "node-ce8c3be3-2aa5-4c6e-8e4e-a2025909924a",
-                        "children": [],
-                        "data": {
-                          "name": "Magic Resist",
-                          "description": "Increases magic resist by 8 points.",
-                          "stat": {
-                            "maxHp": 0,
-                            "maxMana": 0,
-                            "hp": 0,
-                            "mana": 0,
-                            "armor": 0,
-                            "magicResist": 8,
-                            "damagePercent": 0,
-                            "attack": 0,
-                            "attackPercent": 0,
-                            "armorPen": 0,
-                            "magicAttack": 0,
-                            "magicAttackPercent": 0,
-                            "magicPen": 0,
-                            "critRate": 0,
-                            "critDamage": 0,
-                            "attackRange": 0,
-                            "attackRangePercent": 0,
-                            "attackSpeed": 0,
-                            "attackSpeedPercent": 0,
-                            "speed": 0,
-                            "lifeSteal": 0,
-                            "lifeStealPercent": 0,
-                            "level": 0
-                          }
-                        },
-                        "__rd3t": {
-                          "id": "99ea392c-ab25-43d5-b0ab-b7394ee792b5",
-                          "depth": 4,
-                          "collapsed": false
-                        }
-                      }
-                    ],
-                    "data": {
-                      "name": "Magic Resist",
-                      "description": "Increases magic resist by 4 points.",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": 0,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 4,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0
-                      }
-                    },
-                    "__rd3t": {
-                      "id": "16efb889-75ea-4bfd-bede-5b58c50a4020",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
-                "data": {
-                  "name": "Magic Resist",
-                  "description": "Increases magic resist by 2 points.",
-                  "stat": {
-                    "maxHp": 0,
-                    "maxMana": 0,
-                    "hp": 0,
-                    "mana": 0,
-                    "armor": 0,
-                    "magicResist": 2,
-                    "damagePercent": 0,
-                    "attack": 0,
-                    "attackPercent": 0,
-                    "armorPen": 0,
-                    "magicAttack": 0,
-                    "magicAttackPercent": 0,
-                    "magicPen": 0,
-                    "critRate": 0,
-                    "critDamage": 0,
-                    "attackRange": 0,
-                    "attackRangePercent": 0,
-                    "attackSpeed": 0,
-                    "attackSpeedPercent": 0,
-                    "speed": 0,
-                    "lifeSteal": 0,
-                    "lifeStealPercent": 0,
-                    "level": 0
-                  }
-                },
-                "__rd3t": {
-                  "id": "1a96d257-17a2-498d-ab27-5b8c4b175a2d",
-                  "depth": 2,
-                  "collapsed": false
-                }
-              }
-            ],
-            "data": {
-              "name": "Magic Resist",
-              "description": "Increase magic resist by 1 points.",
-              "stat": {
-                "maxHp": 0,
-                "maxMana": 0,
-                "hp": 0,
-                "mana": 0,
-                "armor": 0,
-                "magicResist": 1,
-                "damagePercent": 0,
-                "attack": 0,
-                "attackPercent": 0,
-                "armorPen": 0,
-                "magicAttack": 0,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0,
-                "critDamage": 0,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0,
-                "lifeSteal": 0,
-                "lifeStealPercent": 0,
-                "level": 0
-              }
-            },
-            "__rd3t": {
-              "id": "39653fdb-1f86-40bd-9bb9-4902caaecd70",
-              "depth": 1,
-              "collapsed": false
-            }
-          },
-          {
-            "nodeId": "node-55aed6b7-fda0-4a79-9a51-74c87dd80c50",
-            "children": [
-              {
-                "nodeId": "node-1ffecd34-a048-46f6-9d44-b726c340a98a",
-                "children": [
-                  {
-                    "nodeId": "node-e0728448-e3d6-4271-be3a-86268c468e07",
-                    "children": [
-                      {
-                        "nodeId": "node-45c5b41d-6bff-4d27-bcff-5fb7c095d378",
-                        "children": [],
-                        "data": {
-                          "name": "Max Health",
-                          "description": "Increases max health by 80 points.",
-                          "stat": {
-                            "maxHp": 0,
-                            "maxMana": 0,
-                            "hp": 0,
-                            "mana": 0,
-                            "armor": 0,
-                            "magicResist": 0,
-                            "damagePercent": 0,
-                            "attack": 0,
-                            "attackPercent": 0,
-                            "armorPen": 0,
-                            "magicAttack": 0,
-                            "magicAttackPercent": 0,
-                            "magicPen": 0,
-                            "critRate": 0,
-                            "critDamage": 0,
-                            "attackRange": 0,
-                            "attackRangePercent": 0,
-                            "attackSpeed": 0,
-                            "attackSpeedPercent": 0,
-                            "speed": 0,
-                            "lifeSteal": 0,
-                            "lifeStealPercent": 0,
-                            "level": 0
-                          }
-                        },
-                        "__rd3t": {
-                          "id": "0cb8a1e2-8cdc-4a12-a0d0-e9d46408bfe0",
-                          "depth": 4,
-                          "collapsed": false
-                        }
-                      }
-                    ],
-                    "data": {
-                      "name": "Max Health",
-                      "description": "Increases max health by 40 points.",
-                      "stat": {
-                        "maxHp": 40,
-                        "maxMana": 0,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0
-                      }
-                    },
-                    "__rd3t": {
-                      "id": "817c2ea5-55fc-4576-8e68-b663f59f1165",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
-                "data": {
-                  "name": "Max Health",
-                  "description": "Increases max health by 20 points.",
-                  "stat": {
-                    "maxHp": 20,
-                    "maxMana": 0,
-                    "hp": 0,
-                    "mana": 0,
-                    "armor": 0,
-                    "magicResist": 0,
-                    "damagePercent": 0,
-                    "attack": 0,
-                    "attackPercent": 0,
-                    "armorPen": 0,
-                    "magicAttack": 0,
-                    "magicAttackPercent": 0,
-                    "magicPen": 0,
-                    "critRate": 0,
-                    "critDamage": 0,
-                    "attackRange": 0,
-                    "attackRangePercent": 0,
-                    "attackSpeed": 0,
-                    "attackSpeedPercent": 0,
-                    "speed": 0,
-                    "lifeSteal": 0,
-                    "lifeStealPercent": 0,
-                    "level": 0
-                  }
-                },
-                "__rd3t": {
-                  "id": "bd1b9bac-fab5-45a0-8367-ffdd073a36ce",
-                  "depth": 2,
-                  "collapsed": false
-                }
-              }
-            ],
-            "data": {
-              "name": "Max Health",
-              "description": "increases max health by 10 points.",
-              "stat": {
-                "maxHp": 10,
-                "maxMana": 0,
-                "hp": 0,
-                "mana": 0,
-                "armor": 0,
-                "magicResist": 0,
-                "damagePercent": 0,
-                "attack": 0,
-                "attackPercent": 0,
-                "armorPen": 0,
-                "magicAttack": 0,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0,
-                "critDamage": 0,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0,
-                "lifeSteal": 0,
-                "lifeStealPercent": 0,
-                "level": 0
-              }
-            },
-            "__rd3t": {
-              "id": "5c62e979-3234-426f-bd85-955815b4a001",
-              "depth": 1,
-              "collapsed": false
-            }
-          },
-          {
-            "nodeId": "node-42d9aeb5-2402-415a-9d0d-248a878277d5",
-            "children": [
-              {
-                "nodeId": "node-22973146-4835-495c-8125-5fba82a779d1",
-                "children": [
-                  {
-                    "nodeId": "node-1de824cb-2374-4a8b-a20f-c42b81457fe2",
-                    "children": [
-                      {
-                        "nodeId": "node-70b9a3dd-716a-482b-b4a0-4c77ea503c70",
-                        "children": [],
-                        "data": {
-                          "name": "Max Mana",
-                          "description": "Increases max mana by 80 points.",
-                          "stat": {
-                            "maxHp": 0,
-                            "maxMana": 0,
-                            "hp": 0,
-                            "mana": 0,
-                            "armor": 0,
-                            "magicResist": 0,
-                            "damagePercent": 0,
-                            "attack": 0,
-                            "attackPercent": 0,
-                            "armorPen": 0,
-                            "magicAttack": 0,
-                            "magicAttackPercent": 0,
-                            "magicPen": 0,
-                            "critRate": 0,
-                            "critDamage": 0,
-                            "attackRange": 0,
-                            "attackRangePercent": 0,
-                            "attackSpeed": 0,
-                            "attackSpeedPercent": 0,
-                            "speed": 0,
-                            "lifeSteal": 0,
-                            "lifeStealPercent": 0,
-                            "level": 0
-                          }
-                        },
-                        "__rd3t": {
-                          "id": "82ba4533-72e3-42ab-b781-0cc50e2ee750",
-                          "depth": 4,
-                          "collapsed": false
-                        }
-                      }
-                    ],
-                    "data": {
-                      "name": "Max Mana",
-                      "description": "increases max mana by 40 points.",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": 40,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0
-                      }
-                    },
-                    "__rd3t": {
-                      "id": "56d9d116-a08e-4a40-ac1d-f9744ccf13d1",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
-                "data": {
-                  "name": "Max Mana",
-                  "description": "Increases mana by 20 points.",
-                  "stat": {
-                    "maxHp": 0,
-                    "maxMana": 20,
-                    "hp": 0,
-                    "mana": 0,
-                    "armor": 0,
-                    "magicResist": 0,
-                    "damagePercent": 0,
-                    "attack": 0,
-                    "attackPercent": 0,
-                    "armorPen": 0,
-                    "magicAttack": 0,
-                    "magicAttackPercent": 0,
-                    "magicPen": 0,
-                    "critRate": 0,
-                    "critDamage": 0,
-                    "attackRange": 0,
-                    "attackRangePercent": 0,
-                    "attackSpeed": 0,
-                    "attackSpeedPercent": 0,
-                    "speed": 0,
-                    "lifeSteal": 0,
-                    "lifeStealPercent": 0,
-                    "level": 0
-                  }
-                },
-                "__rd3t": {
-                  "id": "4aedd0be-2074-4cd9-9161-7e0c2eb8bc60",
-                  "depth": 2,
-                  "collapsed": false
-                }
-              }
-            ],
-            "data": {
-              "name": "Max Mana",
-              "description": "Increases mana by 10 points.",
-              "stat": {
-                "maxHp": 0,
-                "maxMana": 10,
-                "hp": 0,
-                "mana": 0,
-                "armor": 0,
-                "magicResist": 0,
-                "damagePercent": 0,
-                "attack": 0,
-                "attackPercent": 0,
-                "armorPen": 0,
-                "magicAttack": 0,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0,
-                "critDamage": 0,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0,
-                "lifeSteal": 0,
-                "lifeStealPercent": 0,
-                "level": 0
-              }
-            },
-            "__rd3t": {
-              "id": "bbee15cd-1d3b-4d4c-a044-c4c7aff759f7",
-              "depth": 1,
-              "collapsed": false
-            }
-          },
-          {
-            "nodeId": "node-d44c1c21-5832-42e8-8253-3595d499c156",
-            "children": [
-              {
-                "nodeId": "node-c066e5fc-3b82-4ba3-86ec-3fd6e0c02bf0",
-                "children": [
-                  {
-                    "nodeId": "node-fc510315-56c3-40b2-840b-bc41dbabaf43",
-                    "children": [
-                      {
-                        "nodeId": "node-d19cfefe-28d5-438b-819a-49d6f61213c3",
-                        "children": [],
-                        "data": {
-                          "name": "Magic Attack",
-                          "description": "Increases magic attack by 8 point.",
-                          "stat": {
-                            "maxHp": 0,
-                            "maxMana": 0,
-                            "hp": 0,
-                            "mana": 0,
-                            "armor": 0,
-                            "magicResist": 0,
-                            "damagePercent": 0,
-                            "attack": 0,
-                            "attackPercent": 0,
-                            "armorPen": 0,
-                            "magicAttack": 8,
-                            "magicAttackPercent": 0,
-                            "magicPen": 0,
-                            "critRate": 0,
-                            "critDamage": 0,
-                            "attackRange": 0,
-                            "attackRangePercent": 0,
-                            "attackSpeed": 0,
-                            "attackSpeedPercent": 0,
-                            "speed": 0,
-                            "lifeSteal": 0,
-                            "lifeStealPercent": 0,
-                            "level": 0
-                          }
-                        },
-                        "__rd3t": {
-                          "id": "959e5419-3635-4658-bdc0-cc9526eed297",
-                          "depth": 4,
-                          "collapsed": false
-                        }
-                      }
-                    ],
-                    "data": {
-                      "name": "Magic Attack",
-                      "description": "Increases magic attack by 4 points.",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": 0,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 4,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0
-                      }
-                    },
-                    "__rd3t": {
-                      "id": "b80ae0bc-314a-4380-9975-4a3eae1b1b74",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
-                "data": {
-                  "name": "Magic Attack",
-                  "description": "Increases magic attack by 2 points.",
-                  "stat": {
-                    "maxHp": 0,
-                    "maxMana": 0,
-                    "hp": 0,
-                    "mana": 0,
-                    "armor": 0,
-                    "magicResist": 0,
-                    "damagePercent": 0,
-                    "attack": 0,
-                    "attackPercent": 0,
-                    "armorPen": 0,
-                    "magicAttack": 2,
-                    "magicAttackPercent": 0,
-                    "magicPen": 0,
-                    "critRate": 0,
-                    "critDamage": 0,
-                    "attackRange": 0,
-                    "attackRangePercent": 0,
-                    "attackSpeed": 0,
-                    "attackSpeedPercent": 0,
-                    "speed": 0,
-                    "lifeSteal": 0,
-                    "lifeStealPercent": 0,
-                    "level": 0
-                  }
-                },
-                "__rd3t": {
-                  "id": "9dc30625-fa58-41cc-b832-eb4d5129fb1b",
-                  "depth": 2,
-                  "collapsed": false
-                }
-              }
-            ],
-            "data": {
-              "name": "Magic Attack",
-              "description": "Increases magic attack by 1 point.",
-              "stat": {
-                "maxHp": 0,
-                "maxMana": 0,
-                "hp": 0,
-                "mana": 0,
-                "armor": 0,
-                "magicResist": 0,
-                "damagePercent": 0,
-                "attack": 0,
-                "attackPercent": 0,
-                "armorPen": 0,
-                "magicAttack": 1,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0,
-                "critDamage": 0,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0,
-                "lifeSteal": 0,
-                "lifeStealPercent": 0,
-                "level": 0
-              }
-            },
-            "__rd3t": {
-              "id": "5d2a26c8-68b9-45c6-b6c8-f3c653e0bf11",
-              "depth": 1,
-              "collapsed": false
-            }
-          },
-          {
-            "nodeId": "node-2d223e46-943d-41ba-957a-3ff05b7bd82e",
-            "children": [
-              {
-                "nodeId": "node-d89d3dce-31bf-44ca-9496-b42f721bcab6",
-                "children": [
-                  {
-                    "nodeId": "node-2d4710a8-3d4e-4635-bfdf-4d7c2b4eff31",
-                    "children": [
-                      {
-                        "nodeId": "node-edcc48f0-db2e-46ec-9f6a-a47dcfbdf3a8",
-                        "children": [],
-                        "data": {
-                          "name": "Critical Rate",
-                          "description": "Increases critical rate by 8 percent.",
-                          "stat": {
-                            "maxHp": 0,
-                            "maxMana": 0,
-                            "hp": 0,
-                            "mana": 0,
-                            "armor": 0,
-                            "magicResist": 0,
-                            "damagePercent": 0,
-                            "attack": 0,
-                            "attackPercent": 0,
-                            "armorPen": 0,
-                            "magicAttack": 0,
-                            "magicAttackPercent": 0,
-                            "magicPen": 0,
-                            "critRate": 0.08,
-                            "critDamage": 0,
-                            "attackRange": 0,
-                            "attackRangePercent": 0,
-                            "attackSpeed": 0,
-                            "attackSpeedPercent": 0,
-                            "speed": 0,
-                            "lifeSteal": 0,
-                            "lifeStealPercent": 0,
-                            "level": 0
-                          }
-                        },
-                        "__rd3t": {
-                          "id": "091888d6-12c4-4d68-9672-f7de56382390",
-                          "depth": 4,
-                          "collapsed": false
-                        }
-                      }
-                    ],
-                    "data": {
-                      "name": "Critical Rate",
-                      "description": "Increases critical rate by 4 percent.",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": 0,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0.04,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0
-                      }
-                    },
-                    "__rd3t": {
-                      "id": "18e36a63-e6f7-460a-8d60-e7589e72c9c0",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
-                "data": {
-                  "name": "Critical Rate",
-                  "description": "Increases critical rate by 2 percent.",
-                  "stat": {
-                    "maxHp": 0,
-                    "maxMana": 0,
-                    "hp": 0,
-                    "mana": 0,
-                    "armor": 0,
-                    "magicResist": 0,
-                    "damagePercent": 0,
-                    "attack": 0,
-                    "attackPercent": 0,
-                    "armorPen": 0,
-                    "magicAttack": 0,
-                    "magicAttackPercent": 0,
-                    "magicPen": 0,
-                    "critRate": 0.02,
-                    "critDamage": 0,
-                    "attackRange": 0,
-                    "attackRangePercent": 0,
-                    "attackSpeed": 0,
-                    "attackSpeedPercent": 0,
-                    "speed": 0,
-                    "lifeSteal": 0,
-                    "lifeStealPercent": 0,
-                    "level": 0
-                  }
-                },
-                "__rd3t": {
-                  "id": "8402b3a2-c56e-4ed3-94bd-38ba5b6d1738",
-                  "depth": 2,
-                  "collapsed": false
-                }
-              }
-            ],
-            "data": {
-              "name": "Critical Rate",
-              "description": "Increases critical rate by 1 percent.",
-              "stat": {
-                "maxHp": 0,
-                "maxMana": 0,
-                "hp": 0,
-                "mana": 0,
-                "armor": 0,
-                "magicResist": 0,
-                "damagePercent": 0,
-                "attack": 0,
-                "attackPercent": 0,
-                "armorPen": 0,
-                "magicAttack": 0,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0.01,
-                "critDamage": 0,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0,
-                "lifeSteal": 0,
-                "lifeStealPercent": 0,
-                "level": 0
-              }
-            },
-            "__rd3t": {
-              "id": "7699b039-6758-4d16-b7ca-54381a53a17f",
-              "depth": 1,
-              "collapsed": false
-            }
-          },
-          {
-            "nodeId": "node-84356ff8-2170-491a-8f1c-59715c56b1f7",
-            "children": [
-              {
-                "nodeId": "node-f0da1e22-bb0e-430d-b983-48c440c376df",
-                "children": [
-                  {
-                    "nodeId": "node-a5a6c9cb-7b23-4916-bd3e-5f68bd3c8d91",
-                    "children": [
-                      {
-                        "nodeId": "node-acf33d78-c5e5-4d32-9343-0b0a30232e74",
-                        "children": [],
-                        "data": {
-                          "name": "Critical Damage",
-                          "description": "Increases critical damage by 40 percent.",
-                          "stat": {
-                            "maxHp": 0,
-                            "maxMana": 0,
-                            "hp": 0,
-                            "mana": 0,
-                            "armor": 0,
-                            "magicResist": 0,
-                            "damagePercent": 0,
-                            "attack": 0,
-                            "attackPercent": 0,
-                            "armorPen": 0,
-                            "magicAttack": 0,
-                            "magicAttackPercent": 0,
-                            "magicPen": 0,
-                            "critRate": 0,
-                            "critDamage": 0.4,
-                            "attackRange": 0,
-                            "attackRangePercent": 0,
-                            "attackSpeed": 0,
-                            "attackSpeedPercent": 0,
-                            "speed": 0,
-                            "lifeSteal": 0,
-                            "lifeStealPercent": 0,
-                            "level": 0
-                          }
-                        },
-                        "__rd3t": {
-                          "id": "f3bfade8-b6dd-48d5-96f5-ef710f05f0d5",
-                          "depth": 4,
-                          "collapsed": false
-                        }
-                      }
-                    ],
-                    "data": {
-                      "name": "Critical Damage",
-                      "description": "Increases critical damage by 20 percent.",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": 0,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0.2,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0
-                      }
-                    },
-                    "__rd3t": {
-                      "id": "bc0c68ee-94bb-4e7f-b5da-0274723bab29",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
-                "data": {
-                  "name": "Critical Damage",
-                  "description": "Increases critical damage by 10 percent.",
-                  "stat": {
-                    "maxHp": 0,
-                    "maxMana": 0,
-                    "hp": 0,
-                    "mana": 0,
-                    "armor": 0,
-                    "magicResist": 0,
-                    "damagePercent": 0,
-                    "attack": 0,
-                    "attackPercent": 0,
-                    "armorPen": 0,
-                    "magicAttack": 0,
-                    "magicAttackPercent": 0,
-                    "magicPen": 0,
-                    "critRate": 0,
-                    "critDamage": 0.1,
-                    "attackRange": 0,
-                    "attackRangePercent": 0,
-                    "attackSpeed": 0,
-                    "attackSpeedPercent": 0,
-                    "speed": 0,
-                    "lifeSteal": 0,
-                    "lifeStealPercent": 0,
-                    "level": 0
-                  }
-                },
-                "__rd3t": {
-                  "id": "c07cfcc2-eb73-48c8-a8bc-694137157be0",
-                  "depth": 2,
-                  "collapsed": false
-                }
-              }
-            ],
-            "data": {
-              "name": "Critical Damage",
-              "description": "Increases critical damage by 5 percent.",
-              "stat": {
-                "maxHp": 0,
-                "maxMana": 0,
-                "hp": 0,
-                "mana": 0,
-                "armor": 0,
-                "magicResist": 0,
-                "damagePercent": 0,
-                "attack": 0,
-                "attackPercent": 0,
-                "armorPen": 0,
-                "magicAttack": 0,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0,
-                "critDamage": 0.05,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0,
-                "lifeSteal": 0,
-                "lifeStealPercent": 0,
-                "level": 0
-              }
-            },
-            "__rd3t": {
-              "id": "bac4bd1d-c3ec-40f2-bb97-320a1b0521af",
-              "depth": 1,
-              "collapsed": false
-            }
-          },
-          {
-            "nodeId": "node-e10b6b70-7b71-4199-8c3b-5c3dc8da465f",
-            "children": [
-              {
-                "nodeId": "node-e45edc99-14b8-4931-b243-d1ac3b91292a",
-                "children": [
-                  {
-                    "nodeId": "node-2f72e2b0-b6dd-4e95-b867-e108880d7556",
-                    "children": [
-                      {
-                        "nodeId": "node-51a1a8bc-8bc7-4aae-9da7-64f742f0b64e",
-                        "children": [],
-                        "data": {
-                          "name": "Speed",
-                          "description": "Increases speed by 8 percent.",
-                          "stat": {
-                            "maxHp": 0,
-                            "maxMana": 0,
-                            "hp": 0,
-                            "mana": 0,
-                            "armor": 0,
-                            "magicResist": 0,
-                            "damagePercent": 0,
-                            "attack": 0,
-                            "attackPercent": 0,
-                            "armorPen": 0,
-                            "magicAttack": 0,
-                            "magicAttackPercent": 0,
-                            "magicPen": 0,
-                            "critRate": 0,
-                            "critDamage": 0,
-                            "attackRange": 0,
-                            "attackRangePercent": 0,
-                            "attackSpeed": 0,
-                            "attackSpeedPercent": 0,
-                            "speed": 0.08,
-                            "lifeSteal": 0,
-                            "lifeStealPercent": 0,
-                            "level": 0
-                          }
-                        },
-                        "__rd3t": {
-                          "id": "5cd258c1-db1f-4142-a52b-ed4a8f04fe08",
-                          "depth": 4,
-                          "collapsed": false
-                        }
-                      }
-                    ],
-                    "data": {
-                      "name": "Speed",
-                      "description": "Increases speed by 4 percent.",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": 0,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0.04,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0
-                      }
-                    },
-                    "__rd3t": {
-                      "id": "1f8e6475-bad6-4095-b986-5d7cb3dcf4ed",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
-                "data": {
-                  "name": "Speed",
-                  "description": "Increases speed by 2 percent.",
-                  "stat": {
-                    "maxHp": 0,
-                    "maxMana": 0,
-                    "hp": 0,
-                    "mana": 0,
-                    "armor": 0,
-                    "magicResist": 0,
-                    "damagePercent": 0,
-                    "attack": 0,
-                    "attackPercent": 0,
-                    "armorPen": 0,
-                    "magicAttack": 0,
-                    "magicAttackPercent": 0,
-                    "magicPen": 0,
-                    "critRate": 0,
-                    "critDamage": 0,
-                    "attackRange": 0,
-                    "attackRangePercent": 0,
-                    "attackSpeed": 0,
-                    "attackSpeedPercent": 0,
-                    "speed": 0.02,
-                    "lifeSteal": 0,
-                    "lifeStealPercent": 0,
-                    "level": 0
-                  }
-                },
-                "__rd3t": {
-                  "id": "32588699-b06f-405c-89e3-4a10dfd2b2ec",
-                  "depth": 2,
-                  "collapsed": false
-                }
-              }
-            ],
-            "data": {
-              "name": "Speed",
-              "description": "Increases speed by 1 percent",
-              "stat": {
-                "maxHp": 0,
-                "maxMana": 0,
-                "hp": 0,
-                "mana": 0,
-                "armor": 0,
-                "magicResist": 0,
-                "damagePercent": 0,
-                "attack": 0,
-                "attackPercent": 0,
-                "armorPen": 0,
-                "magicAttack": 0,
-                "magicAttackPercent": 0,
-                "magicPen": 0,
-                "critRate": 0,
-                "critDamage": 0,
-                "attackRange": 0,
-                "attackRangePercent": 0,
-                "attackSpeed": 0,
-                "attackSpeedPercent": 0,
-                "speed": 0.01,
-                "lifeSteal": 0,
-                "lifeStealPercent": 0,
-                "level": 0
-              }
-            },
-            "__rd3t": {
-              "id": "9da665f1-ccae-4c15-9efb-8d8a12d8e7bc",
-              "depth": 1,
-              "collapsed": false
-            }
-          }
-        ],
-        "data": {
-          "name": "Adventurer's Stat",
-          "description": "Default stats that all adventurer's have.",
-          "stat": {
-            "maxHp": 100,
-            "maxMana": 100,
-            "hp": 0,
-            "mana": 0,
-            "armor": 0,
-            "magicResist": 0,
-            "damagePercent": 0,
-            "attack": 10,
-            "attackPercent": 0,
-            "armorPen": 0,
-            "magicAttack": 0,
-            "magicAttackPercent": 0,
-            "magicPen": 0,
-            "critRate": 0,
-            "critDamage": 0,
-            "attackRange": 0,
-            "attackRangePercent": 0,
-            "attackSpeed": 1,
-            "attackSpeedPercent": 0,
-            "speed": 1,
-            "lifeSteal": 0,
-            "lifeStealPercent": 0,
-            "level": 1
-          }
-        },
-        "__rd3t": {
-          "id": "916d2755-11e2-4875-9653-60bf701e2130",
+          "id": "28383593-14bf-400b-bc41-e233a2fb356c",
           "depth": 0,
           "collapsed": false
         }
@@ -4890,7 +3526,6 @@
   "nodes": [
     {
       "id": "default-node-5a9fd4fb-a947-4324-8eeb-b76ed374f305",
-      "nodeId": "default-node-5a9fd4fb-a947-4324-8eeb-b76ed374f305",
       "children": [],
       "data": {
         "name": "Name",
@@ -4920,6 +3555,8 @@
           "lifeStealPercent": 0,
           "level": 0
         },
+        "status": "selected",
+        "selectionTime": 0,
         "effect": {
           "effectId": "For Testing Effect",
           "doesStack": 0,

@@ -9,7 +9,7 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
     let [form, setForm] = useState(getEditForm(node, type))
     let [nodes, setNodes] = useState([])
     let [weapons, setWeapons] = useState([])
-    let dataKeys = ["name", "description", "stat", "weaponId", "effect", "status"]
+    let dataKeys = ["name", "description", "stat", "weaponId", "effect", "status", "selectionTime"]
     let nodeStatuses = ["none", "selected", "skipped"]
     let [showZeroStat, setShowZeroStat] = useState(false)
 
@@ -89,8 +89,12 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
             form.data.stat[key] = Number(val)
         })
 
-        if(typeof form.data.effect.cooldown !== typeof number){
+        if(type === "upgrade" && typeof form.data.effect.cooldown !== typeof number){
             form.data.effect.cooldown = Number(form.data.effect.cooldown)
+        }
+
+        if(type === "upgrade" && typeof form.data.selectionTime !== typeof number){
+            form.data.selectionTime = Number(form.data.selectionTime)
         }
 
         let success = updateUpgrade(form)
@@ -137,22 +141,26 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
         </Dropdown.Menu>
     </Dropdown>
 
-    let effectTypeDropDown = 
-    <Dropdown className="mb-5">
-        <Dropdown.Toggle variant="info" id="dropdown-basic">
-            Type: {form.data.effect.type}
-        </Dropdown.Toggle>
+    let effectTypeDropDown
+    if(type==="upgrade"){
+        effectTypeDropDown =  
+        <Dropdown className="mb-5">
+            <Dropdown.Toggle variant="info" id="dropdown-basic">
+                Type: {form.data.effect.type}
+            </Dropdown.Toggle>
 
-        <Dropdown.Menu>
-            {effectTypes.map(type=>{
-                return <Dropdown.Item onClick={()=>setForm(prev=>{
-                    let newForm = {...prev}
-                    newForm.data.effect.type = type
-                    return newForm
-                })}>{type}</Dropdown.Item>
-            })}
-        </Dropdown.Menu>
-    </Dropdown>
+            <Dropdown.Menu>
+                {effectTypes.map(type=>{
+                    return <Dropdown.Item onClick={()=>setForm(prev=>{
+                        let newForm = {...prev}
+                        newForm.data.effect.type = type
+                        return newForm
+                    })}>{type}</Dropdown.Item>
+                })}
+            </Dropdown.Menu>
+        </Dropdown>
+    }
+    
 
     let statusDropDown = 
     <Dropdown className="mb-5">
@@ -188,10 +196,12 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
             {statusDropDown}
 
             {
-                form.data.status === "selected" &&
+                form.data.status === "selected" && type === "upgrade" &&
                 <label className="d-flex justify-content-center">
-                    <span className="text-danger">Selection Time/Order</span>
-                    <input type="number" value={form.data.selectionTime} onChange={onChange("other", "selectionTime")}></input>
+                    <div>
+                        <span className="text-danger">Selection Time/Order</span>
+                        <input type="number" value={form.data.selectionTime} onChange={onChange("other", "selectionTime")}></input>
+                    </div>
                 </label> 
             }
             

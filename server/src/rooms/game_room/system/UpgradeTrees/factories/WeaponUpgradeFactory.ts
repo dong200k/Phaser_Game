@@ -1,6 +1,7 @@
 import WeaponData from "../../../schemas/Trees/Node/Data/WeaponData"
 import Node from "../../../schemas/Trees/Node/Node"
 import Stat from "../../../schemas/gameobjs/Stat"
+import UpgradeEffect from "../../../schemas/gameobjs/UpgradeEffect"
 import DatabaseManager from "../../Database/DatabaseManager"
 
 export default class WeaponUpgradeFactory{
@@ -14,6 +15,7 @@ export default class WeaponUpgradeFactory{
     private static createNode(copy: Node<WeaponData>){
         let {weaponId, name, description, stat, upgradeEffect} = copy.data
         stat = new Stat(stat)
+        upgradeEffect = new UpgradeEffect(upgradeEffect?.type, upgradeEffect?.effectLogicId, upgradeEffect?.cooldown, upgradeEffect?.doesStack, upgradeEffect?.collisionGroup)
         let weaponData = new WeaponData(weaponId, stat, upgradeEffect, name, description)
         let node = new Node<WeaponData>(weaponData)
 
@@ -53,7 +55,7 @@ export default class WeaponUpgradeFactory{
     }
 
     /**
-     * 
+     * Note: For testing
      * @returns returns a bow upgrade tree's root to be used by a single player
      */
     static createBowUpgrade(){
@@ -61,7 +63,7 @@ export default class WeaponUpgradeFactory{
     }
 
     /**
-     * 
+     * Note: For testing
      * @returns returns a sword upgrade tree's root to be used by a single player
      */
     static createSwordUpgrade(){

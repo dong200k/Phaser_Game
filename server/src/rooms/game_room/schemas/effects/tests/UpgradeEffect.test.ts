@@ -1,11 +1,10 @@
 import GameManager from "../../../system/GameManager";
 import EffectManager from "../../../system/StateManagers/EffectManager";
-import State from "../../State";
 import Entity from "../../gameobjs/Entity";
 import UpgradeEffect from "../../gameobjs/UpgradeEffect";
 import EffectFactory from "../EffectFactory";
 import ContinuousUpgradeEffect from "../continuous/ContinuousUpgradeEffect";
-import UpgradeTriggerEffect from "../trigger/TriggerUpgradeEffect";
+import TriggerUpgradeEffect from "../trigger/TriggerUpgradeEffect";
 
 
 describe('Upgrade Effect Tests', () => {
@@ -21,7 +20,8 @@ describe('Upgrade Effect Tests', () => {
     test("EffectManager properly identifies creating UpgradeTriggerEffect or ContinuousUpgradeEffect properly based on an UpgradeEffect",()=>{
         // Effect (val) that should be created based on types(key)
         let types = {
-            "player attack": UpgradeTriggerEffect,
+            "player attack": TriggerUpgradeEffect,
+            "player skill": TriggerUpgradeEffect,
             "none": ContinuousUpgradeEffect
         }
 
@@ -39,8 +39,8 @@ describe('Upgrade Effect Tests', () => {
         let triggerType = "player attack"
         let effectLogicId = "" // EffectLogicId that maps to an undefined EffectLogic
         let upgradeEffect = new UpgradeEffect(triggerType, effectLogicId)
-        let effect = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect) as UpgradeTriggerEffect
-        expect(effect instanceof UpgradeTriggerEffect).toBe(true)
+        let effect = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect) as TriggerUpgradeEffect
+        expect(effect instanceof TriggerUpgradeEffect).toBe(true)
 
         // Check effect is properly added
         EffectManager.addUpgradeEffectsTo(entity, effect)
@@ -81,19 +81,19 @@ describe('Upgrade Effect Tests', () => {
         // Create a UpgradeTriggerEffect
         triggerType = "player attack"
         upgradeEffect = new UpgradeEffect(triggerType, effectLogicId)
-        let effect2 = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect) as UpgradeTriggerEffect
-        expect(effect2 instanceof UpgradeTriggerEffect).toBe(true)
+        let effect2 = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect) as TriggerUpgradeEffect
+        expect(effect2 instanceof TriggerUpgradeEffect).toBe(true)
 
         // Create a 2nd UpgradeTriggerEffect of the same type
         upgradeEffect = new UpgradeEffect(triggerType, effectLogicId)
-        let effect3 = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect) as UpgradeTriggerEffect
-        expect(effect3 instanceof UpgradeTriggerEffect).toBe(true)
+        let effect3 = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect) as TriggerUpgradeEffect
+        expect(effect3 instanceof TriggerUpgradeEffect).toBe(true)
 
         // Create a 3rd UpgradeTriggerEffect of a different type
         triggerType = "player skill"
         upgradeEffect = new UpgradeEffect(triggerType, effectLogicId)
-        let effect4 = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect) as UpgradeTriggerEffect
-        expect(effect4 instanceof UpgradeTriggerEffect).toBe(true)
+        let effect4 = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect) as TriggerUpgradeEffect
+        expect(effect4 instanceof TriggerUpgradeEffect).toBe(true)
 
         let effects = [effect, effect2, effect3, effect4]
 
@@ -105,7 +105,7 @@ describe('Upgrade Effect Tests', () => {
         effects.forEach(effect=>
                 expect(entity.effects.find(effectOnPlayer=>effect===effectOnPlayer)).not.toBe(undefined))
             
-        // Check that all 3 UgpradeTriggerEffects cooldown are up
+        // Check that all 3 UgpradeTriggerEffects and the ContinuousUpgradeEffect cooldown are up
         expect(effect2.cooldown.isFinished).toBe(true)
         expect(effect3.cooldown.isFinished).toBe(true)
         expect(effect4.cooldown.isFinished).toBe(true)

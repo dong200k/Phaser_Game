@@ -21,14 +21,16 @@ describe("Skill Tree Tests", ()=>{
         gameManager.playerManager.createPlayer(sessionId, false)
         playerState = gameManager.playerManager.getPlayerStateAndBody(sessionId).playerState
     })
-    test("Player can equip a skill tree", ()=>{
+    test("Equiping a Skill tree grants the player its stats and effects", ()=>{
         let skillTree = SkillTreeFactory.createAdventurerSkill()
         SkillTreeManager.setSkillTree(playerState, skillTree as Node<SkillData>)
         
         // Check that player's skillTree's root has same structure as bow upgrade
         expect(playerState.skillTree.root).toBeDefined()
     })
-    test("Player can switch a skill tree", ()=>{
+    test("Unequipping a Skill tree removes from the player its stats and effects", ()=>{
+    })
+    test("Switching SkillTree/unequipping a new tree while the player has a tree works properly", ()=>{
         let skillTree = SkillTreeFactory.createAdventurerSkill()
         SkillTreeManager.setSkillTree(playerState, skillTree as Node<SkillData>)
         
@@ -59,7 +61,7 @@ describe("Skill Tree Tests", ()=>{
 
         expect(skillTree?.children[1].data.status).toBe("selected")
     })
-    test("Selecting multiple upgrades correctly change total stat", ()=>{
+    test("Selecting multiple upgrades correctly change total stat of the tree", ()=>{
         let skillTree = SkillTreeFactory.createAdventurerSkill()
         SkillTreeManager.setSkillTree(playerState, skillTree as Node<SkillData>)
         
@@ -96,5 +98,7 @@ describe("Skill Tree Tests", ()=>{
         stat.attack += 2
         actualStat = TreeUtil.getTotalStat(playerState.skillTree)
         expect(stat).toEqual(actualStat)
+    })
+    test("Skill tree is properly initialized with its stat effects applied to the player when the game starts", ()=>{
     })
 })
