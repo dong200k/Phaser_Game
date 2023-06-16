@@ -2,6 +2,7 @@ import Cooldown from "../../gameobjs/Cooldown";
 import Entity from "../../gameobjs/Entity";
 import TriggerEffect from "./TriggerEffect";
 import EffectLogicManager from "../../../system/EffectLogic/EffectLogicManager";
+import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
 
 /** TriggerEffect, but with cooldown. Used for Weapon Upgrade and Artifact Upgrade trees logics that are triggered by player input. */
 export default class TriggerUpgradeEffect extends TriggerEffect {
@@ -14,8 +15,9 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
     doesStack: boolean
     /** holds collision info, if any pair of UpgradeTriggerEffect on a single Entity has doesStack = false,
      * if either collisionGroup === -1 or they are different nothing happens,
-     * if their collisionGroups are the same the old one is removed from the Entity */
+     * if their collisionGroups are the same the old one is removed from the Entity if they came from the same tree */
     collisionGroup: number
+    tree?: WeaponUpgradeTree
 
     constructor(effectLogicId: string, cooldown:number=1000, type: string, doesStack: boolean, collisionGroup: number) {
         super(type);
@@ -33,6 +35,10 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
     public update(deltaT: number): number {
         this.cooldown.tick(deltaT)
         return 0
+    }
+
+    public setTree(tree: WeaponUpgradeTree){
+        this.tree = tree
     }
 
     /** Uses the effect referenced by effectLogicId if cooldown is finished */

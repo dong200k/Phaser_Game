@@ -1,4 +1,5 @@
 import EffectLogicManager from "../../../system/EffectLogic/EffectLogicManager";
+import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
 import Entity from "../../gameobjs/Entity";
 import OneTimeEffect from "./OneTimeEffect";
 
@@ -12,6 +13,8 @@ export default class OneTimeUpgradeEffect extends OneTimeEffect {
      * if either collisionGroup === -1 or they are different nothing happens,
      * if their collisionGroups are the same the old one is removed from the Entity */
     collisionGroup: number
+    tree?: WeaponUpgradeTree
+    
 
     constructor(effectLogicId: string, cooldown:number=1000, doesStack: boolean, collisionGroup: number) {
         super()
@@ -30,6 +33,10 @@ export default class OneTimeUpgradeEffect extends OneTimeEffect {
             console.log(e?.message)
             return false
         }
+    }
+    
+    public setTree(tree: WeaponUpgradeTree){
+        this.tree = tree
     }
 
     public toString(): string {

@@ -15,7 +15,9 @@ export default class WeaponUpgradeFactory{
     private static createNode(copy: Node<WeaponData>){
         let {weaponId, name, description, stat, upgradeEffect} = copy.data
         stat = new Stat(stat)
-        upgradeEffect = new UpgradeEffect(upgradeEffect?.type, upgradeEffect?.effectLogicId, upgradeEffect?.cooldown, upgradeEffect?.doesStack, upgradeEffect?.collisionGroup)
+        if(upgradeEffect){
+            upgradeEffect = new UpgradeEffect(upgradeEffect.type, upgradeEffect.effectLogicId, upgradeEffect.cooldown, upgradeEffect.doesStack, upgradeEffect.collisionGroup)
+        }
         let weaponData = new WeaponData(weaponId, stat, upgradeEffect, name, description)
         let node = new Node<WeaponData>(weaponData)
 

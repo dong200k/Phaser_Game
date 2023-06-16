@@ -1,7 +1,10 @@
 import GameManager from "../../../system/GameManager";
 import EffectManager from "../../../system/StateManagers/EffectManager";
+import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
 import Entity from "../../gameobjs/Entity";
+import Player from "../../gameobjs/Player";
 import UpgradeEffect from "../../gameobjs/UpgradeEffect";
+import Effect from "../Effect";
 import EffectFactory from "../EffectFactory";
 import ContinuousUpgradeEffect from "../continuous/ContinuousUpgradeEffect";
 import TriggerUpgradeEffect from "../trigger/TriggerUpgradeEffect";
@@ -117,6 +120,75 @@ describe('Upgrade Effect Tests', () => {
 
         // Check that the UpgradeTriggerEffect with a different type == "none" is not on cooldown
         expect(effect4.cooldown.isFinished).toBe(true)
+    })
+    test("Effect Collision Test", ()=>{
+        let tree1 = new WeaponUpgradeTree(new Player("p1"))
+        let tree2 = new WeaponUpgradeTree(new Player("p2"))
+
+        /** list of a few rules/expected collision results */
+        let collisionRules = [
+            {   // collisionGroups both = -1, both doesStack = true and collisionGroup = -1 so definitely no collision
+                collides: false,
+                effect1Rules: {collisionGroup: -1, doesStack: true, tree: tree1},
+                effect2Rules: {collisionGroup: -1, doesStack: true, tree: tree2}
+            },
+            {   // collisionGroup different and 1 is -1 so no collision
+                collides: false,
+                effect1Rules: {collisionGroup: -1, doesStack: true, tree: tree1},
+                effect2Rules: {collisionGroup: 2, doesStack: false, tree: tree1}
+            },
+            {   // collisionGroup different so no collision
+                collides: false,
+                effect1Rules: {collisionGroup: 3, doesStack: true, tree: tree1},
+                effect2Rules: {collisionGroup: 2, doesStack: false, tree: tree1}
+            },
+            {   // different tree no collision
+                collides: false,
+                effect1Rules: {collisionGroup: 2, doesStack: true, tree: tree1},
+                effect2Rules: {collisionGroup: 2, doesStack: false, tree: tree2}
+            },
+            {   // does stack both true so no collision
+                collides: false,
+                effect1Rules: {collisionGroup: 2, doesStack: true, tree: tree1},
+                effect2Rules: {collisionGroup: 2, doesStack: true, tree: tree1}
+            },
+            {   // collision because same non -1 collisionGroup, one doesn't stack and tree is the same
+                collides: true,
+                effect1Rules: {collisionGroup: 2, doesStack: true, tree: tree1},
+                effect2Rules: {collisionGroup: 2, doesStack: false, tree: tree1}
+            },
+        ]
+
+        // For each rule make sure that entity has correct effects based on collides
+        collisionRules.forEach(collisionRule=>{
+            let {collides, effect1Rules: e1, effect2Rules: e2} = collisionRule
+
+            // Create effect1, a ContinuousUpgradeEffect
+            let upgradeEffect1 = new UpgradeEffect("none","", 1000, e1.doesStack, e1.collisionGroup)
+            let effect1 = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect1) as ContinuousUpgradeEffect
+            effect1.setTree(e1.tree)
+
+            // Create effect2, a TriggerUpgradeEffect
+            let upgradeEffect2 = new UpgradeEffect("player attack","", 1000, e2.doesStack, e2.collisionGroup)
+            let effect2 = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect2) as TriggerUpgradeEffect
+            effect2.setTree(e2.tree)
+
+            // Clear effects on entity
+            while(entity.effects.length!==0) entity.effects.pop()
+
+            EffectManager.addUpgradeEffectsTo(entity, [effect1, effect2])
+
+            if(collides){
+                // check only effect2 remains
+                expect(entity.effects.length).toBe(1)
+                expect(entity.effects[0]).toBe(effect2)
+            }else{
+                // check both effects are there
+                expect(entity.effects.length).toBe(2)
+                expect(entity.effects).toContain(effect1)
+                expect(entity.effects).toContain(effect2)
+            }
+        })
     })
 })
 

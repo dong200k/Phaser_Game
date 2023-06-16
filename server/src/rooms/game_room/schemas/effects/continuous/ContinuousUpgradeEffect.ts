@@ -1,4 +1,5 @@
 import EffectLogicManager from "../../../system/EffectLogic/EffectLogicManager";
+import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
 import Entity from "../../gameobjs/Entity";
 import ContinuousEffectUntimed from "./ContinuousEffectUntimed";
 
@@ -14,8 +15,9 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
     doesStack: boolean
     /** holds collision info, if any pair of UpgradeTriggerEffect on a single Entity has doesStack = false,
      * if either collisionGroup === -1 or they are different nothing happens,
-     * if their collisionGroups are the same the old one is removed from the Entity*/
+     * if their collisionGroups are the same the old one is removed from the Entity if they came from the same tree*/
     collisionGroup: number
+    tree?: WeaponUpgradeTree
 
     constructor(effectLogicId: string, cooldown: number, type: string, doesStack: boolean, collisionGroup: number){
         super(cooldown)
@@ -34,5 +36,9 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
             console.log(e?.message)
             return false
         }
+    }
+
+    public setTree(tree: WeaponUpgradeTree){
+        this.tree = tree
     }
 }

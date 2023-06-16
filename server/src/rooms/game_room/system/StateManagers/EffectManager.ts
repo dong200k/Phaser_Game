@@ -134,6 +134,7 @@ export default class EffectManager {
     public static addUpgradeEffectsTo(entity: Entity, effect: IUpgradeEffect | Array<IUpgradeEffect>) {
         /**
          * Takes in 2 effects and checks if there is a collision between them and only one of them can exist on an Entity at once.
+         * If the 2 effect comes from different trees or either does'nt have a tree they are from they don't collide
          * If either effect does not have both the properties collisionGroup and doesStack they don't collide
          * If either effect has a collision group of -1 there is no collision and both can exist.
          * If they both have the same collision group then if either does stack is false then there is a collision
@@ -143,7 +144,8 @@ export default class EffectManager {
          * @returns true if there is a collision else false
          */
         function collides(effect1: Effect, effect2: Effect){
-            return ("collisionGroup" in effect1) && ("doesStack" in effect1) 
+            return ("tree" in effect1) && ("tree" in effect2) && effect1.tree === effect2.tree
+                && ("collisionGroup" in effect1) && ("doesStack" in effect1) 
                 && ("collisionGroup" in effect2) && ("doesStack" in effect2)
                 && effect1.collisionGroup === effect2.collisionGroup 
                 && effect1.collisionGroup !== -1 && (!effect1.doesStack || !effect2.doesStack)

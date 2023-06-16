@@ -148,6 +148,7 @@ export default class TreeUtil{
             // If node has an UpgradeEffect then convert it to an Effect and apply it to the player
             if(selectedUpgrade.data.upgradeEffect){
                 let effect = EffectFactory.createEffectFromUpgradeEffect(selectedUpgrade.data.upgradeEffect)
+                effect.setTree(tree as WeaponUpgradeTree)
 
                 // Add effect to player
                 EffectManager.addUpgradeEffectsTo(playerState, effect)
@@ -178,7 +179,11 @@ export default class TreeUtil{
         // Convert upgradeEffects (which are sorted in order they were selected first at the front of the list) to Effects
         // then apply them to the player from first to last
         let orderedUpgradeEffects = TreeUtil.getSelectedTreeEffects(tree)
-        let effects = orderedUpgradeEffects.map((upgradeEffect: UpgradeEffect)=>EffectFactory.createEffectFromUpgradeEffect(upgradeEffect))
+        let effects = orderedUpgradeEffects.map((upgradeEffect: UpgradeEffect)=>{
+            let effect = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect)
+            effect.setTree(tree)
+            return effect
+        })
         EffectManager.addUpgradeEffectsTo(playerState, effects)
         
         // store effects so they can be removed when the artifact is unequipped

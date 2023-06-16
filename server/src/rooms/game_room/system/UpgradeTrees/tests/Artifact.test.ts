@@ -22,6 +22,7 @@ describe("Artifact Tests", ()=>{
     })
 
     test("Equiping a artifact grants the player its stats and effects", ()=>{
+        
     })
     test("Unequipping a artifact removes from the player its stats and effects", ()=>{
     })
