@@ -98,11 +98,39 @@ namespace EventManager {
          * @param key The key of the PeerInfo to delete.
          */
         export const DELETE_PEER_INFO = "HUDSceneDeletePeerInfo";
+
+        /**
+         * Emitting this event will clear the HUD of any data from previous games.
+         * 
+         * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.RESET_HUD)```
+         */
+        export const RESET_HUD = "HUDSceneResetHUD";
     }
 
     export namespace GameEvents {
         /** Event to notify the GameScene to leave the game. Should only be emitted when GameScene is running.*/
         export const LEAVE_GAME = "GameSceneLeaveGame";
+    }
+
+    export namespace NavbarEvents {
+
+        /**
+         * Emitting this event will updated the Navbar based on the data provided.
+         * 
+         * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.NavbarEvents.UPDATE_NAVBAR, data)```
+         * 
+         * @param data
+         * ```
+         * {
+                activeOn: "home" | "play" | "shop" | "skill tree" | "role";
+                username: string;
+                level: number; 
+                coins: number;
+                gems: number;
+            }
+            ```
+         */
+        export const UPDATE_NAVBAR = "NavbarSceneUpdateNavbar";
     }
 
 }
