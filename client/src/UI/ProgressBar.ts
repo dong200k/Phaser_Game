@@ -3,6 +3,7 @@ import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import { ColorStyle } from "../config";
 import UIFactory from "./UIFactory";
 import TextBox from "./TextBox";
+import TextBoxPhaser from "./TextBoxPhaser";
 
 export interface ProgressBarConfig extends Sizer.IConfig {
     progressBarColor?: number;
@@ -10,7 +11,8 @@ export interface ProgressBarConfig extends Sizer.IConfig {
     progressBarHeight?: number;
     progressBarMaxValue?: number;
     progressBarValue?: number;
-    progressBarTextVisible?: boolean;
+    progressBarCreateText?: boolean;
+    progressBarPhaserText?: boolean;
 }
 
 interface SceneWithRexUI extends Phaser.Scene {
@@ -20,7 +22,8 @@ interface SceneWithRexUI extends Phaser.Scene {
 export default class ProgressBar extends Sizer {
 
     rexUI: UIPlugins;
-    private text: TextBox;
+    private text?: TextBox;
+    private textPhaser?: TextBoxPhaser;
     private progressBar: Phaser.GameObjects.Rectangle;
 
     private progressBarColor: number;
@@ -39,7 +42,7 @@ export default class ProgressBar extends Sizer {
         this.progressBarHeight = config?.progressBarHeight ?? 20;
         this.progressBarMaxValue = config?.progressBarMaxValue ?? 100;
         this.progressBarValue = config?.progressBarValue ?? 10;
-        this.progressBarTextVisible = config?.progressBarTextVisible ?? true;
+        this.progressBarTextVisible = config?.progressBarCreateText ?? true;
         
         //this.scene.add.existing(this.graphic);
         let overlapSizer = this.rexUI.add.overlapSizer({});
@@ -47,16 +50,25 @@ export default class ProgressBar extends Sizer {
         this.progressBar = this.scene.add.rectangle(0, 0, (this.progressBarValue / this.progressBarMaxValue) * this.progressBarWidth, this.progressBarHeight,this.progressBarColor).setOrigin(0, 0.5);
         overlapSizer.add(this.progressBar, {expand: false, align:"left"});
         overlapSizer.add(this.rexUI.add.roundRectangle(0, 0, this.progressBarWidth, this.progressBarHeight, 0, 0x0, 0).setStrokeStyle(1, ColorStyle.primary.hex[900]))
-        this.text = UIFactory.createTextBoxDOM(scene, `${this.progressBarValue}/${this.progressBarMaxValue}`, "l6")
-
-        overlapSizer.add(this.text);
+        
+        if(config?.progressBarCreateText ?? true) {
+            if(config?.progressBarPhaserText ?? false) {
+                this.textPhaser = UIFactory.createTextBoxPhaser(scene, `${this.progressBarValue}/${this.progressBarMaxValue}`, "l6")
+                overlapSizer.add(this.textPhaser, {expand: false});
+            } else {
+                this.text = UIFactory.createTextBoxDOM(scene, `${this.progressBarValue}/${this.progressBarMaxValue}`, "l6")
+                overlapSizer.add(this.text, {expand: false});
+            }
+        }
+       
         this.add(overlapSizer);
 
         this.updateProgressBar();
     }
 
     public setProgressBarTextVisible(visible: boolean) {
-        this.text.setVisible(visible);
+        this.text?.setVisible(visible);
+        this.textPhaser?.setVisible(visible);
     }
 
     public setProgressBarValue(value: number) {
@@ -72,6 +84,7 @@ export default class ProgressBar extends Sizer {
     public updateProgressBar() {
         this.setProgressBarTextVisible(this.progressBarTextVisible);
         this.progressBar.setSize((this.progressBarValue / this.progressBarMaxValue) * this.progressBarWidth, this.progressBarHeight);
-        this.text.setText(`${this.progressBarValue}/${this.progressBarMaxValue}`);
+        this.text?.setText(`${this.progressBarValue}/${this.progressBarMaxValue}`);
+        this.textPhaser?.setText(`${this.progressBarValue}/${this.progressBarMaxValue}`);
     }
 }

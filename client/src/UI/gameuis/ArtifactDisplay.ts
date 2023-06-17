@@ -69,10 +69,7 @@ export default class ArtifactDisplay {
         this.artifactSizer.layout();
 
         this.artifactSizer.getAllChildren().forEach((child) => {
-            if(child instanceof CircleImage) {
-                child.updateMaskPosition();
-                child.updateMaskVisible();
-            }
+            if(child instanceof CircleImage) child.updateMask();
         })
     }
 

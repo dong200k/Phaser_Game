@@ -23,7 +23,7 @@ namespace EventManager {
          * 
          * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, args)```
          * 
-         * args is equal to an object shown below, 
+         * @param args
          * ```
          * {
                 slot1ItemKey: string;
@@ -49,7 +49,7 @@ namespace EventManager {
          * 
          * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_ARTIFACT_DISPLAY, args)```
          * 
-         * args is equal to the following:
+         * @param args
          * ```
          * {
          *     items: [{
@@ -60,6 +60,44 @@ namespace EventManager {
          * ```
          */
         export const UPDATE_ARTIFACT_DISPLAY = "HUDSceneUpdateArtifactDisplay";
+
+        /**
+         * Emitting this event will create or update a peer info inside the PeerInfoPopup.
+         * 
+         * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, key, data)```
+         * 
+         * @param key The key of the PeerInfo. If the PeerInfo with the key doesn't exist 
+         * it will be create. Otherwise it will be updated.
+         * @param data 
+         * ```
+         * {
+                slot1ItemKey: string;
+                slot2ItemKey: string;
+                slot3ItemKey: string;
+                hpValue: number;
+                maxHpValue: number;
+                mpValue: number;
+                maxMpValue: number;
+                xpValue: number;
+                maxXpValue: number;
+                level: number;
+                specialCooldownPercent: number;
+                specialImageKey: string;
+                name: string;
+                roleImageKey: string;
+            }
+         * ```
+         */
+        export const CREATE_OR_UPDATE_PEER_INFO = "HUDSceneCreateOrUpdatePeerInfo";
+
+        /**
+         * Emitting this event will remove a PeerInfo from the PeerInfoPopup.
+         * 
+         * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.DELETE_PEER_INFO, key)```
+         * 
+         * @param key The key of the PeerInfo to delete.
+         */
+        export const DELETE_PEER_INFO = "HUDSceneDeletePeerInfo";
     }
 
     export namespace GameEvents {

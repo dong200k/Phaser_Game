@@ -16,11 +16,11 @@ export default class CircleImage extends Phaser.GameObjects.Image {
         this.setDisplaySize(this.radius * 2, this.radius * 2);
     }
 
-    public updateMaskPosition() {
+    /** Called to set the mask's position to the image's position, and the mask's visibility to
+     * the image's visibility.
+     */
+    public updateMask() {
         if(this.circle) this.circle.setPosition(this.x, this.y);
-    }
-
-    public updateMaskVisible() {
         this.circle.setVisible(this.visible);
     }
 

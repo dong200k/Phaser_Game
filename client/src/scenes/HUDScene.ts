@@ -6,13 +6,8 @@ import MenuModal from "../UI/modals/MenuModal";
 import PlayerInfo, { PlayerInfoData } from "../UI/gameuis/PlayerInfo";
 import ArtifactDisplay, { ArtifactDisplayData } from "../UI/gameuis/ArtifactDisplay";
 import EventManager from "../system/EventManager";
-
-// export enum HUDEvents {
-//     HUDPlayerInfoUpdate = "HUDPlayerInfoUpdate",
-// }
-
-
-export type HUDEventsPlayerInfoUpdate = (data: Partial<PlayerInfoData>) => void;
+import PeerInfo from "../UI/gameuis/PeerInfo";
+import PeerInfoPopup from "../UI/gameuis/PeerInfoPopup";
 
 export default class HUDScene extends Phaser.Scene {
 
@@ -20,6 +15,7 @@ export default class HUDScene extends Phaser.Scene {
     rexUI!: UIPlugins;
     private playerInfoDisplay!: PlayerInfo;
     private artifactDisplay!: ArtifactDisplay;
+    private peerInfoPopup!: PeerInfoPopup;
 
     constructor() {
         super(SceneKey.HUDScene);
@@ -28,7 +24,6 @@ export default class HUDScene extends Phaser.Scene {
     create() {
         this.initializeUI();
         this.initializeListeners();
-        //eventsManager.emit(HUDEvents.HUDPlayerInfoUpdate, HUDEventsCallbacks)
     }
 
     public updatePlayerInfoData(data: Partial<PlayerInfoData>) {
@@ -42,11 +37,15 @@ export default class HUDScene extends Phaser.Scene {
     private initializeListeners() {
         EventManager.eventEmitter.on(EventManager.HUDEvents.UPDATE_PLAYER_INFO, this.updatePlayerInfoData, this);
         EventManager.eventEmitter.on(EventManager.HUDEvents.UPDATE_ARTIFACT_DISPLAY, this.updateArtifactDisplay, this);
+        EventManager.eventEmitter.on(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, this.peerInfoPopup.updatePeerInfo, this.peerInfoPopup);
+        EventManager.eventEmitter.on(EventManager.HUDEvents.DELETE_PEER_INFO, this.peerInfoPopup.removePeerInfo, this.peerInfoPopup);
     }
 
     private removeListeners() {
         EventManager.eventEmitter.off(EventManager.HUDEvents.UPDATE_PLAYER_INFO, this.updatePlayerInfoData, this);    
         EventManager.eventEmitter.off(EventManager.HUDEvents.UPDATE_ARTIFACT_DISPLAY, this.updateArtifactDisplay, this);
+        EventManager.eventEmitter.off(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, this.peerInfoPopup.updatePeerInfo, this.peerInfoPopup);
+        EventManager.eventEmitter.off(EventManager.HUDEvents.DELETE_PEER_INFO, this.peerInfoPopup.removePeerInfo, this.peerInfoPopup);
     }
 
     private initializeUI() {
@@ -87,67 +86,9 @@ export default class HUDScene extends Phaser.Scene {
         });
 
         // ----- Party Info popup -----
-
-        let partyPopup = this.createPartyInfoPopup();
-        partyPopup.setPosition(this.game.scale.width / 2, this.game.scale.height / 2);
-        partyPopup.layout();
-        partyPopup.setDepth(100);
-        partyPopup.setVisible(false);
-
-        this.input.keyboard?.on("keydown-E", () => partyPopup.setVisible(true));
-        this.input.keyboard?.on("keyup-E", () => partyPopup.setVisible(false));
-    }
-
-    private createPartyInfoPopup() {
-        let fixedWidthSizer = this.rexUI.add.fixWidthSizer({
-            width: 500,
-        })
-        fixedWidthSizer.addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 10, ColorStyle.primary.hex[900]));
-        fixedWidthSizer.add(this.createStatusBars());
-        return fixedWidthSizer;
-    }
-
-
-    private createStatusBars() {
-        let healthBar = new ProgressBar(this, {
-            progressBarWidth: 200,
-            progressBarHeight: 15,
-            progressBarMaxValue: 100,
-            progressBarValue: 100,
-            progressBarColor: 0x832F2F,
-        });
-        
-        let manaBar = new ProgressBar(this, {
-            progressBarWidth: 200,
-            progressBarHeight: 15,
-            progressBarMaxValue: 100,
-            progressBarValue: 100,
-            progressBarColor: 0x2F3883,
-        });
-        
-        let xpBar = new ProgressBar(this, {
-            progressBarWidth: 200,
-            progressBarHeight: 15,
-            progressBarMaxValue: 100,
-            progressBarValue: 100,
-            progressBarColor: 0x7C832F,
-        });
-        this.add.existing(healthBar);
-        this.add.existing(manaBar);
-        this.add.existing(xpBar);
-
-        let sizer = this.rexUI.add.sizer({
-            orientation: "vertical",
-            space: {
-                item: 5,
-            }
-        })
-
-        // sizer.add(this.createHotSlots(), {align: "left", expand: true});
-        sizer.add(healthBar);
-        sizer.add(manaBar);
-        sizer.add(xpBar);
-
-        return sizer;
+        this.peerInfoPopup = new PeerInfoPopup(this);
+        this.peerInfoPopup.setVisible(false);
+        this.input.keyboard?.on("keydown-SHIFT", () => this.peerInfoPopup.setVisible(true));
+        this.input.keyboard?.on("keyup-SHIFT", () => this.peerInfoPopup.setVisible(false));
     }
 }

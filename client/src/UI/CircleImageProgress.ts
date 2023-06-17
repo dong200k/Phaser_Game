@@ -9,6 +9,7 @@ import TextBoxPhaser from "./TextBoxPhaser";
 interface CircleImageProgressConfig extends OverlapSizer.IConfig {
     texture?: string | Phaser.Textures.Texture,
     radius?: number,
+    createText?: boolean;
 }
 
 interface SceneWithRexUI extends Phaser.Scene {
@@ -22,7 +23,7 @@ export default class CircleImageProgress extends OverlapSizer {
     private backgroundCircle: CircleImage | null = null;
     private circularProgress: CircularProgress;
     private radius: number;
-    private text: TextBoxPhaser;
+    private text?: TextBoxPhaser;
 
     constructor(scene: SceneWithRexUI, config: CircleImageProgressConfig) {
         super(scene, config);
@@ -50,14 +51,16 @@ export default class CircleImageProgress extends OverlapSizer {
 
         this.scene.add.existing(this.circularProgress);
         this.add(this.circularProgress);
-        this.text = UIFactory.createTextBoxPhaser(this.scene, "20", "l1")
-        this.add(this.text, {expand: false});
+        if(config?.createText !== false) {
+            this.text = UIFactory.createTextBoxPhaser(this.scene, "20", "l1")
+            this.add(this.text, {expand: false});
+        }
     }
 
     public layoutCircleImageProgress() {
         if(this.backgroundCircle) {
             this.backgroundCircle.setPosition(this.x, this.y);
-            this.backgroundCircle.updateMaskPosition();
+            this.backgroundCircle.updateMask();
         }
     }
 
@@ -74,7 +77,7 @@ export default class CircleImageProgress extends OverlapSizer {
      * @param text A string.
      */
     public setProgressText(value: string) {
-        this.text.setText(value);
+        this.text?.setText(value);
     }
 
     /**
@@ -82,7 +85,7 @@ export default class CircleImageProgress extends OverlapSizer {
      * @param value True or False.
      */
     public setProgressTextVisible(value: boolean) {
-        this.text.setVisible(value);
+        this.text?.setVisible(value);
     }
 
     /**

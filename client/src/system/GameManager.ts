@@ -9,6 +9,7 @@ import GameObject from "../gameobjs/GameObject";
 import ClientSidePrediction from "./ClientSidePrediction";
 import Tile from "../gameobjs/Tile";
 import EventManager from "./EventManager";
+import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -279,10 +280,28 @@ export default class GameManager {
                 let time = entityState.specialCooldown.time;
                 let remainingTime = entityState.specialCooldown.remainingTime;
                 let isFinished = entityState.specialCooldown.isFinished;
+                // Updates the HUD's PlayerInfo display.
                 EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
                     specialCooldownCounter: Math.round(remainingTime / 1000),
                     specialCooldownPercent: isFinished? 0 : remainingTime / time,
                 });
+            }
+        }
+        if(entity instanceof Player) {
+            let playerState = entityState as PlayerState;
+
+            // Create PeerInfo and set up initial values.
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.name, {
+                name: playerState.name,
+            })
+
+            playerState.onChange = () => {
+                let time = playerState.specialCooldown.time;
+                let remainingTime = playerState.specialCooldown.remainingTime;
+                let isFinished = playerState.specialCooldown.isFinished;
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.name, {
+                    specialCooldownPercent: isFinished? 0 : remainingTime / time,
+                })
             }
         }
     }
