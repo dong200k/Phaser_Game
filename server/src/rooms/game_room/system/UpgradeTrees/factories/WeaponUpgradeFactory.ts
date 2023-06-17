@@ -13,12 +13,14 @@ export default class WeaponUpgradeFactory{
      * @returns 
      */
     private static createNode(copy: Node<WeaponData>){
-        let {weaponId, name, description, stat, upgradeEffect} = copy.data
+        let {weaponId, name, description, stat, upgradeEffect, status, selectionTime} = copy.data
         stat = new Stat(stat)
-        if(upgradeEffect){
+        if(upgradeEffect && upgradeEffect.effectLogicId !== "" && upgradeEffect.effectLogicId){
             upgradeEffect = new UpgradeEffect(upgradeEffect.type, upgradeEffect.effectLogicId, upgradeEffect.cooldown, upgradeEffect.doesStack, upgradeEffect.collisionGroup)
+        }else{
+            upgradeEffect = undefined
         }
-        let weaponData = new WeaponData(weaponId, stat, upgradeEffect, name, description)
+        let weaponData = new WeaponData(weaponId, stat, upgradeEffect, name, description, status, selectionTime)
         let node = new Node<WeaponData>(weaponData)
 
         return node
@@ -50,8 +52,10 @@ export default class WeaponUpgradeFactory{
 
         dfs(root, upgrade.root)
 
-        //select the root node
-        if(selectRoot) root.data.setStatus("selected")
+        if(selectRoot){
+            root.data.status = "selected"
+            root.data.selectionTime = 0
+        }
 
         return root
     }

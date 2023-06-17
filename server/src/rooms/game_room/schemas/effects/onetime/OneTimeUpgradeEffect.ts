@@ -6,7 +6,7 @@ import OneTimeEffect from "./OneTimeEffect";
 export default class OneTimeUpgradeEffect extends OneTimeEffect {
 
     /** Id of effectLogic to use */
-    private effectLogicId: string
+    effectLogicId: string
     /** Whether the UpgradeTriggerEffect stacks with other UpgradeTriggerEffects on a single Entity with the same collisionGroup besides a collisionGroup of -1*/
     doesStack: boolean
     /** holds collision info, if any pair of UpgradeTriggerEffect on a single Entity has doesStack = false,

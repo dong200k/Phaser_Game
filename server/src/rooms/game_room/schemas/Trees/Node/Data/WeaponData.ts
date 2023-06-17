@@ -1,7 +1,7 @@
 import Effect from "../../../effects/Effect";
 import Stat from "../../../gameobjs/Stat";
 import UpgradeEffect from "../../../gameobjs/UpgradeEffect";
-import { Data } from "./Data";
+import { Data, status } from "./Data";
 import {type} from "@colyseus/schema"
 
 export default class WeaponData extends Data{
@@ -12,8 +12,8 @@ export default class WeaponData extends Data{
     /** Holds effect logic data of node from the react-frontend */
     @type(UpgradeEffect) upgradeEffect?
 
-    constructor(weaponId?: string, stat?: Stat, upgradeEffect?: UpgradeEffect, name: string = "Upgrade Name", description: string = "Upgrade Description"){
-        super()
+    constructor(weaponId?: string, stat?: Stat, upgradeEffect?: UpgradeEffect, name: string = "Upgrade Name", description: string = "Upgrade Description", status: status = "none", selectionTime?: number){
+        super(status, selectionTime)
         this.stat = stat? stat : Stat.getZeroStat()
         this.name = name
         this.description = description

@@ -52,13 +52,16 @@ export default class SkillTreeFactory{
     }
 
     /**
-     * Creates default adventurere skill tree node
+     * Creates fully upgraded adventurer skill tree node
      */
-    static createAdventurerSkill(){
-        return SkillTreeFactory.createSkill("skill-a63779a4-c357-4c62-a17d-d3d3606b1b4b")
+    static createUpgradedAdventurerSkill(selectRoot: boolean = true){
+        return SkillTreeFactory.createSkill("skill-a63779a4-c357-4c62-a17d-d3d3606b1b4b", selectRoot)
     }
 
-    static createTestSkill(){
-        return SkillTreeFactory.createSkill("skill-a1d641ec-5560-47d6-af95-89e6e1ef4dc6")
+     /**
+     * Creates default un-upgraded adventurer skill tree node
+     */
+     static createAdventurerSkill(selectRoot: boolean = false){
+        return SkillTreeFactory.createSkill("skill-bd5a5c20-d375-46eb-a2dc-dace60afbab9", selectRoot)
     }
 }

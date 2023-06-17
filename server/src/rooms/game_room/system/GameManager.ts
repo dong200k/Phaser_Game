@@ -8,6 +8,7 @@ import EffectManager from './StateManagers/EffectManager';
 import DungeonManager from './StateManagers/DungeonManager';
 import DatabaseManager from './Database/DatabaseManager';
 import EffectLogicManager from './EffectLogic/EffectLogicManager';
+import ArtifactManager from './StateManagers/ArtifactManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -47,6 +48,7 @@ export default class GameManager {
      */
     async preload(){
         await DatabaseManager.getManager().loadData()
+        await ArtifactManager.preload()
     }
 
     public syncServerStateBasedOnGameState(){

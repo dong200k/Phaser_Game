@@ -26,6 +26,6 @@ export default class StatTree<DataType> extends Schema{
         this.totalStat.mul(0)
         this.name = "name"
         this.description = "description"
-        while(this.statEffectIds) this.statEffectIds.pop()
+        while(this.statEffectIds.length > 0) this.statEffectIds.pop()
     }
 }

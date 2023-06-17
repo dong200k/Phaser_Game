@@ -6,6 +6,7 @@ import Stat from "../../../schemas/gameobjs/Stat"
 import GameManager from "../../GameManager"
 import SkillTreeFactory from "../factories/SkillTreeFactory"
 import SkillTreeManager from "../../StateManagers/SkillTreeManager"
+import EffectManager from "../../StateManagers/EffectManager"
 import TreeUtil from "../../../../../util/TreeUtil"
 
 describe("Skill Tree Tests", ()=>{
@@ -22,83 +23,85 @@ describe("Skill Tree Tests", ()=>{
         playerState = gameManager.playerManager.getPlayerStateAndBody(sessionId).playerState
     })
     test("Equiping a Skill tree grants the player its stats and effects", ()=>{
-        let skillTree = SkillTreeFactory.createAdventurerSkill()
-        SkillTreeManager.setSkillTree(playerState, skillTree as Node<SkillData>)
-        
-        // Check that player's skillTree's root has same structure as bow upgrade
-        expect(playerState.skillTree.root).toBeDefined()
+        EffectManager.updateEffectsOn(playerState, 1)
+        let skillTree = SkillTreeFactory.createUpgradedAdventurerSkill() as Node<SkillData>
+
+        // Compute expected stats
+        let expectedTreeStat = TreeUtil.computeTotalStat(skillTree)
+        let expectedPlayerStatAfterEquipingTree = Stat.add(playerState.stat, expectedTreeStat)
+
+        // Equip skill tree
+        SkillTreeManager.equipSkillTree(playerState, skillTree as Node<SkillData>)
+        EffectManager.updateEffectsOn(playerState, 1)
+
+        // Check that player stat changed properly
+        expect(expectedPlayerStatAfterEquipingTree).toEqual(playerState.stat)
     })
     test("Unequipping a Skill tree removes from the player its stats and effects", ()=>{
+        let skillTree = SkillTreeFactory.createUpgradedAdventurerSkill() as Node<SkillData>
+
+        // Equip skill tree
+        SkillTreeManager.equipSkillTree(playerState, skillTree as Node<SkillData>)
+        EffectManager.updateEffectsOn(playerState, 1)
+
+        // Compute expected stats for removing skill tree
+        let expectedTreeStat = SkillTreeManager.getTotalStat(playerState)
+        let expectedPlayerStatAfterUnEquipingTree = Stat.sub(playerState.stat, expectedTreeStat)
+
+        /** check stats changed and after unequiping skill tree*/
+        SkillTreeManager.unEquipSkillTree(playerState)
+        expect(playerState.skillTree.root).toBe(undefined)
+        expect(playerState.stat).toEqual(expectedPlayerStatAfterUnEquipingTree)
     })
     test("Switching SkillTree/unequipping a new tree while the player has a tree works properly", ()=>{
-        let skillTree = SkillTreeFactory.createAdventurerSkill()
-        SkillTreeManager.setSkillTree(playerState, skillTree as Node<SkillData>)
-        
-        // Check that player's skillTree's root has same structure as bow upgrade
-        expect(playerState.skillTree.root).toEqual(SkillTreeFactory.createAdventurerSkill())
+        let fullyUpgradedSkillTree= SkillTreeFactory.createUpgradedAdventurerSkill() as Node<SkillData>
+        let unUpgradedSkillTree = SkillTreeFactory.createAdventurerSkill() as Node<SkillData>
 
-        // Equip new skill tree
-        skillTree = SkillTreeFactory.createTestSkill()
-        SkillTreeManager.setSkillTree(playerState, skillTree as Node<SkillData>)
+        /** Unequip current skill tree if any */
+        SkillTreeManager.unEquipSkillTree(playerState)
+
+        /** Equip the 1st skill tree */
+        SkillTreeManager.equipSkillTree(playerState, fullyUpgradedSkillTree)
+        EffectManager.updateEffectsOn(playerState, 1)
+
+        let expectedStatAfterSwap = Stat.sub(playerState.stat, playerState.skillTree.totalStat)
+
+        SkillTreeManager.swapSkillTree(playerState, unUpgradedSkillTree)
+        EffectManager.updateEffectsOn(playerState, 1)
         
-        // Check that player's skillTree's root has same structure as bow upgrade
-        expect(playerState.skillTree.root).toEqual(SkillTreeFactory.createTestSkill())
+        // Expect stats to properly update and tree to be swaped
+        expect(expectedStatAfterSwap).toEqual(playerState.stat)
+        expect(playerState.skillTree.root).toEqual(unUpgradedSkillTree)
     })
     test("Player can receive next available upgrades in the tree", ()=>{
-        let skillTree = SkillTreeFactory.createAdventurerSkill()
-        SkillTreeManager.setSkillTree(playerState, skillTree as Node<SkillData>)
-        
-        let upgrades = TreeUtil.getAvailableUpgrades(playerState.skillTree)
-        expect(upgrades?.length).toBe(9)
+        let unUpgradedSkillTree = SkillTreeFactory.createAdventurerSkill() as Node<SkillData>
+        SkillTreeManager.swapSkillTree(playerState, unUpgradedSkillTree)
+
+        let upgrades = SkillTreeManager.getAvailableUpgrades(playerState)
+        expect(upgrades.length).toBe(1)
+
+        // Select upgrade to get next set of upgrades
+        SkillTreeManager.selectUpgrade(playerState, upgrades, 0)
+
+        upgrades = SkillTreeManager.getAvailableUpgrades(playerState)
+        expect(upgrades.length).toBe(9)
     })
-    test("Player can select a skill upgrade", ()=>{
-        let skillTree = SkillTreeFactory.createAdventurerSkill()
-        SkillTreeManager.setSkillTree(playerState, skillTree as Node<SkillData>)
-        
-        //get upgrade and select 2nd upgrade
-        let upgrades = TreeUtil.getAvailableUpgrades(playerState.skillTree)
-        TreeUtil.selectUpgrade(playerState, playerState.skillTree, upgrades, 1)
+    test("Selecting an Skill tree's upgrade applies the upgrade's stat bonus to the Entity's effects", ()=>{
+        EffectManager.updateEffectsOn(playerState, 1)
+        let unUpgradedSkillTree = SkillTreeFactory.createAdventurerSkill() as Node<SkillData>
+        SkillTreeManager.swapSkillTree(playerState, unUpgradedSkillTree)
 
-        expect(skillTree?.children[1].data.status).toBe("selected")
+        let upgrades = SkillTreeManager.getAvailableUpgrades(playerState)
+        expect(upgrades.length).toBe(1)
+
+        let expectedPlayerStatAfterUpgrade = Stat.add(playerState.stat, upgrades[0].data.stat)
+
+        // Select upgrade to get next set of upgrades
+        SkillTreeManager.selectUpgrade(playerState, upgrades, 0)
+        EffectManager.updateEffectsOn(playerState, 1)
+
+        expect(expectedPlayerStatAfterUpgrade).toEqual(playerState.stat)
     })
-    test("Selecting multiple upgrades correctly change total stat of the tree", ()=>{
-        let skillTree = SkillTreeFactory.createAdventurerSkill()
-        SkillTreeManager.setSkillTree(playerState, skillTree as Node<SkillData>)
-        
-         // check stats are correct at the start
-         let statObject = {
-            ...Stat.getZeroStatObject(), 
-            maxMana: 100,
-            maxHp: 100,
-            attack: 10,
-            attackSpeed: 1,
-            speed: 1,
-            level: 1,
-        }
-        let stat = new Stat(statObject)
-        let actualStat = TreeUtil.getTotalStat(playerState.skillTree)
-        expect(stat).toEqual(actualStat)
-
-        //get upgrade and select 1st upgrade (+ 1 attack)
-        let upgrades = TreeUtil.getAvailableUpgrades(playerState.skillTree)
-        TreeUtil.selectUpgrade(playerState, playerState.skillTree, upgrades, 0)
-        Object.entries(upgrades[0].data.stat).forEach(([key,val])=>{
-            if(val>0)console.log(key, val)
-        })
-
-        //Check stats are correct after upgrade
-        stat.attack += 1
-        actualStat = TreeUtil.getTotalStat(playerState.skillTree)
-        expect(stat).toEqual(actualStat)
-
-        // Get next upgrade (+ 2 attack)
-        upgrades = TreeUtil.getAvailableUpgrades(playerState.skillTree)
-        TreeUtil.selectUpgrade(playerState, playerState.skillTree, upgrades, 0)
-
-        stat.attack += 2
-        actualStat = TreeUtil.getTotalStat(playerState.skillTree)
-        expect(stat).toEqual(actualStat)
-    })
-    test("Skill tree is properly initialized with its stat effects applied to the player when the game starts", ()=>{
-    })
+    // test("Skill tree is properly initialized with its stat effects applied to the player when the game starts", ()=>{
+    // })
 })

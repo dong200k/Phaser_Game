@@ -14,8 +14,8 @@ export default class ArtifactManager{
     /** Pool of artifacts that don't have a root */
     static artifactTreePool: ObjectPool<WeaponUpgradeTree>
 
+    /** Initialize artifact pool with INITIAL_ARTIFACT_TREE_COUNT many empty aritfact tree*/
     static preload(){
-        /** Initialize artifact pool with INITIAL_ARTIFACT_TREE_COUNT many empty aritfact tree*/
         ArtifactManager.artifactTreePool = new ObjectPool(new WeaponUpgradeTree())
         for(let i=1; i<ArtifactManager.INITIAL_ARTIFACT_TREE_COUNT; i++){
             ArtifactManager.artifactTreePool.returnInstance(new WeaponUpgradeTree())
@@ -29,7 +29,7 @@ export default class ArtifactManager{
      * Note: if the tree already has selected nodes, UpgradeEffects will be selected how they were selected by the player. 
      * @param playerState player who wants to equip the artifact
      * @param root root of artifact upgrade tree to equip
-     * @returns true if the artifact is equip else false
+     * @returns the artifact tree if it is equiped else false
      */
     static equipArtifact(playerState: Player, root: Node<WeaponData>){
         let artifacts = playerState.artifacts
@@ -41,14 +41,21 @@ export default class ArtifactManager{
         let artifactTree = ArtifactManager.artifactTreePool.getInstance()
         artifactTree.root = root
 
-        // Select the root upgrade by default
-        TreeUtil.selectUpgrade(playerState, artifactTree, [root], 0)
+        // Apply artifacts effects to player
+        let totalStat = TreeUtil.addTreeStatsToPlayer(playerState, artifactTree)
+        TreeUtil.addTreeUpgradeEffectsToPlayer(playerState, artifactTree)
+        
+        let weaponId = TreeUtil.getWeaponId(artifactTree)
+        TreeUtil.setTreeWeapon(artifactTree, weaponId)
+
+        // Set total stat as computed total stat
+        artifactTree.totalStat = totalStat
 
         // Add this artifact to the player
         artifacts.push(artifactTree)
         artifactTree.setOwner(playerState)
 
-        return true
+        return artifactTree
     }
 
     /**

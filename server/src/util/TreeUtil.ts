@@ -22,11 +22,11 @@ export default class TreeUtil{
     }
 
     /**
-     * Takes in a weapon or skill tree and computes the total stats the tree provides based on selected upgrades.
-     * @param tree
+     * Takes in the root node of a tree and computes the total stats the tree provides based on selected upgrades.
+     * @param root
      * @returns 
      */
-    static computeTotalStat(tree: WeaponUpgradeTree | StatTree<SkillData>){
+    static computeTotalStat(root?: Node<WeaponData> | Node<SkillData>){
         let totalStats = Stat.getZeroStat()
 
         //dfs traversal to get stats that have been selected
@@ -45,7 +45,7 @@ export default class TreeUtil{
             }
         }
 
-        if(tree.root) dfs(tree.root)
+        if(root) dfs(root)
 
         return totalStats
     }
@@ -65,11 +65,12 @@ export default class TreeUtil{
             switch(root.data.status){
                 case "selected":
                     // Selected nodes definitely have a selectionTime
-                    if(root.data.upgradeEffect){
+                    if(root.data.upgradeEffect && root.data.upgradeEffect.effectLogicId && root.data.upgradeEffect.effectLogicId !== ""){
                         upgradeEffectsWithOrder.push({effect: root.data.upgradeEffect, order: root.data.selectionTime as number})
                     }
-                case "none":
-                    return
+                    break;
+                // case "none":
+                //     return
             }
             
             for(let node of root.children){
@@ -85,6 +86,38 @@ export default class TreeUtil{
             .sort((u1: {effect: UpgradeEffect, order: number}, u2: {effect: UpgradeEffect, order: number})=>{
                 return u1.order - u2.order})
             .map((u: {effect: UpgradeEffect, order: number})=>u.effect)
+    }
+
+    /**
+     * Takes in a WeaponUpgradeTree or a StatTree and returns the last selected weaponId
+     * @param tree
+     * @returns weaponId from the last selected node
+     */
+    static getWeaponId(tree: WeaponUpgradeTree){
+        let weaponId = ""
+        let maxSelectionTime = -1
+
+        //dfs traversal
+        function dfs(root: Node<WeaponData>){
+            switch(root.data.status){
+                case "selected":
+                    // Selected nodes definitely have a selectionTime
+                    if(root.data.weaponId && root.data.selectionTime && root.data.selectionTime > maxSelectionTime) {
+                        weaponId = root.data.weaponId
+                    }
+                    break;
+                // case "none":
+                //     return
+            }
+            
+            for(let node of root.children){
+                dfs(node)
+            }
+        }
+
+        if(tree.root) dfs(tree.root)
+
+        return weaponId
     }
 
     /**
@@ -165,7 +198,6 @@ export default class TreeUtil{
         let statEffect = EffectFactory.createStatEffect(stat)
         let UUID = EffectManager.addStatEffectsTo(playerState, statEffect)
         tree.statEffectIds.push(UUID) // Store selected stat effect's key so it can be removed when the tree is unequipped
-
         // Change total tree stat inplace to reflect changes
         tree.totalStat.add(stat)
     }
@@ -179,6 +211,7 @@ export default class TreeUtil{
         // Convert upgradeEffects (which are sorted in order they were selected first at the front of the list) to Effects
         // then apply them to the player from first to last
         let orderedUpgradeEffects = TreeUtil.getSelectedTreeEffects(tree)
+        
         let effects = orderedUpgradeEffects.map((upgradeEffect: UpgradeEffect)=>{
             let effect = EffectFactory.createEffectFromUpgradeEffect(upgradeEffect)
             effect.setTree(tree)
@@ -197,10 +230,11 @@ export default class TreeUtil{
      * @param tree tree to get the stats from
      */
     static addTreeStatsToPlayer(playerState: Player, tree: WeaponUpgradeTree | StatTree<SkillData>){
-        let totalStat = TreeUtil.computeTotalStat(tree)
+        let totalStat = TreeUtil.computeTotalStat(tree.root)
         let statEffect = EffectFactory.createStatEffect(totalStat)
         let UUID = EffectManager.addStatEffectsTo(playerState, statEffect)
         tree.statEffectIds.push(UUID) // Add id to artifact tree so it can be removed when tree is unequipped
+        return totalStat
     }
 
     /**

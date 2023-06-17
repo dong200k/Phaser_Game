@@ -33,7 +33,7 @@ export default class WeaponUpgradeTree extends StatTree<WeaponData>{
     reset(){
         super.reset()
         this.weaponId = undefined
-        while(this.effects) this.effects.pop()
+        while(this.effects.length > 0) this.effects.pop()
         return this
     }
 }

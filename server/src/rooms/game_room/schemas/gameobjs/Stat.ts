@@ -51,7 +51,10 @@ export default class Stat extends Schema {
         speed: 1, lifeSteal: 0, lifeStealPercent: 0, level: 1
     }
 
-    constructor(stat: statType = Stat.defaultStatObject) {
+    /** Creates a new stat object based on the stat config passed in. Stat properties not initialized in the config
+     * for example attackSpeed will be set to zero by default.
+     */
+    constructor(stat: Partial<statType> = Stat.defaultStatObject) {
         super(0, 0);
         let zeroStat = Stat.getZeroStatObject()
         let zeroPaddedStat = {...zeroStat, ...stat}
@@ -100,10 +103,24 @@ export default class Stat extends Schema {
      * @param stat1 
      * @param stat2 
      */
-    static add(stat1: Stat, stat2: statType){
+    static add(stat1: Stat, stat2: Stat){
         let sum = Stat.getZeroStat()
         Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
             sum[key as keyStat] += stat1[key as keyStat] + stat2[key as keyStat]
+        })
+
+        return sum
+    }
+
+    /**
+     * Takes in 2 stats and return a new stat with stat1-stat2
+     * @param stat1 
+     * @param stat2 
+     */
+    static sub(stat1: Stat, stat2: statType){
+        let sum = Stat.getZeroStat()
+        Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
+            sum[key as keyStat] += stat1[key as keyStat] - stat2[key as keyStat]
         })
 
         return sum
@@ -135,12 +152,43 @@ export default class Stat extends Schema {
     }
 
     /**
+     * Takes in a stat and a scalar, returns a new stat wtih stat + increment
+     * @param stat
+     * @param increment number to add the properties by
+     */
+    static addScalar(stat: Stat, increment: number){
+        let newStat = Stat.getZeroStat()
+        Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
+            newStat[key as keyStat] = stat[key as keyStat] + increment
+        })
+        return newStat
+    }
+
+    /**
      * Adds the stat by another stat in place
-     * @param scalar number to scale/multiply stat by
      */
     public add(stat: Stat){
         Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
             this[key as keyStat] = this[key as keyStat] + stat[key as keyStat]
+        })
+    }
+
+    /**
+     * subs the stat by another stat in place
+     */
+    public sub(stat: Stat){
+        Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
+            this[key as keyStat] = this[key as keyStat] - stat[key as keyStat]
+        })
+    }
+
+    /**
+     * Adds all of the stat's properties by a scalar in place
+     * @param scalar number to add the properties by
+     */
+    public addScalar(scalar: number){
+        Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
+            this[key as keyStat] = this[key as keyStat] + scalar
         })
     }
 

@@ -2,6 +2,7 @@ import TreeUtil from '../../../../util/TreeUtil';
 import WeaponData from '../../schemas/Trees/Node/Data/WeaponData';
 import Node from '../../schemas/Trees/Node/Node';
 import Player from '../../schemas/gameobjs/Player';
+import EffectManager from './EffectManager';
 
 export default class WeaponManager{
     /**
@@ -12,27 +13,55 @@ export default class WeaponManager{
      */
     static equipWeaponUpgrade(playerState: Player, root: Node<WeaponData>){
         // Already equipped a weapon
-        if(playerState.weaponUpgradeTree.root){
-            // Equip weapon is what we are trying to equip
-            if(playerState.weaponUpgradeTree.root === root) return
-
-            WeaponManager.unEquipWeaponUpgrade(playerState)
-        }
+        if(playerState.weaponUpgradeTree.root) return
         
         playerState.weaponUpgradeTree.root = root
-        playerState.weaponUpgradeTree.setOwner(playerState)
+        let totalStat = TreeUtil.addTreeStatsToPlayer(playerState, playerState.weaponUpgradeTree)
+        TreeUtil.addTreeUpgradeEffectsToPlayer(playerState, playerState.weaponUpgradeTree)
         
-        // Select this upgrade by default
-        TreeUtil.selectUpgrade(playerState, playerState.weaponUpgradeTree, [root], 0)
+        let weaponId = TreeUtil.getWeaponId(playerState.weaponUpgradeTree)
+        TreeUtil.setTreeWeapon(playerState.weaponUpgradeTree, weaponId)
+
+        // Set total stat as computed total stat
+        playerState.weaponUpgradeTree.totalStat = totalStat
+
+        playerState.weaponUpgradeTree.setOwner(playerState)
     }
 
     /**
-     * Takes in player and unequips their WeaponUpgradeTree
+     * Takes in player and unequips their WeaponUpgradeTree and removes the stat/upgrade effects the tree gives
      * @param playerState player who is unequiping the WeaponUpgradeTree
+     * @returns the root of the weaponUpgradeTree that was unequipped, or undefined if there is no root
      */
     static unEquipWeaponUpgrade(playerState: Player){
+        if(!playerState.weaponUpgradeTree.root) return
+        TreeUtil.removeTreeStats(playerState, playerState.weaponUpgradeTree)
+        TreeUtil.removeTreeUpgradeEffects(playerState, playerState.weaponUpgradeTree)
+        let root = playerState.weaponUpgradeTree.root
         playerState.weaponUpgradeTree.reset()
-        return 
+        return root
+    }
+
+    /**
+     * Takes in player and swaps their current weaponUpgradeTree
+     * @param playerState player who is unequiping their WeaponUpgradeTree
+     * @param root root node of weapon upgrade tree to switch to
+     * @returns the root of the weaponUpgradeTree that was unequipped, or undefined if there is no root
+     */
+    static swapWeaponUpgrade(playerState: Player, root: Node<WeaponData>){
+        // Weapon to swap is same as current weapon
+        if(playerState.weaponUpgradeTree.root === root) return
+
+        // A weapon is already equipped so unequip it
+        let oldRoot
+        if(playerState.weaponUpgradeTree.root){
+            oldRoot = WeaponManager.unEquipWeaponUpgrade(playerState)
+        }
+        
+        // Equip new weapon
+        WeaponManager.equipWeaponUpgrade(playerState, root)
+
+        return oldRoot
     }
 
     /**
@@ -56,9 +85,9 @@ export default class WeaponManager{
    }
 
     /**
-     * Takes in a player and gets the total stats the tree provides based on selected upgrades.
+     * Takes in a player and gets the total stats the weapon tree provides based on selected upgrades.
      * @param tree
-     * @returns returns a Stat class with the trees total stats, do not modify
+     * @returns returns a Stat class with the tree's total stats, do not modify
      */
     static getTotalStat(playerState: Player){
         return TreeUtil.getTotalStat(playerState.weaponUpgradeTree)
