@@ -3,7 +3,7 @@ import MathUtil from '../../../../util/MathUtil';
 import { Cloneable } from '../../../../util/PoolUtil';
 
 export default class GameObject extends Schema implements Cloneable {
-    @type('string') private id: string;
+    @type('string') id: string;
     @type('string') ownerId;
     @type('string') type;
 

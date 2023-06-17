@@ -23,11 +23,14 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
         })
 
         this.onMessage("start", (client: Client, message: any) => {
-            matchMaker.createRoom('game', {}).then((room) => {
+            // Don't start a game if the players are already in a game.
+            if(!this.metadata.inGame) {
+                matchMaker.createRoom('game', {}).then((room) => {
                 this.onCreateGameRoom(room);
-            }).catch(e => {
-                console.log(e);
-            })
+                }).catch(e => {
+                    console.log(e);
+                })
+            }
         })
     }
     
