@@ -2702,6 +2702,160 @@
           "collapsed": false
         }
       }
+    },
+    {
+      "id": "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d",
+      "name": "Upgraded-Tribow",
+      "type": "weapon",
+      "root": {
+        "id": "node-73cc8fe3-a0dd-45df-ac22-0866de24ba37",
+        "children": [
+          {
+            "id": "node-07556e81-e5f7-42c2-b527-e95bd3f8c33b",
+            "children": [
+              {
+                "id": "node-d7983151-7210-46a8-94ee-e5480f15c955",
+                "children": [],
+                "data": {
+                  "name": "Tribow",
+                  "description": "Shoots 3 projectile",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "selected",
+                  "selectionTime": 2,
+                  "upgradeEffect": {
+                    "effectLogicId": "Tribow",
+                    "doesStack": 0,
+                    "cooldown": 1000,
+                    "collisionGroup": "1",
+                    "type": "player attack"
+                  },
+                  "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "a1f59f33-df6a-4b78-ace9-c3691a6c0c37",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Doubow",
+              "description": "Shoots two projectile.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "selected",
+              "selectionTime": 1,
+              "upgradeEffect": {
+                "effectLogicId": "Doubow",
+                "doesStack": 0,
+                "cooldown": 1000,
+                "collisionGroup": "1",
+                "type": "player attack"
+              },
+              "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "f6eefed4-ad79-4e76-bd25-725eeeaa3787",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "name": "Bow",
+          "description": "Shoots one projectile",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0
+          },
+          "status": "selected",
+          "selectionTime": 0,
+          "upgradeEffect": {
+            "effectLogicId": "BowLogic",
+            "doesStack": 0,
+            "cooldown": 1000,
+            "collisionGroup": "1",
+            "type": "player attack"
+          },
+          "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
+          "doesStack": false
+        },
+        "__rd3t": {
+          "id": "c7b08cbd-0e8d-4a94-a05d-eca09c78ad28",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
     }
   ],
   "skills": [

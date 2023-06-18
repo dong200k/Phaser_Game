@@ -2,6 +2,8 @@ import Entity from "../../schemas/gameobjs/Entity";
 import GameManager from "../GameManager";
 import EffectLogic from "./EffectLogic";
 import BowLogic from "./EffectLogics/weapon/BowLogic";
+import DoubowLogic from "./EffectLogics/weapon/DoubowLogic";
+import TribowLogic from "./EffectLogics/weapon/TribowLogic";
 
 export default class EffectLogicManager{
 
@@ -22,6 +24,8 @@ export default class EffectLogicManager{
     /** Initialize all EffectLogics that will be used in the game here. */
     private initEffectLogics(){
         this.addEffectLogic(new BowLogic())
+        this.addEffectLogic(new DoubowLogic())
+        this.addEffectLogic(new TribowLogic())
     }
 
     private addEffectLogic(effectLogic: EffectLogic){

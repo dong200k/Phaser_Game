@@ -16,7 +16,12 @@ export default class WeaponUpgradeFactory{
         let {weaponId, name, description, stat, upgradeEffect, status, selectionTime} = copy.data
         stat = new Stat(stat)
         if(upgradeEffect && upgradeEffect.effectLogicId !== "" && upgradeEffect.effectLogicId){
-            upgradeEffect = new UpgradeEffect(upgradeEffect.type, upgradeEffect.effectLogicId, upgradeEffect.cooldown, upgradeEffect.doesStack, upgradeEffect.collisionGroup)
+            let type = String(upgradeEffect.type)
+            let effectLogicId = String(upgradeEffect.effectLogicId)
+            let cooldown = Number(upgradeEffect.cooldown)
+            let doesStack = Boolean(upgradeEffect.doesStack)
+            let collisionGroup = Number(upgradeEffect.collisionGroup)
+            upgradeEffect = new UpgradeEffect(type, effectLogicId, cooldown, doesStack, collisionGroup)
         }else{
             upgradeEffect = undefined
         }
@@ -62,10 +67,14 @@ export default class WeaponUpgradeFactory{
 
     /**
      * Note: For testing
-     * @returns returns a bow upgrade tree's root to be used by a single player
+     * @returns returns a tribow upgrade tree's root to be used by a single player
      */
     static createBowUpgrade(){
-        return WeaponUpgradeFactory.createUpgrade('1')
+        return WeaponUpgradeFactory.createUpgrade('1', false)
+    }
+
+    static createTribowUpgrade(){
+        return WeaponUpgradeFactory.createUpgrade('upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d') as Node<WeaponData>
     }
 
     /**

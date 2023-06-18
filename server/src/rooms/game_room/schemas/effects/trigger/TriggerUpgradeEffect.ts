@@ -33,7 +33,7 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
      * Updates this UpgradeTriggerEffect's cooldown
      */
     public update(deltaT: number): number {
-        this.cooldown.tick(deltaT)
+        this.cooldown.tick(deltaT * 1000) // pass in miliseconds
         return 0
     }
 

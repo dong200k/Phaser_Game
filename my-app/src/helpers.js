@@ -81,7 +81,7 @@ export function getDefaultUpgradeNode(){
     ...getDefaultNode(),
   }
   // If there needs to be Additional key add them below
-  node.data.effect = {
+  node.data.upgradeEffect = {
     effectLogicId: "",
     doesStack: 1, // whether it stacks (1) or overwrites (0) other useAttacks
     cooldown: 1000,

@@ -66,7 +66,7 @@ export default class PlayerManager{
         if(playerState.role === "ranger"){
             console.log("Activating wall hack speed boost for 1 second")
             playerState.stat.speed *= 5
-            console.log(playerState.stat.speed)
+            // console.log(playerState.stat.speed)
 
             // set mask to 0 to collide with nothing
             playerBody.collisionFilter = {
@@ -104,7 +104,7 @@ export default class PlayerManager{
 
         //*** TODO *** initialize weapon upgrade tree based on role
         //Set weaponupgrade tree for player with a test weapon
-        let root = WeaponUpgradeFactory.createBowUpgrade()
+        let root = WeaponUpgradeFactory.createTribowUpgrade()
         if(root) WeaponManager.equipWeaponUpgrade(newPlayer, root)
 
         let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {

@@ -51,7 +51,7 @@ export default class ProjectileManager{
        
         let projVelocity = velocity? velocity: {x: 1, y: 1}
         Matter.Body.setVelocity(body, projVelocity);
-        console.log(projectile.projectileId)
+        // console.log(projectile.projectileId)
         this.gameManager.addGameObject(projectile.projectileId, projectile, body);
         return body 
     }   

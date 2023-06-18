@@ -5,8 +5,9 @@ import { useParams } from "react-router";
 import UpgradeService from "../services/UpgradeService.js";
 import EditNode from "./EditNode.js";
 import NodeDetails from "./NodeDetails.js";
-import { getDeepCopy } from "../util.js";
 import SkillService from "../services/SkillService.js";
+import Dropdown from 'react-bootstrap/Dropdown';
+
 
 const containerStyles = {
   width: "100vw",
@@ -48,6 +49,7 @@ export default function Upgrade(props) {
   const id = useParams().id
   let [upgrade, setUpgrade] = useState(undefined)
   let [editNode, setEditNode] = useState(undefined)
+  let statuses = ["selected", "none", "skipped"]
 
   useEffect(()=>{
     if(props.type === "upgrade"){
@@ -73,7 +75,7 @@ export default function Upgrade(props) {
 
   const updateUpgrade = (node)=>{
     setUpgrade(prevUpgrade=>{
-      let newUpgrade = getDeepCopy(prevUpgrade)
+      let newUpgrade = structuredClone(prevUpgrade)
 
       function dfs(root){
         if(!root) return
@@ -118,7 +120,7 @@ export default function Upgrade(props) {
 
   function addChild(node){
     setUpgrade(prevUpgrade=>{
-      let newUpgrade = getDeepCopy(prevUpgrade)
+      let newUpgrade = structuredClone(prevUpgrade)
 
       function dfs(root){
         if(!root) return
@@ -144,7 +146,7 @@ export default function Upgrade(props) {
 
   function deleteNode(node){
     setUpgrade(prevUpgrade=>{
-      let newUpgrade = getDeepCopy(prevUpgrade)
+      let newUpgrade = structuredClone(prevUpgrade)
 
       function dfs(root){
         if(!root) return
@@ -169,6 +171,36 @@ export default function Upgrade(props) {
     })
   }
 
+  // Should only be used in skill tree as selection order matters for Artifact/Weapon tree
+  async function setAllStatus(status = "selected"){
+    if(props.type !== "skill") return
+
+    let newUpgrade = structuredClone(upgrade)
+    function dfs(root){
+      root.data.status = status
+
+      for(let node of root.children){
+          dfs(node)
+      }
+    }
+
+    dfs(newUpgrade.root)
+    setUpgrade(newUpgrade)
+  }
+
+  let setAllStatusDropdown =
+  <Dropdown className="mb-5">
+        <Dropdown.Toggle variant="danger" id="dropdown-basic">
+            Set All Status
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+            {statuses.map(status=>{
+                return <Dropdown.Item onClick={()=>setAllStatus(status)}>{status}</Dropdown.Item>
+            })}
+        </Dropdown.Menu>
+    </Dropdown>
+
   return (
     <div>
       {!upgrade? 
@@ -179,6 +211,12 @@ export default function Upgrade(props) {
             <h1 className="text-center" style={{display:"inline-block"}}>{props.type==="upgrade"? upgrade.type==="weapon"? "Weapon":"Artifact" : "Skill"} Name:</h1>
             <h1 style={{display:"inline-block"}}><input type="text" value={upgrade.name} onChange={onChange}/></h1>
             <h1 className="text-center">id: {upgrade.id}</h1>
+            {
+              props.type === "skill" && 
+              <div>
+                {setAllStatusDropdown}
+              </div>
+            }
           </div>
 
           <button className="btn btn-success" style={{width: "30%", height: "50px", marginLeft: "35%"}} onClick={saveUpgrade}>SAVE TO DATABASE!!!</button>

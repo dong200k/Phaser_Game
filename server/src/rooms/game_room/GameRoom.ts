@@ -26,7 +26,11 @@ export default class GameRoom extends Room<State> {
         this.gameManager = new GameManager(state);
         this.setState(state);
         this.initListeners();
-        this.startGame();
+        this.gameManager.preload()
+            .then(()=>{
+                this.startGame()
+            })
+        
     }
 
     initListeners() {

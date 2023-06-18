@@ -1,6 +1,6 @@
 export default function NodeDetails({nodeDatum: node, type}){
     let {data, children, id} = node
-    let dataKeys = ["name", "description", "stat", "weaponId", "effect", ]
+    let dataKeys = ["name", "description", "stat", "weaponId", "upgradeEffect", "effect"]
     return (
       <div>
         <h5><span className="text-primary">Name: </span>{data.name}</h5>
@@ -30,28 +30,28 @@ export default function NodeDetails({nodeDatum: node, type}){
 
         <br/><br/>
         {
-          type === "upgrade" && node.data.effect && node.data.effect.effectLogicId &&
+          type === "upgrade" && node.data.upgradeEffect && node.data.upgradeEffect.effectLogicId &&
           <div>
-            <h3>Effect</h3>
+            <h3>Upgrade Effect</h3>
               <div className="">
-                  <span className="text-danger">effectLogicId: <span className="text-dark">{node.data.effect.effectLogicId}</span></span>
+                  <span className="text-danger">effectLogicId: <span className="text-dark">{node.data.upgradeEffect.effectLogicId}</span></span>
               </div>
               <div>
-                  <span className="text-danger">type: <span className="text-dark">{node.data.effect.type}</span> </span>
+                  <span className="text-danger">type: <span className="text-dark">{node.data.upgradeEffect.type}</span> </span>
               </div>
               {
-                node.data.effect.cooldown !== undefined &&
+                node.data.upgradeEffect.cooldown !== undefined &&
                 <div>
-                  <span className="text-danger">cooldown(ms): <span className="text-dark">{node.data.effect.cooldown}</span> </span>
+                  <span className="text-danger">cooldown(ms): <span className="text-dark">{node.data.upgradeEffect.cooldown}</span> </span>
                 </div>
               }
 
               <div>
-                  <span className="text-danger">collisionGroup: <span className="text-dark">{node.data.effect.collisionGroup}</span> </span>
+                  <span className="text-danger">collisionGroup: <span className="text-dark">{node.data.upgradeEffect.collisionGroup}</span> </span>
               </div>
               
               <div>
-                  <span className="text-danger">doesStack: <span className="text-dark">{node.data.effect.doesStack}</span> </span>
+                  <span className="text-danger">doesStack: <span className="text-dark">{node.data.upgradeEffect.doesStack}</span> </span>
               </div>
 
               

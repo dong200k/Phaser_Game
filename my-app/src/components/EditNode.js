@@ -9,7 +9,7 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
     let [form, setForm] = useState(getEditForm(node, type))
     let [nodes, setNodes] = useState([])
     let [weapons, setWeapons] = useState([])
-    let dataKeys = ["name", "description", "stat", "weaponId", "effect", "status", "selectionTime"]
+    let dataKeys = ["name", "description", "stat", "weaponId", "upgradeEffect", "status", "selectionTime"]
     let nodeStatuses = ["none", "selected", "skipped"]
     let [showZeroStat, setShowZeroStat] = useState(false)
 
@@ -30,7 +30,7 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
             if(type === "upgrade"){
                 delete newForm.data.coinCost
             }else if(type === "skill"){
-                delete newForm.data.effect
+                delete newForm.data.upgradeEffect
             }
 
             newForm.id = prevForm.id
@@ -56,17 +56,17 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
 
                     return newForm
                 })
-            }else if(type === "effect"){
+            }else if(type === "upgradeEffect"){
                 setForm(prevForm=>{
                     let newForm = {...prevForm}
                     newForm.data = {...prevForm.data}
-                    newForm.data.effect = {...prevForm.data.effect}
+                    newForm.data.upgradeEffect = {...prevForm.data.upgradeEffect}
 
                     if(key === "doesStack"){
-                        let val = prevForm.data.effect[key] === 1? 0 : 1
-                        newForm.data.effect[key] = val
+                        let val = prevForm.data.upgradeEffect[key] === 1? 0 : 1
+                        newForm.data.upgradeEffect[key] = val
                     }else{
-                        newForm.data.effect[key] = e.target.value
+                        newForm.data.upgradeEffect[key] = e.target.value
                     }
 
                     return newForm
@@ -89,13 +89,17 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
             form.data.stat[key] = Number(val)
         })
 
-        if(type === "upgrade" && typeof form.data.effect.cooldown !== typeof number){
-            form.data.effect.cooldown = Number(form.data.effect.cooldown)
+        if(type === "upgrade" && typeof form.data.upgradeEffect.cooldown !== typeof number){
+            form.data.upgradeEffect.cooldown = Number(form.data.upgradeEffect.cooldown)
         }
 
         if(type === "upgrade" && typeof form.data.selectionTime !== typeof number){
             form.data.selectionTime = Number(form.data.selectionTime)
         }
+
+        form.data.doesStack = form.data.doesStack === 1? true:false
+        form.data.collisionGroup = Number(form.data.collisionGroup)
+        form.data.coinCost = Number(form.data.coinCost)
 
         let success = updateUpgrade(form)
 
@@ -146,14 +150,14 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
         effectTypeDropDown =  
         <Dropdown className="mb-5">
             <Dropdown.Toggle variant="info" id="dropdown-basic">
-                Type: {form.data.effect.type}
+                Type: {form.data.upgradeEffect.type}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
                 {effectTypes.map(type=>{
                     return <Dropdown.Item onClick={()=>setForm(prev=>{
                         let newForm = {...prev}
-                        newForm.data.effect.type = type
+                        newForm.data.upgradeEffect.type = type
                         return newForm
                     })}>{type}</Dropdown.Item>
                 })}
@@ -214,21 +218,21 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
                     {form.data.weaponId? <div>WeaponId: {form.data.weaponId}</div>: <></>}
                     {weaponDropDown}
 
-                    <h3>Effect</h3>
+                    <h3>Upgrade Effect</h3>
                     <label className="d-flex justify-content-center">
-                        <span className="text-danger">effectLogicId:</span><input type="text" style={{width: "25%"}}  value={form.data.effect.effectLogicId} onChange={onChange("effect", "effectLogicId")}/>
+                        <span className="text-danger">effectLogicId:</span><input type="text" style={{width: "25%"}}  value={form.data.upgradeEffect.effectLogicId} onChange={onChange("upgradeEffect", "effectLogicId")}/>
                     </label>
                     <label className="d-flex justify-content-center">
                         <span className="text-danger">cooldown(ms):</span>
-                        <input type="number" value={form.data.effect.cooldown} onChange={onChange("effect", "cooldown")}></input>
+                        <input type="number" value={form.data.upgradeEffect.cooldown} onChange={onChange("upgradeEffect", "cooldown")}></input>
                     </label>
                     <label className="d-flex justify-content-center">
                         <span className="text-danger">collisionGroup:</span>
-                        <input type="number" value={form.data.effect.collisionGroup} onChange={onChange("effect", "collisionGroup")}></input>
+                        <input type="number" value={form.data.upgradeEffect.collisionGroup} onChange={onChange("upgradeEffect", "collisionGroup")}></input>
                     </label>
                     <label className="d-flex justify-content-center">
-                        <span className="text-danger">doesStack: {form.data.effect.doesStack} </span>
-                        <input type="checkbox" checked={form.data.effect.doesStack} onChange={onChange("effect", "doesStack")}></input>
+                        <span className="text-danger">doesStack: {form.data.upgradeEffect.doesStack} </span>
+                        <input type="checkbox" checked={form.data.upgradeEffect.doesStack} onChange={onChange("upgradeEffect", "doesStack")}></input>
                     </label>
                     {effectTypeDropDown}
                     <br></br>
