@@ -46,10 +46,12 @@ export default class TextBox extends Phaser.GameObjects.DOMElement implements La
 
     public setColor(color: string) {
         this.divElement.style.color = color;
+        return this;
     }
 
     public setLayoutPosition(x: number, y: number) {
         this.setPosition(x, y);
+        return this;
     }
 
     public getLayoutWidth(): number {

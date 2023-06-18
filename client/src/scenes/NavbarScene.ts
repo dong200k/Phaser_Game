@@ -59,6 +59,7 @@ export default class NavbarScene extends Phaser.Scene {
 
     private initializeListeners() {
         EventManager.eventEmitter.on(EventManager.NavbarEvents.UPDATE_NAVBAR, this.updateNavbar, this);
+        this.events.once("shutdown", () => this.removeListeners());
     }
 
     private removeListeners() {

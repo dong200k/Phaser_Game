@@ -97,6 +97,15 @@ export default class PeerInfoPopup {
     }
 
     /**
+     * Removes all the PeerInfo. This is used to reset the PeerInfoPopup.
+     */
+    public removeAllPeerInfo() {
+        this.peerInfoMap.forEach((value, key) => {
+            this.removePeerInfo(key);
+        })
+    }
+
+    /**
      * Sets the visibility of this popup to show/hide this popup.
      * @param value True or False
      */

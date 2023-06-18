@@ -105,6 +105,30 @@ namespace EventManager {
          * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.RESET_HUD)```
          */
         export const RESET_HUD = "HUDSceneResetHUD";
+
+        /**
+         * Emitting this event will display the weapon/artifact upgrade popup. The popup
+         * can be shown or hidden by the user. When the user selects an upgrade, the corresponding callback is called
+         * and the popup is destroyed.
+         * 
+         * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, data)```
+         * 
+         * @param data
+         * ```
+         * {
+                title: string; //Title of the tab clicker
+                items: [{
+                    typeName: string; //Text above item name. Color gold if includes 'weapon'. Color blue if includes 'artifact'.
+                    name: string;
+                    imageKey: string;
+                    description: string;
+                    onClick: Function;
+                }];
+            }
+         * ```
+         * 
+         */
+        export const SHOW_WEAPON_ARTIFACT_POPUP = "HUDSceneShowWAPopup";
     }
 
     export namespace GameEvents {

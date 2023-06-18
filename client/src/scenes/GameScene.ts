@@ -84,6 +84,7 @@ export default class GameScene extends Phaser.Scene {
             this.gameRoom.onLeave(() => {
                 this.gameRoom = undefined;
             });
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.RESET_HUD);
             this.gameManager = new GameManager(this,this.gameRoom);
         }).catch((e) => {
             console.log("Join Game Error: ", e);

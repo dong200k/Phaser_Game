@@ -265,42 +265,54 @@ export default class GameManager {
         entityState.stat.onChange = (changes: any) => {
             entity.updateStat(entityState.stat);
         }
-        if(entity === this.player1) {
-            // entityState.attackCooldown.onChange = () => {
-            //     console.log(entityState.attackCooldown.time);
-            //     console.log(entityState.attackCooldown.remainingTime);
-            // }
-            // EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_ARTIFACT_DISPLAY, {
-            //     items: [
-            //         {imageKey: "demo_hero", level: 20},
-            //     ]
-            // })
-
-            entityState.specialCooldown.onChange = () => {
-                let time = entityState.specialCooldown.time;
-                let remainingTime = entityState.specialCooldown.remainingTime;
-                let isFinished = entityState.specialCooldown.isFinished;
-                // Updates the HUD's PlayerInfo display.
-                EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
-                    specialCooldownCounter: Math.round(remainingTime / 1000),
-                    specialCooldownPercent: isFinished? 0 : remainingTime / time,
-                });
-            }
-        }
         if(entity instanceof Player) {
             let playerState = entityState as PlayerState;
 
             // Create PeerInfo and set up initial values.
-            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.name, {
-                name: playerState.name,
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+                name: playerState.id,
             })
 
             playerState.onChange = () => {
+                
+            }
+
+            playerState.specialCooldown.onChange = () => {
                 let time = playerState.specialCooldown.time;
                 let remainingTime = playerState.specialCooldown.remainingTime;
                 let isFinished = playerState.specialCooldown.isFinished;
-                EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.name, {
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
                     specialCooldownPercent: isFinished? 0 : remainingTime / time,
+                })
+
+                // Player1 gets the PlayerInfo updated along side its peer info.
+                if(entity === this.player1) { 
+                    EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
+                        specialCooldownCounter: Math.round(remainingTime / 1000),
+                        specialCooldownPercent: isFinished? 0 : remainingTime / time,
+                    });
+                }
+            }
+
+            if(entity === this.player1) {
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+                    title: "LEVEL 1 UPGRADES",
+                    items: [
+                        {
+                            typeName: "Artifact + 1",
+                            name: "Spining Stars",
+                            imageKey: "",
+                            description: "Surround you with a circle of blades",
+                            onClick: () => {console.log("Spining Stars onclick")}
+                        },
+                        {
+                            typeName: "New Artifact",
+                            name: "Gloves",
+                            imageKey: "",
+                            description: "Increase Damage by 10",
+                            onClick: () => {console.log("Gloves onclick")}
+                        }
+                    ]
                 })
             }
         }
