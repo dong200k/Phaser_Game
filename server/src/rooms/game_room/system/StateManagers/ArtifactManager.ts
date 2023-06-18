@@ -76,4 +76,17 @@ export default class ArtifactManager{
         // Reset the artifact tree and send it to the object pool for reuse
         ArtifactManager.artifactTreePool.returnInstance(artifactTree.reset())
     }
+    
+    /**
+     * Takes in a artifact tree and selects all of its upgrades in order of root to the leaf.
+     * Note: artifacts have one branch so the selection order is predetermined for all users unlike weapons.
+     * @param artifact 
+     */
+    static selectAllUpgrades(artifact: Node<WeaponData>){
+        let curr = artifact
+        while(curr){
+            curr.data.setStatus("selected")
+            curr = curr.children[0]
+        }
+    }
 }

@@ -501,7 +501,7 @@
     },
     {
       "id": "upgrade-a4275241-dc56-4ea3-88cc-775c58bd64ce",
-      "name": "Hermes Boots",
+      "name": "Upgraded-Hermes Boots",
       "type": "artifact",
       "root": {
         "id": "node-a4e88134-7d9a-4a58-be8a-1db4c9be8a71",
@@ -546,17 +546,22 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
+                          "status": "none",
+                          "selectionTime": 4,
                           "upgradeEffect": {
                             "effectId": "hermes-awaken-effect",
                             "doesStack": 1,
                             "effectLogicId": "Hermes-Boots",
                             "cooldown": 2000,
-                            "type": "none",
+                            "type": "player skill",
                             "collisionGroup": "-1"
-                          }
+                          },
+                          "doesStack": false,
+                          "collisionGroup": 0,
+                          "coinCost": 0
                         },
                         "__rd3t": {
-                          "id": "76c481ff-3a9f-4b4a-b7b9-6fc6f6a461a2",
+                          "id": "568a7760-43cc-40b9-b7fc-30534edecdcf",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -590,10 +595,20 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
+                      "status": "none",
+                      "selectionTime": 3,
                       "upgradeEffect": {
                         "effectId": "",
                         "doesStack": 0
-                      }
+                      },
+                      "doesStack": false,
+                      "collisionGroup": 0,
+                      "coinCost": 0
+                    },
+                    "__rd3t": {
+                      "id": "f0d1c14c-79a4-4b7b-9f7a-d9f9ea9dc1c6",
+                      "depth": 3,
+                      "collapsed": false
                     }
                   }
                 ],
@@ -625,10 +640,20 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
+                  "status": "none",
+                  "selectionTime": 2,
                   "upgradeEffect": {
                     "effectId": "",
                     "doesStack": 0
-                  }
+                  },
+                  "doesStack": false,
+                  "collisionGroup": 0,
+                  "coinCost": 0
+                },
+                "__rd3t": {
+                  "id": "3d145f26-d5fa-426e-9bb3-2ba8f3352cc6",
+                  "depth": 2,
+                  "collapsed": false
                 }
               }
             ],
@@ -660,10 +685,20 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
+              "status": "none",
+              "selectionTime": 1,
               "upgradeEffect": {
                 "effectId": "",
                 "doesStack": 0
-              }
+              },
+              "doesStack": false,
+              "collisionGroup": 0,
+              "coinCost": 0
+            },
+            "__rd3t": {
+              "id": "36b5263d-1ba7-4796-b418-c16129085158",
+              "depth": 1,
+              "collapsed": false
             }
           }
         ],
@@ -695,13 +730,19 @@
             "lifeStealPercent": 0,
             "level": 0
           },
+          "status": "none",
+          "selectionTime": 0,
           "upgradeEffect": {
             "effectId": "",
             "doesStack": 1
-          }
+          },
+          "doesStack": false,
+          "collisionGroup": 0,
+          "coinCost": 0,
+          "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
         },
         "__rd3t": {
-          "id": "97fd7993-21bd-480f-8c50-a6620a2fbe23",
+          "id": "be51e8f8-fd8d-45b2-a059-7b50281b037b",
           "depth": 0,
           "collapsed": false
         }
@@ -1588,7 +1629,7 @@
                 "id": "node-5a5714a7-a425-4c96-97bd-defc4f48065b",
                 "children": [],
                 "data": {
-                  "name": "auto-generated",
+                  "name": "available-upgrade-1",
                   "description": "auto-generated",
                   "stat": {
                     "maxHp": 100,
@@ -1623,10 +1664,13 @@
                     "cooldown": 1000,
                     "collisionGroup": -1,
                     "type": "none"
-                  }
+                  },
+                  "doesStack": false,
+                  "collisionGroup": null,
+                  "coinCost": null
                 },
                 "__rd3t": {
-                  "id": "627b1ced-a6ff-4b83-9b08-a258417ae8fa",
+                  "id": "fe0b609f-cf2e-43ec-be8c-ee52209818cd",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -1684,7 +1728,7 @@
                 "id": "node-91198aa4-5e36-4653-ad61-c98d7e9af9b2",
                 "children": [],
                 "data": {
-                  "name": "auto-generated",
+                  "name": "available-upgrade-2",
                   "description": "auto-generated",
                   "stat": {
                     "maxHp": 0,
@@ -1719,10 +1763,13 @@
                     "cooldown": 1000,
                     "collisionGroup": -1,
                     "type": "none"
-                  }
+                  },
+                  "doesStack": false,
+                  "collisionGroup": null,
+                  "coinCost": null
                 },
                 "__rd3t": {
-                  "id": "317cdcbd-b700-4f9e-b64e-419b8a92f1c9",
+                  "id": "e3e81d2e-666b-42bc-9866-a36b31b343aa",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -1780,7 +1827,7 @@
                 "id": "node-c0c47faf-4a5d-4ada-95c7-8237bc21346e",
                 "children": [],
                 "data": {
-                  "name": "auto-generated",
+                  "name": "available-upgrade-3",
                   "description": "auto-generated",
                   "stat": {
                     "maxHp": 0,
@@ -1815,10 +1862,13 @@
                     "cooldown": 1000,
                     "collisionGroup": -1,
                     "type": "none"
-                  }
+                  },
+                  "doesStack": false,
+                  "collisionGroup": null,
+                  "coinCost": null
                 },
                 "__rd3t": {
-                  "id": "7b08ff5d-9f1b-4cd8-9d24-f61715599bdb",
+                  "id": "621a4f13-c352-47a8-b5bc-ffc37344b5f0",
                   "depth": 2,
                   "collapsed": false
                 }

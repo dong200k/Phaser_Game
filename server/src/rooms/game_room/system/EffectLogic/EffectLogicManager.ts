@@ -1,6 +1,7 @@
 import Entity from "../../schemas/gameobjs/Entity";
 import GameManager from "../GameManager";
 import EffectLogic from "./EffectLogic";
+import { HermesBoots } from "./EffectLogics/artifact/HermesBootLogic";
 import BowLogic from "./EffectLogics/weapon/BowLogic";
 import DoubowLogic from "./EffectLogics/weapon/DoubowLogic";
 import TribowLogic from "./EffectLogics/weapon/TribowLogic";
@@ -26,6 +27,7 @@ export default class EffectLogicManager{
         this.addEffectLogic(new BowLogic())
         this.addEffectLogic(new DoubowLogic())
         this.addEffectLogic(new TribowLogic())
+        this.addEffectLogic(new HermesBoots())
     }
 
     private addEffectLogic(effectLogic: EffectLogic){

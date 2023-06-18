@@ -84,3 +84,4 @@ export type weapon = {
 
 // ------------ interfaces for Upgrade Effects -------------- //
 export type IUpgradeEffect = TriggerUpgradeEffect | ContinuousUpgradeEffect | OneTimeUpgradeEffect
+export type ITriggerType = "player skill" | "player attack" | "none"

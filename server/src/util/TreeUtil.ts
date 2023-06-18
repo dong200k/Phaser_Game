@@ -134,9 +134,10 @@ export default class TreeUtil{
         let upgrades: U[] = []
         //dfs traversal to get next upgrades    
         function dfs(root: U){
-            if(root.data.status === "none")
+            if(root.data.status === "none"){
                 return upgrades.push(root)
-
+            }
+            
             for(let node of root.children){
                 dfs(node as U) // Node will definitely be same type as tree's root
             }

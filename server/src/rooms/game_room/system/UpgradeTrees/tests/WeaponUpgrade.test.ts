@@ -6,7 +6,9 @@ import CompoundEffect from "../../../schemas/effects/combo/CompoundEffect"
 import Player from "../../../schemas/gameobjs/Player"
 import Stat from "../../../schemas/gameobjs/Stat"
 import GameManager from "../../GameManager"
+import ArtifactManager from "../../StateManagers/ArtifactManager"
 import EffectManager from "../../StateManagers/EffectManager"
+import SkillTreeManager from "../../StateManagers/SkillTreeManager"
 import WeaponManager from "../../StateManagers/WeaponManager"
 import { IUpgradeEffect } from "../../interfaces"
 import WeaponUpgradeFactory from "../factories/WeaponUpgradeFactory"
@@ -23,6 +25,14 @@ describe("Weapon Upgrade Tests", ()=>{
         let sessionId = "fake-id"
         gameManager.playerManager.createPlayer(sessionId, false)
         playerState = gameManager.playerManager.getPlayerStateAndBody(sessionId).playerState
+
+        // Unequip all artifacts, skilltrees, and weapons
+        playerState.artifacts.forEach(artifact=>ArtifactManager.unEquipArtifact(playerState, artifact))
+        SkillTreeManager.unEquipSkillTree(playerState)
+        WeaponManager.unEquipWeaponUpgrade(playerState)
+
+        // Update any effects from equiping initial weapon, artifacts, and skilltrees
+        EffectManager.updateEffectsOn(playerState, 1)
     })
 
     test("Player has correct starter weapon based on role", ()=>{

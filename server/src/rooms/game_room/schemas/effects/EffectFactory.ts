@@ -10,6 +10,7 @@ import TriggerUpgradeEffect from "./trigger/TriggerUpgradeEffect";
 import UpgradeEffect from "../gameobjs/UpgradeEffect";
 import ContinuousUpgradeEffect from "./continuous/ContinuousUpgradeEffect";
 import OneTimeUpgradeEffect from "./onetime/OneTimeUpgradeEffect";
+import CollisionImmuneEffect from "./temp/CollisionImmuneEffect";
 
 
 export default class EffectFactory {
@@ -92,6 +93,15 @@ export default class EffectFactory {
     }
 
     /**
+     * Creates a effect to make entity immune to all collisions for a certain duration.
+     * @param activeTime The time the effect will last for.
+     * @returns A CollisionImmuneEffect
+     */
+    public static createCollisionImmuneEffectTimed(activeTime: number) {
+        return new CollisionImmuneEffect(true, activeTime);
+    }
+
+    /**
      * Creates a speed multiplier effect that will change the player's speed by a multiplier.
      * This is untimed so the effect will have to be stopped manually by calling setAsCompleted().
      * @param speedMultiplier The multiplier.
@@ -141,9 +151,9 @@ export default class EffectFactory {
             case "player skill":
                 // Creates a UpgradeTriggerEffect which uses the effect when the EffectManager.useOnTriggerEffectsOn is called with the corresponding type, "player attack" in this case
                 return new TriggerUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
-            case "one time":
-                // Creates a onetime upgrade effect that is used once
-                return new OneTimeUpgradeEffect(effectLogicId, cooldown, doesStack, collisionGroup)
+            // case "one time":
+            //     // Creates a onetime upgrade effect that is used once
+            //     return new OneTimeUpgradeEffect(effectLogicId, cooldown, doesStack, collisionGroup)
             case "none":
                 // Creates a ContinuousUpgradeEffect which uses the effect's logic automatically
                 return new ContinuousUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)

@@ -7,6 +7,8 @@ import MaskManager from '../Collisions/MaskManager';
 import WeaponManager from './WeaponManager';
 import WeaponUpgradeFactory from '../UpgradeTrees/factories/WeaponUpgradeFactory';
 import EffectManager from './EffectManager';
+import ArtifactFactory from '../UpgradeTrees/factories/ArtifactFactory';
+import ArtifactManager from './ArtifactManager';
 
 export default class PlayerManager{
     private gameManager: GameManager
@@ -63,30 +65,7 @@ export default class PlayerManager{
         if(!useSpecial || !playerState.specialCooldown.isFinished) return
         playerState.specialCooldown.reset()
 
-        if(playerState.role === "ranger"){
-            console.log("Activating wall hack speed boost for 1 second")
-            playerState.stat.speed *= 5
-            // console.log(playerState.stat.speed)
-
-            // set mask to 0 to collide with nothing
-            playerBody.collisionFilter = {
-                ...playerBody.collisionFilter,
-                mask: 0 
-            }
-
-            // revert hacks
-            setTimeout(()=>{
-                playerState.stat.speed = 1
-                if(playerBody){
-                    playerBody.collisionFilter = {
-                        ...playerBody.collisionFilter,
-                        mask: MaskManager.getManager().getMask("PLAYER")
-                    }
-                }
-
-            }, 1000)
-        }
-       
+        EffectManager.useTriggerEffectsOn(playerState, "player skill")
     }
 
     public async createPlayer(sessionId: string, isOwner: boolean) {
@@ -105,7 +84,11 @@ export default class PlayerManager{
         //*** TODO *** initialize weapon upgrade tree based on role
         //Set weaponupgrade tree for player with a test weapon
         let root = WeaponUpgradeFactory.createTribowUpgrade()
-        if(root) WeaponManager.equipWeaponUpgrade(newPlayer, root)
+        WeaponManager.equipWeaponUpgrade(newPlayer, root)
+
+        let hermesBoots = ArtifactFactory.createUpgradedHermesBoot()
+        ArtifactManager.equipArtifact(newPlayer, hermesBoots)
+        
 
         let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {
             isStatic: false,
@@ -120,6 +103,7 @@ export default class PlayerManager{
         })
 
         newPlayer.setId(sessionId);
+        newPlayer.setBody(body)
         this.gameManager.addGameObject(sessionId, newPlayer, body);
     }   
 
