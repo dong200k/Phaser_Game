@@ -54,14 +54,14 @@ export default class SkillTreeFactory{
     /**
      * Creates fully upgraded adventurer skill tree node
      */
-    static createUpgradedAdventurerSkill(selectRoot: boolean = true){
-        return SkillTreeFactory.createSkill("skill-a63779a4-c357-4c62-a17d-d3d3606b1b4b", selectRoot)
+    static createUpgradedAdventurerSkill(selectRoot: boolean = false){
+        return SkillTreeFactory.createSkill("skill-a63779a4-c357-4c62-a17d-d3d3606b1b4b", selectRoot) as Node<SkillData>
     }
 
      /**
      * Creates default un-upgraded adventurer skill tree node
      */
      static createAdventurerSkill(selectRoot: boolean = false){
-        return SkillTreeFactory.createSkill("skill-bd5a5c20-d375-46eb-a2dc-dace60afbab9", selectRoot)
+        return SkillTreeFactory.createSkill("skill-bd5a5c20-d375-46eb-a2dc-dace60afbab9", selectRoot) as Node<SkillData>
     }
 }

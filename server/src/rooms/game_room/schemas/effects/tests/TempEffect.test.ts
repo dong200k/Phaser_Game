@@ -216,8 +216,8 @@ describe("Stat Effects", () => {
 
         //create player
         let sessionId = "fake-id"
-        gameManager.playerManager.createPlayer(sessionId, false)
-        let {playerBody, playerState: player} = gameManager.playerManager.getPlayerStateAndBody(sessionId)
+        gameManager.getPlayerManager().createPlayer(sessionId, false)
+        let {playerBody, playerState: player} = gameManager.getPlayerManager().getPlayerStateAndBody(sessionId)
         let collisionFilter = playerBody.collisionFilter
         let initialMask = collisionFilter.mask
 

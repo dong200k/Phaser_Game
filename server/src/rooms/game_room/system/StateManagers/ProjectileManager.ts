@@ -1,58 +1,65 @@
-import Matter, { Bodies } from 'matter-js';
-import State from '../../schemas/State';
-import Player from '../../schemas/gameobjs/Player';
-import Cooldown from '../../schemas/gameobjs/Cooldown';
 import GameManager from '../GameManager';
-import MathUtil from '../../../../util/MathUtil';
-import GameObject from '../../schemas/gameobjs/GameObject';
-import Projectile from '../../schemas/gameobjs/Projectile';
-import Entity from '../../schemas/gameobjs/Entity';
-import { Categories } from '../Collisions/Category';
-import MaskManager from '../Collisions/MaskManager';
+import Projectile from '../../schemas/projectiles/Projectile'
+import { IProjectileConfig } from '../interfaces';
+import ProjectilePool from '../../schemas/projectiles/ProjectilePool';
 
 export default class ProjectileManager{
     private gameManager: GameManager
+    private projectilePool: ProjectilePool
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
+        this.projectilePool = new ProjectilePool()
     }   
 
     update(deltaT: number){
+        // Call update on each projectile
+        this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
+            if(gameObject instanceof Projectile){
+                if(gameObject.active){
+                    gameObject.update(deltaT)
+                }else if(!gameObject.inPoolMap){
+                    gameObject.inPoolMap = true
+                    this.projectilePool.returnInstance(gameObject.poolType, gameObject)
+                }
+            }
+        })
     }
 
     // getProjectileStateAndBody(sessionId: string){
     //     return {playerBody: this.gameManager.gameObjects.get(sessionId), playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
     // }
 
-    public spawnProjectile(spriteName: string = "demo_hero", owner: Entity, x?: number, y?: number, velocity?: {x: number, y:number}) {
-        // ***TODO*** grab width and height from database or based on owner and spriteName
-        let width = 10
-        let height = 10
-        let spawnX = x? x: owner.x
-        let spawnY = y? y: owner.y
-        let projectile = new Projectile(spriteName, owner, spawnX, spawnY, width, height);
+    /**
+     * Creates a projectile and its Matter.Body based on the projectileConfig and adds it to the gameManager
+     * @param projectileConfig 
+     * @returns 
+     */
+    public spawnProjectile(projectileConfig: IProjectileConfig) {
+        let projectile: Projectile
+        let poolType = projectileConfig.poolType
 
-        let body = Matter.Bodies.rectangle(spawnX, spawnY, width, height, {
-            isStatic: false,
-            inertia: Infinity,
-            inverseInertia: 0,
-            restitution: 0,
-            friction: 0,
-        })
+        // Create the pool if it doesn't exist
+        if(!this.projectilePool.containsType(poolType)){
+            this.projectilePool.addPoolType(poolType)
+        }
 
-        // TODO make it not hard coded to player projectile only
-        body.collisionFilter = {
-            group: 0,
-            category: Categories.PLAYER_PROJECTILE,
-            mask: MaskManager.getManager().getMask('PLAYER_PROJECTILE') 
-        };
+        // If the pool exists and contains at least 1 instance
+        let pool = this.projectilePool.getPool(poolType)
+        if(pool && pool.length() > 0){
+            // Get and reuse instance
+            projectile = this.projectilePool.getInstance(poolType)
+            projectile.setConfig(projectileConfig)
+        }else{
+            // no instance so create new projectile
+            projectile = new Projectile(projectileConfig, this.gameManager);
+            this.gameManager.addGameObject(projectile.projectileId, projectile, projectile.getBody() as Matter.Body);
+        }
 
-        // console.log(Categories.OBSTACLE & MaskManager.getMask("PLAYER_PROJECTILE") as number)
-       
-        let projVelocity = velocity? velocity: {x: 1, y: 1}
-        Matter.Body.setVelocity(body, projVelocity);
-        // console.log(projectile.projectileId)
-        this.gameManager.addGameObject(projectile.projectileId, projectile, body);
-        return body 
-    }   
+        return {projectile: projectile, body: projectile.getBody() as Matter.Body}
+    }
+
+    getProjectilePool(){
+        return this.projectilePool
+    }
 }

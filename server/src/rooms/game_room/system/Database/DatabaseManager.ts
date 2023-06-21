@@ -54,6 +54,17 @@ export default class DatabaseManager{
     }
 
     /**
+     * 
+     * @param weaponId id of weapon to get projectile of
+     * @returns the projectile string of the weapon if it exists else it returns the default demo_hero
+     */
+    getWeaponProjectile(weaponId: string){
+        let weapon = DatabaseManager.getManager().weapons.get(weaponId)
+        if(weapon) return weapon.projectile
+        else return "demo_hero"
+    }
+
+    /**
      * Returns json object with skill tree information based on id
      * @param id id of skill tree to retrieve, look at the my-app frontend to get ids
      * @returns 

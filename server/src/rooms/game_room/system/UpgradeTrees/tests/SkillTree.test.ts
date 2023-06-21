@@ -19,8 +19,8 @@ describe("Skill Tree Tests", ()=>{
 
         //create player
         let sessionId = "fake-id"
-        gameManager.playerManager.createPlayer(sessionId, false)
-        playerState = gameManager.playerManager.getPlayerStateAndBody(sessionId).playerState
+        gameManager.getPlayerManager().createPlayer(sessionId, false)
+        playerState = gameManager.getPlayerManager().getPlayerStateAndBody(sessionId).playerState
     })
     test("Equiping a Skill tree grants the player its stats and effects", ()=>{
         EffectManager.updateEffectsOn(playerState, 1)

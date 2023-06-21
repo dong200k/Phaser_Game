@@ -9,6 +9,8 @@ import WeaponUpgradeFactory from '../UpgradeTrees/factories/WeaponUpgradeFactory
 import EffectManager from './EffectManager';
 import ArtifactFactory from '../UpgradeTrees/factories/ArtifactFactory';
 import ArtifactManager from './ArtifactManager';
+import SkillTreeFactory from '../UpgradeTrees/factories/SkillTreeFactory';
+import SkillTreeManager from './SkillTreeManager';
 
 export default class PlayerManager{
     private gameManager: GameManager
@@ -68,6 +70,27 @@ export default class PlayerManager{
         EffectManager.useTriggerEffectsOn(playerState, "player skill")
     }
 
+    /**
+     * TODO connect to a database with player information
+     * Initializes the player data
+     * @param playerId identifier for the player
+     * @param player playerState to init
+     */
+    private initPlayerData(playerId: string, player: Player){
+        //*** TODO *** initialize weapon upgrade tree based on role
+        //Set weaponupgrade tree for player with a test weapon
+        let root = WeaponUpgradeFactory.createTribowUpgrade()
+        WeaponManager.equipWeaponUpgrade(player, root)
+
+        // Equip aritfacts
+        let upgradeHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
+        ArtifactManager.equipArtifact(player, upgradeHermesBoots)
+
+        // Equip skill tree
+        let maxedSkillTree = SkillTreeFactory.createUpgradedAdventurerSkill()
+        SkillTreeManager.equipSkillTree(player, maxedSkillTree)
+    }
+
     public async createPlayer(sessionId: string, isOwner: boolean) {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
@@ -81,14 +104,7 @@ export default class PlayerManager{
             newPlayer.y = playerSpawnPoint.y + (Math.random() * 20 - 10);
         } 
 
-        //*** TODO *** initialize weapon upgrade tree based on role
-        //Set weaponupgrade tree for player with a test weapon
-        let root = WeaponUpgradeFactory.createTribowUpgrade()
-        WeaponManager.equipWeaponUpgrade(newPlayer, root)
-
-        let hermesBoots = ArtifactFactory.createUpgradedHermesBoot()
-        ArtifactManager.equipArtifact(newPlayer, hermesBoots)
-        
+        this.initPlayerData("", newPlayer)
 
         let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {
             isStatic: false,

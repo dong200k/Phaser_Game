@@ -9,14 +9,16 @@ import DungeonManager from './StateManagers/DungeonManager';
 import DatabaseManager from './Database/DatabaseManager';
 import EffectLogicManager from './EffectLogic/EffectLogicManager';
 import ArtifactManager from './StateManagers/ArtifactManager';
+import Projectile from '../schemas/projectiles/Projectile';
+import MathUtil from '../../../util/MathUtil';
 
 export default class GameManager {
     private engine: Matter.Engine;
     public world: Matter.World;
 
     // Managers
-    public playerManager: PlayerManager
-    public projectileManager: ProjectileManager;
+    private playerManager: PlayerManager
+    private projectileManager: ProjectileManager;
     private effectManager: EffectManager;
     private dungeonManager: DungeonManager;
 
@@ -51,6 +53,8 @@ export default class GameManager {
         await ArtifactManager.preload()
     }
 
+    private prevVelo = 0
+
     public syncServerStateBasedOnGameState(){
         // sync object positions
         Matter.Events.on(this.engine, "afterUpdate", () => {
@@ -82,7 +86,7 @@ export default class GameManager {
         this.gameObjects.set(id, body);
         
         Matter.Composite.add(this.world, body);
-    }   
+    }
 
     /**
      * removes game object from the server's state, from the GameManager, and from the Matter.Composite
@@ -128,7 +132,8 @@ export default class GameManager {
 
         this.playerManager.update(deltaT);
         this.effectManager.update(deltaTSeconds);
-        this.dungeonManager.update(deltaTSeconds);
+        // this.dungeonManager.update(deltaTSeconds);
+        this.projectileManager.update(deltaT)
 
         // console.log(deltaT)
     }
@@ -147,5 +152,9 @@ export default class GameManager {
 
     public getDungeonManager() {
         return this.dungeonManager;
+    }
+
+    public getProjectileManager() {
+        return this.projectileManager;
     }
 }

@@ -23,8 +23,8 @@ describe("Artifact Tests", ()=>{
 
         //create player
         let sessionId = "fake-id"
-        gameManager.playerManager.createPlayer(sessionId, false)
-        playerState = gameManager.playerManager.getPlayerStateAndBody(sessionId).playerState
+        gameManager.getPlayerManager().createPlayer(sessionId, false)
+        playerState = gameManager.getPlayerManager().getPlayerStateAndBody(sessionId).playerState
 
         // Unequip all artifacts, skilltrees, and weapons
         playerState.artifacts.forEach(artifact=>ArtifactManager.unEquipArtifact(playerState, artifact))
