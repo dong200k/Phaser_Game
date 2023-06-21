@@ -2,10 +2,16 @@ import GameManager from '../GameManager';
 import Projectile from '../../schemas/projectiles/Projectile'
 import { IProjectileConfig } from '../interfaces';
 import ProjectilePool from '../../schemas/projectiles/ProjectilePool';
+import ctors, { IClasses } from '../../schemas/projectiles/projectileClasses';
 
 export default class ProjectileManager{
     private gameManager: GameManager
     private projectilePool: ProjectilePool
+
+    // Add subclasses of projectile here
+    static ctors = {
+        "Projectile": Projectile,
+    }
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
@@ -31,11 +37,13 @@ export default class ProjectileManager{
     // }
 
     /**
-     * Creates a projectile and its Matter.Body based on the projectileConfig and adds it to the gameManager
+     * Creates a projectile and its Matter.Body based on the projectileConfig and adds it to the gameManager.
+     * If using a subclass of Projectile set the type parameter accordingly
      * @param projectileConfig 
+     * @param type: string name of the projectile class to creates
      * @returns 
      */
-    public spawnProjectile(projectileConfig: IProjectileConfig) {
+    public spawnProjectile(projectileConfig: IProjectileConfig, type: IClasses = "Projectile") {
         let projectile: Projectile
         let poolType = projectileConfig.poolType
 
@@ -52,6 +60,8 @@ export default class ProjectileManager{
             projectile.setConfig(projectileConfig)
         }else{
             // no instance so create new projectile
+            projectile = new ctors[type](projectileConfig, this.gameManager)
+
             projectile = new Projectile(projectileConfig, this.gameManager);
             this.gameManager.addGameObject(projectile.projectileId, projectile, projectile.getBody() as Matter.Body);
         }

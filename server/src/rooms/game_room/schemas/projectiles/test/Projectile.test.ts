@@ -143,7 +143,7 @@ describe("Projectile test", ()=>{
         expect(projectile.inPoolMap).toBe(false) // not in pool map for reuse
 
         // update projectiles's position, but still within range
-        projectile.x = projectile.spawnX + range - 10
+        projectile.x = projectile.spawnX + range - 100
         projectileManager.update(0)
         expect(projectile.active).toBeTruthy() // active
         expect(projectile.inPoolMap).toBeFalsy() // not in pool map for reuse
