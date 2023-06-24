@@ -16,3 +16,5 @@ gameServer.define('game', GameRoom)
 gameServer.listen(PORT).then(() => {
     console.log("Game Server is listening on port: ", PORT);
 });
+
+gameServer.simulateLatency(33);

@@ -229,9 +229,9 @@ export default class DungeonManager {
                                 mask: MaskManager.getManager().getMask('OBSTACLE') 
                             };
                             
-                            gameObjects.set(uid, body);
-    
-                            Matter.Composite.add(engine.world, body);
+                            // gameObjects.set(uid, body);
+                            // Matter.Composite.add(engine.world, body);
+                            this.gameManager.addGameObject(uid, tile, body);
                         }
                     }
                 }

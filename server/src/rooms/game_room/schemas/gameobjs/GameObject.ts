@@ -2,6 +2,7 @@ import { Schema, type } from '@colyseus/schema';
 import MathUtil from '../../../../util/MathUtil';
 import { Cloneable } from '../../../../util/PoolUtil';
 
+<<<<<<< HEAD
 export class Velocity extends Schema {
     @type('number') x = 0;
     @type('number') y = 0;
@@ -13,6 +14,8 @@ export class Velocity extends Schema {
     }
 }
 
+=======
+>>>>>>> master
 export default class GameObject extends Schema implements Cloneable {
     @type('string') private id: string;
     @type('string') ownerId;
@@ -22,14 +25,12 @@ export default class GameObject extends Schema implements Cloneable {
     private body: Matter.Body | null = null;
     @type('number') x;
     @type('number') y;
-    @type(Velocity) velocity;
 
     constructor(x: number, y: number, ownerId?: string) {
         super();
         this.id = MathUtil.uid()
         this.x = x;
         this.y = y;
-        this.velocity = new Velocity();
         this.ownerId = ownerId;
         this.type = 'GameObject';
     }

@@ -11,9 +11,18 @@ import ArtifactFactory from '../UpgradeTrees/factories/ArtifactFactory';
 import ArtifactManager from './ArtifactManager';
 import SkillTreeFactory from '../UpgradeTrees/factories/SkillTreeFactory';
 import SkillTreeManager from './SkillTreeManager';
+import ReconciliationInfo from '../../schemas/ReconciliationInfo';
+
+interface InputPlayload {
+    payload: number[];
+    playerId: string;
+}
 
 export default class PlayerManager{
     private gameManager: GameManager
+
+    private inputPayloads: InputPlayload[] = [];
+
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
@@ -27,6 +36,8 @@ export default class PlayerManager{
                 gameObject.specialCooldown.tick(deltaT)
             }
         })
+
+        this.processMovementInputPayload();
     }
 
     getPlayerStateAndBody(sessionId: string){
@@ -41,6 +52,63 @@ export default class PlayerManager{
         // trigger all player attack effect logics if there is a mouseclick
         if(mouseClick){
             EffectManager.useTriggerEffectsOn(playerState, "player attack", playerBody, {mouseX, mouseY})
+        }
+    }
+
+    queuePlayerMovement(playerId: string, data: number[]) {
+        let inputPlayload = {
+            playerId: playerId,
+            payload: data,
+        }
+        this.inputPayloads.push(inputPlayload);
+    }
+
+    private processMovementInputPayload() {
+        let loopCount = this.inputPayloads.length;
+
+        if(this.inputPayloads.length > 100) {
+            console.warn("Input payloads exceed 100, dropping payloads.");
+            while(this.inputPayloads.length > 50) this.inputPayloads.shift();
+        }
+
+        while(loopCount > 0) {
+            let item = this.inputPayloads.shift();
+            if(item && this.gameManager.state.reconciliationInfos.length > 0) {
+                let clientTick = item.payload[4];
+                let serverTick = this.gameManager.state.serverTickCount;
+                let playerId = item.playerId;
+                let reconciliationInfo = this.gameManager.state.reconciliationInfos.reduce<ReconciliationInfo>((prev, current, idx, arr) => {
+                    if(prev.clientId === playerId) return prev;
+                    else return current;
+                })
+                reconciliationInfo.adjectmentConfirmId = item.payload[5];
+
+                if(clientTick < serverTick) {
+                    // Drop package and ask player to catch up.
+                    // console.log(`Client ${playerId} is ${serverTick - clientTick} ticks behind. Asking client to speed up.`);
+                    if(reconciliationInfo.adjectmentConfirmId === reconciliationInfo.adjustmentId) {
+                        reconciliationInfo.adjustmentId++;
+                        reconciliationInfo.adjustmentAmount = 2;
+                    }
+                } else if(clientTick > serverTick + 3) {
+                    // Save packet and tell client to slow down.
+                    // console.log(`Client ${playerId} is ${clientTick - serverTick} ticks ahead. Asking client to slow down.`);
+                    if(reconciliationInfo.adjectmentConfirmId === reconciliationInfo.adjustmentId) {
+                        reconciliationInfo.adjustmentId++;
+                        reconciliationInfo.adjustmentAmount = -2;
+                    }
+                    this.inputPayloads.push(item);
+                }
+                else if(clientTick === serverTick) {
+                    // Process client payload.
+                    this.processPlayerMovement(playerId, item.payload);
+
+                } else {
+                    // Save packet for future ticks.
+                    this.inputPayloads.push(item);
+                }
+            }
+            loopCount--;
         }
     }
 
@@ -125,7 +193,11 @@ export default class PlayerManager{
         newPlayer.setId(sessionId);
         newPlayer.setBody(body)
         this.gameManager.addGameObject(sessionId, newPlayer, body);
-    }   
+    } 
+
+    public removePlayer(sessionId: string) {
+        this.gameManager.removeGameObject(sessionId);
+    }
 
     /**
      * Gets the nearest player to the given x and y position.
