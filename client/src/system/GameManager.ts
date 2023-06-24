@@ -52,6 +52,7 @@ export default class GameManager {
             this.fixedTick(time, this.timePerTick);
         }
         this.interpolateGameObjects();
+        this.syncGameObjectVisibility();
     }
 
     /**
@@ -66,11 +67,23 @@ export default class GameManager {
 
     /**
      * Updates the gameObject's position to be closer to the server's gameObject position.
+     * If the gameObject is not visible then just teleport it.
      */
     private interpolateGameObjects() {
         this.gameObjects?.forEach((obj) => {
-            obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, .10));
-            obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, .10));
+            if(obj.visible) {
+                obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, .10));
+                obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, .10));
+            } else {
+                obj.setX(obj.serverX);
+                obj.setY(obj.serverY);
+            } 
+        })
+    }
+
+    private syncGameObjectVisibility() {
+        this.gameObjects?.forEach((obj) => {
+            obj.setVisible(obj.serverVisible)
         })
     }
 
@@ -244,6 +257,7 @@ export default class GameManager {
             gameObjectState.onChange = (changes:any) => {
                 gameObject.serverX = gameObjectState.x;
                 gameObject.serverY = gameObjectState.y;
+                gameObject.serverVisible = gameObjectState.visible;
             }
         }
     }

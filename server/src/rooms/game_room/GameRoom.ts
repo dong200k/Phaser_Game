@@ -43,7 +43,8 @@ export default class GameRoom extends Room<State> {
 
     initListeners() {
         this.onMessage("move", (client, msg)=>{
-            this.gameManager?.getPlayerManager().processPlayerMovement(client.sessionId, msg)
+            // Queue up player's movement so that the playerManager can process them next update.
+            this.gameManager?.getPlayerManager().queuePlayerMovement(client.sessionId, msg);
         })
 
         this.onMessage("attack", (client, msg)=>{
@@ -53,7 +54,7 @@ export default class GameRoom extends Room<State> {
         this.onMessage("special", (client, msg)=>{
             this.gameManager?.getPlayerManager().processPlayerSpecial(client.sessionId, msg)
             //this.gameManager?.playerManager.processPlayerMovement(client.sessionId, msg)
-            this.gameManager?.getPlayerManager().queuePlayerMovement(client.sessionId, msg);
+            
         })
 
         // this.onMessage("input", (client, msg) => {

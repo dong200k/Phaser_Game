@@ -15,6 +15,7 @@ export class Velocity extends Schema {
 
 export default class GameObject extends Schema implements Cloneable {
     @type('string') private id: string;
+    @type('boolean') visible: boolean;
     @type('string') ownerId;
     @type('string') type;
 
@@ -30,6 +31,7 @@ export default class GameObject extends Schema implements Cloneable {
         this.y = y;
         this.ownerId = ownerId;
         this.type = 'GameObject';
+        this.visible = true;
     }
 
     /** 
@@ -53,5 +55,18 @@ export default class GameObject extends Schema implements Cloneable {
     /** Give this gameObject an new ID. You should only call this if you want to assign your own ID. */
     public setId(id: string) {
         this.id = id;
+    }
+
+    /** Sets the visiblity of this GameObject. Note: This is used to make 
+     * the GameObject disappear on the client side when this GameObject is 
+     * not in use (returned to ObjectPool).
+     */
+    public setVisible(value: boolean) {
+        this.visible = value;
+    }
+
+    /** Checks if this game object is visible. */
+    public getVisible() {
+        return this.visible;
     }
 }
