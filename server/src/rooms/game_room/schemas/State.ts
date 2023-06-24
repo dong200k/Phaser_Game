@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Schema, type, MapSchema } from '@colyseus/schema';
-=======
 import { Schema, type, MapSchema, ArraySchema, filterChildren } from '@colyseus/schema';
->>>>>>> master
 import GameObject from './gameobjs/GameObject';
 import Tilemap from './dungeon/tilemap/Tilemap';
 import Dungeon from './dungeon/Dungeon';

@@ -90,4 +90,14 @@ export default class ArtifactManager{
             curr = curr.children[0]
         }
     }
+
+    /**
+     * Takes in a WeaponUpgradeTree (artifact) and returns the list of available upgrades in the tree.
+     * @param tree to get upgrades from
+     * @returns a list of available upgrades
+     */
+    static getAvailableUpgrades <T extends WeaponUpgradeTree, U extends Exclude<T["root"], undefined>>
+    (artifact: T): U[]{
+        return TreeUtil.getAvailableUpgrades(artifact)
+    }
 }
