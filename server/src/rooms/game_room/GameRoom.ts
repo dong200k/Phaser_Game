@@ -34,21 +34,26 @@ export default class GameRoom extends Room<State> {
         this.gameManager = new GameManager(state);
         this.setState(state);
         this.initListeners();
-        this.startGame();
+        this.gameManager.preload()
+            .then(()=>{
+                this.startGame()
+            })
+        
     }
 
     initListeners() {
         this.onMessage("move", (client, msg)=>{
-            //this.gameManager?.playerManager.processPlayerMovement(client.sessionId, msg)
-            this.gameManager.playerManager.queuePlayerMovement(client.sessionId, msg);
+            this.gameManager?.getPlayerManager().processPlayerMovement(client.sessionId, msg)
         })
 
         this.onMessage("attack", (client, msg)=>{
-            this.gameManager.playerManager.processPlayerAttack(client.sessionId, msg)
+            this.gameManager?.getPlayerManager().processPlayerAttack(client.sessionId, msg)
         })
 
         this.onMessage("special", (client, msg)=>{
-            this.gameManager.playerManager.processPlayerSpecial(client.sessionId, msg)
+            this.gameManager?.getPlayerManager().processPlayerSpecial(client.sessionId, msg)
+            //this.gameManager?.playerManager.processPlayerMovement(client.sessionId, msg)
+            this.gameManager?.getPlayerManager().queuePlayerMovement(client.sessionId, msg);
         })
 
         // this.onMessage("input", (client, msg) => {
@@ -84,13 +89,13 @@ export default class GameRoom extends Room<State> {
 
     onJoin(client: Client) {
         // Add a new player to the room state. The first player is the owner of the room.
-        this.gameManager.playerManager.createPlayer(client.sessionId, this.gameManager.playerCount() === 0);
+        this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0);
         this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
     }
 
     onLeave(client: Client) {
         // removes player from list of gameobjects
-        this.gameManager.playerManager.removePlayer(client.sessionId);
+        this.gameManager.getPlayerManager().removePlayer(client.sessionId);
         for(let i = this.state.reconciliationInfos.length - 1; i >= 0; i--) {
             if(this.state.reconciliationInfos[i].clientId === client.sessionId) this.state.reconciliationInfos.deleteAt(i);
         }

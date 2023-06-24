@@ -69,4 +69,16 @@ export default abstract class ContinuousEffectUntimed extends Effect {
     protected onReset(): void {
         //TODO
     }
+
+    public setTickRate(tickRate: number){
+        this.tickRate = tickRate
+    }
+
+    public setTimeUntilNextTick(timeUntilNextTick: number){
+        this.timeUntilNextTick = timeUntilNextTick
+    }
+
+    public getTickRate(){
+        return this.tickRate
+    }
 }

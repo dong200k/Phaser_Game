@@ -30,5 +30,9 @@ export class ObjectPool<T extends Cloneable> {
     public getObjectsCreated(): number {
         return this.objectsCreated;
     }
+
+    public length(): number {
+        return this.poolQueue.length
+    }
 }
 

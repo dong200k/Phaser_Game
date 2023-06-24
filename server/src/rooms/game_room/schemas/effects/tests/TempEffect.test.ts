@@ -1,4 +1,6 @@
+import GameManager from "../../../system/GameManager";
 import EffectManager from "../../../system/StateManagers/EffectManager";
+import State from "../../State";
 import Player from "../../gameobjs/Player"
 import EffectFactory from "../EffectFactory";
 
@@ -207,6 +209,34 @@ describe("Stat Effects", () => {
         expect(player.stat.attackRangePercent).toBeCloseTo(1);
         expect(player.stat.speed).toBe(1);
         expect(player.stat.lifeSteal).toBeCloseTo(0);
+    })
+    test("Collision Immune Effect", async ()=>{
+        let gameManager = new GameManager(new State())
+        await gameManager.preload()
+
+        //create player
+        let sessionId = "fake-id"
+        gameManager.getPlayerManager().createPlayer(sessionId, false)
+        let {playerBody, playerState: player} = gameManager.getPlayerManager().getPlayerStateAndBody(sessionId)
+        let collisionFilter = playerBody.collisionFilter
+        let initialMask = collisionFilter.mask
+
+        /** Create collision immune effect with duraction of 5 ticks */
+        let effect = EffectFactory.createCollisionImmuneEffectTimed(5)
+
+        // Add effect to player, expect mask to be 0
+        EffectManager.addEffectsTo(player, effect);
+        EffectManager.updateEffectsOn(player, 0.1);
+        expect(collisionFilter.mask).toBe(0)
+
+        // Mask should revert back
+        EffectManager.removeEffectFrom(player, effect);
+        expect(collisionFilter.mask).toBe(initialMask);
+
+        // Add effect to player, expect mask to be 0
+        EffectManager.addEffectsTo(player, effect);
+        EffectManager.updateEffectsOn(player, 0.1);
+        expect(collisionFilter.mask).toBe(0)
     })
 })
 

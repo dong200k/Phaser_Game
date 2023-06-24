@@ -3,19 +3,22 @@ import State from "../schemas/State";
 import Player from '../schemas/gameobjs/Player';
 import PlayerManager from './StateManagers/PlayerManager';
 import GameObject from '../schemas/gameobjs/GameObject';
-import Cooldown from '../schemas/gameobjs/Cooldown';
 import ProjectileManager from './StateManagers/ProjectileManager';
 import EffectManager from './StateManagers/EffectManager';
 import DungeonManager from './StateManagers/DungeonManager';
-import WeaponManager from './StateManagers/WeaponManager';
+import DatabaseManager from './Database/DatabaseManager';
+import EffectLogicManager from './EffectLogic/EffectLogicManager';
+import ArtifactManager from './StateManagers/ArtifactManager';
+import Projectile from '../schemas/projectiles/Projectile';
+import MathUtil from '../../../util/MathUtil';
 
 export default class GameManager {
     private engine: Matter.Engine;
     public world: Matter.World;
 
     // Managers
-    public playerManager: PlayerManager
-    public projectileManager: ProjectileManager;
+    private playerManager: PlayerManager
+    private projectileManager: ProjectileManager;
     private effectManager: EffectManager;
     private dungeonManager: DungeonManager;
 
@@ -34,11 +37,23 @@ export default class GameManager {
         this.projectileManager = new ProjectileManager(this)
         this.effectManager = new EffectManager(this);
         this.dungeonManager = new DungeonManager(this);
-
+        EffectLogicManager.getManager().setGameManager(this)
         this.initUpdateEvents();
         this.initCollisionEvent();
         this.syncServerStateBasedOnGameState();
     }
+
+    /**
+     * Preloads asynchronous tasks such as getting upgrades and weapons from database.
+     * so that they are available before other things are done.
+     * *** TODO: Call this function and await it in GameRoom before game starts. ***
+     */
+    async preload(){
+        await DatabaseManager.getManager().loadData()
+        await ArtifactManager.preload()
+    }
+
+    private prevVelo = 0
 
     public syncServerStateBasedOnGameState(){
         // sync object positions
@@ -69,7 +84,7 @@ export default class GameManager {
         this.gameObjects.set(id, body);
         
         Matter.Composite.add(this.world, body);
-    }   
+    }
 
     /**
      * removes game object from the server's state, from the GameManager, and from the Matter.Composite
@@ -116,6 +131,7 @@ export default class GameManager {
         this.playerManager.update(deltaT);
         this.effectManager.update(deltaTSeconds);
         this.dungeonManager.update(deltaTSeconds);
+        this.projectileManager.update(deltaT)
 
         // console.log(deltaT)
     }
@@ -134,5 +150,9 @@ export default class GameManager {
 
     public getDungeonManager() {
         return this.dungeonManager;
+    }
+
+    public getProjectileManager() {
+        return this.projectileManager;
     }
 }

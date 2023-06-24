@@ -1,4 +1,4 @@
-import { getDefaultUpgrade, padUpgradeStat } from "../helpers.js"
+import { getDefaultArtifact, getDefaultUpgrade, padUpgradeStat } from "../helpers.js"
 
 class UpgradeService{
     BASEURL = "http://localhost:3010"
@@ -11,17 +11,16 @@ class UpgradeService{
             console.log(`error getting upgrade with the id: ${id}`)
             return null
         }
-        
     }
     async saveUpgrade(upgrade){
-        let paddedUpgrade = padUpgradeStat(upgrade)
+        // let paddedUpgrade = padUpgradeStat(upgrade)
         try {
             let result = await fetch(this.BASEURL + `/upgrades/${upgrade.id}`, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(paddedUpgrade)
+                body: JSON.stringify(upgrade)
             })
             return result.status === 200
             
@@ -30,8 +29,11 @@ class UpgradeService{
         }
     
     }
-    async createUpgrade(){
-        let upgrade = getDefaultUpgrade()
+    async createUpgrade(type){
+        let upgrade
+        if(type === "artifact") upgrade = getDefaultArtifact()
+        else upgrade = getDefaultUpgrade()
+        console.log("create upgrade ", upgrade.type, type)
         try {
             let result = await fetch(this.BASEURL + `/upgrades`, {
                 method: "POST",

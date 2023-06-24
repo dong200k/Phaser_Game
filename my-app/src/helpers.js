@@ -15,14 +15,32 @@ export const useCenteredTree = () => {
 export function getDefaultUpgrade(){
   return {
     id: "upgrade-" + window.crypto.randomUUID(),
-    upgradeName: "auto-generated",
-    root: getDefaultNode()
+    name: "auto-generated",
+    type: "weapon",
+    root: getDefaultUpgradeNode()
+  }
+}
+
+export function getDefaultArtifact(){
+  return {
+    id: "upgrade-" + window.crypto.randomUUID(),
+    name: "auto-generated",
+    type: "artifact",
+    root: getDefaultUpgradeNode()
+  }
+}
+
+export function getDefaultSkill(){
+  return {
+    id: "skill-" + window.crypto.randomUUID(),
+    name: "auto-generated",
+    root: getDefaultSkillNode()
   }
 }
 
 export function getDefaultNode(){
   return {
-    nodeId: "node-" + window.crypto.randomUUID(),
+    id: "node-" + window.crypto.randomUUID(),
     children: [],
     data: {
       name: "auto-generated",
@@ -49,10 +67,71 @@ export function getDefaultNode(){
         attackSpeedPercent:0,
         speed:0,
         lifeSteal:0,
+        lifeStealPercent: 0,
         level:0,
-      }
+      },
+      status: "none",
+      selectionTime: 0
     }
   }
+}
+
+export function getDefaultUpgradeNode(){
+  let node = {
+    ...getDefaultNode(),
+  }
+  // If there needs to be Additional key add them below
+  node.data.upgradeEffect = {
+    effectLogicId: "",
+    doesStack: 1, // whether it stacks (1) or overwrites (0) other useAttacks
+    cooldown: 1000,
+    collisionGroup: -1,
+    type: "none"
+  }
+  return node
+}
+
+export function getDefaultSkillNode(){
+  let node = {
+    ...getDefaultNode(),
+  }
+  // If there needs to be Additional key add them below
+  node.data.coinCost = 0
+  return node
+}
+
+export function getDefaultWeapon(){
+  return {
+    id: "weapon-" + window.crypto.randomUUID(),
+    name: "name",
+    description: "description",
+    sprite: "demo_hero",
+    projectile: "demo_hero"
+  }
+}
+
+export function getEditForm(node, type){
+  let nodeCopy = structuredClone(node)
+  let defaultNode
+  if(type === "skill"){
+    defaultNode = getDefaultSkillNode()
+  }else if(type === "upgrade"){
+    defaultNode = getDefaultUpgradeNode()
+  }else{
+    defaultNode = getDefaultNode()
+  }
+
+  // set node's stat to defaultNodeStat stat, 
+  //if nodeCopy's stat has extra properties that default does not have add them to the obj
+  //if nodeCopy's stat has the properties that default has overwrite the default ones
+  nodeCopy.data.stat = {...defaultNode.data.stat, ...nodeCopy.data.stat}
+
+  // Same for the other categories of nodeCopy.data
+  // use the categories from nodeCopy.data if both has the category
+  // else include the other/additional categories from defaultNode
+  nodeCopy.data = {...defaultNode.data, ...nodeCopy.data}
+
+  return nodeCopy 
 }
 
 export function padUpgradeStat(upgrade){
@@ -78,3 +157,16 @@ export function padUpgradeStat(upgrade){
 
   return newUpgrade
 }
+
+// export default function isValidStat(stat){
+//   let message = ""
+//   Object.entries(stat).forEach(([key, val])=>{
+//     switch(key){
+//       case "critRate":
+//         break;
+//       default: 
+//         break;
+//     }        
+
+//   })
+// }

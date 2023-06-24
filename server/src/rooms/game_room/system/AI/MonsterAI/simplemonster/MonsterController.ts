@@ -27,7 +27,6 @@ export default class MonsterController extends StateMachine<MonsterControllerDat
 
         //Set initial state
         this.changeState("Idle");
-        
     }
 
     public getPlayerManager() {
