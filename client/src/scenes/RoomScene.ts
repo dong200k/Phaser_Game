@@ -8,6 +8,10 @@ import Layout from "../UI/Layout";
 import SceneManager from "../system/SceneManager";
 import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import RoleModal from "../UI/RoleModal";
+import UIFactory from "../UI/UIFactory";
+import TextBoxRex from "../UI/TextBoxRex";
+import TextBoxPhaser from "../UI/TextBoxPhaser";
+import PlayerList from "../UI/roomuis/PlayerList";
 
 /*
 Planning: 
@@ -83,6 +87,7 @@ export default class RoomScene extends Phaser.Scene {
 
     private roomModalData: RoomModalData;
 
+    private playerList!: PlayerList;
 
     // Plugin for UI elements that will be injected at scene creation.
     rexUI!: UIPlugins;
@@ -161,6 +166,19 @@ export default class RoomScene extends Phaser.Scene {
         });
     }
 
+    public hideDOM() {
+        this.children.each((child) => {
+            if(child instanceof Phaser.GameObjects.DOMElement) child.setVisible(false);
+            
+        })
+    }
+
+    public showDOM() {
+        this.children.each((child) => {
+            if(child instanceof Phaser.GameObjects.DOMElement) child.setVisible(true);
+        })
+    }
+
     private initializeUI() {
 
         // ---------- Room ID -----------
@@ -199,7 +217,9 @@ export default class RoomScene extends Phaser.Scene {
                 manualClose: true, 
             }).then(() => {
                 modal.getDialog().destroy();
+                this.playerList.show();
             });
+            this.playerList.hide();
         });
         let selectDungeonButton = new Button(this, "Select dungeon", 0, 0, "regular", () => {
             let modal = new RoleModal(this, {
@@ -216,7 +236,9 @@ export default class RoomScene extends Phaser.Scene {
                 manualClose: true, 
             }).then(() => {
                 modal.getDialog().destroy();
+                this.playerList.show();
             });
+            this.playerList.hide();
         });
         let selectPetButton = new Button(this, "Select pet", 0, 0, "regular", () => {
             let modal = new RoleModal(this, {
@@ -233,7 +255,9 @@ export default class RoomScene extends Phaser.Scene {
                 manualClose: true, 
             }).then(() => {
                 modal.getDialog().destroy();
+                this.playerList.show();
             });
+            this.playerList.hide();
         });
         let startButton = new Button(this, "Start", 0, 0, "large", () => {
             this.waitingRoom?.send('start');
@@ -251,6 +275,36 @@ export default class RoomScene extends Phaser.Scene {
 
         // list of players text
         this.playersInRoomText = this.add.text(this.game.scale.width / 2 - 50, 100, "Players in room: 0");
+
+        // --------- Player Listing ----------
+
+        this.playerList = new PlayerList(this);
+        // let playerListing = this.rexUI.add.sizer({
+        //     orientation: "vertical",
+        //     anchor: {
+        //         top: "top",
+        //         right: "right",
+        //     }
+        // });
+
+        // playerListing.add(this.createPlayerListingItem());
+        // playerListing.layout();
+
+        this.playerList.updatePlayerList({
+            items: [
+                {name: "Endsider"},
+                {name: "Endsider"},
+                {name: "Endsider"},
+                {name: "Endsider"},
+                {name: "Endsider"},
+                {name: "Endsider"},
+                {name: "Endsider"}
+            ]
+        })
+
+
+        // Room Information 
+        
     }
 
     /** Called when the user selects a new role from the role modal. */

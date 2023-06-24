@@ -3,6 +3,7 @@ import ButtonRex, { ButtonRexConfig } from "./ButtonRex";
 import CircleImage from "./CircleImage";
 import TextBox from "./TextBox";
 import TextBoxPhaser, { FontTypeString } from "./TextBoxPhaser";
+import TextBoxRex from "./TextBoxRex";
 
 export default class UIFactory {
 
@@ -20,6 +21,12 @@ export default class UIFactory {
 
     public static createTextBoxDOM(scene:Phaser.Scene,text="",fontType:FontTypeString='p3') {
         let textBox = new TextBox(scene, text, fontType);
+        scene.add.existing(textBox);
+        return textBox;
+    }
+
+    public static createTextBoxRex(scene:Phaser.Scene,text="",fontType:FontTypeString='p3') {
+        let textBox = new TextBoxRex(scene, text, fontType);
         scene.add.existing(textBox);
         return textBox;
     }
