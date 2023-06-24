@@ -43,12 +43,14 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
 
     /** Uses the effect referenced by effectLogicId if cooldown is finished */
     public onTrigger(entity: Entity, ...args: any): boolean {
+        console.log(`using trigger effect for ${this.effectLogicId}`)
+
         // cooldown not finished return
         if(!this.cooldown.isFinished) return false
 
         // restart cooldown and use corresponding effect logic
         this.cooldown.reset()
-        return EffectLogicManager.getManager().useEffect(this.effectLogicId, entity, ...args)
+        return EffectLogicManager.getManager().useEffect(this.effectLogicId, entity, this.tree, ...args)
     }
     
     public toString(): string {

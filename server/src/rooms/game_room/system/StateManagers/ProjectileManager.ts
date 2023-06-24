@@ -61,8 +61,6 @@ export default class ProjectileManager{
         }else{
             // no instance so create new projectile
             projectile = new ctors[type](projectileConfig, this.gameManager)
-
-            projectile = new Projectile(projectileConfig, this.gameManager);
             this.gameManager.addGameObject(projectile.projectileId, projectile, projectile.getBody() as Matter.Body);
         }
 

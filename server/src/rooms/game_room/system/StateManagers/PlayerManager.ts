@@ -83,8 +83,12 @@ export default class PlayerManager{
         WeaponManager.equipWeaponUpgrade(player, root)
 
         // Equip aritfacts
-        let upgradeHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
-        ArtifactManager.equipArtifact(player, upgradeHermesBoots)
+        let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
+        let upgradedFrostGlaive = ArtifactFactory.createUpgradeFrostGlaive()
+        let upgradedDemoArtifact = ArtifactFactory.createDemo()
+        ArtifactManager.equipArtifact(player, upgradedHermesBoots)
+        // ArtifactManager.equipArtifact(player, upgradedFrostGlaive)
+        ArtifactManager.equipArtifact(player, upgradedDemoArtifact)
 
         // Equip skill tree
         let maxedSkillTree = SkillTreeFactory.createUpgradedAdventurerSkill()

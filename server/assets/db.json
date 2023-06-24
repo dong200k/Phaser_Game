@@ -792,6 +792,8 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
+                      "status": "none",
+                      "selectionTime": 0,
                       "upgradeEffect": {
                         "effectLogicId": "Frost-glaive-frenzy",
                         "doesStack": 1,
@@ -799,10 +801,13 @@
                         "collisionGroup": -1,
                         "type": "player skill"
                       },
-                      "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
+                      "weaponId": "weapon-26f83100-c741-46b3-81b3-861922871ca6",
+                      "doesStack": false,
+                      "collisionGroup": null,
+                      "coinCost": null
                     },
                     "__rd3t": {
-                      "id": "66a62a58-b356-4ea6-bddf-1f7e402bf1d9",
+                      "id": "7f7ed21a-400f-452f-9aac-d3bf58c45707",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -836,6 +841,8 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
+                  "status": "none",
+                  "selectionTime": 0,
                   "upgradeEffect": {
                     "effectLogicId": "Frost-glaive",
                     "doesStack": 0,
@@ -843,10 +850,13 @@
                     "collisionGroup": "1",
                     "type": "none"
                   },
-                  "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
+                  "weaponId": "weapon-26f83100-c741-46b3-81b3-861922871ca6",
+                  "doesStack": false,
+                  "collisionGroup": null,
+                  "coinCost": null
                 },
                 "__rd3t": {
-                  "id": "e2c190f8-813f-4457-b6f0-e26c02cf5438",
+                  "id": "9e52ab66-0489-4890-85e0-dd0edc665d3c",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -890,7 +900,7 @@
               "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
             },
             "__rd3t": {
-              "id": "4b6dde6e-d8b2-490a-a87b-76b912ce7190",
+              "id": "29034a3a-1523-4797-8dd8-2526cb0a44c5",
               "depth": 1,
               "collapsed": false
             }
@@ -924,17 +934,22 @@
             "lifeStealPercent": 0,
             "level": 0
           },
+          "status": "none",
+          "selectionTime": 0,
           "upgradeEffect": {
             "effectLogicId": "Frost-glaive",
             "doesStack": 1,
             "cooldown": 3000,
-            "collisionGroup": "0",
+            "collisionGroup": "1",
             "type": "none"
           },
-          "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
+          "weaponId": "weapon-26f83100-c741-46b3-81b3-861922871ca6",
+          "doesStack": false,
+          "collisionGroup": 0,
+          "coinCost": 0
         },
         "__rd3t": {
-          "id": "7c552d95-9d90-44c0-b270-00c55d053fdd",
+          "id": "647cd130-4f7b-4847-9493-4fa1ff7a818b",
           "depth": 0,
           "collapsed": false
         }
@@ -2902,6 +2917,114 @@
         },
         "__rd3t": {
           "id": "c7b08cbd-0e8d-4a94-a05d-eca09c78ad28",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
+    },
+    {
+      "id": "upgrade-f831783f-9c3b-40fb-aa62-4e29dfe84664",
+      "name": "Demo",
+      "type": "artifact",
+      "root": {
+        "id": "node-15877dac-8b47-4d94-a23b-b02815d4526a",
+        "children": [
+          {
+            "id": "node-a5a7b229-9fce-4eaf-a278-19ded1519894",
+            "children": [],
+            "data": {
+              "name": "auto-generated",
+              "description": "auto-generated",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "demo2",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "none"
+              },
+              "weaponId": "weapon-26f83100-c741-46b3-81b3-861922871ca6",
+              "doesStack": false,
+              "collisionGroup": null,
+              "coinCost": null
+            },
+            "__rd3t": {
+              "id": "49f751cd-a02d-44f2-a067-c11400697cca",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "name": "auto-generated",
+          "description": "auto-generated",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 1,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0
+          },
+          "status": "none",
+          "selectionTime": 0,
+          "upgradeEffect": {
+            "effectLogicId": "demo",
+            "doesStack": 1,
+            "cooldown": 2000,
+            "collisionGroup": -1,
+            "type": "player skill"
+          },
+          "weaponId": "weapon-26f83100-c741-46b3-81b3-861922871ca6",
+          "doesStack": false,
+          "collisionGroup": null,
+          "coinCost": null
+        },
+        "__rd3t": {
+          "id": "3db2300f-617c-4c57-bf3a-33ed2b8bbd35",
           "depth": 0,
           "collapsed": false
         }
@@ -6152,6 +6275,13 @@
       "description": "description",
       "sprite": "demo_hero",
       "projectile": "demo_hero"
+    },
+    {
+      "id": "weapon-26f83100-c741-46b3-81b3-861922871ca6",
+      "name": "frost-glaive",
+      "description": "frosty star",
+      "sprite": "frost-glaive",
+      "projectile": "frost-glaive"
     }
   ]
 }

@@ -1,6 +1,8 @@
 import Entity from "../../schemas/gameobjs/Entity";
 import GameManager from "../GameManager";
 import EffectLogic from "./EffectLogic";
+import { DemoLogic, DemoLogicSkill } from "./EffectLogics/artifact/DemoLogic";
+import { FrostGlaive, FrostGlaiveFrenzy } from "./EffectLogics/artifact/FrostGlaiveLogic";
 import { HermesBoots } from "./EffectLogics/artifact/HermesBootLogic";
 import BowLogic from "./EffectLogics/weapon/BowLogic";
 import DoubowLogic from "./EffectLogics/weapon/DoubowLogic";
@@ -28,6 +30,10 @@ export default class EffectLogicManager{
         this.addEffectLogic(new DoubowLogic())
         this.addEffectLogic(new TribowLogic())
         this.addEffectLogic(new HermesBoots())
+        this.addEffectLogic(new FrostGlaive())
+        this.addEffectLogic(new FrostGlaiveFrenzy())
+        this.addEffectLogic(new DemoLogic())
+        this.addEffectLogic(new DemoLogicSkill())
     }
 
     private addEffectLogic(effectLogic: EffectLogic){

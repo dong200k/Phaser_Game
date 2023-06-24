@@ -145,6 +145,8 @@ export default class EffectFactory {
         let doesStack = upgradeEffect.doesStack
         let collisionGroup = upgradeEffect.collisionGroup
 
+        // console.log(type)
+
         // Creates appropriate effect based on type. To add types change logic here and also add a type to my-app/src/effectTypes.js
         switch(upgradeEffect.type){
             case "player attack":

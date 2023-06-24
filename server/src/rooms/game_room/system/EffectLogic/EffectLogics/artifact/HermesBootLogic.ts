@@ -16,6 +16,5 @@ export class HermesBoots extends EffectLogic{
     public useEffect(playerState: Player){
         EffectManager.addEffectsTo(playerState, EffectFactory.createSpeedMultiplierEffectTimed(5, 1))
         EffectManager.addEffectsTo(playerState, EffectFactory.createCollisionImmuneEffectTimed(1))
-        console.log("Hermes Speed Boost")
     }
 }

@@ -20,7 +20,7 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
     tree?: WeaponUpgradeTree
 
     constructor(effectLogicId: string, cooldown: number, type: string, doesStack: boolean, collisionGroup: number){
-        super(cooldown)
+        super(cooldown/100)
         this.setName("Continuous Upgrade Effect")
         this.setDescription("Type of ContinuousEffecftUntime that repeatedly calls the effectLogic referenced by effectLogicId")
         this.effectLogicId = effectLogicId
@@ -29,9 +29,10 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
     }
 
     public applyEffect(entity: Entity): boolean {
+        // console.log(`using continuous effect for ${this.effectLogicId}`)
         try{
             // use effect that effectLogicId references
-            return EffectLogicManager.getManager().useEffect(this.effectLogicId, entity)
+            return EffectLogicManager.getManager().useEffect(this.effectLogicId, entity, this.tree)
         }catch(e: any){
             console.log(e?.message)
             return false
@@ -40,5 +41,9 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
 
     public setTree(tree: WeaponUpgradeTree){
         this.tree = tree
+    }
+
+    public toString(): string {
+        return super.toString() + `(effectLogicId: ${this.effectLogicId}, does stack?: ${this.doesStack}, collisionGroup: ${this.collisionGroup})`;
     }
 }

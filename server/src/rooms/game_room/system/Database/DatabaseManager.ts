@@ -32,7 +32,7 @@ export default class DatabaseManager{
             }
 
             //Load weapons
-            for (let weapon of db.skills) {
+            for (let weapon of db.weapons) {
                 this.weapons.set(weapon.id, weapon)
             }
         } catch (error: any) {

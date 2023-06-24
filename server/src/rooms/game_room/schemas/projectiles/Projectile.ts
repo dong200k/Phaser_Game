@@ -9,6 +9,7 @@ import MathUtil from "../../../../util/MathUtil";
 import GameObject, { Velocity } from "../gameobjs/GameObject";
 import GameManager from "../../system/GameManager";
 import MaskManager from "../../system/Collisions/MaskManager";
+import CircularFollowProjectle from "./specialprojectiles/CircularFollowProjectile";
 
 /**
  * Projectiles are are updated via the update() method. Call projectile.setInactive() to return the projectile to the
@@ -69,7 +70,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.type = "Projectile"
         this.createBody()
     }
-
+    
     /**
      * Updates this projectile by deltaT. If the projectile has an activeTime and this.outOfTime() is true then projetile will be made inactive.
      * If projectile has a range and this.outOfRange() is true then projectile will be made inactive.

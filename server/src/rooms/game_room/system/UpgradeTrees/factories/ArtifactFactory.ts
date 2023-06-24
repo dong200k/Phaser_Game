@@ -13,4 +13,22 @@ export default class ArtifactFactory{
 
         return artifact
     }
+
+    /**
+     * @returns returns a fully upgraded frost glaive artifact tree's root to be used by a single player
+     */
+    static createUpgradeFrostGlaive(){
+        let artifact = WeaponUpgradeFactory.createUpgrade('upgrade-6c21dc6f-d21f-430d-b31a-93ca9583d842', false) as Node<WeaponData>
+        ArtifactManager.selectAllUpgrades(artifact)
+
+        return artifact
+    }
+
+    static createDemo(){
+        let artifact = WeaponUpgradeFactory.createUpgrade('upgrade-f831783f-9c3b-40fb-aa62-4e29dfe84664', false) as Node<WeaponData>
+        ArtifactManager.selectAllUpgrades(artifact)
+
+        return artifact
+    }
+
 }

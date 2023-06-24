@@ -1,4 +1,5 @@
 import MathUtil from "../../../../../../util/MathUtil";
+import WeaponUpgradeTree from "../../../../schemas/Trees/WeaponUpgradeTree";
 import Player from "../../../../schemas/gameobjs/Player";
 import { CategoryType } from "../../../Collisions/Category";
 import DatabaseManager from "../../../Database/DatabaseManager";
@@ -9,7 +10,7 @@ export default class DoubowLogic extends EffectLogic{
     effectLogicId = "Doubow"
 
     /** Shoots two projectiles at -30 and 30 degrees */
-    public useEffect(playerState: Player, gameManager: GameManager, playerBody: Matter.Body, mouseData: {mouseX: number, mouseY: number}){
+    public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Matter.Body, mouseData: {mouseX: number, mouseY: number}){
         // Grab Mouse Data and Player weapon
         let {mouseX, mouseY} = mouseData
         

@@ -132,7 +132,7 @@ export default class GameManager {
 
         this.playerManager.update(deltaT);
         this.effectManager.update(deltaTSeconds);
-        // this.dungeonManager.update(deltaTSeconds);
+        this.dungeonManager.update(deltaTSeconds);
         this.projectileManager.update(deltaT)
 
         // console.log(deltaT)
