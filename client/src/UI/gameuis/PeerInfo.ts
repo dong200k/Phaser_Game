@@ -1,5 +1,4 @@
 import { OverlapSizer, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
-import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import { ColorStyle } from "../../config";
 import ProgressBar from "../ProgressBar";
 import CircleImageProgress from "../CircleImageProgress";
@@ -7,10 +6,7 @@ import UIFactory from "../UIFactory";
 import TextBox from "../TextBox";
 import CircleImage from "../CircleImage";
 import TextBoxPhaser from "../TextBoxPhaser";
-
-interface SceneWithRexUI extends Phaser.Scene {
-    rexUI: UIPlugins;
-}
+import RexUIBase, { SceneWithRexUI } from "../RexUIBase";
 
 interface PeerInfoDataArtifact {
     imageKey: string;
@@ -38,10 +34,8 @@ export interface PeerInfoData {
 /** Creating an instance of this class will display a player info ui onto the screen. 
  * The sizer can be accessed through the getPlayerInfoSizer() method.
 */
-export default class PeerInfo {
+export default class PeerInfo extends RexUIBase {
     private peerInfoSizer: Sizer; 
-    private rexUI: UIPlugins;
-    private scene: SceneWithRexUI;
     private peerInfoData: PeerInfoData;
 
     //UI Items
@@ -58,8 +52,7 @@ export default class PeerInfo {
 
 
     constructor(scene: SceneWithRexUI, config: Partial<PeerInfoData>) {
-        this.scene = scene;
-        this.rexUI = scene.rexUI;
+        super(scene);
         this.peerInfoData = {
             slot1ItemKey: "",
             slot2ItemKey: "",

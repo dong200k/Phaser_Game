@@ -1,12 +1,8 @@
 import { FixWidthSizer, OverlapSizer, TextBox } from "phaser3-rex-plugins/templates/ui/ui-components";
-import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import CircleImage from "../CircleImage";
 import UIFactory from "../UIFactory";
 import { ColorStyle } from "../../config";
-
-interface SceneWithRexUI extends Phaser.Scene {
-    rexUI: UIPlugins;
-}
+import RexUIBase, { SceneWithRexUI } from "../RexUIBase";
 
 export interface ArtifactDisplayItem {
     imageKey: string;
@@ -17,17 +13,14 @@ export interface ArtifactDisplayData {
     items: ArtifactDisplayItem[] 
 }
 
-export default class ArtifactDisplay {
+export default class ArtifactDisplay extends RexUIBase {
 
-    private scene: SceneWithRexUI;
-    private rexUI: UIPlugins;
     private artifactSizer: FixWidthSizer;
     private artifactData: ArtifactDisplayData;
     private artifactSizerItems: OverlapSizer[] = [];
 
     constructor(scene: SceneWithRexUI, config: Partial<ArtifactDisplayData>) {
-        this.scene = scene;
-        this.rexUI = scene.rexUI;
+        super(scene);
         this.artifactData = {items: []}
         Object.assign(this.artifactData, config);
         this.artifactSizer = this.rexUI.add.fixWidthSizer({

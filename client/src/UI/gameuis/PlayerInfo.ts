@@ -1,14 +1,10 @@
 import { Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
-import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import { ColorStyle } from "../../config";
 import ProgressBar from "../ProgressBar";
 import CircleImageProgress from "../CircleImageProgress";
 import UIFactory from "../UIFactory";
 import TextBox from "../TextBox";
-
-interface SceneWithRexUI extends Phaser.Scene {
-    rexUI: UIPlugins;
-}
+import RexUIBase, { SceneWithRexUI } from "../RexUIBase";
 
 export interface PlayerInfoData {
     slot1ItemKey: string;
@@ -29,10 +25,8 @@ export interface PlayerInfoData {
 /** Creating an instance of this class will display a player info ui onto the screen. 
  * The sizer can be accessed through the getPlayerInfoSizer() method.
 */
-export default class PlayerInfo {
-    private playerInfoSizer: Sizer; 
-    private rexUI: UIPlugins;
-    private scene: SceneWithRexUI;
+export default class PlayerInfo extends RexUIBase{
+    private playerInfoSizer: Sizer;
     private playerInfoData: PlayerInfoData;
 
     //UI Items
@@ -44,8 +38,7 @@ export default class PlayerInfo {
     private specialDisplay!: CircleImageProgress;
 
     constructor(scene: SceneWithRexUI, config: Partial<PlayerInfoData>) {
-        this.scene = scene;
-        this.rexUI = scene.rexUI;
+        super(scene);
         this.playerInfoData = {
             slot1ItemKey: "",
             slot2ItemKey: "",

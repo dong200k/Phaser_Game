@@ -12,6 +12,8 @@ import UIFactory from "../UI/UIFactory";
 import TextBoxRex from "../UI/TextBoxRex";
 import TextBoxPhaser from "../UI/TextBoxPhaser";
 import PlayerList from "../UI/roomuis/PlayerList";
+import RoomInfo from "../UI/roomuis/RoomInfo";
+import RPDDisplay from "../UI/roomuis/RPDDisplay";
 
 /*
 Planning: 
@@ -77,9 +79,7 @@ export default class RoomScene extends Phaser.Scene {
     
     private waitingRoom?: Colyseus.Room;
 
-    private playersInRoomText?: Phaser.GameObjects.Text;
     private playersInRoom: number = 0;
-    private roomIDText: TextBox | null = null;
 
     private selectedRole: number = 0;
     private selectedPet: number = 0;
@@ -88,6 +88,8 @@ export default class RoomScene extends Phaser.Scene {
     private roomModalData: RoomModalData;
 
     private playerList!: PlayerList;
+    private roomInfo!: RoomInfo;
+    private rolePetDungeonDisplay!: RPDDisplay;
 
     // Plugin for UI elements that will be injected at scene creation.
     rexUI!: UIPlugins;
@@ -182,10 +184,10 @@ export default class RoomScene extends Phaser.Scene {
     private initializeUI() {
 
         // ---------- Room ID -----------
-        this.roomIDText = new TextBox(this, "", "p4", ColorStyle.neutrals[900]);
-        this.roomIDText.setPosition(24, 24);
-        this.roomIDText.setOrigin(0, 0);
-        this.add.existing(this.roomIDText);
+        // this.roomIDText = new TextBox(this, "", "p4", ColorStyle.neutrals[900]);
+        // this.roomIDText.setPosition(24, 24);
+        // this.roomIDText.setOrigin(0, 0);
+        // this.add.existing(this.roomIDText);
 
         // --------- Leave Room Button ----------
         let leaveButton = new Button(this, "Leave room", 0, 0, "regular", () => {
@@ -259,37 +261,42 @@ export default class RoomScene extends Phaser.Scene {
             });
             this.playerList.hide();
         });
-        let startButton = new Button(this, "Start", 0, 0, "large", () => {
+        let startButton = new Button(this, "Start Game", 0, 0, "large", () => {
             this.waitingRoom?.send('start');
         });
+        let readyButton = new Button(this, "Ready", 0, 0, "large", () => {
+            console.log("Ready Onclick");
+        });
 
-        let otherButtonLayout = new Layout(this, {
+        //Layout the select role, select pet, and select dungeon buttons.
+        let buttonLayout1 = new Layout(this, {
             flexDirection: 'row', 
             alignItems: 'center', 
             gap: 70,
-            x: this.game.scale.width / 2,
-            y: this.game.scale.height / 2 + 200,
+            x: this.game.scale.width / 2 - 150,
+            y: this.game.scale.height / 2 + 50,
         });
-        otherButtonLayout.add([selectRoleButton, selectPetButton, selectDungeonButton, startButton]);
-        this.add.existing(otherButtonLayout);
+        buttonLayout1.add([selectRoleButton, selectPetButton, selectDungeonButton]);
+        this.add.existing(buttonLayout1);
 
-        // list of players text
-        this.playersInRoomText = this.add.text(this.game.scale.width / 2 - 50, 100, "Players in room: 0");
+        let buttonLayout2 = new Layout(this, {
+            flexDirection: 'row', 
+            alignItems: 'center', 
+            gap: 20,
+            x: this.game.scale.width / 2 + 30,
+            y: this.game.scale.height - 95,
+        })
+        buttonLayout2.add([startButton, readyButton]);
+        this.add.existing(buttonLayout2);
+        
+        // --------- Role, Pet and Dungeon Display ----------
+
+        this.rolePetDungeonDisplay = new RPDDisplay(this);
+
 
         // --------- Player Listing ----------
 
         this.playerList = new PlayerList(this);
-        // let playerListing = this.rexUI.add.sizer({
-        //     orientation: "vertical",
-        //     anchor: {
-        //         top: "top",
-        //         right: "right",
-        //     }
-        // });
-
-        // playerListing.add(this.createPlayerListingItem());
-        // playerListing.layout();
-
         this.playerList.updatePlayerList({
             items: [
                 {name: "Endsider"},
@@ -303,8 +310,8 @@ export default class RoomScene extends Phaser.Scene {
         })
 
 
-        // Room Information 
-        
+        // --------- Room Information -----------
+        this.roomInfo = new RoomInfo(this, {});
     }
 
     /** Called when the user selects a new role from the role modal. */
@@ -331,14 +338,14 @@ export default class RoomScene extends Phaser.Scene {
     }
 
     private updatePlayersInRoom(count: number) {
-        this.playersInRoomText?.setText(`Players in room: ${count}`)
+        this.roomInfo.update({playersInRoom: count});
     }
 
     private joinRoom() {
         if(!this.waitingRoom) {
             ClientManager.getClient().joinWaitingRoom().then((room) => {
                 this.waitingRoom = room;
-                this.roomIDText?.setText(`Room ID: ${room.id}`);
+                this.roomInfo.update({roomID: room.id});
                 this.onJoin();
             }).catch(e => {
                 console.log("Failed to join waiting room ", e);

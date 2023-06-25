@@ -1,12 +1,7 @@
-import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import { ColorStyle } from "../../config";
 import UIFactory from "../UIFactory";
 import { Dialog, FixWidthSizer, RoundRectangle, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
-
-
-interface SceneWithRexUI extends Phaser.Scene {
-    rexUI: UIPlugins;
-}
+import RexUIBase from "../RexUIBase";
 
 export interface WAPopupItem {
     typeName: string;
@@ -22,18 +17,9 @@ export interface WAPopupData {
 }
 
 /** Creates a Weapon and Artifact Popup Manager that can spawn popups with the displayPopup() method. */
-export default class WAPopup {
+export default class WAPopup extends RexUIBase{
 
-    private scene: SceneWithRexUI;
-    private rexUI: UIPlugins;
     private popup?: Dialog;
-
-    constructor(scene: SceneWithRexUI) {
-        this.scene = scene;
-        this.rexUI = scene.rexUI;
-
-        // this.displayPopup(this.popupData);
-    }
 
     public displayPopup(data: WAPopupData) {
         if(this.popup) {

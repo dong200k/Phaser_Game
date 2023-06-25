@@ -1,12 +1,8 @@
-import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import UIFactory from "../UIFactory";
 import { ColorStyle } from "../../config";
 import { Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 import TextBoxRex from "../TextBoxRex";
-
-interface SceneWithRexUI extends Phaser.Scene {
-    rexUI: UIPlugins;
-}
+import RexUIBase, { SceneWithRexUI } from "../RexUIBase";
 
 export interface PlayerListItem {
     imageKey?: string;
@@ -20,16 +16,13 @@ export interface PlayerListData {
     items: PlayerListItem[];
 }
 
-export default class PlayerList {
+export default class PlayerList extends RexUIBase {
     
-    private scene: SceneWithRexUI;
-    private rexUI: UIPlugins;
     private playerListSizer: Sizer;
     private playerListItems: Sizer[] = [];
 
     constructor(scene: SceneWithRexUI) {
-        this.scene = scene;
-        this.rexUI = scene.rexUI;
+        super(scene);
 
         this.playerListSizer = this.rexUI.add.sizer({
             orientation: "vertical",

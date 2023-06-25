@@ -1,23 +1,16 @@
 import { FixWidthSizer } from "phaser3-rex-plugins/templates/ui/ui-components";
-import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import PeerInfo, { PeerInfoData } from "./PeerInfo";
 import { ColorStyle } from "../../config";
 import CircleImage from "../CircleImage";
+import RexUIBase, { SceneWithRexUI } from "../RexUIBase";
 
-interface SceneWithRexUI extends Phaser.Scene {
-    rexUI: UIPlugins;
-}
+export default class PeerInfoPopup extends RexUIBase{
 
-export default class PeerInfoPopup {
-
-    private rexUI: UIPlugins;
-    private scene: SceneWithRexUI;
     private peerInfoSizer: FixWidthSizer;
     private peerInfoMap: Map<string, PeerInfo>;
 
     constructor(scene: SceneWithRexUI) {
-        this.scene = scene;
-        this.rexUI = scene.rexUI;
+        super(scene);
         this.peerInfoMap = new Map<string, PeerInfo>();
 
         this.peerInfoSizer = this.rexUI.add.fixWidthSizer({
