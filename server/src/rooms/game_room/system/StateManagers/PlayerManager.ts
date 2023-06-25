@@ -41,7 +41,7 @@ export default class PlayerManager{
     }
 
     getPlayerStateAndBody(sessionId: string){
-        return {playerBody: this.gameManager.gameObjects.get(sessionId) as Matter.Body, playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
+        return {playerBody: this.gameManager.matterBodies.get(sessionId) as Matter.Body, playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
     }
 
     processPlayerAttack(playerId: string, data: any){

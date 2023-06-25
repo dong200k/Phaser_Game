@@ -69,7 +69,7 @@ export default class DungeonManager {
             this.setDungeonSpawnPoints(newDungeon, tiled);
 
             // Make the obstables collidable by adding them to matter.
-            this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.gameObjects, newTilemap);
+            this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.matterBodies, newTilemap);
 
             // Waves
             let wave = new Wave();
@@ -86,7 +86,7 @@ export default class DungeonManager {
             wave3.setAgressionLevel(5);
             wave3.addMonster("TinyZombie", 100);
             newDungeon.addWave(wave3);
-
+            
             // ---- Setting new dungeon to state -----
             this.dungeon = newDungeon;
             this.gameManager.state.dungeon = this.dungeon;
@@ -197,10 +197,10 @@ export default class DungeonManager {
     /**
      * Registers the obstacle layer to the matter engine for collision. 
      * @param engine The matter engine.
-     * @param gameObjects The gameObjects array to add the matter body of the tile to.
+     * @param matterBodies The matterBodies array to add the matter body of the tile to.
      * @param tilemap The tilemap that contains the objectlayer.
      */
-    private addObstaclesToMatter(engine:Matter.Engine, gameObjects:Map<string, Matter.Body>, tilemap: Tilemap) {
+    private addObstaclesToMatter(engine:Matter.Engine, matterBodies:Map<string, Matter.Body>, tilemap: Tilemap) {
         let obstacleLayer = tilemap.layers.get("Obstacle");
         if(obstacleLayer) {
             let width = obstacleLayer.width;
@@ -229,7 +229,7 @@ export default class DungeonManager {
                                 mask: MaskManager.getManager().getMask('OBSTACLE') 
                             };
                             
-                            // gameObjects.set(uid, body);
+                            // matterBodies.set(uid, body);
                             // Matter.Composite.add(engine.world, body);
                             this.gameManager.addGameObject(uid, tile, body);
                         }

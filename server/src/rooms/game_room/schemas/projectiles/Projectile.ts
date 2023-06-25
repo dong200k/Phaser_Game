@@ -121,6 +121,8 @@ export default class Projectile extends GameObject implements Cloneable {
             category: Categories[this.collisionCategory],
             mask: MaskManager.getManager().getMask(this.collisionCategory) 
         };
+
+        body.label = this.collisionCategory
         
         let velocity = {x: this.initialVelocity.x, y:this.initialVelocity.y}
         Matter.Body.setVelocity(body, velocity);
