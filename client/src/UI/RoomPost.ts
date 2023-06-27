@@ -63,8 +63,13 @@ export default class RoomPost extends Phaser.GameObjects.Container implements La
             this.roomPlayerCountText.setText(`Player count: ${this.room.clients}/${this.room.maxClients}`);
             
             if(!inGame) {
-                this.roomStateText.setText(`Open`);
-                this.joinButton.setButtonActive(true);
+                if(this.room.clients >= this.room.maxClients) {
+                    this.roomStateText.setText(`Full`);
+                    this.joinButton.setButtonActive(false);
+                } else {
+                    this.roomStateText.setText(`Open`);
+                    this.joinButton.setButtonActive(true);
+                }
             } else {
                 this.roomStateText.setText(`In Game`);
                 this.joinButton.setButtonActive(false);
