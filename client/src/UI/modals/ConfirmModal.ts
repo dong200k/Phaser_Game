@@ -16,6 +16,10 @@ interface ConfirmModalConfig extends BaseModalConfig {
     confirmButtonOnclick?: Function;
 }
 
+/** 
+ * The ConfirmModal is used as a popup when there is a yes or no choice required. The modal is automatically displayed on construction.
+ * It is also automatically destroyed when the player closes it. Create a new instance for each modal popup.
+ */
 export default class ConfirmModal extends BaseModal {
     
     constructor(scene: SceneWithRexUI, config: ConfirmModalConfig) {

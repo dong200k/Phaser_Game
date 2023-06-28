@@ -13,6 +13,10 @@ export interface ArtifactDisplayData {
     items: ArtifactDisplayItem[] 
 }
 
+/**
+ * The ArtifactDisplay displays the images and levels of the artifacts 
+ * the player has ingame.
+ */
 export default class ArtifactDisplay extends RexUIBase {
 
     private artifactSizer: FixWidthSizer;

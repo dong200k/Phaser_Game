@@ -12,6 +12,10 @@ interface RPDDisplayData {
     dungeonName: string,
 }
 
+/**
+ * The RPDDisplay displays the role image, role name, pet image, pet name, dungeon image and dungeon name for the RoomScene.
+ * These can be updated through its updateDisplay(...) method.
+ */
 export default class RPDDisplay extends RexUIBase {
     
     private RPDDisplaySizer: Sizer;

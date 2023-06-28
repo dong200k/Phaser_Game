@@ -5,6 +5,7 @@ import TextBoxRex from "../TextBoxRex";
 import RexUIBase, { SceneWithRexUI } from "../RexUIBase";
 
 export interface PlayerListItem {
+    key?: string;
     imageKey?: string;
     name?: string;
     role?: string;
@@ -16,10 +17,21 @@ export interface PlayerListData {
     items: PlayerListItem[];
 }
 
+interface QueueUpdate {
+    sizer: Sizer;
+    data: PlayerListItem;
+}
+
+/**
+ * The PlayerList displays a list of all the players inside the WaitingRoom. Each player's role image, name, role name, level, and status will be displayed.
+ * The status can either be Leader, if the player is a leader of the room, or Ready when the player presses the Ready Button.
+ */
 export default class PlayerList extends RexUIBase {
     
     private playerListSizer: Sizer;
     private playerListItems: Sizer[] = [];
+
+    private queuedUpdate: QueueUpdate[] = [];
 
     constructor(scene: SceneWithRexUI) {
         super(scene);
@@ -41,7 +53,7 @@ export default class PlayerList extends RexUIBase {
             let itemSizer = this.createPlayerListItem();
             this.playerListSizer.add(itemSizer);
             this.playerListItems.push(itemSizer);
-            itemSizer.setVisible(false);
+            // itemSizer.setVisible(false);
         }
 
         this.playerListSizer.layout();
@@ -56,18 +68,37 @@ export default class PlayerList extends RexUIBase {
         this.playerListSizer.moveTo(500, this.scene.game.scale.width - this.playerListSizer.width / 2, this.scene.game.scale.height / 2, "Cubic");
     }
 
+    /**
+     * Gets the RexUI Sizer associated with this PlayerList.
+     * @returns Sizer.
+     */
     public getPlayerListSizer() {
         return this.playerListSizer;
     }
 
+    /**
+     * Updates the entire player list based on the PlayerListData provided.
+     * @param data PlayerListData.
+     */
     public updatePlayerList(data: PlayerListData) {
         for(let i = 0; i < 10; i++) {
             if(i < data.items.length) {
                 this.playerListItems[i].setVisible(true);
-                this.updatePlayerListItem(this.playerListItems[i], data.items[i]);
+                //this.updatePlayerListItem(this.playerListItems[i], data.items[i]);
+                this.queuedUpdate.push({
+                    sizer: this.playerListItems[i],
+                    data: data.items[i],
+                })
             } else {
                 this.playerListItems[i].setVisible(false);
             }
+        }
+    }
+
+    public update() {
+        if(this.queuedUpdate.length > 0) {
+            let updateItem = this.queuedUpdate.shift();
+            if(updateItem) this.updatePlayerListItem(updateItem?.sizer, updateItem?.data);
         }
     }
 
@@ -95,6 +126,7 @@ export default class PlayerList extends RexUIBase {
             orientation: "vertical",
             space: {
                 left: 5,
+                right: 5,
             }
         });
 
@@ -106,7 +138,7 @@ export default class PlayerList extends RexUIBase {
             align: "justify",
         });
         
-        rightInnerSizer.add(UIFactory.createTextBoxRex(this.scene, "Level 10", "p6").setName("playerListItemLevel"), {padding: {right: 80}});
+        rightInnerSizer.add(UIFactory.createTextBoxRex(this.scene, "Level 10", "p6").setName("playerListItemLevel"), {padding: {right: 120}});
         rightInnerSizer.add(UIFactory.createTextBoxRex(this.scene, "Ready", "p6").setName("playerListItemStatus"));
 
         rightSizer.add(rightInnerSizer, {expand: true});

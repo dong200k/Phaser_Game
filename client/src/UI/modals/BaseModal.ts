@@ -10,8 +10,9 @@ export interface BaseModalConfig {
 }
 
 /**
- * The base modal class contains some setup code to create a modal that can automatally popup on create.
- * It also blocks all inputs from moving into the gameobjects underneath it.
+ * The BaseModal is an abstract class that contains some setup code to create a popup modal. 
+ * This modal automatically pop ups on creation and automatically destroys on completion. 
+ * This modal blocks all inputs from emiting into the gameobjects underneath it.
  */
 export default abstract class BaseModal {
     scene: SceneWithRexUI;

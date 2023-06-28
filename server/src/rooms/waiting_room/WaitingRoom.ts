@@ -16,6 +16,8 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
         console.log(`Created: Waiting room ${this.roomId}`);
         this.setState(new State());
 
+        this.state.maxPlayerCount = this.maxClients;
+
         this.setMetadata({
             inGame: false,
             passwordProtected: false,
@@ -23,14 +25,39 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
         })
 
         this.onMessage("start", (client: Client, message: any) => {
-            // Don't start a game if the players are already in a game.
-            if(!this.metadata.inGame) {
+            let player = this.state.players.get(client.sessionId);
+            if(player && player.isLeader && !this.metadata.inGame && this.isEveryoneReady()) {
                 matchMaker.createRoom('game', {}).then((room) => {
                 this.onCreateGameRoom(room);
                 }).catch(e => {
                     console.log(e);
                 })
             }
+        })
+
+        this.onMessage("ready", (client: Client, message: any) => {
+            let player = this.state.players.get(client.sessionId);
+            if(player) player.isReady = true;
+        })
+
+        this.onMessage("unready", (client: Client, message: any) => {
+            let player = this.state.players.get(client.sessionId);
+            if(player) player.isReady = false;
+        })
+
+        this.onMessage("changeRole", (client: Client, message: any) => {
+            let player = this.state.players.get(client.sessionId);
+            if(player) player.role = message;
+        })
+
+        this.onMessage("changePet", (client: Client, message: any) => {
+            let player = this.state.players.get(client.sessionId);
+            if(player) player.pet = message;
+        })
+
+        this.onMessage("changeDungeon", (client: Client, message: any) => {
+            let player = this.state.players.get(client.sessionId);
+            if(player && player.isLeader) this.state.dungeon = message;
         })
     }
     
@@ -41,6 +68,7 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
 
     onLeave(client: Client) {
         this.state.removePlayer(client.sessionId);
+        if(client.sessionId === this.state.leaderSessionId) this.chooseNextLeader();
     }
 
     onDispose() {
@@ -48,6 +76,11 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
         console.log(`Disposed: Waiting room ${this.roomId}`);
     }
 
+    /**
+     * When the game room is created, lock the waiting room, sends the gameroom id to 
+     * all current players in the waiting room, and marks the waiting room as inGame.
+     * @param room The game room.
+     */
     public onCreateGameRoom(room: RoomListingData) {
         this.lock();
         this.broadcast("joinGame", room.roomId);
@@ -55,11 +88,52 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
         globalEventEmitter.once(`GameFinished${room.roomId}`, () => this.onGameRoomDispose());
     }
 
+    /**
+     * When the game room is disposed, unlock the waiting room and mark it as not inGame.
+     */
     public onGameRoomDispose() {
         // If the waiting room is already disposed don't change its state (causes null pointer).
         if(!this.waitingRoomDisposed) {
             this.unlock();
             this.setMetadata({ inGame: false });
         }
+    }
+
+    public chooseNextLeader() {
+        if(this.state.playerJoinOrder.length > 0) {
+            let nextLeaderSID = this.state.playerJoinOrder[0];
+            this.setLeader(nextLeaderSID);
+        }
+    }
+
+    /**
+     * Sets a new leader.
+     * @param sessionId The sessionId of the player.
+     */
+    public setLeader(sessionId: string) {
+        if(sessionId === this.state.leaderSessionId || 
+            this.state.players.get(sessionId) === undefined) return;
+
+        //Unassign previous leader.
+        let previousLeaderSID = this.state.leaderSessionId;
+        let previousLeader = this.state.players.get(previousLeaderSID);
+        if(previousLeader !== undefined) previousLeader.isLeader = false;
+        
+        //Assign new leader.
+        this.state.leaderSessionId = sessionId;
+        let newLeader = this.state.players.get(sessionId);
+        if(newLeader) newLeader.isLeader = true;
+    }
+
+    /**
+     * Checks if everyone is ready or not. 
+     * @returns True if everyone is ready. False otherwise.
+     */
+    public isEveryoneReady() {
+        let ready = true;
+        this.state.players.forEach((player) => {
+            if(!player.isLeader && !player.isReady) ready = false;
+        })
+        return ready;
     }
 }

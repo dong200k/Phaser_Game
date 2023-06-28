@@ -16,11 +16,39 @@ export interface WAPopupData {
     items: WAPopupItem[];
 }
 
-/** Creates a Weapon and Artifact Popup Manager that can spawn popups with the displayPopup() method. */
-export default class WAPopup extends RexUIBase{
+/** Creates a Weapon and Artifact Popup Manager that can spawn popups with the displayPopup(...) method. 
+ * The player is then able to show or hide the popup and select their upgrades.
+*/
+export default class WAPopup extends RexUIBase {
 
     private popup?: Dialog;
 
+    /**
+     * Displays a new popup with weapon or artifact upgrade choices.
+     * @param data WAPopupData.
+     * @example Using the EventManager.
+     * ```Typescript
+     * EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+            title: "LEVEL 1 UPGRADES",
+            items: [
+                {
+                    typeName: "Artifact + 1",
+                    name: "Spining Stars",
+                    imageKey: "",
+                    description: "Surround you with a circle of blades",
+                    onClick: () => {console.log("Spining Stars onclick")}
+                },
+                {
+                    typeName: "New Artifact",
+                    name: "Gloves",
+                    imageKey: "",
+                    description: "Increase Damage by 10",
+                    onClick: () => {console.log("Gloves onclick")}
+                }
+            ]
+        })
+     * ```
+     */
     public displayPopup(data: WAPopupData) {
         if(this.popup) {
             this.popup.destroy();

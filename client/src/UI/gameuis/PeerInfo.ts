@@ -13,6 +13,7 @@ interface PeerInfoDataArtifact {
     level: number;
 }
 
+
 export interface PeerInfoData {
     slot1ItemKey: string;
     slot2ItemKey: string;
@@ -31,8 +32,9 @@ export interface PeerInfoData {
     // artifacts: PeerInfoDataArtifact[];
 }
 
-/** Creating an instance of this class will display a player info ui onto the screen. 
- * The sizer can be accessed through the getPlayerInfoSizer() method.
+/** 
+ * The PeerInfo contains information of a player similar to PlayerInfo. The PeerInfo however is 
+ * displayed on the PeerInfoPopup.
 */
 export default class PeerInfo extends RexUIBase {
     private peerInfoSizer: Sizer; 

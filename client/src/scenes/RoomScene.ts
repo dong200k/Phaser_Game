@@ -3,34 +3,14 @@ import * as Colyseus from 'colyseus.js';
 import ClientManager from "../system/ClientManager";
 import { ColorStyle, SceneKey } from "../config";
 import Button from "../UI/Button";
-import TextBox from "../UI/TextBox";
 import Layout from "../UI/Layout";
 import SceneManager from "../system/SceneManager";
 import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import RoleModal from "../UI/RoleModal";
-import UIFactory from "../UI/UIFactory";
-import TextBoxRex from "../UI/TextBoxRex";
-import TextBoxPhaser from "../UI/TextBoxPhaser";
-import PlayerList from "../UI/roomuis/PlayerList";
+import PlayerList, { PlayerListData } from "../UI/roomuis/PlayerList";
 import RoomInfo from "../UI/roomuis/RoomInfo";
 import RPDDisplay from "../UI/roomuis/RPDDisplay";
-
-/*
-Planning: 
-    role section
-    - the avatar of the role should be shown.
-    - the avatar of the role can be shown in its idle animation.
-    - next to the avatar there should be a short description about the avatar. It's base stats and its weapon.
-    - the weapon should also be displayed with a short description and stats as well. 
-    - there should be a select button to select the role. 
-    - there should be multiple pages that will display all the roles.
-    pet selection
-    - the player can select their pets as well. 
-    - if the player has no pets then they cannot select one.
-    - they would be able to purchase a pet directly from the pet selection screen.
-    dungeon selection
-    - the player can select the dungeon to play in.
-*/
+import type WaitingRoomState from "../../../server/src/rooms/waiting_room/schemas/State";
 
 interface Stats {
     hp?: number;
@@ -77,25 +57,33 @@ interface RoomModalData {
 
 export default class RoomScene extends Phaser.Scene {
     
-    private waitingRoom?: Colyseus.Room;
+    private waitingRoom?: Colyseus.Room<WaitingRoomState>;
 
     private playersInRoom: number = 0;
 
     private selectedRole: number = 0;
     private selectedPet: number = 0;
     private selectedDungeon: number = 0;
+    private ready: boolean = false;
+    private leader: boolean = false;
 
     private roomModalData: RoomModalData;
+    private playerListData: PlayerListData;
 
     private playerList!: PlayerList;
     private roomInfo!: RoomInfo;
     private rolePetDungeonDisplay!: RPDDisplay;
+
+    private startGameOrReadyButton!: Button;
 
     // Plugin for UI elements that will be injected at scene creation.
     rexUI!: UIPlugins;
 
     constructor() {
         super(SceneKey.RoomScene);
+        this.playerListData = {
+            items: []
+        }
         this.roomModalData = {
             petData:[
                 {
@@ -166,6 +154,10 @@ export default class RoomScene extends Phaser.Scene {
         this.events.on("wake", (sys: Phaser.Scenes.Systems) => {
             this.joinRoom();
         });
+    }
+
+    update(time: number, delta: number): void {
+        this.playerList.update();
     }
 
     public hideDOM() {
@@ -261,19 +253,23 @@ export default class RoomScene extends Phaser.Scene {
             });
             this.playerList.hide();
         });
-        let startButton = new Button(this, "Start Game", 0, 0, "large", () => {
-            this.waitingRoom?.send('start');
-        });
-        let readyButton = new Button(this, "Ready", 0, 0, "large", () => {
-            console.log("Ready Onclick");
+        // let startButton = new Button(this, "Start Game", 0, 0, "large", () => {
+        //     this.waitingRoom?.send('start');
+        // });
+        // let readyButton = new Button(this, "Ready", 0, 0, "large", () => {
+        //     console.log("Ready Onclick");
+        // });
+
+        this.startGameOrReadyButton = new Button(this, "Ready", 0, 0, "large", () => {
+            this.startGameOrReadyButtonOnclick();
         });
 
         //Layout the select role, select pet, and select dungeon buttons.
         let buttonLayout1 = new Layout(this, {
             flexDirection: 'row', 
             alignItems: 'center', 
-            gap: 70,
-            x: this.game.scale.width / 2 - 150,
+            gap: 60,
+            x: this.game.scale.width / 2 - 140,
             y: this.game.scale.height / 2 + 50,
         });
         buttonLayout1.add([selectRoleButton, selectPetButton, selectDungeonButton]);
@@ -283,62 +279,77 @@ export default class RoomScene extends Phaser.Scene {
             flexDirection: 'row', 
             alignItems: 'center', 
             gap: 20,
-            x: this.game.scale.width / 2 + 30,
+            x: this.game.scale.width / 2 + 125,
             y: this.game.scale.height - 95,
         })
-        buttonLayout2.add([startButton, readyButton]);
+        buttonLayout2.add([this.startGameOrReadyButton]);
         this.add.existing(buttonLayout2);
         
         // --------- Role, Pet and Dungeon Display ----------
-
         this.rolePetDungeonDisplay = new RPDDisplay(this);
 
 
         // --------- Player Listing ----------
-
         this.playerList = new PlayerList(this);
-        this.playerList.updatePlayerList({
-            items: [
-                {name: "Endsider"},
-                {name: "Endsider"},
-                {name: "Endsider"},
-                {name: "Endsider"},
-                {name: "Endsider"},
-                {name: "Endsider"},
-                {name: "Endsider"}
-            ]
-        })
 
 
         // --------- Room Information -----------
         this.roomInfo = new RoomInfo(this, {});
     }
 
+    private startGameOrReadyButtonOnclick() {
+        // console.log("Start game or ready onclick");
+        if(this.leader) {
+            this.waitingRoom?.send('start');   
+        } else if(this.ready) {
+            this.waitingRoom?.send('unready');
+        } else {
+            this.waitingRoom?.send('ready');
+        }
+    }
+
     /** Called when the user selects a new role from the role modal. */
     private selectRole(roleName: string) {
-        console.log("selected: ", roleName);
+        //console.log("selected: ", roleName);
         this.roomModalData.roleData.forEach((data, idx) => {
-            if(data.name === roleName) this.selectedRole = idx;
+            if(data.name === roleName) {
+                // this.selectedRole = idx;
+                this.waitingRoom?.send("changeRole", idx);
+            }
         })
     }
 
     /** Called when the user selects a new dungeon from the dungeon modal. */
     private selectDungeon(dungeonName: string) {
-        console.log("selected: ", dungeonName);
+        //console.log("selected: ", dungeonName);
         this.roomModalData.dungeonData.forEach((data, idx) => {
-            if(data.name === dungeonName) this.selectedDungeon = idx;
+            if(data.name === dungeonName) {
+                // this.selectedDungeon = idx;
+                if(!this.leader) {
+                    console.log("Warn: Only the leader can change the dungeon.")
+                } else {
+                    this.waitingRoom?.send("changeDungeon", idx);
+                }
+            }
         })
     }
 
     private selectPet(petName: string) {
-        console.log("selected: ", petName);
+        //console.log("selected: ", petName);
         this.roomModalData.petData.forEach((data, idx) => {
-            if(data.name === petName) this.selectedPet = idx;
+            if(data.name === petName) {
+                // this.selectedPet = idx
+                this.waitingRoom?.send("changePet", idx);
+            }
         })
     }
 
     private updatePlayersInRoom(count: number) {
         this.roomInfo.update({playersInRoom: count});
+    }
+
+    private updatePlayerList() {
+        this.playerList.updatePlayerList(this.playerListData);
     }
 
     private joinRoom() {
@@ -356,13 +367,56 @@ export default class RoomScene extends Phaser.Scene {
     private onJoin() {
         this.playersInRoom = 0;
         if(this.waitingRoom) {
-            this.waitingRoom.state.players.onAdd = (player:any, key:string) => {
+            this.waitingRoom.state.players.onAdd = (player, key:string) => {
+
+                this.playerListData.items.push({
+                    name: player.name,
+                    imageKey: "",
+                    key: key,
+                    level: 1,
+                    role: this.roomModalData.roleData[player.role].name,
+                    status: player.isLeader ? "Leader": player.isReady ? "Ready" : "",
+                })
+
+                this.updatePlayerList();
+
+                player.onChange = () => {
+                    //For the player of this client.
+                    if(key === this.waitingRoom?.sessionId) {
+                        this.leader = player.isLeader;
+                        this.ready = player.isReady;
+                        this.selectedRole = player.role;
+                        this.selectedPet = player.pet;
+                        this.rolePetDungeonDisplay.updateDisplay({
+                            roleName: this.roomModalData.roleData[this.selectedRole].name,
+                            petName: this.roomModalData.petData[this.selectedPet].name,
+                        })
+                        this.startGameOrReadyButton.setText(this.leader ? "Start Game" : this.ready ? "Unready" : "Ready");
+                    }
+
+                    this.playerListData.items.forEach((item) => {
+                        if(item.key === key) {
+                            item.name = key === this.waitingRoom?.sessionId ? player.name + " (You)": player.name;
+                            item.imageKey = "";
+                            item.level = player.level;
+                            item.role = this.roomModalData.roleData[player.role].name;
+                            item.status = player.isLeader ? "Leader": player.isReady ? "Ready" : "";
+                        }
+                    })
+                    //Update PlayerList
+                    this.updatePlayerList();
+                }
+
                 //console.log(player, "added at ", key);
                 this.playersInRoom++;
                 this.updatePlayersInRoom(this.playersInRoom);
             }
-            this.waitingRoom.state.players.onRemove = (player:any, key:string) => {
+            this.waitingRoom.state.players.onRemove = (player, key:string) => {
                 //console.log(player, "removed at ", key);
+                this.playerListData.items = this.playerListData.items.filter((item) => {
+                    return item.key !== key;
+                })
+                this.updatePlayerList();
                 this.playersInRoom--;
                 this.updatePlayersInRoom(this.playersInRoom);
             }
@@ -376,12 +430,27 @@ export default class RoomScene extends Phaser.Scene {
             this.waitingRoom.onError((code, message) => {
                 console.log(`code: ${code}, message: ${message}`);
             })
+
+            this.waitingRoom.state.onChange = () => {
+                this.roomInfo.update({
+                    maxPlayersInRoom: this.waitingRoom?.state.maxPlayerCount,
+                })
+                this.selectedDungeon = this.waitingRoom?.state.dungeon ?? this.selectedDungeon;
+                this.rolePetDungeonDisplay.updateDisplay({
+                    dungeonName: this.roomModalData.dungeonData[this.selectedDungeon].name,
+                })
+            }
         }
+    }
+
+    private clearPlayerListData() {
+        while(this.playerListData.items.length > 0) this.playerListData.items.pop();
     }
 
     private leaveRoom() {
         this.waitingRoom?.leave();
         this.waitingRoom = undefined;
+        this.clearPlayerListData();
     }
 
 }

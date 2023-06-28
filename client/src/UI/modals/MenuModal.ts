@@ -13,6 +13,9 @@ interface MenuModalConfig {
     leaveGameOnclick?: Function;
 }
 
+/**
+ * The MenuModal displays a menu popup when the player clicks on the menu button ingame.
+ */
 export default class MenuModal extends BaseModal {
    
     constructor(scene: SceneWithRexUI, config: MenuModalConfig) {

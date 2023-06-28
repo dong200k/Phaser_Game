@@ -13,6 +13,10 @@ interface RoomInfoData {
     maxPlayersInRoom: number;
 }
 
+/**
+ * The RoomInfo is used to display some WaitingRoom information for the RoomScene. These information includes 
+ * the roomid, is the room private, and the player count.
+ */
 export default class RoomInfo extends RexUIBase{
 
     private infoSizer!: Sizer;

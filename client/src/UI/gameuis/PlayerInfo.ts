@@ -22,10 +22,11 @@ export interface PlayerInfoData {
     specialImageKey: string;
 }
 
-/** Creating an instance of this class will display a player info ui onto the screen. 
- * The sizer can be accessed through the getPlayerInfoSizer() method.
+/** 
+ * The PlayerInfo is used to display the player's information ingame. These info includes the 
+ * player's hotslots, hp, mp, xp, level, and cooldowns.
 */
-export default class PlayerInfo extends RexUIBase{
+export default class PlayerInfo extends RexUIBase {
     private playerInfoSizer: Sizer;
     private playerInfoData: PlayerInfoData;
 

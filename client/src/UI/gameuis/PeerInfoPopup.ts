@@ -4,6 +4,10 @@ import { ColorStyle } from "../../config";
 import CircleImage from "../CircleImage";
 import RexUIBase, { SceneWithRexUI } from "../RexUIBase";
 
+/**
+ * The PeerInfoPopup is used to display the information of other players. 
+ * The popup can be shown by holding a button and hidden by releasing that button. 
+ */
 export default class PeerInfoPopup extends RexUIBase{
 
     private peerInfoSizer: FixWidthSizer;
