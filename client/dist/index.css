@@ -18,6 +18,22 @@ canvas {
     cursor: pointer;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #4C4540;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #201F1E;
+    border-radius: 10px;
+}
+
 @font-face {
     font-family: pressStart2P;
     font-style: normal;

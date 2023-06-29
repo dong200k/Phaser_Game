@@ -57,13 +57,31 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
 
         this.onMessage("changeDungeon", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
-            if(player && player.isLeader && !this.state.inGame) this.state.dungeon = message;
+            if(player && player.isLeader) {
+                if(!this.state.inGame) this.state.dungeon = message;
+            } else {
+                this.send(client, "serverMessage", "Only the leader can change the dungeon!");
+            }
+        })
+
+        this.onMessage("playerMessage", (client: Client, message: any) => {
+            let player = this.state.players.get(client.sessionId);
+            if(player) {
+                this.broadcast("playerMessage", {
+                    name: player.name,
+                    message: message
+                })
+            }
         })
     }
     
     onJoin(client: Client) {
         // Add a new player to the room state. The first player is the owner of the room.
         this.state.createPlayer(client.sessionId, this.state.playerCount() === 0);
+        let player = this.state.players.get(client.sessionId);
+        if(player) {
+            this.broadcast("serverMessage", `${player.name} has joined the room.`)
+        }
     }
 
     onLeave(client: Client) {

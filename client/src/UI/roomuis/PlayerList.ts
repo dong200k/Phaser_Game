@@ -41,10 +41,10 @@ export default class PlayerList extends RexUIBase {
             width: 350,
             height: 800,
             space: {
-                top: 70,
+                top: 15,
                 bottom: 70,
-                left: 20,
-                right: 20,
+                left: 10,
+                right: 10,
                 item: 2
             }
         }).addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 0, ColorStyle.primary.hex[900]));

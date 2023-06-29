@@ -15,6 +15,8 @@ export default class ChatBox extends RexUIBase {
     private domInput: Phaser.GameObjects.DOMElement;
     private domTextArea: Phaser.GameObjects.DOMElement;
 
+    private submitCallback?: (value: string) => void;
+
     constructor(scene: SceneWithRexUI, config?: ChatBoxConfig) {
         super(scene);
 
@@ -59,23 +61,30 @@ export default class ChatBox extends RexUIBase {
             'border-radius': '2px',
             'padding': '0px 2px 0px 2px',
         });
+        this.domInput.node.setAttribute('placeholder', "Chat here...");
+        let inputNode = (this.domInput.node as HTMLInputElement);
+        let form = this.scene.add.dom(0, 0, "form");
+        let formNode = (form.node as HTMLFormElement);
+        formNode.setAttribute("type", "submit");
+        formNode.appendChild(inputNode);
+        formNode.addEventListener("submit", (e) => {
+            e.preventDefault();
+            if(this.submitCallback) {
+                this.submitCallback(inputNode.value);
+                inputNode.value = "";
+            }
+        })
+
         
         this.chatBoxSizer.add(this.domTextArea);
         this.chatBoxSizer.add(this.domInput);
 
-
-        this.appendText("[System] Nope");
-        this.appendText("[System] Nope");
-        this.appendText("[System] Nope");
-        this.appendText("[System] Nope");
-        this.appendText("[System] Nope");
-        this.appendText("[System] Nope");
-        this.appendText("[System] Nope");
-        this.appendText("[System] Nope");
-        this.appendText("[System] Nope");
-        this.appendText("[System] Nope");
-
         this.chatBoxSizer.layout();
+
+        this.chatBoxSizer.onClickOutside(() => {
+            (this.domInput.node as HTMLInputElement).blur();
+            (this.domTextArea.node as HTMLTextAreaElement).blur();
+        })
     }
 
     public setText(text: string) {
@@ -83,7 +92,18 @@ export default class ChatBox extends RexUIBase {
     }
 
     public appendText(text: string) {
-        this.domTextArea.node.textContent += text + "\n";
+        // Adds new text to the textarea. The textarea autoscrolls if the textarea is scrolled all the way to the bottom.
+        let ta = (this.domTextArea.node as HTMLTextAreaElement);
+        let shouldScroll = Math.abs(ta.scrollTop - (ta.scrollHeight - ta.clientHeight)) < 10;
+        ta.textContent += text + "\n";
+        if(shouldScroll) ta.scrollTo({top: ta.scrollHeight});
+    }
+
+    /** Sets the callback that will be called when the input is submited. 
+     * The callback will be called with the value of the input. The input is then cleared.
+     */
+    public setSubmitCallback(callback: (value: string) => void) {
+        this.submitCallback = callback;
     }
 
     public getChatBoxSizer() {

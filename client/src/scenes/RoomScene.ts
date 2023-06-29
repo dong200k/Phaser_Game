@@ -74,6 +74,7 @@ export default class RoomScene extends Phaser.Scene {
     private playerList!: PlayerList;
     private roomInfo!: RoomInfo;
     private rolePetDungeonDisplay!: RPDDisplay;
+    private chatBox!: ChatBox;
 
     private startGameOrReadyButton!: Button;
 
@@ -213,8 +214,10 @@ export default class RoomScene extends Phaser.Scene {
             }).then(() => {
                 modal.getDialog().destroy();
                 this.playerList.show();
+                this.showChatBox();
             });
             this.playerList.hide();
+            this.hideChatBox();
         });
         let selectDungeonButton = new Button(this, "Select dungeon", 0, 0, "regular", () => {
             let modal = new RoleModal(this, {
@@ -232,8 +235,10 @@ export default class RoomScene extends Phaser.Scene {
             }).then(() => {
                 modal.getDialog().destroy();
                 this.playerList.show();
+                this.showChatBox();
             });
             this.playerList.hide();
+            this.hideChatBox();
         });
         let selectPetButton = new Button(this, "Select pet", 0, 0, "regular", () => {
             let modal = new RoleModal(this, {
@@ -251,8 +256,10 @@ export default class RoomScene extends Phaser.Scene {
             }).then(() => {
                 modal.getDialog().destroy();
                 this.playerList.show();
+                this.showChatBox();
             });
             this.playerList.hide();
+            this.hideChatBox();
         });
         // let startButton = new Button(this, "Start Game", 0, 0, "large", () => {
         //     this.waitingRoom?.send('start');
@@ -261,9 +268,7 @@ export default class RoomScene extends Phaser.Scene {
         //     console.log("Ready Onclick");
         // });
 
-        this.startGameOrReadyButton = new Button(this, "Ready", 0, 0, "large", () => {
-            this.startGameOrReadyButtonOnclick();
-        });
+        
 
         //Layout the select role, select pet, and select dungeon buttons.
         let buttonLayout1 = new Layout(this, {
@@ -276,15 +281,15 @@ export default class RoomScene extends Phaser.Scene {
         buttonLayout1.add([selectRoleButton, selectPetButton, selectDungeonButton]);
         this.add.existing(buttonLayout1);
 
-        let buttonLayout2 = new Layout(this, {
-            flexDirection: 'row', 
-            alignItems: 'center', 
-            gap: 20,
-            x: this.game.scale.width / 2 + 125,
-            y: this.game.scale.height - 95,
-        })
-        buttonLayout2.add([this.startGameOrReadyButton]);
-        this.add.existing(buttonLayout2);
+        // let buttonLayout2 = new Layout(this, {
+        //     flexDirection: 'row', 
+        //     alignItems: 'center', 
+        //     gap: 20,
+        //     x: this.game.scale.width / 2 + 125,
+        //     y: this.game.scale.height - 95,
+        // })
+        // buttonLayout2.add([this.startGameOrReadyButton]);
+        // this.add.existing(buttonLayout2);
         
         // --------- Role, Pet and Dungeon Display ----------
         this.rolePetDungeonDisplay = new RPDDisplay(this);
@@ -298,14 +303,38 @@ export default class RoomScene extends Phaser.Scene {
         this.roomInfo = new RoomInfo(this, {});
 
         // --------- Chat Box ----------
-        let chatBox = new ChatBox(this);
-        let chatBoxSizer = chatBox.getChatBoxSizer();
+        this.chatBox = new ChatBox(this, {
+            width: 390,
+            height: 200,
+        });
+        let chatBoxSizer = this.chatBox.getChatBoxSizer();
         chatBoxSizer.setPosition(chatBoxSizer.width/2 + 10, this.game.scale.height - chatBoxSizer.height/2 - 10);
-        
+        this.chatBox.setSubmitCallback((value) => {
+            this.waitingRoom?.send("playerMessage", value);
+        });
+
+        // --------- Start/Ready Button ---------
+        this.startGameOrReadyButton = new Button(this, "Ready", 0, 0, "large", () => {
+            this.startGameOrReadyButtonOnclick();
+        });
+        this.startGameOrReadyButton.setPosition(this.game.scale.width - this.startGameOrReadyButton.width / 2 - 175, this.game.scale.height - this.startGameOrReadyButton.height / 2 - 70);
+        this.add.existing(this.startGameOrReadyButton);
     }
 
+    /** Slides the chatbox into view. */
+    private showChatBox() {
+        let chatBoxSizer = this.chatBox.getChatBoxSizer();
+        chatBoxSizer.moveTo(500, chatBoxSizer.width/2 + 10, this.game.scale.height - chatBoxSizer.height/2 - 10, "Cubic");
+    }
+
+    /** Slides the chatbox out of view. */
+    private hideChatBox() {
+        let chatBoxSizer = this.chatBox.getChatBoxSizer();
+        chatBoxSizer.moveTo(500, -chatBoxSizer.width/2, this.game.scale.height - chatBoxSizer.height/2 - 10, "Back");
+    }
+
+    /** Called when the start/ready button has been clicked. */
     private startGameOrReadyButtonOnclick() {
-        // console.log("Start game or ready onclick");
         if(this.leader) {
             this.waitingRoom?.send('start');   
         } else if(this.ready) {
@@ -332,11 +361,7 @@ export default class RoomScene extends Phaser.Scene {
         this.roomModalData.dungeonData.forEach((data, idx) => {
             if(data.name === dungeonName) {
                 // this.selectedDungeon = idx;
-                if(!this.leader) {
-                    console.log("Warn: Only the leader can change the dungeon.")
-                } else {
-                    this.waitingRoom?.send("changeDungeon", idx);
-                }
+                this.waitingRoom?.send("changeDungeon", idx);
             }
         })
     }
@@ -432,6 +457,15 @@ export default class RoomScene extends Phaser.Scene {
                 // Sets the game room Id for the client.
                 ClientManager.getClient().setGameRoomId(message);
                 SceneManager.getSceneManager().pushScene("GameScene");
+            })
+
+            this.waitingRoom.onMessage("serverMessage", (message) => {
+                console.log(message);
+                this.chatBox.appendText(`[System] ${message}`);
+            })
+
+            this.waitingRoom.onMessage("playerMessage", (message) => {
+                this.chatBox.appendText(`${message.name}: ${message.message}`);
             })
 
             this.waitingRoom.onError((code, message) => {
