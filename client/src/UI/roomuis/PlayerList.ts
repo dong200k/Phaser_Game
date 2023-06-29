@@ -53,7 +53,7 @@ export default class PlayerList extends RexUIBase {
             let itemSizer = this.createPlayerListItem();
             this.playerListSizer.add(itemSizer);
             this.playerListItems.push(itemSizer);
-            // itemSizer.setVisible(false);
+            itemSizer.setVisible(false);
         }
 
         this.playerListSizer.layout();
@@ -130,7 +130,7 @@ export default class PlayerList extends RexUIBase {
             }
         });
 
-        rightSizer.add(UIFactory.createTextBoxRex(this.scene, "Endsider", "p4").setName("playerListItemName"), {align: "left", expand: false, padding: {bottom: 6}});
+        rightSizer.add(UIFactory.createTextBoxRex(this.scene, "Endsider", "p4").setName("playerListItemName"), {align: "left", expand: false});
         rightSizer.add(UIFactory.createTextBoxRex(this.scene, "Berserker", "p6").setName("playerListItemRole"), {align: "left", expand: false});
         
         let rightInnerSizer = this.rexUI.add.fixWidthSizer({

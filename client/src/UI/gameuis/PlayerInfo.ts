@@ -186,8 +186,8 @@ export default class PlayerInfo extends RexUIBase {
             this.rexUI.add.sizer({
                 height: 36,
                 space: {
-                    left: 36,
-                    right: 36,
+                    left: 28,
+                    right: 28,
                 }
             })
             .addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 0, ColorStyle.primary.hex[900]))
@@ -210,7 +210,7 @@ export default class PlayerInfo extends RexUIBase {
                 this.rexUI.add.overlapSizer()
                 .add(this.rexUI.add.roundRectangle(0, 0, 36, 36, 0, 0, 0).setStrokeStyle(2, ColorStyle.primary.hex[900]))
                 .add(this.scene.add.image(0, 0, "").setName(`slotImage${i+1}`))
-                .add(UIFactory.createTextBoxDOM(this.scene, `${i+1}`, "l6"), {align: "left-top", expand: false, offsetX: 3, offsetY: 3})
+                .add(UIFactory.createTextBoxDOM(this.scene, `${i+1}`, "l6"), {align: "left-top", expand: false})
             )
         }
 

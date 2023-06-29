@@ -1,6 +1,17 @@
 body {
     margin: 0;
     background-color: #0F0E0D;
+    height: 100vh;
+}
+
+#game {
+    height: 100%;
+    
+}
+
+canvas {
+    border-radius: 5px;
+    border-color: #353432;
 }
 
 .button-text:hover {

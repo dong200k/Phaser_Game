@@ -11,6 +11,7 @@ import PlayerList, { PlayerListData } from "../UI/roomuis/PlayerList";
 import RoomInfo from "../UI/roomuis/RoomInfo";
 import RPDDisplay from "../UI/roomuis/RPDDisplay";
 import type WaitingRoomState from "../../../server/src/rooms/waiting_room/schemas/State";
+import ChatBox from "../UI/ChatBox";
 
 interface Stats {
     hp?: number;
@@ -189,7 +190,7 @@ export default class RoomScene extends Phaser.Scene {
             }
             this.leaveRoom();
         });
-        let leaveButtonLayout = new Layout(this, {originX: 0, originY: 1, x: 48, y: this.game.scale.height - 48});
+        let leaveButtonLayout = new Layout(this, {x: 80, y: 120});
         leaveButtonLayout.add(leaveButton);
         this.add.existing(leaveButtonLayout);
 
@@ -295,6 +296,12 @@ export default class RoomScene extends Phaser.Scene {
 
         // --------- Room Information -----------
         this.roomInfo = new RoomInfo(this, {});
+
+        // --------- Chat Box ----------
+        let chatBox = new ChatBox(this);
+        let chatBoxSizer = chatBox.getChatBoxSizer();
+        chatBoxSizer.setPosition(chatBoxSizer.width/2 + 10, this.game.scale.height - chatBoxSizer.height/2 - 10);
+        
     }
 
     private startGameOrReadyButtonOnclick() {

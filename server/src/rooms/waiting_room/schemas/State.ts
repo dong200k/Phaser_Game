@@ -11,6 +11,8 @@ export default class State extends Schema {
 
     @type("boolean") privateRoom = false;
 
+    @type("boolean") inGame = false;
+
     leaderSessionId = "";
 
     playerJoinOrder: Array<string> = [];

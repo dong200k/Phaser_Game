@@ -30,7 +30,7 @@ export default {
     scale: {
         width: 1280,
         height: 800,
-        mode: Phaser.Scale.FIT,
+        // mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
     plugins: {

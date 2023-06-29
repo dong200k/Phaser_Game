@@ -26,7 +26,7 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
 
         this.onMessage("start", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
-            if(player && player.isLeader && !this.metadata.inGame && this.isEveryoneReady()) {
+            if(player && player.isLeader && !this.state.inGame && this.isEveryoneReady()) {
                 matchMaker.createRoom('game', {}).then((room) => {
                 this.onCreateGameRoom(room);
                 }).catch(e => {
@@ -37,27 +37,27 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
 
         this.onMessage("ready", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
-            if(player) player.isReady = true;
+            if(player && !this.state.inGame) player.isReady = true;
         })
 
         this.onMessage("unready", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
-            if(player) player.isReady = false;
+            if(player && !this.state.inGame) player.isReady = false;
         })
 
         this.onMessage("changeRole", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
-            if(player) player.role = message;
+            if(player && !this.state.inGame) player.role = message;
         })
 
         this.onMessage("changePet", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
-            if(player) player.pet = message;
+            if(player && !this.state.inGame) player.pet = message;
         })
 
         this.onMessage("changeDungeon", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
-            if(player && player.isLeader) this.state.dungeon = message;
+            if(player && player.isLeader && !this.state.inGame) this.state.dungeon = message;
         })
     }
     
@@ -85,6 +85,7 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
         this.lock();
         this.broadcast("joinGame", room.roomId);
         this.setMetadata({ inGame: true })
+        this.state.inGame = true;
         globalEventEmitter.once(`GameFinished${room.roomId}`, () => this.onGameRoomDispose());
     }
 
@@ -96,6 +97,7 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
         if(!this.waitingRoomDisposed) {
             this.unlock();
             this.setMetadata({ inGame: false });
+            this.state.inGame = false;
         }
     }
 

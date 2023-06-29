@@ -67,7 +67,7 @@ export default class WAPopup extends RexUIBase {
         if(this.popup) {
             let gameWidth = this.scene.game.scale.width;
             let gameHeight = this.scene.game.scale.height;
-            this.popup.moveTo(1000, gameWidth - this.popup.width / 2, gameHeight + this.popup.height / 2 - 35, "Back");
+            this.popup.moveTo(700, gameWidth - this.popup.width / 2, gameHeight + this.popup.height / 2 - 35, "Back");
         }
     }
 
@@ -76,7 +76,7 @@ export default class WAPopup extends RexUIBase {
         if(this.popup) {
             let gameWidth = this.scene.game.scale.width;
             let gameHeight = this.scene.game.scale.height;
-            this.popup.moveTo(1000, gameWidth - this.popup.width / 2, gameHeight - this.popup.height / 2, "Cubic");
+            this.popup.moveTo(700, gameWidth - this.popup.width / 2, gameHeight - this.popup.height / 2, "Cubic");
         }
     }
 
@@ -103,7 +103,7 @@ export default class WAPopup extends RexUIBase {
             })
             .setName("waTitleButton")
             .addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[500]).setName("waTitleBackground"))
-            .add(UIFactory.createTextBoxDOM(this.scene, data.title ?? "UPGRADES", "h4"), {padding: {top: 15}}),
+            .add(UIFactory.createTextBoxDOM(this.scene, data.title ?? "UPGRADES", "h4"), {padding: {top: 6}}),
             actions: data.items?.map((item) => {
                 let sizer = this.rexUI.add.sizer({
                     orientation: "vertical",
@@ -117,7 +117,7 @@ export default class WAPopup extends RexUIBase {
                 let sizer2 = this.rexUI.add.sizer({
                     orientation: "vertical",
                     space: {
-                        item: 15,
+                        item: 0,
                     }
                 })
 
