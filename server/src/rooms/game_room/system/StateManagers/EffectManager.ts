@@ -4,6 +4,11 @@ import StatEffect from "../../schemas/effects/temp/StatEffect";
 import Entity from "../../schemas/gameobjs/Entity";
 import GameManager from "../GameManager";
 import MathUtil from "../../../../util/MathUtil";
+import TriggerEffect from "../../schemas/effects/trigger/TriggerEffect";
+import TriggerUpgradeEffect from "../../schemas/effects/trigger/TriggerUpgradeEffect";
+import ContinuousUpgradeEffect from "../../schemas/effects/continuous/ContinuousUpgradeEffect";
+import { IUpgradeEffect } from "../interfaces";
+import OneTimeUpgradeEffect from "../../schemas/effects/onetime/OneTimeUpgradeEffect";
 
 const statCompoundEffectName = "!Entity Stat Compound Effect!";
 
@@ -13,7 +18,7 @@ export default class EffectManager {
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
-    }  
+    }   
 
     /**
      * Updates this EffectManager, which updates all effects on entities.
@@ -34,15 +39,30 @@ export default class EffectManager {
      * @param effect A effect or an array or effects.
      */
     public static addEffectsTo(entity: Entity, effect: Effect | Effect[]) {
+        function printEffects(entity: Entity, init: string){
+            let str = init + "\n"
+            entity.effects.forEach(e=>str = str + e.toString() + "\n")
+            console.log(str)
+        }
+        
         if(Array.isArray(effect)) {
             effect.forEach((e) => {
                 entity.effects.push(e);
                 e.addToEntity(entity);
             })
         } else {
-            entity.effects.push(effect);
+            // printEffects(entity, "before")
+            // expect(entity.effects.length).toBe(1)
+            // let lenBefore = entity.effects.length
+            // let removed = entity.effects[0]
+            entity.effects.unshift(effect);
+            // let lenAFter = entity.effects.length
+            // if(lenAFter !== (lenBefore + 1)) entity.effects.push(removed)
+            // expect(entity.effects.length).toBe(2)
+            // printEffects(entity, "middle")
             effect.addToEntity(entity);
         }
+        // printEffects(entity, "after")
     }
 
     /**
@@ -106,6 +126,78 @@ export default class EffectManager {
     }
 
     /**
+     * uses all the TriggerEffects in the effects array on an entity with the corresponding type. 
+     * @param entity The entity that should be updated.
+     * @param type type of the trigger effects to activate
+     * @param args Any extra args/data needed
+     */
+    public static useTriggerEffectsOn(entity: Entity, type: string, ...args: any) {
+        entity.effects.map(effect=>{
+            if(effect instanceof TriggerEffect && effect.type === type){
+                effect.onTrigger(entity, ...args)
+            }
+        })
+    }
+
+    /**
+     * Adds an UpgradeTriggerEffect | ContinuousUpgradeEffect or Array<UpgradeTriggerEffect | ContinuousUpgradeEffect> to the entity
+     * Removes all UpgradeTriggerEffect | ContinuousUpgradeEffect on the entity that collides with the effect to add.
+     * Note: if effect is an Array, effects will be applied starting from the front of the array.
+     * @param entity The entity.
+     * @param effect A effect or an array or effects.
+     */
+    public static addUpgradeEffectsTo(entity: Entity, effect: IUpgradeEffect | Array<IUpgradeEffect>) {
+        /**
+         * Takes in 2 effects and checks if there is a collision between them and only one of them can exist on an Entity at once.
+         * If the 2 effect comes from different trees or either does'nt have a tree they are from they don't collide
+         * If either effect does not have both the properties collisionGroup and doesStack they don't collide
+         * If either effect has a collision group of -1 there is no collision and both can exist.
+         * If they both have the same collision group then if either does stack is false then there is a collision
+         * else no collision.
+         * @param effect1
+         * @param effect2
+         * @returns true if there is a collision else false
+         */
+        function collides(effect1: Effect, effect2: Effect){
+            return ("tree" in effect1) && ("tree" in effect2) && effect1.tree === effect2.tree
+                && ("collisionGroup" in effect1) && ("doesStack" in effect1) 
+                && ("collisionGroup" in effect2) && ("doesStack" in effect2)
+                && effect1.collisionGroup === effect2.collisionGroup 
+                && effect1.collisionGroup !== -1 && (!effect1.doesStack || !effect2.doesStack)
+        }
+
+        function printEffects(entity: Entity, init: string){
+            let str = init + "\n"
+            entity.effects.forEach(e=>str = str + e.toString() + "\n")
+            console.log(str)
+        }
+
+        /** Adds one upgrade effect to the entity and replaces any upgrade effect that collides with this effect*/
+        function addOneUpgradeEffect(effect: IUpgradeEffect){
+            // printEffects(entity, "before: ")
+            // remove old effects the collide with new effect
+            entity.effects.forEach(oldEffect=>{
+                if(collides(oldEffect, effect)){
+                    EffectManager.removeEffectFrom(entity, oldEffect)
+                } 
+            })
+            
+            // add new effect
+            // printEffects(entity, "middle: ")
+            EffectManager.addEffectsTo(entity, effect)
+            // printEffects(entity, "after: ")
+        }
+        
+        if(Array.isArray(effect)) {
+            effect.forEach((e) => {
+                addOneUpgradeEffect(e)
+            })
+        } else {
+            addOneUpgradeEffect(effect)
+        }
+    }
+
+    /**
      * Returns the compound effect from this entity that is responsible for grouping together StatComponents.
      * If no such compound effect is found it is created, added to the entity, and returned.
      * @param entity The entity.
@@ -123,4 +215,6 @@ export default class EffectManager {
         compoundEffect.addToEntity(entity);
         return compoundEffect;
     }
+
+    
 }

@@ -15,13 +15,32 @@ export default class MathUtil {
      * @param x x direction
      * @param y y direction
      * @param speed speed multiplier
-     * @returns normalized speed in direction <x,y>
+     * @returns normalized speed in direction <x,y> multiplied by speed
      */
     public static getNormalizedSpeed(x: number, y: number, speed: number){
         let mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
         if(mag===0) return {x: 0, y: 0}
         return {x: x/mag * speed, y: y/mag * speed}
     }
+
+    /**
+     * 
+     * @param x x direction
+     * @param y y direction
+     * @param speed speed multiplier
+     * @param rotationDegree angle to rotate in degrees
+     * @returns normalized speed in direction <x,y> rotated by degrees, multiplied by speed
+     */
+    public static getRotatedSpeed(x: number, y: number, speed: number, rotationDegree: number){
+        let radians = rotationDegree * Math.PI/180
+
+        let direction = MathUtil.getNormalizedSpeed(x, y, 1)
+        let angle = Math.acos(direction.x) + radians
+        if(direction.y < 0) angle = -angle
+        let rotatedX = Math.cos(angle)
+        let rotatedY = Math.sin(angle)
+        return {x: rotatedX * speed, y: rotatedY * speed}
+    }   
 
     /**
      * Round to the provided decimal place. (E.g. If number = 100.2222 and dp = 2 then return 100.22)

@@ -1,16 +1,16 @@
 import Matter, { Bodies } from 'matter-js';
-import State from '../../schemas/State';
 import Player from '../../schemas/gameobjs/Player';
-import Cooldown from '../../schemas/gameobjs/Cooldown';
 import GameManager from '../GameManager';
 import MathUtil from '../../../../util/MathUtil';
-import GameObject from '../../schemas/gameobjs/GameObject';
-import Projectile from '../../schemas/gameobjs/Projectile';
 import { Categories } from '../Collisions/Category';
 import MaskManager from '../Collisions/MaskManager';
-import WeaponManager from './WeaponManager';
-import WeaponLogicManager from '../WeaponLogic/WeaponLogicManager';
+import WeaponUpgradeFactory from '../UpgradeTrees/factories/WeaponUpgradeFactory';
+import EffectManager from './EffectManager';
+import ArtifactFactory from '../UpgradeTrees/factories/ArtifactFactory';
+import SkillTreeFactory from '../UpgradeTrees/factories/SkillTreeFactory';
+import SkillTreeManager from './SkillTreeManager';
 import ReconciliationInfo from '../../schemas/ReconciliationInfo';
+import WeaponManager from './WeaponManager';
 
 interface InputPlayload {
     payload: number[];
@@ -31,7 +31,7 @@ export default class PlayerManager{
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Player){
-                gameObject.attackCooldown.tick(deltaT)
+                // gameObject.attackCooldown.tick(deltaT)
                 gameObject.specialCooldown.tick(deltaT)
             }
         })
@@ -40,20 +40,18 @@ export default class PlayerManager{
     }
 
     getPlayerStateAndBody(sessionId: string){
-        return {playerBody: this.gameManager.gameObjects.get(sessionId), playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
+        return {playerBody: this.gameManager.matterBodies.get(sessionId) as Matter.Body, playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
     }
 
     processPlayerAttack(playerId: string, data: any){
         let [mouseClick, mouseX, mouseY] = data
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
-       
-        if(!mouseClick || !playerState.attackCooldown.isFinished) return
-        playerState.attackCooldown.reset()
-
-        data = {mouseX, mouseY, playerBody}
-
-        WeaponLogicManager.getManager().useAttack(playerState, this.gameManager, data)
+        
+        // trigger all player attack effect logics if there is a mouseclick
+        if(mouseClick){
+            EffectManager.useTriggerEffectsOn(playerState, "player attack", playerBody, {mouseX, mouseY})
+        }
     }
 
     queuePlayerMovement(playerId: string, data: number[]) {
@@ -136,37 +134,39 @@ export default class PlayerManager{
         if(!useSpecial || !playerState.specialCooldown.isFinished) return
         playerState.specialCooldown.reset()
 
-        if(playerState.role === "ranger"){
-            console.log("Activating wall hack speed boost for 1 second")
-            playerState.stat.speed *= 5
-            console.log(playerState.stat.speed)
-
-            // set mask to 0 to collide with nothing
-            playerBody.collisionFilter = {
-                ...playerBody.collisionFilter,
-                mask: 0 
-            }
-
-            // revert hacks
-            setTimeout(()=>{
-                playerState.stat.speed = 1
-                if(playerBody){
-                    playerBody.collisionFilter = {
-                        ...playerBody.collisionFilter,
-                        mask: MaskManager.getManager().getMask("PLAYER")
-                    }
-                }
-
-            }, 1000)
-        }
-       
+        EffectManager.useTriggerEffectsOn(playerState, "player skill")
     }
 
-    public createPlayer(sessionId: string, isOwner: boolean) {
+    /**
+     * TODO connect to a database with player information
+     * Initializes the player data
+     * @param playerId identifier for the player
+     * @param player playerState to init
+     */
+    private initPlayerData(playerId: string, player: Player){
+        //*** TODO *** initialize weapon upgrade tree based on role
+        //Set weaponupgrade tree for player with a test weapon
+        let root = WeaponUpgradeFactory.createTribowUpgrade()
+        WeaponManager.equipWeaponUpgrade(player, root)
+
+        // Equip aritfacts
+        let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
+        let upgradedFrostGlaive = ArtifactFactory.createUpgradeFrostGlaive()
+        let upgradedDemoArtifact = ArtifactFactory.createDemo()
+        this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
+        // ArtifactManager.equipArtifact(player, upgradedFrostGlaive)
+        this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
+
+        // Equip skill tree
+        let maxedSkillTree = SkillTreeFactory.createUpgradedAdventurerSkill()
+        SkillTreeManager.equipSkillTree(player, maxedSkillTree)
+    }
+
+    public async createPlayer(sessionId: string, isOwner: boolean, gameManager?: GameManager) {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
         //TODO: get player data from the database
-        let newPlayer = new Player("No Name");
+        let newPlayer = new Player("No Name", undefined, gameManager);
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
         let playerSpawnPoint = this.gameManager.getDungeonManager().getPlayerSpawnPoint();
@@ -174,9 +174,8 @@ export default class PlayerManager{
             newPlayer.x = playerSpawnPoint.x + (Math.random() * 20 - 10);
             newPlayer.y = playerSpawnPoint.y + (Math.random() * 20 - 10);
         } 
-        //Set weaponupgrade tree for player with a test weapon
-        let tree = WeaponManager.getTestUpgradeTreeRoot()
-        WeaponManager.setWeaponUpgradeTree(newPlayer, tree)
+
+        this.initPlayerData("", newPlayer)
 
         let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {
             isStatic: false,
@@ -191,6 +190,7 @@ export default class PlayerManager{
         })
 
         newPlayer.setId(sessionId);
+        newPlayer.setBody(body)
         this.gameManager.addGameObject(sessionId, newPlayer, body);
     } 
 

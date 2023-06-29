@@ -6,6 +6,11 @@ import InstantHPEffect from "./onetime/InstantHPEffect";
 import SpeedMultiEffect from "./temp/SpeedMultiEffect";
 import StatEffect, { StatConfig } from "./temp/StatEffect";
 import CompoundEffect from "./combo/CompoundEffect";
+import TriggerUpgradeEffect from "./trigger/TriggerUpgradeEffect";
+import UpgradeEffect from "../gameobjs/UpgradeEffect";
+import ContinuousUpgradeEffect from "./continuous/ContinuousUpgradeEffect";
+import OneTimeUpgradeEffect from "./onetime/OneTimeUpgradeEffect";
+import CollisionImmuneEffect from "./temp/CollisionImmuneEffect";
 
 
 export default class EffectFactory {
@@ -88,6 +93,15 @@ export default class EffectFactory {
     }
 
     /**
+     * Creates a effect to make entity immune to all collisions for a certain duration.
+     * @param activeTime The time the effect will last for.
+     * @returns A CollisionImmuneEffect
+     */
+    public static createCollisionImmuneEffectTimed(activeTime: number) {
+        return new CollisionImmuneEffect(true, activeTime);
+    }
+
+    /**
      * Creates a speed multiplier effect that will change the player's speed by a multiplier.
      * This is untimed so the effect will have to be stopped manually by calling setAsCompleted().
      * @param speedMultiplier The multiplier.
@@ -113,5 +127,40 @@ export default class EffectFactory {
      */
     public static createCompoundEffect(name: string) {
         return new CompoundEffect(name);
+    }
+
+    /**
+     * Creates a new UpgradeTriggerEffect or ContinuousUpgradeEffect from an UpgradeEffect
+     * @param effectLogicId effect's logic to use, must be initialized in EffectLogicManager
+     * @param ms cooldown in miliseconds
+     * @param doesStack if two UpgradeEffects on one upgrade tree have the same collisionGroup and either one has doesStack === false, old one gets overwritten. Unless collisionGroup === -1 in that case no collision.
+     * @param collisionGroup number that represents collision group, not the same collision logic as CollisionManager read does stack param for how it works.
+     * @param type string that represents the type of the TriggerEffect. 
+     * @returns 
+     */
+    static createEffectFromUpgradeEffect(upgradeEffect: UpgradeEffect){
+        let effectLogicId = upgradeEffect.effectLogicId
+        let cooldown = upgradeEffect.cooldown
+        let type = upgradeEffect.type
+        let doesStack = upgradeEffect.doesStack
+        let collisionGroup = upgradeEffect.collisionGroup
+
+        // console.log(type)
+
+        // Creates appropriate effect based on type. To add types change logic here and also add a type to my-app/src/effectTypes.js
+        switch(upgradeEffect.type){
+            case "player attack":
+            case "player skill":
+                // Creates a UpgradeTriggerEffect which uses the effect when the EffectManager.useOnTriggerEffectsOn is called with the corresponding type, "player attack" in this case
+                return new TriggerUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
+            // case "one time":
+            //     // Creates a onetime upgrade effect that is used once
+            //     return new OneTimeUpgradeEffect(effectLogicId, cooldown, doesStack, collisionGroup)
+            case "none":
+                // Creates a ContinuousUpgradeEffect which uses the effect's logic automatically
+                return new ContinuousUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
+            default:
+                return new ContinuousUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
+        }
     }
 }

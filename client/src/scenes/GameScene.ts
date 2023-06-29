@@ -22,6 +22,7 @@ export default class GameScene extends Phaser.Scene {
         this.load.image("demo_hero", "images/demo_hero.png");
         this.load.image("dirt_map_tiles", "tilemaps/demo_map/dirt_dungeon_tileset_extruded.png");
         this.load.image("TinyZombie", "images/zombie_1.png");
+        this.load.image("frost-glaive", "images/projectiles/frost-glaive.png")
     }
 
     create() {
