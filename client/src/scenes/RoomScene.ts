@@ -178,12 +178,6 @@ export default class RoomScene extends Phaser.Scene {
 
     private initializeUI() {
 
-        // ---------- Room ID -----------
-        // this.roomIDText = new TextBox(this, "", "p4", ColorStyle.neutrals[900]);
-        // this.roomIDText.setPosition(24, 24);
-        // this.roomIDText.setOrigin(0, 0);
-        // this.add.existing(this.roomIDText);
-
         // --------- Leave Room Button ----------
         let leaveButton = new Button(this, "Leave room", 0, 0, "regular", () => {
             if(SceneManager.getSceneManager().popScene() === "") {
@@ -262,15 +256,7 @@ export default class RoomScene extends Phaser.Scene {
             this.playerList.hide();
             this.hideChatBox();
         });
-        // let startButton = new Button(this, "Start Game", 0, 0, "large", () => {
-        //     this.waitingRoom?.send('start');
-        // });
-        // let readyButton = new Button(this, "Ready", 0, 0, "large", () => {
-        //     console.log("Ready Onclick");
-        // });
-
         
-
         //Layout the select role, select pet, and select dungeon buttons.
         let buttonLayout1 = new Layout(this, {
             flexDirection: 'row', 
@@ -281,16 +267,6 @@ export default class RoomScene extends Phaser.Scene {
         });
         buttonLayout1.add([selectRoleButton, selectPetButton, selectDungeonButton]);
         this.add.existing(buttonLayout1);
-
-        // let buttonLayout2 = new Layout(this, {
-        //     flexDirection: 'row', 
-        //     alignItems: 'center', 
-        //     gap: 20,
-        //     x: this.game.scale.width / 2 + 125,
-        //     y: this.game.scale.height - 95,
-        // })
-        // buttonLayout2.add([this.startGameOrReadyButton]);
-        // this.add.existing(buttonLayout2);
         
         // --------- Role, Pet and Dungeon Display ----------
         this.rolePetDungeonDisplay = new RPDDisplay(this);
@@ -377,10 +353,14 @@ export default class RoomScene extends Phaser.Scene {
         })
     }
 
+    /** Updates the player in room number on the top right of the screen */
     private updatePlayersInRoom(count: number) {
         this.roomInfo.update({playersInRoom: count});
     }
 
+    /** Updates the player list on the left side of the screen.
+     * This includes the player's name, role, level, status and role image.
+     */
     private updatePlayerList() {
         this.playerList.updatePlayerList(this.playerListData);
     }
@@ -461,7 +441,6 @@ export default class RoomScene extends Phaser.Scene {
             })
 
             this.waitingRoom.onMessage("serverMessage", (message) => {
-                console.log(message);
                 this.chatBox.appendText(`[System] ${message}`);
             })
 

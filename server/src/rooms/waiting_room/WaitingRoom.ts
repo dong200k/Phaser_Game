@@ -26,12 +26,21 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
 
         this.onMessage("start", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
-            if(player && player.isLeader && !this.state.inGame && this.isEveryoneReady()) {
-                matchMaker.createRoom('game', {}).then((room) => {
-                this.onCreateGameRoom(room);
-                }).catch(e => {
-                    console.log(e);
-                })
+            if(player && player.isLeader) {
+                console.log("inGame: ", this.state.inGame);
+                if(this.isEveryoneReady()) {
+                    if(this.state.inGame) {
+                        client.send("serverMessage", "Game already in session!");
+                    } else {
+                        matchMaker.createRoom('game', {}).then((room) => {
+                        this.onCreateGameRoom(room);
+                        }).catch(e => {
+                            console.log(e);
+                        })
+                    }
+                } else {
+                    client.send("serverMessage", "All players need to be ready to start game!");
+                }
             }
         })
 
@@ -60,7 +69,7 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
             if(player && player.isLeader) {
                 if(!this.state.inGame) this.state.dungeon = message;
             } else {
-                this.send(client, "serverMessage", "Only the leader can change the dungeon!");
+                client.send("serverMessage", "Only the leader can change the dungeon!");
             }
         })
 
@@ -101,9 +110,9 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
      */
     public onCreateGameRoom(room: RoomListingData) {
         this.lock();
-        this.broadcast("joinGame", room.roomId);
         this.setMetadata({ inGame: true })
         this.state.inGame = true;
+        this.broadcast("joinGame", room.roomId);
         globalEventEmitter.once(`GameFinished${room.roomId}`, () => this.onGameRoomDispose());
     }
 
@@ -113,9 +122,10 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
     public onGameRoomDispose() {
         // If the waiting room is already disposed don't change its state (causes null pointer).
         if(!this.waitingRoomDisposed) {
-            this.unlock();
             this.setMetadata({ inGame: false });
             this.state.inGame = false;
+            this.unreadyEveryone();
+            this.unlock();
         }
     }
 
@@ -155,5 +165,11 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
             if(!player.isLeader && !player.isReady) ready = false;
         })
         return ready;
+    }
+
+    public unreadyEveryone() {
+        this.state.players.forEach((player) => {
+            player.isReady = false;
+        })
     }
 }

@@ -251,17 +251,13 @@ export default class GameManager {
 
     /** Adds a listener to an entity to respond to server updates on that entity. */
     private addListenersToGameObject(gameObject: GameObject, gameObjectState: any) {
-        // Player1 would be excluded from receiving position updates from server directly. It's position will be updated by ClientSidePrediction.
-        if(gameObject !== this.player1) {
-            gameObjectState.onChange = (changes:any) => {
-                gameObject.serverX = gameObjectState.x;
-                gameObject.serverY = gameObjectState.y;
-            }
+        gameObjectState.onChange = (changes:any) => {
+            gameObject.serverX = gameObjectState.x;
+            gameObject.serverY = gameObjectState.y;
         }
     }
 
     private addListenersToEntity(entity: Entity, entityState: any) {
-        this.addListenersToGameObject(entity, entityState);
         entityState.stat.onChange = (changes: any) => {
             entity.updateStat(entityState.stat);
         }
@@ -273,28 +269,14 @@ export default class GameManager {
                 name: playerState.id,
             })
 
-            playerState.onChange = () => {
-                
-            }
-
-            playerState.specialCooldown.onChange = () => {
-                let time = playerState.specialCooldown.time;
-                let remainingTime = playerState.specialCooldown.remainingTime;
-                let isFinished = playerState.specialCooldown.isFinished;
-                EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
-                    specialCooldownPercent: isFinished? 0 : remainingTime / time,
-                })
-
-                // Player1 gets the PlayerInfo updated along side its peer info.
-                if(entity === this.player1) { 
-                    EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
-                        specialCooldownCounter: Math.round(remainingTime / 1000),
-                        specialCooldownPercent: isFinished? 0 : remainingTime / time,
-                    });
+            // Player1 would be excluded from updating its serverX. This will instead be handled by the ClientSidePrediction.
+            if(entity !== this.player1) {
+                playerState.onChange = () => {
+                    entity.serverX = playerState.x;
+                    entity.serverY = playerState.y;
                 }
-            }
-
-            if(entity === this.player1) {
+            } else {
+                // For future artifact and weapon upgrades.
                 EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
                     title: "LEVEL 1 UPGRADES",
                     items: [
@@ -315,6 +297,27 @@ export default class GameManager {
                     ]
                 })
             }
+            
+            // Updates specialcooldown HUD.
+            playerState.specialCooldown.onChange = () => {
+                let time = playerState.specialCooldown.time;
+                let remainingTime = playerState.specialCooldown.remainingTime;
+                let isFinished = playerState.specialCooldown.isFinished;
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+                    specialCooldownPercent: isFinished? 0 : remainingTime / time,
+                })
+
+                // Player1 gets the PlayerInfo updated along side its peer info.
+                if(entity === this.player1) { 
+                    EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
+                        specialCooldownCounter: Math.round(remainingTime / 1000),
+                        specialCooldownPercent: isFinished? 0 : remainingTime / time,
+                    });
+                }
+            }
+
+        } else {
+            this.addListenersToGameObject(entity, entityState);
         }
     }
 }
