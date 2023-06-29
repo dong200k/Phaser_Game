@@ -9,8 +9,6 @@ import DungeonManager from './StateManagers/DungeonManager';
 import DatabaseManager from './Database/DatabaseManager';
 import EffectLogicManager from './EffectLogic/EffectLogicManager';
 import ArtifactManager from './StateManagers/ArtifactManager';
-import TreeManager from './StateManagers/TreeManager';
-import WeaponManager from './StateManagers/WeaponManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
