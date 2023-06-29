@@ -1,4 +1,3 @@
-import TreeUtil from "../../../../../util/TreeUtil"
 import State from "../../../schemas/State"
 import WeaponData from "../../../schemas/Trees/Node/Data/WeaponData"
 import Node from "../../../schemas/Trees/Node/Node"
@@ -9,6 +8,7 @@ import GameManager from "../../GameManager"
 import ArtifactManager from "../../StateManagers/ArtifactManager"
 import EffectManager from "../../StateManagers/EffectManager"
 import SkillTreeManager from "../../StateManagers/SkillTreeManager"
+import TreeManager from "../../StateManagers/TreeManager"
 import WeaponManager from "../../StateManagers/WeaponManager"
 import { IUpgradeEffect } from "../../interfaces"
 import WeaponUpgradeFactory from "../factories/WeaponUpgradeFactory"
@@ -16,6 +16,7 @@ import WeaponUpgradeFactory from "../factories/WeaponUpgradeFactory"
 describe("Weapon Upgrade Tests", ()=>{
     let gameManager: GameManager
     let playerState: Player
+    let artifactManager: ArtifactManager
 
     beforeEach(async ()=>{
         gameManager = new GameManager(new State())
@@ -26,8 +27,10 @@ describe("Weapon Upgrade Tests", ()=>{
         gameManager.getPlayerManager().createPlayer(sessionId, false)
         playerState = gameManager.getPlayerManager().getPlayerStateAndBody(sessionId).playerState
 
+        artifactManager = gameManager.getArtifactManager()
+
         // Unequip all artifacts, skilltrees, and weapons
-        playerState.artifacts.forEach(artifact=>ArtifactManager.unEquipArtifact(playerState, artifact))
+        playerState.artifacts.forEach(artifact=>artifactManager.unEquipArtifact(playerState, artifact))
         SkillTreeManager.unEquipSkillTree(playerState)
         WeaponManager.unEquipWeaponUpgrade(playerState)
 
@@ -51,7 +54,7 @@ describe("Weapon Upgrade Tests", ()=>{
         expectedTreeStatBonus.maxHp += 100
 
         /** Make sure hard coded tree bonus is same as computed one */
-        expect(TreeUtil.computeTotalStat(fullyUpgradedTestWeapon)).toEqual(expectedTreeStatBonus)
+        expect(TreeManager.computeTotalStat(fullyUpgradedTestWeapon)).toEqual(expectedTreeStatBonus)
 
         let expectedPlayerStatAfterEquipingTree = Stat.add(expectedTreeStatBonus, playerState.stat)
         
@@ -104,7 +107,7 @@ describe("Weapon Upgrade Tests", ()=>{
 
         /** Compute Expected Stat after swap */
         let expectedStatAfterUnequip = Stat.sub(playerState.stat, playerState.weaponUpgradeTree.totalStat)
-        let expectedStatAfterSwap = Stat.add(expectedStatAfterUnequip, TreeUtil.computeTotalStat(fullyUpgradedTestWeapon))
+        let expectedStatAfterSwap = Stat.add(expectedStatAfterUnequip, TreeManager.computeTotalStat(fullyUpgradedTestWeapon))
         
         /** Swap to the tree to test */
         WeaponManager.swapWeaponUpgrade(playerState, fullyUpgradedTestWeapon)

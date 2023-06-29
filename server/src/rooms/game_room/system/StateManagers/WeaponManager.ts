@@ -1,10 +1,10 @@
-import TreeUtil from '../../../../util/TreeUtil';
 import WeaponData from '../../schemas/Trees/Node/Data/WeaponData';
 import Node from '../../schemas/Trees/Node/Node';
 import Player from '../../schemas/gameobjs/Player';
-import EffectManager from './EffectManager';
+import TreeManager from './TreeManager';
 
 export default class WeaponManager{
+    
     /**
      * Takes in player and root of a WeaponUpgradeTree equips the tree onto the player and also adds whatever effects the tree has
      * onto the player.
@@ -16,11 +16,11 @@ export default class WeaponManager{
         if(playerState.weaponUpgradeTree.root) return
         
         playerState.weaponUpgradeTree.root = root
-        let totalStat = TreeUtil.addTreeStatsToPlayer(playerState, playerState.weaponUpgradeTree)
-        TreeUtil.addTreeUpgradeEffectsToPlayer(playerState, playerState.weaponUpgradeTree)
+        let totalStat = TreeManager.addTreeStatsToPlayer(playerState, playerState.weaponUpgradeTree)
+        TreeManager.addTreeUpgradeEffectsToPlayer(playerState, playerState.weaponUpgradeTree)
         
-        let weaponId = TreeUtil.getWeaponId(playerState.weaponUpgradeTree)
-        TreeUtil.setTreeWeapon(playerState.weaponUpgradeTree, weaponId)
+        let weaponId = TreeManager.getWeaponId(playerState.weaponUpgradeTree)
+        TreeManager.setTreeWeapon(playerState.weaponUpgradeTree, weaponId)
 
         // Set total stat as computed total stat
         playerState.weaponUpgradeTree.totalStat = totalStat
@@ -35,8 +35,8 @@ export default class WeaponManager{
      */
     static unEquipWeaponUpgrade(playerState: Player){
         if(!playerState.weaponUpgradeTree.root) return
-        TreeUtil.removeTreeStats(playerState, playerState.weaponUpgradeTree)
-        TreeUtil.removeTreeUpgradeEffects(playerState, playerState.weaponUpgradeTree)
+        TreeManager.removeTreeStats(playerState, playerState.weaponUpgradeTree)
+        TreeManager.removeTreeUpgradeEffects(playerState, playerState.weaponUpgradeTree)
         let root = playerState.weaponUpgradeTree.root
         playerState.weaponUpgradeTree.reset()
         return root
@@ -59,7 +59,7 @@ export default class WeaponManager{
         }
         
         // Equip new weapon
-        WeaponManager.equipWeaponUpgrade(playerState, root)
+        this.equipWeaponUpgrade(playerState, root)
 
         return oldRoot
     }
@@ -72,7 +72,7 @@ export default class WeaponManager{
      * @param choice choice of upgrade, zero indexed non negative integer
      */
     static selectUpgrade(playerState: Player, upgrades: Node<WeaponData>[], choice: number){
-        TreeUtil.selectUpgrade(playerState, playerState.weaponUpgradeTree, upgrades, choice)
+        TreeManager.selectUpgrade(playerState, playerState.weaponUpgradeTree, upgrades, choice)
     }
 
     /**
@@ -81,7 +81,7 @@ export default class WeaponManager{
     * @returns a list of WeaponUpgradeTree's available upgrades
     */
    static getAvailableUpgrades(playerState: Player){
-    return TreeUtil.getAvailableUpgrades(playerState.weaponUpgradeTree)
+    return TreeManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
    }
 
     /**
@@ -90,6 +90,6 @@ export default class WeaponManager{
      * @returns returns a Stat class with the tree's total stats, do not modify
      */
     static getTotalStat(playerState: Player){
-        return TreeUtil.getTotalStat(playerState.weaponUpgradeTree)
+        return TreeManager.getTotalStat(playerState.weaponUpgradeTree)
     }
 }

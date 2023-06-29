@@ -1,10 +1,10 @@
-import TreeUtil from '../../../../util/TreeUtil';
 import SkillData from '../../schemas/Trees/Node/Data/SkillData';
-import WeaponData from '../../schemas/Trees/Node/Data/WeaponData';
 import Node from '../../schemas/Trees/Node/Node';
 import Player from '../../schemas/gameobjs/Player';
+import TreeManager from './TreeManager';
 
 export default class SkillTreeManager{
+
     /**
      * Takes in a player and a root of a skill tree, equips the root onto the player's skillTree and adds the stat bonuses
      * of the tree to the player.
@@ -19,7 +19,7 @@ export default class SkillTreeManager{
         
         // Equip the tree and update player/tree stats
         skillTree.root = root
-        let totalStat = TreeUtil.addTreeStatsToPlayer(playerState, skillTree)
+        let totalStat = TreeManager.addTreeStatsToPlayer(playerState, skillTree)
         skillTree.totalStat = totalStat
     }
 
@@ -33,7 +33,7 @@ export default class SkillTreeManager{
 
         if(!skillTree.root) return
 
-        TreeUtil.removeTreeStats(playerState, skillTree)
+        TreeManager.removeTreeStats(playerState, skillTree)
         let root = skillTree.root
         skillTree.reset()
 
@@ -69,7 +69,7 @@ export default class SkillTreeManager{
      * @param choice choice of upgrade, zero indexed non negative integer
      */
     static selectUpgrade(playerState: Player, upgrades: Node<SkillData>[], choice: number){
-        TreeUtil.selectUpgrade(playerState, playerState.skillTree, upgrades, choice)
+        TreeManager.selectUpgrade(playerState, playerState.skillTree, upgrades, choice)
     }
 
     /**
@@ -78,7 +78,7 @@ export default class SkillTreeManager{
     * @returns a list of skill tree's available upgrades
     */
    static getAvailableUpgrades(playerState: Player){
-    return TreeUtil.getAvailableUpgrades(playerState.skillTree)
+    return TreeManager.getAvailableUpgrades(playerState.skillTree)
    }
 
     /**
@@ -87,6 +87,6 @@ export default class SkillTreeManager{
      * @returns returns a Stat class with the tree's total stats, do not modify
      */
     static getTotalStat(playerState: Player){
-        return TreeUtil.getTotalStat(playerState.skillTree)
+        return TreeManager.getTotalStat(playerState.skillTree)
     }
 }

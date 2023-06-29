@@ -23,7 +23,7 @@ describe("Projectile test", ()=>{
 
         //create player
         let sessionId = "fake-id"
-        gameManager.getPlayerManager().createPlayer(sessionId, false)
+        gameManager.getPlayerManager().createPlayer(sessionId, false, gameManager)
         playerState = gameManager.getPlayerManager().getPlayerStateAndBody(sessionId).playerState
 
         activeTime = 3000

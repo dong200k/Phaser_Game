@@ -90,7 +90,7 @@ export default class GameRoom extends Room<State> {
 
     onJoin(client: Client) {
         // Add a new player to the room state. The first player is the owner of the room.
-        this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0);
+        this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, this.gameManager);
         this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
     }
 

@@ -5,7 +5,6 @@ import UpgradeEffect from "../../../schemas/gameobjs/UpgradeEffect"
 import DatabaseManager from "../../Database/DatabaseManager"
 
 export default class WeaponUpgradeFactory{
-    static singleton = new WeaponUpgradeFactory()
 
     /**
      * Creates a Node class from a single node from an upgrade from db formatted as a json (does not copy children)
@@ -83,9 +82,5 @@ export default class WeaponUpgradeFactory{
      */
     static createSwordUpgrade(){
         return WeaponUpgradeFactory.createUpgrade('2')
-    }
-
-    static getManager(){
-        return WeaponUpgradeFactory.singleton
     }
 }

@@ -2,6 +2,7 @@ import FileUtil from "../../../../util/FileUtil"
 import { skillTree, upgrade, weapon } from "../interfaces"
 
 export default class DatabaseManager{
+
     static singleton = new DatabaseManager()
 
     private weaponUpgrades: Map<string, upgrade> = new Map()
@@ -40,17 +41,13 @@ export default class DatabaseManager{
         }
     }
 
-    static getManager(){
-        return DatabaseManager.singleton
-    }
-
     /**
      * Returns json object with basic weapon information such as name, description, sprite, projectile, etc based on the weaponId parameter.
      * @param weaponId 
      * @returns 
      */
     getWeapon(weaponId: string){
-        return DatabaseManager.getManager().weapons.get(weaponId)
+        return this.weapons.get(weaponId)
     }
 
     /**
@@ -59,7 +56,7 @@ export default class DatabaseManager{
      * @returns the projectile string of the weapon if it exists else it returns the default demo_hero
      */
     getWeaponProjectile(weaponId: string){
-        let weapon = DatabaseManager.getManager().weapons.get(weaponId)
+        let weapon = this.weapons.get(weaponId)
         if(weapon) return weapon.projectile
         else return "demo_hero"
     }
@@ -70,7 +67,7 @@ export default class DatabaseManager{
      * @returns 
      */
     getSkill(id: string){
-        return DatabaseManager.getManager().skillTrees.get(id)
+        return this.skillTrees.get(id)
     }
 
     /**
@@ -79,7 +76,7 @@ export default class DatabaseManager{
      * @returns 
      */
     getArtifactUpgrade(id: string){
-        return DatabaseManager.getManager().artifactUpgrades.get(id)
+        return this.artifactUpgrades.get(id)
     }
 
     /**
@@ -88,7 +85,7 @@ export default class DatabaseManager{
      * @returns 
      */
     getWeaponUpgrade(id: string){
-        return DatabaseManager.getManager().weaponUpgrades.get(id)
+        return this.weaponUpgrades.get(id)
     }
 
     /**
@@ -96,11 +93,15 @@ export default class DatabaseManager{
      * @param id id of weapon/artifact upgrade tree to retrieve, look at the my-app frontend to get ids
      */
     getUpgrade(id: string){
-        let weaponUpgradeTree = DatabaseManager.getManager().getWeaponUpgrade(id)
-        let artifactUpgradeTree = DatabaseManager.getManager().getArtifactUpgrade(id)
+        let weaponUpgradeTree = this.getWeaponUpgrade(id)
+        let artifactUpgradeTree = this.getArtifactUpgrade(id)
 
         if(weaponUpgradeTree) return weaponUpgradeTree
         else return artifactUpgradeTree
+    }
+
+    static getManager() {
+        return DatabaseManager.singleton
     }
     
 }

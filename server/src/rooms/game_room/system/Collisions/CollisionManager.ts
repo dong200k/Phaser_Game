@@ -8,5 +8,5 @@ export default class CollisionManager{
         this.gameManager = gameManager
     }
 
-    public resolveCollisions(bodyA: Matter.Body, bodyB)
+    // public resolveCollisions(bodyA: Matter.Body, bodyB)
 }

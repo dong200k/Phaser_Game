@@ -3,6 +3,7 @@ import Entity from "../../gameobjs/Entity";
 import TriggerEffect from "./TriggerEffect";
 import EffectLogicManager from "../../../system/EffectLogic/EffectLogicManager";
 import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
+import GameManager from "../../../system/GameManager";
 
 /** TriggerEffect, but with cooldown. Used for Weapon Upgrade and Artifact Upgrade trees logics that are triggered by player input. */
 export default class TriggerUpgradeEffect extends TriggerEffect {
@@ -50,7 +51,8 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
 
         // restart cooldown and use corresponding effect logic
         this.cooldown.reset()
-        return EffectLogicManager.getManager().useEffect(this.effectLogicId, entity, this.tree, ...args)
+        let used = this.tree?.getGameManager()?.getEffectLogicManager().useEffect(this.effectLogicId, entity, this.tree, ...args)
+        return used? true : false
     }
     
     public toString(): string {

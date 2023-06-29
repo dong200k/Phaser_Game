@@ -9,6 +9,8 @@ import DungeonManager from './StateManagers/DungeonManager';
 import DatabaseManager from './Database/DatabaseManager';
 import EffectLogicManager from './EffectLogic/EffectLogicManager';
 import ArtifactManager from './StateManagers/ArtifactManager';
+import TreeManager from './StateManagers/TreeManager';
+import WeaponManager from './StateManagers/WeaponManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -19,6 +21,8 @@ export default class GameManager {
     private projectileManager: ProjectileManager;
     private effectManager: EffectManager;
     private dungeonManager: DungeonManager;
+    private effectLogicManager: EffectLogicManager
+    private artifactManager: ArtifactManager
 
     // Data
     public matterBodies: Map<string, Matter.Body> = new Map();
@@ -36,7 +40,9 @@ export default class GameManager {
         this.projectileManager = new ProjectileManager(this)
         this.effectManager = new EffectManager(this);
         this.dungeonManager = new DungeonManager(this);
-        EffectLogicManager.getManager().setGameManager(this)
+        this.effectLogicManager = new EffectLogicManager(this)
+        this.artifactManager = new ArtifactManager(this)
+
         this.initUpdateEvents();
         this.initCollisionEvent();
         this.syncServerStateBasedOnGameState();
@@ -49,10 +55,7 @@ export default class GameManager {
      */
     async preload(){
         await DatabaseManager.getManager().loadData()
-        await ArtifactManager.preload()
     }
-
-    private prevVelo = 0
 
     public syncServerStateBasedOnGameState(){
         // sync object positions
@@ -157,5 +160,13 @@ export default class GameManager {
 
     public getProjectileManager() {
         return this.projectileManager;
+    }
+
+    public getEffectLogicManager() {
+        return this.effectLogicManager
+    }
+
+    public getArtifactManager() {
+        return this.artifactManager
     }
 }

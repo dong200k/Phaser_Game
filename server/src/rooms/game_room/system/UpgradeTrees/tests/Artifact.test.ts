@@ -1,4 +1,3 @@
-import TreeUtil from "../../../../../util/TreeUtil"
 import State from "../../../schemas/State"
 import WeaponData from "../../../schemas/Trees/Node/Data/WeaponData"
 import Node from "../../../schemas/Trees/Node/Node"
@@ -9,6 +8,7 @@ import GameManager from "../../GameManager"
 import ArtifactManager from "../../StateManagers/ArtifactManager"
 import EffectManager from "../../StateManagers/EffectManager"
 import SkillTreeManager from "../../StateManagers/SkillTreeManager"
+import TreeManager from "../../StateManagers/TreeManager"
 import WeaponManager from "../../StateManagers/WeaponManager"
 import { IUpgradeEffect } from "../../interfaces"
 import WeaponUpgradeFactory from "../factories/WeaponUpgradeFactory"
@@ -16,10 +16,13 @@ import WeaponUpgradeFactory from "../factories/WeaponUpgradeFactory"
 describe("Artifact Tests", ()=>{
     let gameManager: GameManager
     let playerState: Player
+    let artifactManager: ArtifactManager
 
     beforeEach(async ()=>{
         gameManager = new GameManager(new State())
         await gameManager.preload()
+
+        artifactManager = gameManager.getArtifactManager()
 
         //create player
         let sessionId = "fake-id"
@@ -27,7 +30,7 @@ describe("Artifact Tests", ()=>{
         playerState = gameManager.getPlayerManager().getPlayerStateAndBody(sessionId).playerState
 
         // Unequip all artifacts, skilltrees, and weapons
-        playerState.artifacts.forEach(artifact=>ArtifactManager.unEquipArtifact(playerState, artifact))
+        playerState.artifacts.forEach(artifact=>artifactManager.unEquipArtifact(playerState, artifact))
         SkillTreeManager.unEquipSkillTree(playerState)
         WeaponManager.unEquipWeaponUpgrade(playerState)
 
@@ -47,12 +50,12 @@ describe("Artifact Tests", ()=>{
         expectedTreeStatBonus.addScalar(1)
 
         /** Make sure hard coded tree bonus is same as computed one */
-        expect(TreeUtil.computeTotalStat(fullyUpgradedTestArtifact)).toEqual(expectedTreeStatBonus)
+        expect(TreeManager.computeTotalStat(fullyUpgradedTestArtifact)).toEqual(expectedTreeStatBonus)
 
         let expectedPlayerStatAfterEquipingTree = Stat.add(expectedTreeStatBonus, playerState.stat)
         
         /** Equip artifact and compare actual player stats with expected stats */
-        ArtifactManager.equipArtifact(playerState, fullyUpgradedTestArtifact)
+        artifactManager.equipArtifact(playerState, fullyUpgradedTestArtifact)
         EffectManager.updateEffectsOn(playerState, 1)
         expect(playerState.stat).toEqual(expectedPlayerStatAfterEquipingTree)
         expect(playerState.artifacts[0].weaponId).toBe("weapon-4933503f-cd70-4076-8a99-8d90de74ab73")
@@ -72,16 +75,16 @@ describe("Artifact Tests", ()=>{
         expect(fullyUpgradedTestArtifact.data.status).toBe("selected")
         
         /** Equip artifact */
-        let artifactTree = ArtifactManager.equipArtifact(playerState, fullyUpgradedTestArtifact)
+        let artifactTree = artifactManager.equipArtifact(playerState, fullyUpgradedTestArtifact)
         expect(artifactTree instanceof WeaponUpgradeTree).toBeTruthy()
         EffectManager.updateEffectsOn(playerState, 1)
         
         /** Compute expected stat after unequipping artifact */
-        let artifactTotalStat = TreeUtil.getTotalStat(artifactTree as WeaponUpgradeTree)
+        let artifactTotalStat = TreeManager.getTotalStat(artifactTree as WeaponUpgradeTree)
         let expectedPlayerStatAfterUnEquipingTree = Stat.sub(playerState.stat, artifactTotalStat)
 
         /** Unequip artifact */
-        ArtifactManager.unEquipArtifact(playerState, artifactTree as WeaponUpgradeTree)
+        artifactManager.unEquipArtifact(playerState, artifactTree as WeaponUpgradeTree)
 
         /** Check player stat changed correctly */
         expect(expectedPlayerStatAfterUnEquipingTree).toEqual(playerState.stat)
@@ -91,7 +94,7 @@ describe("Artifact Tests", ()=>{
 
         for(let i=0;i<count;i++){
             let fullyUpgradedTestArtifact = WeaponUpgradeFactory.createUpgrade("upgrade-d251298f-b878-4a95-8864-d2a7e53fb098") as Node<WeaponData>
-            ArtifactManager.equipArtifact(playerState, fullyUpgradedTestArtifact)
+            artifactManager.equipArtifact(playerState, fullyUpgradedTestArtifact)
         }
 
         expect(playerState.artifacts.length).toBe(ArtifactManager.MAX_ARTIFACT_COUNT)
