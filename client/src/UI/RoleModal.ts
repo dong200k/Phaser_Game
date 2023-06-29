@@ -136,10 +136,10 @@ export default class RoleModal {
             name: "detailsDisplay",
         })
         detailsSizer.addBackground(this.scene.rexUI.add.roundRectangle(0, 0, 100, 100, 0, ColorStyle.primary.hex[500]));
-        detailsSizer.add(UIFactory.createTextBoxPhaser(this.scene, roleName, "h3"));
+        detailsSizer.add(UIFactory.createTextBoxPhaser(this.scene, roleName, "h3").setWordWrapWidth(550).setMaxLines(1));
         detailsSizer.addNewLine();
         detailsSizer.add(this.scene.add.image(0, 0, imageKey).setDisplaySize(128, 128));
-        detailsSizer.add(UIFactory.createTextBoxPhaser(this.scene, roleDescription, "p5").setWordWrapWidth(700).setAlign("left"));
+        detailsSizer.add(UIFactory.createTextBoxPhaser(this.scene, roleDescription, "p5").setWordWrapWidth(400).setAlign("left"));
         if(roleData.stats !== undefined) {
             detailsSizer.addNewLine();
             detailsSizer.add(UIFactory.createTextBoxPhaser(this.scene, "STATS", "h5"), {padding: {top: 20}})
@@ -300,7 +300,7 @@ export default class RoleModal {
         })
         item.addBackground(this.scene.rexUI.add.roundRectangle(0, 0, 300, 64, 0, ColorStyle.primary.hex[500]).setName("background"));
         item.add(this.scene.add.image(0, 0, imageKey).setDisplaySize(64, 64));
-        item.add(UIFactory.createTextBoxPhaser(this.scene, name, "p3").setWordWrapWidth(470).setMaxLines(2), {align: 'top', padding: {left: 10, top: 8}});
+        item.add(UIFactory.createTextBoxPhaser(this.scene, name, "p3").setWordWrapWidth(200).setMaxLines(2).setAlign("left"), {align: 'top', padding: {left: 10, top: 8}});
         
         itemWraper.add(item);
         return itemWraper;

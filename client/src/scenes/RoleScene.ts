@@ -4,7 +4,7 @@ import TextBox from "../UI/TextBox";
 import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import UIFactory from "../UI/UIFactory";
 import { RoundRectangle, ScrollablePanel, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
-import ConfirmModal from "../UI/ConfirmModal";
+import ConfirmModal from "../UI/modals/ConfirmModal";
 
 interface RoleItem {
     name: string;
@@ -208,7 +208,7 @@ export default class RoleScene extends Phaser.Scene {
         sizer.add(UIFactory.createTextBoxPhaser(this, roleItem.name, "h5"));
         sizer.addNewLine();
         sizer.add(this.add.image(0, 0, roleItem.spriteKey ?? "").setDisplaySize(128, 128));
-        sizer.add(UIFactory.createTextBoxPhaser(this, roleItem.description ?? "", "p5").setWordWrapWidth(470).setAlign("left"));
+        sizer.add(UIFactory.createTextBoxPhaser(this, roleItem.description ?? "", "p5").setWordWrapWidth(225).setAlign("left"));
         sizer.addNewLine();
         if(!roleItem.purchased)
             sizer.add(UIFactory.createTextBoxPhaser(this, `${roleItem.cost ?? 10000} Coins`, "h5"));

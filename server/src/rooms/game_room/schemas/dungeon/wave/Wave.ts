@@ -21,13 +21,15 @@ export default class Wave {
     private timeUntilNextSpawn: number;
     private defaultTimeUntilNextSpawn: number;
     private spawnsQueued: number;
+    private spawnMonsterCallback: (monsterId: string) => void;
 
-    constructor() {
+    constructor(spawnMonsterCallback: (monsterId: string) => void) {
         this.monsterQueue = [];
         this.aggressionLevel = 3;
         this.timeUntilNextSpawn = 1;
         this.defaultTimeUntilNextSpawn = 1;
         this.spawnsQueued = 0;
+        this.spawnMonsterCallback = spawnMonsterCallback;
     }
 
     /**
@@ -47,7 +49,7 @@ export default class Wave {
         while(this.spawnsQueued > 0) {
             let monsterId = this.getNextMonsterId();
             if(monsterId === undefined) return true;
-            DungeonEvent.getInstance().emit("SPAWN_MONSTER", monsterId);
+            this.spawnMonsterCallback(monsterId);
             this.spawnsQueued--; 
         }
         return false;

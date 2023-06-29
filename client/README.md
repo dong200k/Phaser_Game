@@ -1,4 +1,4 @@
-# Dungeon and Adventurers Server
+# Dungeon and Adventurers Client
 This document describes the client implementation for Dungeons and Adventurers.
 
 ## Technology

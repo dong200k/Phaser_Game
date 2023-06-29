@@ -2,9 +2,10 @@ import { Client, Room, matchMaker } from "colyseus";
 import State from "./schemas/State";
 import GameManager from "./system/GameManager";
 import ReconciliationInfo from "./schemas/ReconciliationInfo";
+import globalEventEmitter from "../../util/EventUtil";
 
 export default class GameRoom extends Room<State> {
-    autoDispose = false;
+    //autoDispose = false;
     
     private gameManager!: GameManager;
 
@@ -23,8 +24,8 @@ export default class GameRoom extends Room<State> {
         //Game rooms are private and can only be joined by id.
         this.setPrivate(true);
 
-        //If no one joins the game room, dispose it.
-        setTimeout(() => this.autoDispose = true, 30000);
+        // //If no one joins the game room, dispose it.
+        // setTimeout(() => this.autoDispose = true, 10000);
 
         //Disable automatically sending patches.
         this.setPatchRate(0);
@@ -104,5 +105,6 @@ export default class GameRoom extends Room<State> {
 
     onDispose() {
         console.log(`Disposed: Game room ${this.roomId}`);
+        globalEventEmitter.emit(`GameFinished${this.roomId}`);
     }
 }

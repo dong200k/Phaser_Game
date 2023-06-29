@@ -22,6 +22,7 @@ export default class TextBoxPhaser extends Phaser.GameObjects.Text implements La
         this.setOrigin(0.5, 0.5);
         this.updateTextDisplay();
         this.setStyle({border:"2px solid black"});
+        this.setResolution(2.2);
         // this.setBackgroundColor("#222222");
     }
     
@@ -30,9 +31,9 @@ export default class TextBoxPhaser extends Phaser.GameObjects.Text implements La
         let style = {...TextStyle[this.fontType]};
         let fontSize = style.fontSize;
         let fontSizeNumber = parseInt(fontSize.substring(0, fontSize.length - 2));
-        style.fontSize = (fontSizeNumber * 2) + "px";
+        // style.fontSize = (fontSizeNumber * 2) + "px";
         this.setStyle(style);
-        this.setScale(0.5, 0.5);
+        // this.setScale(0.5, 0.5);
     }
 
     public setFontType(type:FontTypeString) {

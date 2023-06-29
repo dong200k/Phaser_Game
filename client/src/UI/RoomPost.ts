@@ -34,7 +34,7 @@ export default class RoomPost extends Phaser.GameObjects.Container implements La
         this.joinButton = new Button(this.scene, 'Join', 0, 0, "small", () => {
             if(this.room) {
                 ClientManager.getClient().setWaitingRoomId(this.room.roomId);
-                SceneManager.getSceneManager().switchToScene("RoomScene");
+                SceneManager.getSceneManager().pushScene("RoomScene");
             }
         });
         this.joinButton.setPosition(this.getLayoutWidth() / 2 - 60, 0);
@@ -57,10 +57,24 @@ export default class RoomPost extends Phaser.GameObjects.Container implements La
 
     private updateRoomPostDisplay() {
         if(this.room) {
-            this.roomNameText.setText(`Room name: ${this.room.roomId}`);
+            let {inGame, passwordProtected, roomName} = this.room.metadata;
+
+            this.roomNameText.setText(`Room name: ${roomName}`);
             this.roomPlayerCountText.setText(`Player count: ${this.room.clients}/${this.room.maxClients}`);
-            this.roomStateText.setText(`Open`);
-            this.joinButton.setButtonActive(true);
+            
+            if(!inGame) {
+                if(this.room.clients >= this.room.maxClients) {
+                    this.roomStateText.setText(`Full`);
+                    this.joinButton.setButtonActive(false);
+                } else {
+                    this.roomStateText.setText(`Open`);
+                    this.joinButton.setButtonActive(true);
+                }
+            } else {
+                this.roomStateText.setText(`In Game`);
+                this.joinButton.setButtonActive(false);
+            }
+            
             this.background.setFillStyle(ColorStyle.primary.hex[500]);
         } else {
             this.roomNameText.setText("Vacant slot");
