@@ -5,16 +5,28 @@ export default class State extends Schema {
     @type({ map:Player })
     players = new MapSchema<Player>();
     
-    ownerSessionId = "";
+    @type("number") maxPlayerCount = 4;
+    
+    @type("number") dungeon = 0;
 
-    createPlayer(sessionId: string, isOwner: boolean) {
-        if(isOwner)
-            this.ownerSessionId = sessionId;
-        this.players.set(sessionId, new Player("No Name", isOwner));
+    @type("boolean") privateRoom = false;
+
+    @type("boolean") inGame = false;
+
+    leaderSessionId = "";
+
+    playerJoinOrder: Array<string> = [];
+
+    createPlayer(sessionId: string, isLeader: boolean) {
+        if(isLeader)
+            this.leaderSessionId = sessionId;
+        this.players.set(sessionId, new Player("No Name", isLeader, 1));
+        this.playerJoinOrder.push(sessionId);
     }
 
     removePlayer(sessionId: string) {
-        this.players.delete(sessionId);
+        if(this.players.delete(sessionId))
+            this.playerJoinOrder.splice(this.playerJoinOrder.indexOf(sessionId), 1);
     }
 
     playerCount() {

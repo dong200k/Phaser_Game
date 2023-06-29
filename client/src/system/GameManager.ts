@@ -8,12 +8,14 @@ import MathUtil from "../util/MathUtil";
 import GameObject from "../gameobjs/GameObject";
 import ClientSidePrediction from "./ClientSidePrediction";
 import Tile from "../gameobjs/Tile";
+import EventManager from "./EventManager";
+import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
 
 export default class GameManager {
     private scene: Phaser.Scene;
     private gameRoom: Colyseus.Room;
 
-    private gameObjects?: GameObject[] = [];
+    private gameObjects: GameObject[] = [];
     private player1?: Player;
     private players: Player[] = [];
 
@@ -24,6 +26,8 @@ export default class GameManager {
     private rightKey?: Phaser.Input.Keyboard.Key;
     private spaceKey?: Phaser.Input.Keyboard.Key;
     private debugKey?: Phaser.Input.Keyboard.Key;
+
+    private mouseDown: boolean = false;
 
     // ------- fixed tick --------
     private timePerTick = 50; // 20 ticks per second.
@@ -59,7 +63,7 @@ export default class GameManager {
      * Updates the gameObject's position to match the server's gameObject position.
      */
     public syncGameObjectsWithServer() {
-        this.gameObjects?.forEach((obj) => {
+        this.gameObjects.forEach((obj) => {
             obj.setX(obj.serverX);
             obj.setY(obj.serverY);
         })
@@ -114,6 +118,14 @@ export default class GameManager {
         this.debugKey?.on("down", () => {
             this.csp.setDebugGraphicsVisible(!this.csp.isDebugGraphicsVisible());
         })
+
+        this.scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
+            if(pointer.leftButtonDown()) this.mouseDown = true;
+        })
+
+        this.scene.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
+            if(pointer.leftButtonReleased()) this.mouseDown = false;
+        })
     }
 
     private initializeListeners() {
@@ -135,7 +147,7 @@ export default class GameManager {
 
         //[0] mouse click, [1] mousex, [2] mousey.
         let mouseData = [0, 0, 0]
-        mouseData[0] = this.scene.input.mousePointer.isDown? 1 : 0;
+        mouseData[0] = this.mouseDown? 1 : 0;
         mouseData[1] = this.scene.input.mousePointer.worldX;
         mouseData[2] = this.scene.input.mousePointer.worldY;
         this.gameRoom?.send("attack", mouseData);
@@ -175,7 +187,7 @@ export default class GameManager {
         }
         if(newGameObject) {
             newGameObject.setServerState(gameObj);
-            this.gameObjects?.push(newGameObject);
+            this.gameObjects.push(newGameObject);
             this.csp.addGameObject(newGameObject);
         }
     }
@@ -230,7 +242,7 @@ export default class GameManager {
     
     private addPlayer(player: any, key: string): Player{
         let newPlayer = new Player(this.scene, player);
-        console.log(newPlayer)
+        // console.log(newPlayer)
         if(key === this.gameRoom.sessionId) {
             this.player1 = newPlayer;
             this.scene.cameras.main.startFollow(this.player1, false, 0.1);
@@ -252,34 +264,74 @@ export default class GameManager {
 
     /** Adds a listener to an entity to respond to server updates on that entity. */
     private addListenersToGameObject(gameObject: GameObject, gameObjectState: any) {
-        // Player1 would be excluded from receiving position updates from server directly. It's position will be updated by ClientSidePrediction.
-        if(gameObject !== this.player1) {
-            gameObjectState.onChange = (changes:any) => {
-                gameObject.serverX = gameObjectState.x;
-                gameObject.serverY = gameObjectState.y;
-                gameObject.serverVisible = gameObjectState.visible;
-            }
+        gameObjectState.onChange = (changes:any) => {
+            gameObject.serverX = gameObjectState.x;
+            gameObject.serverY = gameObjectState.y;
+            gameObject.serverVisible = gameObjectState.visible;
         }
     }
 
     private addListenersToEntity(entity: Entity, entityState: any) {
-        this.addListenersToGameObject(entity, entityState);
         entityState.stat.onChange = (changes: any) => {
             entity.updateStat(entityState.stat);
         }
-    }
+        if(entity instanceof Player) {
+            let playerState = entityState as PlayerState;
 
-    /**
-     * What we need: 
-     * 1. A concrete concept of time. We will use a tick.
-     * 
-     * 
-     * 
-     * Doing client side prediction.
-     * Client: Send movement input to the server.
-     * Client: Start moving the entity.
-     * Server: Receives movement input from client and process movement.
-     * Server: Sends updated entity position to client.
-     * Client: Compares entity's position with the authrotiative entity potition of the server.
-     */
+            // Create PeerInfo and set up initial values.
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+                name: playerState.id,
+            })
+
+            // Player1 would be excluded from updating its serverX. This will instead be handled by the ClientSidePrediction.
+            if(entity !== this.player1) {
+                playerState.onChange = () => {
+                    entity.serverX = playerState.x;
+                    entity.serverY = playerState.y;
+                }
+            } else {
+                // For future artifact and weapon upgrades.
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+                    title: "LEVEL 1 UPGRADES",
+                    items: [
+                        {
+                            typeName: "Artifact + 1",
+                            name: "Spining Stars",
+                            imageKey: "",
+                            description: "Surround you with a circle of blades",
+                            onClick: () => {console.log("Spining Stars onclick")}
+                        },
+                        {
+                            typeName: "New Artifact",
+                            name: "Gloves",
+                            imageKey: "",
+                            description: "Increase Damage by 10",
+                            onClick: () => {console.log("Gloves onclick")}
+                        }
+                    ]
+                })
+            }
+            
+            // Updates specialcooldown HUD.
+            playerState.specialCooldown.onChange = () => {
+                let time = playerState.specialCooldown.time;
+                let remainingTime = playerState.specialCooldown.remainingTime;
+                let isFinished = playerState.specialCooldown.isFinished;
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+                    specialCooldownPercent: isFinished? 0 : remainingTime / time,
+                })
+
+                // Player1 gets the PlayerInfo updated along side its peer info.
+                if(entity === this.player1) { 
+                    EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
+                        specialCooldownCounter: Math.round(remainingTime / 1000),
+                        specialCooldownPercent: isFinished? 0 : remainingTime / time,
+                    });
+                }
+            }
+
+        } else {
+            this.addListenersToGameObject(entity, entityState);
+        }
+    }
 }

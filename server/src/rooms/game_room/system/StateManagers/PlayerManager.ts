@@ -84,14 +84,14 @@ export default class PlayerManager{
 
                 if(clientTick < serverTick) {
                     // Drop package and ask player to catch up.
-                    // console.log(`Client ${playerId} is ${serverTick - clientTick} ticks behind. Asking client to speed up.`);
+                    //console.log(`Client ${playerId} is ${serverTick - clientTick} ticks behind. Asking client to speed up.`);
                     if(reconciliationInfo.adjectmentConfirmId === reconciliationInfo.adjustmentId) {
                         reconciliationInfo.adjustmentId++;
                         reconciliationInfo.adjustmentAmount = 2;
                     }
-                } else if(clientTick > serverTick + 3) {
+                } else if(clientTick > serverTick + 2) {
                     // Save packet and tell client to slow down.
-                    // console.log(`Client ${playerId} is ${clientTick - serverTick} ticks ahead. Asking client to slow down.`);
+                    //console.log(`Client ${playerId} is ${clientTick - serverTick} ticks ahead. Asking client to slow down.`);
                     if(reconciliationInfo.adjectmentConfirmId === reconciliationInfo.adjustmentId) {
                         reconciliationInfo.adjustmentId++;
                         reconciliationInfo.adjustmentAmount = -2;

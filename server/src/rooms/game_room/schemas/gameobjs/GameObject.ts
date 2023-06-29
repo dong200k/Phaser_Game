@@ -14,7 +14,7 @@ export class Velocity extends Schema {
 }
 
 export default class GameObject extends Schema implements Cloneable {
-    @type('string') private id: string;
+    @type('string') id: string;
     @type('boolean') visible: boolean;
     @type('string') ownerId;
     @type('string') type;

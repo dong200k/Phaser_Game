@@ -36,6 +36,7 @@ export default class MenuScene extends Phaser.Scene {
 
         // this.test();
         // this.test2();
+        
     }
 
     test() {

@@ -1,10 +1,37 @@
 body {
     margin: 0;
     background-color: #0F0E0D;
+    height: 100vh;
+}
+
+#game {
+    height: 100%;
+    
+}
+
+canvas {
+    border-radius: 5px;
+    border-color: #353432;
 }
 
 .button-text:hover {
     cursor: pointer;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #4C4540;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #201F1E;
+    border-radius: 10px;
 }
 
 @font-face {

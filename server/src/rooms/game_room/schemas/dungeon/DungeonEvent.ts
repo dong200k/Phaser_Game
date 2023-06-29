@@ -2,7 +2,7 @@ import EventEmitter from "events";
 
 export type DungeonEventTypes = "SPAWN_MONSTER";
 
-/** The dungeon emitter is used to communicate dungeon events. It can be accessed by the singleton DungeonEvent.getInstance(). */
+/** DEPRECATED DO NOT USE. The dungeon emitter is used to communicate dungeon events. It can be accessed by the singleton DungeonEvent.getInstance(). */
 class DungeonEmitter extends EventEmitter {
     constructor() {
         super();

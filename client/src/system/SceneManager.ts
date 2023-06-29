@@ -109,10 +109,10 @@ export default class SceneManager {
     /** Displays the navbar on top of the current scene. This is called automatically on certain scenes. */
     public showNavbar() {
         if(this.scene) {
-            if(!this.scene.scene.isSleeping("NavbarScene") && !this.scene.scene.isActive("NavbarScene"))
-                this.scene.scene.launch("NavbarScene");
+            if(!this.scene.scene.isSleeping(SceneKey.NavbarScene) && !this.scene.scene.isActive(SceneKey.NavbarScene))
+                this.scene.scene.launch(SceneKey.NavbarScene);
             else {
-                this.scene.scene.wake("NavbarScene");
+                this.scene.scene.wake(SceneKey.NavbarScene);
             }
             this.scene.scene.bringToTop(SceneKey.NavbarScene);
         }
@@ -120,9 +120,25 @@ export default class SceneManager {
 
     /** Shutsdown the navbar. */
     public hideNavbar() {
-        if(this.scene) {
+        if(this.scene && !this.scene.scene.isSleeping(SceneKey.NavbarScene) && this.scene.scene.isActive(SceneKey.NavbarScene)) {
             this.scene.scene.sleep(SceneKey.NavbarScene);
         }
+    }
+
+    /** Displays the HUD */
+    public showHUD() {
+        if(this.scene) {
+            if(!this.scene.scene.isSleeping(SceneKey.HUDScene) && !this.scene.scene.isActive(SceneKey.HUDScene))
+                this.scene.scene.launch(SceneKey.HUDScene);
+            else 
+                this.scene.scene.wake(SceneKey.HUDScene);
+            this.scene.scene.bringToTop(SceneKey.HUDScene);
+        }
+    }
+
+    /** Hides the HUD */
+    public hideHUD() {
+        if(this.scene) this.scene.scene.sleep(SceneKey.HUDScene);
     }
 
     /** Shutdown the current scene, clearing display list, timers, etc. */

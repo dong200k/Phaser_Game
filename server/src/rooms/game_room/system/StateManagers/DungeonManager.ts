@@ -31,7 +31,6 @@ export default class DungeonManager {
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager;
         this.createDungeon();
-        this.initializeListeners();
     }   
 
     /**
@@ -72,21 +71,21 @@ export default class DungeonManager {
             this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.matterBodies, newTilemap);
 
             // Waves
-            let wave = new Wave();
+            let wave = this.createNewWave();
             wave.setAgressionLevel(1);
             wave.addMonster("TinyZombie", 10);
             newDungeon.addWave(wave);
 
-            let wave2 = new Wave();
+            let wave2 = this.createNewWave();
             wave2.setAgressionLevel(2);
             wave2.addMonster("TinyZombie", 20);
             newDungeon.addWave(wave2);
 
-            let wave3 = new Wave();
-            wave3.setAgressionLevel(5);
-            wave3.addMonster("TinyZombie", 100);
-            newDungeon.addWave(wave3);
-            
+            // let wave3 = this.createNewWave();
+            // wave3.setAgressionLevel(5);
+            // wave3.addMonster("TinyZombie", 100);
+            // newDungeon.addWave(wave3);
+
             // ---- Setting new dungeon to state -----
             this.dungeon = newDungeon;
             this.gameManager.state.dungeon = this.dungeon;
@@ -95,10 +94,8 @@ export default class DungeonManager {
         })
     }
 
-    private initializeListeners() {
-        DungeonEvent.getInstance().on("SPAWN_MONSTER", (monsterId) => {
-            this.spawnMonster(monsterId);
-        })
+    public createNewWave() {
+        return new Wave((name: string) => this.spawnMonster(name));
     }
 
     public spawnMonster(monsterName: string): Monster {
