@@ -90,7 +90,8 @@ export default class RoomScene extends Phaser.Scene {
             petData:[
                 {
                     name: "Baby Dragon",
-                    stats: {hp:100}
+                    stats: {hp:100},
+                    description: "Volutpat vulputate tellus eget dui molestie tortor vitae. Risus sollicitudin feugiat quam tortor magna dictum scelerisque. Sed cras tincidunt sit pharetra eleifend sem aliquam nibh vitae. Sit enim arcu sed ullamcorper quisque ac ligula sed. Turpis eget et cursus commodo sem. "
                 },
                 {
                     name: "Vampire Bat",

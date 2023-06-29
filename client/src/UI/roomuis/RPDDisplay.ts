@@ -42,19 +42,19 @@ export default class RPDDisplay extends RexUIBase {
             orientation: "vertical",
         })
         roleSizer.add(this.scene.add.image(0, 0, "").setName("RPDDisplayRoleImage").setDisplaySize(100, 100), {expand: false});
-        roleSizer.add(UIFactory.createTextBoxPhaser(this.scene, "Role", "l4").setName("RPDDisplayRoleName"), {expand: false});
+        roleSizer.add(UIFactory.createTextBoxPhaser(this.scene, "Role", "l4").setName("RPDDisplayRoleName").setWordWrapWidth(120), {expand: false});
 
         let petSizer = this.rexUI.add.sizer({
             orientation: "vertical",
         })
         petSizer.add(this.scene.add.image(0, 0, "").setName("RPDDisplayPetImage").setDisplaySize(100, 100), {expand: false});
-        petSizer.add(UIFactory.createTextBoxPhaser(this.scene, "Pet", "l4").setName("RPDDisplayPetName"), {expand: false});
+        petSizer.add(UIFactory.createTextBoxPhaser(this.scene, "Pet", "l4").setName("RPDDisplayPetName").setWordWrapWidth(120), {expand: false});
 
         let dungeonSizer = this.rexUI.add.sizer({
             orientation: "vertical",
         })
         dungeonSizer.add(this.scene.add.image(0, 0, "").setName("RPDDisplayDungeonImage").setDisplaySize(100, 100), {expand: false});
-        dungeonSizer.add(UIFactory.createTextBoxPhaser(this.scene, "Dungeon", "l4").setName("RPDDisplayDungeonName"), {expand: false});
+        dungeonSizer.add(UIFactory.createTextBoxPhaser(this.scene, "Dungeon", "l4").setName("RPDDisplayDungeonName").setWordWrapWidth(120), {expand: false});
 
         this.RPDDisplaySizer.add(roleSizer);
         this.RPDDisplaySizer.add(petSizer);

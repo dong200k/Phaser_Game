@@ -208,7 +208,7 @@ export default class RoleScene extends Phaser.Scene {
         sizer.add(UIFactory.createTextBoxPhaser(this, roleItem.name, "h5"));
         sizer.addNewLine();
         sizer.add(this.add.image(0, 0, roleItem.spriteKey ?? "").setDisplaySize(128, 128));
-        sizer.add(UIFactory.createTextBoxPhaser(this, roleItem.description ?? "", "p5").setWordWrapWidth(470).setAlign("left"));
+        sizer.add(UIFactory.createTextBoxPhaser(this, roleItem.description ?? "", "p5").setWordWrapWidth(225).setAlign("left"));
         sizer.addNewLine();
         if(!roleItem.purchased)
             sizer.add(UIFactory.createTextBoxPhaser(this, `${roleItem.cost ?? 10000} Coins`, "h5"));
