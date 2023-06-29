@@ -23,7 +23,7 @@ describe("Projectile test", ()=>{
 
         //create player
         let sessionId = "fake-id"
-        gameManager.getPlayerManager().createPlayer(sessionId, false)
+        gameManager.getPlayerManager().createPlayer(sessionId, false, gameManager)
         playerState = gameManager.getPlayerManager().getPlayerStateAndBody(sessionId).playerState
 
         activeTime = 3000
@@ -90,7 +90,7 @@ describe("Projectile test", ()=>{
     test("Timed projectiles get returned to the proper pool based on poolType when timed out", ()=>{
         let poolType = "pool-1"
         let gameObjectsBefore = gameManager.state.gameObjects.size
-        let matterBodiesBefore = gameManager.gameObjects.size
+        let matterBodiesBefore = gameManager.matterBodies.size
 
         // Spawn 1 projectile
         expect(projectilePool.getPool(poolType)).toBeUndefined() // no pool is created yet
@@ -99,7 +99,7 @@ describe("Projectile test", ()=>{
 
         // Check that projectiles are spawned and active
         let gameObjectsAfter = gameManager.state.gameObjects.size
-        let matterBodiesAfter = gameManager.gameObjects.size
+        let matterBodiesAfter = gameManager.matterBodies.size
         expect(gameObjectsAfter).toBe(gameObjectsBefore + 1)
         expect(matterBodiesAfter).toBe(matterBodiesBefore + 1)
         expect(projectile.active).toBe(true) // active
@@ -127,7 +127,7 @@ describe("Projectile test", ()=>{
     test("Ranged projectiles get returned to the proper pool based on poolType when range is out", ()=>{
         let poolType = "pool-2"
         let gameObjectsBefore = gameManager.state.gameObjects.size
-        let matterBodiesBefore = gameManager.gameObjects.size
+        let matterBodiesBefore = gameManager.matterBodies.size
         
         // Spawn 1 projectile
         expect(projectilePool.getPool(poolType)).toBeUndefined() // no pool is created yet
@@ -136,7 +136,7 @@ describe("Projectile test", ()=>{
 
         // Check that projectiles are spawned and active
         let gameObjectsAfter = gameManager.state.gameObjects.size
-        let matterBodiesAfter = gameManager.gameObjects.size
+        let matterBodiesAfter = gameManager.matterBodies.size
         expect(gameObjectsAfter).toBe(gameObjectsBefore + 1)
         expect(matterBodiesAfter).toBe(matterBodiesBefore + 1)
         expect(projectile.active).toBe(true) // active

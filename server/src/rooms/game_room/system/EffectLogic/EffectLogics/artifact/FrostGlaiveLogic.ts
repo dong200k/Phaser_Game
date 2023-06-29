@@ -45,7 +45,7 @@ export class FrostGlaive extends EffectLogic{
 */
 export class FrostGlaiveFrenzy extends EffectLogic{
     effectLogicId = "Frost-glaive-frenzy" 
-    triggerType: ITriggerType = "none"
+    triggerType: ITriggerType = "player skill"
 
     public useEffect(playerState: Player, gameManager: GameManager, tree?: WeaponUpgradeTree){
         let artifact = tree

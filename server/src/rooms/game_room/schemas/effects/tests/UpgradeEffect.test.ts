@@ -122,8 +122,8 @@ describe('Upgrade Effect Tests', () => {
         expect(effect4.cooldown.isFinished).toBe(true)
     })
     test("Effect Collision Test", ()=>{
-        let tree1 = new WeaponUpgradeTree(new Player("p1"))
-        let tree2 = new WeaponUpgradeTree(new Player("p2"))
+        let tree1 = new WeaponUpgradeTree(gameManager, new Player("p1"))
+        let tree2 = new WeaponUpgradeTree(gameManager, new Player("p2"))
 
         /** list of a few rules/expected collision results */
         let collisionRules = [

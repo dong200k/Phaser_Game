@@ -4,14 +4,13 @@ import GameManager from '../GameManager';
 import MathUtil from '../../../../util/MathUtil';
 import { Categories } from '../Collisions/Category';
 import MaskManager from '../Collisions/MaskManager';
-import WeaponManager from './WeaponManager';
 import WeaponUpgradeFactory from '../UpgradeTrees/factories/WeaponUpgradeFactory';
 import EffectManager from './EffectManager';
 import ArtifactFactory from '../UpgradeTrees/factories/ArtifactFactory';
-import ArtifactManager from './ArtifactManager';
 import SkillTreeFactory from '../UpgradeTrees/factories/SkillTreeFactory';
 import SkillTreeManager from './SkillTreeManager';
 import ReconciliationInfo from '../../schemas/ReconciliationInfo';
+import WeaponManager from './WeaponManager';
 
 interface InputPlayload {
     payload: number[];
@@ -41,7 +40,7 @@ export default class PlayerManager{
     }
 
     getPlayerStateAndBody(sessionId: string){
-        return {playerBody: this.gameManager.gameObjects.get(sessionId) as Matter.Body, playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
+        return {playerBody: this.gameManager.matterBodies.get(sessionId) as Matter.Body, playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
     }
 
     processPlayerAttack(playerId: string, data: any){
@@ -154,20 +153,20 @@ export default class PlayerManager{
         let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
         let upgradedFrostGlaive = ArtifactFactory.createUpgradeFrostGlaive()
         let upgradedDemoArtifact = ArtifactFactory.createDemo()
-        ArtifactManager.equipArtifact(player, upgradedHermesBoots)
+        this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
         // ArtifactManager.equipArtifact(player, upgradedFrostGlaive)
-        ArtifactManager.equipArtifact(player, upgradedDemoArtifact)
+        this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
 
         // Equip skill tree
         let maxedSkillTree = SkillTreeFactory.createUpgradedAdventurerSkill()
         SkillTreeManager.equipSkillTree(player, maxedSkillTree)
     }
 
-    public async createPlayer(sessionId: string, isOwner: boolean) {
+    public async createPlayer(sessionId: string, isOwner: boolean, gameManager?: GameManager) {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
         //TODO: get player data from the database
-        let newPlayer = new Player("No Name");
+        let newPlayer = new Player("No Name", undefined, gameManager);
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
         let playerSpawnPoint = this.gameManager.getDungeonManager().getPlayerSpawnPoint();

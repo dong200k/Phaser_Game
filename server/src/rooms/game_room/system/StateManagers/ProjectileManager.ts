@@ -3,6 +3,7 @@ import Projectile from '../../schemas/projectiles/Projectile'
 import { IProjectileConfig } from '../interfaces';
 import ProjectilePool from '../../schemas/projectiles/ProjectilePool';
 import ctors, { IClasses } from '../../schemas/projectiles/projectileClasses';
+import Matter from 'matter-js';
 
 export default class ProjectileManager{
     private gameManager: GameManager
@@ -33,7 +34,7 @@ export default class ProjectileManager{
     }
 
     // getProjectileStateAndBody(sessionId: string){
-    //     return {playerBody: this.gameManager.gameObjects.get(sessionId), playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
+    //     return {playerBody: this.gameManager.matterBodies.get(sessionId), playerState: this.gameManager.state.gameObjects.get(sessionId) as Player}
     // }
 
     /**
@@ -61,7 +62,9 @@ export default class ProjectileManager{
         }else{
             // no instance so create new projectile
             projectile = new ctors[type](projectileConfig, this.gameManager)
-            this.gameManager.addGameObject(projectile.projectileId, projectile, projectile.getBody() as Matter.Body);
+            let body = projectile.getBody() as Matter.Body
+            body.label = ""
+            this.gameManager.addGameObject(projectile.projectileId, projectile, body);
         }
 
         return {projectile: projectile, body: projectile.getBody() as Matter.Body}

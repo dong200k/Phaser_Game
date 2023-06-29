@@ -7,7 +7,7 @@ import GameManager from "../../GameManager"
 import SkillTreeFactory from "../factories/SkillTreeFactory"
 import SkillTreeManager from "../../StateManagers/SkillTreeManager"
 import EffectManager from "../../StateManagers/EffectManager"
-import TreeUtil from "../../../../../util/TreeUtil"
+import TreeManager from "../../StateManagers/TreeManager"
 
 describe("Skill Tree Tests", ()=>{
     let gameManager: GameManager
@@ -27,7 +27,7 @@ describe("Skill Tree Tests", ()=>{
         let skillTree = SkillTreeFactory.createUpgradedAdventurerSkill() as Node<SkillData>
 
         // Compute expected stats
-        let expectedTreeStat = TreeUtil.computeTotalStat(skillTree)
+        let expectedTreeStat = TreeManager.computeTotalStat(skillTree)
         let expectedPlayerStatAfterEquipingTree = Stat.add(playerState.stat, expectedTreeStat)
 
         // Equip skill tree

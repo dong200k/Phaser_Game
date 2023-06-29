@@ -1,12 +1,11 @@
-import TreeUtil from "../../../../../util/TreeUtil"
 import State from "../../../schemas/State"
 import WeaponData from "../../../schemas/Trees/Node/Data/WeaponData"
 import Node from "../../../schemas/Trees/Node/Node"
 import Player from "../../../schemas/gameobjs/Player"
 import GameManager from "../../GameManager"
-import ArtifactManager from "../../StateManagers/ArtifactManager"
 import EffectManager from "../../StateManagers/EffectManager"
 import SkillTreeManager from "../../StateManagers/SkillTreeManager"
+import TreeManager from "../../StateManagers/TreeManager"
 import WeaponManager from "../../StateManagers/WeaponManager"
 import WeaponUpgradeFactory from "../factories/WeaponUpgradeFactory"
 
@@ -24,7 +23,7 @@ describe("Tree Upgrade Tests", ()=>{
         playerState = gameManager.getPlayerManager().getPlayerStateAndBody(sessionId).playerState
 
         // Unequip all artifacts, skilltrees, and weapons
-        playerState.artifacts.forEach(artifact=>ArtifactManager.unEquipArtifact(playerState, artifact))
+        playerState.artifacts.forEach(artifact=>gameManager.getArtifactManager().unEquipArtifact(playerState, artifact))
         SkillTreeManager.unEquipSkillTree(playerState)
         WeaponManager.unEquipWeaponUpgrade(playerState)
 
@@ -38,7 +37,7 @@ describe("Tree Upgrade Tests", ()=>{
         WeaponManager.equipWeaponUpgrade(playerState, partially_upgraded_test_weapon as Node<WeaponData>)
         
         // Check that there are 3 upgrades
-        let upgrades = TreeUtil.getAvailableUpgrades(playerState.weaponUpgradeTree)
+        let upgrades = TreeManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
         expect(upgrades.length).toBe(3)
         
         // Check upgrades are correct
@@ -53,16 +52,16 @@ describe("Tree Upgrade Tests", ()=>{
         WeaponManager.equipWeaponUpgrade(playerState, un_upgraded_test_weapon as Node<WeaponData>)
         
         // Get Upgrades
-        let upgrades = TreeUtil.getAvailableUpgrades(playerState.weaponUpgradeTree)
+        let upgrades = TreeManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
         expect(upgrades.length).toBe(1) // Check that there are 1 upgrades
         expect(upgrades[0].data.name).toBe("test") // Check upgrade is correct
 
         // Select 1st upgrade
-        TreeUtil.selectUpgrade(playerState, playerState.weaponUpgradeTree, upgrades, 0)
+        TreeManager.selectUpgrade(playerState, playerState.weaponUpgradeTree, upgrades, 0)
         expect(upgrades[0].data.status).toBe("selected")
         
         // Try to get next set of upgrades which should be 3
-        upgrades = TreeUtil.getAvailableUpgrades(playerState.weaponUpgradeTree)
+        upgrades = TreeManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
         expect(upgrades.length).toBe(3) // Check that there are 3 upgrades
         
         // Check upgrades are correct
@@ -72,11 +71,11 @@ describe("Tree Upgrade Tests", ()=>{
         expect(upgradeNames).toEqual(expectedUpgradeNames)
 
         // Select 1st upgrade
-        TreeUtil.selectUpgrade(playerState, playerState.weaponUpgradeTree, upgrades, 0)
+        TreeManager.selectUpgrade(playerState, playerState.weaponUpgradeTree, upgrades, 0)
         expect(upgrades[0].data.status).toBe("selected")
 
         // Try again Check that there are 3 upgrades
-        upgrades = TreeUtil.getAvailableUpgrades(playerState.weaponUpgradeTree)
+        upgrades = TreeManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
         expect(upgrades.length).toBe(3)
         
         // Check upgrades are correct
@@ -90,7 +89,7 @@ describe("Tree Upgrade Tests", ()=>{
         WeaponManager.equipWeaponUpgrade(playerState, partially_upgraded_test_weapon as Node<WeaponData>)
         
         // Select 1st upgrade
-        let upgrades = TreeUtil.getAvailableUpgrades(playerState.weaponUpgradeTree)
+        let upgrades = TreeManager.getAvailableUpgrades(playerState.weaponUpgradeTree)
         
         WeaponManager.selectUpgrade(playerState, upgrades, 1)
         

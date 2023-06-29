@@ -4,6 +4,7 @@ import WeaponData from "./Node/Data/WeaponData";
 import Player from "../gameobjs/Player";
 import Effect from "../effects/Effect";
 import { type, ArraySchema } from '@colyseus/schema';
+import GameManager from "../../system/GameManager";
 
 /** Currently acts as a weapon upgrade and artifact upgrade tree */
 export default class WeaponUpgradeTree extends StatTree<WeaponData>{
@@ -13,8 +14,8 @@ export default class WeaponUpgradeTree extends StatTree<WeaponData>{
 
     owner!: Player
 
-    constructor(owner?: Player, root?: Node<WeaponData>, name: string = "name", description: string = "description"){
-        super(root, name, description)
+    constructor(gameManager?: GameManager, owner?: Player, root?: Node<WeaponData>, name: string = "name", description: string = "description"){
+        super(gameManager, root, name, description)
         this.weaponId = root?.data.weaponId
         if(owner) this.setOwner(owner)
     }
