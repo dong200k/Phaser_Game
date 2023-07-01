@@ -9,11 +9,18 @@ const getFinalSpeed = function({speed}: Stat){
     return speed * BASE_SPEED;
 }
 
+/**
+ * Takes in an attacker stat and a defender stack and returns the true damage the defender should take
+ * @param param0 stat of attacker/projectile
+ * @param param1 stat of defender/entity
+ * @returns 
+ */
 const getFinalAttackDamage = function({attack, attackPercent, damagePercent, critDamage, critRate, armorPen}: Stat, {armor}: Stat){
     const isCrit = Math.random() < critRate? 1 : 0;
     const trueDamage = (attack * (1 + attackPercent + damagePercent)) * (critDamage + 1) * isCrit 
     const effectiveArmor = armor * (1 - Math.min(armorPen, ARMOR_PEN_CAP))
-    return trueDamage - effectiveArmor;
+    let damage = trueDamage - effectiveArmor;
+    return damage < 0? 0 : damage
 }
 
 const getFinalMagicDamage = function({magicAttack, magicAttackPercent, damagePercent, magicPen}: Stat, {magicResist}: Stat){

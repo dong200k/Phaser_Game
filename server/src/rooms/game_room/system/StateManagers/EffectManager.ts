@@ -8,7 +8,6 @@ import TriggerEffect from "../../schemas/effects/trigger/TriggerEffect";
 import TriggerUpgradeEffect from "../../schemas/effects/trigger/TriggerUpgradeEffect";
 import ContinuousUpgradeEffect from "../../schemas/effects/continuous/ContinuousUpgradeEffect";
 import { IUpgradeEffect } from "../interfaces";
-import OneTimeUpgradeEffect from "../../schemas/effects/onetime/OneTimeUpgradeEffect";
 
 const statCompoundEffectName = "!Entity Stat Compound Effect!";
 

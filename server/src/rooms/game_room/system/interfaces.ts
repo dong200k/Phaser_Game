@@ -2,7 +2,6 @@ import WeaponData from "../schemas/Trees/Node/Data/WeaponData";
 import Node from "../schemas/Trees/Node/Node";
 import SkillData from "../schemas/Trees/Node/Data/SkillData";
 import ContinuousUpgradeEffect from "../schemas/effects/continuous/ContinuousUpgradeEffect";
-import OneTimeUpgradeEffect from "../schemas/effects/onetime/OneTimeUpgradeEffect";
 import TriggerUpgradeEffect from "../schemas/effects/trigger/TriggerUpgradeEffect";
 import Stat, { statType } from "../schemas/gameobjs/Stat";
 import { CategoryType } from "./Collisions/Category";
@@ -87,7 +86,7 @@ export type weapon = {
 // }
 
 // ------------ interfaces for Upgrade Effects -------------- //
-export type IUpgradeEffect = TriggerUpgradeEffect | ContinuousUpgradeEffect | OneTimeUpgradeEffect
+export type IUpgradeEffect = TriggerUpgradeEffect | ContinuousUpgradeEffect
 export type ITriggerType = "player skill" | "player attack" | "none"
 
 // ------------ interfaces for Projectiles -------------- //

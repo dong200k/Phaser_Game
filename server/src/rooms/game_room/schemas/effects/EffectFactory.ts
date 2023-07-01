@@ -9,7 +9,6 @@ import CompoundEffect from "./combo/CompoundEffect";
 import TriggerUpgradeEffect from "./trigger/TriggerUpgradeEffect";
 import UpgradeEffect from "../gameobjs/UpgradeEffect";
 import ContinuousUpgradeEffect from "./continuous/ContinuousUpgradeEffect";
-import OneTimeUpgradeEffect from "./onetime/OneTimeUpgradeEffect";
 import CollisionImmuneEffect from "./temp/CollisionImmuneEffect";
 
 
