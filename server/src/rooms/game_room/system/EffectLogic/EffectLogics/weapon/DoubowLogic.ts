@@ -42,7 +42,9 @@ export default class DoubowLogic extends EffectLogic{
             collisionCategory: collisionCategory,
             range: range,
             activeTime: activeTime,
-            poolType: poolType
+            poolType: poolType,
+            attackMultiplier: 1,
+            magicMultiplier: 0,
         })
 
         // spawn projectile with direction rotated -30 degrees from player to player mouse
@@ -58,7 +60,9 @@ export default class DoubowLogic extends EffectLogic{
             collisionCategory: "PLAYER_PROJECTILE",
             range: range,
             activeTime: activeTime,
-            poolType: "BowLogic"
+            poolType: "BowLogic",
+            attackMultiplier: 1,
+            magicMultiplier: 0,
         })
     }
 }

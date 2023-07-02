@@ -3,7 +3,7 @@ import Entity from "../../schemas/gameobjs/Entity";
 import Projectile from "../../schemas/projectiles/Projectile";
 import GameManager from "../GameManager";
 import EffectManager from "../StateManagers/EffectManager";
-import { getFinalAttackDamage, getFinalLifeSteal } from "../formulas";
+import { getTrueAttackDamage, getFinalLifeSteal, getTrueMagicDamage } from "../Formulas/formulas";
 import { CategoryType, getCategoryType } from "./Category";
 
 export default class CollisionManager{
@@ -99,16 +99,20 @@ export default class CollisionManager{
      * @param projectile 
      */
     public resolveProjectileCollision(entity: Entity, projectile: Projectile){
-        let trueDamage = getFinalAttackDamage(projectile.stat, entity.stat)
-        
-        // Entity colliding with projectile takes damage
-        let damageEffect = EffectFactory.createDamageEffect(trueDamage)
+        let trueAttackDamage = getTrueAttackDamage(projectile.stat, entity.stat, projectile.attackMultiplier)
+        let trueMagicDamage = getTrueMagicDamage(projectile.stat, entity.stat, projectile.magicMultiplier)
+
+        // Entity colliding with projectile takes attack and magic damage
+        let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage)
         EffectManager.addEffectsTo(entity, damageEffect)
-        console.log("damage:", trueDamage)
+
+        damageEffect = EffectFactory.createDamageEffect(trueMagicDamage)
+        EffectManager.addEffectsTo(entity, damageEffect)
+
         // Entity shooting projectile heals based on their lifesteal
         let attackingEntity = projectile.entity
         if(attackingEntity){
-            let lifeSteal = getFinalLifeSteal(trueDamage, attackingEntity.stat.lifeSteal)
+            let lifeSteal = getFinalLifeSteal(trueAttackDamage, attackingEntity.stat.lifeSteal)
             let healEffect = EffectFactory.createHealEffect(lifeSteal)
             console.log("lifesteal:", lifeSteal)
             EffectManager.addEffectsTo(attackingEntity, healEffect)

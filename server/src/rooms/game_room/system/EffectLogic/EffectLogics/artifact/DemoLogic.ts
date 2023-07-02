@@ -34,7 +34,9 @@ export class DemoLogic extends EffectLogic{
             poolType: poolType,
             entity: playerState,
             range: 500,
-            activeTime: 3000
+            activeTime: 3000,
+            attackMultiplier: 1,
+            magicMultiplier: 0,
         }, "Projectile")
     }
 }

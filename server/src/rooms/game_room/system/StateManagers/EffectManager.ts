@@ -38,30 +38,15 @@ export default class EffectManager {
      * @param effect A effect or an array or effects.
      */
     public static addEffectsTo(entity: Entity, effect: Effect | Effect[]) {
-        function printEffects(entity: Entity, init: string){
-            let str = init + "\n"
-            entity.effects.forEach(e=>str = str + e.toString() + "\n")
-            console.log(str)
-        }
-        
         if(Array.isArray(effect)) {
             effect.forEach((e) => {
                 entity.effects.push(e);
                 e.addToEntity(entity);
             })
         } else {
-            // printEffects(entity, "before")
-            // expect(entity.effects.length).toBe(1)
-            // let lenBefore = entity.effects.length
-            // let removed = entity.effects[0]
             entity.effects.unshift(effect);
-            // let lenAFter = entity.effects.length
-            // if(lenAFter !== (lenBefore + 1)) entity.effects.push(removed)
-            // expect(entity.effects.length).toBe(2)
-            // printEffects(entity, "middle")
             effect.addToEntity(entity);
         }
-        // printEffects(entity, "after")
     }
 
     /**
@@ -163,12 +148,6 @@ export default class EffectManager {
                 && ("collisionGroup" in effect2) && ("doesStack" in effect2)
                 && effect1.collisionGroup === effect2.collisionGroup 
                 && effect1.collisionGroup !== -1 && (!effect1.doesStack || !effect2.doesStack)
-        }
-
-        function printEffects(entity: Entity, init: string){
-            let str = init + "\n"
-            entity.effects.forEach(e=>str = str + e.toString() + "\n")
-            console.log(str)
         }
 
         /** Adds one upgrade effect to the entity and replaces any upgrade effect that collides with this effect*/

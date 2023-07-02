@@ -103,6 +103,8 @@ export type IProjectileConfig = {
     poolType: string,
     activeTime?: number,
     range?: number,
+    attackMultiplier: number,
+    magicMultiplier: number,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }
