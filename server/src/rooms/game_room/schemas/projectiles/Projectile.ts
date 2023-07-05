@@ -9,7 +9,6 @@ import MathUtil from "../../../../util/MathUtil";
 import GameObject, { Velocity } from "../gameobjs/GameObject";
 import GameManager from "../../system/GameManager";
 import MaskManager from "../../system/Collisions/MaskManager";
-import CircularFollowProjectle from "./specialprojectiles/CircularFollowProjectile";
 
 /**
  * Projectiles are are updated via the update() method. Call projectile.setInactive() to return the projectile to the
@@ -45,6 +44,9 @@ export default class Projectile extends GameObject implements Cloneable {
     @type(Entity) entity?: Entity
     /** Stats used for damage calculation */
     @type(Stat) stat: Stat
+    /** attack multiplier AD  */
+    @type("number") attackMultiplier: number
+    @type("number") magicMultiplier: number
     /** GameManager this projectile belongs to */
     private gameManager: GameManager
 
@@ -68,6 +70,8 @@ export default class Projectile extends GameObject implements Cloneable {
         this.gameManager = gameManager
         this.entity = projectileConfig.entity
         this.type = "Projectile"
+        this.attackMultiplier = projectileConfig.attackMultiplier
+        this.magicMultiplier = projectileConfig.magicMultiplier
         this.createBody()
     }
     
@@ -178,6 +182,8 @@ export default class Projectile extends GameObject implements Cloneable {
         this.spawnX = projectileConfig.spawnX
         this.spawnY = projectileConfig.spawnY
         this.entity = projectileConfig.entity
+        this.attackMultiplier = projectileConfig.attackMultiplier
+        this.magicMultiplier = projectileConfig.magicMultiplier
         this.type = "Projectile"
 
         // Make body collideable again

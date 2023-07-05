@@ -33,7 +33,9 @@ export default class BowLogic extends EffectLogic{
             collisionCategory: collisionCategory,
             range: range,
             activeTime: activeTime,
-            poolType: poolType
+            poolType: poolType,
+            attackMultiplier: 1,
+            magicMultiplier: 0,
         })
     }
 }

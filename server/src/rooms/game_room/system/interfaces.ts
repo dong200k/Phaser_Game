@@ -2,11 +2,10 @@ import WeaponData from "../schemas/Trees/Node/Data/WeaponData";
 import Node from "../schemas/Trees/Node/Node";
 import SkillData from "../schemas/Trees/Node/Data/SkillData";
 import ContinuousUpgradeEffect from "../schemas/effects/continuous/ContinuousUpgradeEffect";
-import OneTimeUpgradeEffect from "../schemas/effects/onetime/OneTimeUpgradeEffect";
 import TriggerUpgradeEffect from "../schemas/effects/trigger/TriggerUpgradeEffect";
 import Stat, { statType } from "../schemas/gameobjs/Stat";
 import { CategoryType } from "./Collisions/Category";
-import { Velocity } from "../schemas/gameobjs/GameObject";
+import GameObject, { Velocity } from "../schemas/gameobjs/GameObject";
 import Entity from "../schemas/gameobjs/Entity";
 
 // ------------ interfaces for the Tiled json file -------------- //
@@ -87,7 +86,7 @@ export type weapon = {
 // }
 
 // ------------ interfaces for Upgrade Effects -------------- //
-export type IUpgradeEffect = TriggerUpgradeEffect | ContinuousUpgradeEffect | OneTimeUpgradeEffect
+export type IUpgradeEffect = TriggerUpgradeEffect | ContinuousUpgradeEffect
 export type ITriggerType = "player skill" | "player attack" | "none"
 
 // ------------ interfaces for Projectiles -------------- //
@@ -104,6 +103,13 @@ export type IProjectileConfig = {
     poolType: string,
     activeTime?: number,
     range?: number,
+    attackMultiplier: number,
+    magicMultiplier: number,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
+}
+
+// ------------ interfaces for Collision Manager -------------- //
+export type ICollisionRule = {
+    typeA: CategoryType, typeB: CategoryType, resolve: (gameObjectA: any, gameObjectB: any, bodyA: Matter.Body, bodyB: Matter.Body)=> void
 }

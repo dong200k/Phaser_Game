@@ -22,6 +22,7 @@ export default class TribowLogic extends EffectLogic{
         let playerY = playerBody.position.y
         let collisionCategory: CategoryType =  "PLAYER_PROJECTILE"
         let poolType = "Bow"
+        let attackMultiplier = 10
 
         // direction of player to player mouse position
         let x = mouseX - playerX
@@ -42,7 +43,9 @@ export default class TribowLogic extends EffectLogic{
             collisionCategory: collisionCategory,
             range: range,
             activeTime: activeTime,
-            poolType: poolType
+            poolType: poolType,
+            attackMultiplier: attackMultiplier,
+            magicMultiplier: 0,
         })
 
         // spawn projectile with direction rotated 30 degrees from player to player mouse
@@ -58,7 +61,9 @@ export default class TribowLogic extends EffectLogic{
             collisionCategory: collisionCategory,
             range: range,
             activeTime: activeTime,
-            poolType: poolType
+            poolType: poolType,
+            attackMultiplier: attackMultiplier,
+            magicMultiplier: 0,
         })
 
         // spawn projectile with direction rotated -30 degrees from player to player mouse
@@ -74,7 +79,9 @@ export default class TribowLogic extends EffectLogic{
             collisionCategory: collisionCategory,
             range: range,
             activeTime: activeTime,
-            poolType: poolType
+            poolType: poolType,
+            attackMultiplier: attackMultiplier,
+            magicMultiplier: 0,
         })
     }
 }
