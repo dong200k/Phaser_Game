@@ -23,12 +23,14 @@ export default class GameObject extends Schema implements Cloneable {
     private body: Matter.Body | null = null;
     @type('number') x;
     @type('number') y;
+    @type(Velocity) velocity;
 
     constructor(x: number, y: number, ownerId?: string) {
         super();
         this.id = MathUtil.uid()
         this.x = x;
         this.y = y;
+        this.velocity = new Velocity();
         this.ownerId = ownerId;
         this.type = 'GameObject';
         this.visible = true;

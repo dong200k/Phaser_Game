@@ -10,6 +10,7 @@ import ClientSidePrediction from "./ClientSidePrediction";
 import Tile from "../gameobjs/Tile";
 import EventManager from "./EventManager";
 import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
+import type MonsterState from "../../../server/src/rooms/game_room/schemas/gameobjs/monsters/Monster";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -330,8 +331,22 @@ export default class GameManager {
                 }
             }
 
-        } else {
-            this.addListenersToGameObject(entity, entityState);
         }
+        
+        if(entity instanceof Monster) {
+            let monsterState = entityState as MonsterState;
+            // animations
+            monsterState.velocity.onChange = () => {
+                let velocityX = monsterState.velocity.x;
+                let velocityY = monsterState.velocity.y;
+                if(velocityX < 0) entity.setFlip(true, false);
+                else entity.setFlip(false, false);
+            }
+            entity.play({key: "walk", repeat: -1});
+        }
+
+        if(!(entity instanceof Player))
+            this.addListenersToGameObject(entity, entityState);
+        
     }
 }

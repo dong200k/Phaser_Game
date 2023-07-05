@@ -26,13 +26,14 @@ export default class OneTimeUpgradeEffect extends OneTimeEffect {
     }
 
     public applyEffect(entity: Entity): boolean {
-        try{
-            // use effect that effectLogicId references
-            return EffectLogicManager.getManager().useEffect(this.effectLogicId, entity)
-        }catch(e: any){
-            console.log(e?.message)
-            return false
-        }
+        // try{
+        //     // use effect that effectLogicId references
+        //     return EffectLogicManager.getManager().useEffect(this.effectLogicId, entity)
+        // }catch(e: any){
+        //     console.log(e?.message)
+        //     return false
+        // }
+        return false;
     }
     
     public setTree(tree: WeaponUpgradeTree){

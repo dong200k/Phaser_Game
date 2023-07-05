@@ -69,6 +69,8 @@ export default class GameManager {
                 if(objState && !obj.isStatic) {
                     objState.x = obj.position.x;
                     objState.y = obj.position.y;
+                    objState.velocity.x = obj.velocity.x;
+                    objState.velocity.y = obj.velocity.y;
                 }
             })
         });
@@ -122,13 +124,13 @@ export default class GameManager {
 
     private initCollisionEvent() {
         Matter.Events.on(this.engine, "collisionStart", (event) => {
-            console.log("collision detected")
+            //console.log("collision detected")
             let pairs = event.pairs;
             // console.log(event.source)
             pairs.forEach((pair, idx) => {
                 // do something
-                console.log(idx, pair.bodyA.label)
-                console.log(idx, pair.bodyB.label)
+                //console.log(idx, pair.bodyA.label)
+                //console.log(idx, pair.bodyB.label)
                 // this.matterBodies.get(pair.bodyA.id)
             })
         })
