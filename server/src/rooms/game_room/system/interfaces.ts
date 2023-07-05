@@ -5,7 +5,7 @@ import ContinuousUpgradeEffect from "../schemas/effects/continuous/ContinuousUpg
 import TriggerUpgradeEffect from "../schemas/effects/trigger/TriggerUpgradeEffect";
 import Stat, { statType } from "../schemas/gameobjs/Stat";
 import { CategoryType } from "./Collisions/Category";
-import { Velocity } from "../schemas/gameobjs/GameObject";
+import GameObject, { Velocity } from "../schemas/gameobjs/GameObject";
 import Entity from "../schemas/gameobjs/Entity";
 
 // ------------ interfaces for the Tiled json file -------------- //
@@ -107,4 +107,9 @@ export type IProjectileConfig = {
     magicMultiplier: number,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
+}
+
+// ------------ interfaces for Collision Manager -------------- //
+export type ICollisionRule = {
+    typeA: CategoryType, typeB: CategoryType, resolve: (gameObjectA: any, gameObjectB: any, bodyA: Matter.Body, bodyB: Matter.Body)=> void
 }

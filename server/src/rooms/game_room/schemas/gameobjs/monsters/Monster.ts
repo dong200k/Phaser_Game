@@ -9,6 +9,7 @@ export default class Monster extends Entity {
     @type("string") private monsterName: string;
     @type(MonsterController) private controller: MonsterController | null = null;
     private aggroTarget: Entity | null = null;
+    private prevHp: number
 
 
     constructor(monsterName: string, controller?:MonsterController) {
@@ -16,6 +17,7 @@ export default class Monster extends Entity {
         this.monsterName = monsterName;
         this.type = "Monster";
         if(controller !== undefined) this.controller = controller;
+        this.prevHp = this.stat.hp
     }
 
     public setController(contorller: MonsterController) {
@@ -44,5 +46,15 @@ export default class Monster extends Entity {
      */
     public update(deltaT: number) {
         this.controller?.update(deltaT);
+
+        if(this.stat.hp != this.prevHp){
+            console.log(`Monster took ${this.stat.hp - this.prevHp} damage`)
+            this.prevHp = this.stat.hp
+        }
+
+        if(this.stat.hp <= 0){
+            console.log("Monster Down")
+            this.setVisible(false)
+        }
     }
 }

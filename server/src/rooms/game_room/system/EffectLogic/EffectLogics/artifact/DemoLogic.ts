@@ -19,7 +19,7 @@ export class DemoLogic extends EffectLogic{
         let collisionCategory: CategoryType =  "PLAYER_PROJECTILE"
         let poolType = "Horizontal-Glaive"
 
-        let xVelocity = Math.random() * 100 + 10
+        let xVelocity = Math.random() * 10 + 10
         if(Math.random()<0.5) xVelocity *= -1
 
         gameManager.getProjectileManager().spawnProjectile({
@@ -35,7 +35,7 @@ export class DemoLogic extends EffectLogic{
             entity: playerState,
             range: 500,
             activeTime: 3000,
-            attackMultiplier: 1,
+            attackMultiplier: 10,
             magicMultiplier: 0,
         }, "Projectile")
     }

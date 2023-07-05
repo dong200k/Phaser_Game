@@ -44,8 +44,10 @@ export default class EffectManager {
                 e.addToEntity(entity);
             })
         } else {
-            entity.effects.unshift(effect);
-            effect.addToEntity(entity);
+            if(entity.effects) {
+                entity.effects.unshift(effect);
+                effect.addToEntity(entity);
+            }
         }
     }
 

@@ -5,9 +5,42 @@ import GameManager from "../GameManager";
 import EffectManager from "../StateManagers/EffectManager";
 import { getTrueAttackDamage, getFinalLifeSteal, getTrueMagicDamage } from "../Formulas/formulas";
 import { CategoryType, getCategoryType } from "./Category";
+import { ICollisionRule } from "../interfaces";
+import Tile from "../../schemas/gameobjs/Tile";
 
 export default class CollisionManager{
     private gameManager: GameManager
+
+    private collisionRules: ICollisionRule[] = [
+        // Projectile Collisions
+        {typeA: "PLAYER_PROJECTILE", typeB: "MONSTER", resolve: this.resolveProjectileCollision},
+        {typeA: "MONSTER_PROJECTILE", typeB: "PLAYER_PROJECTILE", resolve: this.resolveProjectileCollision},
+        {typeA: "DAMAGE_ALL_PROJECTILE", typeB: "PLAYER", resolve: this.resolveProjectileCollision},
+        {typeA: "DAMAGE_ALL_PROJECTILE", typeB: "MONSTER", resolve: this.resolveProjectileCollision},
+
+        // Obstacle collisions
+        {typeA: "PLAYER_PROJECTILE", typeB: "OBSTACLE", resolve: this.resolveProjectileObstacleCollision},
+        {typeA: "MONSTER_PROJECTILE", typeB: "OBSTACLE", resolve: this.resolveProjectileObstacleCollision},
+        {typeA: "DAMAGE_ALL_PROJECTILE", typeB: "OBSTACLE", resolve: this.resolveProjectileObstacleCollision},
+        {typeA: "PLAYER", typeB: "OBSTACLE", resolve: this.resolveObstacleCollision},
+        {typeA: "MONSTER", typeB: "OBSTACLE", resolve: this.resolveObstacleCollision},
+        {typeA: "PET", typeB: "OBSTACLE", resolve: this.resolveObstacleCollision},
+
+        // *** TODO create resolve functions for collisions below ***
+        // Other Player collision
+        {typeA: "PLAYER", typeB: "MONSTER", resolve: ()=>{}},
+        {typeA: "PLAYER", typeB: "PET", resolve: ()=>{}},
+        {typeA: "PLAYER", typeB: "NPC", resolve: ()=>{}},
+        {typeA: "PLAYER", typeB: "CHEST", resolve: ()=>{}},
+        {typeA: "PLAYER", typeB: "ITEM", resolve: ()=>{}},
+        {typeA: "PLAYER", typeB: "PLAYER_BARRIER", resolve: ()=>{}},
+
+        // Other Pet Collisions
+        {typeA: "PET", typeB: "CHEST", resolve: ()=>{}},
+        {typeA: "PET", typeB: "ITEM", resolve: ()=>{}},
+
+        // **TODO** Add more 
+    ]
 
     constructor(gameManager: GameManager){
         this.gameManager = gameManager
@@ -34,63 +67,23 @@ export default class CollisionManager{
         }
 
         // Get Category type/string
-        let typeA = getCategoryType(categoryNumberA)
-        let typeB = getCategoryType(categoryNumberB)
+        let categoryA = getCategoryType(categoryNumberA)
+        let categoryB = getCategoryType(categoryNumberB)
 
         // Get each matterBody's corresponding gameObjects
         let gameObjectA = this.gameManager.gameObjects.get(bodyA.id)
         let gameObjectB = this.gameManager.gameObjects.get(bodyB.id)
 
-        // Projectile and player/monster collision
-        let playerProjectileCollision = typeA === "PLAYER_PROJECTILE" && typeB === "MONSTER"
-        let monsterProjectileCollision = typeA === "MONSTER_PROJECTILE" && typeB === "PLAYER"
-        let friendlyFireProjectileCollision = (typeA === "DAMAGE_ALL_PROJECTILE") && (typeB === "MONSTER" || typeB === "PLAYER")
-        if(playerProjectileCollision || monsterProjectileCollision || friendlyFireProjectileCollision){
-            return this.resolveProjectileCollision(gameObjectB as Entity, gameObjectA as Projectile)
-        }
-
-        // Obstacle collisions
-        let collidesWithObstacles: CategoryType[] = [
-            "PLAYER_PROJECTILE", 
-            "MONSTER_PROJECTILE", 
-            "DAMAGE_ALL_PROJECTILE",
-            "PLAYER", "MONSTER", "PET"
-        ]
-        if(collidesWithObstacles.includes(typeA) && typeB === "OBSTACLE"){
-            return
-        }
-
-        // Other Player collisions
-        if(typeA === "PLAYER"){
-            switch(typeB){
-                case "MONSTER":
-                    break;
-                case "PET":
-                    break;
-                case "NPC":
-                    break;
-                case "CHEST":
-                    break;
-                case "ITEM":
-                    break;
-                case "PLAYER_BARRIER":
-                    break;
-                default:
-                    break;
+        // Find collision match and resolve the collision
+        this.collisionRules.forEach(({typeA, typeB, resolve})=>{
+            // Order is based on what appears first/category number of the matter bodies's collision filter.
+            // Check Category.ts to see order
+            if((typeA === categoryA && typeB === categoryB)){
+                console.log(`${typeA}, ${typeB}`)
+                resolve(gameObjectA, gameObjectB, bodyA, bodyB)
+                return
             }
-            return
-        }
-
-        // Pet collisions
-        if(typeA === "PET"){
-            switch(typeB){
-                case "CHEST":
-                    break;
-                case "ITEM":
-                    break;
-            }
-            return
-        }
+        })
     }
 
     /**
@@ -98,7 +91,7 @@ export default class CollisionManager{
      * @param entity 
      * @param projectile 
      */
-    public resolveProjectileCollision(entity: Entity, projectile: Projectile){
+    public resolveProjectileCollision(projectile: Projectile, entity: Entity, bodyA: Matter.Body, bodyB: Matter.Body){
         let trueAttackDamage = getTrueAttackDamage(projectile.stat, entity.stat, projectile.attackMultiplier)
         let trueMagicDamage = getTrueMagicDamage(projectile.stat, entity.stat, projectile.magicMultiplier)
 
@@ -117,5 +110,16 @@ export default class CollisionManager{
             console.log("lifesteal:", lifeSteal)
             EffectManager.addEffectsTo(attackingEntity, healEffect)
         }
+
+        setTimeout(()=>{
+            projectile.setInactive()  
+        }, 200)
+    }
+
+    public resolveProjectileObstacleCollision(projectile: Projectile, obstacle: Tile, bodyA: Matter.Body, bodyB: Matter.Body){
+        projectile.setInactive()
+    }
+
+    public resolveObstacleCollision(){
     }
 }

@@ -22,6 +22,7 @@ export default class TribowLogic extends EffectLogic{
         let playerY = playerBody.position.y
         let collisionCategory: CategoryType =  "PLAYER_PROJECTILE"
         let poolType = "Bow"
+        let attackMultiplier = 10
 
         // direction of player to player mouse position
         let x = mouseX - playerX
@@ -43,7 +44,7 @@ export default class TribowLogic extends EffectLogic{
             range: range,
             activeTime: activeTime,
             poolType: poolType,
-            attackMultiplier: 1,
+            attackMultiplier: attackMultiplier,
             magicMultiplier: 0,
         })
 
@@ -61,7 +62,7 @@ export default class TribowLogic extends EffectLogic{
             range: range,
             activeTime: activeTime,
             poolType: poolType,
-            attackMultiplier: 1,
+            attackMultiplier: attackMultiplier,
             magicMultiplier: 0,
         })
 
@@ -79,7 +80,7 @@ export default class TribowLogic extends EffectLogic{
             range: range,
             activeTime: activeTime,
             poolType: poolType,
-            attackMultiplier: 1,
+            attackMultiplier: attackMultiplier,
             magicMultiplier: 0,
         })
     }

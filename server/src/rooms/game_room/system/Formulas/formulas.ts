@@ -66,15 +66,27 @@ export const getFinalLifeSteal = function(trueDamage: number, lifeSteal: number)
 }
 
 /**
- *
+ * Note: 
+ * Assuming attackSpeed = 1.
+ * attackSpeedPercent = 0 same cooldown.
+ * attackSpeedPercent = 1 halves cooldown.
+ * attackSpeedPercent = 2 makes cooldown 1/3.
+ * attackSpeedPercent = -1 doubles cooldown.
+ * attackSpeedPercent = -2 triples cooldown.
+ * ATTACK_SPEED_CAP affects maximum final attack speed. At the moment it is = 5 which means maximum speedup is 5x reduced cooldown.
  * @param stat
  * @param BASE_ATTACK_COOLDOWN cooldown
  * @returns actual cooldown after accounting attack speed
  */
 export const getFinalAttackCooldown = function({attackSpeed, attackSpeedPercent}: Stat, BASE_ATTACK_COOLDOWN: number){
-    const totalAttackSpeed = attackSpeed * (1 + attackSpeedPercent)
+    let totalAttackSpeed: number
+    if(attackSpeedPercent < 0) {
+        totalAttackSpeed = attackSpeed / Math.abs(-1 + attackSpeedPercent)
+    }else{
+        totalAttackSpeed = attackSpeed * (1 + attackSpeedPercent)
+    }
 
-    if(totalAttackSpeed < 0 || totalAttackSpeed  === 0) return BASE_ATTACK_COOLDOWN
+    if(totalAttackSpeed === 0 || attackSpeed < 0) return BASE_ATTACK_COOLDOWN
 
     const speedFactor = 1 / Math.min(totalAttackSpeed, ATTACK_SPEED_CAP)
     return BASE_ATTACK_COOLDOWN * speedFactor;
@@ -84,8 +96,8 @@ export const getFinalAttackCooldown = function({attackSpeed, attackSpeedPercent}
 /**
  * 
  * @param stat 
- * @returns attack range
+ * @returns attack range after accounting stat
  */
 export const getFinalAttackRange = function({attackRangePercent, attackRange}: Stat){
-    return (1 + attackRangePercent) + attackRange;
+    return (1 + attackRangePercent) * attackRange;
 }
