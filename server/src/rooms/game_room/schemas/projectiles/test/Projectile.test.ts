@@ -42,7 +42,9 @@ describe("Projectile test", ()=>{
             collisionCategory: "PLAYER_PROJECTILE",
             range: range,
             activeTime: activeTime,
-            poolType: poolType
+            poolType: poolType,
+            attackMultiplier: 1,
+            magicMultiplier: 1,
         })
     }
 

@@ -30,6 +30,8 @@ export class FrostGlaive extends EffectLogic{
             poolType: poolType,
             entity: playerState,
             activeTime: 5000,
+            attackMultiplier: 1,
+            magicMultiplier: 1,
             data: {
                 radius: 50,
                 startDegree: 30,
@@ -66,6 +68,8 @@ export class FrostGlaiveFrenzy extends EffectLogic{
                 poolType: poolType,
                 entity: playerState,
                 activeTime: 5000,
+                attackMultiplier: 1,
+                magicMultiplier: 1,
                 data: {
                     radius: radius,
                     startDegree: startDegree,

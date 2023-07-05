@@ -62,7 +62,7 @@ export default class ArtifactManager{
         artifacts.push(artifactTree)
         artifactTree.setOwner(playerState)
 
-        playerState.effects.forEach(e=>console.log(e.toString() + '\n'))
+        // playerState.effects.forEach(e=>console.log(e.toString() + '\n'))
         return artifactTree
     }
 
