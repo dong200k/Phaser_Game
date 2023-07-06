@@ -1,20 +1,27 @@
-
+import type GameObjectState from "../../../server/src/rooms/game_room/schemas/gameobjs/GameObject";
 
 export default abstract class GameObject extends Phaser.GameObjects.Sprite
 {
     serverX: number;
     serverY: number;
     serverVisible: boolean;
-    serverState: any;
+    gameObjectState: GameObjectState;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, texture: string|Phaser.Textures.Texture) {
+    // Adjust the sprites position.
+    positionOffsetX: number;
+    positionOffsetY: number;
+
+    constructor(scene: Phaser.Scene, x: number, y: number, texture: string|Phaser.Textures.Texture, gameObjectState: GameObjectState) {
         super(scene, x, y, texture);
         this.serverX = x;
         this.serverY = y;
+        this.positionOffsetX = 0;
+        this.positionOffsetY = 0;
         this.serverVisible = true;
+        this.gameObjectState = gameObjectState;
     }
 
-    public setServerState(serverState: any) {
-        this.serverState = serverState;
-    }
+    // public setServerState(serverState: GameObjectState) {
+    //     this.gameObjectState = serverState;
+    // }
 }

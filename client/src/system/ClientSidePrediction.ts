@@ -314,14 +314,19 @@ export default class ClientSidePrediction {
             friction: 0,
         };
 
-        if(gameObject.serverState.type === "Tile") matterConfig = this.matterBodyConfig["Tile"];
-        if(gameObject.serverState.type === "Player") matterConfig = this.matterBodyConfig["Player"];
+
+        if(gameObject.gameObjectState.type === "Tile") matterConfig = this.matterBodyConfig["Tile"];
+        if(gameObject.gameObjectState.type === "Player") matterConfig = this.matterBodyConfig["Player"];
+
+        let width = gameObject.gameObjectState.width;
+        let height = gameObject.gameObjectState.height;
 
         let gameObjectItem = {
             gameObject: gameObject,
-            body: Matter.Bodies.rectangle(gameObject.serverX, gameObject.serverY, gameObject.width, gameObject.height, matterConfig),
+            body: Matter.Bodies.rectangle(gameObject.serverX, gameObject.serverY, width, height, matterConfig),
             debugGraphic: this.scene.add.graphics({lineStyle: {width: 1, color: 0x0000cc}})
-                .strokeRect(-gameObject.width / 2,-gameObject.height / 2, gameObject.width, gameObject.height)
+                .strokeRect(-width / 2,-height / 2, width, height)
+                .fillCircle(0, 0, 2)
                 .setVisible(this.debugGraphicsVisible)
                 .setDepth(10),
         }            

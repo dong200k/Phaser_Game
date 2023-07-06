@@ -77,11 +77,11 @@ export default class GameManager {
     private interpolateGameObjects() {
         this.gameObjects?.forEach((obj) => {
             if(obj.visible) {
-                obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, .10));
-                obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, .10));
+                obj.setX(Phaser.Math.Linear(obj.x, obj.serverX + obj.positionOffsetX, .10));
+                obj.setY(Phaser.Math.Linear(obj.y, obj.serverY + obj.positionOffsetY, .10));
             } else {
-                obj.setX(obj.serverX);
-                obj.setY(obj.serverY);
+                obj.setX(obj.serverX + obj.positionOffsetX);
+                obj.setY(obj.serverY + obj.positionOffsetY);
             } 
         })
     }
@@ -187,7 +187,7 @@ export default class GameManager {
                 break;
         }
         if(newGameObject) {
-            newGameObject.setServerState(gameObj);
+            // newGameObject.setServerState(gameObj);
             this.gameObjects.push(newGameObject);
             this.csp.addGameObject(newGameObject);
         }
@@ -243,6 +243,8 @@ export default class GameManager {
     
     private addPlayer(player: any, key: string): Player{
         let newPlayer = new Player(this.scene, player);
+        newPlayer.positionOffsetX = 10;
+        newPlayer.positionOffsetY = -10;
         // console.log(newPlayer)
         if(key === this.gameRoom.sessionId) {
             this.player1 = newPlayer;
@@ -253,6 +255,7 @@ export default class GameManager {
             this.players.push(newPlayer);
         this.scene.add.existing(newPlayer);
         this.addListenersToEntity(newPlayer, player);
+
         return newPlayer;
     }
 

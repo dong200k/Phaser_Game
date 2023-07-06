@@ -1,10 +1,12 @@
 import Entity from "./Entity";
+import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
+
 export default class Player extends Entity
 {
-    private playerState: any;
+    private playerState: PlayerState;
 
-    constructor(scene:Phaser.Scene,playerState:any) {
-        super(scene, playerState.x, playerState.y, "demo_hero");
+    constructor(scene:Phaser.Scene,playerState:PlayerState) {
+        super(scene, playerState.x, playerState.y, playerState.role, playerState);
         this.playerState = playerState;
     }
 

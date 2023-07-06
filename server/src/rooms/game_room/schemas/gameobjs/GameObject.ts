@@ -23,6 +23,8 @@ export default class GameObject extends Schema implements Cloneable {
     private body: Matter.Body | null = null;
     @type('number') x;
     @type('number') y;
+    @type('number') width;
+    @type('number') height;
     @type(Velocity) velocity;
 
     constructor(x: number, y: number, ownerId?: string) {
@@ -30,6 +32,8 @@ export default class GameObject extends Schema implements Cloneable {
         this.id = MathUtil.uid()
         this.x = x;
         this.y = y;
+        this.width = 1;
+        this.height = 1;
         this.velocity = new Velocity();
         this.ownerId = ownerId;
         this.type = 'GameObject';

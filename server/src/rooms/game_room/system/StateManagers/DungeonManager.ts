@@ -104,6 +104,9 @@ export default class DungeonManager {
         let width = 12;
         let height = 18;
         
+        monster.width = width;
+        monster.height = height;
+
         let randomSpawnPoint = null;
         if(this.dungeon !== undefined)
             randomSpawnPoint = this.dungeon.getRandomMonsterSpawnPoint();

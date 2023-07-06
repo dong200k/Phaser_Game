@@ -19,7 +19,7 @@ export default class Player extends Entity {
     constructor(name: string, role?: string, gameManager?: GameManager, ) {
         super();
         this.name = name;
-        this.role = role? role: "ranger"
+        this.role = role? role: "Ranger";
         // this.attackCooldown = new Cooldown(1000)
         this.specialCooldown = new Cooldown(5000)
         this.type = "Player";

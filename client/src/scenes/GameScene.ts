@@ -41,13 +41,13 @@ export default class GameScene extends Phaser.Scene {
          */
 
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
-
-        
+        this.load.aseprite("Ranger", "images/roles/ranger.png", "images/roles/ranger.json");
     }
 
     create() {
         //Initialize fields
         this.anims.createFromAseprite("TinyZombie");
+        this.anims.createFromAseprite("Ranger");
         // this.anims.remove()
         this.initializeListeners();
         this.joinGameRoom();
