@@ -11,7 +11,7 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
     positionOffsetX: number;
     positionOffsetY: number;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, texture: string|Phaser.Textures.Texture, gameObjectState: GameObjectState) {
+    constructor(scene: Phaser.Scene, x: number, y: number, texture: string, gameObjectState: GameObjectState) {
         super(scene, x, y, texture);
         this.serverX = x;
         this.serverY = y;
@@ -19,6 +19,9 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
         this.positionOffsetY = 0;
         this.serverVisible = true;
         this.gameObjectState = gameObjectState;
+        
+        // Generate animations for this game object.
+        scene.anims.createFromAseprite(texture, undefined, this);
     }
 
     // public setServerState(serverState: GameObjectState) {

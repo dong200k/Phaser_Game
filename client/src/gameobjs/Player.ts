@@ -4,10 +4,12 @@ import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameob
 export default class Player extends Entity
 {
     private playerState: PlayerState;
+    running: boolean;
 
     constructor(scene:Phaser.Scene,playerState:PlayerState) {
         super(scene, playerState.x, playerState.y, playerState.role, playerState);
         this.playerState = playerState;
+        this.running = false;
     }
 
     // /**Add listeners to connect to the server's player*/

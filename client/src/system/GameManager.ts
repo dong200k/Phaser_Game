@@ -11,6 +11,7 @@ import Tile from "../gameobjs/Tile";
 import EventManager from "./EventManager";
 import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
 import type MonsterState from "../../../server/src/rooms/game_room/schemas/gameobjs/monsters/Monster";
+import type ProjectileState from "../../../server/src/rooms/game_room/schemas/projectiles/Projectile";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -235,7 +236,6 @@ export default class GameManager {
 
     private addProjectile(projectile: any, key: string): Projectile{
         let proj = new Projectile(this.scene, projectile);
-        proj.scale = 0.5
         this.addListenersToGameObject(proj, projectile);
         this.scene.add.existing(proj)
         return proj;
@@ -273,6 +273,19 @@ export default class GameManager {
             gameObject.serverY = gameObjectState.y;
             gameObject.serverVisible = gameObjectState.visible;
         }
+
+        if(gameObject instanceof Projectile) {
+            let projectileState = gameObjectState as ProjectileState;
+
+            projectileState.velocity.onChange = () => {
+                let velocityX = projectileState.velocity.x;
+                let velocityY = projectileState.velocity.y;
+                if(velocityX !== 0)
+                    gameObject.setRotation(Phaser.Math.Angle.Between(0, 0, velocityX, velocityY));
+            }
+
+            gameObject.play({key: "fly", repeat: -1});
+        } 
     }
 
     private addListenersToEntity(entity: Entity, entityState: any) {
@@ -286,6 +299,28 @@ export default class GameManager {
             EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
                 name: playerState.id,
             })
+
+
+            // animations
+            entity.play({key: "idle", repeat: -1});
+            
+            playerState.velocity.onChange = () => {
+                let velocityX = playerState.velocity.x;
+                let velocityY = playerState.velocity.y;
+                if(velocityX < 0) entity.setFlip(true, false);
+                else if(velocityX > 0) entity.setFlip(false, false);
+
+                if(velocityX === 0 && velocityY === 0) {
+                    entity.play({key: "idle", repeat: -1});
+                    entity.running = false;
+                } else {
+                    if(!entity.running) {
+                        entity.play({key: "run", repeat: -1});
+                        entity.running = true;
+                    }
+                }
+            }
+
 
             // Player1 would be excluded from updating its serverX. This will instead be handled by the ClientSidePrediction.
             if(entity !== this.player1) {

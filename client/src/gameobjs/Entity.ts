@@ -42,7 +42,7 @@ export default abstract class Entity extends GameObject
 {
     private stat: Stat;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, texture: string|Phaser.Textures.Texture, entityState: EntityState) {
+    constructor(scene: Phaser.Scene, x: number, y: number, texture: string, entityState: EntityState) {
         super(scene, x, y, texture, entityState);
         this.stat = {};
     }

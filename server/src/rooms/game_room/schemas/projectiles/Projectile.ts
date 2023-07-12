@@ -24,8 +24,8 @@ export default class Projectile extends GameObject implements Cloneable {
     @type("string") projectileId: string
     /** Pool that the projectile is returned to when it is inactive */
     @type("string") poolType: string
-    /** Sprite of this projectile */
-    @type("string") sprite: string
+    // /** Sprite of this projectile */
+    // @type("string") sprite: string
     /** Determines what this projectile collides with */
     @type("string") collisionCategory: CategoryType
     /** range projectile is active for */

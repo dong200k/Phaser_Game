@@ -19,6 +19,9 @@ export default class GameObject extends Schema implements Cloneable {
     @type('string') ownerId;
     @type('string') type;
 
+    /** Sprite of this projectile */
+    @type("string") sprite: string
+
     // -- physics --
     private body: Matter.Body | null = null;
     @type('number') x;
@@ -37,6 +40,7 @@ export default class GameObject extends Schema implements Cloneable {
         this.velocity = new Velocity();
         this.ownerId = ownerId;
         this.type = 'GameObject';
+        this.sprite = "";
         this.visible = true;
     }
 
