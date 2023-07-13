@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import GameObject from "./GameObject";
+import EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
 
 export interface Stat {
     hp?: number;
@@ -41,8 +42,8 @@ export default abstract class Entity extends GameObject
 {
     private stat: Stat;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, texture: string|Phaser.Textures.Texture) {
-        super(scene, x, y, texture);
+    constructor(scene: Phaser.Scene, x: number, y: number, texture: string, entityState: EntityState) {
+        super(scene, x, y, texture, entityState);
         this.stat = {};
     }
 

@@ -6259,8 +6259,8 @@
       "id": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
       "name": "bow",
       "description": "description",
-      "sprite": "demo_hero",
-      "projectile": "demo_hero"
+      "sprite": "RangerArrow",
+      "projectile": "RangerArrow"
     },
     {
       "id": "weapon-4933503f-cd70-4076-8a99-8d90de74ab73",

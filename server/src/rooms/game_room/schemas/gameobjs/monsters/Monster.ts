@@ -53,7 +53,7 @@ export default class Monster extends Entity {
         }
 
         if(this.stat.hp <= 0){
-            console.log("Monster Down")
+            //console.log("Monster Down")
             this.setVisible(false)
         }
     }

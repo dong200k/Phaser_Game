@@ -10,6 +10,8 @@ import ClientSidePrediction from "./ClientSidePrediction";
 import Tile from "../gameobjs/Tile";
 import EventManager from "./EventManager";
 import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
+import type MonsterState from "../../../server/src/rooms/game_room/schemas/gameobjs/monsters/Monster";
+import type ProjectileState from "../../../server/src/rooms/game_room/schemas/projectiles/Projectile";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -76,11 +78,11 @@ export default class GameManager {
     private interpolateGameObjects() {
         this.gameObjects?.forEach((obj) => {
             if(obj.visible) {
-                obj.setX(Phaser.Math.Linear(obj.x, obj.serverX, .10));
-                obj.setY(Phaser.Math.Linear(obj.y, obj.serverY, .10));
+                obj.setX(Phaser.Math.Linear(obj.x, obj.serverX + obj.positionOffsetX, .10));
+                obj.setY(Phaser.Math.Linear(obj.y, obj.serverY + obj.positionOffsetY, .10));
             } else {
-                obj.setX(obj.serverX);
-                obj.setY(obj.serverY);
+                obj.setX(obj.serverX + obj.positionOffsetX);
+                obj.setY(obj.serverY + obj.positionOffsetY);
             } 
         })
     }
@@ -186,7 +188,7 @@ export default class GameManager {
                 break;
         }
         if(newGameObject) {
-            newGameObject.setServerState(gameObj);
+            // newGameObject.setServerState(gameObj);
             this.gameObjects.push(newGameObject);
             this.csp.addGameObject(newGameObject);
         }
@@ -234,7 +236,6 @@ export default class GameManager {
 
     private addProjectile(projectile: any, key: string): Projectile{
         let proj = new Projectile(this.scene, projectile);
-        proj.scale = 0.5
         this.addListenersToGameObject(proj, projectile);
         this.scene.add.existing(proj)
         return proj;
@@ -242,6 +243,8 @@ export default class GameManager {
     
     private addPlayer(player: any, key: string): Player{
         let newPlayer = new Player(this.scene, player);
+        newPlayer.positionOffsetX = 10;
+        newPlayer.positionOffsetY = -10;
         // console.log(newPlayer)
         if(key === this.gameRoom.sessionId) {
             this.player1 = newPlayer;
@@ -252,6 +255,7 @@ export default class GameManager {
             this.players.push(newPlayer);
         this.scene.add.existing(newPlayer);
         this.addListenersToEntity(newPlayer, player);
+
         return newPlayer;
     }
 
@@ -269,6 +273,19 @@ export default class GameManager {
             gameObject.serverY = gameObjectState.y;
             gameObject.serverVisible = gameObjectState.visible;
         }
+
+        if(gameObject instanceof Projectile) {
+            let projectileState = gameObjectState as ProjectileState;
+
+            projectileState.velocity.onChange = () => {
+                let velocityX = projectileState.velocity.x;
+                let velocityY = projectileState.velocity.y;
+                if(velocityX !== 0)
+                    gameObject.setRotation(Phaser.Math.Angle.Between(0, 0, velocityX, velocityY));
+            }
+
+            gameObject.play({key: "fly", repeat: -1});
+        } 
     }
 
     private addListenersToEntity(entity: Entity, entityState: any) {
@@ -282,6 +299,28 @@ export default class GameManager {
             EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
                 name: playerState.id,
             })
+
+
+            // animations
+            entity.play({key: "idle", repeat: -1});
+            
+            playerState.velocity.onChange = () => {
+                let velocityX = playerState.velocity.x;
+                let velocityY = playerState.velocity.y;
+                if(velocityX < 0) entity.setFlip(true, false);
+                else if(velocityX > 0) entity.setFlip(false, false);
+
+                if(velocityX === 0 && velocityY === 0) {
+                    entity.play({key: "idle", repeat: -1});
+                    entity.running = false;
+                } else {
+                    if(!entity.running) {
+                        entity.play({key: "run", repeat: -1});
+                        entity.running = true;
+                    }
+                }
+            }
+
 
             // Player1 would be excluded from updating its serverX. This will instead be handled by the ClientSidePrediction.
             if(entity !== this.player1) {
@@ -330,8 +369,22 @@ export default class GameManager {
                 }
             }
 
-        } else {
-            this.addListenersToGameObject(entity, entityState);
         }
+        
+        if(entity instanceof Monster) {
+            let monsterState = entityState as MonsterState;
+            // animations
+            monsterState.velocity.onChange = () => {
+                let velocityX = monsterState.velocity.x;
+                let velocityY = monsterState.velocity.y;
+                if(velocityX < 0) entity.setFlip(true, false);
+                else entity.setFlip(false, false);
+            }
+            entity.play({key: "walk", repeat: -1});
+        }
+
+        if(!(entity instanceof Player))
+            this.addListenersToGameObject(entity, entityState);
+        
     }
 }

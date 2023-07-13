@@ -12,6 +12,8 @@ export default class Tile extends GameObject {
         this.tileId = tildId;
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
+        this.width = tileWidth;
+        this.height = tileHeight;
         this.type = "Tile";
     }
 }

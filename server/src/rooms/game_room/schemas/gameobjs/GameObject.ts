@@ -19,18 +19,28 @@ export default class GameObject extends Schema implements Cloneable {
     @type('string') ownerId;
     @type('string') type;
 
+    /** Sprite of this projectile */
+    @type("string") sprite: string
+
     // -- physics --
     private body: Matter.Body | null = null;
     @type('number') x;
     @type('number') y;
+    @type('number') width;
+    @type('number') height;
+    @type(Velocity) velocity;
 
     constructor(x: number, y: number, ownerId?: string) {
         super();
         this.id = MathUtil.uid()
         this.x = x;
         this.y = y;
+        this.width = 1;
+        this.height = 1;
+        this.velocity = new Velocity();
         this.ownerId = ownerId;
         this.type = 'GameObject';
+        this.sprite = "";
         this.visible = true;
     }
 

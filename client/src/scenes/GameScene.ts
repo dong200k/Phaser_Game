@@ -6,6 +6,14 @@ import { SceneKey } from '../config';
 import SceneManager from '../system/SceneManager';
 import EventManager from '../system/EventManager';
 
+interface MobAsset {
+    key: string;
+    png: string;
+    json: string;
+}
+
+// Server -> MobAssets -> Load on client.
+
 /**
  * The GameScene will be responsive for rendering the core gameplay. 
  */
@@ -21,12 +29,31 @@ export default class GameScene extends Phaser.Scene {
     preload() {
         this.load.image("demo_hero", "images/demo_hero.png");
         this.load.image("dirt_map_tiles", "tilemaps/demo_map/dirt_dungeon_tileset_extruded.png");
-        this.load.image("TinyZombie", "images/zombie_1.png");
-        this.load.image("frost-glaive", "images/projectiles/frost-glaive.png")
+        //this.load.image("TinyZombieOld", "images/zombie_1.png");
+        this.load.image("frost-glaive", "images/projectiles/frost-glaive.png");
+
+        // Load animations 
+        /**
+         * What we need. We need to be able to run the animation based on the state of the server.
+         * - The player should face the direction of the mouse. The server can keep the state of this.
+         * - When the player moves the walking animation should play.
+         * - when the player shoots the fire animation should play, need to figure out a way to time the animation with the shot.
+         */
+
+        this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
+        this.load.aseprite("Ranger", "images/roles/ranger.png", "images/roles/ranger.json");
+        this.load.aseprite("RangerArrow", "images/projectiles/arrow_1.png", "images/projectiles/arrow_1.json");
+
+        //this.load.
     }
 
     create() {
         //Initialize fields
+        //this.anims.createFromAseprite("TinyZombie");
+        //this.anims.createFromAseprite("Ranger");
+        //this.anims.createFromAseprite("RangerArrow");
+        
+        // this.anims.remove()
         this.initializeListeners();
         this.joinGameRoom();
         
@@ -41,6 +68,8 @@ export default class GameScene extends Phaser.Scene {
             EventManager.eventEmitter.off(EventManager.GameEvents.LEAVE_GAME, this.leaveGame, this);
             this.events.removeAllListeners();
             this.hideHUD();
+            
+            console.log("Onshutdown!!!");
         });
         this.events.on("sleep", () => {
             this.hideHUD();

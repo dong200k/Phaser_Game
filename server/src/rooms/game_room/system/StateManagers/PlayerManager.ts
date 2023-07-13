@@ -165,10 +165,15 @@ export default class PlayerManager{
     public async createPlayer(sessionId: string, isOwner: boolean, gameManager?: GameManager) {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
+
         //TODO: get player data from the database
         let newPlayer = new Player("No Name", undefined, gameManager);
+
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
+        newPlayer.width = 46; // 49
+        newPlayer.height = 42; // 44
+
         let playerSpawnPoint = this.gameManager.getDungeonManager().getPlayerSpawnPoint();
         if(playerSpawnPoint !== null) {
             newPlayer.x = playerSpawnPoint.x + (Math.random() * 20 - 10);
@@ -177,7 +182,7 @@ export default class PlayerManager{
 
         this.initPlayerData("", newPlayer)
 
-        let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {
+        let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, newPlayer.width, newPlayer.height, {
             isStatic: false,
             inertia: Infinity,
             inverseInertia: 0,
