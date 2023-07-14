@@ -12,6 +12,7 @@ import EventManager from "./EventManager";
 import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
 import type MonsterState from "../../../server/src/rooms/game_room/schemas/gameobjs/monsters/Monster";
 import type ProjectileState from "../../../server/src/rooms/game_room/schemas/projectiles/Projectile";
+import type GameObjectState from "../../../server/src/rooms/game_room/schemas/gameobjs/GameObject";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -59,6 +60,7 @@ export default class GameManager {
         }
         this.interpolateGameObjects();
         this.syncGameObjectVisibility();
+        this.syncGameObjectActive();
     }
 
     /**
@@ -90,6 +92,18 @@ export default class GameManager {
     private syncGameObjectVisibility() {
         this.gameObjects?.forEach((obj) => {
             obj.setVisible(obj.serverVisible)
+        })
+    }
+
+    private syncGameObjectActive() {
+        this.gameObjects?.forEach((obj) => {
+            if(obj.active === true && obj.serverActive === false) {
+                this.csp.removeGameObject(obj);
+            } else if(obj.active === false && obj.serverActive === true) {
+                this.csp.addGameObject(obj);
+            }
+            obj.setActive(obj.serverActive);
+            obj.setVisible(obj.serverActive);
         })
     }
 
@@ -267,11 +281,12 @@ export default class GameManager {
     }
 
     /** Adds a listener to an entity to respond to server updates on that entity. */
-    private addListenersToGameObject(gameObject: GameObject, gameObjectState: any) {
+    private addListenersToGameObject(gameObject: GameObject, gameObjectState: GameObjectState) {
         gameObjectState.onChange = (changes:any) => {
             gameObject.serverX = gameObjectState.x;
             gameObject.serverY = gameObjectState.y;
             gameObject.serverVisible = gameObjectState.visible;
+            gameObject.serverActive = gameObjectState.active;
         }
 
         if(gameObject instanceof Projectile) {

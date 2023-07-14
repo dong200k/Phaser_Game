@@ -22,8 +22,8 @@ export default class Projectile extends GameObject implements Cloneable {
 
     /** Unique id of the projectile */
     @type("string") projectileId: string
-    /** Pool that the projectile is returned to when it is inactive */
-    @type("string") poolType: string
+    // /** Pool that the projectile is returned to when it is inactive */
+    // @type("string") poolType: string
     // /** Sprite of this projectile */
     // @type("string") sprite: string
     /** Determines what this projectile collides with */
@@ -34,10 +34,10 @@ export default class Projectile extends GameObject implements Cloneable {
     @type("number") activeTime?: number
     @type("number") spawnX: number
     @type("number") spawnY: number
-    /** Whether the projectile is active or not, inactive projectiles will be reset by the update method for reuse */
-    @type("boolean") active:boolean = true
-    /** Whether the projectile is in poolmap for reuse */
-    @type("boolean") inPoolMap:boolean = false
+    // /** Whether the projectile is active or not, inactive projectiles will be reset by the update method for reuse */
+    // @type("boolean") active:boolean = true
+    // /** Whether the projectile is in poolmap for reuse */
+    // @type("boolean") inPoolMap:boolean = false
     /** Initial velocity of the projectile's body */
     @type(Velocity) initialVelocity: Velocity
     /** Entity that this projectile originates from */
@@ -150,10 +150,10 @@ export default class Projectile extends GameObject implements Cloneable {
         }
     }
 
-    /** Marks this projectile as active so it's update method goes through and the client knows that it is active. */
-    public setActive(){
-        this.active = true
-    }
+    // /** Marks this projectile as active so it's update method goes through and the client knows that it is active. */
+    // public setActive(){
+    //     this.active = true
+    // }
 
     /** Marks this projectile as inactive and resets it. On the next update of ProjectileManager this projectile will be
      * returned to the projectilePool
@@ -199,7 +199,7 @@ export default class Projectile extends GameObject implements Cloneable {
             Matter.Body.setVelocity(body, this.initialVelocity)
         }
 
-        this.setActive()    
+        this.setActive(true)    
         this.inPoolMap = false
     }
 }

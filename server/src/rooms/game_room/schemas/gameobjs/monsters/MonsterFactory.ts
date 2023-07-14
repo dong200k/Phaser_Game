@@ -10,10 +10,11 @@ export default class MonsterFactory {
      * @param type The id of the monster. Can be accessed through MonsterId.
      * @returns A monster.
      */
-    public static createMonster(type: MonsterType): Monster {
-        let monster = new TinyZombie();
+    public static createMonster(type: MonsterType | string): Monster {
+        let monster;
         switch(type) {
             case "TinyZombie": monster = new TinyZombie(); break;
+            default: monster = new TinyZombie();
         }
         return monster;
     }

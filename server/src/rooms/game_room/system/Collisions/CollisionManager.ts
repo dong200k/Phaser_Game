@@ -79,7 +79,7 @@ export default class CollisionManager{
             // Order is based on what appears first/category number of the matter bodies's collision filter.
             // Check Category.ts to see order
             if((typeA === categoryA && typeB === categoryB)){
-                console.log(`${typeA}, ${typeB}`)
+                //console.log(`${typeA}, ${typeB}`)
                 resolve(gameObjectA, gameObjectB, bodyA, bodyB)
                 return
             }

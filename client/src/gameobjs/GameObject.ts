@@ -4,7 +4,8 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
 {
     serverX: number;
     serverY: number;
-    serverVisible: boolean;
+    serverVisible: boolean; // controls the visibility of the GameObject
+    serverActive: boolean; // controls the visibility and active state of the GameObject
     gameObjectState: GameObjectState;
 
     // Adjust the sprites position.
@@ -17,7 +18,8 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
         this.serverY = y;
         this.positionOffsetX = 0;
         this.positionOffsetY = 0;
-        this.serverVisible = true;
+        this.serverVisible = gameObjectState.visible;
+        this.serverActive = gameObjectState.active;
         this.gameObjectState = gameObjectState;
         
         // Generate animations for this game object.

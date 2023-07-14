@@ -13,6 +13,8 @@ import { TiledJSON } from "../interfaces"
 import Tilemap from "../../schemas/dungeon/tilemap/Tilemap"
 import Layer from "../../schemas/dungeon/tilemap/Layer"
 import MathUtil from "../../../../util/MathUtil"
+import MonsterPool from "../../schemas/gameobjs/monsters/MonsterPool"
+import TinyZombie from "../../schemas/gameobjs/monsters/zombie/TinyZombie"
 
 const dungeonURLMap = {
     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -23,13 +25,20 @@ const dungeonURLMap = {
 // The dungeon object will contain the tilemap.
 // Merge the tilemap manager into the dungeon manager.
 export default class DungeonManager {
-    //Spawn different monsters 
-    //Reuse monsters
     private gameManager: GameManager;
     private dungeon?: Dungeon;
 
+    // Stores reusable Monster objects.
+    private monsterPool: MonsterPool;
+
+    // Monster constructors
+    static ctors = {
+        "TinyZombie": TinyZombie,
+    }
+
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager;
+        this.monsterPool = new MonsterPool();
         this.createDungeon();
     }   
 
@@ -41,7 +50,13 @@ export default class DungeonManager {
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Monster){
-                gameObject.update(deltaT);
+                // console.log(`Active:${gameObject.active}, x:${gameObject.x}, y:${gameObject.y}, `);
+                if(gameObject.active) {
+                    gameObject.update(deltaT);
+                } else if(!gameObject.isInPoolMap()) {
+                    gameObject.disableCollisions();
+                    this.monsterPool.returnInstance(gameObject.poolType, gameObject);
+                }
             }
         })
 
@@ -49,6 +64,10 @@ export default class DungeonManager {
 
         // SPAM THE WAVES!!!
         this.dungeon?.startNextWave();
+    }
+
+    private cleanUpMonsters() {
+
     }
 
     /** Creates a new Dungeon. The Dungeon will have an update method that should be called every frame. */
@@ -95,17 +114,41 @@ export default class DungeonManager {
     }
 
     public createNewWave() {
-        return new Wave((name: string) => this.spawnMonster(name));
+        return new Wave((name: string) => {
+            this.spawnMonster(name);
+        });
     }
 
     public spawnMonster(monsterName: string): Monster {
-        let monster = MonsterFactory.createMonster("TinyZombie");
-        monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
-        let width = 12;
-        let height = 18;
         
-        monster.width = width;
-        monster.height = height;
+        let monster: Monster;// = MonsterFactory.createMonster(monsterName);
+        let poolType = monsterName;
+        //monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
+
+        // Create the pool if it doesn't exist
+        if(!this.monsterPool.containsType(poolType)) {
+            this.monsterPool.addPoolType(poolType);
+        }
+        
+
+        // If the pool contains at least 1 instance
+        let pool = this.monsterPool.getPool(poolType);
+        if(pool && pool.length() > 0) {
+            // reuse instance.
+            monster = this.monsterPool.getInstance(poolType);
+            monster.reset();
+        } else {
+            // Create a new monster.
+            monster = MonsterFactory.createMonster(monsterName);
+            monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
+            this.gameManager.addGameObject(monster.getId(), monster, monster.getBody());
+        }
+        
+        // let width = 12;
+        // let height = 18;
+        
+        // monster.width = width;
+        // monster.height = height;
 
         let randomSpawnPoint = null;
         if(this.dungeon !== undefined)
@@ -117,19 +160,10 @@ export default class DungeonManager {
             spawnY = randomSpawnPoint.y + Math.floor((Math.random() * 10) - 5);
         }
 
-        let body = Matter.Bodies.rectangle(spawnX, spawnY, width, height, {
-            isStatic: false,
-        });
+        Matter.Body.setPosition(monster.getBody(), {x: spawnX, y: spawnY});
         monster.x = spawnX;
         monster.y = spawnY;
-
-        body.collisionFilter = {
-            group: 0,
-            category: Categories.MONSTER,
-            mask: MaskManager.getManager().getMask('MONSTER'),
-        }
         
-        this.gameManager.addGameObject(monster.getId(), monster, body);
         return monster;
     }
 
@@ -145,6 +179,11 @@ export default class DungeonManager {
         if(this.dungeon === undefined) return null;
         if(this.dungeon.getPlayerSpawnPoints().length === 0) return null;
         return this.dungeon.getPlayerSpawnPoints().at(0);
+    }
+
+    /** Gets the MonsterPool. The MonsterPool is used to reuse Monster objects. */
+    public getMonsterPool() {
+        return this.monsterPool;
     }
 
     /**

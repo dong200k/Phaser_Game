@@ -85,6 +85,7 @@ export default class GameManager {
 
     /**
      * Adds obj and body to GameRoom's state, GameManager's gameObjects and the Matter world.
+     * Sets the obj's body field to the provided matter body.
      * @param id unique identifer of GameObject
      * @param obj  state/game object for sharing with client
      * @param body Matter.Body of game object for collision

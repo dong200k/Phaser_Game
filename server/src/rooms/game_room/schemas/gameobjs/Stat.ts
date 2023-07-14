@@ -99,6 +99,14 @@ export default class Stat extends Schema {
     }
 
     /**
+     * Copy the values provided into this Stat.
+     * @param stat The stat.
+     */
+    public setStats(stat: Partial<statType>) {
+        Object.assign(this, stat);
+    }
+
+    /**
      * Takes in 2 stats and return a new stat with the addition of the 2 stats values
      * @param stat1 
      * @param stat2 

@@ -7,6 +7,14 @@ import Stat, { statType } from "../schemas/gameobjs/Stat";
 import { CategoryType } from "./Collisions/Category";
 import GameObject, { Velocity } from "../schemas/gameobjs/GameObject";
 import Entity from "../schemas/gameobjs/Entity";
+import MonsterController from "./AI/MonsterAI/simplemonster/MonsterController";
+
+// ------------ Math -------------
+
+export interface Vector2 {
+    x: number;
+    y: number;
+}
 
 // ------------ interfaces for the Tiled json file -------------- //
 interface TiledObjectJSON {
@@ -107,6 +115,15 @@ export type IProjectileConfig = {
     magicMultiplier: number,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
+}
+
+// ------------ interfaces for Monsters -------------- //
+export type IMonsterConfig = {
+    name: string;
+    width: number;
+    height: number;
+    stat: statType;
+    poolType?: string;
 }
 
 // ------------ interfaces for Collision Manager -------------- //

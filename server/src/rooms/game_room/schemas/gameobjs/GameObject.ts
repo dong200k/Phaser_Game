@@ -1,6 +1,7 @@
 import { Schema, type } from '@colyseus/schema';
 import MathUtil from '../../../../util/MathUtil';
 import { Cloneable } from '../../../../util/PoolUtil';
+import Matter from 'matter-js';
 
 export class Velocity extends Schema {
     @type('number') x = 0;
@@ -16,6 +17,7 @@ export class Velocity extends Schema {
 export default class GameObject extends Schema implements Cloneable {
     @type('string') id: string;
     @type('boolean') visible: boolean;
+    @type('boolean') active: boolean;
     @type('string') ownerId;
     @type('string') type;
 
@@ -23,12 +25,16 @@ export default class GameObject extends Schema implements Cloneable {
     @type("string") sprite: string
 
     // -- physics --
-    private body: Matter.Body | null = null;
+    protected body: Matter.Body;
     @type('number') x;
     @type('number') y;
     @type('number') width;
     @type('number') height;
     @type(Velocity) velocity;
+
+    // -- Object Pools --
+    inPoolMap: boolean;
+    poolType: string;
 
     constructor(x: number, y: number, ownerId?: string) {
         super();
@@ -42,6 +48,12 @@ export default class GameObject extends Schema implements Cloneable {
         this.type = 'GameObject';
         this.sprite = "";
         this.visible = true;
+        this.active = true;
+        this.inPoolMap = false;
+        this.poolType = "";
+        this.body = Matter.Bodies.rectangle(this.x, this.y, this.width, this.height, {
+            isStatic: false,
+        });
     }
 
     /** 
@@ -67,16 +79,57 @@ export default class GameObject extends Schema implements Cloneable {
         this.id = id;
     }
 
-    /** Sets the visiblity of this GameObject. Note: This is used to make 
-     * the GameObject disappear on the client side when this GameObject is 
-     * not in use (returned to ObjectPool).
-     */
+    /** Sets the visiblity of this GameObject. */
     public setVisible(value: boolean) {
         this.visible = value;
     }
 
     /** Checks if this game object is visible. */
-    public getVisible() {
+    public isVisible() {
         return this.visible;
+    }
+
+    /** Sets the active state of this GameObject. Note: This is used to make 
+     * the GameObject disappear on the client side when this GameObject is 
+     * not in use (returned to ObjectPool).
+     */
+    public setActive(value: boolean) {
+        this.active = value;
+    } 
+
+    /** Checks if this game object is active. */
+    public isActive() {
+        return this.active;
+    }
+
+    /** Checks if this GameObject is in a pool. */
+    public isInPoolMap() {
+        return this.inPoolMap;
+    }
+
+    /**
+     * Sets the inPoolMap value of this GameObject. inPoolMap is used to check 
+     * whether this GameObject should be put in the pool or not.
+     * @param value True or False.
+     */
+    public setInPoolMap(value: boolean) {
+        this.inPoolMap = value;
+    }
+
+    /**
+     * Gets the pool type of this object.
+     * @returns The Pool type.
+     */
+    public getPoolType() {
+        return this.poolType;
+    }
+
+    /**
+     * Sets the pooltype of this GameObject. This is used so that the object is stored 
+     * properly inside an ObjectPool.
+     * @param value The poolType.
+     */
+    public setPoolType(value: string) {
+        this.poolType = value;
     }
 }

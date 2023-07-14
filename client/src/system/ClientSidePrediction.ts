@@ -334,4 +334,23 @@ export default class ClientSidePrediction {
         this.gameObjectItems.push(gameObjectItem);
         Matter.Composite.add(this.engine.world, gameObjectItem.body);
     }
+
+    /**
+     * Removes the given GameObject from this ClientSidePrediction. This will remove the Matter.Body representation
+     * of this GameObject and the DebugGraphics for this GameObject.
+     * @param gameObject The GameObject to be removed.
+     */
+    public removeGameObject(gameObject: GameObject) {
+        this.gameObjectItems = this.gameObjectItems.filter((item) => {
+            if(item.gameObject === gameObject) {
+                // remove debug graphics.
+                item.debugGraphic.destroy();
+                // remove matter body.
+                Matter.Composite.remove(this.engine.world, item.body);
+                return false;
+            } else {
+                return true;
+            }
+        })
+    }
 }
