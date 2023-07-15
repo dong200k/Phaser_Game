@@ -316,25 +316,8 @@ export default class GameManager {
             })
 
 
-            // animations
+            // Idle animation for all players.
             entity.play({key: "idle", repeat: -1});
-            
-            playerState.velocity.onChange = () => {
-                let velocityX = playerState.velocity.x;
-                let velocityY = playerState.velocity.y;
-                if(velocityX < 0) entity.setFlip(true, false);
-                else if(velocityX > 0) entity.setFlip(false, false);
-
-                if(velocityX === 0 && velocityY === 0) {
-                    entity.play({key: "idle", repeat: -1});
-                    entity.running = false;
-                } else {
-                    if(!entity.running) {
-                        entity.play({key: "run", repeat: -1});
-                        entity.running = true;
-                    }
-                }
-            }
 
 
             // Player1 would be excluded from updating its serverX. This will instead be handled by the ClientSidePrediction.
@@ -342,6 +325,24 @@ export default class GameManager {
                 playerState.onChange = () => {
                     entity.serverX = playerState.x;
                     entity.serverY = playerState.y;
+                }
+
+                // animations for all other player's except player1. Player1 gets animation from the csp.
+                playerState.velocity.onChange = () => {
+                    let velocityX = playerState.velocity.x;
+                    let velocityY = playerState.velocity.y;
+                    if(velocityX < 0) entity.setFlip(true, false);
+                    else if(velocityX > 0) entity.setFlip(false, false);
+
+                    if(velocityX === 0 && velocityY === 0) {
+                        entity.play({key: "idle", repeat: -1});
+                        entity.running = false;
+                    } else {
+                        if(!entity.running) {
+                            entity.play({key: "run", repeat: -1});
+                            entity.running = true;
+                        }
+                    }
                 }
             } else {
                 // For future artifact and weapon upgrades.

@@ -157,6 +157,7 @@ export default class ClientSidePrediction {
 
 
         this.serverReconciliation(deltaT);
+        this.updatePlayerMovementAnimation();
     }
 
     /**
@@ -268,6 +269,9 @@ export default class ClientSidePrediction {
         })
     }
     
+    /** Updates the player's velocity based on the player's movement input.
+     * @param data The player's movement input.
+     */
     private processPlayerMovement(data: number[]) {
         let {player1, body} = this.getPlayer1AndBody();
         //calculate new player velocity
@@ -280,6 +284,27 @@ export default class ClientSidePrediction {
         if(data[3]) x += 1;
         let velocity = MathUtil.getNormalizedSpeed(x, y, speed ?? 0);
         if(body) Matter.Body.setVelocity(body, velocity);
+    }
+
+    /** Updates the player's movement animation, based on the player's body velocity. */
+    private updatePlayerMovementAnimation() {
+        let {player1, body} = this.getPlayer1AndBody();
+        if(player1 && body) {
+            let velocityX = body.velocity.x;
+            let velocityY = body.velocity.y;
+            if(velocityX < 0) player1.setFlip(true, false);
+            else if(velocityX > 0) player1.setFlip(false, false);
+    
+            if(velocityX === 0 && velocityY === 0) {
+                player1.play({key: "idle", repeat: -1});
+                player1.running = false;
+            } else {
+                if(!player1.running) {
+                    player1.play({key: "run", repeat: -1});
+                    player1.running = true;
+                }
+            }
+        }
     }
 
     public setDebugGraphicsVisible(value: boolean) {
