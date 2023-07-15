@@ -260,6 +260,9 @@ export default class ClientSidePrediction {
         });
     }
 
+    /**
+     * Updates the position of the debug graphics based on the server's position.
+     */
     private updateDebugGraphics() {
         this.gameObjectItems.forEach((item) => {
             let graphics = item.debugGraphic;
@@ -353,7 +356,7 @@ export default class ClientSidePrediction {
                 .strokeRect(-width / 2,-height / 2, width, height)
                 .fillCircle(0, 0, 2)
                 .setVisible(this.debugGraphicsVisible)
-                .setDepth(10),
+                .setDepth(100),
         }            
 
         this.gameObjectItems.push(gameObjectItem);

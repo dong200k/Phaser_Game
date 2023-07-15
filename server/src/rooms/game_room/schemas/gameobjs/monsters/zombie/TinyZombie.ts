@@ -11,6 +11,7 @@ export default class TinyZombie extends Monster {
             height: 18,
             stat: new Stat(),
         }, config));
+        this.stat.attackRange = 30;
     }
 
 }

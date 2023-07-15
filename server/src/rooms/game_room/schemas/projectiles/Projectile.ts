@@ -113,6 +113,7 @@ export default class Projectile extends GameObject implements Cloneable {
         let height = 10
         let body = Matter.Bodies.rectangle(this.x, this.y, width, height, {
             isStatic: false,
+            isSensor: true,
             inertia: Infinity,
             inverseInertia: 0,
             restitution: 0,

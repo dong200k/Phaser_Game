@@ -130,3 +130,13 @@ export type IMonsterConfig = {
 export type ICollisionRule = {
     typeA: CategoryType, typeB: CategoryType, resolve: (gameObjectA: any, gameObjectB: any, bodyA: Matter.Body, bodyB: Matter.Body)=> void
 }
+
+
+// ------------ Events ------------ //
+export enum GameEvents {
+    /** 
+     * Event to spawn a projectile.
+     * @param projectileConfig - The projectile configuation object. IProjectileConfig.
+     * */
+    SPAWN_PROJECTILE = "SPAWN_PROJECTILE",
+}

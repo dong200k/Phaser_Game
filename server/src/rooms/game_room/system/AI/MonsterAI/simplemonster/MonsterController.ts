@@ -1,6 +1,7 @@
 import Monster from "../../../../schemas/gameobjs/monsters/Monster";
 import StateMachine from "../../../StateMachine/StateMachine";
 import PlayerManager from "../../../StateManagers/PlayerManager";
+import Attack from "./Attack";
 import Follow from "./Follow";
 import Idle from "./Idle";
 
@@ -24,6 +25,9 @@ export default class MonsterController extends StateMachine<MonsterControllerDat
         //Follow state
         let follow = new Follow("Follow", this);
         this.addState(follow);
+        //Attack state
+        let attack = new Attack("Attack", this);
+        this.addState(attack);
 
         //Set initial state
         this.changeState("Idle");

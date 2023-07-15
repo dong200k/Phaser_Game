@@ -65,16 +65,17 @@ export default class Monster extends Entity {
         this.controller?.update(deltaT);
 
         if(this.stat.hp != this.prevHp){
-            console.log(`Monster took ${this.stat.hp - this.prevHp} damage`)
+            //console.log(`Monster took ${this.stat.hp - this.prevHp} damage`)
             this.prevHp = this.stat.hp;
         }
 
         if(this.stat.hp <= 0){
-            console.log("Monster Down");
+            //console.log("Monster Down");
             this.setActive(false);
         }
     }
 
+    /** Sets this monster's fields based on the given config object. */
     public setConfig(config: IMonsterConfig) {
         this.monsterName = config.name;
         this.width = config.width;
@@ -83,6 +84,9 @@ export default class Monster extends Entity {
         this.stat.setStats(config.stat);
     }
 
+    /**
+     * Reset this monster to its original state. This will reset the stats, enable collisions and sets active and visible field to true.
+     */
     public reset() {
         this.enableCollisions();
         this.setConfig(this.config);

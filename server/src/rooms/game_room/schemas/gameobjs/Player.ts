@@ -15,10 +15,18 @@ export default class Player extends Entity {
     @type(StatTree) skillTree;
     @type([WeaponUpgradeTree]) artifacts = new ArraySchema<WeaponUpgradeTree>();
 
+    // Levels
+    @type('number') level: number;
+    @type('number') xp: number;
+    @type('number') maxXp: number;
+
 
     constructor(name: string, role?: string, gameManager?: GameManager, ) {
         super();
         this.name = name;
+        this.level = 1;
+        this.xp = 0;
+        this.maxXp = 100;
         this.role = role? role: "Ranger";
         // this.attackCooldown = new Cooldown(1000)
         this.specialCooldown = new Cooldown(5000)

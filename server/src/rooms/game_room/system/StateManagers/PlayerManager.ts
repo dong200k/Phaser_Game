@@ -224,4 +224,8 @@ export default class PlayerManager{
         }
         return nearestPlayer;
     }
+
+    public getGameManager() {
+        return this.gameManager;
+    }
 }

@@ -304,87 +304,12 @@ export default class GameManager {
     }
 
     private addListenersToEntity(entity: Entity, entityState: any) {
-        entityState.stat.onChange = (changes: any) => {
-            entity.updateStat(entityState.stat);
-        }
         if(entity instanceof Player) {
-            let playerState = entityState as PlayerState;
-
-            // Create PeerInfo and set up initial values.
-            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
-                name: playerState.id,
-            })
-
-
-            // Idle animation for all players.
-            entity.play({key: "idle", repeat: -1});
-
-
-            // Player1 would be excluded from updating its serverX. This will instead be handled by the ClientSidePrediction.
-            if(entity !== this.player1) {
-                playerState.onChange = () => {
-                    entity.serverX = playerState.x;
-                    entity.serverY = playerState.y;
-                }
-
-                // animations for all other player's except player1. Player1 gets animation from the csp.
-                playerState.velocity.onChange = () => {
-                    let velocityX = playerState.velocity.x;
-                    let velocityY = playerState.velocity.y;
-                    if(velocityX < 0) entity.setFlip(true, false);
-                    else if(velocityX > 0) entity.setFlip(false, false);
-
-                    if(velocityX === 0 && velocityY === 0) {
-                        entity.play({key: "idle", repeat: -1});
-                        entity.running = false;
-                    } else {
-                        if(!entity.running) {
-                            entity.play({key: "run", repeat: -1});
-                            entity.running = true;
-                        }
-                    }
-                }
+            if(entity === this.player1) {
+                this.addListenersToPlayer1(entity, entityState);
             } else {
-                // For future artifact and weapon upgrades.
-                EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
-                    title: "LEVEL 1 UPGRADES",
-                    items: [
-                        {
-                            typeName: "Artifact + 1",
-                            name: "Spining Stars",
-                            imageKey: "",
-                            description: "Surround you with a circle of blades",
-                            onClick: () => {console.log("Spining Stars onclick")}
-                        },
-                        {
-                            typeName: "New Artifact",
-                            name: "Gloves",
-                            imageKey: "",
-                            description: "Increase Damage by 10",
-                            onClick: () => {console.log("Gloves onclick")}
-                        }
-                    ]
-                })
+                this.addListenersToPeerPlayers(entity, entityState);
             }
-            
-            // Updates specialcooldown HUD.
-            playerState.specialCooldown.onChange = () => {
-                let time = playerState.specialCooldown.time;
-                let remainingTime = playerState.specialCooldown.remainingTime;
-                let isFinished = playerState.specialCooldown.isFinished;
-                EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
-                    specialCooldownPercent: isFinished? 0 : remainingTime / time,
-                })
-
-                // Player1 gets the PlayerInfo updated along side its peer info.
-                if(entity === this.player1) { 
-                    EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
-                        specialCooldownCounter: Math.round(remainingTime / 1000),
-                        specialCooldownPercent: isFinished? 0 : remainingTime / time,
-                    });
-                }
-            }
-
         }
         
         if(entity instanceof Monster) {
@@ -402,5 +327,128 @@ export default class GameManager {
         if(!(entity instanceof Player))
             this.addListenersToGameObject(entity, entityState);
         
+    }
+
+    private addListenersToPlayer1(player1: Player, playerState: PlayerState) {
+        // Create PeerInfo and set up initial values.
+        EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+            name: playerState.id,
+        })
+
+
+        // Idle animation for all players.
+        player1.play({key: "idle", repeat: -1});
+
+        // For future artifact and weapon upgrades.
+        EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+            title: "LEVEL 1 UPGRADES",
+            items: [
+                {
+                    typeName: "Artifact + 1",
+                    name: "Spining Stars",
+                    imageKey: "",
+                    description: "Surround you with a circle of blades",
+                    onClick: () => {console.log("Spining Stars onclick")}
+                },
+                {
+                    typeName: "New Artifact",
+                    name: "Gloves",
+                    imageKey: "",
+                    description: "Increase Damage by 10",
+                    onClick: () => {console.log("Gloves onclick")}
+                }
+            ]
+        })
+
+        // Updates specialcooldown HUD.
+        playerState.specialCooldown.onChange = () => {
+            let time = playerState.specialCooldown.time;
+            let remainingTime = playerState.specialCooldown.remainingTime;
+            let isFinished = playerState.specialCooldown.isFinished;
+            // Updates the Peer Info Display
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+                specialCooldownPercent: isFinished? 0 : remainingTime / time,
+            })
+            // Updates Player Info Display
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
+                specialCooldownCounter: Math.round(remainingTime / 1000),
+                specialCooldownPercent: isFinished? 0 : remainingTime / time,
+            });
+        }
+
+        // Stat changes
+        playerState.stat.onChange = (changes: any) => {
+            player1.updateStat(playerState.stat);
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
+                hpValue: playerState.stat.hp,
+                maxHpValue: playerState.stat.maxHp,
+                mpValue: playerState.stat.mana,
+                maxMpValue: playerState.stat.maxMana,
+                level: playerState.stat.level,
+            })
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+                hpValue: playerState.stat.hp,
+                maxHpValue: playerState.stat.maxHp,
+                mpValue: playerState.stat.mana,
+                maxMpValue: playerState.stat.maxMana,
+                level: playerState.stat.level,
+            })
+        }
+    }
+
+    private addListenersToPeerPlayers(player: Player, playerState: PlayerState) {
+        // Create PeerInfo and set up initial values.
+        EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+            name: playerState.id,
+        })
+
+        // Idle animation for all players.
+        player.play({key: "idle", repeat: -1});
+
+        playerState.onChange = () => {
+            player.serverX = playerState.x;
+            player.serverY = playerState.y;
+        }
+
+        // animations for all other player's except player1. Player1 gets animation from the csp.
+        playerState.velocity.onChange = () => {
+            let velocityX = playerState.velocity.x;
+            let velocityY = playerState.velocity.y;
+            if(velocityX < 0) player.setFlip(true, false);
+            else if(velocityX > 0) player.setFlip(false, false);
+
+            if(velocityX === 0 && velocityY === 0) {
+                player.play({key: "idle", repeat: -1});
+                player.running = false;
+            } else {
+                if(!player.running) {
+                    player.play({key: "run", repeat: -1});
+                    player.running = true;
+                }
+            }
+        }
+
+        // Updates specialcooldown HUD.
+        playerState.specialCooldown.onChange = () => {
+            let time = playerState.specialCooldown.time;
+            let remainingTime = playerState.specialCooldown.remainingTime;
+            let isFinished = playerState.specialCooldown.isFinished;
+            // Updates the Peer Info Display
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+                specialCooldownPercent: isFinished? 0 : remainingTime / time,
+            })
+        }
+
+        // Stat changes
+        playerState.stat.onChange = (changes: any) => {
+            player.updateStat(playerState.stat);
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+                hpValue: playerState.stat.hp,
+                maxHpValue: playerState.stat.maxHp,
+                mpValue: playerState.stat.mana,
+                maxMpValue: playerState.stat.maxMana,
+                level: playerState.stat.level,
+            })
+        }
     }
 }

@@ -7,6 +7,7 @@ import { getTrueAttackDamage, getFinalLifeSteal, getTrueMagicDamage } from "../F
 import { CategoryType, getCategoryType } from "./Category";
 import { ICollisionRule } from "../interfaces";
 import Tile from "../../schemas/gameobjs/Tile";
+import Player from "../../schemas/gameobjs/Player";
 
 export default class CollisionManager{
     private gameManager: GameManager
@@ -14,7 +15,7 @@ export default class CollisionManager{
     private collisionRules: ICollisionRule[] = [
         // Projectile Collisions
         {typeA: "PLAYER_PROJECTILE", typeB: "MONSTER", resolve: this.resolveProjectileCollision},
-        {typeA: "MONSTER_PROJECTILE", typeB: "PLAYER_PROJECTILE", resolve: this.resolveProjectileCollision},
+        {typeA: "MONSTER_PROJECTILE", typeB: "PLAYER", resolve: this.resolveProjectileCollision},
         {typeA: "DAMAGE_ALL_PROJECTILE", typeB: "PLAYER", resolve: this.resolveProjectileCollision},
         {typeA: "DAMAGE_ALL_PROJECTILE", typeB: "MONSTER", resolve: this.resolveProjectileCollision},
 
@@ -95,6 +96,11 @@ export default class CollisionManager{
         let trueAttackDamage = getTrueAttackDamage(projectile.stat, entity.stat, projectile.attackMultiplier)
         let trueMagicDamage = getTrueMagicDamage(projectile.stat, entity.stat, projectile.magicMultiplier)
 
+        if(entity instanceof Player) {
+            console.log("Player hit, ", trueAttackDamage + trueMagicDamage);
+            console.log(entity.stat.hp);
+        }
+
         // Entity colliding with projectile takes attack and magic damage
         let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage)
         EffectManager.addEffectsTo(entity, damageEffect)
@@ -107,13 +113,15 @@ export default class CollisionManager{
         if(attackingEntity){
             let lifeSteal = getFinalLifeSteal(trueAttackDamage, attackingEntity.stat.lifeSteal)
             let healEffect = EffectFactory.createHealEffect(lifeSteal)
-            console.log("lifesteal:", lifeSteal)
+            //console.log("lifesteal:", lifeSteal)
             EffectManager.addEffectsTo(attackingEntity, healEffect)
         }
 
-        setTimeout(()=>{
-            projectile.setInactive()  
-        }, 200)
+        // setTimeout(()=>{
+        //     projectile.setInactive()  
+        // }, 200)
+
+        projectile.setInactive();
     }
 
     public resolveProjectileObstacleCollision(projectile: Projectile, obstacle: Tile, bodyA: Matter.Body, bodyB: Matter.Body){
