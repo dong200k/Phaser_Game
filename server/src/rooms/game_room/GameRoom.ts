@@ -15,11 +15,12 @@ export default class GameRoom extends Room<State> {
     private simulationInterval: number = 16.6;
 
     // ------- fixed tick --------
-    private timePerTick = 50; // 20 ticks per second.
-    private timeTillNextTick = 50;
+    private timePerTick = 33.33; // 20 ticks per second.
+    private timeTillNextTick!: number;
 
     onCreate() {
         console.log(`Created: Game room ${this.roomId}`);
+        this.timeTillNextTick = this.timePerTick;
 
         //Game rooms are private and can only be joined by id.
         this.setPrivate(true);

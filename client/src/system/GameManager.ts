@@ -33,7 +33,7 @@ export default class GameManager {
     private mouseDown: boolean = false;
 
     // ------- fixed tick --------
-    private timePerTick = 50; // 20 ticks per second.
+    private timePerTick = 33.33; // 30 ticks per second.
     private timeTillNextTick: number;
 
     private csp!: ClientSidePrediction;
@@ -80,8 +80,8 @@ export default class GameManager {
     private interpolateGameObjects() {
         this.gameObjects?.forEach((obj) => {
             if(obj.visible) {
-                obj.setX(Phaser.Math.Linear(obj.x, obj.serverX + obj.positionOffsetX, .10));
-                obj.setY(Phaser.Math.Linear(obj.y, obj.serverY + obj.positionOffsetY, .10));
+                obj.setX(Phaser.Math.Linear(obj.x, obj.serverX + obj.positionOffsetX, .2));
+                obj.setY(Phaser.Math.Linear(obj.y, obj.serverY + obj.positionOffsetY, .2));
             } else {
                 obj.setX(obj.serverX + obj.positionOffsetX);
                 obj.setY(obj.serverY + obj.positionOffsetY);
