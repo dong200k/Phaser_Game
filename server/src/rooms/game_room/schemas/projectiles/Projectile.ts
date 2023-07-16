@@ -73,6 +73,9 @@ export default class Projectile extends GameObject implements Cloneable {
         this.attackMultiplier = projectileConfig.attackMultiplier
         this.magicMultiplier = projectileConfig.magicMultiplier
         this.createBody()
+
+        this.width = Math.abs(this.body.bounds.max.x - this.body.bounds.min.x);
+        this.height = Math.abs(this.body.bounds.max.y - this.body.bounds.min.y);
     }
     
     /**
@@ -111,6 +114,7 @@ export default class Projectile extends GameObject implements Cloneable {
     protected createBody(){
         let width = 10
         let height = 10
+
         let body = Matter.Bodies.rectangle(this.x, this.y, width, height, {
             isStatic: false,
             isSensor: true,

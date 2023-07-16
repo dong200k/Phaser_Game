@@ -21,7 +21,7 @@ export default class Player extends Entity {
     @type('number') maxXp: number;
 
 
-    constructor(name: string, role?: string, gameManager?: GameManager, ) {
+    constructor(name: string, role?: string, gameManager?: GameManager) {
         super();
         this.name = name;
         this.level = 1;

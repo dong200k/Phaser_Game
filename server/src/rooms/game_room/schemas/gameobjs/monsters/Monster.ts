@@ -64,15 +64,15 @@ export default class Monster extends Entity {
     public update(deltaT: number) {
         this.controller?.update(deltaT);
 
-        if(this.stat.hp != this.prevHp){
-            //console.log(`Monster took ${this.stat.hp - this.prevHp} damage`)
-            this.prevHp = this.stat.hp;
-        }
+        // if(this.stat.hp != this.prevHp){
+        //     //console.log(`Monster took ${this.stat.hp - this.prevHp} damage`)
+        //     this.prevHp = this.stat.hp;
+        // }
 
-        if(this.stat.hp <= 0){
-            //console.log("Monster Down");
-            this.setActive(false);
-        }
+        // if(this.stat.hp <= 0){
+        //     //console.log("Monster Down");
+        //     this.setActive(false);
+        // }
     }
 
     /** Sets this monster's fields based on the given config object. */

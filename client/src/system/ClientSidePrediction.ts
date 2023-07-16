@@ -108,6 +108,11 @@ export default class ClientSidePrediction {
         return {player1: this.player1, body: this.player1Body};
     }
 
+    /**
+     * Updates the ClientSidePrediction
+     * @param deltaT deltaT milliseconds.
+     * @param playerMovementData The player movement data.
+     */
     public update(deltaT: number, playerMovementData: number[]) {
 
         if(this.debugGraphicsVisible) this.updateDebugGraphics();
@@ -140,7 +145,7 @@ export default class ClientSidePrediction {
 
         do {
             // ------ Tick Logic below -------
-            this.processPlayerMovement(playerMovementData);
+            this.processPlayerMovement(playerMovementData, deltaT);
             Matter.Engine.update(this.engine, deltaT);
             this.clientTickCount++;
             this.saveToInputHistory(this.clientTickCount, playerMovementData);
@@ -187,7 +192,7 @@ export default class ClientSidePrediction {
                     while(ticksToRun > 0) {
                         let inputHistory = this.getInputHistoryAt(serverTick);
                         if(inputHistory) {
-                            this.processPlayerMovement(inputHistory);
+                            this.processPlayerMovement(inputHistory, deltaT);
                             Matter.Engine.update(this.engine, deltaT);
                         }
                         ticksToRun--;
@@ -274,19 +279,22 @@ export default class ClientSidePrediction {
     
     /** Updates the player's velocity based on the player's movement input.
      * @param data The player's movement input.
+     * @param deltaT deltaT milliseconds.
      */
-    private processPlayerMovement(data: number[]) {
+    private processPlayerMovement(data: number[], deltaT: number) {
         let {player1, body} = this.getPlayer1AndBody();
         //calculate new player velocity
-        let speed = player1?.getStat().speed;
-        let x = 0;
-        let y = 0;
-        if(data[0]) y -= 1;
-        if(data[1]) y += 1;
-        if(data[2]) x -= 1;
-        if(data[3]) x += 1;
-        let velocity = MathUtil.getNormalizedSpeed(x, y, speed ?? 0);
-        if(body) Matter.Body.setVelocity(body, velocity);
+        if(player1 && body) {
+            let speed = (player1.getStat().speed ?? 0) * (deltaT / 1000);
+            let x = 0;
+            let y = 0;
+            if(data[0]) y -= 1;
+            if(data[1]) y += 1;
+            if(data[2]) x -= 1;
+            if(data[3]) x += 1;
+            let velocity = MathUtil.getNormalizedSpeed(x, y, speed ?? 0);
+            Matter.Body.setVelocity(body, velocity);
+        }
     }
 
     /** Updates the player's movement animation, based on the player's body velocity. */

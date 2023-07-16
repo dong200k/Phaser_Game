@@ -3,6 +3,10 @@ import Entity from "./Entity";
 export default class Monster extends Entity
 {
     private monsterState: any;
+    /** Is the walking animation playing or not. */
+    walking: boolean = false;
+
+    /** Is the monster active or not. */
 
     constructor(scene:Phaser.Scene, monsterState:any) {
         super(scene, monsterState.x, monsterState.y, monsterState.monsterName, monsterState);

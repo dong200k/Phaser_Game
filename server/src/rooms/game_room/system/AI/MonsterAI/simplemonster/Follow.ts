@@ -2,8 +2,11 @@ import Matter from "matter-js";
 import StateNode from "../../../StateMachine/StateNode";
 import MonsterController from "./MonsterController";
 import MathUtil from "../../../../../../util/MathUtil";
-import { getFinalAttackRange } from "../../../Formulas/formulas";
+import { getFinalAttackRange, getFinalSpeed } from "../../../Formulas/formulas";
 
+/**
+ * In this state the monster will follow its aggroTarget.
+ */
 export default class Follow extends StateNode {
 
     public onEnter(): void {
@@ -21,7 +24,7 @@ export default class Follow extends StateNode {
             this.getStateMachine().changeState("Idle");
         } else {
             let body = monster.getBody();
-            let speed = monster.stat.speed;
+            let speed = getFinalSpeed(monster.stat) * deltaT;
             let velocity = MathUtil.getNormalizedSpeed(aggroTarget.x - monster.x, aggroTarget.y - monster.y, speed);
             if(body) Matter.Body.setVelocity(body, velocity);
 

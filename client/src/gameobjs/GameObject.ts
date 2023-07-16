@@ -8,7 +8,7 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
     serverActive: boolean; // controls the visibility and active state of the GameObject
     gameObjectState: GameObjectState;
 
-    // Adjust the sprites position.
+    // Adjust the sprites position, to match the server's Matter.Body.
     positionOffsetX: number;
     positionOffsetY: number;
 

@@ -96,10 +96,10 @@ export default class CollisionManager{
         let trueAttackDamage = getTrueAttackDamage(projectile.stat, entity.stat, projectile.attackMultiplier)
         let trueMagicDamage = getTrueMagicDamage(projectile.stat, entity.stat, projectile.magicMultiplier)
 
-        if(entity instanceof Player) {
-            console.log("Player hit, ", trueAttackDamage + trueMagicDamage);
-            console.log(entity.stat.hp);
-        }
+        // if(entity instanceof Player) {
+        //     console.log("Player hit, ", trueAttackDamage + trueMagicDamage);
+        //     console.log(entity.stat.hp);
+        // }
 
         // Entity colliding with projectile takes attack and magic damage
         let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage)

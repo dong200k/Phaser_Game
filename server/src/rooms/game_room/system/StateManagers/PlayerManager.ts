@@ -11,6 +11,7 @@ import SkillTreeFactory from '../UpgradeTrees/factories/SkillTreeFactory';
 import SkillTreeManager from './SkillTreeManager';
 import ReconciliationInfo from '../../schemas/ReconciliationInfo';
 import WeaponManager from './WeaponManager';
+import { getFinalSpeed } from '../Formulas/formulas';
 
 interface InputPlayload {
     payload: number[];
@@ -27,6 +28,10 @@ export default class PlayerManager{
         this.gameManager = gameManager
     }   
 
+    /**
+     * Updates this PlayerManager.
+     * @param deltaT deltaT milliseconds.
+     */
     update(deltaT: number){
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
@@ -36,7 +41,7 @@ export default class PlayerManager{
             }
         })
 
-        this.processMovementInputPayload();
+        this.processMovementInputPayload(deltaT / 1000);
     }
 
     getPlayerStateAndBody(sessionId: string){
@@ -62,7 +67,7 @@ export default class PlayerManager{
         this.inputPayloads.push(inputPlayload);
     }
 
-    private processMovementInputPayload() {
+    private processMovementInputPayload(deltaT: number) {
         let loopCount = this.inputPayloads.length;
 
         if(this.inputPayloads.length > 100) {
@@ -100,7 +105,7 @@ export default class PlayerManager{
                 }
                 else if(clientTick === serverTick) {
                     // Process client payload.
-                    this.processPlayerMovement(playerId, item.payload);
+                    this.processPlayerMovement(playerId, item.payload, deltaT);
 
                 } else {
                     // Save packet for future ticks.
@@ -111,19 +116,19 @@ export default class PlayerManager{
         }
     }
 
-    processPlayerMovement(playerId: string, data: number[]){
+    processPlayerMovement(playerId: string, data: number[], deltaT: number){
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
 
         //calculate new player velocity
-        let speed = playerState.stat.speed;
+        let speed = getFinalSpeed(playerState.stat) * deltaT;
         let x = 0;
         let y = 0;
         if(data[0]) y -= 1;
         if(data[1]) y += 1;
         if(data[2]) x -= 1;
         if(data[3]) x += 1;
-        let velocity = MathUtil.getNormalizedSpeed(x, y, speed)
+        let velocity = MathUtil.getNormalizedSpeed(x, y, speed);
         Matter.Body.setVelocity(playerBody, velocity);
     }
 

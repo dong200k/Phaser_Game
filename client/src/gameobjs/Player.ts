@@ -28,4 +28,18 @@ export default class Player extends Entity
         return this.playerState;
     }
 
+    public setFlip(x: boolean, y: boolean): this {
+        super.setFlip(x, y);
+
+        if(x === false) {
+            this.positionOffsetX = 5;
+            this.positionOffsetY = -10;
+        } else {
+            this.positionOffsetX = -5;
+            this.positionOffsetY = -10;
+        }
+
+        return this;
+    }
+
 }

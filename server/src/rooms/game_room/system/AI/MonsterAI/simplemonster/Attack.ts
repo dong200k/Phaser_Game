@@ -1,11 +1,13 @@
-import Matter from "matter-js";
 import StateNode from "../../../StateMachine/StateNode";
 import MonsterController from "./MonsterController";
 import MathUtil from "../../../../../../util/MathUtil";
 import { getFinalAttackCooldown, getFinalAttackRange } from "../../../Formulas/formulas";
-import EffectManager from "../../../StateManagers/EffectManager";
 import { GameEvents, IProjectileConfig } from "../../../interfaces";
 
+/**
+ * The Attack state is entered when the monster is in attackRange of its aggroTarget.
+ * The monster will then perform its attack on its aggroTarget.
+ */
 export default class Attack extends StateNode {
 
     /** The time it takes for a attack to complete. */ 
@@ -53,15 +55,15 @@ export default class Attack extends StateNode {
                         spawnY: monster.y,
                         width: 10,
                         height: 10,
-                        initialVelocity: MathUtil.getNormalizedSpeed(monster.x - target.x, monster.y - target.y, 1),
+                        initialVelocity: MathUtil.getNormalizedSpeed(target.x - monster.x, target.y - monster.y, .1),
                         collisionCategory: "MONSTER_PROJECTILE",
-                        range: 20,
+                        range: 100,
                         activeTime: 200,
                         poolType: "monster_projectile",
                         attackMultiplier: 1,
                         magicMultiplier: 0,
                     }
-                    console.log(`spawning monster projectile at: (${projectileConfig.spawnX}, ${projectileConfig.spawnY})`);
+                    // console.log(`spawning monster projectile at: (${projectileConfig.spawnX}, ${projectileConfig.spawnY})`);
                     stateMachine.getPlayerManager().getGameManager().getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, projectileConfig);
                 }
                 

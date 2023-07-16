@@ -43,6 +43,14 @@ export default abstract class StateMachine<Data> extends Schema{
     protected abstract create(data: Data): void;
 
     /**
+     * Called by the state manager after it updates its current state. This method can 
+     * be useful to change state inside the Controller. Ex. Change to the Death state when 
+     * the entity's hp reaches zero.
+     * @param deltaT - Time passed in seconds.
+     */
+    protected abstract postUpdate(deltaT: number): void;
+
+    /**
      * Add a state to the state machine.
      * @param state - The state node.
      * @throws Error if the state's name is not unique.
@@ -109,5 +117,6 @@ export default abstract class StateMachine<Data> extends Schema{
             this.create(this.tempData);
         }
         if (this.currentState) this.currentState.update(deltaT);
+        this.postUpdate(deltaT);
     }
 }

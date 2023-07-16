@@ -2,6 +2,9 @@ import Matter from "matter-js";
 import StateNode from "../../../StateMachine/StateNode";
 import MonsterController from "./MonsterController";
 
+/** In this state the monster will not move.
+ * It will ocasionally look for a new aggroTarget to follow.
+ */
 export default class Idle extends StateNode {
 
     private searchForNewTargetDefaultCooldown: number = 2;
