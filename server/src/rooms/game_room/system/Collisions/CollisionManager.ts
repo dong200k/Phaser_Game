@@ -8,6 +8,7 @@ import { CategoryType, getCategoryType } from "./Category";
 import { ICollisionRule } from "../interfaces";
 import Tile from "../../schemas/gameobjs/Tile";
 import Player from "../../schemas/gameobjs/Player";
+import MeleeProjectile from "../../schemas/projectiles/specialprojectiles/MeleeProjectile";
 
 export default class CollisionManager{
     private gameManager: GameManager
@@ -120,8 +121,8 @@ export default class CollisionManager{
         // setTimeout(()=>{
         //     projectile.setInactive()  
         // }, 200)
-
-        projectile.setInactive();
+        // Melee projectile will be set inactive by its controller.
+        if(!(projectile instanceof MeleeProjectile)) projectile.setInactive();
     }
 
     public resolveProjectileObstacleCollision(projectile: Projectile, obstacle: Tile, bodyA: Matter.Body, bodyB: Matter.Body){

@@ -49,19 +49,20 @@ export default class Attack extends StateNode {
                 if(target) {
                     let projectileConfig: IProjectileConfig;
                     projectileConfig = {
-                        sprite: "demo_hero",
+                        sprite: "TinyZombieAttack",
                         stat: monster.stat,
                         spawnX: monster.x,
                         spawnY: monster.y,
-                        width: 10,
-                        height: 10,
+                        width: 16,
+                        height: 16,
                         initialVelocity: MathUtil.getNormalizedSpeed(target.x - monster.x, target.y - monster.y, .1),
                         collisionCategory: "MONSTER_PROJECTILE",
                         range: 100,
-                        activeTime: 200,
+                        activeTime: 500,
                         poolType: "monster_projectile",
                         attackMultiplier: 1,
                         magicMultiplier: 0,
+                        classType: "MeleeProjectile",
                     }
                     // console.log(`spawning monster projectile at: (${projectileConfig.spawnX}, ${projectileConfig.spawnY})`);
                     stateMachine.getPlayerManager().getGameManager().getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, projectileConfig);

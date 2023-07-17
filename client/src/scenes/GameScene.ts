@@ -43,6 +43,7 @@ export default class GameScene extends Phaser.Scene {
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
         this.load.aseprite("Ranger", "images/roles/ranger.png", "images/roles/ranger.json");
         this.load.aseprite("RangerArrow", "images/projectiles/arrow_1.png", "images/projectiles/arrow_1.json");
+        this.load.aseprite("TinyZombieAttack", "images/projectiles/bite_1.png", "images/projectiles/bite_1.json");
 
         //this.load.
     }

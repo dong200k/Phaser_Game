@@ -23,7 +23,10 @@ export default class ProjectileManager{
     private initializeEvents() {
         let eventEmitter = this.gameManager.getEventEmitter();
         eventEmitter.addListener(GameEvents.SPAWN_PROJECTILE, (projectileConfig: IProjectileConfig) => {
-            this.spawnProjectile(projectileConfig);
+            if(projectileConfig.classType !== undefined)
+                this.spawnProjectile(projectileConfig, projectileConfig.classType);
+            else
+                this.spawnProjectile(projectileConfig);
         });
     }
 

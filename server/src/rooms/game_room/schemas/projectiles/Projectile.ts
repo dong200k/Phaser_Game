@@ -9,6 +9,8 @@ import MathUtil from "../../../../util/MathUtil";
 import GameObject, { Velocity } from "../gameobjs/GameObject";
 import GameManager from "../../system/GameManager";
 import MaskManager from "../../system/Collisions/MaskManager";
+import StateMachine from "../../system/StateMachine/StateMachine";
+import RangedProjectileController from "./projectilestates/rangestates/RangedProjectileController";
 
 /**
  * Projectiles are are updated via the update() method. Call projectile.setInactive() to return the projectile to the
@@ -50,6 +52,8 @@ export default class Projectile extends GameObject implements Cloneable {
     /** GameManager this projectile belongs to */
     private gameManager: GameManager
 
+    @type(StateMachine) projectileController: StateMachine<unknown>;
+
     /**
      * Creates a new projectile GameObject and a corresponding Matter.Body with the projectileConfig
      * @param projectileConfig 
@@ -76,12 +80,13 @@ export default class Projectile extends GameObject implements Cloneable {
 
         this.width = Math.abs(this.body.bounds.max.x - this.body.bounds.min.x);
         this.height = Math.abs(this.body.bounds.max.y - this.body.bounds.min.y);
+        this.projectileController = new RangedProjectileController({projectile: this});
     }
     
     /**
      * Updates this projectile by deltaT. If the projectile has an activeTime and this.outOfTime() is true then projetile will be made inactive.
      * If projectile has a range and this.outOfRange() is true then projectile will be made inactive.
-     * @param deltaT The time that passed since the last update in seconds.
+     * @param deltaT The time that passed since the last update in milliseconds.
      */
     public update(deltaT: number){
         // Update time projectile is active
@@ -91,6 +96,9 @@ export default class Projectile extends GameObject implements Cloneable {
 
         // Make projectile inactive it is out of time or range
         if(this.outOfTime() || this.outOfRange()) this.setInactive()
+
+        // Updates this projectile's ai.
+        this.projectileController.update(deltaT / 1000);
     }
 
     /**
@@ -152,6 +160,25 @@ export default class Projectile extends GameObject implements Cloneable {
                 group: 0,
                 mask: 0
             }
+        }
+    }
+
+    /** Disable collision on the Matter body associated with this object. */
+    public disableCollisions() {
+        this.body.collisionFilter = {
+            ...this.body.collisionFilter,
+            group: 0,
+            mask: 0,
+        }
+    }
+
+    /** Enable collision on the Matter body associated with this object. */
+    public enableCollisions() {
+        this.body.collisionFilter = {
+            ...this.body.collisionFilter,
+            group: 0,
+            category: Categories[this.collisionCategory],
+            mask: MaskManager.getManager().getMask(this.collisionCategory) 
         }
     }
 

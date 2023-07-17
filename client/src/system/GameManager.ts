@@ -254,8 +254,8 @@ export default class GameManager {
     private addProjectile(projectile: any, key: string): Projectile{
         let proj = new Projectile(this.scene, projectile);
         this.addListenersToGameObject(proj, projectile);
-        // Play the fly animation.
-        proj.play({key: "fly", repeat: -1});
+        // Play projectile animation.
+        proj.play({key: "play", repeat: -1});
         this.scene.add.existing(proj)
         return proj;
     }

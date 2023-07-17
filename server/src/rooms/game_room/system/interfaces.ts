@@ -8,6 +8,7 @@ import { CategoryType } from "./Collisions/Category";
 import GameObject, { Velocity } from "../schemas/gameobjs/GameObject";
 import Entity from "../schemas/gameobjs/Entity";
 import MonsterController from "./AI/MonsterAI/simplemonster/MonsterController";
+import { IClasses } from "../schemas/projectiles/projectileClasses";
 
 // ------------ Math -------------
 
@@ -113,6 +114,7 @@ export type IProjectileConfig = {
     range?: number,
     attackMultiplier: number,
     magicMultiplier: number,
+    classType?: IClasses,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }
