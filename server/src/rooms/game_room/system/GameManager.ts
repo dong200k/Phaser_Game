@@ -141,7 +141,7 @@ export default class GameManager {
         let deltaTSeconds = deltaT / 1000;
         Matter.Engine.update(this.engine, deltaT);
 
-        this.playerManager.update(deltaT);
+        this.playerManager.update(deltaTSeconds);
         this.effectManager.update(deltaTSeconds);
         this.dungeonManager.update(deltaTSeconds);
         this.projectileManager.update(deltaT)

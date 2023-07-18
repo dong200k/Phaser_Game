@@ -9,7 +9,7 @@ import GameObject from "../gameobjs/GameObject";
 import ClientSidePrediction from "./ClientSidePrediction";
 import Tile from "../gameobjs/Tile";
 import EventManager from "./EventManager";
-import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
+import PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
 import type MonsterState from "../../../server/src/rooms/game_room/schemas/gameobjs/monsters/Monster";
 import type ProjectileState from "../../../server/src/rooms/game_room/schemas/projectiles/Projectile";
 import type GameObjectState from "../../../server/src/rooms/game_room/schemas/gameobjs/GameObject";
@@ -251,11 +251,15 @@ export default class GameManager {
     }
 
     /** Adds a new projectile to the scene. */
-    private addProjectile(projectile: any, key: string): Projectile{
+    private addProjectile(projectile: ProjectileState, key: string): Projectile{
         let proj = new Projectile(this.scene, projectile);
         this.addListenersToGameObject(proj, projectile);
         // Play projectile animation.
-        proj.play({key: "play", repeat: -1});
+        if(projectile.projectileType === "Melee") {
+            proj.play("play");
+        } else {
+            proj.play({key: "play", repeat: -1});
+        }  
         this.scene.add.existing(proj)
         return proj;
     }
@@ -314,6 +318,7 @@ export default class GameManager {
                 /** ----- Player Listeners ----- */
                 let playerState = entityState as PlayerState;
                 playerState.specialCooldown.onChange = (changes: any) => this.playerSpecialCooldownOnChange(gameObject, playerState, changes);
+                playerState.playerController.onChange = (changes: any) => this.playerControllerOnChange(gameObject, playerState, changes);
             }
         }
     }
@@ -358,19 +363,21 @@ export default class GameManager {
             }
         }
         if(gameObject instanceof Player && gameObject !== this.player1) {
-            // Movement animations for all players except player1. Player1 gets animation from the csp.
-            let velocityX = gameObjectState.velocity.x;
-            let velocityY = gameObjectState.velocity.y;
-            if(velocityX < 0) gameObject.setFlip(true, false);
-            else if(velocityX > 0) gameObject.setFlip(false, false);
+            if((gameObjectState as PlayerState).playerController.stateName !== "Dead") {
+                // Movement animations for all players except player1. Player1 gets animation from the csp.
+                let velocityX = gameObjectState.velocity.x;
+                let velocityY = gameObjectState.velocity.y;
+                if(velocityX < 0) gameObject.setFlip(true, false);
+                else if(velocityX > 0) gameObject.setFlip(false, false);
 
-            if(velocityX === 0 && velocityY === 0) {
-                gameObject.play({key: "idle", repeat: -1});
-                gameObject.running = false;
-            } else {
-                if(!gameObject.running) {
-                    gameObject.play({key: "run", repeat: -1});
-                    gameObject.running = true;
+                if(velocityX === 0 && velocityY === 0) {
+                    gameObject.play({key: "idle", repeat: -1});
+                    gameObject.running = false;
+                } else {
+                    if(!gameObject.running) {
+                        gameObject.play({key: "run", repeat: -1});
+                        gameObject.running = true;
+                    }
                 }
             }
         }
@@ -431,6 +438,13 @@ export default class GameManager {
                 specialCooldownCounter: Math.round(remainingTime / 1000),
                 specialCooldownPercent: isFinished? 0 : remainingTime / time,
             });
+        }
+    }
+
+    private playerControllerOnChange(player: Player, playerState: PlayerState, changes: any) {
+        let currentState = playerState.playerController.stateName;
+        if(currentState === "Dead") {
+            player.play("death");
         }
     }
 

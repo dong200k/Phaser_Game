@@ -7,6 +7,7 @@ import { type } from "@colyseus/schema";
 import { Categories } from "../../../system/Collisions/Category";
 import MaskManager from "../../../system/Collisions/MaskManager";
 import Stat from "../Stat";
+import GameManager from "../../../system/GameManager";
 
 
 export default class Monster extends Entity {
@@ -17,8 +18,8 @@ export default class Monster extends Entity {
     private prevHp: number;
     private config: IMonsterConfig;
 
-    constructor(config: IMonsterConfig) {
-        super();
+    constructor(gameManager: GameManager, config: IMonsterConfig) {
+        super(gameManager);
         this.config = config;
         this.monsterName = config.name;
         this.setConfig(this.config);
@@ -100,7 +101,7 @@ export default class Monster extends Entity {
     public disableCollisions() {
         this.body.collisionFilter = {
             ...this.body.collisionFilter,
-            group: 0,
+            group: -1,
             mask: 0,
         }
     }

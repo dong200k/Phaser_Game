@@ -92,7 +92,7 @@ export default class DungeonManager {
             // Waves
             let wave = this.createNewWave();
             wave.setAgressionLevel(1);
-            wave.addMonster("TinyZombie", 10);
+            wave.addMonster("TinyZombie", 1);
             newDungeon.addWave(wave);
 
             let wave2 = this.createNewWave();
@@ -139,7 +139,7 @@ export default class DungeonManager {
             monster.reset();
         } else {
             // Create a new monster.
-            monster = MonsterFactory.createMonster(monsterName);
+            monster = MonsterFactory.createMonster(this.gameManager, monsterName);
             monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
             this.gameManager.addGameObject(monster.getId(), monster, monster.getBody());
         }
@@ -225,7 +225,7 @@ export default class DungeonManager {
             //Create tilemap layers
             if(layerType === "tilelayer") {
                 let newLayer = new Layer(layerName, width, height, tileWidth, tileHeight);
-                newLayer.populateTiles(tileWidth, tileHeight, layer.data);
+                newLayer.populateTiles(this.gameManager, tileWidth, tileHeight, layer.data);
                 tilemap.addExistingLayer(newLayer);
             }
         })

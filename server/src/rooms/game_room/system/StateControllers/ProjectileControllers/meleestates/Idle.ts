@@ -1,5 +1,5 @@
-import StateNode from "../../../../system/StateMachine/StateNode";
-import Projectile from "../../Projectile";
+import StateNode from "../../../StateMachine/StateNode";
+import Projectile from "../../../../schemas/projectiles/Projectile";
 import MeleeProjectileController from "./MeleeProjectileController";
 
 /**

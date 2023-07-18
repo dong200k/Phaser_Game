@@ -2,6 +2,10 @@ import Entity from "../../gameobjs/Entity";
 import OneTimeEffect from "./OneTimeEffect";
 import { type } from '@colyseus/schema';
 
+/**
+ * This effect will update the entity's hp by the specified amount on the next
+ * effectManager update. The entity's hp will not go below 0 and above maxHp.
+ */
 export default class InstantHPEffect extends OneTimeEffect {
 
     @type("number") private hp: number = 10;
@@ -16,6 +20,14 @@ export default class InstantHPEffect extends OneTimeEffect {
     public applyEffect(entity: Entity): boolean {
         // Basic hp inc. Should add checks for max hp.
         entity.stat.hp += this.hp;
+
+        // Clamp the entity's hp between 0 and maxHp.
+        if(entity.stat.hp < 0) {
+            entity.stat.hp = 0;
+        } else if(entity.stat.hp > entity.stat.maxHp) {
+            entity.stat.hp = entity.stat.maxHp;
+        }
+
         return true;
     }
 

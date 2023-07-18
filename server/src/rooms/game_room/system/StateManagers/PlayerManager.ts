@@ -22,6 +22,7 @@ export default class PlayerManager{
     private gameManager: GameManager
 
     private inputPayloads: InputPlayload[] = [];
+    private disabledPlayers: Set<string> = new Set();
 
 
     constructor(gameManager: GameManager) {
@@ -30,18 +31,19 @@ export default class PlayerManager{
 
     /**
      * Updates this PlayerManager.
-     * @param deltaT deltaT milliseconds.
+     * @param deltaT deltaT seconds.
      */
     update(deltaT: number){
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Player){
                 // gameObject.attackCooldown.tick(deltaT)
-                gameObject.specialCooldown.tick(deltaT)
+                gameObject.specialCooldown.tick(deltaT * 1000);
+                gameObject.playerController.update(deltaT);
             }
         })
 
-        this.processMovementInputPayload(deltaT / 1000);
+        this.processMovementInputPayload(deltaT);
     }
 
     getPlayerStateAndBody(sessionId: string){
@@ -49,6 +51,9 @@ export default class PlayerManager{
     }
 
     processPlayerAttack(playerId: string, data: any){
+        // Do nothing if the player is diabled.
+        if(this.disabledPlayers.has(playerId)) return;
+
         let [mouseClick, mouseX, mouseY] = data
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
@@ -67,6 +72,10 @@ export default class PlayerManager{
         this.inputPayloads.push(inputPlayload);
     }
 
+    /**
+     * Process all the movement data that have been queued up.
+     * @param deltaT deltaT seconds.
+     */
     private processMovementInputPayload(deltaT: number) {
         let loopCount = this.inputPayloads.length;
 
@@ -117,8 +126,16 @@ export default class PlayerManager{
     }
 
     processPlayerMovement(playerId: string, data: number[], deltaT: number){
+        
+
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
+
+        // If the player is disabled stop the player
+        if(this.disabledPlayers.has(playerId)) {
+            Matter.Body.setVelocity(playerBody, {x: 0, y: 0});
+            return; 
+        }
 
         //calculate new player velocity
         let speed = getFinalSpeed(playerState.stat) * deltaT;
@@ -132,7 +149,10 @@ export default class PlayerManager{
         Matter.Body.setVelocity(playerBody, velocity);
     }
 
-    processPlayerSpecial(playerId: string, useSpecial: boolean){
+    processPlayerSpecial(playerId: string, useSpecial: boolean) {
+        // Do nothing if the player is diabled.
+        if(this.disabledPlayers.has(playerId)) return;
+
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
         
@@ -167,12 +187,12 @@ export default class PlayerManager{
         SkillTreeManager.equipSkillTree(player, maxedSkillTree)
     }
 
-    public async createPlayer(sessionId: string, isOwner: boolean, gameManager?: GameManager) {
+    public async createPlayer(sessionId: string, isOwner: boolean) {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
 
         //TODO: get player data from the database
-        let newPlayer = new Player("No Name", undefined, gameManager);
+        let newPlayer = new Player(this.gameManager, "No Name", undefined);
 
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
@@ -232,5 +252,19 @@ export default class PlayerManager{
 
     public getGameManager() {
         return this.gameManager;
+    }
+
+    /** Disable a player's input from updating the state of the game.
+     * @param player The player to disable.
+     */
+    public disablePlayer(player: Player) {
+        this.disabledPlayers.add(player.id);
+    }
+
+    /** Enable a player's input from updating the state of the game.
+     * @param player The player to enable.
+     */
+    public enablePlayer(player: Player) {
+        this.disabledPlayers.delete(player.id);
     }
 }

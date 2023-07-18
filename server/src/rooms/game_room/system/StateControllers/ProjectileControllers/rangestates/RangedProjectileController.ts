@@ -1,5 +1,5 @@
+import Projectile from "../../../../schemas/projectiles/Projectile";
 import StateMachine from "../../../../system/StateMachine/StateMachine";
-import Projectile from "../../Projectile";
 
 
 export interface RangedProjectileControllerData {

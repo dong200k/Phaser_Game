@@ -1,11 +1,12 @@
+import GameManager from "../../../../system/GameManager";
 import { IMonsterConfig } from "../../../../system/interfaces";
 import Stat from "../../Stat";
 import Monster from "../Monster";
 
 export default class TinyZombie extends Monster {
 
-    constructor() {
-        super({ // Note: this config object will be used as default values when resetting the monster.
+    constructor(gameManager: GameManager) {
+        super(gameManager, { // Note: this config object will be used as default values when resetting the monster.
             name: "TinyZombie",
             width: 12, // 12
             height: 18, // 18

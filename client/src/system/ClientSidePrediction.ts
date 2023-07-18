@@ -285,6 +285,13 @@ export default class ClientSidePrediction {
         let {player1, body} = this.getPlayer1AndBody();
         //calculate new player velocity
         if(player1 && body) {
+
+            // If the player is dead prevent movement.
+            if(player1.getPlayerState().playerController.stateName === "Dead") {
+                Matter.Body.setVelocity(body, {x: 0, y: 0});
+                return; 
+            }
+
             let speed = (player1.getStat().speed ?? 0) * (deltaT / 1000);
             let x = 0;
             let y = 0;
@@ -300,7 +307,7 @@ export default class ClientSidePrediction {
     /** Updates the player's movement animation, based on the player's body velocity. */
     private updatePlayerMovementAnimation() {
         let {player1, body} = this.getPlayer1AndBody();
-        if(player1 && body) {
+        if(player1 && body && player1.getPlayerState().playerController.stateName !== "Dead") {
             let velocityX = body.velocity.x;
             let velocityY = body.velocity.y;
             if(velocityX < 0) player1.setFlip(true, false);

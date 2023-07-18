@@ -1,5 +1,5 @@
-import StateMachine from "../../../../system/StateMachine/StateMachine";
-import Projectile from "../../Projectile";
+import StateMachine from "../../../StateMachine/StateMachine";
+import Projectile from "../../../../schemas/projectiles/Projectile";
 import Attack from "./Attack";
 import Idle from "./Idle";
 
@@ -13,7 +13,8 @@ export default class MeleeProjectileController extends StateMachine<MeleeProject
 
     private projectile!: Projectile;
     private attackDuration: number = 1;
-    private triggerPercent: number = 0.7;
+    private triggerPercent: number = 0.6;
+    private unTriggerPercent: number = 0.4;
 
     protected create(data: MeleeProjectileControllerData): void {
         this.projectile = data.projectile;
@@ -44,5 +45,9 @@ export default class MeleeProjectileController extends StateMachine<MeleeProject
 
     public getTriggerPercent() {
         return this.triggerPercent;
+    }
+
+    public getUntriggerPercent() {
+        return this.unTriggerPercent;
     }
 }

@@ -10,7 +10,7 @@ import GameObject, { Velocity } from "../gameobjs/GameObject";
 import GameManager from "../../system/GameManager";
 import MaskManager from "../../system/Collisions/MaskManager";
 import StateMachine from "../../system/StateMachine/StateMachine";
-import RangedProjectileController from "./projectilestates/rangestates/RangedProjectileController";
+import RangedProjectileController from "../../system/StateControllers/ProjectileControllers/rangestates/RangedProjectileController";
 
 /**
  * Projectiles are are updated via the update() method. Call projectile.setInactive() to return the projectile to the
@@ -49,10 +49,12 @@ export default class Projectile extends GameObject implements Cloneable {
     /** attack multiplier AD  */
     @type("number") attackMultiplier: number
     @type("number") magicMultiplier: number
-    /** GameManager this projectile belongs to */
-    private gameManager: GameManager
+    // /** GameManager this projectile belongs to */
+    // private gameManager: GameManager
 
     @type(StateMachine) projectileController: StateMachine<unknown>;
+
+    @type("string") projectileType: string;
 
     /**
      * Creates a new projectile GameObject and a corresponding Matter.Body with the projectileConfig
@@ -60,7 +62,7 @@ export default class Projectile extends GameObject implements Cloneable {
      * @param gameManager
      */
     constructor(projectileConfig: IProjectileConfig, gameManager: GameManager){
-        super(projectileConfig.spawnX, projectileConfig.spawnY)
+        super(gameManager, projectileConfig.spawnX, projectileConfig.spawnY)
         this.projectileId = MathUtil.uid()
         this.poolType = projectileConfig.poolType
         this.sprite = projectileConfig.sprite
@@ -74,6 +76,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.gameManager = gameManager
         this.entity = projectileConfig.entity
         this.type = "Projectile"
+        this.projectileType = "Ranged";
         this.attackMultiplier = projectileConfig.attackMultiplier
         this.magicMultiplier = projectileConfig.magicMultiplier
         this.createBody()
@@ -153,21 +156,14 @@ export default class Projectile extends GameObject implements Cloneable {
      */
     public reset() {
         // Make body non collideable
-        let body = this.getBody()
-        if(body){
-            body.collisionFilter = {
-                ...body.collisionFilter,
-                group: 0,
-                mask: 0
-            }
-        }
+        this.disableCollisions();
     }
 
     /** Disable collision on the Matter body associated with this object. */
     public disableCollisions() {
         this.body.collisionFilter = {
             ...this.body.collisionFilter,
-            group: 0,
+            group: -1,
             mask: 0,
         }
     }

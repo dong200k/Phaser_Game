@@ -2,6 +2,7 @@ import { Schema, type } from '@colyseus/schema';
 import MathUtil from '../../../../util/MathUtil';
 import { Cloneable } from '../../../../util/PoolUtil';
 import Matter from 'matter-js';
+import GameManager from '../../system/GameManager';
 
 export class Velocity extends Schema {
     @type('number') x = 0;
@@ -36,9 +37,13 @@ export default class GameObject extends Schema implements Cloneable {
     inPoolMap: boolean;
     poolType: string;
 
-    constructor(x: number, y: number, ownerId?: string) {
+    // -- Reference to the GameManager --
+    gameManager: GameManager;
+
+    constructor(gameManager: GameManager, x: number, y: number, ownerId?: string) {
         super();
-        this.id = MathUtil.uid()
+        this.id = MathUtil.uid();
+        this.gameManager = gameManager;
         this.x = x;
         this.y = y;
         this.width = 1;
