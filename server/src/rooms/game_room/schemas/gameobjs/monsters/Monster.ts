@@ -50,7 +50,7 @@ export default class Monster extends Entity {
      * Sets a new aggroTarget for this monster.
      * @param aggroTarget The aggroTarget.
      */
-    public setAggroTarget(aggroTarget: Entity) {
+    public setAggroTarget(aggroTarget: Entity | null) {
         this.aggroTarget = aggroTarget;
     }
 

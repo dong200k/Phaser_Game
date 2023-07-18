@@ -45,6 +45,12 @@ export default class MonsterController extends StateMachine<MonsterControllerDat
             currentState !== null && currentState.getStateName() !== "Death") {
             this.changeState("Death");
         }
+
+        // Remove the aggroTarger if it is dead
+        let aggroTarget = this.monster.getAggroTarget();
+        if(aggroTarget?.isDead()) {
+            this.monster.setAggroTarget(null);
+        }
     }
 
     public getPlayerManager() {

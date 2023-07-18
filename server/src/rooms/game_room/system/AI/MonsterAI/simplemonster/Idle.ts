@@ -24,7 +24,7 @@ export default class Idle extends StateNode {
         // Search for a new aggro target every 
         if(this.searchForNewTargetCooldown <= 0) {
             this.searchForNewTargetCooldown = this.searchForNewTargetDefaultCooldown;
-            let aggroTarget = stateMachine.getPlayerManager().getNearestPlayer(monster.x, monster.y);
+            let aggroTarget = stateMachine.getPlayerManager().getNearestAlivePlayer(monster.x, monster.y);
             if(aggroTarget !== undefined) monster.setAggroTarget(aggroTarget);
         }
 

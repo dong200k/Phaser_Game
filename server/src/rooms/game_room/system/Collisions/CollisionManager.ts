@@ -118,11 +118,9 @@ export default class CollisionManager{
             EffectManager.addEffectsTo(attackingEntity, healEffect)
         }
 
-        // setTimeout(()=>{
-        //     projectile.setInactive()  
-        // }, 200)
         // Melee projectile will be set inactive by its controller.
         if(!(projectile instanceof MeleeProjectile)) projectile.setInactive();
+        else projectile.disableCollisions();
     }
 
     public resolveProjectileObstacleCollision(projectile: Projectile, obstacle: Tile, bodyA: Matter.Body, bodyB: Matter.Body){

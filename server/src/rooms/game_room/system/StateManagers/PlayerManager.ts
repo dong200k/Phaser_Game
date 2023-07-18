@@ -177,10 +177,10 @@ export default class PlayerManager{
         // Equip aritfacts
         let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
         let upgradedFrostGlaive = ArtifactFactory.createUpgradeFrostGlaive()
-        let upgradedDemoArtifact = ArtifactFactory.createDemo()
+        //let upgradedDemoArtifact = ArtifactFactory.createDemo()
         this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
         // ArtifactManager.equipArtifact(player, upgradedFrostGlaive)
-        this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
+        // this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
 
         // Equip skill tree
         let maxedSkillTree = SkillTreeFactory.createUpgradedAdventurerSkill()
@@ -247,6 +247,33 @@ export default class PlayerManager{
                 nearestPlayer = player;
             }
         }
+        return nearestPlayer;
+    }
+
+    /**
+     * Gets the nearest alive player to the given x and y position. If no such player is found 
+     * return undefined.
+     * @param x The x value.
+     * @param y The y value.
+     */
+    public getNearestAlivePlayer(x: number, y: number): Player | undefined {
+        let players = new Array<Player>;
+        this.gameManager.state.gameObjects.forEach((value) => {if(value instanceof Player) players.push(value)});
+        if(players.length === 0) return undefined;
+        let idx = 0;
+        let nearestDistance = Number.MAX_VALUE;
+        let nearestPlayer = undefined;
+        do {
+            let player = players[idx];
+            if(!player.isDead()) {
+                let distance = MathUtil.distanceSquared(x, y, player.x, player.y);
+                if(distance < nearestDistance) {
+                    nearestDistance = distance;
+                    nearestPlayer = player;
+                }
+            }
+            idx++;
+        } while(idx < players.length);
         return nearestPlayer;
     }
 

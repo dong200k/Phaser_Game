@@ -11,6 +11,8 @@ import GameManager from "../../system/GameManager";
 import MaskManager from "../../system/Collisions/MaskManager";
 import StateMachine from "../../system/StateMachine/StateMachine";
 import RangedProjectileController from "../../system/StateControllers/ProjectileControllers/rangestates/RangedProjectileController";
+import MeleeProjectile from "./specialprojectiles/MeleeProjectile";
+import MeleeProjectileController from "../../system/StateControllers/ProjectileControllers/meleestates/MeleeProjectileController";
 
 /**
  * Projectiles are are updated via the update() method. Call projectile.setInactive() to return the projectile to the

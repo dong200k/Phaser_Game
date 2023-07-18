@@ -12,4 +12,9 @@ export default class Entity extends GameObject {
         super(gameManager, 0, 0);
         this.stat = new Stat()
     }
+
+    /** Checks this entity's hp to see if it is dead or not (hp <= 0). */
+    public isDead() {
+        return this.stat.hp <= 0;
+    }
 }

@@ -15,4 +15,8 @@ export default class MeleeProjectile extends Projectile {
         this.projectileType = "Melee";
     }
 
+    public reset(): void {
+        super.reset();
+        (this.projectileController as MeleeProjectileController).reset();
+    }
 }

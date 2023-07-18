@@ -50,4 +50,9 @@ export default class MeleeProjectileController extends StateMachine<MeleeProject
     public getUntriggerPercent() {
         return this.unTriggerPercent;
     }
+
+    /** Reset this controller to its original state. */
+    public reset() {
+        this.changeState("Idle");
+    }
 }
