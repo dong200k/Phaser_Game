@@ -321,6 +321,12 @@ export default class GameManager {
                 playerState.playerController.onChange = (changes: any) => this.playerControllerOnChange(gameObject, playerState, changes);
             }
         }
+
+        if(gameObject instanceof Projectile) {
+            /** ----- Projectile Listeners ----- */
+            let projectileState = gameObjectState as ProjectileState;
+            projectileState.projectileController.onChange = (changes: any) => this.projectileControllerOnChange(gameObject, projectileState, changes);
+        }
     }
 
     /** Called when the gameObjectState field changes. This doesn't account for object fields only primitive fields. */
@@ -448,4 +454,10 @@ export default class GameManager {
         }
     }
 
+    private projectileControllerOnChange(projectile: Projectile, projectileState: ProjectileState, changes: any) {
+        let currentState = projectileState.projectileController.stateName;
+        if(currentState === "Attack") {
+            projectile.play("play");
+        }
+    }
 }

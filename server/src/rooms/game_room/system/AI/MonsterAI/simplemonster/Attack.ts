@@ -14,7 +14,7 @@ export default class Attack extends StateNode {
     private defaultAttackCooldown: number = 1;
 
     /** The percent of the attack cooldown before the attack triggers. Ex. Monster slashes. */
-    private attackTriggerPercent: number = 0.7;
+    private attackTriggerPercent: number = 0.95;
 
     /** The attack cooldown. Goes from defaultAttackCooldown to 0. */
     private attackCooldown: number = 1;

@@ -5,8 +5,15 @@ import Player from "../../gameobjs/Player"
 import EffectFactory from "../EffectFactory";
 
 describe("Speed Multiplier Effect, Temp", () => {
+    let gameManager: GameManager;
+
+    beforeEach(async ()=>{
+        gameManager = new GameManager(new State())
+        await gameManager.preload()
+    })
+
     const createPlayer = (initialSpeed: number) => {
-        let player = new Player("Dummy Player", "Shoe washer");
+        let player = new Player(gameManager, "Dummy Player", "Shoe washer");
         player.stat.speed = initialSpeed;
         return player;
     }
@@ -98,8 +105,10 @@ describe("Speed Multiplier Effect, Temp", () => {
 
 
 describe("Stat Effects", () => {
+    let gameManager = new GameManager(new State());
+
     const createPlayer = () => {
-        let player = new Player("Average Person", "Road Constructor");
+        let player = new Player(gameManager, "Average Person", "Road Constructor");
         player.stat.hp = 100;
         player.stat.maxHp = 100;
         player.stat.mana = 100;

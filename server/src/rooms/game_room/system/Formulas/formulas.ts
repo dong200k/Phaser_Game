@@ -16,6 +16,7 @@ export const getFinalSpeed = function({speed}: Stat){
 
 /**
  * Takes in an attacker stat, a defender stack, and a attack damage multiplier, and returns the true attack damage the defender should take
+ * The lowest damage returned is 1, even if the attacker has 0 attack.
  * @param attackerStat stat of attacker/projectile
  * @param defenderStat stat of defender/entity
  * @param attackMultiplier non negative multiplier for the ad damage before armor is taken into account
@@ -32,7 +33,7 @@ export const getTrueAttackDamage = function({attack, attackPercent, damagePercen
     let effectiveArmor = armor * reductionMultiplier
 
     const trueDamage = damage - effectiveArmor;
-    return trueDamage < 0? 0 : trueDamage
+    return trueDamage < 1 ? 1 : trueDamage;
 }
 
 /**

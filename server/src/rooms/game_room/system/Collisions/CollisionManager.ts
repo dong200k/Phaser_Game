@@ -101,6 +101,7 @@ export default class CollisionManager{
         //     console.log("Player hit, ", trueAttackDamage + trueMagicDamage);
         //     console.log(entity.stat.hp);
         // }
+        // console.log(`Collision detected: attack:${trueAttackDamage}, magic:${trueMagicDamage}, player armor: ${entity.stat.armor}`);
 
         // Entity colliding with projectile takes attack and magic damage
         let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage)

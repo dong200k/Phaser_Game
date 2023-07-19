@@ -15,11 +15,12 @@ export default class TinyZombie extends Monster {
                 attackRange: 20,
                 attack: 5,
                 magicAttack: 0,
-                attackPercent: 1,
+                attackPercent: 0,
                 armor: 0,
                 magicResist: 0,
                 maxHp: 100,
                 hp: 100,
+                attackSpeed: 0.7,
             }), 
         });
     }

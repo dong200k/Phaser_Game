@@ -21,7 +21,7 @@ describe("Monster tests", ()=>{
 
         //create player
         let sessionId = "fake-id"
-        gameManager.getPlayerManager().createPlayer(sessionId, false, gameManager)
+        gameManager.getPlayerManager().createPlayer(sessionId, false)
         playerState = gameManager.getPlayerManager().getPlayerStateAndBody(sessionId).playerState
     })
 
