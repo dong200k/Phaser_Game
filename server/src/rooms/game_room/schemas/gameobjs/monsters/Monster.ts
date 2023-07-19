@@ -13,7 +13,7 @@ import GameManager from "../../../system/GameManager";
 export default class Monster extends Entity {
 
     @type("string") private monsterName: string;
-    @type(MonsterController) private controller: MonsterController | null = null;
+    @type(MonsterController) controller: MonsterController;
     private aggroTarget: Entity | null = null;
     private prevHp: number;
     private config: IMonsterConfig;
@@ -36,6 +36,7 @@ export default class Monster extends Entity {
             mask: MaskManager.getManager().getMask('MONSTER'),
         }
         this.body = body;
+        this.controller = new MonsterController({monster: this, playerManager: gameManager.getPlayerManager()});
     }
 
     public setController(contorller: MonsterController) {

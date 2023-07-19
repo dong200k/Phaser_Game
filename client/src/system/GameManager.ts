@@ -320,6 +320,12 @@ export default class GameManager {
                 playerState.specialCooldown.onChange = (changes: any) => this.playerSpecialCooldownOnChange(gameObject, playerState, changes);
                 playerState.playerController.onChange = (changes: any) => this.playerControllerOnChange(gameObject, playerState, changes);
             }
+
+            if(gameObject instanceof Monster) {
+                /** ----- Monster Listeners ----- */
+                let monsterState = entityState as MonsterState;
+                monsterState.controller.onChange = (changes: any) => this.monsterControllerOnChange(gameObject, monsterState, changes);
+            }
         }
 
         if(gameObject instanceof Projectile) {
@@ -394,10 +400,6 @@ export default class GameManager {
         if(entity instanceof Monster) {
             let monsterState = entityState as MonsterState;
             entity.updateStat(monsterState.stat);
-            if((entity.getStat().hp ?? 0) <= 0) {
-                entity.play({key: "death"});
-                entity.walking = false;
-            }
         }
         if(entity instanceof Player) {
             let playerState = entityState as PlayerState;
@@ -458,6 +460,14 @@ export default class GameManager {
         let currentState = projectileState.projectileController.stateName;
         if(currentState === "Attack") {
             projectile.play("play");
+        }
+    }
+
+    private monsterControllerOnChange(monster: Monster, monsterState: MonsterState, changes:any) {
+        let currentState = monsterState.controller.stateName;
+        if(currentState === "Death") {
+            monster.play({key: "death"});
+            monster.walking = false;
         }
     }
 }
