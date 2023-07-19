@@ -213,6 +213,11 @@ export default class GameManager {
     /** Called when the dungeon is first created on the server */
     private onChangeDungeon = (currentValue: any) => {
         currentValue.listen("tilemap", this.onChangeTilemap);
+        currentValue.listen("playerBounds", this.onChangePlayerBounds);
+    }
+
+    private onChangePlayerBounds = (currentValue: any) => {
+        this.csp.updatePlayerBounds(currentValue.minX, currentValue.minY, currentValue.maxX, currentValue.maxY);
     }
 
     /** Called when the tilemap is first created on the server */

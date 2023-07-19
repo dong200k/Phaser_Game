@@ -126,8 +126,6 @@ export default class PlayerManager{
     }
 
     processPlayerMovement(playerId: string, data: number[], deltaT: number){
-        
-
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
 
@@ -146,6 +144,30 @@ export default class PlayerManager{
         if(data[2]) x -= 1;
         if(data[3]) x += 1;
         let velocity = MathUtil.getNormalizedSpeed(x, y, speed);
+
+        // If the velocity would send the player off bounds, update it so that the player wont go off bounds.
+        let bounds = this.getGameManager().getDungeonManager().getDungeon()?.getPlayerBounds();
+        if(bounds) {
+            let minX = playerBody.bounds.min.x;
+            let minY = playerBody.bounds.min.y;
+            let maxX = playerBody.bounds.max.x;
+            let maxY = playerBody.bounds.max.y;
+            if(velocity.x > 0) {
+                let distanceToMax = bounds.maxX - maxX;
+                velocity.x = Math.min(velocity.x, distanceToMax);
+            } else if(velocity.x < 0) {
+                let distanceToMin = bounds.minX - minX;
+                velocity.x = Math.max(velocity.x, distanceToMin);
+            }
+            if(velocity.y > 0) {
+                let distanceToMax = bounds.maxY - maxY;
+                velocity.y = Math.min(velocity.y, distanceToMax * deltaT);
+            } else if(velocity.y < 0) {
+                let distanceToMin = bounds.minY - minY;
+                velocity.y = Math.max(velocity.y, distanceToMin * deltaT);
+            }
+        }
+
         Matter.Body.setVelocity(playerBody, velocity);
     }
 

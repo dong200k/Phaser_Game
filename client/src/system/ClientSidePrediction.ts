@@ -16,6 +16,13 @@ interface ServerStateQueueItem {
     positionY: number;
 }
 
+interface PlayerBounds {
+    minX: number;
+    minY: number;
+    maxX: number;
+    maxY: number;
+}
+
 /**
  * The ClientSidePrediction class will manage the prediction of player1 to match that of the server's.
  * Its main purpose would be movement prediction. Which would consist of the following:
@@ -49,6 +56,8 @@ export default class ClientSidePrediction {
     private ticksToProcess: number = 0;
 
     private serverStateQueue: ServerStateQueueItem[] = [];
+
+    private playerBounds: PlayerBounds | null = null;
 
 
     // Debugging rectangles
@@ -300,6 +309,30 @@ export default class ClientSidePrediction {
             if(data[2]) x -= 1;
             if(data[3]) x += 1;
             let velocity = MathUtil.getNormalizedSpeed(x, y, speed ?? 0);
+
+            // If the velocity would send the player off bounds, update it so that the player wont go off bounds.
+            let bounds = this.playerBounds;
+            if(bounds) {
+                let minX = body.bounds.min.x;
+                let minY = body.bounds.min.y;
+                let maxX = body.bounds.max.x;
+                let maxY = body.bounds.max.y;
+                if(velocity.x > 0) {
+                    let distanceToMax = bounds.maxX - maxX;
+                    velocity.x = Math.min(velocity.x, distanceToMax);
+                } else if(velocity.x < 0) {
+                    let distanceToMin = bounds.minX - minX;
+                    velocity.x = Math.max(velocity.x, distanceToMin);
+                }
+                if(velocity.y > 0) {
+                    let distanceToMax = bounds.maxY - maxY;
+                    velocity.y = Math.min(velocity.y, distanceToMax);
+                } else if(velocity.y < 0) {
+                    let distanceToMin = bounds.minY - minY;
+                    velocity.y = Math.max(velocity.y, distanceToMin);
+                }
+            }
+
             Matter.Body.setVelocity(body, velocity);
         }
     }
@@ -395,5 +428,18 @@ export default class ClientSidePrediction {
                 return true;
             }
         })
+    }
+
+    /**
+     * Updates the player's world bounds. This will restrict the player's movement
+     * to within these bounds.
+     * @param minX minX
+     * @param minY minY
+     * @param maxX maxX
+     * @param maxY maxY
+     */
+    public updatePlayerBounds(minX: number, minY: number, maxX: number, maxY:number) {
+        this.playerBounds = { minX, minY, maxX, maxY };
+        console.log(this.playerBounds);
     }
 }

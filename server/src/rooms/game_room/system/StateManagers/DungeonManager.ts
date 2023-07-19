@@ -86,6 +86,9 @@ export default class DungeonManager {
             // Set spawnpoints 
             this.setDungeonSpawnPoints(newDungeon, tiled);
 
+            // Set world bounds
+            this.setDungeonWorldBounds(newDungeon, tiled);
+
             // Make the obstables collidable by adding them to matter.
             this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.matterBodies, newTilemap);
 
@@ -207,6 +210,23 @@ export default class DungeonManager {
     }
 
     /**
+     * Sets the world bounds for the dungeon. There is a world bound for the player typed 'playerbounds'.
+     * @param dungeon The dungeon.
+     * @param data The Tiled tilemap jsonfile.
+     */
+    private setDungeonWorldBounds(dungeon: Dungeon, data: TiledJSON) {
+        data.layers.forEach((value) => {
+            if(value.type === "objectgroup" && value.name === "WorldBounds") {
+                value.objects.forEach((bounds) => {
+                    if(bounds.type === "playerbounds") {
+                        dungeon.addPlayerWorldBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+                    }
+                })
+            }
+        });
+    }
+
+    /**
      * Create and return a Tilemap based on a TiledJSON object.
      * @param data A TiledJSON object.
      * @returns A Tilemap.
@@ -278,5 +298,14 @@ export default class DungeonManager {
                 console.log("Error: tileWidth and tileHeight is not defined");
             }
         }
+    }
+
+    /**
+     * Gets the current dungeon. 
+     * The dungeon contains the tilemaps, spawnpoints, world bounds, and wave spawning.
+     * @returns The current dungeon.
+     */
+    public getDungeon() {
+        return this.dungeon;
     }
 }
