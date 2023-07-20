@@ -30,8 +30,8 @@ export default abstract class StateNode extends Schema
      * Can be used to change the state.
      * @returns The StateMachine.
      */
-    public getStateMachine() {
-        return this.stateMachine;
+    public getStateMachine<T extends StateMachine<unknown>>() {
+        return this.stateMachine as T;
     }
 
     /**
@@ -46,7 +46,7 @@ export default abstract class StateNode extends Schema
 
     /**
      * Called by the StateMachine every update.
-     * @param deltaT - The change in time.
+     * @param deltaT - The change in time since the last update, in seconds.
      */
     public abstract update(deltaT: number): void;
     

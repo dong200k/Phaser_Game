@@ -13,23 +13,40 @@ import { TiledJSON } from "../interfaces"
 import Tilemap from "../../schemas/dungeon/tilemap/Tilemap"
 import Layer from "../../schemas/dungeon/tilemap/Layer"
 import MathUtil from "../../../../util/MathUtil"
+import MonsterPool from "../../schemas/gameobjs/monsters/MonsterPool"
+import TinyZombie from "../../schemas/gameobjs/monsters/zombie/TinyZombie"
+import InvisObstacle from "../../schemas/gameobjs/InvisObstacle"
 
 const dungeonURLMap = {
     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
     "Dirt Map": "assets/tilemaps/dirt_map/dirt_map.json"
 }
 
+interface Rect {
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+}
+
 // The dungeon manager will be responsible for holding the dungeon.
 // The dungeon object will contain the tilemap.
 // Merge the tilemap manager into the dungeon manager.
 export default class DungeonManager {
-    //Spawn different monsters 
-    //Reuse monsters
     private gameManager: GameManager;
     private dungeon?: Dungeon;
 
+    // Stores reusable Monster objects.
+    private monsterPool: MonsterPool;
+
+    // Monster constructors
+    static ctors = {
+        "TinyZombie": TinyZombie,
+    }
+
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager;
+        this.monsterPool = new MonsterPool();
         this.createDungeon();
     }   
 
@@ -41,7 +58,13 @@ export default class DungeonManager {
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Monster){
-                gameObject.update(deltaT);
+                // console.log(`Active:${gameObject.active}, x:${gameObject.x}, y:${gameObject.y}, `);
+                if(gameObject.active) {
+                    gameObject.update(deltaT);
+                } else if(!gameObject.isInPoolMap()) {
+                    gameObject.disableCollisions();
+                    this.monsterPool.returnInstance(gameObject.poolType, gameObject);
+                }
             }
         })
 
@@ -49,6 +72,10 @@ export default class DungeonManager {
 
         // SPAM THE WAVES!!!
         this.dungeon?.startNextWave();
+    }
+
+    private cleanUpMonsters() {
+
     }
 
     /** Creates a new Dungeon. The Dungeon will have an update method that should be called every frame. */
@@ -67,13 +94,17 @@ export default class DungeonManager {
             // Set spawnpoints 
             this.setDungeonSpawnPoints(newDungeon, tiled);
 
-            // Make the obstables collidable by adding them to matter.
-            this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.matterBodies, newTilemap);
+            // Set world bounds
+            this.setDungeonWorldBounds(newDungeon, tiled);
 
+            // Make the obstables collidable by adding them to matter.
+            this.addObstaclesToMatterAlgo(newTilemap);
+            // this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.matterBodies, newTilemap);
+            
             // Waves
             let wave = this.createNewWave();
             wave.setAgressionLevel(1);
-            wave.addMonster("TinyZombie", 10);
+            wave.addMonster("TinyZombie", 1);
             newDungeon.addWave(wave);
 
             let wave2 = this.createNewWave();
@@ -95,17 +126,41 @@ export default class DungeonManager {
     }
 
     public createNewWave() {
-        return new Wave((name: string) => this.spawnMonster(name));
+        return new Wave((name: string) => {
+            this.spawnMonster(name);
+        });
     }
 
     public spawnMonster(monsterName: string): Monster {
-        let monster = MonsterFactory.createMonster("TinyZombie");
-        monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
-        let width = 12;
-        let height = 18;
         
-        monster.width = width;
-        monster.height = height;
+        let monster: Monster;// = MonsterFactory.createMonster(monsterName);
+        let poolType = monsterName;
+        //monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
+
+        // Create the pool if it doesn't exist
+        if(!this.monsterPool.containsType(poolType)) {
+            this.monsterPool.addPoolType(poolType);
+        }
+        
+
+        // If the pool contains at least 1 instance
+        let pool = this.monsterPool.getPool(poolType);
+        if(pool && pool.length() > 0) {
+            // reuse instance.
+            monster = this.monsterPool.getInstance(poolType);
+            monster.reset();
+        } else {
+            // Create a new monster.
+            monster = MonsterFactory.createMonster(this.gameManager, monsterName);
+            monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
+            this.gameManager.addGameObject(monster.getId(), monster, monster.getBody());
+        }
+        
+        // let width = 12;
+        // let height = 18;
+        
+        // monster.width = width;
+        // monster.height = height;
 
         let randomSpawnPoint = null;
         if(this.dungeon !== undefined)
@@ -117,19 +172,10 @@ export default class DungeonManager {
             spawnY = randomSpawnPoint.y + Math.floor((Math.random() * 10) - 5);
         }
 
-        let body = Matter.Bodies.rectangle(spawnX, spawnY, width, height, {
-            isStatic: false,
-        });
+        Matter.Body.setPosition(monster.getBody(), {x: spawnX, y: spawnY});
         monster.x = spawnX;
         monster.y = spawnY;
-
-        body.collisionFilter = {
-            group: 0,
-            category: Categories.MONSTER,
-            mask: MaskManager.getManager().getMask('MONSTER'),
-        }
         
-        this.gameManager.addGameObject(monster.getId(), monster, body);
         return monster;
     }
 
@@ -147,6 +193,11 @@ export default class DungeonManager {
         return this.dungeon.getPlayerSpawnPoints().at(0);
     }
 
+    /** Gets the MonsterPool. The MonsterPool is used to reuse Monster objects. */
+    public getMonsterPool() {
+        return this.monsterPool;
+    }
+
     /**
      * Sets the spawn points for the given dungeon. Spawnpoints can be added with Tiled. To add create a point 
      * inside the objectlayer called 'SpawnPoints'. Then give it a type of either 'player' or 'monster'
@@ -161,6 +212,23 @@ export default class DungeonManager {
                         dungeon.addPlayerSpawnPoint(spawnPoint.x, spawnPoint.y);
                     } else if(spawnPoint.type === "monster") {
                         dungeon.addMonsterSpawnPoint(spawnPoint.x, spawnPoint.y);
+                    }
+                })
+            }
+        });
+    }
+
+    /**
+     * Sets the world bounds for the dungeon. There is a world bound for the player typed 'playerbounds'.
+     * @param dungeon The dungeon.
+     * @param data The Tiled tilemap jsonfile.
+     */
+    private setDungeonWorldBounds(dungeon: Dungeon, data: TiledJSON) {
+        data.layers.forEach((value) => {
+            if(value.type === "objectgroup" && value.name === "WorldBounds") {
+                value.objects.forEach((bounds) => {
+                    if(bounds.type === "playerbounds") {
+                        dungeon.addPlayerWorldBounds(bounds.x, bounds.y, bounds.width, bounds.height);
                     }
                 })
             }
@@ -186,7 +254,7 @@ export default class DungeonManager {
             //Create tilemap layers
             if(layerType === "tilelayer") {
                 let newLayer = new Layer(layerName, width, height, tileWidth, tileHeight);
-                newLayer.populateTiles(tileWidth, tileHeight, layer.data);
+                newLayer.populateTiles(this.gameManager, tileWidth, tileHeight, layer.data);
                 tilemap.addExistingLayer(newLayer);
             }
         })
@@ -239,5 +307,134 @@ export default class DungeonManager {
                 console.log("Error: tileWidth and tileHeight is not defined");
             }
         }
+    }
+
+    /**
+     * Registers the obstacle layer to the matter engine for collision. This method 
+     * will reduce the number of matter bodies that is used by the obstacle tiles.
+     * @param engine The matter engine.
+     * @param matterBodies The matterBodies array to add the matter body of the tile to.
+     * @param tilemap The tilemap that contains the objectlayer.
+     */
+    private addObstaclesToMatterAlgo(tilemap: Tilemap) {
+        let obstacleLayer = tilemap.layers.get("Obstacle");
+        if(obstacleLayer) {
+            let tileWidth = tilemap.tileWidth;
+            let tileHeight = tilemap.tileHeight; 
+
+            // Create a grid of numbers where 1's will
+            let grid: number[][] = [];
+            for(let i = 0; i < tilemap.height; i++)
+                grid[i] = [];
+            
+            for(let y = 0; y < tilemap.height; y++) {
+                for(let x = 0; x < tilemap.width; x++) {
+                    let tile = obstacleLayer.getTileAt(x, y);
+                    if(tile && tile.tileId !== 0) grid[y][x] = 1;
+                    else grid[y][x] = 0;
+                }
+            }
+
+            // Calculate the rectanges that will cover the obstacle layer.
+            let rects = DungeonManager.getRectangleMapping(grid);
+
+            // Create InvisObstacles based on the rects and add them to the gameManager.
+            rects.forEach((rect) => {
+                let x = rect.x * tileWidth;
+                let y = rect.y * tileHeight;
+                let width = rect.width * tileWidth;
+                let height = rect.height * tileHeight;
+                x += width / 2;
+                y += height / 2;
+                let invisObstacle = new InvisObstacle(this.gameManager, x, y, width, height);
+                let body = Matter.Bodies.rectangle(x, y, width, height, {
+                    isStatic: true,
+                    friction: 0,
+                });
+                body.collisionFilter = {
+                    group: 0,
+                    category: Categories.OBSTACLE,
+                    mask: MaskManager.getManager().getMask('OBSTACLE') 
+                };
+                this.gameManager.addGameObject(invisObstacle.id, invisObstacle, body);
+            })
+        }
+    }
+
+    /**
+     * Given a grid of 1's and 0's, return a list of rectangles that fills up all the 1's 
+     * on the grid. This list should be made as small as possible.
+     * @param grid The grid of 1's and 0's
+     * @returns a list of Rect objects.
+     */
+    public static getRectangleMapping(grid: number[][]): Rect[] {
+        let rects: Rect[] = [];
+        let maxWidth = grid[0].length;
+        let maxHeight = grid.length;
+        
+        for(let y = 0; y < grid.length; y++) {
+            for(let x = 0; x < grid[0].length; x++) {
+
+                // Search for the next 1.
+                if(grid[y][x] === 1) {
+                    let rect = {x: x, y: y, width: 1, height: 1};
+                    let expandedRight = false;
+                    let expandedBottom = false;
+                    do {
+                        expandedRight = false;
+                        expandedBottom = false;
+                        // Try to expand the rectangle to the right.
+                        if(x + rect.width < maxWidth) {
+                            let col = x + rect.width;
+                            let count = rect.height;
+                            for(let idx = y; idx < grid.length; idx++) {
+                                if(grid[idx][col] === 1 && count !== 0) count--;
+                                else idx = grid.length;
+                            }
+                            if(count <= 0) {
+                                // expand right.
+                                expandedRight = true;
+                                rect.width++;
+                            } 
+                        }
+                        // Try to expand the rectangle downwards.
+                        if(!expandedRight && y + rect.height < maxHeight) {
+                            let row = y + rect.height;
+                            let count = rect.width;
+                            // Check if it is possible to expand the rectangle downwards.
+                            for(let idx = x; idx < grid[row].length; idx++) {
+                                if(grid[row][idx] === 1 && count !== 0) count --;
+                                else idx = grid[row].length;
+                            }
+                            if(count <= 0) {
+                                // It is possible to expand the rect downwards.
+                                expandedBottom = true;
+                                rect.height++;
+                            }
+                        }
+                    } while(expandedRight || expandedBottom);
+                    // zero out the region of the rectangle.
+                    for(let rx = rect.x; rx < rect.x + rect.width; rx++) {
+                        for(let ry = rect.y; ry < rect.y + rect.height; ry++) {
+                            grid[ry][rx] = 0;
+                        }
+                    }
+
+                    rects.push(rect);
+                }
+
+            }
+        }
+
+        return rects;
+    }
+
+    /**
+     * Gets the current dungeon. 
+     * The dungeon contains the tilemaps, spawnpoints, world bounds, and wave spawning.
+     * @returns The current dungeon.
+     */
+    public getDungeon() {
+        return this.dungeon;
     }
 }

@@ -22,7 +22,6 @@ export default class ProjectilePool{
     public getInstance(type: string){
         let pool = this.poolMap.get(type) as ObjectPool<Projectile>
         let instance = pool.getInstance();
-        instance.setVisible(true);
         return instance;
     }
 
@@ -32,7 +31,6 @@ export default class ProjectilePool{
      * @param instance instance to return to the pool for reuse
      */
     public returnInstance(type: string, instance: Projectile){
-        instance.setVisible(false);
         let pool = this.poolMap.get(type) as ObjectPool<Projectile>
         pool.returnInstance(instance)
     }

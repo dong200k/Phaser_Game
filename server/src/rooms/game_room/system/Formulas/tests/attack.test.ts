@@ -39,7 +39,7 @@ describe("Attack Formula Test", ()=>{
         // 10 armor
         defenderStat.armor = 10
         damage = getTrueAttackDamage(attackerStat, defenderStat, attackMultiplier)
-        expect(damage).toBe(0)
+        expect(damage).toBe(1)
 
         // -10 armor
         defenderStat.armor = -10
@@ -63,6 +63,7 @@ describe("Attack Formula Test", ()=>{
             damage = getTrueAttackDamage(attackerStat, defenderStat, attackMultiplier)
             let expectedArmorAfterPenetration = 10 * (1 - Math.min(ARMOR_PEN_CAP, armorPen))
             let expectedDamage = 10 - expectedArmorAfterPenetration
+            if(expectedDamage < 1) expectedDamage = 1;
             expect(damage).toBe(expectedDamage)
     
             // -10 armor so armor pen is not applied
@@ -83,21 +84,21 @@ describe("Attack Formula Test", ()=>{
             defenderStat.armor = 0
             let damage = getTrueAttackDamage(attackerStat, defenderStat, attackMultiplier)
             let expectedDamage = 10 * attackMultiplier
-            if(expectedDamage < 0) expectedDamage = 0
+            if(expectedDamage < 1) expectedDamage = 1
             expect(damage).toBe(expectedDamage)
     
             // 10 armor
             defenderStat.armor = 10
             damage = getTrueAttackDamage(attackerStat, defenderStat, attackMultiplier)
             expectedDamage = 10 * attackMultiplier - defenderStat.armor
-            if(expectedDamage < 0) expectedDamage = 0
+            if(expectedDamage < 1) expectedDamage = 1
             expect(damage).toBe(expectedDamage)
     
             // -10 armor so armor pen is not applied
             defenderStat.armor = -10
             damage = getTrueAttackDamage(attackerStat, defenderStat, attackMultiplier)
             expectedDamage = 10 * attackMultiplier - defenderStat.armor
-            if(expectedDamage < 0) expectedDamage = 0
+            if(expectedDamage < 1) expectedDamage = 1
             expect(damage).toBe(expectedDamage)
         }
         
@@ -111,12 +112,12 @@ describe("Attack Formula Test", ()=>{
         let attackMultiplier = 1
         defenderStat.armor = 0
         let damage = getTrueAttackDamage(attackerStat, defenderStat, attackMultiplier)
-        expect(damage).toBe(0)
+        expect(damage).toBe(1)
 
         // 10 armor
         defenderStat.armor = 10
         damage = getTrueAttackDamage(attackerStat, defenderStat, attackMultiplier)
-        expect(damage).toBe(0)
+        expect(damage).toBe(1)
 
         // -10 armor so armor pen is not applied
         defenderStat.armor = -10

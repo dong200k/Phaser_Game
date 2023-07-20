@@ -15,11 +15,12 @@ export default class GameRoom extends Room<State> {
     private simulationInterval: number = 16.6;
 
     // ------- fixed tick --------
-    private timePerTick = 50; // 20 ticks per second.
-    private timeTillNextTick = 50;
+    private timePerTick = 33.33; // 20 ticks per second.
+    private timeTillNextTick!: number;
 
     onCreate() {
         console.log(`Created: Game room ${this.roomId}`);
+        this.timeTillNextTick = this.timePerTick;
 
         //Game rooms are private and can only be joined by id.
         this.setPrivate(true);
@@ -45,15 +46,15 @@ export default class GameRoom extends Room<State> {
     initListeners() {
         this.onMessage("move", (client, msg)=>{
             // Queue up player's movement so that the playerManager can process them next update.
-            this.gameManager?.getPlayerManager().queuePlayerMovement(client.sessionId, msg);
+            this.gameManager.getPlayerManager().queuePlayerMovement(client.sessionId, msg);
         })
 
         this.onMessage("attack", (client, msg)=>{
-            this.gameManager?.getPlayerManager().processPlayerAttack(client.sessionId, msg)
+            this.gameManager.getPlayerManager().processPlayerAttack(client.sessionId, msg)
         })
 
         this.onMessage("special", (client, msg)=>{
-            this.gameManager?.getPlayerManager().processPlayerSpecial(client.sessionId, msg)
+            this.gameManager.getPlayerManager().processPlayerSpecial(client.sessionId, msg)
             //this.gameManager?.playerManager.processPlayerMovement(client.sessionId, msg)
             
         })
@@ -91,7 +92,7 @@ export default class GameRoom extends Room<State> {
 
     onJoin(client: Client) {
         // Add a new player to the room state. The first player is the owner of the room.
-        this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, this.gameManager);
+        this.gameManager.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0);
         this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
     }
 

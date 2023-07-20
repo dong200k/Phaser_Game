@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import GameObject from "./GameObject";
 import EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
+import { ColorStyle } from "../config";
 
 export interface Stat {
     hp?: number;
@@ -55,6 +56,16 @@ export default abstract class Entity extends GameObject
      *  @param stat new Stat values.
      */
     public updateStat(stat: Stat) {
+        let prevHp = this.stat.hp ?? 0;
         Object.assign(this.stat, stat);
+        let hpChange = (this.stat.hp ?? 0) - prevHp;
+
+        if(hpChange < 0) {
+            // Took damage.
+            this.tint = ColorStyle.red.hex[900];
+            setTimeout(() => {
+                this.tint = 0xffffff;
+            }, 100);
+        }
     }
 }

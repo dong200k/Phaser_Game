@@ -11,6 +11,7 @@ import SkillTreeFactory from '../UpgradeTrees/factories/SkillTreeFactory';
 import SkillTreeManager from './SkillTreeManager';
 import ReconciliationInfo from '../../schemas/ReconciliationInfo';
 import WeaponManager from './WeaponManager';
+import { getFinalSpeed } from '../Formulas/formulas';
 
 interface InputPlayload {
     payload: number[];
@@ -21,22 +22,28 @@ export default class PlayerManager{
     private gameManager: GameManager
 
     private inputPayloads: InputPlayload[] = [];
+    private disabledPlayers: Set<string> = new Set();
 
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
     }   
 
+    /**
+     * Updates this PlayerManager.
+     * @param deltaT deltaT seconds.
+     */
     update(deltaT: number){
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Player){
                 // gameObject.attackCooldown.tick(deltaT)
-                gameObject.specialCooldown.tick(deltaT)
+                gameObject.specialCooldown.tick(deltaT * 1000);
+                gameObject.playerController.update(deltaT);
             }
         })
 
-        this.processMovementInputPayload();
+        this.processMovementInputPayload(deltaT);
     }
 
     getPlayerStateAndBody(sessionId: string){
@@ -44,6 +51,9 @@ export default class PlayerManager{
     }
 
     processPlayerAttack(playerId: string, data: any){
+        // Do nothing if the player is diabled.
+        if(this.disabledPlayers.has(playerId)) return;
+
         let [mouseClick, mouseX, mouseY] = data
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
@@ -62,7 +72,11 @@ export default class PlayerManager{
         this.inputPayloads.push(inputPlayload);
     }
 
-    private processMovementInputPayload() {
+    /**
+     * Process all the movement data that have been queued up.
+     * @param deltaT deltaT seconds.
+     */
+    private processMovementInputPayload(deltaT: number) {
         let loopCount = this.inputPayloads.length;
 
         if(this.inputPayloads.length > 100) {
@@ -100,7 +114,7 @@ export default class PlayerManager{
                 }
                 else if(clientTick === serverTick) {
                     // Process client payload.
-                    this.processPlayerMovement(playerId, item.payload);
+                    this.processPlayerMovement(playerId, item.payload, deltaT);
 
                 } else {
                     // Save packet for future ticks.
@@ -111,23 +125,56 @@ export default class PlayerManager{
         }
     }
 
-    processPlayerMovement(playerId: string, data: number[]){
+    processPlayerMovement(playerId: string, data: number[], deltaT: number){
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
 
+        // If the player is disabled stop the player
+        if(this.disabledPlayers.has(playerId)) {
+            Matter.Body.setVelocity(playerBody, {x: 0, y: 0});
+            return; 
+        }
+
         //calculate new player velocity
-        let speed = playerState.stat.speed;
+        let speed = getFinalSpeed(playerState.stat) * deltaT;
         let x = 0;
         let y = 0;
         if(data[0]) y -= 1;
         if(data[1]) y += 1;
         if(data[2]) x -= 1;
         if(data[3]) x += 1;
-        let velocity = MathUtil.getNormalizedSpeed(x, y, speed)
+        let velocity = MathUtil.getNormalizedSpeed(x, y, speed);
+
+        // If the velocity would send the player off bounds, update it so that the player wont go off bounds.
+        let bounds = this.getGameManager().getDungeonManager().getDungeon()?.getPlayerBounds();
+        if(bounds) {
+            let minX = playerBody.bounds.min.x;
+            let minY = playerBody.bounds.min.y;
+            let maxX = playerBody.bounds.max.x;
+            let maxY = playerBody.bounds.max.y;
+            if(velocity.x > 0) {
+                let distanceToMax = bounds.maxX - maxX;
+                velocity.x = Math.min(velocity.x, distanceToMax);
+            } else if(velocity.x < 0) {
+                let distanceToMin = bounds.minX - minX;
+                velocity.x = Math.max(velocity.x, distanceToMin);
+            }
+            if(velocity.y > 0) {
+                let distanceToMax = bounds.maxY - maxY;
+                velocity.y = Math.min(velocity.y, distanceToMax * deltaT);
+            } else if(velocity.y < 0) {
+                let distanceToMin = bounds.minY - minY;
+                velocity.y = Math.max(velocity.y, distanceToMin * deltaT);
+            }
+        }
+
         Matter.Body.setVelocity(playerBody, velocity);
     }
 
-    processPlayerSpecial(playerId: string, useSpecial: boolean){
+    processPlayerSpecial(playerId: string, useSpecial: boolean) {
+        // Do nothing if the player is diabled.
+        if(this.disabledPlayers.has(playerId)) return;
+
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
         
@@ -152,22 +199,22 @@ export default class PlayerManager{
         // Equip aritfacts
         let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
         let upgradedFrostGlaive = ArtifactFactory.createUpgradeFrostGlaive()
-        let upgradedDemoArtifact = ArtifactFactory.createDemo()
+        //let upgradedDemoArtifact = ArtifactFactory.createDemo()
         this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
         // ArtifactManager.equipArtifact(player, upgradedFrostGlaive)
-        this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
+        // this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
 
         // Equip skill tree
         let maxedSkillTree = SkillTreeFactory.createUpgradedAdventurerSkill()
         SkillTreeManager.equipSkillTree(player, maxedSkillTree)
     }
 
-    public async createPlayer(sessionId: string, isOwner: boolean, gameManager?: GameManager) {
+    public async createPlayer(sessionId: string, isOwner: boolean) {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
 
         //TODO: get player data from the database
-        let newPlayer = new Player("No Name", undefined, gameManager);
+        let newPlayer = new Player(this.gameManager, "No Name", undefined);
 
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
@@ -223,5 +270,50 @@ export default class PlayerManager{
             }
         }
         return nearestPlayer;
+    }
+
+    /**
+     * Gets the nearest alive player to the given x and y position. If no such player is found 
+     * return undefined.
+     * @param x The x value.
+     * @param y The y value.
+     */
+    public getNearestAlivePlayer(x: number, y: number): Player | undefined {
+        let players = new Array<Player>;
+        this.gameManager.state.gameObjects.forEach((value) => {if(value instanceof Player) players.push(value)});
+        if(players.length === 0) return undefined;
+        let idx = 0;
+        let nearestDistance = Number.MAX_VALUE;
+        let nearestPlayer = undefined;
+        do {
+            let player = players[idx];
+            if(!player.isDead()) {
+                let distance = MathUtil.distanceSquared(x, y, player.x, player.y);
+                if(distance < nearestDistance) {
+                    nearestDistance = distance;
+                    nearestPlayer = player;
+                }
+            }
+            idx++;
+        } while(idx < players.length);
+        return nearestPlayer;
+    }
+
+    public getGameManager() {
+        return this.gameManager;
+    }
+
+    /** Disable a player's input from updating the state of the game.
+     * @param player The player to disable.
+     */
+    public disablePlayer(player: Player) {
+        this.disabledPlayers.add(player.id);
+    }
+
+    /** Enable a player's input from updating the state of the game.
+     * @param player The player to enable.
+     */
+    public enablePlayer(player: Player) {
+        this.disabledPlayers.delete(player.id);
     }
 }

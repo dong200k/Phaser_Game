@@ -28,7 +28,7 @@ export default class TribowLogic extends EffectLogic{
         let x = mouseX - playerX
         let y = mouseY - playerY
 
-        let projectileSpeed = 10
+        let projectileSpeed = 5
 
         // Spawn projectile with direction from player to player mouse
         let direction = MathUtil.getNormalizedSpeed(mouseX - playerX, mouseY - playerY, projectileSpeed)

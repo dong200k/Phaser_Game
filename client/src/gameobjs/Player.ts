@@ -10,6 +10,8 @@ export default class Player extends Entity
         super(scene, playerState.x, playerState.y, playerState.role, playerState);
         this.playerState = playerState;
         this.running = false;
+        // Generate animations for this player.
+        scene.anims.createFromAseprite(playerState.role, undefined, this);
     }
 
     // /**Add listeners to connect to the server's player*/
@@ -26,6 +28,20 @@ export default class Player extends Entity
 
     public getPlayerState() {
         return this.playerState;
+    }
+
+    public setFlip(x: boolean, y: boolean): this {
+        super.setFlip(x, y);
+
+        if(x === false) {
+            this.positionOffsetX = 5;
+            this.positionOffsetY = -10;
+        } else {
+            this.positionOffsetX = -5;
+            this.positionOffsetY = -10;
+        }
+
+        return this;
     }
 
 }

@@ -10,7 +10,9 @@ export default abstract class StateMachine<Data> extends Schema{
     /** stores the states of this stateMachine. */
     private states: StateNode[];
     /** stores the current state of this stateMachine. */
-    @type(StateNode) private currentState: StateNode | null;
+    private currentState: StateNode | null;
+    /** the currentState's name. */
+    @type("string") stateName: string = "";
     /** stores the previous state of this stateMachine. */
     private previousState: StateNode | null;
     /** A flag that marks if the create() methods had been called yet or not. */
@@ -43,6 +45,14 @@ export default abstract class StateMachine<Data> extends Schema{
     protected abstract create(data: Data): void;
 
     /**
+     * Called by the state manager after it updates its current state. This method can 
+     * be useful to change state inside the Controller. Ex. Change to the Death state when 
+     * the entity's hp reaches zero.
+     * @param deltaT - Time passed in seconds.
+     */
+    protected abstract postUpdate(deltaT: number): void;
+
+    /**
      * Add a state to the state machine.
      * @param state - The state node.
      * @throws Error if the state's name is not unique.
@@ -59,19 +69,16 @@ export default abstract class StateMachine<Data> extends Schema{
     }
 
     /**
-     * Changes the current state to another based on a state's name. Note: If there are duplicate stateNames, the state that 
-     * is added 
+     * Changes the current state to another based on a state's name.
      * @param stateName The state's name.
      */
     changeState(stateName: string) {
-        let newState = null;
-        
-        let matchingStates = this.states.filter(state => { return state.getStateName() === stateName });
-        if (matchingStates.length > 0)
-            newState = matchingStates[0];
-        
-
-        if(newState) this.changeStateHelper(newState);
+        this.states.forEach((state) => {
+            if(state.getStateName() === stateName) {
+                this.stateName = stateName;
+                this.changeStateHelper(state);
+            }
+        })        
     }
 
     /**
@@ -109,5 +116,6 @@ export default abstract class StateMachine<Data> extends Schema{
             this.create(this.tempData);
         }
         if (this.currentState) this.currentState.update(deltaT);
+        this.postUpdate(deltaT);
     }
 }

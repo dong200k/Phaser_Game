@@ -83,7 +83,7 @@ export default class ProgressBar extends Sizer {
 
     public updateProgressBar() {
         this.setProgressBarTextVisible(this.progressBarTextVisible);
-        this.progressBar.setSize((this.progressBarValue / this.progressBarMaxValue) * this.progressBarWidth, this.progressBarHeight);
+        this.progressBar.setSize(Math.min(Math.max((this.progressBarValue / this.progressBarMaxValue) * this.progressBarWidth, 0), this.progressBarWidth), this.progressBarHeight);
         this.text?.setText(`${this.progressBarValue}/${this.progressBarMaxValue}`);
         this.textPhaser?.setText(`${this.progressBarValue}/${this.progressBarMaxValue}`);
     }

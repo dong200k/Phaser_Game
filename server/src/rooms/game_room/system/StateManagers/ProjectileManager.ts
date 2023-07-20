@@ -1,6 +1,6 @@
 import GameManager from '../GameManager';
 import Projectile from '../../schemas/projectiles/Projectile'
-import { IProjectileConfig } from '../interfaces';
+import { GameEvents, IProjectileConfig } from '../interfaces';
 import ProjectilePool from '../../schemas/projectiles/ProjectilePool';
 import ctors, { IClasses } from '../../schemas/projectiles/projectileClasses';
 import Matter from 'matter-js';
@@ -15,9 +15,20 @@ export default class ProjectileManager{
     }
 
     constructor(gameManager: GameManager) {
-        this.gameManager = gameManager
-        this.projectilePool = new ProjectilePool()
+        this.gameManager = gameManager;
+        this.projectilePool = new ProjectilePool();
+        this.initializeEvents();
     }   
+
+    private initializeEvents() {
+        let eventEmitter = this.gameManager.getEventEmitter();
+        eventEmitter.addListener(GameEvents.SPAWN_PROJECTILE, (projectileConfig: IProjectileConfig) => {
+            if(projectileConfig.classType !== undefined)
+                this.spawnProjectile(projectileConfig, projectileConfig.classType);
+            else
+                this.spawnProjectile(projectileConfig);
+        });
+    }
 
     update(deltaT: number){
         // Call update on each projectile

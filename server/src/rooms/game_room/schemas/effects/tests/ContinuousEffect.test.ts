@@ -1,10 +1,20 @@
+import GameManager from "../../../system/GameManager";
 import EffectManager from "../../../system/StateManagers/EffectManager";
+import State from "../../State";
 import Player from "../../gameobjs/Player"
 import EffectFactory from "../EffectFactory";
 
 describe('Continuous HP Effect', () => {
+
+    let gameManager: GameManager
+
+    beforeEach(async ()=>{
+        gameManager = new GameManager(new State())
+        await gameManager.preload()
+    })
+
     const createPlayer = (hp: number) => {
-        let player = new Player("Dummy Player", "Shoe washer");
+        let player = new Player(gameManager, "Dummy Player", "Shoe washer");
         player.stat.hp = hp;
         return player;
     }
