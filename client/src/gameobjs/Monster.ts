@@ -11,6 +11,8 @@ export default class Monster extends Entity
     constructor(scene:Phaser.Scene, monsterState:any) {
         super(scene, monsterState.x, monsterState.y, monsterState.monsterName, monsterState);
         this.monsterState = monsterState;
+        // Generate animations for this monster.
+        scene.anims.createFromAseprite(monsterState.monsterName, undefined, this);
     }
 
     // /**Add listeners to connect to the server's player*/

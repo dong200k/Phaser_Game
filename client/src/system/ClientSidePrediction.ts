@@ -171,7 +171,7 @@ export default class ClientSidePrediction {
 
 
         this.serverReconciliation(deltaT);
-        this.updatePlayerMovementAnimation();
+        this.updatePlayerMovementAnimation(playerMovementData);
     }
 
     /**
@@ -338,13 +338,17 @@ export default class ClientSidePrediction {
     }
 
     /** Updates the player's movement animation, based on the player's body velocity. */
-    private updatePlayerMovementAnimation() {
+    private updatePlayerMovementAnimation(movementData: number[]) {
         let {player1, body} = this.getPlayer1AndBody();
         if(player1 && body && player1.getPlayerState().playerController.stateName !== "Dead") {
             let velocityX = body.velocity.x;
             let velocityY = body.velocity.y;
-            if(velocityX < 0) player1.setFlip(true, false);
-            else if(velocityX > 0) player1.setFlip(false, false);
+
+            /** Flip the player's sprite based on if they are pressing left or right. */
+            if(!(movementData[2] && movementData[3])) {
+                if(movementData[2]) player1.setFlip(true, false);
+                else if(movementData[3]) player1.setFlip(false, false);
+            }
     
             if(velocityX === 0 && velocityY === 0) {
                 player1.play({key: "idle", repeat: -1});
@@ -390,7 +394,7 @@ export default class ClientSidePrediction {
             friction: 0,
         };
 
-
+        if(gameObject.gameObjectState.type === "InvisObstacle") matterConfig = this.matterBodyConfig["Tile"];
         if(gameObject.gameObjectState.type === "Tile") matterConfig = this.matterBodyConfig["Tile"];
         if(gameObject.gameObjectState.type === "Player") matterConfig = this.matterBodyConfig["Player"];
 
@@ -440,6 +444,5 @@ export default class ClientSidePrediction {
      */
     public updatePlayerBounds(minX: number, minY: number, maxX: number, maxY:number) {
         this.playerBounds = { minX, minY, maxX, maxY };
-        console.log(this.playerBounds);
     }
 }

@@ -8,6 +8,8 @@ export default class Projectile extends GameObject
     constructor(scene:Phaser.Scene,projectileState:ProjectileState) {
         super(scene, projectileState.x, projectileState.y, projectileState.sprite, projectileState);
         this.projectileState = projectileState;
+        // Generate animations for this projectile.
+        scene.anims.createFromAseprite(projectileState.sprite, undefined, this);
     }
 
 }

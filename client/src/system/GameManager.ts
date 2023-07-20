@@ -15,6 +15,7 @@ import type ProjectileState from "../../../server/src/rooms/game_room/schemas/pr
 import type GameObjectState from "../../../server/src/rooms/game_room/schemas/gameobjs/GameObject";
 import EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
 import { ColorStyle } from "../config";
+import InvisObstacle from "../gameobjs/InvisObstacle";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -201,6 +202,9 @@ export default class GameManager {
                 break;
             case 'Tile':
                 newGameObject = new Tile(this.scene, gameObj);
+                break;
+            case 'InvisObstacle':
+                newGameObject = new InvisObstacle(this.scene, gameObj);
                 break;
         }
         if(newGameObject) {

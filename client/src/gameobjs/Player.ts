@@ -10,6 +10,8 @@ export default class Player extends Entity
         super(scene, playerState.x, playerState.y, playerState.role, playerState);
         this.playerState = playerState;
         this.running = false;
+        // Generate animations for this player.
+        scene.anims.createFromAseprite(playerState.role, undefined, this);
     }
 
     // /**Add listeners to connect to the server's player*/

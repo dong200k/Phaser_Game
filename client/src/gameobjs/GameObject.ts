@@ -21,9 +21,6 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
         this.serverVisible = gameObjectState.visible;
         this.serverActive = gameObjectState.active;
         this.gameObjectState = gameObjectState;
-        
-        // Generate animations for this game object.
-        scene.anims.createFromAseprite(texture, undefined, this);
     }
 
     // public setServerState(serverState: GameObjectState) {

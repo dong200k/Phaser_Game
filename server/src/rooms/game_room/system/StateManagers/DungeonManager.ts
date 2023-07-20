@@ -15,10 +15,18 @@ import Layer from "../../schemas/dungeon/tilemap/Layer"
 import MathUtil from "../../../../util/MathUtil"
 import MonsterPool from "../../schemas/gameobjs/monsters/MonsterPool"
 import TinyZombie from "../../schemas/gameobjs/monsters/zombie/TinyZombie"
+import InvisObstacle from "../../schemas/gameobjs/InvisObstacle"
 
 const dungeonURLMap = {
     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
     "Dirt Map": "assets/tilemaps/dirt_map/dirt_map.json"
+}
+
+interface Rect {
+    x: number,
+    y: number,
+    width: number,
+    height: number,
 }
 
 // The dungeon manager will be responsible for holding the dungeon.
@@ -90,8 +98,9 @@ export default class DungeonManager {
             this.setDungeonWorldBounds(newDungeon, tiled);
 
             // Make the obstables collidable by adding them to matter.
-            this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.matterBodies, newTilemap);
-
+            this.addObstaclesToMatterAlgo(newTilemap);
+            // this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.matterBodies, newTilemap);
+            
             // Waves
             let wave = this.createNewWave();
             wave.setAgressionLevel(1);
@@ -298,6 +307,126 @@ export default class DungeonManager {
                 console.log("Error: tileWidth and tileHeight is not defined");
             }
         }
+    }
+
+    /**
+     * Registers the obstacle layer to the matter engine for collision. This method 
+     * will reduce the number of matter bodies that is used by the obstacle tiles.
+     * @param engine The matter engine.
+     * @param matterBodies The matterBodies array to add the matter body of the tile to.
+     * @param tilemap The tilemap that contains the objectlayer.
+     */
+    private addObstaclesToMatterAlgo(tilemap: Tilemap) {
+        let obstacleLayer = tilemap.layers.get("Obstacle");
+        if(obstacleLayer) {
+            let tileWidth = tilemap.tileWidth;
+            let tileHeight = tilemap.tileHeight; 
+
+            // Create a grid of numbers where 1's will
+            let grid: number[][] = [];
+            for(let i = 0; i < tilemap.height; i++)
+                grid[i] = [];
+            
+            for(let y = 0; y < tilemap.height; y++) {
+                for(let x = 0; x < tilemap.width; x++) {
+                    let tile = obstacleLayer.getTileAt(x, y);
+                    if(tile && tile.tileId !== 0) grid[y][x] = 1;
+                    else grid[y][x] = 0;
+                }
+            }
+
+            // Calculate the rectanges that will cover the obstacle layer.
+            let rects = DungeonManager.getRectangleMapping(grid);
+
+            // Create InvisObstacles based on the rects and add them to the gameManager.
+            rects.forEach((rect) => {
+                let x = rect.x * tileWidth;
+                let y = rect.y * tileHeight;
+                let width = rect.width * tileWidth;
+                let height = rect.height * tileHeight;
+                x += width / 2;
+                y += height / 2;
+                let invisObstacle = new InvisObstacle(this.gameManager, x, y, width, height);
+                let body = Matter.Bodies.rectangle(x, y, width, height, {
+                    isStatic: true,
+                    friction: 0,
+                });
+                body.collisionFilter = {
+                    group: 0,
+                    category: Categories.OBSTACLE,
+                    mask: MaskManager.getManager().getMask('OBSTACLE') 
+                };
+                this.gameManager.addGameObject(invisObstacle.id, invisObstacle, body);
+            })
+        }
+    }
+
+    /**
+     * Given a grid of 1's and 0's, return a list of rectangles that fills up all the 1's 
+     * on the grid. This list should be made as small as possible.
+     * @param grid The grid of 1's and 0's
+     * @returns a list of Rect objects.
+     */
+    public static getRectangleMapping(grid: number[][]): Rect[] {
+        let rects: Rect[] = [];
+        let maxWidth = grid[0].length;
+        let maxHeight = grid.length;
+        
+        for(let y = 0; y < grid.length; y++) {
+            for(let x = 0; x < grid[0].length; x++) {
+
+                // Search for the next 1.
+                if(grid[y][x] === 1) {
+                    let rect = {x: x, y: y, width: 1, height: 1};
+                    let expandedRight = false;
+                    let expandedBottom = false;
+                    do {
+                        expandedRight = false;
+                        expandedBottom = false;
+                        // Try to expand the rectangle to the right.
+                        if(x + rect.width < maxWidth) {
+                            let col = x + rect.width;
+                            let count = rect.height;
+                            for(let idx = y; idx < grid.length; idx++) {
+                                if(grid[idx][col] === 1 && count !== 0) count--;
+                                else idx = grid.length;
+                            }
+                            if(count <= 0) {
+                                // expand right.
+                                expandedRight = true;
+                                rect.width++;
+                            } 
+                        }
+                        // Try to expand the rectangle downwards.
+                        if(!expandedRight && y + rect.height < maxHeight) {
+                            let row = y + rect.height;
+                            let count = rect.width;
+                            // Check if it is possible to expand the rectangle downwards.
+                            for(let idx = x; idx < grid[row].length; idx++) {
+                                if(grid[row][idx] === 1 && count !== 0) count --;
+                                else idx = grid[row].length;
+                            }
+                            if(count <= 0) {
+                                // It is possible to expand the rect downwards.
+                                expandedBottom = true;
+                                rect.height++;
+                            }
+                        }
+                    } while(expandedRight || expandedBottom);
+                    // zero out the region of the rectangle.
+                    for(let rx = rect.x; rx < rect.x + rect.width; rx++) {
+                        for(let ry = rect.y; ry < rect.y + rect.height; ry++) {
+                            grid[ry][rx] = 0;
+                        }
+                    }
+
+                    rects.push(rect);
+                }
+
+            }
+        }
+
+        return rects;
     }
 
     /**
