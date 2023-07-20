@@ -28,7 +28,7 @@ describe("Dungeon Manager", () => {
         ]
 
         let rects2 = DungeonManager.getRectangleMapping(grid2);
-        console.log(rects2);
+        // console.log(rects2);
         // expect(rects).toBe([
         //     {x: 0, y: 0, width: 1, height: 2},
         //     {x: 1, y: 1, width: 1, height: 1},
