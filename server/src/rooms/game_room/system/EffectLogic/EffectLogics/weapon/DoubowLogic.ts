@@ -27,7 +27,7 @@ export default class DoubowLogic extends EffectLogic{
         let x = mouseX - playerX
         let y = mouseY - playerY
 
-        let projectileSpeed = 10
+        let projectileSpeed = 5
 
         // spawn projectile with direction rotated 30 degrees from player to player mouse
         let directionRotated30 = MathUtil.getRotatedSpeed(x, y, projectileSpeed, 30)

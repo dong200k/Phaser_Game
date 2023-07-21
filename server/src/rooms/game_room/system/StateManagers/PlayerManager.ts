@@ -12,6 +12,7 @@ import SkillTreeManager from './SkillTreeManager';
 import ReconciliationInfo from '../../schemas/ReconciliationInfo';
 import WeaponManager from './WeaponManager';
 import { getFinalSpeed } from '../Formulas/formulas';
+import WeaponUpgradeTree from '../../schemas/Trees/WeaponUpgradeTree';
 
 interface InputPlayload {
     payload: number[];
@@ -194,6 +195,7 @@ export default class PlayerManager{
         //*** TODO *** initialize weapon upgrade tree based on role
         //Set weaponupgrade tree for player with a test weapon
         let root = WeaponUpgradeFactory.createTribowUpgrade()
+        
         WeaponManager.equipWeaponUpgrade(player, root)
 
         // Equip aritfacts

@@ -16,14 +16,20 @@ export default class BowLogic extends EffectLogic{
         let range = 300
         let activeTime = 3000
         let weaponId = playerState.weaponUpgradeTree.weaponId
+        //let projectileName = DatabaseManager.getManager().getWeaponProjectile(weaponId as string);
+        let projectileName = "RangerArrow";
+        //console.log(weaponId, projectileName);
         let playerX = playerBody.position.x
         let playerY = playerBody.position.y
-        let velocity = MathUtil.getNormalizedSpeed(mouseX - playerX, mouseY - playerY, 10)
+        
         let collisionCategory: CategoryType =  "PLAYER_PROJECTILE"
         let poolType = "Bow"
 
+        let projectileSpeed = 5
+        let velocity = MathUtil.getNormalizedSpeed(mouseX - playerX, mouseY - playerY, projectileSpeed)
+
         gameManager.getProjectileManager().spawnProjectile({
-            sprite: DatabaseManager.getManager().getWeaponProjectile(weaponId as string),
+            sprite: projectileName,
             stat: playerState.stat,
             spawnX: playerX,
             spawnY: playerY,
