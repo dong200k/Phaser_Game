@@ -9,18 +9,19 @@ import Wave from "../../schemas/dungeon/wave/Wave"
 import DungeonEvent from "../../schemas/dungeon/DungeonEvent"
 import AIFactory from "../AI/AIFactory"
 import FileUtil from "../../../../util/FileUtil"
-import { TiledJSON } from "../interfaces"
+import { IDungeon, TiledJSON } from "../interfaces"
 import Tilemap from "../../schemas/dungeon/tilemap/Tilemap"
 import Layer from "../../schemas/dungeon/tilemap/Layer"
 import MathUtil from "../../../../util/MathUtil"
 import MonsterPool from "../../schemas/gameobjs/monsters/MonsterPool"
 import TinyZombie from "../../schemas/gameobjs/monsters/zombie/TinyZombie"
 import InvisObstacle from "../../schemas/gameobjs/InvisObstacle"
+import DatabaseManager from "../Database/DatabaseManager"
 
-const dungeonURLMap = {
-    "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
-    "Dirt Map": "assets/tilemaps/dirt_map/dirt_map.json"
-}
+// const dungeonURLMap = {
+//     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
+//     "Dirt Map": "assets/tilemaps/dirt_map/dirt_map.json"
+// }
 
 interface Rect {
     x: number,
@@ -80,15 +81,19 @@ export default class DungeonManager {
 
     /** Creates a new Dungeon. The Dungeon will have an update method that should be called every frame. */
     private createDungeon() {
-        let dungeonName = "Demo Map";
-        let dungeonFileLocation = dungeonURLMap["Demo Map"];
+        // let dungeonName = "Demo Map";
+        // let dungeonFileLocation = dungeonURLMap["Demo Map"];
+        let dungeonData = DatabaseManager.getManager().getDungeon("8eba2633-d096-44df-a68d-d87adbd1a591");
+        let dungeonFileLocation = dungeonData.serverJsonLocation;
+        let dungeonName = dungeonData.name;
+
         // Load the tiled json file ... 
         FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
             // ----- Fill in the dungeons information based on the json file ------
             let newDungeon = new Dungeon(dungeonName);
 
             // Tilemap 
-            let newTilemap = this.createTilemap(tiled);
+            let newTilemap = this.createTilemap(tiled, dungeonData);
             newDungeon.setTilemap(newTilemap);
 
             // Set spawnpoints 
@@ -240,12 +245,13 @@ export default class DungeonManager {
      * @param data A TiledJSON object.
      * @returns A Tilemap.
      */
-    private createTilemap(data: TiledJSON) {
+    private createTilemap(data: TiledJSON, dungeon: IDungeon) {
         let tileWidth = data.tilewidth;
         let tileHeight = data.tileheight;
         let layers = data.layers;
-        //Create tilemap
-        let tilemap = new Tilemap(data.width, data.height, tileWidth, tileHeight);
+        // Create tilemap
+        let tilemap = new Tilemap(data.width, data.height, tileWidth, tileHeight,
+             dungeon.tilesetName, dungeon.clientTilesetLocation);
         layers.forEach((layer) => {
             let width = layer.width;
             let height = layer.height;

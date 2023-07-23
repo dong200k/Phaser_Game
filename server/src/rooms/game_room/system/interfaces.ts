@@ -86,6 +86,14 @@ export type weapon = {
     projectile: string
 }
 
+export interface IDungeon { 
+    id: string,
+    name: string,
+    tilesetName: string,
+    serverJsonLocation: string,
+    clientTilesetLocation: string
+}
+
 // export type dbUpgradeEffect = {
 //     effectLogicId: string,
 //     cooldown: number,
