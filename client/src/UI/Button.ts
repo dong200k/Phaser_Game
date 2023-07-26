@@ -11,6 +11,8 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     private onClick:Function;
     private hoverGradient:Phaser.GameObjects.Sprite;
 
+    private static clickSound?: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+
     private sizeConfig = {
         regular: {
             size: { x: 141, y: 66},
@@ -34,6 +36,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     
     constructor(scene:Phaser.Scene,text:string="",x:number=0,y:number=0, size:"regular"|"small"|"large"="regular",onClick:Function=()=>{}) {
         super(scene, x, y);
+        if(Button.clickSound === undefined) Button.clickSound = scene.sound.add("button_click1");
         this.buttonSize = size;
         this.onClick = onClick;
         this.buttonState = "default";
@@ -97,7 +100,10 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     public setButtonActive(buttonActive:boolean) {
         if(buttonActive) {
             this.setButtonState("default");
-            this.buttonSprite.on(Phaser.Input.Events.POINTER_UP, this.onClick);
+            this.buttonSprite.on(Phaser.Input.Events.POINTER_UP, () => {
+                this.onClick();
+                Button.clickSound?.play();
+            });
         }
         else {
             this.setButtonState("disabled");
@@ -111,6 +117,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         this.buttonSprite.on(Phaser.Input.Events.POINTER_UP, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState("default");
             this.onClick();
+            Button.clickSound?.play();
         });
     }
 

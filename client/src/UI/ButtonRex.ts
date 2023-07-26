@@ -16,6 +16,8 @@ export default class ButtonRex extends OverlapSizer {
     //private onClick:Function;
     private hoverGradient:Phaser.GameObjects.Sprite;
 
+    private static clickSound?: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+
     private sizeConfig = {
         regular: {
             size: { x: 141, y: 66},
@@ -39,6 +41,7 @@ export default class ButtonRex extends OverlapSizer {
     
     constructor(scene: Phaser.Scene, config?: ButtonRexConfig) {
         super(scene, config);
+        if(ButtonRex.clickSound === undefined) ButtonRex.clickSound = scene.sound.add("button_click1");
         this.buttonSize = config?.buttonSize ?? "regular";
         let sizeData = this.sizeConfig[this.buttonSize];
         this.buttonState = "default";
@@ -59,6 +62,7 @@ export default class ButtonRex extends OverlapSizer {
         });
         this.on(Phaser.Input.Events.POINTER_UP, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('default');
+            ButtonRex.clickSound?.play();
         });
         this.on(Phaser.Input.Events.POINTER_OUT, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('default');

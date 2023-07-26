@@ -36,6 +36,13 @@ export default class MenuScene extends Phaser.Scene {
 
         // this.test();
         // this.test2();
+        // this.sampleSound = this.sound.add("button_click1");
+    }
+
+    // count = 1;
+    // sampleSound!: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+
+    update(time: number, delta: number): void {
         
     }
 

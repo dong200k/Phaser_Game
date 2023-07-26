@@ -11,8 +11,11 @@ export default class NavButton extends Phaser.GameObjects.Container implements L
     private buttonText:TextBox;
     private onClick:Function;
 
+    private static clickSound?: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+
     constructor(scene:Phaser.Scene,text:string="",x:number=0,y:number=0,onClick:Function=()=>{}) {
         super(scene, x, y);
+        if(NavButton.clickSound === undefined) NavButton.clickSound = scene.sound.add("button_click1");
         this.onClick = onClick;
         this.buttonState = "default";
         this.buttonBackground = new Phaser.GameObjects.Rectangle(scene, 0, 0, 87, 87, ColorStyle.primary.hex[900]);
@@ -59,8 +62,10 @@ export default class NavButton extends Phaser.GameObjects.Container implements L
         this.buttonBackground.removeListener(Phaser.Input.Events.POINTER_UP);
         this.onClick = onClick;
         this.buttonBackground.on(Phaser.Input.Events.POINTER_UP, ()=>{
-            if(this.buttonState !== 'disabled')
+            if(this.buttonState !== 'disabled') {
                 this.onClick();
+                NavButton.clickSound?.play();
+            }
         });
     }
 
