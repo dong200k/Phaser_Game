@@ -1,6 +1,6 @@
 # Map Creation with Tiled
 
-In this document we will go through how to create a level/dungeon for our game. This document is intended for developers to create a level for our game.
+In this document, we will go through how to create a level/dungeon for our game. This document is intended for developers to create a level for our game.
 
 ## What we will be using
 - Windows 10/11
@@ -13,9 +13,9 @@ In this document we will go through how to create a level/dungeon for our game. 
 3. Scroll down to the "Download Now" button. 
 4. This software is free to use, but you can make a donation. To continue click on the "No thanks, just take me to the downloads" link.
 5. Click on the Download button depending on which operating system you are using. Once you do so the installer should begin downloading.
-6. Finally, go through the installation process once the download is completed.
+6. Finally, once the download is completed, go through the installation process.
 
-Check out the [tiled documentation](https://doc.mapeditor.org/en/stable/) on more usage information.
+Check out the [tiled documentation](https://doc.mapeditor.org/en/stable/) for more usage information.
 
 ## Creating a dungeon
 
@@ -124,6 +124,8 @@ The tilemap tmx file is the program file created by the Tiled software.
 2. Set the file location to "server/assets/tilemaps".
 3. Give the file a name and make sure that the file type is .tmx.
 
+Note: Depending on how you saved your tileset image, Tiled may ask you to relocate your image file the next time you open the tmx file.
+
 ### The tilemap json file
 
 The tilemap json file is the file that will be read by our server. 
@@ -155,5 +157,11 @@ After we saved our files into their respective location, we can now let our serv
 - The tilesetName is the name that you want Phaser to refer to your tileset. Pick a unique name.
 - The serverJsonLocation is the file location of your dungeon's json file that you created.
 - The clientTilesetLocation is the location of your extruded tileset image file that you created.
+
+3. Finally, on the client side in the GameScene's preload() method we are going to load our tileset image.
+```
+    this.load.image("dirt_map_tiles", "tilemaps/demo_map/dirt_dungeon_tileset_extruded.png");
+```
+In the example above the first arg is your tilesetName and the second arg is the clientTilesetLocation.
 
 All done, now the players can pick your dungeon inside the waiting room.

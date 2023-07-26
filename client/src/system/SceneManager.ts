@@ -4,7 +4,7 @@ import { SceneKey, SceneKeyType } from "../config";
 
 export default class SceneManager {
 
-    private static singleton:SceneManager = new SceneManager();
+    private static singleton: SceneManager = new SceneManager();
 
     private scene: Phaser.Scene | null = null;
     private historyStack: SceneKeyType[] = [];
@@ -37,11 +37,7 @@ export default class SceneManager {
         if(this.scene) {
             if(this.currentSceneKey !== key) {
                 this.historyStack.splice(0, this.historyStack.length);
-                if(this.currentSceneKey) 
-                    this.sleepCurrentScene();
-                this.currentSceneKey = key;
-                this.launchOrWakeCurrentScene();
-                this.showNavbarOnCertainScene(key);
+                this.switchToSceneHelper(key);
             }
         } else {
             console.log("Error: phaser scene does not exist in SceneManager");
@@ -57,11 +53,8 @@ export default class SceneManager {
             if(this.currentSceneKey !== key) {
                 if(this.currentSceneKey) {
                     this.historyStack.push(this.currentSceneKey);
-                    this.sleepCurrentScene()
                 }
-                this.currentSceneKey = key;
-                this.launchOrWakeCurrentScene();
-                this.showNavbarOnCertainScene(key);
+                this.switchToSceneHelper(key);
             }
         } else {
             console.log("Error: phaser scene does not exist in SceneManager");
@@ -76,18 +69,26 @@ export default class SceneManager {
         if(this.scene) {
             let key = this.historyStack.pop();
             if(key && this.currentSceneKey !== key) {
-                if(this.currentSceneKey) {
-                    this.sleepCurrentScene();
-                }
-                this.currentSceneKey = key;
-                this.launchOrWakeCurrentScene();
-                this.showNavbarOnCertainScene(key);
+                this.switchToSceneHelper(key);
                 return key;
             }
         } else {
             console.log("Error: phaser scene does not exist in SceneManager");
         }
         return "";
+    }
+
+    /**
+     * Main logic for switching to a new scene. 
+     * @param key The scene key.
+     */
+    private switchToSceneHelper(key: SceneKeyType) {
+        if(this.currentSceneKey) {
+            this.sleepCurrentScene();
+        }
+        this.currentSceneKey = key;
+        this.launchOrWakeCurrentScene();
+        this.showNavbarOnCertainScene(key);
     }
 
     private showNavbarOnCertainScene(key: SceneKeyType) {

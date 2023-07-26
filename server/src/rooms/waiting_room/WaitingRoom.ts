@@ -1,6 +1,7 @@
 import { Client, Room, RoomListingData, matchMaker } from "colyseus";
 import State from "./schemas/State";
 import globalEventEmitter from "../../util/EventUtil";
+import FileUtil from "../../util/FileUtil";
 
 interface WaitingRoomMetadata {
     inGame: boolean;
@@ -8,9 +9,21 @@ interface WaitingRoomMetadata {
     roomName: string;
 }
 
+interface DungeonData {
+    id: string;
+    name: string;
+}
+
+/** The WaitingRoom is a room players join before starting a game. 
+ * In this room players can choose their role, pet, and dungeon. 
+ * They can also chat with other players in the room.
+ */
 export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
+
     maxClients = 4;
     waitingRoomDisposed = false;
+
+    dungeonData: DungeonData[] = [];
 
     onCreate() {
         console.log(`Created: Waiting room ${this.roomId}`);
@@ -24,6 +37,7 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
             roomName: "A Room",
         })
 
+        // Message received from the room leader to start the game.
         this.onMessage("start", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
             if(player && player.isLeader) {
@@ -32,7 +46,7 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
                     if(this.state.inGame) {
                         client.send("serverMessage", "Game already in session!");
                     } else {
-                        matchMaker.createRoom('game', {}).then((room) => {
+                        matchMaker.createRoom('game', {dungeonSelected: this.state.dungeon}).then((room) => {
                         this.onCreateGameRoom(room);
                         }).catch(e => {
                             console.log(e);
@@ -44,26 +58,31 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
             }
         })
 
+        // Message received from a player to ready up.
         this.onMessage("ready", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
             if(player && !this.state.inGame) player.isReady = true;
         })
 
+        // Message received from a player to unready.
         this.onMessage("unready", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
             if(player && !this.state.inGame) player.isReady = false;
         })
 
+        // Message received from a player to change their role.
         this.onMessage("changeRole", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
             if(player && !this.state.inGame) player.role = message;
         })
 
+        // Message received from a player to change their pet.
         this.onMessage("changePet", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
             if(player && !this.state.inGame) player.pet = message;
         })
 
+        // Message received from a player to change the dungeon. Only leaders can change the dungeon.
         this.onMessage("changeDungeon", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
             if(player && player.isLeader) {
@@ -73,6 +92,7 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
             }
         })
 
+        // Chatting system.
         this.onMessage("playerMessage", (client: Client, message: any) => {
             let player = this.state.players.get(client.sessionId);
             if(player) {
@@ -82,6 +102,18 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
                 })
             }
         })
+
+        // ----- loading dungeon data -----
+        FileUtil.readJSONAsync("assets/tilemaps/dungeon.json").then(data => {
+            data.forEach((dungeon: any) => {
+                this.dungeonData.push({
+                    id: dungeon.id,
+                    name: dungeon.name,
+                })
+            });
+            this.broadcast("dungeonData", this.dungeonData);
+            this.state.dungeon = this.dungeonData[0].name;
+        });
     }
     
     onJoin(client: Client) {
@@ -89,7 +121,8 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
         this.state.createPlayer(client.sessionId, this.state.playerCount() === 0);
         let player = this.state.players.get(client.sessionId);
         if(player) {
-            this.broadcast("serverMessage", `${player.name} has joined the room.`)
+            this.broadcast("serverMessage", `${player.name} has joined the room.`);
+            client.send("dungeonData", this.dungeonData);
         }
     }
 

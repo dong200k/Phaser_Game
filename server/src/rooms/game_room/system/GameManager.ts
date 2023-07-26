@@ -13,19 +13,20 @@ import TreeManager from './StateManagers/TreeManager';
 import WeaponManager from './StateManagers/WeaponManager';
 import EventEmitter from 'events';
 import CollisionManager from './Collisions/CollisionManager'
+import { GameRoomOptions } from '../GameRoom';
 
 export default class GameManager {
     private engine: Matter.Engine;
     public world: Matter.World;
 
     // Managers
-    private playerManager: PlayerManager;
-    private projectileManager: ProjectileManager;
-    private effectManager: EffectManager;
-    private dungeonManager: DungeonManager;
-    private effectLogicManager: EffectLogicManager;
-    private artifactManager: ArtifactManager;
-    private collisionManager: CollisionManager;
+    private playerManager!: PlayerManager;
+    private projectileManager!: ProjectileManager;
+    private effectManager!: EffectManager;
+    private dungeonManager!: DungeonManager;
+    private effectLogicManager!: EffectLogicManager;
+    private artifactManager!: ArtifactManager;
+    private collisionManager!: CollisionManager;
 
     // Data
     public matterBodies: Map<string, Matter.Body> = new Map();
@@ -35,11 +36,26 @@ export default class GameManager {
     // Events
     private eventEmitter: EventEmitter = new EventEmitter();
 
-    constructor(state: State) {
+    // Game Options/Config
+    private options: GameRoomOptions;
+
+    constructor(state: State, options?: GameRoomOptions) {
         this.state = state;
         this.engine = Matter.Engine.create();
         this.world = this.engine.world;
-        this.engine.gravity.y = 0; //no gravity
+        this.engine.gravity.y = 0; //no gravity 
+        if(options !== undefined) this.options = options;
+        else this.options = {dungeonSelected: "Demo Dungeon"};
+    }
+
+    /**
+     * Preloads asynchronous tasks such as getting upgrades and weapons from database.
+     * so that they are available before other things are done. The managers are then loaded. 
+     * Events are setup.
+     * *** Note: Call this function and await it in GameRoom before game starts. ***
+     */
+    async preload(){
+        await DatabaseManager.getManager().loadData()
 
         // Setup managers
         this.playerManager = new PlayerManager(this)
@@ -53,15 +69,6 @@ export default class GameManager {
         this.initUpdateEvents();
         this.initCollisionEvent();
         this.syncServerStateBasedOnGameState();
-    }
-
-    /**
-     * Preloads asynchronous tasks such as getting upgrades and weapons from database.
-     * so that they are available before other things are done.
-     * *** TODO: Call this function and await it in GameRoom before game starts. ***
-     */
-    async preload(){
-        await DatabaseManager.getManager().loadData()
     }
 
     public syncServerStateBasedOnGameState(){
@@ -180,5 +187,10 @@ export default class GameManager {
     /** Gets the EventEmitter for this GameManager. Used to send events throughout this game. */
     public getEventEmitter() {
         return this.eventEmitter;
+    }
+
+    /** Gets the configuration data for this game. */
+    public getOptions() {
+        return this.options;
     }
 }

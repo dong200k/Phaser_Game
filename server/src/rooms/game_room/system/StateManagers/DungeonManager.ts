@@ -83,7 +83,7 @@ export default class DungeonManager {
     private createDungeon() {
         // let dungeonName = "Demo Map";
         // let dungeonFileLocation = dungeonURLMap["Demo Map"];
-        let dungeonData = DatabaseManager.getManager().getDungeon("8eba2633-d096-44df-a68d-d87adbd1a591");
+        let dungeonData = DatabaseManager.getManager().getDungeonByName(this.gameManager.getOptions().dungeonSelected);
         let dungeonFileLocation = dungeonData.serverJsonLocation;
         let dungeonName = dungeonData.name;
 

@@ -120,6 +120,17 @@ export default class DatabaseManager{
         return dungeon;
     }
 
+    public getDungeonByName(name: string): IDungeon {
+        let dungeon: IDungeon | undefined = undefined;
+        this.dungeons.forEach((data) => {
+            if(data.name === name) {
+                dungeon = data;
+            }
+        })
+        if(dungeon === undefined) throw new Error(`ERROR: Cannot find dungeon with name: ${name}`);
+        return dungeon;
+    }
+
     /**
      * Returns a list of all the dungeons.
      */

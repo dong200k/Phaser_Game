@@ -7,7 +7,7 @@ export default class State extends Schema {
     
     @type("number") maxPlayerCount = 4;
     
-    @type("number") dungeon = 0;
+    @type("string") dungeon: string = "";
 
     @type("boolean") privateRoom = false;
 

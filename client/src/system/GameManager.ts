@@ -227,7 +227,7 @@ export default class GameManager {
     /** Called when the tilemap is first created on the server */
     private onChangeTilemap = (currentValue:any) => {
         let map = this.scene.add.tilemap("", currentValue.tileWidth, currentValue.tileHeight, currentValue.width, currentValue.height);
-        let tileset = map.addTilesetImage("dirt_dungeon_tileset", "dirt_map_tiles", 16, 16, 1, 2);
+        let tileset = map.addTilesetImage("tileset_image", currentValue.tileSetName, 16, 16, 1, 2);
         //Triggers when the server adds a tilemap layer
         currentValue.layers.onAdd = (layer:any, key:string) => {
             if(tileset !== null) {

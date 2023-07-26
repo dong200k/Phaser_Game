@@ -1,10 +1,12 @@
 import Phaser from 'phaser';
 import * as Colyseus from 'colyseus.js';
+import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import ClientManager from '../system/ClientManager';
 import GameManager from '../system/GameManager';
-import { SceneKey } from '../config';
+import { ColorStyle, SceneKey } from '../config';
 import SceneManager from '../system/SceneManager';
 import EventManager from '../system/EventManager';
+import LoadingScreen from '../UI/gameuis/LoadingScreen';
 
 interface MobAsset {
     key: string;
@@ -19,11 +21,25 @@ interface MobAsset {
  */
 export default class GameScene extends Phaser.Scene {
 
+    // Plugin for UI elements that will be injected at scene creation.
+    rexUI!: UIPlugins;
     private gameRoom?: Colyseus.Room;
     private gameManager?: GameManager;
 
+     // ------- loading screen -------
+     private loadingScreen!: LoadingScreen;
+     private loading: boolean;
+     private loadingProgress: number;
+
     constructor() {
         super(SceneKey.GameScene);
+        this.loading = true;
+        this.loadingProgress = 0;
+    }
+
+    init () {
+        this.cameras.main.setBackgroundColor(ColorStyle.neutrals[800]);
+        this.cameras.main.setZoom(2);
     }
 
     preload() {
@@ -53,13 +69,12 @@ export default class GameScene extends Phaser.Scene {
         //this.anims.createFromAseprite("TinyZombie");
         //this.anims.createFromAseprite("Ranger");
         //this.anims.createFromAseprite("RangerArrow");
+        //this.loadingScreen = new LoadingScreen(this);
         
         // this.anims.remove()
         this.initializeListeners();
         this.joinGameRoom();
-        
         this.showHUD();
-        this.cameras.main.setZoom(2);
     }
 
     public initializeListeners() {

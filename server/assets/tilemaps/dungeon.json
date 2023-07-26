@@ -5,5 +5,12 @@
         "tilesetName": "dirt_map_tiles",
         "serverJsonLocation": "assets/tilemaps/demo_map/demo_map.json",
         "clientTilesetLocation": "tilemaps/demo_map/dirt_dungeon_tileset_extruded.png"
+    },
+    {
+        "id": "f3a74414-1583-460e-93ed-474178272e6c",
+        "name": "Demo Dungeon 2",
+        "tilesetName": "dirt_map_tiles",
+        "serverJsonLocation": "assets/tilemaps/demo_map2/demo_map2.json",
+        "clientTilesetLocation": "tilemaps/demo_map/dirt_dungeon_tileset_extruded.png"
     }
 ]
