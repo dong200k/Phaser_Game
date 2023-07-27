@@ -158,7 +158,7 @@ After we saved our files into their respective location, we can now let our serv
 - The serverJsonLocation is the file location of your dungeon's json file that you created.
 - The clientTilesetLocation is the location of your extruded tileset image file that you created.
 
-3. Finally, on the client side in the GameScene's preload() method we are going to load our tileset image.
+3. Finally, on the client side in the SystemPreloadScene's preload() method we are going to load our tileset image.
 ```
     this.load.image("dirt_map_tiles", "tilemaps/demo_map/dirt_dungeon_tileset_extruded.png");
 ```

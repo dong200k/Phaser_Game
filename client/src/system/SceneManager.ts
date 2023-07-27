@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { SceneKey, SceneKeyType } from "../config";
+import EventManager from "./EventManager";
 
 
 export default class SceneManager {
@@ -27,6 +28,10 @@ export default class SceneManager {
      */
     public setScene(scene: Phaser.Scene) {
         this.scene = scene;
+        if(this.scene) {
+            this.scene.scene.bringToTop(SceneKey.NavbarScene);
+            //this.scene.scene.bringToTop(SceneKey.LoadingScene);
+        }
     }
 
     /**
@@ -115,7 +120,7 @@ export default class SceneManager {
             else {
                 this.scene.scene.wake(SceneKey.NavbarScene);
             }
-            this.scene.scene.bringToTop(SceneKey.NavbarScene);
+            //this.scene.scene.bringToTop(SceneKey.NavbarScene);
         }
     }
 
@@ -125,6 +130,25 @@ export default class SceneManager {
             this.scene.scene.sleep(SceneKey.NavbarScene);
         }
     }
+
+    // /** Shows the loading screen. */
+    // public showLoadingScene() {
+    //     if(this.scene) {
+    //         if(!this.scene.scene.isSleeping(SceneKey.LoadingScene) && !this.scene.scene.isActive(SceneKey.LoadingScene))
+    //             this.scene.scene.launch(SceneKey.LoadingScene);
+    //         else {
+    //             this.scene.scene.wake(SceneKey.LoadingScene);
+    //         }
+    //         //this.scene.scene.bringToTop(SceneKey.LoadingScene);
+    //     }
+    // }
+
+    // /** Hides the loading screen. */
+    // public hideLoadingScene() {
+    //     if(this.scene && !this.scene.scene.isSleeping(SceneKey.LoadingScene) && this.scene.scene.isActive(SceneKey.LoadingScene)) {
+    //         this.scene.scene.sleep(SceneKey.LoadingScene);
+    //     }
+    // }
 
     /** Displays the HUD */
     public showHUD() {

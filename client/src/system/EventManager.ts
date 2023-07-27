@@ -160,6 +160,11 @@ namespace EventManager {
         export const UPDATE_NAVBAR = "NavbarSceneUpdateNavbar";
     }
 
+    export namespace LoadingEvents {
+        export const START_LOADING = "LoadingSceneStartLoading";
+        export const STOP_LOADING = "LoadingSceneStopLoading";
+    }
+
 }
 
 export default EventManager;

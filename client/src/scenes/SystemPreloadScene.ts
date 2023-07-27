@@ -1,6 +1,8 @@
 import Phaser from "phaser";
 import { SceneKey, StartScene } from "../config";
 import SceneManager from "../system/SceneManager";
+import LoadingScreen from "../UI/gameuis/LoadingScreen";
+import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 
 /**
  * The purpose of this Scene is to preload important managers such as the SceneManager. 
@@ -8,11 +10,18 @@ import SceneManager from "../system/SceneManager";
  */
 export default class SystemPreloadScene extends Phaser.Scene {
     
+    rexUI!: UIPlugin;
+    loadingScreen!: LoadingScreen;
+
     constructor() {
         super(SceneKey.SystemPreloadScene);
     }
 
     preload() {
+
+        // Show loading screen
+        this.loadingScreen = new LoadingScreen(this);
+
         // ------- Loading UI -------- //
         this.load.image("button_small_active", "images/button/button_small_active.png");
         this.load.image("button_small_deactive", "images/button/button_small_deactive.png");
@@ -22,9 +31,35 @@ export default class SystemPreloadScene extends Phaser.Scene {
         // ------- Loading Audio ------- //
         this.load.audio("button_click1", "audio/button_click1.mp3");
 
+        // ------- Loading Images ------- //
+        this.load.image("demo_hero", "images/demo_hero.png");
+        this.load.image("dirt_map_tiles", "tilemaps/demo_map/dirt_dungeon_tileset_extruded.png");
+        this.load.image("frost-glaive", "images/projectiles/frost-glaive.png");
+
+        // ------- Loading Animations ------- //
+        this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
+        this.load.aseprite("Ranger", "images/roles/ranger.png", "images/roles/ranger.json");
+        this.load.aseprite("RangerArrow", "images/projectiles/arrow_1.png", "images/projectiles/arrow_1.json");
+        this.load.aseprite("TinyZombieAttack", "images/projectiles/bite_1.png", "images/projectiles/bite_1.json");
+
+
+        this.load.on("progress", (value: number) => {
+            // console.log(value);
+            this.loadingScreen.updateProgressBarValue(value);
+        })
+
+        this.load.on("fileprogress", (file: Phaser.Loader.File) => {
+            // console.log(file.src);
+            this.loadingScreen.updateProgressBarText(file.src);
+        })
+
+        this.load.on("complete", () => {
+            // console.log("oncomplete");
+        })
     }
 
     create() {
+        // await this.loadingScreen.startLoading();
         /** Initialize the SceneManager and sets this scene as the current scene. */
         let sceneManager = SceneManager.getSceneManager();
         sceneManager.setScene(this);
