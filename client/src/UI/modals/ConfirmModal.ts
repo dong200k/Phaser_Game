@@ -40,7 +40,7 @@ export default class ConfirmModal extends BaseModal {
 
     protected createModalContent(config: ConfirmModalConfig) {
         let modalContent = this.scene.rexUI.add.fixWidthSizer({
-            width: 500,
+            width: 550,
             space: {
                 top: 20, 
                 left: 20,
@@ -52,7 +52,7 @@ export default class ConfirmModal extends BaseModal {
         });
         
         let descriptionBox = this.scene.rexUI.add.fixWidthSizer({
-            width: 500, 
+            width: 530, 
             height: 200,
             space: {
                 left: 20,
@@ -64,7 +64,7 @@ export default class ConfirmModal extends BaseModal {
             align: "center",
         });
         descriptionBox.addBackground(this.scene.rexUI.add.roundRectangle(0, 0, 100, 100, 0, ColorStyle.primary.hex[500]));
-        descriptionBox.add(UIFactory.createTextBoxPhaser(this.scene, config.description, "p1").setWordWrapWidth(1000));
+        descriptionBox.add(UIFactory.createTextBoxPhaser(this.scene, config.description, "p1").setWordWrapWidth(500));
 
         modalContent.add(descriptionBox);
         modalContent.addNewLine();
