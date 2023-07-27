@@ -1,6 +1,7 @@
 import { OverlapSizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 import TextBoxPhaser from "./TextBoxPhaser";
 import { ColorStyle } from "../config";
+import SettingsManager from "../system/SettingsManager";
 
 export interface ButtonRexConfig extends OverlapSizer.IConfig {
     buttonSize?: "regular"|"small"|"large";
@@ -62,7 +63,9 @@ export default class ButtonRex extends OverlapSizer {
         });
         this.on(Phaser.Input.Events.POINTER_UP, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('default');
-            ButtonRex.clickSound?.play();
+            ButtonRex.clickSound?.play({
+                volume: SettingsManager.getManager().getSoundEffectsVolumeAdjusted(),
+            });
         });
         this.on(Phaser.Input.Events.POINTER_OUT, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('default');

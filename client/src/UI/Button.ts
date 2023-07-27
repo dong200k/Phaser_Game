@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { ColorStyle, TextStyle } from "../config";
 import Layoutable from "./Layoutable";
 import TextBoxPhaser from "./TextBoxPhaser";
+import SettingsManager from "../system/SettingsManager";
 
 export default class Button extends Phaser.GameObjects.Container implements Layoutable {
     private buttonSize:"regular"|"small"|"large";
@@ -100,10 +101,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     public setButtonActive(buttonActive:boolean) {
         if(buttonActive) {
             this.setButtonState("default");
-            this.buttonSprite.on(Phaser.Input.Events.POINTER_UP, () => {
-                this.onClick();
-                Button.clickSound?.play();
-            });
+            this.setOnClick(this.onClick);
         }
         else {
             this.setButtonState("disabled");
@@ -117,7 +115,9 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         this.buttonSprite.on(Phaser.Input.Events.POINTER_UP, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState("default");
             this.onClick();
-            Button.clickSound?.play();
+            Button.clickSound?.play({
+                volume: SettingsManager.getManager().getSoundEffectsVolumeAdjusted(),
+            });
         });
     }
 
