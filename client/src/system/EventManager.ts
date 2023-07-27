@@ -129,6 +129,9 @@ namespace EventManager {
          * 
          */
         export const SHOW_WEAPON_ARTIFACT_POPUP = "HUDSceneShowWAPopup";
+
+        /** Player died event. This will open up the game over modal. */
+        export const PLAYER_DIED = "HUDScenePlayerDied";
     }
 
     export namespace GameEvents {

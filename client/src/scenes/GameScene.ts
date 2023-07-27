@@ -97,6 +97,7 @@ export default class GameScene extends Phaser.Scene {
         })
     }
 
+
     public leaveGame() {
         if(this.scene.isActive(SceneKey.GameScene)) {
             this.gameRoom?.leave();

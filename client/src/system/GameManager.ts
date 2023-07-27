@@ -16,6 +16,7 @@ import type GameObjectState from "../../../server/src/rooms/game_room/schemas/ga
 import EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
 import { ColorStyle } from "../config";
 import InvisObstacle from "../gameobjs/InvisObstacle";
+import GameOverModal from "../UI/modals/GameOverModal";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -462,6 +463,8 @@ export default class GameManager {
         let currentState = playerState.playerController.stateName;
         if(currentState === "Dead") {
             player.play("death");
+            // Open up the game over screen.
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.PLAYER_DIED);
         }
     }
 

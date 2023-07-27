@@ -78,6 +78,7 @@ export default class ButtonRex extends OverlapSizer {
         this.hoverGradient = new Phaser.GameObjects.Sprite(this.scene, 0, 0, "button_small_default_hover_texture");
         this.hoverGradient.setAlpha(0.1);
         this.hoverGradient.setVisible(false);
+        this.hoverGradient.setDisplaySize(sizeData.size.x, sizeData.size.y);
         
         scene.add.existing(this.buttonSprite);
         scene.add.existing(this.buttonText);
