@@ -55,6 +55,7 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.on(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, this.showWAPopup, this);
         EventManager.eventEmitter.on(EventManager.HUDEvents.PLAYER_DIED, this.playerDied, this);
         this.events.once("shutdown", () => this.removeListeners());
+        this.events.on("sleep", () => this.peerInfoPopup.setVisible(false));
     }
 
     private removeListeners() {

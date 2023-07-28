@@ -88,7 +88,7 @@ export default class PeerInfoPopup extends RexUIBase{
         let peerInfo = this.peerInfoMap.get(key);
         if(peerInfo) {
             this.peerInfoMap.delete(key);
-            this.peerInfoSizer.remove(peerInfo.getPeerInfoSizer());
+            this.peerInfoSizer.remove(peerInfo.getPeerInfoSizer(), true);
         }
         this.update();
     }

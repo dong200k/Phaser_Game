@@ -335,6 +335,10 @@ export default class GameManager {
             /** ----- Entity Listeners ----- */
             let entityState = gameObjectState as EntityState;
             entityState.stat.onChange = (changes: any) => this.entityStatOnChange(gameObject, entityState, changes);
+            // entityState.listen("stat", (newStat, prev) => {
+            //     console.log(`New: ${newStat}, prev ${prev}`);
+            //     newStat.onChange = (changes: any) => this.entityStatOnChange(gameObject, entityState, changes);
+            // })
 
             if(gameObject instanceof Player) {
                 /** ----- Player Listeners ----- */
@@ -420,6 +424,7 @@ export default class GameManager {
     /** Called when the entity's stat is updated on the server. */
     private entityStatOnChange(entity: Entity, entityState: EntityState, changes: any) {
         if(entity instanceof Monster) {
+            // console.log("Change detected");
             let monsterState = entityState as MonsterState;
             entity.updateStat(monsterState.stat);
         }
