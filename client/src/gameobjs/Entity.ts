@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import GameObject from "./GameObject";
 import EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
 import { ColorStyle } from "../config";
+import FloatingText from "./FloatingText";
 
 export interface Stat {
     hp?: number;
@@ -72,6 +73,17 @@ export default abstract class Entity extends GameObject
             Entity.hitSound?.play({
                 detune: Math.random() * 200 + 300,
             });
+            let ft = new FloatingText({
+                scene: this.scene,
+                fontType: "p6",
+                color: ColorStyle.red[500],
+                text: `${hpChange}`,
+                x: this.x,
+                y: this.y,
+                duration: 1000,
+            });
+            ft.setDepth(100);
+            this.scene.add.existing(ft);
         }
     }
 }
