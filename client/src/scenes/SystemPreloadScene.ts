@@ -30,6 +30,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
     
         // ------- Loading Audio ------- //
         this.load.audio("button_click1", "audio/button_click1.mp3");
+        this.load.audio("hit", "audio/hit.mp3");
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");

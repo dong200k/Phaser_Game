@@ -43,8 +43,11 @@ export default abstract class Entity extends GameObject
 {
     private stat: Stat;
 
+    private static hitSound?: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, entityState: EntityState) {
         super(scene, x, y, texture, entityState);
+        if(Entity.hitSound === undefined) Entity.hitSound = scene.sound.add("hit");
         this.stat = {};
     }
 
@@ -66,6 +69,9 @@ export default abstract class Entity extends GameObject
             setTimeout(() => {
                 this.tint = 0xffffff;
             }, 100);
+            Entity.hitSound?.play({
+                detune: Math.random() * 200 + 300,
+            });
         }
     }
 }
