@@ -2,6 +2,8 @@ import { OverlapSizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 import TextBoxPhaser from "./TextBoxPhaser";
 import { ColorStyle } from "../config";
 import SettingsManager from "../system/SettingsManager";
+import { PhaserAudio } from "../interfaces";
+import SoundManager from "../system/SoundManager";
 
 export interface ButtonRexConfig extends OverlapSizer.IConfig {
     buttonSize?: "regular"|"small"|"large";
@@ -16,8 +18,6 @@ export default class ButtonRex extends OverlapSizer {
     private buttonText:TextBoxPhaser;
     //private onClick:Function;
     private hoverGradient:Phaser.GameObjects.Sprite;
-
-    private static clickSound?: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
 
     private sizeConfig = {
         regular: {
@@ -42,7 +42,6 @@ export default class ButtonRex extends OverlapSizer {
     
     constructor(scene: Phaser.Scene, config?: ButtonRexConfig) {
         super(scene, config);
-        if(ButtonRex.clickSound === undefined) ButtonRex.clickSound = scene.sound.add("button_click1");
         this.buttonSize = config?.buttonSize ?? "regular";
         let sizeData = this.sizeConfig[this.buttonSize];
         this.buttonState = "default";
@@ -62,10 +61,11 @@ export default class ButtonRex extends OverlapSizer {
             if(this.buttonState !== 'disabled') this.setButtonState('pressed');
         });
         this.on(Phaser.Input.Events.POINTER_UP, ()=>{
-            if(this.buttonState !== 'disabled') this.setButtonState('default');
-            ButtonRex.clickSound?.play({
-                volume: SettingsManager.getManager().getSoundEffectsVolumeAdjusted(),
-            });
+            if(this.buttonState !== 'disabled') {
+                this.setButtonState('default');
+                SoundManager.getManager().play("button_click1");
+            }
+            
         });
         this.on(Phaser.Input.Events.POINTER_OUT, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('default');

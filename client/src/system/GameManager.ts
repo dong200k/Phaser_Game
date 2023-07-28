@@ -17,6 +17,9 @@ import EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/En
 import { ColorStyle } from "../config";
 import InvisObstacle from "../gameobjs/InvisObstacle";
 import GameOverModal from "../UI/modals/GameOverModal";
+import { PhaserAudio } from "../interfaces";
+import SettingsManager from "./SettingsManager";
+import SoundManager from "./SoundManager";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -42,13 +45,18 @@ export default class GameManager {
 
     private csp!: ClientSidePrediction;
 
+    // ------ Audio -------
+    private soundManager: SoundManager;
+
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
         this.timeTillNextTick = this.timePerTick;
+        this.soundManager = SoundManager.getManager();
         this.initializeClientSidePrediction();
         this.initializeInputs();
         this.initializeListeners();
+        this.initializeSounds();
     }
 
     /**
@@ -151,6 +159,10 @@ export default class GameManager {
     private initializeListeners() {
         this.gameRoom.state.gameObjects.onAdd = this.onAdd;
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
+    }
+
+    private initializeSounds() {
+        this.soundManager.add("player_death", "sfx");
     }
 
     private initializeClientSidePrediction() {
@@ -463,8 +475,11 @@ export default class GameManager {
         let currentState = playerState.playerController.stateName;
         if(currentState === "Dead") {
             player.play("death");
+            this.soundManager.play("player_death");
             // Open up the game over screen.
-            EventManager.eventEmitter.emit(EventManager.HUDEvents.PLAYER_DIED);
+            setTimeout(() => {
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.PLAYER_DIED);
+            }, 1000);
         }
     }
 

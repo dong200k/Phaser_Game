@@ -3,6 +3,8 @@ import { ColorStyle, TextStyle } from "../config";
 import Layoutable from "./Layoutable";
 import TextBoxPhaser from "./TextBoxPhaser";
 import SettingsManager from "../system/SettingsManager";
+import { PhaserAudio } from "../interfaces";
+import SoundManager from "../system/SoundManager";
 
 export default class Button extends Phaser.GameObjects.Container implements Layoutable {
     private buttonSize:"regular"|"small"|"large";
@@ -11,8 +13,6 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     private buttonText:TextBoxPhaser;
     private onClick:Function;
     private hoverGradient:Phaser.GameObjects.Sprite;
-
-    private static clickSound?: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
 
     private sizeConfig = {
         regular: {
@@ -37,7 +37,6 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
     
     constructor(scene:Phaser.Scene,text:string="",x:number=0,y:number=0, size:"regular"|"small"|"large"="regular",onClick:Function=()=>{}) {
         super(scene, x, y);
-        if(Button.clickSound === undefined) Button.clickSound = scene.sound.add("button_click1");
         this.buttonSize = size;
         this.onClick = onClick;
         this.buttonState = "default";
@@ -115,9 +114,7 @@ export default class Button extends Phaser.GameObjects.Container implements Layo
         this.buttonSprite.on(Phaser.Input.Events.POINTER_UP, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState("default");
             this.onClick();
-            Button.clickSound?.play({
-                volume: SettingsManager.getManager().getSoundEffectsVolumeAdjusted(),
-            });
+            SoundManager.getManager().play("button_click1");
         });
     }
 

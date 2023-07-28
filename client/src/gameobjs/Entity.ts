@@ -3,6 +3,7 @@ import GameObject from "./GameObject";
 import EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
 import { ColorStyle } from "../config";
 import FloatingText from "./FloatingText";
+import SoundManager from "../system/SoundManager";
 
 export interface Stat {
     hp?: number;
@@ -44,11 +45,8 @@ export default abstract class Entity extends GameObject
 {
     private stat: Stat;
 
-    private static hitSound?: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
-
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, entityState: EntityState) {
         super(scene, x, y, texture, entityState);
-        if(Entity.hitSound === undefined) Entity.hitSound = scene.sound.add("hit");
         this.stat = {};
     }
 
@@ -70,9 +68,7 @@ export default abstract class Entity extends GameObject
             setTimeout(() => {
                 this.tint = 0xffffff;
             }, 100);
-            Entity.hitSound?.play({
-                detune: Math.random() * 200 + 300,
-            });
+            SoundManager.getManager().play("hit", {detune: Math.floor(Math.random() * 500 - 250)});
             let ft = new FloatingText({
                 scene: this.scene,
                 fontType: "p6",
