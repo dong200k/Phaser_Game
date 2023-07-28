@@ -494,6 +494,7 @@ export default class GameManager {
         let currentState = monsterState.controller.stateName;
         if(currentState === "Death") {
             monster.play({key: "death"});
+            this.soundManager.play("monster_death", {detune: Math.floor(Math.random() * 300 - 150)});
             monster.walking = false;
         }
     }
