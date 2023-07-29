@@ -104,10 +104,10 @@ export default class CollisionManager{
         // console.log(`Collision detected: attack:${trueAttackDamage}, magic:${trueMagicDamage}, player armor: ${entity.stat.armor}`);
 
         // Entity colliding with projectile takes attack and magic damage
-        let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage)
+        let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage, projectile.originEntityId)
         EffectManager.addEffectsTo(entity, damageEffect)
 
-        damageEffect = EffectFactory.createDamageEffect(trueMagicDamage)
+        damageEffect = EffectFactory.createDamageEffect(trueMagicDamage, projectile.originEntityId)
         EffectManager.addEffectsTo(entity, damageEffect)
 
         // Entity shooting projectile heals based on their lifesteal

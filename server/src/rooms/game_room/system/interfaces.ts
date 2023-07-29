@@ -123,6 +123,7 @@ export type IProjectileConfig = {
     attackMultiplier: number,
     magicMultiplier: number,
     classType?: IClasses,
+    originEntityId?: string,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }

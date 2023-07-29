@@ -45,6 +45,7 @@ export default class DoubowLogic extends EffectLogic{
             poolType: poolType,
             attackMultiplier: 1,
             magicMultiplier: 0,
+            originEntityId: playerState.getId(),
         })
 
         // spawn projectile with direction rotated -30 degrees from player to player mouse
@@ -63,6 +64,7 @@ export default class DoubowLogic extends EffectLogic{
             poolType: "BowLogic",
             attackMultiplier: 1,
             magicMultiplier: 0,
+            originEntityId: playerState.getId(),
         })
     }
 }

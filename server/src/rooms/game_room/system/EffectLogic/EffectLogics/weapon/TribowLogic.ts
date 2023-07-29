@@ -46,6 +46,7 @@ export default class TribowLogic extends EffectLogic{
             poolType: poolType,
             attackMultiplier: attackMultiplier,
             magicMultiplier: 0,
+            originEntityId: playerState.getId(),
         })
 
         // spawn projectile with direction rotated 30 degrees from player to player mouse
@@ -64,6 +65,7 @@ export default class TribowLogic extends EffectLogic{
             poolType: poolType,
             attackMultiplier: attackMultiplier,
             magicMultiplier: 0,
+            originEntityId: playerState.getId(),
         })
 
         // spawn projectile with direction rotated -30 degrees from player to player mouse
@@ -82,6 +84,7 @@ export default class TribowLogic extends EffectLogic{
             poolType: poolType,
             attackMultiplier: attackMultiplier,
             magicMultiplier: 0,
+            originEntityId: playerState.getId(),
         })
     }
 }

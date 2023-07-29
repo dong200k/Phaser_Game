@@ -61,6 +61,9 @@ export default class Projectile extends GameObject implements Cloneable {
 
     @type("string") projectileType: string;
 
+    /** The entity that created this projectile. */
+    originEntityId?: string;
+
     /**
      * Creates a new projectile GameObject and a corresponding Matter.Body with the projectileConfig
      * @param projectileConfig 
@@ -82,6 +85,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.entity = projectileConfig.entity
         this.type = "Projectile"
         this.projectileType = "Ranged";
+        this.originEntityId = projectileConfig.originEntityId;
         this.attackMultiplier = projectileConfig.attackMultiplier
         this.magicMultiplier = projectileConfig.magicMultiplier
         this.createBody()
@@ -218,6 +222,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.attackMultiplier = projectileConfig.attackMultiplier
         this.magicMultiplier = projectileConfig.magicMultiplier
         this.type = "Projectile"
+        this.originEntityId = projectileConfig.originEntityId;
 
         // Make body collideable again
         let body = this.getBody()

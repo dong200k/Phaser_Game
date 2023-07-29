@@ -370,6 +370,21 @@ export default class GameManager {
                 gameObject.walking = true;
             }
         }
+        if(gameObject instanceof Player) {
+            let playerState = gameObjectState as PlayerState;
+            if(gameObject === this.player1) {
+                // Updates the Player Info Display. This display is on the bottom left corner of the screen.
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
+                    xpValue: playerState.xp,
+                    maxXpValue: playerState.maxXp,
+                })
+            }
+            // Updates the Peer Info Display. This display popup when holding SHIFT.
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+                xpValue: playerState.xp,
+                maxXpValue: playerState.maxXp,
+            })
+        }
         // Updates the gameObject's serverX and serverY for all gameObjects except for player1. ClientSidePrediction updates player1.
         if(!(gameObject instanceof Player && gameObject === this.player1)) {
             gameObject.serverX = gameObjectState.x;
@@ -439,8 +454,6 @@ export default class GameManager {
                     mpValue: playerState.stat.mana,
                     maxMpValue: playerState.stat.maxMana,
                     level: playerState.stat.level,
-                    xpValue: playerState.xp,
-                    maxXpValue: playerState.maxXp,
                 })
             }
             // Updates the Peer Info Display. This display popup when holding SHIFT.
@@ -450,8 +463,6 @@ export default class GameManager {
                 mpValue: playerState.stat.mana,
                 maxMpValue: playerState.stat.maxMana,
                 level: playerState.stat.level,
-                xpValue: playerState.xp,
-                maxXpValue: playerState.maxXp,
             })
         }
     }

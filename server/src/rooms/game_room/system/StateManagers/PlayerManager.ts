@@ -19,7 +19,7 @@ interface InputPlayload {
     playerId: string;
 }
 
-export default class PlayerManager{
+export default class PlayerManager {
     private gameManager: GameManager
 
     private inputPayloads: InputPlayload[] = [];
@@ -301,6 +301,24 @@ export default class PlayerManager{
         return nearestPlayer;
     }
 
+    /**
+     * Returns a list of all the players within range of an x and y position.
+     * @param x The x position.
+     * @param y The y position.
+     * @param range The range.
+     */
+    public getAllPlayersWithinRange(x: number, y: number, range: number) {
+        let playerList: Player[] = new Array();
+        this.gameManager.state.gameObjects.forEach((gameObject, key) => {
+            if(gameObject instanceof Player) {
+                if(MathUtil.distance(gameObject.x, gameObject.y, x, y) <= range) {
+                    playerList.push(gameObject);
+                }
+            }
+        })
+        return playerList;
+    }
+
     public getGameManager() {
         return this.gameManager;
     }
@@ -317,5 +335,60 @@ export default class PlayerManager{
      */
     public enablePlayer(player: Player) {
         this.disabledPlayers.delete(player.id);
+    }
+
+    /**
+     * Gives a player xp.
+     * @param player The player.
+     * @param xp The amount of xp to give.
+     */
+    public addXpToPlayer(xp: number, player: Player) {
+        player.xp += xp;
+    }
+
+    /**
+     * Splits the xp among the provided players. If no players are provided the xp will 
+     * be split among all the players.
+     * @param xp The amount of xp to give.
+     * @param players The players to give them to.
+     */
+    public splitXpToPlayers(xp: number, players?: Player[]) {
+        // Gets all the players that will receive the xp.
+        let playerList: Player[] = [];
+        if(players === undefined || players.length === 0) {
+            this.gameManager.state.gameObjects.forEach((gameObject, key)=> {
+                if(gameObject instanceof Player) playerList.push(gameObject);
+            })
+        } else {
+            players.forEach((player) => playerList.push(player));
+        }
+        if(playerList.length === 0) return;
+        // Split the xp among the players.
+        let splitXp = xp / playerList.length;
+        playerList.forEach((player) => this.addXpToPlayer(splitXp, player));
+    }
+
+    /**
+     * Splits the xp among all the players within range of an x and y position.
+     * @param xp The amount of xp.
+     * @param x The x position.
+     * @param y The y position.
+     * @param range The range.
+     */
+    public splitXpToPlayersWithinRange(xp: number, x: number, y: number, range: number) {
+        this.splitXpToPlayers(xp, this.getAllPlayersWithinRange(x, y, range));
+    }
+
+    /**
+     * Gets the Player with the given id.
+     * @param id The id.
+     * @returns The Player with the given id or undefined if no such player was found.
+     */
+    public getPlayerWithId(id: string): Player | undefined {
+        let player: Player | undefined;
+        this.gameManager.state.gameObjects.forEach((gameObject, key)=> {
+            if(gameObject instanceof Player && gameObject.getId() === id) player = gameObject;
+        })
+        return player;
     }
 }

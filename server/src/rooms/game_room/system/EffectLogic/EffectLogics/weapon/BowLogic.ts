@@ -42,6 +42,7 @@ export default class BowLogic extends EffectLogic{
             poolType: poolType,
             attackMultiplier: 1,
             magicMultiplier: 0,
+            originEntityId: playerState.getId(),
         })
     }
 }

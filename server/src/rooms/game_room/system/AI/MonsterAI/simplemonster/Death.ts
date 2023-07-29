@@ -17,6 +17,13 @@ export default class Death extends StateNode {
         let monster = stateMachine.getMonster();
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
         monster.disableCollisions();
+
+        // --- Give xp to player ---
+        let playerManager = stateMachine.getPlayerManager();
+        let playerThatDamagedMe = playerManager.getPlayerWithId(monster.getLastToDamage() ?? "");
+        if(playerThatDamagedMe) playerManager.addXpToPlayer(10, playerThatDamagedMe);
+
+        // console.log(playerThatDamagedMe?.xp);
     }
 
     public onExit(): void {
