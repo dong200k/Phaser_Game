@@ -51,6 +51,7 @@ export default class Attack extends StateNode {
 
         if(this.attackDuration < 0) {
             this.projectile.setActive(false);
+            this.projectile.disableCollisions();
             this.getStateMachine().changeState("Idle");
         }
     }

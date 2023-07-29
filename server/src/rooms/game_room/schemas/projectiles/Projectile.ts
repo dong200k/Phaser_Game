@@ -45,9 +45,12 @@ export default class Projectile extends GameObject implements Cloneable {
     /** Initial velocity of the projectile's body */
     @type(Velocity) initialVelocity: Velocity
     /** Entity that this projectile originates from */
-    @type(Entity) entity?: Entity
+    /*@type(Entity)*/ entity?: Entity
     /** Stats used for damage calculation */
-    @type(Stat) stat: Stat
+    /* ----  WARNING ----- Adding @type(Stat) causes issues with monster's stat not updating on client side. 
+    This is likly due to stat being a reference to the monster's stat causing some issues.
+    */
+    /*@type(Stat)*/ stat: Stat
     /** attack multiplier AD  */
     @type("number") attackMultiplier: number
     @type("number") magicMultiplier: number
