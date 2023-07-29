@@ -377,12 +377,14 @@ export default class GameManager {
                 EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
                     xpValue: playerState.xp,
                     maxXpValue: playerState.maxXp,
+                    level: playerState.level,
                 })
             }
             // Updates the Peer Info Display. This display popup when holding SHIFT.
             EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
                 xpValue: playerState.xp,
                 maxXpValue: playerState.maxXp,
+                level: playerState.level,
             })
         }
         // Updates the gameObject's serverX and serverY for all gameObjects except for player1. ClientSidePrediction updates player1.

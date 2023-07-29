@@ -196,7 +196,9 @@ export default class PlayerManager {
         //Set weaponupgrade tree for player with a test weapon
         let root = WeaponUpgradeFactory.createTribowUpgrade()
         
-        WeaponManager.equipWeaponUpgrade(player, root)
+        WeaponManager.equipWeaponUpgrade(player, root);
+        let upgrades = WeaponManager.getAvailableUpgrades(player);
+        WeaponManager.selectUpgrade(player, upgrades, 0);
 
         // Equip aritfacts
         let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
@@ -344,6 +346,10 @@ export default class PlayerManager {
      */
     public addXpToPlayer(xp: number, player: Player) {
         player.xp += xp;
+        if(player.xp >= player.maxXp) {
+            player.xp -= player.maxXp;
+            player.level++;
+        }
     }
 
     /**
