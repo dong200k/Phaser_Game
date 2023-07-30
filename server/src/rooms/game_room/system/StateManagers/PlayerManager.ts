@@ -1,5 +1,5 @@
 import Matter, { Bodies } from 'matter-js';
-import Player from '../../schemas/gameobjs/Player';
+import Player, { UpgradeItem } from '../../schemas/gameobjs/Player';
 import GameManager from '../GameManager';
 import MathUtil from '../../../../util/MathUtil';
 import { Categories } from '../Collisions/Category';
@@ -197,8 +197,6 @@ export default class PlayerManager {
         let root = WeaponUpgradeFactory.createTribowUpgrade()
         
         WeaponManager.equipWeaponUpgrade(player, root);
-        let upgrades = WeaponManager.getAvailableUpgrades(player);
-        WeaponManager.selectUpgrade(player, upgrades, 0);
 
         // Equip aritfacts
         let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
@@ -349,6 +347,9 @@ export default class PlayerManager {
         if(player.xp >= player.maxXp) {
             player.xp -= player.maxXp;
             player.level++;
+            // If the player is not currently selecting an upgrade give them one.
+            if(!player.upgradeInfo.playerIsSelectingUpgrades)
+                this.givePlayerUpgradeSelection(player);
         }
     }
 
@@ -396,5 +397,37 @@ export default class PlayerManager {
             if(gameObject instanceof Player && gameObject.getId() === id) player = gameObject;
         })
         return player;
+    }
+
+    /**
+     * Called when the player have selected an upgrade.
+     * @param playerId The player's id.
+     * @param choice The idx of the upgrade.
+     */
+    public processPlayerSelectUpgrade(playerId: string, choice: number) {
+        let player = this.getPlayerWithId(playerId);
+        if(player) {
+            let upgrades = WeaponManager.getAvailableUpgrades(player);
+            if(upgrades.length > choice) {
+                WeaponManager.selectUpgrade(player, upgrades, choice);
+
+                // Update the fields in upgradeInfo.
+                player.upgradeInfo.playerSelectedUpgrade();
+                // Give the player another upgrade if their level - 1 is greater than the number of times they upgraded.
+                if(player.level - 1 > player.upgradeInfo.upgradeCount) {
+                    this.givePlayerUpgradeSelection(player);
+                }
+            }
+        }
+    }
+
+    /** 
+     * Chooses the next upgrades for a player.
+     * @param player The player.
+     */
+    public givePlayerUpgradeSelection(player: Player) {
+        player.upgradeInfo.giveNextUpgrade([
+            new UpgradeItem("DuoBow"),
+        ])
     }
 }

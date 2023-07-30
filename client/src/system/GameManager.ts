@@ -345,6 +345,7 @@ export default class GameManager {
                 let playerState = entityState as PlayerState;
                 playerState.specialCooldown.onChange = (changes: any) => this.playerSpecialCooldownOnChange(gameObject, playerState, changes);
                 playerState.playerController.onChange = (changes: any) => this.playerControllerOnChange(gameObject, playerState, changes);
+                playerState.upgradeInfo.onChange = (changes: any) => this.playerUpgradeInfoOnChange(gameObject, playerState, changes);
             }
 
             if(gameObject instanceof Monster) {
@@ -514,6 +515,31 @@ export default class GameManager {
             monster.play({key: "death"});
             this.soundManager.play("monster_death", {detune: Math.floor(Math.random() * 300 - 150)});
             monster.walking = false;
+        }
+    }
+
+    private playerUpgradeInfoOnChange(player: Player, playerState: PlayerState, changes: any) {
+        if(player === this.player1) {
+            if(playerState.upgradeInfo.currentUpgrades.length > 0) {
+
+                let upgradesList: any[] = [];
+                playerState.upgradeInfo.currentUpgrades.forEach((item, idx) => {
+                    upgradesList.push({
+                        typeName: "weapon",
+                        name: item.name,
+                        description: "",
+                        imageKey: "",
+                        onClick: () => {
+                            this.gameRoom.send("selectUpgrade", idx);
+                        },
+                    })
+                })
+    
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+                    title: `Level ${playerState.upgradeInfo.upgradeCount + 2} Upgrades`,
+                    items: upgradesList,
+                })
+            }
         }
     }
 }

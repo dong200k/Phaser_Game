@@ -13,7 +13,7 @@ import TreeManager from './StateManagers/TreeManager';
 import WeaponManager from './StateManagers/WeaponManager';
 import EventEmitter from 'events';
 import CollisionManager from './Collisions/CollisionManager'
-import { GameRoomOptions } from '../GameRoom';
+import GameRoom, { GameRoomOptions } from '../GameRoom';
 
 export default class GameManager {
     private engine: Matter.Engine;

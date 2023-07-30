@@ -65,6 +65,10 @@ export default class GameRoom extends Room<State> {
             
         })
 
+        this.onMessage("selectUpgrade", (client, msg) => {
+            this.gameManager.getPlayerManager().processPlayerSelectUpgrade(client.sessionId, msg);
+        })
+
         // this.onMessage("input", (client, msg) => {
 
         // })
