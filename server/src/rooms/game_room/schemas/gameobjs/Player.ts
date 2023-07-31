@@ -7,12 +7,25 @@ import Cooldown from './Cooldown';
 import GameManager from '../../system/GameManager';
 import PlayerController from '../../system/StateControllers/PlayerControllers/PlayerController';
 
+interface IUpgradeItemConfig {
+    name: string;
+    type: "weapon" | "artifact";
+    description: string;
+    imageKey: string;
+}
+
 export class UpgradeItem extends Schema {
     @type('string') name: string = "";
+    @type('string') type: "weapon" | "artifact";
+    @type('string') description: string;
+    @type('string') imageKey: string;
 
-    constructor(name: string) {
+    constructor(config: IUpgradeItemConfig) {
         super();
-        this.name = name;
+        this.name = config.name;
+        this.type = config.type;
+        this.description = config.description;
+        this.imageKey = config.imageKey;
     }
 }
 

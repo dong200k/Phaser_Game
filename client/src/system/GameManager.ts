@@ -528,12 +528,13 @@ export default class GameManager {
                 let upgradesList: any[] = [];
                 playerState.upgradeInfo.currentUpgrades.forEach((item, idx) => {
                     upgradesList.push({
-                        typeName: "weapon",
+                        typeName: item.type,
                         name: item.name,
-                        description: "",
-                        imageKey: "",
+                        description: item.description,
+                        imageKey: item.imageKey,
                         onClick: () => {
                             this.gameRoom.send("selectUpgrade", idx);
+                            SoundManager.getManager().play("button_click1", {detune: 700});
                         },
                     })
                 })

@@ -426,8 +426,20 @@ export default class PlayerManager {
      * @param player The player.
      */
     public givePlayerUpgradeSelection(player: Player) {
-        player.upgradeInfo.giveNextUpgrade([
-            new UpgradeItem("DuoBow"),
-        ])
+        let upgradesForLevel = player.upgradeInfo.upgradeCount + 2;
+
+        let weaponUpgrades = WeaponManager.getAvailableUpgrades(player);
+
+        let upgradeItems: UpgradeItem[] = [];
+        weaponUpgrades.forEach((weaponUpgrade) => {
+            upgradeItems.push(new UpgradeItem({
+                name: weaponUpgrade.data.name,
+                type: "weapon",
+                description: weaponUpgrade.data.description,
+                imageKey: weaponUpgrade.data.name.toLocaleLowerCase() + "_icon",
+            }));
+        })
+
+        player.upgradeInfo.giveNextUpgrade(upgradeItems);
     }
 }

@@ -135,7 +135,9 @@ export default class WAPopup extends RexUIBase {
 
                 sizer.addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[500]).setName("waItemBackground"));
                 sizer.add(sizer2, {align: "center"});
-                sizer.add(this.scene.add.image(0, 0, item.imageKey).setDisplaySize(64, 64), {align: "center"});
+                let image = this.scene.add.image(0, 0, item.imageKey).setDisplaySize(64, 64);
+                image.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+                sizer.add(image, {align: "center"});
                 sizer.add(UIFactory.createTextBoxPhaser(this.scene, item.description, "p5").setWordWrapWidth(500, false), {expand: false, align: "center"});
 
                 sizer.setData("onClick", item.onClick);
