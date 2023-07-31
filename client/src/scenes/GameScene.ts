@@ -1,10 +1,12 @@
 import Phaser from 'phaser';
 import * as Colyseus from 'colyseus.js';
+import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import ClientManager from '../system/ClientManager';
 import GameManager from '../system/GameManager';
-import { SceneKey } from '../config';
+import { ColorStyle, SceneKey } from '../config';
 import SceneManager from '../system/SceneManager';
 import EventManager from '../system/EventManager';
+import LoadingScreen from '../UI/gameuis/LoadingScreen';
 
 interface MobAsset {
     key: string;
@@ -19,33 +21,29 @@ interface MobAsset {
  */
 export default class GameScene extends Phaser.Scene {
 
+    // Plugin for UI elements that will be injected at scene creation.
+    rexUI!: UIPlugins;
     private gameRoom?: Colyseus.Room;
     private gameManager?: GameManager;
 
+     // ------- loading screen -------
+     private loadingScreen!: LoadingScreen;
+     private loading: boolean;
+     private loadingProgress: number;
+
     constructor() {
         super(SceneKey.GameScene);
+        this.loading = true;
+        this.loadingProgress = 0;
+    }
+
+    init () {
+        this.cameras.main.setBackgroundColor(ColorStyle.neutrals[800]);
+        this.cameras.main.setZoom(2);
     }
 
     preload() {
-        this.load.image("demo_hero", "images/demo_hero.png");
-        this.load.image("dirt_map_tiles", "tilemaps/demo_map/dirt_dungeon_tileset_extruded.png");
-        //this.load.image("TinyZombieOld", "images/zombie_1.png");
-        this.load.image("frost-glaive", "images/projectiles/frost-glaive.png");
-
-        // Load animations 
-        /**
-         * What we need. We need to be able to run the animation based on the state of the server.
-         * - The player should face the direction of the mouse. The server can keep the state of this.
-         * - When the player moves the walking animation should play.
-         * - when the player shoots the fire animation should play, need to figure out a way to time the animation with the shot.
-         */
-
-        this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
-        this.load.aseprite("Ranger", "images/roles/ranger.png", "images/roles/ranger.json");
-        this.load.aseprite("RangerArrow", "images/projectiles/arrow_1.png", "images/projectiles/arrow_1.json");
-        this.load.aseprite("TinyZombieAttack", "images/projectiles/bite_1.png", "images/projectiles/bite_1.json");
-
-        //this.load.
+        // this.loadingScreen = new LoadingScreen(this);
     }
 
     create() {
@@ -57,9 +55,7 @@ export default class GameScene extends Phaser.Scene {
         // this.anims.remove()
         this.initializeListeners();
         this.joinGameRoom();
-        
         this.showHUD();
-        this.cameras.main.setZoom(2);
     }
 
     public initializeListeners() {
@@ -81,6 +77,7 @@ export default class GameScene extends Phaser.Scene {
             this.showHUD();
         })
     }
+
 
     public leaveGame() {
         if(this.scene.isActive(SceneKey.GameScene)) {

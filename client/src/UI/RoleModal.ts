@@ -191,8 +191,8 @@ export default class RoleModal {
     private createConfirmButtons(config: {cancelText?: string, confirmText?: string, cancelOnclick: Function, confirmOnclick: Function}) {
         let buttons = this.scene.rexUI.add.sizer({
             orientation: "horizontal",
-            width: 320,
-            height: 60,
+            width: 325,
+            height: 70,
             space: {
                 item: 30,
             }
@@ -216,7 +216,7 @@ export default class RoleModal {
         let options = this.scene.rexUI.add.scrollablePanel({
             x: 0,
             y: 0,
-            width: 320,
+            width: 325,
             height: 350,
             scrollMode: "vertical",
             panel: {

@@ -16,6 +16,10 @@ import type GameObjectState from "../../../server/src/rooms/game_room/schemas/ga
 import EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
 import { ColorStyle } from "../config";
 import InvisObstacle from "../gameobjs/InvisObstacle";
+import GameOverModal from "../UI/modals/GameOverModal";
+import { PhaserAudio } from "../interfaces";
+import SettingsManager from "./SettingsManager";
+import SoundManager from "./SoundManager";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -41,13 +45,18 @@ export default class GameManager {
 
     private csp!: ClientSidePrediction;
 
+    // ------ Audio -------
+    private soundManager: SoundManager;
+
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
         this.timeTillNextTick = this.timePerTick;
+        this.soundManager = SoundManager.getManager();
         this.initializeClientSidePrediction();
         this.initializeInputs();
         this.initializeListeners();
+        this.initializeSounds();
     }
 
     /**
@@ -152,6 +161,10 @@ export default class GameManager {
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
     }
 
+    private initializeSounds() {
+        this.soundManager.add("player_death", "sfx");
+    }
+
     private initializeClientSidePrediction() {
         this.csp = new ClientSidePrediction(this.scene);
     }
@@ -227,7 +240,7 @@ export default class GameManager {
     /** Called when the tilemap is first created on the server */
     private onChangeTilemap = (currentValue:any) => {
         let map = this.scene.add.tilemap("", currentValue.tileWidth, currentValue.tileHeight, currentValue.width, currentValue.height);
-        let tileset = map.addTilesetImage("dirt_dungeon_tileset", "dirt_map_tiles", 16, 16, 1, 2);
+        let tileset = map.addTilesetImage("tileset_image", currentValue.tileSetName, 16, 16, 1, 2);
         //Triggers when the server adds a tilemap layer
         currentValue.layers.onAdd = (layer:any, key:string) => {
             if(tileset !== null) {
@@ -322,12 +335,17 @@ export default class GameManager {
             /** ----- Entity Listeners ----- */
             let entityState = gameObjectState as EntityState;
             entityState.stat.onChange = (changes: any) => this.entityStatOnChange(gameObject, entityState, changes);
+            // entityState.listen("stat", (newStat, prev) => {
+            //     console.log(`New: ${newStat}, prev ${prev}`);
+            //     newStat.onChange = (changes: any) => this.entityStatOnChange(gameObject, entityState, changes);
+            // })
 
             if(gameObject instanceof Player) {
                 /** ----- Player Listeners ----- */
                 let playerState = entityState as PlayerState;
                 playerState.specialCooldown.onChange = (changes: any) => this.playerSpecialCooldownOnChange(gameObject, playerState, changes);
                 playerState.playerController.onChange = (changes: any) => this.playerControllerOnChange(gameObject, playerState, changes);
+                playerState.upgradeInfo.onChange = (changes: any) => this.playerUpgradeInfoOnChange(gameObject, playerState, changes);
             }
 
             if(gameObject instanceof Monster) {
@@ -352,6 +370,28 @@ export default class GameManager {
                 gameObject.play({key: "walk", repeat: -1});
                 gameObject.walking = true;
             }
+        }
+        if(gameObject instanceof Player) {
+            let playerState = gameObjectState as PlayerState;
+            if(gameObject === this.player1) {
+                // Updates the Player Info Display. This display is on the bottom left corner of the screen.
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
+                    xpValue: playerState.xp,
+                    maxXpValue: playerState.maxXp,
+                    level: playerState.level,
+                })
+                // Play the level up sound effect.
+                if(gameObject.serverLevel < playerState.level) {
+                    gameObject.serverLevel = playerState.level;
+                    SoundManager.getManager().play("level_up");
+                }
+            }
+            // Updates the Peer Info Display. This display popup when holding SHIFT.
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
+                xpValue: playerState.xp,
+                maxXpValue: playerState.maxXp,
+                level: playerState.level,
+            })
         }
         // Updates the gameObject's serverX and serverY for all gameObjects except for player1. ClientSidePrediction updates player1.
         if(!(gameObject instanceof Player && gameObject === this.player1)) {
@@ -407,6 +447,7 @@ export default class GameManager {
     /** Called when the entity's stat is updated on the server. */
     private entityStatOnChange(entity: Entity, entityState: EntityState, changes: any) {
         if(entity instanceof Monster) {
+            // console.log("Change detected");
             let monsterState = entityState as MonsterState;
             entity.updateStat(monsterState.stat);
         }
@@ -420,9 +461,6 @@ export default class GameManager {
                     maxHpValue: playerState.stat.maxHp,
                     mpValue: playerState.stat.mana,
                     maxMpValue: playerState.stat.maxMana,
-                    level: playerState.stat.level,
-                    xpValue: playerState.xp,
-                    maxXpValue: playerState.maxXp,
                 })
             }
             // Updates the Peer Info Display. This display popup when holding SHIFT.
@@ -431,9 +469,6 @@ export default class GameManager {
                 maxHpValue: playerState.stat.maxHp,
                 mpValue: playerState.stat.mana,
                 maxMpValue: playerState.stat.maxMana,
-                level: playerState.stat.level,
-                xpValue: playerState.xp,
-                maxXpValue: playerState.maxXp,
             })
         }
     }
@@ -462,6 +497,11 @@ export default class GameManager {
         let currentState = playerState.playerController.stateName;
         if(currentState === "Dead") {
             player.play("death");
+            this.soundManager.play("player_death");
+            // Open up the game over screen.
+            setTimeout(() => {
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.PLAYER_DIED);
+            }, 1000);
         }
     }
 
@@ -476,7 +516,34 @@ export default class GameManager {
         let currentState = monsterState.controller.stateName;
         if(currentState === "Death") {
             monster.play({key: "death"});
+            this.soundManager.play("monster_death", {detune: Math.floor(Math.random() * 300 - 150)});
             monster.walking = false;
+        }
+    }
+
+    private playerUpgradeInfoOnChange(player: Player, playerState: PlayerState, changes: any) {
+        if(player === this.player1) {
+            if(playerState.upgradeInfo.currentUpgrades.length > 0) {
+
+                let upgradesList: any[] = [];
+                playerState.upgradeInfo.currentUpgrades.forEach((item, idx) => {
+                    upgradesList.push({
+                        typeName: item.type,
+                        name: item.name,
+                        description: item.description,
+                        imageKey: item.imageKey,
+                        onClick: () => {
+                            this.gameRoom.send("selectUpgrade", idx);
+                            SoundManager.getManager().play("button_click1", {detune: 700});
+                        },
+                    })
+                })
+    
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+                    title: `Level ${playerState.upgradeInfo.upgradeCount + 2} Upgrades`,
+                    items: upgradesList,
+                })
+            }
         }
     }
 }

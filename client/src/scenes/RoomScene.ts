@@ -335,12 +335,7 @@ export default class RoomScene extends Phaser.Scene {
     /** Called when the user selects a new dungeon from the dungeon modal. */
     private selectDungeon(dungeonName: string) {
         //console.log("selected: ", dungeonName);
-        this.roomModalData.dungeonData.forEach((data, idx) => {
-            if(data.name === dungeonName) {
-                // this.selectedDungeon = idx;
-                this.waitingRoom?.send("changeDungeon", idx);
-            }
-        })
+        this.waitingRoom?.send("changeDungeon", dungeonName);   
     }
 
     private selectPet(petName: string) {
@@ -448,17 +443,38 @@ export default class RoomScene extends Phaser.Scene {
                 this.chatBox.appendText(`${message.name}: ${message.message}`);
             })
 
+            this.waitingRoom.onMessage("dungeonData", (message) => {
+                this.roomModalData.dungeonData = message;
+                if(this.roomModalData.dungeonData.length > 0) {
+                    this.rolePetDungeonDisplay.updateDisplay({
+                        dungeonName: this.roomModalData.dungeonData[0].name,
+                    })
+                }
+            })
+
             this.waitingRoom.onError((code, message) => {
                 console.log(`code: ${code}, message: ${message}`);
             })
 
             this.waitingRoom.state.onChange = () => {
+                // Update max players in room number.
                 this.roomInfo.update({
                     maxPlayersInRoom: this.waitingRoom?.state.maxPlayerCount,
                 })
-                this.selectedDungeon = this.waitingRoom?.state.dungeon ?? this.selectedDungeon;
+                
+                // Update dungeon name.
+                let dungeonName = this.waitingRoom?.state.dungeon;
+                if(dungeonName) {
+                    this.roomModalData.dungeonData.forEach((data, idx) => {
+                        if(data.name === dungeonName) {
+                            this.selectedDungeon = idx;
+                        }
+                    })
+                } else {
+                    this.selectedDungeon = 0;
+                }
                 this.rolePetDungeonDisplay.updateDisplay({
-                    dungeonName: this.roomModalData.dungeonData[this.selectedDungeon].name,
+                    dungeonName: dungeonName,
                 })
             }
         }

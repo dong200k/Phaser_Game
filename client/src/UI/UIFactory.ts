@@ -77,7 +77,7 @@ export default class UIFactory {
         return buttonRex;
     }
 
-    public static createCircleImage(scene: Phaser.Scene, x: number, y: number, texture: string | Phaser.Textures.Texture, radius: number) {
+    public static createCircleImage(scene: Phaser.Scene, x: number, y: number, texture: string, radius: number) {
         let circleImage = new CircleImage(scene, x, y, texture, radius);
         scene.add.existing(circleImage);
         return circleImage;

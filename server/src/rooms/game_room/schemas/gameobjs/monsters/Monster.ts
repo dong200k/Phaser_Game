@@ -67,7 +67,7 @@ export default class Monster extends Entity {
         this.controller?.update(deltaT);
 
         // if(this.stat.hp != this.prevHp){
-        //     //console.log(`Monster took ${this.stat.hp - this.prevHp} damage`)
+        //     console.log(`Monster took ${this.stat.hp - this.prevHp} damage`)
         //     this.prevHp = this.stat.hp;
         // }
 

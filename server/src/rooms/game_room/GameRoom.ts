@@ -4,6 +4,11 @@ import GameManager from "./system/GameManager";
 import ReconciliationInfo from "./schemas/ReconciliationInfo";
 import globalEventEmitter from "../../util/EventUtil";
 
+export interface GameRoomOptions {
+    /** The name of the selected dungeon. */
+    dungeonSelected: string;
+}
+
 export default class GameRoom extends Room<State> {
     //autoDispose = false;
     
@@ -18,7 +23,7 @@ export default class GameRoom extends Room<State> {
     private timePerTick = 33.33; // 20 ticks per second.
     private timeTillNextTick!: number;
 
-    onCreate() {
+    onCreate(options: GameRoomOptions) {
         console.log(`Created: Game room ${this.roomId}`);
         this.timeTillNextTick = this.timePerTick;
 
@@ -33,12 +38,13 @@ export default class GameRoom extends Room<State> {
 
         //Setting up state and game manager.
         let state = new State();
-        this.gameManager = new GameManager(state);
+        this.gameManager = new GameManager(state, options);
         this.setState(state);
-        this.initListeners();
+        
         this.gameManager.preload()
             .then(()=>{
-                this.startGame()
+                this.startGame();
+                this.initListeners();
             })
         
     }
@@ -57,6 +63,10 @@ export default class GameRoom extends Room<State> {
             this.gameManager.getPlayerManager().processPlayerSpecial(client.sessionId, msg)
             //this.gameManager?.playerManager.processPlayerMovement(client.sessionId, msg)
             
+        })
+
+        this.onMessage("selectUpgrade", (client, msg) => {
+            this.gameManager.getPlayerManager().processPlayerSelectUpgrade(client.sessionId, msg);
         })
 
         // this.onMessage("input", (client, msg) => {

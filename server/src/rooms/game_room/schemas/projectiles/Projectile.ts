@@ -45,9 +45,12 @@ export default class Projectile extends GameObject implements Cloneable {
     /** Initial velocity of the projectile's body */
     @type(Velocity) initialVelocity: Velocity
     /** Entity that this projectile originates from */
-    @type(Entity) entity?: Entity
+    /*@type(Entity)*/ entity?: Entity
     /** Stats used for damage calculation */
-    @type(Stat) stat: Stat
+    /* ----  WARNING ----- Adding @type(Stat) causes issues with monster's stat not updating on client side. 
+    This is likly due to stat being a reference to the monster's stat causing some issues.
+    */
+    /*@type(Stat)*/ stat: Stat
     /** attack multiplier AD  */
     @type("number") attackMultiplier: number
     @type("number") magicMultiplier: number
@@ -57,6 +60,9 @@ export default class Projectile extends GameObject implements Cloneable {
     @type(StateMachine) projectileController: StateMachine<unknown>;
 
     @type("string") projectileType: string;
+
+    /** The entity that created this projectile. */
+    originEntityId?: string;
 
     /**
      * Creates a new projectile GameObject and a corresponding Matter.Body with the projectileConfig
@@ -79,6 +85,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.entity = projectileConfig.entity
         this.type = "Projectile"
         this.projectileType = "Ranged";
+        this.originEntityId = projectileConfig.originEntityId;
         this.attackMultiplier = projectileConfig.attackMultiplier
         this.magicMultiplier = projectileConfig.magicMultiplier
         this.createBody()
@@ -215,6 +222,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.attackMultiplier = projectileConfig.attackMultiplier
         this.magicMultiplier = projectileConfig.magicMultiplier
         this.type = "Projectile"
+        this.originEntityId = projectileConfig.originEntityId;
 
         // Make body collideable again
         let body = this.getBody()

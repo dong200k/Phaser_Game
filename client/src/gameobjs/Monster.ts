@@ -6,13 +6,16 @@ export default class Monster extends Entity
     /** Is the walking animation playing or not. */
     walking: boolean = false;
 
-    /** Is the monster active or not. */
+    // static count: number = 0;
 
     constructor(scene:Phaser.Scene, monsterState:any) {
         super(scene, monsterState.x, monsterState.y, monsterState.monsterName, monsterState);
         this.monsterState = monsterState;
         // Generate animations for this monster.
         scene.anims.createFromAseprite(monsterState.monsterName, undefined, this);
+
+        // Monster.count++;
+        // console.log(`Monster Constructed: ${Monster.count}`);
     }
 
     // /**Add listeners to connect to the server's player*/

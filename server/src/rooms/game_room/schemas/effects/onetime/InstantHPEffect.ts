@@ -10,16 +10,24 @@ export default class InstantHPEffect extends OneTimeEffect {
 
     @type("number") private hp: number = 10;
 
-    constructor(hp?: number) {
+    /** The entity that created this effect. (The entity that did the damage.) */
+    private originEntityId?: string; 
+
+    constructor(hp?: number, originEntityId?: string) {
         super();
         this.setName("InstantHealEffect");
         this.setDescription("Immediatly grants an entity some hp");
         if(hp !== undefined) this.hp = hp;
+        this.originEntityId = originEntityId;
     }
 
     public applyEffect(entity: Entity): boolean {
         // Basic hp inc. Should add checks for max hp.
         entity.stat.hp += this.hp;
+
+        if(this.originEntityId !== undefined && this.hp < 0) {
+            entity.setLastToDamage(this.originEntityId);
+        }
 
         // Clamp the entity's hp between 0 and maxHp.
         if(entity.stat.hp < 0) {

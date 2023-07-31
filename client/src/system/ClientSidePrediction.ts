@@ -409,7 +409,14 @@ export default class ClientSidePrediction {
                 .fillCircle(0, 0, 2)
                 .setVisible(this.debugGraphicsVisible)
                 .setDepth(100),
-        }            
+        }
+        
+        if(gameObject.gameObjectState.type === "Monster") {
+            gameObjectItem.body.collisionFilter = {
+                group: -1,
+                mask: 0,
+            }
+        }
 
         this.gameObjectItems.push(gameObjectItem);
         Matter.Composite.add(this.engine.world, gameObjectItem.body);

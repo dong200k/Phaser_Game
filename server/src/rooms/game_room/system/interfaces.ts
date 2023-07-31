@@ -86,6 +86,14 @@ export type weapon = {
     projectile: string
 }
 
+export interface IDungeon { 
+    id: string,
+    name: string,
+    tilesetName: string,
+    serverJsonLocation: string,
+    clientTilesetLocation: string
+}
+
 // export type dbUpgradeEffect = {
 //     effectLogicId: string,
 //     cooldown: number,
@@ -115,6 +123,7 @@ export type IProjectileConfig = {
     attackMultiplier: number,
     magicMultiplier: number,
     classType?: IClasses,
+    originEntityId?: string,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }

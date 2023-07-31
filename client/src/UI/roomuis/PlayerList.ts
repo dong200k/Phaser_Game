@@ -115,7 +115,7 @@ export default class PlayerList extends RexUIBase {
 
     private createPlayerListItem(data?: PlayerListItem) {
         let outerSizer = this.rexUI.add.sizer({
-            width: 300,
+            width: 310,
             orientation: "horizontal",
         }).setName("playerListItemSizer");
 

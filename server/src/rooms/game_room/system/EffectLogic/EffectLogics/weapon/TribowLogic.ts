@@ -22,7 +22,7 @@ export default class TribowLogic extends EffectLogic{
         let playerY = playerBody.position.y
         let collisionCategory: CategoryType =  "PLAYER_PROJECTILE"
         let poolType = "Bow"
-        let attackMultiplier = 10
+        let attackMultiplier = 1
 
         // direction of player to player mouse position
         let x = mouseX - playerX
@@ -46,10 +46,11 @@ export default class TribowLogic extends EffectLogic{
             poolType: poolType,
             attackMultiplier: attackMultiplier,
             magicMultiplier: 0,
+            originEntityId: playerState.getId(),
         })
 
         // spawn projectile with direction rotated 30 degrees from player to player mouse
-        let directionRotated30 = MathUtil.getRotatedSpeed(x, y, projectileSpeed, 30)
+        let directionRotated30 = MathUtil.getRotatedSpeed(x, y, projectileSpeed, 10)
         gameManager.getProjectileManager().spawnProjectile({
             sprite: projectileName,
             stat: playerState.stat,
@@ -64,10 +65,11 @@ export default class TribowLogic extends EffectLogic{
             poolType: poolType,
             attackMultiplier: attackMultiplier,
             magicMultiplier: 0,
+            originEntityId: playerState.getId(),
         })
 
         // spawn projectile with direction rotated -30 degrees from player to player mouse
-        let directionRotatedMinus30 = MathUtil.getRotatedSpeed(x, y, projectileSpeed, -30)
+        let directionRotatedMinus30 = MathUtil.getRotatedSpeed(x, y, projectileSpeed, -10)
         gameManager.getProjectileManager().spawnProjectile({
             sprite: projectileName,
             stat: playerState.stat,
@@ -82,6 +84,7 @@ export default class TribowLogic extends EffectLogic{
             poolType: poolType,
             attackMultiplier: attackMultiplier,
             magicMultiplier: 0,
+            originEntityId: playerState.getId(),
         })
     }
 }

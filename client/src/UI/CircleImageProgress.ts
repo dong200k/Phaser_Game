@@ -7,7 +7,7 @@ import TextBoxPhaser from "./TextBoxPhaser";
 
 
 interface CircleImageProgressConfig extends OverlapSizer.IConfig {
-    texture?: string | Phaser.Textures.Texture,
+    texture?: string,
     radius?: number,
     createText?: boolean;
 }

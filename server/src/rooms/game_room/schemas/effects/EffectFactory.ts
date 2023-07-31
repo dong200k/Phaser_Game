@@ -10,6 +10,7 @@ import TriggerUpgradeEffect from "./trigger/TriggerUpgradeEffect";
 import UpgradeEffect from "../gameobjs/UpgradeEffect";
 import ContinuousUpgradeEffect from "./continuous/ContinuousUpgradeEffect";
 import CollisionImmuneEffect from "./temp/CollisionImmuneEffect";
+import Entity from "../gameobjs/Entity";
 
 
 export default class EffectFactory {
@@ -27,11 +28,12 @@ export default class EffectFactory {
     /**
      * Creates an effect that will provide a one time damage effect.
      * @param damageAmount The amount of hp to damage (non negative).
+     * @param originEntityId The id of the entity that created this damage/ did the damage.
      * @returns An InstantHPEffect.
      */
-    public static createDamageEffect(damageAmount: number): InstantHPEffect {
+    public static createDamageEffect(damageAmount: number, originEntityId?: string): InstantHPEffect {
         if(damageAmount < 0) damageAmount = 0;
-        return new InstantHPEffect(-damageAmount);
+        return new InstantHPEffect(-damageAmount, originEntityId);
     }
 
     /**

@@ -1,5 +1,5 @@
 import FileUtil from "../../../../util/FileUtil"
-import { skillTree, upgrade, weapon } from "../interfaces"
+import { IDungeon, skillTree, upgrade, weapon } from "../interfaces"
 
 export default class DatabaseManager{
 
@@ -10,6 +10,9 @@ export default class DatabaseManager{
     private weapons: Map<string, weapon> = new Map()
     private skillTrees: Map<string, skillTree> = new Map()
 
+    private dungeons: Map<string, IDungeon> = new Map();
+
+    private constructor() {};
 
     /**
      * Loads weapon upgrades, artifact upgrades, and weapons from server/assets/db.json
@@ -36,6 +39,13 @@ export default class DatabaseManager{
             for (let weapon of db.weapons) {
                 this.weapons.set(weapon.id, weapon)
             }
+
+            //Load dungeons
+            let dungeondb = await FileUtil.readJSONAsync("assets/tilemaps/dungeon.json");
+            for(let dungeon of dungeondb) {
+                this.dungeons.set(dungeon.id, dungeon);
+            }
+
         } catch (error: any) {
             console.log(error.message)
         }
@@ -98,6 +108,38 @@ export default class DatabaseManager{
 
         if(weaponUpgradeTree) return weaponUpgradeTree
         else return artifactUpgradeTree
+    }
+
+    /**
+     * Returns the dungon data associated with the given id.
+     * @param id The dungeon id.
+     */
+    public getDungeon(id: string) {
+        let dungeon = this.dungeons.get(id);
+        if(dungeon === undefined) throw new Error(`ERROR: Cannot find dungeon with id: ${id}`);
+        return dungeon;
+    }
+
+    public getDungeonByName(name: string): IDungeon {
+        let dungeon: IDungeon | undefined = undefined;
+        this.dungeons.forEach((data) => {
+            if(data.name === name) {
+                dungeon = data;
+            }
+        })
+        if(dungeon === undefined) throw new Error(`ERROR: Cannot find dungeon with name: ${name}`);
+        return dungeon;
+    }
+
+    /**
+     * Returns a list of all the dungeons.
+     */
+    public getAllDungeon() {
+        let data: IDungeon[] = [];
+        this.dungeons.forEach((dungeon) => {
+            data.push(dungeon);
+        })
+        return data;
     }
 
     static getManager() {

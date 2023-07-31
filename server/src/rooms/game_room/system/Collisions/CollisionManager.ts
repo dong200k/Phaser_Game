@@ -94,6 +94,9 @@ export default class CollisionManager{
      * @param projectile 
      */
     public resolveProjectileCollision(projectile: Projectile, entity: Entity, bodyA: Matter.Body, bodyB: Matter.Body){
+        // Do nothing if the projectile is not active. This is to prevent a projectile from hitting more than one monster.
+        if(!projectile.active) return;
+
         let trueAttackDamage = getTrueAttackDamage(projectile.stat, entity.stat, projectile.attackMultiplier)
         let trueMagicDamage = getTrueMagicDamage(projectile.stat, entity.stat, projectile.magicMultiplier)
 
@@ -104,10 +107,10 @@ export default class CollisionManager{
         // console.log(`Collision detected: attack:${trueAttackDamage}, magic:${trueMagicDamage}, player armor: ${entity.stat.armor}`);
 
         // Entity colliding with projectile takes attack and magic damage
-        let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage)
+        let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage, projectile.originEntityId)
         EffectManager.addEffectsTo(entity, damageEffect)
 
-        damageEffect = EffectFactory.createDamageEffect(trueMagicDamage)
+        damageEffect = EffectFactory.createDamageEffect(trueMagicDamage, projectile.originEntityId)
         EffectManager.addEffectsTo(entity, damageEffect)
 
         // Entity shooting projectile heals based on their lifesteal

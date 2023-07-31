@@ -3,6 +3,7 @@ import MonsterController from "./MonsterController";
 import MathUtil from "../../../../../../util/MathUtil";
 import { getFinalAttackCooldown, getFinalAttackRange } from "../../../Formulas/formulas";
 import { GameEvents, IProjectileConfig } from "../../../interfaces";
+import Matter from "matter-js";
 
 /**
  * The Attack state is entered when the monster is in attackRange of its aggroTarget.
@@ -29,6 +30,8 @@ export default class Attack extends StateNode {
         this.defaultAttackCooldown = getFinalAttackCooldown(monster.stat, 1);
         this.attackCooldown = this.defaultAttackCooldown;
         this.attackTriggered = false;
+        // Stop movement
+        Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
     }
 
     public onExit(): void {

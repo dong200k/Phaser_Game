@@ -36,8 +36,22 @@ export default class MenuScene extends Phaser.Scene {
 
         // this.test();
         // this.test2();
-        
+        // this.sampleSound = this.sound.add("button_click1");
+        // SceneManager.getSceneManager().showLoadingScene();
+        // this.scene.pause(SceneKey.MenuScene);
     }
+
+    // count = 2000;
+    // // sampleSound!: Phaser.Sound.NoAudioSound | Phaser.Sound.HTML5AudioSound | Phaser.Sound.WebAudioSound;
+
+    // update(time: number, delta: number): void {
+    //     this.count-= delta;
+    //     if(this.count <= 0) {
+    //         SceneManager.getSceneManager().hideLoadingScene();
+    //         this.scene.resume(SceneKey.MenuScene);
+    //     }
+            
+    // }
 
     test() {
         let mainLayout = new Layout(this, {x:this.game.scale.width/2, y:this.game.scale.height/2});
