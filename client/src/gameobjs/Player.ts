@@ -5,11 +5,13 @@ export default class Player extends Entity
 {
     private playerState: PlayerState;
     running: boolean;
+    serverLevel: number;
 
     constructor(scene:Phaser.Scene,playerState:PlayerState) {
         super(scene, playerState.x, playerState.y, playerState.role, playerState);
         this.playerState = playerState;
         this.running = false;
+        this.serverLevel = 1;
         // Generate animations for this player.
         scene.anims.createFromAseprite(playerState.role, undefined, this);
     }

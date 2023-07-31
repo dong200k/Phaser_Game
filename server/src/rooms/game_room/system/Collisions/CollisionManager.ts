@@ -94,6 +94,9 @@ export default class CollisionManager{
      * @param projectile 
      */
     public resolveProjectileCollision(projectile: Projectile, entity: Entity, bodyA: Matter.Body, bodyB: Matter.Body){
+        // Do nothing if the projectile is not active. This is to prevent a projectile from hitting more than one monster.
+        if(!projectile.active) return;
+
         let trueAttackDamage = getTrueAttackDamage(projectile.stat, entity.stat, projectile.attackMultiplier)
         let trueMagicDamage = getTrueMagicDamage(projectile.stat, entity.stat, projectile.magicMultiplier)
 

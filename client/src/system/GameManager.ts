@@ -380,6 +380,11 @@ export default class GameManager {
                     maxXpValue: playerState.maxXp,
                     level: playerState.level,
                 })
+                // Play the level up sound effect.
+                if(gameObject.serverLevel < playerState.level) {
+                    gameObject.serverLevel = playerState.level;
+                    SoundManager.getManager().play("level_up");
+                }
             }
             // Updates the Peer Info Display. This display popup when holding SHIFT.
             EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
@@ -456,7 +461,6 @@ export default class GameManager {
                     maxHpValue: playerState.stat.maxHp,
                     mpValue: playerState.stat.mana,
                     maxMpValue: playerState.stat.maxMana,
-                    level: playerState.stat.level,
                 })
             }
             // Updates the Peer Info Display. This display popup when holding SHIFT.
@@ -465,7 +469,6 @@ export default class GameManager {
                 maxHpValue: playerState.stat.maxHp,
                 mpValue: playerState.stat.mana,
                 maxMpValue: playerState.stat.maxMana,
-                level: playerState.stat.level,
             })
         }
     }
