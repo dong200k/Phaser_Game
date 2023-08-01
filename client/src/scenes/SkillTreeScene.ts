@@ -5,10 +5,15 @@ import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import UIFactory from "../UI/UIFactory";
 import { RoundRectangle, ScrollablePanel, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 import ConfirmModal from "../UI/modals/ConfirmModal";
+import Node from "../../../server/src/rooms/game_room/schemas/Trees/Node/Node";
+import SkillData from "../../../server/src/rooms/game_room/schemas/Trees/Node/Data/SkillData";
+import ClientFirebaseConnection from "../firebase/ClientFirebaseConnection";
+import PlayerService from "../services/PlayerService";
 
 interface SkillItemLevel {
     value: string;
     cost: number;
+    id?: string,
 }
 
 interface SkillItem {
@@ -30,28 +35,89 @@ export default class SkillTreeScene extends Phaser.Scene {
 
     constructor() {
         super(SceneKey.SkillTreeScene);
-        this.skillTreeData = {
-            skillItems: [
-                {
-                    name: "Attack speed",
-                    currentLevel: 3,
-                    levels: [{cost: 100, value: "10%"}, {cost: 200, value: "20%"}, {cost: 500, value: "30%"}]
-                },
-                {
-                    name: "Attack",
-                    currentLevel: 0,
-                    levels: [{cost: 100, value: "5"}, {cost: 200, value: "10"}, {cost: 300, value: "15"}, {cost: 500, value: "20"}, {cost: 1000, value: "30"}, {cost: 3000, value: "40"}]
-                },
-                {
-                    name: "Movement speed",
-                    currentLevel: 3,
-                    levels: [{cost: 500, value: "5%"}, {cost: 1000, value: "10%"}, {cost: 5000, value: "15%"}, {cost: 10000, value: "20%"}]
-                },
-            ]
+        let playerData = ClientFirebaseConnection.getConnection().playerData
+        if(playerData) {
+            this.skillTreeData = this.convertSkillTree(playerData.skillTree.root)
+        }
+        else {
+            this.skillTreeData = {
+                skillItems : [
+                    {
+                        name: "Attack speed",
+                        currentLevel: 3,
+                        levels: [{cost: 100, value: "10%"}, {cost: 200, value: "20%"}, {cost: 500, value: "30%"}]
+                    },
+                    {
+                        name: "Attack",
+                        currentLevel: 0,
+                        levels: [{cost: 100, value: "5"}, {cost: 200, value: "10"}, {cost: 300, value: "15"}, {cost: 500, value: "20"}, {cost: 1000, value: "30"}, {cost: 3000, value: "40"}]
+                    },
+                    {
+                        name: "Movement speed",
+                        currentLevel: 3,
+                        levels: [{cost: 500, value: "5%"}, {cost: 1000, value: "10%"}, {cost: 5000, value: "15%"}, {cost: 10000, value: "20%"}]
+                    },
+                ]
+            }
         }
     }
 
+    /**
+     * Converts skill tree to SkillTreeData format. If a skill node has multiple non zero stats shows only the first one.
+     */
+    convertSkillTree(root: Node<SkillData>){
+        let skillItems: SkillItem[] = []
+
+        // Builds one skill item
+        function dfs(node: Node<SkillData>, skillItem: SkillItem){
+            let nonZeroStat = 0
+            Object.entries(node.data.stat).forEach(([key, val])=>{
+                if(val > 0){
+                    nonZeroStat = val
+                }  
+            })
+
+            let skillItemLevel = {
+                id: node.id,
+                cost: node.data.coinCost,
+                value: String(nonZeroStat)
+            }
+            skillItem.levels.push(skillItemLevel)
+
+            if(node.data.status === "selected") skillItem.currentLevel += 1
+
+            node.children.forEach(child=>{
+                dfs(child, skillItem)
+            })
+        }
+
+        // SkillTree has a root node and many branches each of which is a SkillItem
+        root.children.forEach((child)=>{
+            let skillItem = {
+                currentLevel: 0,
+                levels: [],
+                name: child.data.name
+            }
+
+            dfs(child, skillItem)
+            skillItems.push(skillItem)
+        })
+
+        // console.log("converted skill tree", skillItems)
+        return {skillItems}
+    }
+
     create() {
+        // Listen for player data changes
+        let initPlayerData = (playerData: any)=>{
+            if(playerData) this.skillTreeData = this.convertSkillTree(ClientFirebaseConnection.getConnection().playerData.skillTree.root)
+            // this.createOrUpdatePanel()
+        }
+        ClientFirebaseConnection.getConnection().addPlayerDataListener("SkillTree", initPlayerData)  
+
+        // Init data in case listener was added after data was loaded
+        initPlayerData(ClientFirebaseConnection.getConnection().playerData)
+
 
         // ------- Scrollable Screen --------
         let scrollablePanel = this.rexUI.add.scrollablePanel({
@@ -91,13 +157,23 @@ export default class SkillTreeScene extends Phaser.Scene {
 
         this.skillTreeData.skillItems.forEach((item) => {
             if(item.name === itemName && item.levels.length > item.currentLevel) {
-                console.log(`Player spent ${item.levels[item.currentLevel].cost} coins to level up ${itemName}`);
-                item.currentLevel++;
+                let idToken = ClientFirebaseConnection.getConnection().idToken
+                if(idToken) {
+                    let upgrades = [item.levels[item.currentLevel].id as string] // upgrade ids
+                    
+                    PlayerService.updatePlayerSkillTree(upgrades, idToken)
+                        .then(()=>{
+                            console.log(`Player spent ${item.levels[item.currentLevel].cost} coins to level up ${itemName}`);
+                            item.currentLevel++;
+                            this.createOrUpdatePanel();
+                            if(this.scrollablePanel) this.scrollablePanel.layout();
+                        })
+                        .catch(e=>{
+                            alert(e.message)
+                        })
+                }
             }
         })
-
-        this.createOrUpdatePanel();
-        if(this.scrollablePanel) this.scrollablePanel.layout();
     }
 
     private createOrUpdatePanel() {

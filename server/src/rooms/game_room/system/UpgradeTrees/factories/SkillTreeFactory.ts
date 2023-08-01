@@ -11,12 +11,37 @@ export default class SkillTreeFactory{
      * @returns 
      */
     private static createNode(copy: Node<SkillData>){
-        let {name, description, stat} = copy.data
+        let {name, description, stat, coinCost, status} = copy.data
         stat = new Stat(stat)
-        let skillData = new SkillData(stat, name, description)
-        let node = new Node<SkillData>(skillData)
+        let skillData = new SkillData(stat, name, description, coinCost, status)
+        let node = new Node<SkillData>(skillData, copy.id)
 
         return node
+    }
+
+    /**
+     * Converts a player's firebase skilltree to Node<SkillData> format
+     * @param skillTree a player's skill tree from firebase
+     * @returns 
+     */
+    static convertFirebaseSkillTree(skillTree: any){
+        // Takes in a Node class and a db.json nodeToCopy.
+        // creates class Nodes from all the children of nodeToCopy(deep copy including children's children etc.) and add to the Node Class
+        function dfs(node: Node<SkillData>, nodeToCopy: Node<SkillData>){
+            nodeToCopy.children.forEach((childToCopy, i)=>{
+                // Create Node class from children of nodeToCopy
+                let child = SkillTreeFactory.createNode(childToCopy)
+                node.children.push(child)
+
+                // Copy the childToCopy's children/descendants also
+                dfs(child, childToCopy)
+            })
+        }
+
+        let root = SkillTreeFactory.createNode(skillTree.root)
+        dfs(root, skillTree.root)
+
+        return root
     }
 
     /**

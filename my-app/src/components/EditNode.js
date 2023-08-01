@@ -97,9 +97,14 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
             form.data.selectionTime = Number(form.data.selectionTime)
         }
 
-        form.data.doesStack = form.data.doesStack === 1? true:false
-        form.data.collisionGroup = Number(form.data.collisionGroup)
-        form.data.coinCost = Number(form.data.coinCost)
+        if(type === "upgrade" ){
+            form.data.doesStack = form.data.doesStack === 1? true:false
+            if(form.data.collisionGroup) form.data.collisionGroup = Number(form.data.collisionGroup)
+        }
+
+        if(type === "skill"){
+            form.data.coinCost = Number(form.data.coinCost)
+        }
 
         let success = updateUpgrade(form)
 

@@ -14,7 +14,7 @@ export default class CollisionManager{
     private collisionRules: ICollisionRule[] = [
         // Projectile Collisions
         {typeA: "PLAYER_PROJECTILE", typeB: "MONSTER", resolve: this.resolveProjectileCollision},
-        {typeA: "MONSTER_PROJECTILE", typeB: "PLAYER_PROJECTILE", resolve: this.resolveProjectileCollision},
+        {typeA: "MONSTER_PROJECTILE", typeB: "PLAYER", resolve: this.resolveProjectileCollision},
         {typeA: "DAMAGE_ALL_PROJECTILE", typeB: "PLAYER", resolve: this.resolveProjectileCollision},
         {typeA: "DAMAGE_ALL_PROJECTILE", typeB: "MONSTER", resolve: this.resolveProjectileCollision},
 

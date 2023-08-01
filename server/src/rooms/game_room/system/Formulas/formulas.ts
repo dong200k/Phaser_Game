@@ -95,9 +95,10 @@ export const getFinalAttackCooldown = function({attackSpeed, attackSpeedPercent}
 
 /**
  * 
- * @param stat 
+ * @param stat
+ * @param baseRange base range before applying stat
  * @returns attack range after accounting stat
  */
-export const getFinalAttackRange = function({attackRangePercent, attackRange}: Stat){
-    return (1 + attackRangePercent) * attackRange;
+export const getFinalAttackRange = function({attackRangePercent, attackRange}: Stat, baseRange: number){
+    return (1 + attackRangePercent) * attackRange * baseRange;
 }

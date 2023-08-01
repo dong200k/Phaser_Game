@@ -3,6 +3,7 @@ import WeaponUpgradeTree from "../../../../schemas/Trees/WeaponUpgradeTree";
 import Player from "../../../../schemas/gameobjs/Player";
 import { CategoryType } from "../../../Collisions/Category";
 import DatabaseManager from "../../../Database/DatabaseManager";
+import { getFinalAttackRange } from "../../../Formulas/formulas";
 import GameManager from "../../../GameManager";
 import EffectLogic from "../../EffectLogic";
 
@@ -12,8 +13,9 @@ export default class BowLogic extends EffectLogic{
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Matter.Body, mouseData: {mouseX: number, mouseY: number}){
         // Grab Mouse Data and Player weapon
         let {mouseX, mouseY} = mouseData
+        let baseRange = 300
         
-        let range = 300
+        let range = getFinalAttackRange(playerState.stat, baseRange)
         let activeTime = 3000
         let weaponId = playerState.weaponUpgradeTree.weaponId
         let playerX = playerBody.position.x

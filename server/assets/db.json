@@ -4567,10 +4567,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "40ec83ae-2177-458b-8d73-0d8bd7660811",
+                          "id": "f9595204-0dfe-4e4b-ae04-ae00cb5c296f",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -4604,10 +4606,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "a7512c37-8f39-4e47-ab5a-58038ad3d1a7",
+                      "id": "3d2d3e7e-3bfa-4f93-8eef-2e4c8cf4ff37",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4641,10 +4645,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "fbf10b05-ac12-474a-af32-d653862d0a54",
+                  "id": "edc45a0d-1a01-4b76-b782-640db5aad38b",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4680,10 +4686,10 @@
               },
               "status": "none",
               "selectionTime": 0,
-              "coinCost": 0
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "7add0584-c434-4d1a-95d3-0df72383c1d7",
+              "id": "69096bb6-08c5-47c1-b8a8-fa81e89bfe92",
               "depth": 1,
               "collapsed": false
             }
@@ -4728,10 +4734,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "121b75ed-a4b7-4dd9-af00-af098dcb642f",
+                          "id": "f0e3643e-32d8-4b89-88cf-27146f1440ad",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -4765,10 +4773,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "5d385630-4e0c-444c-a9fb-310a7dd04ed4",
+                      "id": "87e39fe4-a74e-4eb3-a864-dc3ee460511f",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4802,10 +4812,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "ba92896b-e34e-4a72-9514-c1e6b1808aae",
+                  "id": "d322e9ba-bb38-4008-ba2f-bf5279374b4f",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4841,10 +4853,10 @@
               },
               "status": "none",
               "selectionTime": 0,
-              "coinCost": 0
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "bf900111-f77f-4cad-af82-6ea7499fbbbd",
+              "id": "72924e7e-94f8-4ffb-bb61-9f77ce02311b",
               "depth": 1,
               "collapsed": false
             }
@@ -4889,10 +4901,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "d0f3a51b-1a10-4558-8d54-47b52d3fb1c4",
+                          "id": "c4cb82f6-7804-4618-a816-7c3621e5cae6",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -4926,10 +4940,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "6fadcead-6a51-40f9-9ff8-6bcbf0ad8656",
+                      "id": "4ae2b42d-82da-42bb-bb73-37b84c7f90c0",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4963,10 +4979,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "bdac579f-5b4c-454b-ab40-c84f4594b9b0",
+                  "id": "dcece552-f87c-46e6-ae00-0ca0ddc4af9b",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5002,10 +5020,10 @@
               },
               "status": "none",
               "selectionTime": 0,
-              "coinCost": 0
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "24245655-3277-467d-b9df-bde54ae9e0e4",
+              "id": "f9648cf8-a20d-4b34-991e-ec1dd482ab5c",
               "depth": 1,
               "collapsed": false
             }
@@ -5052,11 +5070,11 @@
                           },
                           "status": "none",
                           "selectionTime": 0,
-                          "coinCost": 0,
+                          "coinCost": 80,
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "70e339c2-a8bb-4eb1-824a-c2373180adc2",
+                          "id": "c21a63e5-4766-4b3d-b222-fe029c2b6107",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5090,10 +5108,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "7f59f035-02ca-4efe-976d-637012ed03e7",
+                      "id": "9302c456-40dd-4b41-8eac-74d0985adac7",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5127,10 +5147,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "82344ecd-6512-45ef-9961-30a490fb6e75",
+                  "id": "053097dd-69b5-4529-b678-914c735910bd",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5164,10 +5186,12 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "81444ed5-81e5-459b-8bb7-d6c9588354dd",
+              "id": "1280e580-da74-4825-b8e5-f73a4bc997a8",
               "depth": 1,
               "collapsed": false
             }
@@ -5214,11 +5238,11 @@
                           },
                           "status": "none",
                           "selectionTime": 0,
-                          "coinCost": 0,
+                          "coinCost": 80,
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "4cb2b1b6-26f9-4d43-93a0-4c40390a563e",
+                          "id": "6fce483d-057a-49dd-b8ea-95b14281f0a1",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5252,10 +5276,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "dda7f084-ec5c-4d88-a94c-293c3d9fedc1",
+                      "id": "4646cc99-acd9-4ac6-a351-7ec8035f3a2b",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5289,10 +5315,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "1d0ff5a6-2e66-45f6-9d1e-23e65bf029ac",
+                  "id": "5527167a-9f8b-4e47-97f1-a9164bf6e17a",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5326,10 +5354,12 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "2af415b9-e5d2-4743-a319-1d5062ae2f52",
+              "id": "aac32ebd-8914-4ed3-af7d-80026017316c",
               "depth": 1,
               "collapsed": false
             }
@@ -5374,10 +5404,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "903abc8e-6cdb-497d-bb31-20d5630efe8c",
+                          "id": "f7174ce6-b522-49f1-9b61-6b5e544d1458",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5411,10 +5443,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "744607c1-cfe5-49a1-a590-e522874dfd1f",
+                      "id": "070a9b79-d754-424c-a4ba-1a8de371518d",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5448,10 +5482,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "15254c8d-c967-44d3-8413-bab043e3c2cd",
+                  "id": "b260f157-e312-43db-9e73-5dc49cae536a",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5485,10 +5521,12 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "f83bddb1-5ed7-4c17-87d6-43fd1d0a3083",
+              "id": "dedd9d25-97c7-428a-b8e1-f26da8e8df11",
               "depth": 1,
               "collapsed": false
             }
@@ -5533,10 +5571,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "991bdcc5-38f3-407f-9bd9-e0b7d1102177",
+                          "id": "d9107582-c9c3-4ff0-bae9-c13accc3eb0d",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5570,10 +5610,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "e8ac9fdd-3322-4520-ba05-1847a1b514c3",
+                      "id": "5679daaa-3c62-47bb-aa15-05a1e732ee8c",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5607,10 +5649,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "54d71fb1-3aae-4d89-83a2-8f3f925aeeb0",
+                  "id": "cda7557c-c354-4334-831f-d6581cbfbbce",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5644,10 +5688,12 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "f4ab9a35-0c27-4994-b54f-1c2582aa1b2a",
+              "id": "428c6cd6-48f4-4547-a4e4-9674fca29638",
               "depth": 1,
               "collapsed": false
             }
@@ -5692,10 +5738,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "2662705c-d33a-4ad4-a3f9-b1c1038dfa70",
+                          "id": "9761c7ad-99ab-471a-8e0f-6062ea93e1be",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5729,10 +5777,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "b3e90fc5-f8d3-4d33-9a31-be5305bf3e55",
+                      "id": "7ac0ad8f-b259-4046-ae51-52a762939cd6",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5766,10 +5816,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "0c378aeb-bea5-4cf3-b2f5-cbbea845f7ac",
+                  "id": "cd1e020b-d2ca-4967-8538-2e3aa91faa45",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5803,10 +5855,12 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "d9bd2474-d751-428d-aa02-57c15ce4bf2b",
+              "id": "02afb89c-e4b6-423b-aee4-e1f5213a8e10",
               "depth": 1,
               "collapsed": false
             }
@@ -5851,10 +5905,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "b941d9eb-9c02-47e5-9a2f-fd1dd4c14c71",
+                          "id": "469be4af-9c97-451c-8a63-d0d342c887c6",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5888,10 +5944,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "ddcd35e7-a1e5-4180-bdd9-bdfabb9eea11",
+                      "id": "e1d62953-8b54-4a1a-bfc4-0bcbd67e9053",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5925,10 +5983,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "abf832b3-cb04-48d8-a28b-33785814344f",
+                  "id": "53532d45-d87c-4906-91b3-ae375d0ee744",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5962,10 +6022,12 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "40a5b84e-fab8-4eb0-bec2-2d0b48bea320",
+              "id": "441f3a60-54d6-4a9b-971e-75de247b1b55",
               "depth": 1,
               "collapsed": false
             }
@@ -5975,14 +6037,14 @@
           "name": "Adventurer's Stat",
           "description": "Default stats that all adventurer's have.",
           "stat": {
-            "maxHp": 100,
-            "maxMana": 100,
+            "maxHp": 0,
+            "maxMana": 0,
             "hp": 0,
             "mana": 0,
             "armor": 0,
             "magicResist": 0,
             "damagePercent": 0,
-            "attack": 10,
+            "attack": 0,
             "attackPercent": 0,
             "armorPen": 0,
             "magicAttack": 0,
@@ -5992,19 +6054,21 @@
             "critDamage": 0,
             "attackRange": 0,
             "attackRangePercent": 0,
-            "attackSpeed": 1,
+            "attackSpeed": 0,
             "attackSpeedPercent": 0,
-            "speed": 1,
+            "speed": 0,
             "lifeSteal": 0,
             "lifeStealPercent": 0,
-            "level": 1
+            "level": 0
           },
-          "status": "none",
+          "status": "selected",
           "selectionTime": 0,
-          "coinCost": 0
+          "coinCost": 0,
+          "doesStack": false,
+          "collisionGroup": null
         },
         "__rd3t": {
-          "id": "28383593-14bf-400b-bc41-e233a2fb356c",
+          "id": "3973e515-ba25-4bcd-acbc-9c80f92e6c13",
           "depth": 0,
           "collapsed": false
         }

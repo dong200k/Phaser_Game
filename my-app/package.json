@@ -21,7 +21,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "move-db": "copy db.json ..\\server\\assets"
+    "move-db": "copy db.json ..\\server\\assets && copy db.json ..\\apis\\assets"
   },
   "eslintConfig": {
     "extends": [

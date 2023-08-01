@@ -7,6 +7,7 @@ import TextBox from "../UI/TextBox";
 import DataManager from "../system/DataManager";
 import SceneManager from "../system/SceneManager";
 import EventManager from "../system/EventManager";
+import ClientFirebaseConnection from "../firebase/ClientFirebaseConnection";
 
 interface NavbarData {
     activeOn: "home" | "play" | "shop" | "skill tree" | "role";
@@ -147,7 +148,12 @@ export default class NavbarScene extends Phaser.Scene {
             originY: 0.5,
         });
         
-        let logoutButton = new Button(this, "Logout", 0, 0, "small", () => console.log("Logout button onclick"));
+        let logoutButton = new Button(this, "Logout", 0, 0, "small", () => {
+            ClientFirebaseConnection.getConnection().logout()
+                .then(()=>{
+                    SceneManager.getSceneManager().switchToScene(SceneKey.LoginScene)
+                })
+        });
         this.userNameText = new TextBox(this, `${this.navbarData.username}`, 'l4');
         let logoutLayout = new Layout(this, {
             gap: 5,
@@ -165,5 +171,23 @@ export default class NavbarScene extends Phaser.Scene {
 
         navRightSideLayout.add([this.statLayout, logoutLayout]);
         this.add.existing(navRightSideLayout);
+
+        // Listen for player data changes
+        let initPlayerData = (playerData: any)=>{
+            let navbarData: NavbarData = {
+                activeOn: "home",
+                username: playerData?.username,
+                level: playerData?.level,
+                coins: playerData?.coins,
+                gems: playerData?.gems,
+            }
+    
+            this.updateNavbar(navbarData)
+        }
+        ClientFirebaseConnection.getConnection().addPlayerDataListener("navbar", initPlayerData)  
+
+        // init player data
+        initPlayerData(ClientFirebaseConnection.getConnection().playerData)
+
     }
 }

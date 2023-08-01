@@ -25,7 +25,7 @@ export default class WeaponUpgradeFactory{
             upgradeEffect = undefined
         }
         let weaponData = new WeaponData(weaponId, stat, upgradeEffect, name, description, status, selectionTime)
-        let node = new Node<WeaponData>(weaponData)
+        let node = new Node<WeaponData>(weaponData, copy.id)
 
         return node
     }

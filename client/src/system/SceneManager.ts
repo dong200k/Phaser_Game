@@ -176,4 +176,8 @@ export default class SceneManager {
             setTimeout(() => {this.scene?.scene.get(this.currentSceneKey).input.setPollOnMove()}, 100);
         }
     }
+
+    public getCurrentScene(){
+        return this.currentSceneKey
+    }
 }

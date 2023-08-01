@@ -11,6 +11,7 @@ import SkillTreeFactory from '../UpgradeTrees/factories/SkillTreeFactory';
 import SkillTreeManager from './SkillTreeManager';
 import ReconciliationInfo from '../../schemas/ReconciliationInfo';
 import WeaponManager from './WeaponManager';
+import PlayerService from '../../../../services/PlayerService';
 
 interface InputPlayload {
     payload: number[];
@@ -143,7 +144,7 @@ export default class PlayerManager{
      * @param playerId identifier for the player
      * @param player playerState to init
      */
-    private initPlayerData(playerId: string, player: Player){
+    private async initPlayerData(playerId: string, player: Player, IdToken: string){
         //*** TODO *** initialize weapon upgrade tree based on role
         //Set weaponupgrade tree for player with a test weapon
         let root = WeaponUpgradeFactory.createTribowUpgrade()
@@ -158,11 +159,12 @@ export default class PlayerManager{
         this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
 
         // Equip skill tree
-        let maxedSkillTree = SkillTreeFactory.createUpgradedAdventurerSkill()
-        SkillTreeManager.equipSkillTree(player, maxedSkillTree)
+        let playerData = await PlayerService.getPlayerData(IdToken)
+        let skillTree = SkillTreeFactory.convertFirebaseSkillTree(playerData.skillTree)
+        SkillTreeManager.equipSkillTree(player, skillTree)
     }
 
-    public async createPlayer(sessionId: string, isOwner: boolean, gameManager?: GameManager) {
+    public async createPlayer(sessionId: string, isOwner: boolean, IdToken: string, gameManager?: GameManager) {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
         //TODO: get player data from the database
@@ -175,7 +177,7 @@ export default class PlayerManager{
             newPlayer.y = playerSpawnPoint.y + (Math.random() * 20 - 10);
         } 
 
-        this.initPlayerData("", newPlayer)
+        await this.initPlayerData("", newPlayer, IdToken)
 
         let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, 49, 44, {
             isStatic: false,

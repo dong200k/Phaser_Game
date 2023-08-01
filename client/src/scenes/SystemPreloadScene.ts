@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { SceneKey, StartScene } from "../config";
 import SceneManager from "../system/SceneManager";
+import ClientFirebaseConnection from "../firebase/ClientFirebaseConnection";
 
 /**
  * The purpose of this Scene is to preload important managers such as the SceneManager. 
@@ -25,7 +26,14 @@ export default class SystemPreloadScene extends Phaser.Scene {
         let sceneManager = SceneManager.getSceneManager();
         sceneManager.setScene(this);
         sceneManager.switchToScene("SystemPreloadScene"); // Lets the SceneManager know the current scene.
-        sceneManager.switchToScene(StartScene);
+
+        let idToken = ClientFirebaseConnection.getConnection().idToken
+        if(idToken){
+            // User already logged in
+            sceneManager.switchToScene(StartScene);
+        } else{
+            sceneManager.switchToScene(SceneKey.LoginScene)
+        }
     }
 
 }
