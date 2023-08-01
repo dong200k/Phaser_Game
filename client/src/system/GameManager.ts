@@ -20,6 +20,7 @@ import GameOverModal from "../UI/modals/GameOverModal";
 import { PhaserAudio } from "../interfaces";
 import SettingsManager from "./SettingsManager";
 import SoundManager from "./SoundManager";
+import FloatingText from "../gameobjs/FloatingText";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -48,6 +49,8 @@ export default class GameManager {
     // ------ Audio -------
     private soundManager: SoundManager;
 
+    private floatingTexts: FloatingText[] = [];
+
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
@@ -73,6 +76,7 @@ export default class GameManager {
         this.interpolateGameObjects();
         this.syncGameObjectVisibility();
         this.syncGameObjectActive();
+        this.updateFloatingTexts();
     }
 
     /**
@@ -83,6 +87,12 @@ export default class GameManager {
             obj.setX(obj.serverX);
             obj.setY(obj.serverY);
         })
+    }
+
+    private updateFloatingTexts() {
+        this.floatingTexts = this.floatingTexts.filter((ft) => ft.scene !== undefined);
+        this.floatingTexts.forEach((ft) => ft.updatePosition());
+        console.log(this.floatingTexts.length);
     }
 
     /**
@@ -446,6 +456,26 @@ export default class GameManager {
 
     /** Called when the entity's stat is updated on the server. */
     private entityStatOnChange(entity: Entity, entityState: EntityState, changes: any) {
+        let hpChange = entityState.stat.hp - (entity.getStat().hp ?? 0);
+        if(hpChange < 0) {
+            // When an entity is hit, it is red tinted for 100ms.
+            entity.tint = ColorStyle.red.hex[900];
+            setTimeout(() => entity.tint = 0xffffff, 100);
+            SoundManager.getManager().play("hit", {detune: Math.floor(Math.random() * 500 - 250)});
+            let ft = new FloatingText({
+                scene: this.scene,
+                type: "damage",
+                text: `${hpChange}`,
+                x: entity.x,
+                y: entity.y,
+                duration: 1000,
+                followGameObject: entity,
+            });
+            ft.setDepth(100);
+            this.scene.add.existing(ft);
+            this.floatingTexts.push(ft);
+        }
+
         if(entity instanceof Monster) {
             // console.log("Change detected");
             let monsterState = entityState as MonsterState;

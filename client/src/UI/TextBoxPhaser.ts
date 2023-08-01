@@ -24,6 +24,7 @@ export default class TextBoxPhaser extends Phaser.GameObjects.Text implements La
         this.setStyle({border:"2px solid black"});
         this.setResolution(2.2);
         // this.setBackgroundColor("#222222");
+        this.setShadow(3, 3, ColorStyle.neutrals[800], 2);
     }
     
 
