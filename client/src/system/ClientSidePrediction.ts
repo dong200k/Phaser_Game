@@ -16,6 +16,13 @@ interface ServerStateQueueItem {
     positionY: number;
 }
 
+interface PlayerBounds {
+    minX: number;
+    minY: number;
+    maxX: number;
+    maxY: number;
+}
+
 /**
  * The ClientSidePrediction class will manage the prediction of player1 to match that of the server's.
  * Its main purpose would be movement prediction. Which would consist of the following:
@@ -49,6 +56,8 @@ export default class ClientSidePrediction {
     private ticksToProcess: number = 0;
 
     private serverStateQueue: ServerStateQueueItem[] = [];
+
+    private playerBounds: PlayerBounds | null = null;
 
 
     // Debugging rectangles
@@ -108,6 +117,11 @@ export default class ClientSidePrediction {
         return {player1: this.player1, body: this.player1Body};
     }
 
+    /**
+     * Updates the ClientSidePrediction
+     * @param deltaT deltaT milliseconds.
+     * @param playerMovementData The player movement data.
+     */
     public update(deltaT: number, playerMovementData: number[]) {
 
         if(this.debugGraphicsVisible) this.updateDebugGraphics();
@@ -140,7 +154,7 @@ export default class ClientSidePrediction {
 
         do {
             // ------ Tick Logic below -------
-            this.processPlayerMovement(playerMovementData);
+            this.processPlayerMovement(playerMovementData, deltaT);
             Matter.Engine.update(this.engine, deltaT);
             this.clientTickCount++;
             this.saveToInputHistory(this.clientTickCount, playerMovementData);
@@ -157,6 +171,7 @@ export default class ClientSidePrediction {
 
 
         this.serverReconciliation(deltaT);
+        this.updatePlayerMovementAnimation(playerMovementData);
     }
 
     /**
@@ -186,7 +201,7 @@ export default class ClientSidePrediction {
                     while(ticksToRun > 0) {
                         let inputHistory = this.getInputHistoryAt(serverTick);
                         if(inputHistory) {
-                            this.processPlayerMovement(inputHistory);
+                            this.processPlayerMovement(inputHistory, deltaT);
                             Matter.Engine.update(this.engine, deltaT);
                         }
                         ticksToRun--;
@@ -259,6 +274,9 @@ export default class ClientSidePrediction {
         });
     }
 
+    /**
+     * Updates the position of the debug graphics based on the server's position.
+     */
     private updateDebugGraphics() {
         this.gameObjectItems.forEach((item) => {
             let graphics = item.debugGraphic;
@@ -268,18 +286,80 @@ export default class ClientSidePrediction {
         })
     }
     
-    private processPlayerMovement(data: number[]) {
+    /** Updates the player's velocity based on the player's movement input.
+     * @param data The player's movement input.
+     * @param deltaT deltaT milliseconds.
+     */
+    private processPlayerMovement(data: number[], deltaT: number) {
         let {player1, body} = this.getPlayer1AndBody();
         //calculate new player velocity
-        let speed = player1?.getStat().speed;
-        let x = 0;
-        let y = 0;
-        if(data[0]) y -= 1;
-        if(data[1]) y += 1;
-        if(data[2]) x -= 1;
-        if(data[3]) x += 1;
-        let velocity = MathUtil.getNormalizedSpeed(x, y, speed ?? 0);
-        if(body) Matter.Body.setVelocity(body, velocity);
+        if(player1 && body) {
+
+            // If the player is dead prevent movement.
+            if(player1.getPlayerState().playerController.stateName === "Dead") {
+                Matter.Body.setVelocity(body, {x: 0, y: 0});
+                return; 
+            }
+
+            let speed = (player1.getStat().speed ?? 0) * (deltaT / 1000);
+            let x = 0;
+            let y = 0;
+            if(data[0]) y -= 1;
+            if(data[1]) y += 1;
+            if(data[2]) x -= 1;
+            if(data[3]) x += 1;
+            let velocity = MathUtil.getNormalizedSpeed(x, y, speed ?? 0);
+
+            // If the velocity would send the player off bounds, update it so that the player wont go off bounds.
+            let bounds = this.playerBounds;
+            if(bounds) {
+                let minX = body.bounds.min.x;
+                let minY = body.bounds.min.y;
+                let maxX = body.bounds.max.x;
+                let maxY = body.bounds.max.y;
+                if(velocity.x > 0) {
+                    let distanceToMax = bounds.maxX - maxX;
+                    velocity.x = Math.min(velocity.x, distanceToMax);
+                } else if(velocity.x < 0) {
+                    let distanceToMin = bounds.minX - minX;
+                    velocity.x = Math.max(velocity.x, distanceToMin);
+                }
+                if(velocity.y > 0) {
+                    let distanceToMax = bounds.maxY - maxY;
+                    velocity.y = Math.min(velocity.y, distanceToMax);
+                } else if(velocity.y < 0) {
+                    let distanceToMin = bounds.minY - minY;
+                    velocity.y = Math.max(velocity.y, distanceToMin);
+                }
+            }
+
+            Matter.Body.setVelocity(body, velocity);
+        }
+    }
+
+    /** Updates the player's movement animation, based on the player's body velocity. */
+    private updatePlayerMovementAnimation(movementData: number[]) {
+        let {player1, body} = this.getPlayer1AndBody();
+        if(player1 && body && player1.getPlayerState().playerController.stateName !== "Dead") {
+            let velocityX = body.velocity.x;
+            let velocityY = body.velocity.y;
+
+            /** Flip the player's sprite based on if they are pressing left or right. */
+            if(!(movementData[2] && movementData[3])) {
+                if(movementData[2]) player1.setFlip(true, false);
+                else if(movementData[3]) player1.setFlip(false, false);
+            }
+    
+            if(velocityX === 0 && velocityY === 0) {
+                player1.play({key: "idle", repeat: -1});
+                player1.running = false;
+            } else {
+                if(!player1.running) {
+                    player1.play({key: "run", repeat: -1});
+                    player1.running = true;
+                }
+            }
+        }
     }
 
     public setDebugGraphicsVisible(value: boolean) {
@@ -314,19 +394,62 @@ export default class ClientSidePrediction {
             friction: 0,
         };
 
-        if(gameObject.serverState.type === "Tile") matterConfig = this.matterBodyConfig["Tile"];
-        if(gameObject.serverState.type === "Player") matterConfig = this.matterBodyConfig["Player"];
+        if(gameObject.gameObjectState.type === "InvisObstacle") matterConfig = this.matterBodyConfig["Tile"];
+        if(gameObject.gameObjectState.type === "Tile") matterConfig = this.matterBodyConfig["Tile"];
+        if(gameObject.gameObjectState.type === "Player") matterConfig = this.matterBodyConfig["Player"];
+
+        let width = gameObject.gameObjectState.width;
+        let height = gameObject.gameObjectState.height;
 
         let gameObjectItem = {
             gameObject: gameObject,
-            body: Matter.Bodies.rectangle(gameObject.serverX, gameObject.serverY, gameObject.width, gameObject.height, matterConfig),
+            body: Matter.Bodies.rectangle(gameObject.serverX, gameObject.serverY, width, height, matterConfig),
             debugGraphic: this.scene.add.graphics({lineStyle: {width: 1, color: 0x0000cc}})
-                .strokeRect(-gameObject.width / 2,-gameObject.height / 2, gameObject.width, gameObject.height)
+                .strokeRect(-width / 2,-height / 2, width, height)
+                .fillCircle(0, 0, 2)
                 .setVisible(this.debugGraphicsVisible)
-                .setDepth(10),
-        }            
+                .setDepth(100),
+        }
+        
+        if(gameObject.gameObjectState.type === "Monster") {
+            gameObjectItem.body.collisionFilter = {
+                group: -1,
+                mask: 0,
+            }
+        }
 
         this.gameObjectItems.push(gameObjectItem);
         Matter.Composite.add(this.engine.world, gameObjectItem.body);
+    }
+
+    /**
+     * Removes the given GameObject from this ClientSidePrediction. This will remove the Matter.Body representation
+     * of this GameObject and the DebugGraphics for this GameObject.
+     * @param gameObject The GameObject to be removed.
+     */
+    public removeGameObject(gameObject: GameObject) {
+        this.gameObjectItems = this.gameObjectItems.filter((item) => {
+            if(item.gameObject === gameObject) {
+                // remove debug graphics.
+                item.debugGraphic.destroy();
+                // remove matter body.
+                Matter.Composite.remove(this.engine.world, item.body);
+                return false;
+            } else {
+                return true;
+            }
+        })
+    }
+
+    /**
+     * Updates the player's world bounds. This will restrict the player's movement
+     * to within these bounds.
+     * @param minX minX
+     * @param minY minY
+     * @param maxX maxX
+     * @param maxY maxY
+     */
+    public updatePlayerBounds(minX: number, minY: number, maxX: number, maxY:number) {
+        this.playerBounds = { minX, minY, maxX, maxY };
     }
 }

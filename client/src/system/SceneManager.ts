@@ -1,10 +1,11 @@
 import Phaser from "phaser";
 import { SceneKey, SceneKeyType } from "../config";
+import EventManager from "./EventManager";
 
 
 export default class SceneManager {
 
-    private static singleton:SceneManager = new SceneManager();
+    private static singleton: SceneManager = new SceneManager();
 
     private scene: Phaser.Scene | null = null;
     private historyStack: SceneKeyType[] = [];
@@ -27,6 +28,10 @@ export default class SceneManager {
      */
     public setScene(scene: Phaser.Scene) {
         this.scene = scene;
+        if(this.scene) {
+            this.scene.scene.bringToTop(SceneKey.NavbarScene);
+            //this.scene.scene.bringToTop(SceneKey.LoadingScene);
+        }
     }
 
     /**
@@ -37,11 +42,7 @@ export default class SceneManager {
         if(this.scene) {
             if(this.currentSceneKey !== key) {
                 this.historyStack.splice(0, this.historyStack.length);
-                if(this.currentSceneKey) 
-                    this.sleepCurrentScene();
-                this.currentSceneKey = key;
-                this.launchOrWakeCurrentScene();
-                this.showNavbarOnCertainScene(key);
+                this.switchToSceneHelper(key);
             }
         } else {
             console.log("Error: phaser scene does not exist in SceneManager");
@@ -57,11 +58,8 @@ export default class SceneManager {
             if(this.currentSceneKey !== key) {
                 if(this.currentSceneKey) {
                     this.historyStack.push(this.currentSceneKey);
-                    this.sleepCurrentScene()
                 }
-                this.currentSceneKey = key;
-                this.launchOrWakeCurrentScene();
-                this.showNavbarOnCertainScene(key);
+                this.switchToSceneHelper(key);
             }
         } else {
             console.log("Error: phaser scene does not exist in SceneManager");
@@ -76,18 +74,26 @@ export default class SceneManager {
         if(this.scene) {
             let key = this.historyStack.pop();
             if(key && this.currentSceneKey !== key) {
-                if(this.currentSceneKey) {
-                    this.sleepCurrentScene();
-                }
-                this.currentSceneKey = key;
-                this.launchOrWakeCurrentScene();
-                this.showNavbarOnCertainScene(key);
+                this.switchToSceneHelper(key);
                 return key;
             }
         } else {
             console.log("Error: phaser scene does not exist in SceneManager");
         }
         return "";
+    }
+
+    /**
+     * Main logic for switching to a new scene. 
+     * @param key The scene key.
+     */
+    private switchToSceneHelper(key: SceneKeyType) {
+        if(this.currentSceneKey) {
+            this.sleepCurrentScene();
+        }
+        this.currentSceneKey = key;
+        this.launchOrWakeCurrentScene();
+        this.showNavbarOnCertainScene(key);
     }
 
     private showNavbarOnCertainScene(key: SceneKeyType) {
@@ -114,7 +120,7 @@ export default class SceneManager {
             else {
                 this.scene.scene.wake(SceneKey.NavbarScene);
             }
-            this.scene.scene.bringToTop(SceneKey.NavbarScene);
+            //this.scene.scene.bringToTop(SceneKey.NavbarScene);
         }
     }
 
@@ -124,6 +130,25 @@ export default class SceneManager {
             this.scene.scene.sleep(SceneKey.NavbarScene);
         }
     }
+
+    // /** Shows the loading screen. */
+    // public showLoadingScene() {
+    //     if(this.scene) {
+    //         if(!this.scene.scene.isSleeping(SceneKey.LoadingScene) && !this.scene.scene.isActive(SceneKey.LoadingScene))
+    //             this.scene.scene.launch(SceneKey.LoadingScene);
+    //         else {
+    //             this.scene.scene.wake(SceneKey.LoadingScene);
+    //         }
+    //         //this.scene.scene.bringToTop(SceneKey.LoadingScene);
+    //     }
+    // }
+
+    // /** Hides the loading screen. */
+    // public hideLoadingScene() {
+    //     if(this.scene && !this.scene.scene.isSleeping(SceneKey.LoadingScene) && this.scene.scene.isActive(SceneKey.LoadingScene)) {
+    //         this.scene.scene.sleep(SceneKey.LoadingScene);
+    //     }
+    // }
 
     /** Displays the HUD */
     public showHUD() {

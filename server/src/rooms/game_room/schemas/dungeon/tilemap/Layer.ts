@@ -1,5 +1,6 @@
 import { Schema, type, ArraySchema } from '@colyseus/schema';
 import Tile from '../../gameobjs/Tile';
+import GameManager from '../../../system/GameManager';
 
 export default class Layer extends Schema {
     @type("number") width: number;
@@ -18,11 +19,11 @@ export default class Layer extends Schema {
         this.name = name;
     }
 
-    public populateTiles(tileWidth: number, tileHeight: number, tileIdArray: number[]) {
+    public populateTiles(gameManager: GameManager, tileWidth: number, tileHeight: number, tileIdArray: number[]) {
         tileIdArray.forEach((tileId, idx) => {
             let x = (idx % this.width) * tileWidth + tileWidth/2;
             let y = Math.floor(idx / this.width) * tileHeight + tileHeight/2;
-            this.tiles.push(new Tile(tileId, tileWidth, tileHeight, x, y));
+            this.tiles.push(new Tile(gameManager, tileId, tileWidth, tileHeight, x, y));
         })
     }
 

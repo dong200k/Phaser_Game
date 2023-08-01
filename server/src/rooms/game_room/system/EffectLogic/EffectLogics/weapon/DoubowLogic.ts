@@ -29,10 +29,10 @@ export default class DoubowLogic extends EffectLogic{
         let x = mouseX - playerX
         let y = mouseY - playerY
 
-        let projectileSpeed = 10
+        let projectileSpeed = 5
 
         // spawn projectile with direction rotated 30 degrees from player to player mouse
-        let directionRotated30 = MathUtil.getRotatedSpeed(x, y, projectileSpeed, 30)
+        let directionRotated30 = MathUtil.getRotatedSpeed(x, y, projectileSpeed, 5)
         gameManager.getProjectileManager().spawnProjectile({
             sprite: projectileName,
             stat: playerState.stat,
@@ -47,10 +47,11 @@ export default class DoubowLogic extends EffectLogic{
             poolType: poolType,
             attackMultiplier: 1,
             magicMultiplier: 0,
+            originEntityId: playerState.getId(),
         })
 
         // spawn projectile with direction rotated -30 degrees from player to player mouse
-        let directionRotatedMinus30 = MathUtil.getRotatedSpeed(x, y, projectileSpeed, -30)
+        let directionRotatedMinus30 = MathUtil.getRotatedSpeed(x, y, projectileSpeed, -5)
         gameManager.getProjectileManager().spawnProjectile({
             sprite: projectileName,
             stat: playerState.stat,
@@ -65,6 +66,7 @@ export default class DoubowLogic extends EffectLogic{
             poolType: "BowLogic",
             attackMultiplier: 1,
             magicMultiplier: 0,
+            originEntityId: playerState.getId(),
         })
     }
 }

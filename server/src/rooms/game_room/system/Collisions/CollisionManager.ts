@@ -7,6 +7,8 @@ import { getTrueAttackDamage, getFinalLifeSteal, getTrueMagicDamage } from "../F
 import { CategoryType, getCategoryType } from "./Category";
 import { ICollisionRule } from "../interfaces";
 import Tile from "../../schemas/gameobjs/Tile";
+import Player from "../../schemas/gameobjs/Player";
+import MeleeProjectile from "../../schemas/projectiles/specialprojectiles/MeleeProjectile";
 
 export default class CollisionManager{
     private gameManager: GameManager
@@ -79,7 +81,7 @@ export default class CollisionManager{
             // Order is based on what appears first/category number of the matter bodies's collision filter.
             // Check Category.ts to see order
             if((typeA === categoryA && typeB === categoryB)){
-                console.log(`${typeA}, ${typeB}`)
+                //console.log(`${typeA}, ${typeB}`)
                 resolve(gameObjectA, gameObjectB, bodyA, bodyB)
                 return
             }
@@ -92,14 +94,23 @@ export default class CollisionManager{
      * @param projectile 
      */
     public resolveProjectileCollision(projectile: Projectile, entity: Entity, bodyA: Matter.Body, bodyB: Matter.Body){
+        // Do nothing if the projectile is not active. This is to prevent a projectile from hitting more than one monster.
+        if(!projectile.active) return;
+
         let trueAttackDamage = getTrueAttackDamage(projectile.stat, entity.stat, projectile.attackMultiplier)
         let trueMagicDamage = getTrueMagicDamage(projectile.stat, entity.stat, projectile.magicMultiplier)
 
+        // if(entity instanceof Player) {
+        //     console.log("Player hit, ", trueAttackDamage + trueMagicDamage);
+        //     console.log(entity.stat.hp);
+        // }
+        // console.log(`Collision detected: attack:${trueAttackDamage}, magic:${trueMagicDamage}, player armor: ${entity.stat.armor}`);
+
         // Entity colliding with projectile takes attack and magic damage
-        let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage)
+        let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage, projectile.originEntityId)
         EffectManager.addEffectsTo(entity, damageEffect)
 
-        damageEffect = EffectFactory.createDamageEffect(trueMagicDamage)
+        damageEffect = EffectFactory.createDamageEffect(trueMagicDamage, projectile.originEntityId)
         EffectManager.addEffectsTo(entity, damageEffect)
 
         // Entity shooting projectile heals based on their lifesteal
@@ -107,13 +118,13 @@ export default class CollisionManager{
         if(attackingEntity){
             let lifeSteal = getFinalLifeSteal(trueAttackDamage, attackingEntity.stat.lifeSteal)
             let healEffect = EffectFactory.createHealEffect(lifeSteal)
-            console.log("lifesteal:", lifeSteal)
+            //console.log("lifesteal:", lifeSteal)
             EffectManager.addEffectsTo(attackingEntity, healEffect)
         }
 
-        setTimeout(()=>{
-            projectile.setInactive()  
-        }, 200)
+        // Melee projectile will be set inactive by its controller.
+        if(!(projectile instanceof MeleeProjectile)) projectile.setInactive();
+        else projectile.disableCollisions();
     }
 
     public resolveProjectileObstacleCollision(projectile: Projectile, obstacle: Tile, bodyA: Matter.Body, bodyB: Matter.Body){

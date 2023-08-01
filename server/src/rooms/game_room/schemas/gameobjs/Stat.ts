@@ -48,7 +48,7 @@ export default class Stat extends Schema {
         critRate: 0.5, critDamage: 1, 
         attackRange: 1, attackRangePercent: 0,
         attackSpeed: 1, attackSpeedPercent: 0, 
-        speed: 1, lifeSteal: 0, lifeStealPercent: 0, level: 1
+        speed: 50, lifeSteal: 0, lifeStealPercent: 0, level: 1
     }
 
     /** Creates a new stat object based on the stat config passed in. Stat properties not initialized in the config
@@ -96,6 +96,14 @@ export default class Stat extends Schema {
         // this.lifeStealPercent = stat.lifeStealPercent
 
         // this.level = stat.level;
+    }
+
+    /**
+     * Copy the values provided into this Stat.
+     * @param stat The stat.
+     */
+    public setStats(stat: Partial<statType>) {
+        Object.assign(this, stat);
     }
 
     /**

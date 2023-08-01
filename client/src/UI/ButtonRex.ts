@@ -1,6 +1,9 @@
 import { OverlapSizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 import TextBoxPhaser from "./TextBoxPhaser";
 import { ColorStyle } from "../config";
+import SettingsManager from "../system/SettingsManager";
+import { PhaserAudio } from "../interfaces";
+import SoundManager from "../system/SoundManager";
 
 export interface ButtonRexConfig extends OverlapSizer.IConfig {
     buttonSize?: "regular"|"small"|"large";
@@ -58,7 +61,11 @@ export default class ButtonRex extends OverlapSizer {
             if(this.buttonState !== 'disabled') this.setButtonState('pressed');
         });
         this.on(Phaser.Input.Events.POINTER_UP, ()=>{
-            if(this.buttonState !== 'disabled') this.setButtonState('default');
+            if(this.buttonState !== 'disabled') {
+                this.setButtonState('default');
+                SoundManager.getManager().play("button_click1");
+            }
+            
         });
         this.on(Phaser.Input.Events.POINTER_OUT, ()=>{
             if(this.buttonState !== 'disabled') this.setButtonState('default');
@@ -71,6 +78,7 @@ export default class ButtonRex extends OverlapSizer {
         this.hoverGradient = new Phaser.GameObjects.Sprite(this.scene, 0, 0, "button_small_default_hover_texture");
         this.hoverGradient.setAlpha(0.1);
         this.hoverGradient.setVisible(false);
+        this.hoverGradient.setDisplaySize(sizeData.size.x, sizeData.size.y);
         
         scene.add.existing(this.buttonSprite);
         scene.add.existing(this.buttonText);

@@ -9,6 +9,10 @@ import MathUtil from "../../../../util/MathUtil";
 import GameObject, { Velocity } from "../gameobjs/GameObject";
 import GameManager from "../../system/GameManager";
 import MaskManager from "../../system/Collisions/MaskManager";
+import StateMachine from "../../system/StateMachine/StateMachine";
+import RangedProjectileController from "../../system/StateControllers/ProjectileControllers/rangestates/RangedProjectileController";
+import MeleeProjectile from "./specialprojectiles/MeleeProjectile";
+import MeleeProjectileController from "../../system/StateControllers/ProjectileControllers/meleestates/MeleeProjectileController";
 
 /**
  * Projectiles are are updated via the update() method. Call projectile.setInactive() to return the projectile to the
@@ -22,10 +26,10 @@ export default class Projectile extends GameObject implements Cloneable {
 
     /** Unique id of the projectile */
     @type("string") projectileId: string
-    /** Pool that the projectile is returned to when it is inactive */
-    @type("string") poolType: string
-    /** Sprite of this projectile */
-    @type("string") sprite: string
+    // /** Pool that the projectile is returned to when it is inactive */
+    // @type("string") poolType: string
+    // /** Sprite of this projectile */
+    // @type("string") sprite: string
     /** Determines what this projectile collides with */
     @type("string") collisionCategory: CategoryType
     /** range projectile is active for */
@@ -34,21 +38,31 @@ export default class Projectile extends GameObject implements Cloneable {
     @type("number") activeTime?: number
     @type("number") spawnX: number
     @type("number") spawnY: number
-    /** Whether the projectile is active or not, inactive projectiles will be reset by the update method for reuse */
-    @type("boolean") active:boolean = true
-    /** Whether the projectile is in poolmap for reuse */
-    @type("boolean") inPoolMap:boolean = false
+    // /** Whether the projectile is active or not, inactive projectiles will be reset by the update method for reuse */
+    // @type("boolean") active:boolean = true
+    // /** Whether the projectile is in poolmap for reuse */
+    // @type("boolean") inPoolMap:boolean = false
     /** Initial velocity of the projectile's body */
     @type(Velocity) initialVelocity: Velocity
     /** Entity that this projectile originates from */
-    @type(Entity) entity?: Entity
+    /*@type(Entity)*/ entity?: Entity
     /** Stats used for damage calculation */
-    @type(Stat) stat: Stat
+    /* ----  WARNING ----- Adding @type(Stat) causes issues with monster's stat not updating on client side. 
+    This is likly due to stat being a reference to the monster's stat causing some issues.
+    */
+    /*@type(Stat)*/ stat: Stat
     /** attack multiplier AD  */
     @type("number") attackMultiplier: number
     @type("number") magicMultiplier: number
-    /** GameManager this projectile belongs to */
-    private gameManager: GameManager
+    // /** GameManager this projectile belongs to */
+    // private gameManager: GameManager
+
+    @type(StateMachine) projectileController: StateMachine<unknown>;
+
+    @type("string") projectileType: string;
+
+    /** The entity that created this projectile. */
+    originEntityId?: string;
 
     /**
      * Creates a new projectile GameObject and a corresponding Matter.Body with the projectileConfig
@@ -56,7 +70,7 @@ export default class Projectile extends GameObject implements Cloneable {
      * @param gameManager
      */
     constructor(projectileConfig: IProjectileConfig, gameManager: GameManager){
-        super(projectileConfig.spawnX, projectileConfig.spawnY)
+        super(gameManager, projectileConfig.spawnX, projectileConfig.spawnY)
         this.projectileId = MathUtil.uid()
         this.poolType = projectileConfig.poolType
         this.sprite = projectileConfig.sprite
@@ -70,15 +84,21 @@ export default class Projectile extends GameObject implements Cloneable {
         this.gameManager = gameManager
         this.entity = projectileConfig.entity
         this.type = "Projectile"
+        this.projectileType = "Ranged";
+        this.originEntityId = projectileConfig.originEntityId;
         this.attackMultiplier = projectileConfig.attackMultiplier
         this.magicMultiplier = projectileConfig.magicMultiplier
         this.createBody()
+
+        this.width = Math.abs(this.body.bounds.max.x - this.body.bounds.min.x);
+        this.height = Math.abs(this.body.bounds.max.y - this.body.bounds.min.y);
+        this.projectileController = new RangedProjectileController({projectile: this});
     }
     
     /**
      * Updates this projectile by deltaT. If the projectile has an activeTime and this.outOfTime() is true then projetile will be made inactive.
      * If projectile has a range and this.outOfRange() is true then projectile will be made inactive.
-     * @param deltaT The time that passed since the last update in seconds.
+     * @param deltaT The time that passed since the last update in milliseconds.
      */
     public update(deltaT: number){
         // Update time projectile is active
@@ -88,6 +108,9 @@ export default class Projectile extends GameObject implements Cloneable {
 
         // Make projectile inactive it is out of time or range
         if(this.outOfTime() || this.outOfRange()) this.setInactive()
+
+        // Updates this projectile's ai.
+        this.projectileController.update(deltaT / 1000);
     }
 
     /**
@@ -111,8 +134,10 @@ export default class Projectile extends GameObject implements Cloneable {
     protected createBody(){
         let width = 10
         let height = 10
+
         let body = Matter.Bodies.rectangle(this.x, this.y, width, height, {
             isStatic: false,
+            isSensor: true,
             inertia: Infinity,
             inverseInertia: 0,
             restitution: 0,
@@ -140,20 +165,32 @@ export default class Projectile extends GameObject implements Cloneable {
      */
     public reset() {
         // Make body non collideable
-        let body = this.getBody()
-        if(body){
-            body.collisionFilter = {
-                ...body.collisionFilter,
-                group: 0,
-                mask: 0
-            }
+        this.disableCollisions();
+    }
+
+    /** Disable collision on the Matter body associated with this object. */
+    public disableCollisions() {
+        this.body.collisionFilter = {
+            ...this.body.collisionFilter,
+            group: -1,
+            mask: 0,
         }
     }
 
-    /** Marks this projectile as active so it's update method goes through and the client knows that it is active. */
-    public setActive(){
-        this.active = true
+    /** Enable collision on the Matter body associated with this object. */
+    public enableCollisions() {
+        this.body.collisionFilter = {
+            ...this.body.collisionFilter,
+            group: 0,
+            category: Categories[this.collisionCategory],
+            mask: MaskManager.getManager().getMask(this.collisionCategory) 
+        }
     }
+
+    // /** Marks this projectile as active so it's update method goes through and the client knows that it is active. */
+    // public setActive(){
+    //     this.active = true
+    // }
 
     /** Marks this projectile as inactive and resets it. On the next update of ProjectileManager this projectile will be
      * returned to the projectilePool
@@ -185,6 +222,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.attackMultiplier = projectileConfig.attackMultiplier
         this.magicMultiplier = projectileConfig.magicMultiplier
         this.type = "Projectile"
+        this.originEntityId = projectileConfig.originEntityId;
 
         // Make body collideable again
         let body = this.getBody()
@@ -199,7 +237,7 @@ export default class Projectile extends GameObject implements Cloneable {
             Matter.Body.setVelocity(body, this.initialVelocity)
         }
 
-        this.setActive()    
+        this.setActive(true)    
         this.inPoolMap = false
     }
 }

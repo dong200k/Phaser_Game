@@ -55,7 +55,7 @@ const printEffects = (entity: Entity) => {
 
 function testingOneTimeEffect() {
     console.log("------Testing one time effect-----")
-    let player1 = new Player("Bob", "warrior");
+    let player1 = new Player(gameManager, "Bob", "warrior");
     gameManager.addGameObject(MathUtil.uid(), player1, Matter.Bodies.rectangle(0, 0, 0, 0));
     console.log(`Player 1's starting hp: ${player1.stat.hp}`);
     //Add healing effect to player 1.
@@ -76,7 +76,7 @@ function testingOneTimeEffect() {
 
 function testingContinuousEffect() {
     console.log("------Testing continuous effect-----")
-    let player1 = new Player("Bob", "warrior");
+    let player1 = new Player(gameManager, "Bob", "warrior");
     gameManager.addGameObject(MathUtil.uid(), player1, Matter.Bodies.rectangle(0, 0, 0, 0));
     console.log(`Player 1's starting hp: ${player1.stat.hp}`);
     
@@ -99,7 +99,7 @@ function testingContinuousEffect() {
 
 function testingChainEffect() {
     console.log("------Testing chain effect-----")
-    let player1 = new Player("Bob", "warrior");
+    let player1 = new Player(gameManager, "Bob", "warrior");
     gameManager.addGameObject(MathUtil.uid(), player1, Matter.Bodies.rectangle(0, 0, 0, 0));
     console.log(`Player 1's starting hp: ${player1.stat.hp}`);
     

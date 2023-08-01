@@ -20,6 +20,8 @@ export default class WeaponManager{
         TreeManager.addTreeUpgradeEffectsToPlayer(playerState, playerState.weaponUpgradeTree)
         
         let weaponId = TreeManager.getWeaponId(playerState.weaponUpgradeTree)
+        // console.log(`equipWeaponUpgrade weapon id: ${weaponId}`);
+        // console.log(`weaponUpgradeTree ${playerState.weaponUpgradeTree.weaponId}`);
         TreeManager.setTreeWeapon(playerState.weaponUpgradeTree, weaponId)
 
         // Set total stat as computed total stat

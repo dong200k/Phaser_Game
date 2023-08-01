@@ -2809,7 +2809,7 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "selected",
+                  "status": "none",
                   "selectionTime": 2,
                   "upgradeEffect": {
                     "effectLogicId": "Tribow",
@@ -2819,10 +2819,12 @@
                     "type": "player attack"
                   },
                   "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
-                  "doesStack": false
+                  "doesStack": false,
+                  "collisionGroup": null,
+                  "coinCost": null
                 },
                 "__rd3t": {
-                  "id": "a1f59f33-df6a-4b78-ace9-c3691a6c0c37",
+                  "id": "72683a6f-d76c-4671-8267-cfed8be6f34e",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -2856,7 +2858,7 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "selected",
+              "status": "none",
               "selectionTime": 1,
               "upgradeEffect": {
                 "effectLogicId": "Doubow",
@@ -2866,10 +2868,12 @@
                 "type": "player attack"
               },
               "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
-              "doesStack": false
+              "doesStack": false,
+              "collisionGroup": null,
+              "coinCost": null
             },
             "__rd3t": {
-              "id": "f6eefed4-ad79-4e76-bd25-725eeeaa3787",
+              "id": "0cedc2bc-d9e8-472d-b689-1d6f0e8b282b",
               "depth": 1,
               "collapsed": false
             }
@@ -6323,8 +6327,8 @@
       "id": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
       "name": "bow",
       "description": "description",
-      "sprite": "demo_hero",
-      "projectile": "demo_hero"
+      "sprite": "RangerArrow",
+      "projectile": "RangerArrow"
     },
     {
       "id": "weapon-4933503f-cd70-4076-8a99-8d90de74ab73",

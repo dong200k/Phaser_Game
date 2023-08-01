@@ -9,6 +9,7 @@ import EventManager from "../system/EventManager";
 import PeerInfo from "../UI/gameuis/PeerInfo";
 import PeerInfoPopup from "../UI/gameuis/PeerInfoPopup";
 import WAPopup, { WAPopupData } from "../UI/gameuis/WAPopup";
+import GameOverModal from "../UI/modals/GameOverModal";
 
 export default class HUDScene extends Phaser.Scene {
 
@@ -52,7 +53,9 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.on(EventManager.HUDEvents.DELETE_PEER_INFO, this.peerInfoPopup.removePeerInfo, this.peerInfoPopup);
         EventManager.eventEmitter.on(EventManager.HUDEvents.RESET_HUD, this.resetHUD, this);
         EventManager.eventEmitter.on(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, this.showWAPopup, this);
+        EventManager.eventEmitter.on(EventManager.HUDEvents.PLAYER_DIED, this.playerDied, this);
         this.events.once("shutdown", () => this.removeListeners());
+        this.events.on("sleep", () => this.peerInfoPopup.setVisible(false));
     }
 
     private removeListeners() {
@@ -110,6 +113,19 @@ export default class HUDScene extends Phaser.Scene {
         this.peerInfoPopup.setVisible(false);
         this.input.keyboard?.on("keydown-SHIFT", () => this.peerInfoPopup.setVisible(true));
         this.input.keyboard?.on("keyup-SHIFT", () => this.peerInfoPopup.setVisible(false));
+    }
+
+    public playerDied() {
+        new GameOverModal(this, {
+            texts: [
+                "Coins Earned: 100",
+                "Gems Earned: 100",
+                "Monsters Killed: 100",
+                "Time Survived: 3:00",
+            ],
+            leaveGameOnclick: () => EventManager.eventEmitter.emit(EventManager.GameEvents.LEAVE_GAME),
+            spectateOnclick: () => console.log("Spectate onclick")
+        })
     }
 
     

@@ -1,18 +1,29 @@
 
 import MathUtil from "../../../../../util/MathUtil";
+import GameManager from "../../../system/GameManager";
 import EffectManager from "../../../system/StateManagers/EffectManager";
+import State from "../../State";
 import Player from "../../gameobjs/Player"
 import EffectFactory from "../EffectFactory";
 
 
 describe('CompoundEffect tests', () => {
+
+    let gameManager: GameManager
+
+    beforeEach(async ()=>{
+        // gameManager = new GameManager(new State())
+        // await gameManager.preload()
+    })
+
     const createPlayer = (hp: number) => {
-        let player = new Player("Dummy Player", "Shoe washer");
+        let player = new Player(gameManager, "Dummy Player", "Shoe washer");
         player.stat.hp = hp;
         return player;
     }
-    test("Adding heal 100 to CompoundEffect and adding CompoundEffect to player", () => {
+    test("Adding heal 100 to CompoundEffect and adding CompoundEffect to player. Max hp at 200.", () => {
         let player = createPlayer(100);
+        player.stat.maxHp = 200;
         let healEffect = EffectFactory.createHealEffect(100);
         let compoundEffect = EffectFactory.createCompoundEffect("Test heal compound");
         compoundEffect.addEffect(MathUtil.uid(), healEffect);

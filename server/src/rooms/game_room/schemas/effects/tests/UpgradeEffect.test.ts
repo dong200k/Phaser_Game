@@ -18,7 +18,7 @@ describe('Upgrade Effect Tests', () => {
         // gameManager = new GameManager(new State())
         // await gameManager.preload()
 
-        entity = new Entity()
+        entity = new Entity(gameManager)
     })
     test("EffectManager properly identifies creating UpgradeTriggerEffect or ContinuousUpgradeEffect properly based on an UpgradeEffect",()=>{
         // Effect (val) that should be created based on types(key)
@@ -122,8 +122,8 @@ describe('Upgrade Effect Tests', () => {
         expect(effect4.cooldown.isFinished).toBe(true)
     })
     test("Effect Collision Test", ()=>{
-        let tree1 = new WeaponUpgradeTree(gameManager, new Player("p1"))
-        let tree2 = new WeaponUpgradeTree(gameManager, new Player("p2"))
+        let tree1 = new WeaponUpgradeTree(gameManager, new Player(gameManager, "p1"))
+        let tree2 = new WeaponUpgradeTree(gameManager, new Player(gameManager, "p2"))
 
         /** list of a few rules/expected collision results */
         let collisionRules = [

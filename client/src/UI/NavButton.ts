@@ -2,6 +2,9 @@ import Phaser from "phaser";
 import { ColorStyle, TextStyle } from "../config";
 import TextBox from "./TextBox";
 import Layoutable from "./Layoutable";
+import SettingsManager from "../system/SettingsManager";
+import { PhaserAudio } from "../interfaces";
+import SoundManager from "../system/SoundManager";
 
 type ButtonState = "active"|"disabled"|"default";
 
@@ -59,8 +62,10 @@ export default class NavButton extends Phaser.GameObjects.Container implements L
         this.buttonBackground.removeListener(Phaser.Input.Events.POINTER_UP);
         this.onClick = onClick;
         this.buttonBackground.on(Phaser.Input.Events.POINTER_UP, ()=>{
-            if(this.buttonState !== 'disabled')
+            if(this.buttonState !== 'disabled') {
                 this.onClick();
+                SoundManager.getManager().play("button_click1");
+            }
         });
     }
 

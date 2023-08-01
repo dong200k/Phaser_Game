@@ -1,37 +1,61 @@
 import Phaser from 'phaser';
 import * as Colyseus from 'colyseus.js';
+import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import ClientManager from '../system/ClientManager';
 import GameManager from '../system/GameManager';
-import { SceneKey } from '../config';
+import { ColorStyle, SceneKey } from '../config';
 import SceneManager from '../system/SceneManager';
 import EventManager from '../system/EventManager';
+import LoadingScreen from '../UI/gameuis/LoadingScreen';
+
+interface MobAsset {
+    key: string;
+    png: string;
+    json: string;
+}
+
+// Server -> MobAssets -> Load on client.
 
 /**
  * The GameScene will be responsive for rendering the core gameplay. 
  */
 export default class GameScene extends Phaser.Scene {
 
+    // Plugin for UI elements that will be injected at scene creation.
+    rexUI!: UIPlugins;
     private gameRoom?: Colyseus.Room;
     private gameManager?: GameManager;
 
+     // ------- loading screen -------
+     private loadingScreen!: LoadingScreen;
+     private loading: boolean;
+     private loadingProgress: number;
+
     constructor() {
         super(SceneKey.GameScene);
+        this.loading = true;
+        this.loadingProgress = 0;
+    }
+
+    init () {
+        this.cameras.main.setBackgroundColor(ColorStyle.neutrals[800]);
+        this.cameras.main.setZoom(2);
     }
 
     preload() {
-        this.load.image("demo_hero", "images/demo_hero.png");
-        this.load.image("dirt_map_tiles", "tilemaps/demo_map/dirt_dungeon_tileset_extruded.png");
-        this.load.image("TinyZombie", "images/zombie_1.png");
-        this.load.image("frost-glaive", "images/projectiles/frost-glaive.png")
+        // this.loadingScreen = new LoadingScreen(this);
     }
 
     create() {
         //Initialize fields
+        //this.anims.createFromAseprite("TinyZombie");
+        //this.anims.createFromAseprite("Ranger");
+        //this.anims.createFromAseprite("RangerArrow");
+        
+        // this.anims.remove()
         this.initializeListeners();
         this.joinGameRoom();
-        
         this.showHUD();
-        this.cameras.main.setZoom(2);
     }
 
     public initializeListeners() {
@@ -41,6 +65,8 @@ export default class GameScene extends Phaser.Scene {
             EventManager.eventEmitter.off(EventManager.GameEvents.LEAVE_GAME, this.leaveGame, this);
             this.events.removeAllListeners();
             this.hideHUD();
+            
+            console.log("Onshutdown!!!");
         });
         this.events.on("sleep", () => {
             this.hideHUD();
@@ -51,6 +77,7 @@ export default class GameScene extends Phaser.Scene {
             this.showHUD();
         })
     }
+
 
     public leaveGame() {
         if(this.scene.isActive(SceneKey.GameScene)) {
