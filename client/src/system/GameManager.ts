@@ -92,7 +92,7 @@ export default class GameManager {
     private updateFloatingTexts() {
         this.floatingTexts = this.floatingTexts.filter((ft) => ft.scene !== undefined);
         this.floatingTexts.forEach((ft) => ft.updatePosition());
-        console.log(this.floatingTexts.length);
+        //console.log(this.floatingTexts.length);
     }
 
     /**
@@ -442,8 +442,10 @@ export default class GameManager {
                 else if(velocityX > 0) gameObject.setFlip(false, false);
 
                 if(velocityX === 0 && velocityY === 0) {
-                    gameObject.play({key: "idle", repeat: -1});
-                    gameObject.running = false;
+                    if(gameObject.anims.getName() !== "idle") {
+                        gameObject.play({key: "idle", repeat: -1});
+                        gameObject.running = false;
+                    }
                 } else {
                     if(!gameObject.running) {
                         gameObject.play({key: "run", repeat: -1});
@@ -465,7 +467,7 @@ export default class GameManager {
             let ft = new FloatingText({
                 scene: this.scene,
                 type: "damage",
-                text: `${hpChange}`,
+                text: `${Math.abs(hpChange)}`,
                 x: entity.x,
                 y: entity.y,
                 duration: 1000,

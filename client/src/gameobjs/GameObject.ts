@@ -21,6 +21,8 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
         this.serverVisible = gameObjectState.visible;
         this.serverActive = gameObjectState.active;
         this.gameObjectState = gameObjectState;
+
+        this.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
     }
 
     // public setServerState(serverState: GameObjectState) {
