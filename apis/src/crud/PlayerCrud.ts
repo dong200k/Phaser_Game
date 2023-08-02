@@ -79,12 +79,66 @@ export const updatePlayerSkillTree = async (IdToken: string, upgrades: string[])
   }
 
   applyUpgrades(skillTree.root)
-
+  console.log("upgrade count:", upgradedCount)
+  console.log("upgrade length:", upgrades.length)
   // Upgrades must all go through to save
   if(upgradedCount === upgrades.length) {
     return docRef.update({skillTree: skillTree, coins: coins})
   }else{
     throw new Error("Invalid upgrades selected or coins insufficient")
+  }
+}
+
+/**
+ * Removes upgrades from player skill tree
+ * @param IdToken 
+ * @param upgrades 
+ */
+export const unUpgradePlayerSkillTree = async (IdToken: string, upgrades: string[])=>{
+  // Verify IdToken (from client app) validity
+  let decodedToken = await getAuth().verifyIdToken(IdToken)
+  let uid = decodedToken.uid 
+
+  // Get player
+  const db = getFirestore()
+  let docRef = db.collection("players").doc(uid)
+  let docSnap = await docRef.get()
+
+  if(!docSnap.exists) throw new Error("Player does not exist yet")
+  
+  // Remove upgrades in order (last upgrade first, using postorder traversal)
+  let removedCount = 0
+  let data = docSnap.data()
+  let skillTree = data?.skillTree
+  let coins = data?.coins
+
+  // Postorder to apply upgrades
+  function removeUpgrades(node: Node<SkillData>){
+    // If upgrade already selected, remove later upgrades first then remove it
+    if(node.data.status === "selected"){
+      node.children.forEach(child=>{
+        removeUpgrades(child)
+        if(child.data.status === "selected") return // later upgrade still selected so we cant remove this upgrade
+      })
+
+      let upgrade = upgrades.find(upgrade => upgrade === node.id)
+
+      // remove upgrade and refund coins
+      if(upgrade && node.data.status === "selected"){
+        coins += node.data.coinCost
+        node.data.status = "none"
+        removedCount += 1
+      }
+    }
+  }
+
+  removeUpgrades(skillTree.root)
+
+  // Upgrades must all go through to save
+  if(removedCount === upgrades.length) {
+    return docRef.update({skillTree: skillTree, coins: coins})
+  }else{
+    throw new Error("Invalid upgrades selected for removal")
   }
 }
 

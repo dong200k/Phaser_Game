@@ -59,11 +59,12 @@ export const getTrueMagicDamage = function({magicAttack, magicAttackPercent, dam
 /**
  * 
  * @param trueDamage true magic or true attack damage
- * @param lifeSteal life steal percent
- * @returns total life steal flat
+ * @param lifeSteal flat life steal
+ * @param lifeStealPercent percent life steal
+ * @returns total life steal
  */
-export const getFinalLifeSteal = function(trueDamage: number, lifeSteal: number){
-    return lifeSteal * trueDamage;
+export const getFinalLifeSteal = function(trueDamage: number, lifeSteal: number, lifeStealPercent: number){
+    return lifeStealPercent * trueDamage + lifeSteal;
 }
 
 /**

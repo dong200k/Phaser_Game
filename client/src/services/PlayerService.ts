@@ -34,4 +34,21 @@ export default class PlayerService{
         if(res.status === 200) return
         else throw new Error(json.error)
     }
+
+    static async unUpgradePlayerSkillTree(upgrades: string[], IdToken: string){
+        const url = PlayerService.baseUrl + "/players/skillTree/remove"
+        let res = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+                IdToken,
+                upgrades
+            }),
+            headers: {
+                "Content-type": "application/json"
+            }
+        });
+        let json = await res.json()
+        if(res.status === 200) return
+        else throw new Error(json.error)
+    } 
 }

@@ -1,4 +1,4 @@
-import { CreatePlayer, getPlayerData, updatePlayerSkillTree } from "../crud/PlayerCrud"
+import { CreatePlayer, getPlayerData, unUpgradePlayerSkillTree, updatePlayerSkillTree } from "../crud/PlayerCrud"
 
 const express = require('express')
 const PlayerRouter = express.Router()
@@ -31,8 +31,25 @@ PlayerRouter.post('/players', async (req: any, res: any)=>{
  */
 PlayerRouter.post('/players/skillTree', (req: any, res: any)=>{
     let {IdToken, upgrades} = req.body
-
+    
     return updatePlayerSkillTree(IdToken, upgrades)
+        .then((skillTree)=>{
+            res.status(200).json({skillTree})
+        })
+        .catch((error)=>{
+            console.log(error.message)
+            res.status(403).json({error})
+        })
+})
+
+/**
+ * Updates a players skill tree and coins/gems based on upgrade selection if the upgrades are valid and currencies are enough and
+ * player IdToken is valid.
+ */
+PlayerRouter.post('/players/skillTree/remove', (req: any, res: any)=>{
+    let {IdToken, upgrades} = req.body
+
+    return unUpgradePlayerSkillTree(IdToken, upgrades)
         .then((skillTree)=>{
             res.status(200).json({skillTree})
         })

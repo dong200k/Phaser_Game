@@ -6035,6 +6035,1171 @@
               "depth": 1,
               "collapsed": false
             }
+          },
+          {
+            "id": "node-8c8187bc-0195-469a-9e8f-ba3cb9fc3b33",
+            "children": [
+              {
+                "id": "node-f85cc130-acfe-407f-992f-d90964c178d6",
+                "children": [
+                  {
+                    "id": "node-a59ab9ae-8523-4e91-897f-05300a4daedd",
+                    "children": [
+                      {
+                        "id": "node-75b65109-ba34-413f-afce-ff87abf9748d",
+                        "children": [],
+                        "data": {
+                          "name": "Percent Life Steal Enhancement",
+                          "description": "Increases life steal by 1 percent. Life steal heals user for physical attack dealt.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0.1,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": null
+                        },
+                        "__rd3t": {
+                          "id": "6cc95b1d-eb62-4a26-aa5a-dbdbba170de1",
+                          "depth": 4,
+                          "collapsed": false
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Percent Life Steal Enhancement",
+                      "description": "Increases life steal by 1 percent. Life steal heals user for physical attack dealt.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0.1,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": null
+                    },
+                    "__rd3t": {
+                      "id": "c0b8ffeb-4e80-4790-bd63-140cfadeead4",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Percent Life Steal Enhancement",
+                  "description": "Increases life steal by 1 percent. Life steal heals user for physical attack dealt.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0.01,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": null
+                },
+                "__rd3t": {
+                  "id": "da883c8e-8e4a-494a-a984-8bd042e11b33",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Percent Life Steal Enhancement",
+              "description": "Increases life steal by 1 percent. Life steal heals user for physical attack dealt.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0.1,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": null
+            },
+            "__rd3t": {
+              "id": "bb8b5af3-bd57-469d-ae5d-b5cae61f21dd",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-fa0854a4-8a90-453f-bc53-c738f13928f5",
+            "children": [
+              {
+                "id": "node-bed04b8e-59b3-47b0-bebe-3eb94b4eb510",
+                "children": [
+                  {
+                    "id": "node-4de948d8-540e-4538-a5aa-f08afea0429b",
+                    "children": [
+                      {
+                        "id": "node-b79f4c73-68b3-487f-bdff-c3cb9e3a9af2",
+                        "children": [],
+                        "data": {
+                          "name": "Percent Damage Enhancement",
+                          "description": "Increases all damage by 8 percent.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0.8,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": 0
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Percent Damage Enhancement",
+                      "description": "Increases all damage by 8 percent.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0.04,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": 0
+                    },
+                    "__rd3t": {
+                      "id": "583d767f-0f64-4f61-be8e-a752375c9721",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Percent Damage Enhancement",
+                  "description": "Increases all damage by 2 percent.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0.02,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": 0
+                },
+                "__rd3t": {
+                  "id": "3b82d734-00f7-45bb-9016-e1eb18df196b",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Percent Damage Enhancement",
+              "description": "Increases all damage by 1 percent.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0.1,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": 0
+            },
+            "__rd3t": {
+              "id": "bcf4f317-4e8b-4bb6-b86b-5f57eab234de",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-6816f9e5-753b-4db9-ba2c-8bca7753c1a1",
+            "children": [
+              {
+                "id": "node-018d2070-3447-4a97-80f2-d63de74df91b",
+                "children": [
+                  {
+                    "id": "node-e8399644-0836-4839-be12-afaf1c9e1fc2",
+                    "children": [
+                      {
+                        "id": "node-c2ee473e-a187-44d3-a4bf-29d341188a30",
+                        "children": [],
+                        "data": {
+                          "name": "Armor Pen Enhancement",
+                          "description": "Increases armor penetration by 8. Each point of armor pen reduces enemy armor by 1.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 8,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": null
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Armor Pen Enhancement",
+                      "description": "Increases armor penetration by 4. Each point of armor pen reduces enemy armor by 1.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 4,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": null
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Armor Pen Enhancement",
+                  "description": "Increases armor penetration by 2. Each point of armor pen reduces enemy armor by 1.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 2,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": null
+                },
+                "__rd3t": {
+                  "id": "5c1597ff-501c-4ac1-bdd2-5dec7b03a33b",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Armor Pen Enhancement",
+              "description": "Increases armor penetration by 1. Each point of armor pen reduces enemy armor by 1.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0.1,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": null
+            },
+            "__rd3t": {
+              "id": "ecd42c72-1b2a-4b9d-a3ab-2c88b5a97fd7",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-5b22a0ef-e50c-43c7-8b15-f2a5fd5f398d",
+            "children": [
+              {
+                "id": "node-29d638c7-cc18-424f-ab8e-66f7b3963cd1",
+                "children": [
+                  {
+                    "id": "node-94ad5414-0c1a-4621-9a53-f77dbdc7f495",
+                    "children": [
+                      {
+                        "id": "node-713bdd82-9dba-42ff-b66b-a58f1edd421e",
+                        "children": [],
+                        "data": {
+                          "name": "Magic Pen Enhancement",
+                          "description": "Increases magic penetration by 8. Each point of armor pen reduces enemy magic resist by 1.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 8,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": 0
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Magic Pen Enhancement",
+                      "description": "Increases magic penetration by 4. Each point of armor pen reduces enemy magic resist by 1.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 4,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": 0
+                    },
+                    "__rd3t": {
+                      "id": "ac9b4491-a54b-4c40-83d5-5bd1be9959be",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Magic Pen Enhancement",
+                  "description": "Increases magic penetration by 2. Each point of armor pen reduces enemy magic resist by 1.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 2,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": 0
+                }
+              }
+            ],
+            "data": {
+              "name": "Magic Pen Enhancement",
+              "description": "Increases magic penetration by 1. Each point of armor pen reduces enemy magic resist by 1.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 1,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": 0
+            }
+          },
+          {
+            "id": "node-38cf3292-785c-4128-af43-e498ca0fb39f",
+            "children": [
+              {
+                "id": "node-7cb5f122-0057-462b-a1b8-5e1c997c00d8",
+                "children": [
+                  {
+                    "id": "node-8a65bb59-93c9-440b-94b4-272dbc36ef9e",
+                    "children": [
+                      {
+                        "id": "node-4ef011c0-a693-47c0-b176-66b16722704f",
+                        "children": [],
+                        "data": {
+                          "name": "Percent Attack Speed Enhancement",
+                          "description": "Reduces cooldown of attack by 8 percent.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0.08,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": 0
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Percent Attack Speed Enhancement",
+                      "description": "Reduces cooldown of attack by 4 percent.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0.04,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": 0
+                    },
+                    "__rd3t": {
+                      "id": "0465b347-5f7b-4a63-b8fe-07826d6a6f12",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Percent Attack Speed Enhancement",
+                  "description": "Reduces cooldown of attack by 2 percent.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0.02,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": 0
+                },
+                "__rd3t": {
+                  "id": "a37a76b8-7052-4e05-bb29-f4ff1de57c67",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Percent Attack Speed Enhancement",
+              "description": "Reduces cooldown of attack by 1 percent.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0.01,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": 0
+            }
+          },
+          {
+            "id": "node-269501f1-4ce4-4114-b3ba-e26a8b3ac59a",
+            "children": [
+              {
+                "id": "node-fb40841f-e670-4193-bbe1-957b08b9e2aa",
+                "children": [
+                  {
+                    "id": "node-41ae7002-5c8f-4f35-a252-9f6cbc798c20",
+                    "children": [
+                      {
+                        "id": "node-a77517a4-619d-45f1-bbcb-2ca36376cecd",
+                        "children": [],
+                        "data": {
+                          "name": "Percent Attack Enhancement",
+                          "description": "Increases physical attack damage by 8 percent.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0.8,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": null
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Percent Attack Enhancement",
+                      "description": "Increases physical attack damage by 4 percent.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0.4,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": null
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Percent Attack Enhancement",
+                  "description": "Increases physical attack damage by 2 percent.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0.2,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": null
+                }
+              }
+            ],
+            "data": {
+              "name": "Percent Attack Enhancement",
+              "description": "Increases physical attack damage by 1 percent.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0.1,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": null
+            }
+          },
+          {
+            "id": "node-c9acd956-3346-4f57-b39e-5bbd368c3f6c",
+            "children": [
+              {
+                "id": "node-ae9380f2-8c2c-4020-a178-5672e1f1c0aa",
+                "children": [
+                  {
+                    "id": "node-8d06d200-dbed-4747-b7fc-780a65963c9d",
+                    "children": [
+                      {
+                        "id": "node-725c2a09-fa1b-4813-ba9b-28aada9d1a27",
+                        "children": [],
+                        "data": {
+                          "name": "Percent Magic Attack Enhancement",
+                          "description": "Increases magic attack by 8 percent.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0.8,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": null
+                        },
+                        "__rd3t": {
+                          "id": "94156fbd-e9ba-482a-a1ba-b73ec0b1fe0f",
+                          "depth": 4,
+                          "collapsed": false
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Percent Magic Attack Enhancement",
+                      "description": "Increases magic attack by 4 percent.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0.4,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": null
+                    },
+                    "__rd3t": {
+                      "id": "9d30fbba-d943-4917-b10a-b2105a446e9c",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Percent Magic Attack Enhancement",
+                  "description": "Increases magic attack by 2 percent.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0.2,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": null
+                },
+                "__rd3t": {
+                  "id": "47621a15-9dda-44d3-9480-c1350a37649e",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Percent Magic Attack Enhancement",
+              "description": "Increases magic attack by 1 percent.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0.1,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": null
+            },
+            "__rd3t": {
+              "id": "743c9bc6-9cfd-4cf2-81a0-2f3dc5f3938a",
+              "depth": 1,
+              "collapsed": false
+            }
           }
         ],
         "data": {
@@ -6283,8 +7448,278 @@
       "id": "node-50e34392-a9aa-4dcd-935f-81b736058bcc",
       "children": [],
       "data": {
-        "name": "auto-generated",
-        "description": "auto-generated",
+        "name": "Percent Damage Enhancement",
+        "description": "Increases all damage by 1 percent.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 1,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "skipped",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": 0
+      }
+    },
+    {
+      "id": "node-97e02499-c0a5-4500-94cc-460a401a4ce1",
+      "children": [],
+      "data": {
+        "name": "Percent Attack Enhancement",
+        "description": "Increases physical attack damage by 1 percent.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 1,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "none",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": null
+      }
+    },
+    {
+      "id": "node-c12a632a-351e-4b14-8f98-1f02682a6a81",
+      "children": [],
+      "data": {
+        "name": "Percent Magic Attack Enhancement",
+        "description": "Increases magic attack by 1 percent.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 1,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "none",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": null
+      }
+    },
+    {
+      "id": "node-d1c619f6-269c-4639-92d6-cff5b1be3ed1",
+      "children": [],
+      "data": {
+        "name": "Armor Pen Enhancement",
+        "description": "Increases armor penetration by 1. Each point of armor pen reduces enemy armor by 1.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 1,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "none",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": null
+      }
+    },
+    {
+      "id": "node-68390a26-513d-43f1-a74f-5ff1f154ac11",
+      "children": [],
+      "data": {
+        "name": "Magic Pen Enhancement",
+        "description": "Increases magic penetration by 1. Each point of armor pen reduces enemy magic resist by 1.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": -12,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "none",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": 0
+      }
+    },
+    {
+      "id": "node-b79ec9bd-7231-422a-823c-7d368d4ec7cc",
+      "children": [],
+      "data": {
+        "name": "Percent Attack Speed Enhancement",
+        "description": "Reduces cooldown of attack by 1 percent.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0.01,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "none",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": 0
+      }
+    },
+    {
+      "id": "node-60029c61-a880-41ef-bdad-30e3ec81686e",
+      "children": [],
+      "data": {
+        "name": "Percent Life Steal Enhancement",
+        "description": "Increases life steal by 1 percent. Life steal heals user for physical attack dealt.",
         "stat": {
           "maxHp": 0,
           "maxMana": 0,
@@ -6306,11 +7741,12 @@
           "attackSpeed": 0,
           "attackSpeedPercent": 0,
           "speed": 0,
-          "lifeSteal": 0,
+          "lifeSteal": 0.01,
           "lifeStealPercent": 0,
           "level": 0
         },
-        "status": "skipped",
+        "status": "none",
+        "selectionTime": 0,
         "upgradeEffect": {
           "effectLogicId": "",
           "doesStack": 1,
@@ -6318,7 +7754,9 @@
           "collisionGroup": -1,
           "type": "none"
         },
-        "coinCost": 0
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": null
       }
     }
   ],
