@@ -19,6 +19,8 @@ export default class HUDScene extends Phaser.Scene {
     private artifactDisplay!: ArtifactDisplay;
     private peerInfoPopup!: PeerInfoPopup;
     private waPopup!: WAPopup;
+    private menuModal?: MenuModal;
+    private gameOverModal?: GameOverModal;
 
     constructor() {
         super(SceneKey.HUDScene);
@@ -44,6 +46,8 @@ export default class HUDScene extends Phaser.Scene {
     public resetHUD() {
         // Reset the PeerInfoPopup
         this.peerInfoPopup.removeAllPeerInfo();
+        if(this.menuModal) this.menuModal.closeModal();
+        if(this.gameOverModal) this.gameOverModal.closeModal();
     }
 
     private initializeListeners() {
@@ -70,9 +74,11 @@ export default class HUDScene extends Phaser.Scene {
     private initializeUI() {
         // ----- Menu Button ------
         let menuButton = UIFactory.createButton(this, "Menu", 50, 50, "small", () => {
-            new MenuModal(this, {
+            this.menuModal = new MenuModal(this, {
                 leaveGameOnclick: () => {
+                    this.resetHUD();
                     EventManager.eventEmitter.emit(EventManager.GameEvents.LEAVE_GAME);
+                    
                 }
             });
         });
@@ -116,14 +122,18 @@ export default class HUDScene extends Phaser.Scene {
     }
 
     public playerDied() {
-        new GameOverModal(this, {
+        this.gameOverModal = new GameOverModal(this, {
             texts: [
                 "Coins Earned: 100",
                 "Gems Earned: 100",
                 "Monsters Killed: 100",
                 "Time Survived: 3:00",
             ],
-            leaveGameOnclick: () => EventManager.eventEmitter.emit(EventManager.GameEvents.LEAVE_GAME),
+            leaveGameOnclick: () => {
+                this.resetHUD();
+                EventManager.eventEmitter.emit(EventManager.GameEvents.LEAVE_GAME)
+                
+            },
             spectateOnclick: () => console.log("Spectate onclick")
         })
     }

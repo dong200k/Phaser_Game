@@ -47,15 +47,37 @@ export default class FloatingText extends TextBoxPhaser {
 
         this.setScale(0.5, 0.5);
 
+        // Tweens x and y offsets. this will modify this floatingText's x and y offsets.
+        let yOffset = (this.followGameObject?.height ?? 10) / 4;
+        let xOffset = Math.floor(Math.random() * 24) - 12;
+
+
+        this.scene.tweens.add({
+            targets: this,
+            duration: this.duration * (2/3),
+            ease: Phaser.Math.Easing.Quadratic.In,
+            yOffset: -2,
+            onComplete: (tween) => {
+                if(this.scene) {
+                    this.scene.tweens.add({
+                        targets: this,
+                        duration: this.duration * (1/3),
+                        ease: Phaser.Math.Easing.Quadratic.InOut,
+                        yOffset: yOffset,
+                        alpha: 0,
+                        onComplete: (tween) => {
+                            this.destroy();
+                        },
+                    });
+                }
+            }
+        })
+
         this.scene.tweens.add({
             targets: this,
             duration: this.duration,
-            ease: 'Power1',
-            yOffset: 5,
-            xOffset: Math.floor(Math.random() * 10) - 5,
-            onComplete: (tween) => {
-                this.destroy();
-            }
+            ease: Phaser.Math.Easing.Linear,
+            xOffset: xOffset,
         })
 
         

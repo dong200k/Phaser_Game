@@ -85,6 +85,7 @@ export default class GameScene extends Phaser.Scene {
             this.children.getAll().forEach((obj) => {
                 obj.destroy();
             })
+            this.tweens.killAll();
             this.gameManager = undefined;
             this.gameRoom = undefined;
             let switchToSceneKey = SceneKey.MenuScene;
