@@ -42,7 +42,7 @@ export default class Attack extends StateNode {
         let stateMachine = this.getStateMachine<MonsterController>();
         let monster = stateMachine.getMonster();
         let target = monster.getAggroTarget();
-        let attackRange = getFinalAttackRange(monster.stat);
+        let attackRange = getFinalAttackRange(monster.stat, 1);
 
         this.attackCooldown -= deltaT;
 

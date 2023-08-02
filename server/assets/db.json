@@ -4571,10 +4571,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "40ec83ae-2177-458b-8d73-0d8bd7660811",
+                          "id": "f9595204-0dfe-4e4b-ae04-ae00cb5c296f",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -4608,10 +4610,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "a7512c37-8f39-4e47-ab5a-58038ad3d1a7",
+                      "id": "3d2d3e7e-3bfa-4f93-8eef-2e4c8cf4ff37",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4645,10 +4649,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "fbf10b05-ac12-474a-af32-d653862d0a54",
+                  "id": "edc45a0d-1a01-4b76-b782-640db5aad38b",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4684,10 +4690,10 @@
               },
               "status": "none",
               "selectionTime": 0,
-              "coinCost": 0
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "7add0584-c434-4d1a-95d3-0df72383c1d7",
+              "id": "69096bb6-08c5-47c1-b8a8-fa81e89bfe92",
               "depth": 1,
               "collapsed": false
             }
@@ -4732,10 +4738,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "121b75ed-a4b7-4dd9-af00-af098dcb642f",
+                          "id": "f0e3643e-32d8-4b89-88cf-27146f1440ad",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -4769,10 +4777,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "5d385630-4e0c-444c-a9fb-310a7dd04ed4",
+                      "id": "87e39fe4-a74e-4eb3-a864-dc3ee460511f",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4806,10 +4816,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "ba92896b-e34e-4a72-9514-c1e6b1808aae",
+                  "id": "d322e9ba-bb38-4008-ba2f-bf5279374b4f",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4845,10 +4857,10 @@
               },
               "status": "none",
               "selectionTime": 0,
-              "coinCost": 0
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "bf900111-f77f-4cad-af82-6ea7499fbbbd",
+              "id": "72924e7e-94f8-4ffb-bb61-9f77ce02311b",
               "depth": 1,
               "collapsed": false
             }
@@ -4893,10 +4905,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "d0f3a51b-1a10-4558-8d54-47b52d3fb1c4",
+                          "id": "c4cb82f6-7804-4618-a816-7c3621e5cae6",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -4930,10 +4944,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "6fadcead-6a51-40f9-9ff8-6bcbf0ad8656",
+                      "id": "4ae2b42d-82da-42bb-bb73-37b84c7f90c0",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4967,10 +4983,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "bdac579f-5b4c-454b-ab40-c84f4594b9b0",
+                  "id": "dcece552-f87c-46e6-ae00-0ca0ddc4af9b",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5006,10 +5024,10 @@
               },
               "status": "none",
               "selectionTime": 0,
-              "coinCost": 0
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "24245655-3277-467d-b9df-bde54ae9e0e4",
+              "id": "f9648cf8-a20d-4b34-991e-ec1dd482ab5c",
               "depth": 1,
               "collapsed": false
             }
@@ -5056,11 +5074,11 @@
                           },
                           "status": "none",
                           "selectionTime": 0,
-                          "coinCost": 0,
+                          "coinCost": 80,
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "70e339c2-a8bb-4eb1-824a-c2373180adc2",
+                          "id": "c21a63e5-4766-4b3d-b222-fe029c2b6107",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5094,10 +5112,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "7f59f035-02ca-4efe-976d-637012ed03e7",
+                      "id": "9302c456-40dd-4b41-8eac-74d0985adac7",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5131,10 +5151,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "82344ecd-6512-45ef-9961-30a490fb6e75",
+                  "id": "053097dd-69b5-4529-b678-914c735910bd",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5168,10 +5190,12 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "81444ed5-81e5-459b-8bb7-d6c9588354dd",
+              "id": "1280e580-da74-4825-b8e5-f73a4bc997a8",
               "depth": 1,
               "collapsed": false
             }
@@ -5218,11 +5242,11 @@
                           },
                           "status": "none",
                           "selectionTime": 0,
-                          "coinCost": 0,
+                          "coinCost": 80,
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "4cb2b1b6-26f9-4d43-93a0-4c40390a563e",
+                          "id": "6fce483d-057a-49dd-b8ea-95b14281f0a1",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5256,10 +5280,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "dda7f084-ec5c-4d88-a94c-293c3d9fedc1",
+                      "id": "4646cc99-acd9-4ac6-a351-7ec8035f3a2b",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5293,10 +5319,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "1d0ff5a6-2e66-45f6-9d1e-23e65bf029ac",
+                  "id": "5527167a-9f8b-4e47-97f1-a9164bf6e17a",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5330,10 +5358,12 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "2af415b9-e5d2-4743-a319-1d5062ae2f52",
+              "id": "aac32ebd-8914-4ed3-af7d-80026017316c",
               "depth": 1,
               "collapsed": false
             }
@@ -5378,10 +5408,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "903abc8e-6cdb-497d-bb31-20d5630efe8c",
+                          "id": "f7174ce6-b522-49f1-9b61-6b5e544d1458",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5415,10 +5447,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "744607c1-cfe5-49a1-a590-e522874dfd1f",
+                      "id": "070a9b79-d754-424c-a4ba-1a8de371518d",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5452,10 +5486,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "15254c8d-c967-44d3-8413-bab043e3c2cd",
+                  "id": "b260f157-e312-43db-9e73-5dc49cae536a",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5489,10 +5525,12 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "f83bddb1-5ed7-4c17-87d6-43fd1d0a3083",
+              "id": "dedd9d25-97c7-428a-b8e1-f26da8e8df11",
               "depth": 1,
               "collapsed": false
             }
@@ -5537,10 +5575,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "991bdcc5-38f3-407f-9bd9-e0b7d1102177",
+                          "id": "d9107582-c9c3-4ff0-bae9-c13accc3eb0d",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5574,10 +5614,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "e8ac9fdd-3322-4520-ba05-1847a1b514c3",
+                      "id": "5679daaa-3c62-47bb-aa15-05a1e732ee8c",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5611,10 +5653,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "54d71fb1-3aae-4d89-83a2-8f3f925aeeb0",
+                  "id": "cda7557c-c354-4334-831f-d6581cbfbbce",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5648,10 +5692,12 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "f4ab9a35-0c27-4994-b54f-1c2582aa1b2a",
+              "id": "428c6cd6-48f4-4547-a4e4-9674fca29638",
               "depth": 1,
               "collapsed": false
             }
@@ -5696,10 +5742,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "2662705c-d33a-4ad4-a3f9-b1c1038dfa70",
+                          "id": "9761c7ad-99ab-471a-8e0f-6062ea93e1be",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5733,10 +5781,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "b3e90fc5-f8d3-4d33-9a31-be5305bf3e55",
+                      "id": "7ac0ad8f-b259-4046-ae51-52a762939cd6",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5770,10 +5820,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "0c378aeb-bea5-4cf3-b2f5-cbbea845f7ac",
+                  "id": "cd1e020b-d2ca-4967-8538-2e3aa91faa45",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5807,10 +5859,12 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "d9bd2474-d751-428d-aa02-57c15ce4bf2b",
+              "id": "02afb89c-e4b6-423b-aee4-e1f5213a8e10",
               "depth": 1,
               "collapsed": false
             }
@@ -5855,10 +5909,12 @@
                             "lifeStealPercent": 0,
                             "level": 0
                           },
-                          "status": "none"
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "b941d9eb-9c02-47e5-9a2f-fd1dd4c14c71",
+                          "id": "469be4af-9c97-451c-8a63-d0d342c887c6",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -5892,10 +5948,12 @@
                         "lifeStealPercent": 0,
                         "level": 0
                       },
-                      "status": "none"
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "ddcd35e7-a1e5-4180-bdd9-bdfabb9eea11",
+                      "id": "e1d62953-8b54-4a1a-bfc4-0bcbd67e9053",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5929,10 +5987,12 @@
                     "lifeStealPercent": 0,
                     "level": 0
                   },
-                  "status": "none"
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "abf832b3-cb04-48d8-a28b-33785814344f",
+                  "id": "53532d45-d87c-4906-91b3-ae375d0ee744",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5966,10 +6026,1177 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
-              "status": "none"
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10
             },
             "__rd3t": {
-              "id": "40a5b84e-fab8-4eb0-bec2-2d0b48bea320",
+              "id": "441f3a60-54d6-4a9b-971e-75de247b1b55",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-8c8187bc-0195-469a-9e8f-ba3cb9fc3b33",
+            "children": [
+              {
+                "id": "node-f85cc130-acfe-407f-992f-d90964c178d6",
+                "children": [
+                  {
+                    "id": "node-a59ab9ae-8523-4e91-897f-05300a4daedd",
+                    "children": [
+                      {
+                        "id": "node-75b65109-ba34-413f-afce-ff87abf9748d",
+                        "children": [],
+                        "data": {
+                          "name": "Percent Life Steal Enhancement",
+                          "description": "Increases life steal by 1 percent. Life steal heals user for physical attack dealt.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0.1,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": null
+                        },
+                        "__rd3t": {
+                          "id": "6cc95b1d-eb62-4a26-aa5a-dbdbba170de1",
+                          "depth": 4,
+                          "collapsed": false
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Percent Life Steal Enhancement",
+                      "description": "Increases life steal by 1 percent. Life steal heals user for physical attack dealt.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0.1,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": null
+                    },
+                    "__rd3t": {
+                      "id": "c0b8ffeb-4e80-4790-bd63-140cfadeead4",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Percent Life Steal Enhancement",
+                  "description": "Increases life steal by 1 percent. Life steal heals user for physical attack dealt.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0.01,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": null
+                },
+                "__rd3t": {
+                  "id": "da883c8e-8e4a-494a-a984-8bd042e11b33",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Percent Life Steal Enhancement",
+              "description": "Increases life steal by 1 percent. Life steal heals user for physical attack dealt.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0.1,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": null
+            },
+            "__rd3t": {
+              "id": "bb8b5af3-bd57-469d-ae5d-b5cae61f21dd",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-fa0854a4-8a90-453f-bc53-c738f13928f5",
+            "children": [
+              {
+                "id": "node-bed04b8e-59b3-47b0-bebe-3eb94b4eb510",
+                "children": [
+                  {
+                    "id": "node-4de948d8-540e-4538-a5aa-f08afea0429b",
+                    "children": [
+                      {
+                        "id": "node-b79f4c73-68b3-487f-bdff-c3cb9e3a9af2",
+                        "children": [],
+                        "data": {
+                          "name": "Percent Damage Enhancement",
+                          "description": "Increases all damage by 8 percent.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0.8,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": 0
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Percent Damage Enhancement",
+                      "description": "Increases all damage by 8 percent.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0.04,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": 0
+                    },
+                    "__rd3t": {
+                      "id": "583d767f-0f64-4f61-be8e-a752375c9721",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Percent Damage Enhancement",
+                  "description": "Increases all damage by 2 percent.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0.02,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": 0
+                },
+                "__rd3t": {
+                  "id": "3b82d734-00f7-45bb-9016-e1eb18df196b",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Percent Damage Enhancement",
+              "description": "Increases all damage by 1 percent.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0.1,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": 0
+            },
+            "__rd3t": {
+              "id": "bcf4f317-4e8b-4bb6-b86b-5f57eab234de",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-6816f9e5-753b-4db9-ba2c-8bca7753c1a1",
+            "children": [
+              {
+                "id": "node-018d2070-3447-4a97-80f2-d63de74df91b",
+                "children": [
+                  {
+                    "id": "node-e8399644-0836-4839-be12-afaf1c9e1fc2",
+                    "children": [
+                      {
+                        "id": "node-c2ee473e-a187-44d3-a4bf-29d341188a30",
+                        "children": [],
+                        "data": {
+                          "name": "Armor Pen Enhancement",
+                          "description": "Increases armor penetration by 8. Each point of armor pen reduces enemy armor by 1.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 8,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": null
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Armor Pen Enhancement",
+                      "description": "Increases armor penetration by 4. Each point of armor pen reduces enemy armor by 1.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 4,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": null
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Armor Pen Enhancement",
+                  "description": "Increases armor penetration by 2. Each point of armor pen reduces enemy armor by 1.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 2,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": null
+                },
+                "__rd3t": {
+                  "id": "5c1597ff-501c-4ac1-bdd2-5dec7b03a33b",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Armor Pen Enhancement",
+              "description": "Increases armor penetration by 1. Each point of armor pen reduces enemy armor by 1.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0.1,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": null
+            },
+            "__rd3t": {
+              "id": "ecd42c72-1b2a-4b9d-a3ab-2c88b5a97fd7",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-5b22a0ef-e50c-43c7-8b15-f2a5fd5f398d",
+            "children": [
+              {
+                "id": "node-29d638c7-cc18-424f-ab8e-66f7b3963cd1",
+                "children": [
+                  {
+                    "id": "node-94ad5414-0c1a-4621-9a53-f77dbdc7f495",
+                    "children": [
+                      {
+                        "id": "node-713bdd82-9dba-42ff-b66b-a58f1edd421e",
+                        "children": [],
+                        "data": {
+                          "name": "Magic Pen Enhancement",
+                          "description": "Increases magic penetration by 8. Each point of armor pen reduces enemy magic resist by 1.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 8,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": 0
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Magic Pen Enhancement",
+                      "description": "Increases magic penetration by 4. Each point of armor pen reduces enemy magic resist by 1.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 4,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": 0
+                    },
+                    "__rd3t": {
+                      "id": "ac9b4491-a54b-4c40-83d5-5bd1be9959be",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Magic Pen Enhancement",
+                  "description": "Increases magic penetration by 2. Each point of armor pen reduces enemy magic resist by 1.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 2,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": 0
+                }
+              }
+            ],
+            "data": {
+              "name": "Magic Pen Enhancement",
+              "description": "Increases magic penetration by 1. Each point of armor pen reduces enemy magic resist by 1.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 1,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": 0
+            }
+          },
+          {
+            "id": "node-38cf3292-785c-4128-af43-e498ca0fb39f",
+            "children": [
+              {
+                "id": "node-7cb5f122-0057-462b-a1b8-5e1c997c00d8",
+                "children": [
+                  {
+                    "id": "node-8a65bb59-93c9-440b-94b4-272dbc36ef9e",
+                    "children": [
+                      {
+                        "id": "node-4ef011c0-a693-47c0-b176-66b16722704f",
+                        "children": [],
+                        "data": {
+                          "name": "Percent Attack Speed Enhancement",
+                          "description": "Reduces cooldown of attack by 8 percent.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0.08,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": 0
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Percent Attack Speed Enhancement",
+                      "description": "Reduces cooldown of attack by 4 percent.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0.04,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": 0
+                    },
+                    "__rd3t": {
+                      "id": "0465b347-5f7b-4a63-b8fe-07826d6a6f12",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Percent Attack Speed Enhancement",
+                  "description": "Reduces cooldown of attack by 2 percent.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0.02,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": 0
+                },
+                "__rd3t": {
+                  "id": "a37a76b8-7052-4e05-bb29-f4ff1de57c67",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Percent Attack Speed Enhancement",
+              "description": "Reduces cooldown of attack by 1 percent.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0.01,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": 0
+            }
+          },
+          {
+            "id": "node-269501f1-4ce4-4114-b3ba-e26a8b3ac59a",
+            "children": [
+              {
+                "id": "node-fb40841f-e670-4193-bbe1-957b08b9e2aa",
+                "children": [
+                  {
+                    "id": "node-41ae7002-5c8f-4f35-a252-9f6cbc798c20",
+                    "children": [
+                      {
+                        "id": "node-a77517a4-619d-45f1-bbcb-2ca36376cecd",
+                        "children": [],
+                        "data": {
+                          "name": "Percent Attack Enhancement",
+                          "description": "Increases physical attack damage by 8 percent.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0.8,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": null
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Percent Attack Enhancement",
+                      "description": "Increases physical attack damage by 4 percent.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0.4,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": null
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Percent Attack Enhancement",
+                  "description": "Increases physical attack damage by 2 percent.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0.2,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": null
+                }
+              }
+            ],
+            "data": {
+              "name": "Percent Attack Enhancement",
+              "description": "Increases physical attack damage by 1 percent.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0.1,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": null
+            }
+          },
+          {
+            "id": "node-c9acd956-3346-4f57-b39e-5bbd368c3f6c",
+            "children": [
+              {
+                "id": "node-ae9380f2-8c2c-4020-a178-5672e1f1c0aa",
+                "children": [
+                  {
+                    "id": "node-8d06d200-dbed-4747-b7fc-780a65963c9d",
+                    "children": [
+                      {
+                        "id": "node-725c2a09-fa1b-4813-ba9b-28aada9d1a27",
+                        "children": [],
+                        "data": {
+                          "name": "Percent Magic Attack Enhancement",
+                          "description": "Increases magic attack by 8 percent.",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0.8,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "coinCost": 80,
+                          "doesStack": false,
+                          "collisionGroup": null
+                        },
+                        "__rd3t": {
+                          "id": "94156fbd-e9ba-482a-a1ba-b73ec0b1fe0f",
+                          "depth": 4,
+                          "collapsed": false
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Percent Magic Attack Enhancement",
+                      "description": "Increases magic attack by 4 percent.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0.4,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "coinCost": 40,
+                      "doesStack": false,
+                      "collisionGroup": null
+                    },
+                    "__rd3t": {
+                      "id": "9d30fbba-d943-4917-b10a-b2105a446e9c",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Percent Magic Attack Enhancement",
+                  "description": "Increases magic attack by 2 percent.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0.2,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "coinCost": 20,
+                  "doesStack": false,
+                  "collisionGroup": null
+                },
+                "__rd3t": {
+                  "id": "47621a15-9dda-44d3-9480-c1350a37649e",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Percent Magic Attack Enhancement",
+              "description": "Increases magic attack by 1 percent.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0.1,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "coinCost": 10,
+              "doesStack": false,
+              "collisionGroup": null
+            },
+            "__rd3t": {
+              "id": "743c9bc6-9cfd-4cf2-81a0-2f3dc5f3938a",
               "depth": 1,
               "collapsed": false
             }
@@ -5979,14 +7206,14 @@
           "name": "Adventurer's Stat",
           "description": "Default stats that all adventurer's have.",
           "stat": {
-            "maxHp": 100,
-            "maxMana": 100,
+            "maxHp": 0,
+            "maxMana": 0,
             "hp": 0,
             "mana": 0,
             "armor": 0,
             "magicResist": 0,
             "damagePercent": 0,
-            "attack": 10,
+            "attack": 0,
             "attackPercent": 0,
             "armorPen": 0,
             "magicAttack": 0,
@@ -5996,19 +7223,21 @@
             "critDamage": 0,
             "attackRange": 0,
             "attackRangePercent": 0,
-            "attackSpeed": 1,
+            "attackSpeed": 0,
             "attackSpeedPercent": 0,
-            "speed": 1,
+            "speed": 0,
             "lifeSteal": 0,
             "lifeStealPercent": 0,
-            "level": 1
+            "level": 0
           },
-          "status": "none",
+          "status": "selected",
           "selectionTime": 0,
-          "coinCost": 0
+          "coinCost": 0,
+          "doesStack": false,
+          "collisionGroup": null
         },
         "__rd3t": {
-          "id": "28383593-14bf-400b-bc41-e233a2fb356c",
+          "id": "3973e515-ba25-4bcd-acbc-9c80f92e6c13",
           "depth": 0,
           "collapsed": false
         }
@@ -6219,8 +7448,278 @@
       "id": "node-50e34392-a9aa-4dcd-935f-81b736058bcc",
       "children": [],
       "data": {
-        "name": "auto-generated",
-        "description": "auto-generated",
+        "name": "Percent Damage Enhancement",
+        "description": "Increases all damage by 1 percent.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 1,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "skipped",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": 0
+      }
+    },
+    {
+      "id": "node-97e02499-c0a5-4500-94cc-460a401a4ce1",
+      "children": [],
+      "data": {
+        "name": "Percent Attack Enhancement",
+        "description": "Increases physical attack damage by 1 percent.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 1,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "none",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": null
+      }
+    },
+    {
+      "id": "node-c12a632a-351e-4b14-8f98-1f02682a6a81",
+      "children": [],
+      "data": {
+        "name": "Percent Magic Attack Enhancement",
+        "description": "Increases magic attack by 1 percent.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 1,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "none",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": null
+      }
+    },
+    {
+      "id": "node-d1c619f6-269c-4639-92d6-cff5b1be3ed1",
+      "children": [],
+      "data": {
+        "name": "Armor Pen Enhancement",
+        "description": "Increases armor penetration by 1. Each point of armor pen reduces enemy armor by 1.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 1,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "none",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": null
+      }
+    },
+    {
+      "id": "node-68390a26-513d-43f1-a74f-5ff1f154ac11",
+      "children": [],
+      "data": {
+        "name": "Magic Pen Enhancement",
+        "description": "Increases magic penetration by 1. Each point of armor pen reduces enemy magic resist by 1.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": -12,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "none",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": 0
+      }
+    },
+    {
+      "id": "node-b79ec9bd-7231-422a-823c-7d368d4ec7cc",
+      "children": [],
+      "data": {
+        "name": "Percent Attack Speed Enhancement",
+        "description": "Reduces cooldown of attack by 1 percent.",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0.01,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "none",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "",
+          "doesStack": 1,
+          "cooldown": 1000,
+          "collisionGroup": -1,
+          "type": "none"
+        },
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": 0
+      }
+    },
+    {
+      "id": "node-60029c61-a880-41ef-bdad-30e3ec81686e",
+      "children": [],
+      "data": {
+        "name": "Percent Life Steal Enhancement",
+        "description": "Increases life steal by 1 percent. Life steal heals user for physical attack dealt.",
         "stat": {
           "maxHp": 0,
           "maxMana": 0,
@@ -6242,11 +7741,12 @@
           "attackSpeed": 0,
           "attackSpeedPercent": 0,
           "speed": 0,
-          "lifeSteal": 0,
+          "lifeSteal": 0.01,
           "lifeStealPercent": 0,
           "level": 0
         },
-        "status": "skipped",
+        "status": "none",
+        "selectionTime": 0,
         "upgradeEffect": {
           "effectLogicId": "",
           "doesStack": 1,
@@ -6254,7 +7754,9 @@
           "collisionGroup": -1,
           "type": "none"
         },
-        "coinCost": 0
+        "coinCost": 10,
+        "doesStack": false,
+        "collisionGroup": null
       }
     }
   ],

@@ -28,7 +28,7 @@ export default class Follow extends StateNode {
             let velocity = MathUtil.getNormalizedSpeed(aggroTarget.x - monster.x, aggroTarget.y - monster.y, speed);
             if(body) Matter.Body.setVelocity(body, velocity);
 
-            let attackRange = getFinalAttackRange(monster.stat);
+            let attackRange = getFinalAttackRange(monster.stat, 1);
             if(MathUtil.distance(monster.x, monster.y, aggroTarget.x, aggroTarget.y) <= attackRange) {
                 this.getStateMachine().changeState("Attack");
             }

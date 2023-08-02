@@ -158,6 +158,8 @@ export function padUpgradeStat(upgrade){
   return newUpgrade
 }
 
+
+
 // export default function isValidStat(stat){
 //   let message = ""
 //   Object.entries(stat).forEach(([key, val])=>{

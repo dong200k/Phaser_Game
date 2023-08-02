@@ -177,9 +177,13 @@ export default class TreeManager{
      */
     static computeTotalStat(root?: Node<WeaponData> | Node<SkillData>){
         let totalStats = Stat.getZeroStat()
+        let name = root?.data.name
 
         //dfs traversal to get stats that have been selected
         function dfs(root: Node<WeaponData> | Node<SkillData>){
+            if(name === "Adventurer's Stat"){
+                console.log(root.data.name, root.data.status)
+            }
             switch(root.data.status){
                 case "selected":
                     // Increase total in place

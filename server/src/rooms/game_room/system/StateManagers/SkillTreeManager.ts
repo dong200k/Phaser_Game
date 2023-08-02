@@ -21,6 +21,9 @@ export default class SkillTreeManager{
         skillTree.root = root
         let totalStat = TreeManager.addTreeStatsToPlayer(playerState, skillTree)
         skillTree.totalStat = totalStat
+        Object.entries(totalStat).forEach(([k,v])=>{
+            console.log(k,v)
+        })
     }
 
     /**

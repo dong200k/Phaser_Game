@@ -1,5 +1,5 @@
 import Stat from "../../../gameobjs/Stat";
-import { Data } from "./Data";
+import { Data, status } from "./Data";
 import {type} from "@colyseus/schema"
 
 export default class SkillData extends Data{
@@ -8,11 +8,12 @@ export default class SkillData extends Data{
     @type('string') description
     @type('number') coinCost
  
-    constructor(stat?: Stat, name: string = "Name", description: string = "Description", coinCost: number = 0){
+    constructor(stat?: Stat, name: string = "Name", description: string = "Description", coinCost: number = 0, status: status="none"){
         super()
         this.stat = stat? stat : Stat.getZeroStat()
         this.name = name
         this.description = description
         this.coinCost = coinCost
+        this.status = status
     }
 }
