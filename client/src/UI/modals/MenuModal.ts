@@ -93,10 +93,11 @@ export default class MenuModal extends BaseModal {
 
     private createTab(text: string) {
         return this.scene.rexUI.add.label({
-            width: 50, height: 38,
+            width: 120, height: 38,
             background: this.scene.rexUI.add.roundRectangle(0, 0, 0, 0, 0, ColorStyle.primary.hex[500]),
             text: UIFactory.createTextBoxPhaser(this.scene, text, "p3"),
-            space: { left: 10, right: 10, bottom: 10, top: 10 }
+            space: { left: 10, right: 10, bottom: 10, top: 10 },
+            align: "center",
         })
     }
 

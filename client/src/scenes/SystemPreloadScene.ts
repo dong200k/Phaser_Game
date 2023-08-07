@@ -35,6 +35,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("player_death", "audio/player_death.mp3");
         this.load.audio("monster_death", "audio/monster_death.mp3");
         this.load.audio("level_up", "audio/level_up.mp3");
+        this.load.audio("shoot_arrow", "audio/shoot_arrow.mp3");
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");
@@ -76,6 +77,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("player_death", "sfx");
         soundManager.add("monster_death", "sfx");
         soundManager.add("level_up", "sfx");
+        soundManager.add("shoot_arrow", "sfx");
 
         /** Initialize the SceneManager and sets this scene as the current scene. */
         let sceneManager = SceneManager.getSceneManager();

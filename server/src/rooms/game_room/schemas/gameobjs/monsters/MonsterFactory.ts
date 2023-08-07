@@ -4,6 +4,10 @@ import TinyZombie from "./zombie/TinyZombie";
 
 export type MonsterType = "TinyZombie";
 
+// Map of zombietype to its config object.
+
+// Controller needs a map of the controller id to the controller constructor.
+
 export default class MonsterFactory {
 
     /**

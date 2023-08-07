@@ -286,6 +286,8 @@ export default class GameManager {
     private addProjectile(projectile: ProjectileState, key: string): Projectile{
         let proj = new Projectile(this.scene, projectile);
         this.addListenersToGameObject(proj, projectile);
+        // Play projectile spawn sound.
+        SoundManager.getManager().play(projectile.spawnSound, {detune: Math.floor(Math.random() * 300 ) - 150});
         // Play projectile animation.
         if(projectile.projectileType === "Melee") {
             proj.play("play");
@@ -408,6 +410,15 @@ export default class GameManager {
             gameObject.serverX = gameObjectState.x;
             gameObject.serverY = gameObjectState.y;
         }
+
+        // Play projectile sound if it changed from inactive to active.
+        if(gameObject instanceof Projectile) {
+            if(!gameObject.serverActive && gameObjectState.active) {
+                let projectileState = gameObjectState as ProjectileState;
+                SoundManager.getManager().play(projectileState.spawnSound, {detune: Math.floor(Math.random() * 300 ) - 150});
+            }
+        }
+
         gameObject.serverVisible = gameObjectState.visible;
         gameObject.serverActive = gameObjectState.active;
     }

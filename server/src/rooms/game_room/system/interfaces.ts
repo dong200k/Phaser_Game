@@ -124,6 +124,7 @@ export type IProjectileConfig = {
     magicMultiplier: number,
     classType?: IClasses,
     originEntityId?: string,
+    spawnSound?: string,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }
@@ -135,6 +136,7 @@ export type IMonsterConfig = {
     height: number;
     stat: statType;
     poolType?: string;
+    controllerId?: string;
 }
 
 // ------------ interfaces for Collision Manager -------------- //

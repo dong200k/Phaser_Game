@@ -43,6 +43,7 @@ export default class BowLogic extends EffectLogic{
             attackMultiplier: 1,
             magicMultiplier: 0,
             originEntityId: playerState.getId(),
+            spawnSound: "shoot_arrow",
         })
     }
 }
