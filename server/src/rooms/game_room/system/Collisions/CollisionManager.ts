@@ -116,7 +116,7 @@ export default class CollisionManager{
         // Entity shooting projectile heals based on their lifesteal
         let attackingEntity = projectile.entity
         if(attackingEntity){
-            let lifeSteal = getFinalLifeSteal(trueAttackDamage, attackingEntity.stat.lifeSteal)
+            let lifeSteal = getFinalLifeSteal(trueAttackDamage, attackingEntity.stat.lifeSteal, attackingEntity.stat.lifeStealPercent)
             let healEffect = EffectFactory.createHealEffect(lifeSteal)
             //console.log("lifesteal:", lifeSteal)
             EffectManager.addEffectsTo(attackingEntity, healEffect)

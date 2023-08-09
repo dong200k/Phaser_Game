@@ -1,6 +1,7 @@
 import * as Colyseus from 'colyseus.js';
 import type WaitingRoomState from "../../../server/src/rooms/waiting_room/schemas/State";
 import type GameRoomState from "../../../server/src/rooms/game_room/schemas/State";
+import ClientFirebaseConnection from '../firebase/ClientFirebaseConnection';
 
 type room = "waiting" | "game" | "lobby" | "none";
 
@@ -43,7 +44,7 @@ export default class ClientManager {
             if(this.state === 'lobby' && this.lobbyRoom != null)
                 resolve(this.lobbyRoom);
             else {
-                this.client.joinOrCreate('lobby').then((room) => {
+                this.client.joinOrCreate('lobby', {IdToken: ClientFirebaseConnection.getConnection().idToken}).then((room) => {
                     this.lobbyRoom = room;
                     this.lobbyRoom.onLeave((code) => {
                         this.lobbyRoom = undefined;
@@ -88,14 +89,14 @@ export default class ClientManager {
         const promise = new Promise<Colyseus.Room<GameRoomState>>((resolve, reject) => {
             this.leaveGameRoom();
             if(this.gameRoomId === "") {
-                this.client.create<GameRoomState>('game').then((room) => {
-                    this.onJoinGameRoom(room);
+                this.client.create<GameRoomState>('game', {IdToken: ClientFirebaseConnection.getConnection().idToken}).then((room) => {
+                    this.onJoinGameRoom(room,);
                     resolve(room);
                 }).catch((err) => {
                     reject(err);
                 })
             } else {
-                this.client.joinById<GameRoomState>(this.gameRoomId).then((room) => {
+                this.client.joinById<GameRoomState>(this.gameRoomId, {IdToken: ClientFirebaseConnection.getConnection().idToken}).then((room) => {
                     this.onJoinGameRoom(room);
                     resolve(room);
                 }).catch((err) => {
@@ -123,14 +124,14 @@ export default class ClientManager {
         const promise = new Promise<Colyseus.Room<WaitingRoomState>>((resolve, reject) => {
             this.leaveWaitingRoom();
             if(!this.waitingRoomId) {
-                this.client.create<WaitingRoomState>('waiting').then((room) => {
+                this.client.create<WaitingRoomState>('waiting', {IdToken: ClientFirebaseConnection.getConnection().idToken}).then((room) => {
                     this.onJoinWaitingRoom(room);
                     resolve(room);
                 }).catch((err) => {
                     reject(err);
                 })
             } else {
-                this.client.joinById<WaitingRoomState>(this.waitingRoomId).then((room) => {
+                this.client.joinById<WaitingRoomState>(this.waitingRoomId, {IdToken: ClientFirebaseConnection.getConnection().idToken}).then((room) => {
                     this.onJoinWaitingRoom(room);
                     resolve(room);
                 }).catch((err) => {

@@ -3,6 +3,7 @@ import ContinuousEffectUntimed from "../../../../schemas/effects/continuous/Cont
 import Player from "../../../../schemas/gameobjs/Player";
 import { CategoryType } from "../../../Collisions/Category";
 import DatabaseManager from "../../../Database/DatabaseManager";
+import { getFinalAttackRange } from "../../../Formulas/formulas";
 import GameManager from "../../../GameManager";
 import { ITriggerType } from "../../../interfaces";
 import EffectLogic from "../../EffectLogic";
@@ -15,6 +16,8 @@ export class DemoLogic extends EffectLogic{
     triggerType: ITriggerType = "none"
 
     public useEffect(playerState: Player, gameManager: GameManager, tree?: WeaponUpgradeTree){
+        let baseRange = 300
+        let range = getFinalAttackRange(playerState.stat, baseRange)
         let artifact = tree
         let collisionCategory: CategoryType =  "PLAYER_PROJECTILE"
         let poolType = "Horizontal-Glaive"
@@ -33,7 +36,7 @@ export class DemoLogic extends EffectLogic{
             collisionCategory: collisionCategory,
             poolType: poolType,
             entity: playerState,
-            range: 500,
+            range: range,
             activeTime: 3000,
             attackMultiplier: 10,
             magicMultiplier: 0,
@@ -69,7 +72,7 @@ export class DemoLogicSkill extends EffectLogic{
         let tickRate = 1
         if(effect && effect instanceof ContinuousEffectUntimed){
             tickRate = effect.getTickRate()
-            effect.setTickRate(0.1)
+            effect.setTickRate(0.1 * tickRate)
             effect.setTimeUntilNextTick(0)
         }
 
