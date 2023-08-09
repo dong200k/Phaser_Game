@@ -131,12 +131,19 @@ export type IProjectileConfig = {
 
 // ------------ interfaces for Monsters -------------- //
 export type IMonsterConfig = {
+    id: string;
     name: string;
+    imageKey: string;
+    stats: statType;
+    poolType?: string;
+    controllerKey?: string;
+    bounds: Bounds;
+}
+
+interface Bounds {
+    type: string;
     width: number;
     height: number;
-    stat: statType;
-    poolType?: string;
-    controllerId?: string;
 }
 
 // ------------ interfaces for Collision Manager -------------- //

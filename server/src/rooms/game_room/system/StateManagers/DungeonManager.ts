@@ -109,17 +109,17 @@ export default class DungeonManager {
             // Waves
             let wave = this.createNewWave();
             wave.setAgressionLevel(1);
-            wave.addMonster("TinyZombie", 1);
+            wave.addMonster("Tiny Zombie", 1);
             newDungeon.addWave(wave);
 
             let wave2 = this.createNewWave();
             wave2.setAgressionLevel(2);
-            wave2.addMonster("TinyZombie", 20);
+            wave2.addMonster("Tiny Zombie", 20);
             newDungeon.addWave(wave2);
 
             // let wave3 = this.createNewWave();
             // wave3.setAgressionLevel(5);
-            // wave3.addMonster("TinyZombie", 100);
+            // wave3.addMonster("Tiny Zombie", 100);
             // newDungeon.addWave(wave3);
 
             // ---- Setting new dungeon to state -----
@@ -156,8 +156,9 @@ export default class DungeonManager {
             monster.reset();
         } else {
             // Create a new monster.
-            monster = MonsterFactory.createMonster(this.gameManager, monsterName);
-            monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
+            // monster = MonsterFactory.createMonster(this.gameManager, monsterName);
+            monster = MonsterFactory.createMonsterFromConfig(this.gameManager, DatabaseManager.getManager().getMonsterByName(monsterName));
+            // monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
             this.gameManager.addGameObject(monster.getId(), monster, monster.getBody());
         }
         

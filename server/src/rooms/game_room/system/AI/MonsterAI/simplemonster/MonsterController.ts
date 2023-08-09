@@ -7,7 +7,6 @@ import Follow from "./Follow";
 import Idle from "./Idle";
 
 export interface MonsterControllerData {
-    playerManager: PlayerManager;
     monster: Monster;
 }
 
@@ -18,7 +17,7 @@ export default class MonsterController extends StateMachine<MonsterControllerDat
     private monster!: Monster;
 
     protected create(data: MonsterControllerData): void {
-        this.playerManager = data.playerManager;
+        this.playerManager = data.monster.gameManager.getPlayerManager();
         this.monster = data.monster;
 
         //Idle state

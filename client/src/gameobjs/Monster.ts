@@ -9,10 +9,10 @@ export default class Monster extends Entity
     // static count: number = 0;
 
     constructor(scene:Phaser.Scene, monsterState:any) {
-        super(scene, monsterState.x, monsterState.y, monsterState.monsterName, monsterState);
+        super(scene, monsterState.x, monsterState.y, monsterState.imageKey, monsterState);
         this.monsterState = monsterState;
         // Generate animations for this monster.
-        scene.anims.createFromAseprite(monsterState.monsterName, undefined, this);
+        scene.anims.createFromAseprite(monsterState.imageKey, undefined, this);
 
         // Monster.count++;
         // console.log(`Monster Constructed: ${Monster.count}`);

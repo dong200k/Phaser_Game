@@ -1,5 +1,5 @@
 import FileUtil from "../../../../util/FileUtil"
-import { IDungeon, skillTree, upgrade, weapon } from "../interfaces"
+import { IDungeon, IMonsterConfig, skillTree, upgrade, weapon } from "../interfaces"
 
 export default class DatabaseManager{
 
@@ -11,6 +11,7 @@ export default class DatabaseManager{
     private skillTrees: Map<string, skillTree> = new Map()
 
     private dungeons: Map<string, IDungeon> = new Map();
+    private monsters: Map<string, IMonsterConfig> = new Map();
 
     private constructor() {};
 
@@ -44,6 +45,12 @@ export default class DatabaseManager{
             let dungeondb = await FileUtil.readJSONAsync("assets/tilemaps/dungeon.json");
             for(let dungeon of dungeondb) {
                 this.dungeons.set(dungeon.id, dungeon);
+            }
+
+            //Load monsters
+            let monsterdb = await FileUtil.readJSONAsync("assets/monster.json");
+            for(let monster of monsterdb) {
+                this.monsters.set(monster.id, monster);
             }
 
         } catch (error: any) {
@@ -140,6 +147,23 @@ export default class DatabaseManager{
             data.push(dungeon);
         })
         return data;
+    }
+
+    public getMonster(id: string) {
+        let monster = this.monsters.get(id);
+        if(monster === undefined) throw new Error("Error: Monster Id doesn't exist " + id);
+        return monster;
+    }
+
+    public getMonsterByName(name: string): IMonsterConfig {
+        let monster: IMonsterConfig | undefined = undefined;
+        this.monsters.forEach((data) => {
+            if(data.name === name) {
+                monster = data;
+            }
+        })
+        if(monster === undefined) throw new Error(`ERROR: Cannot find monster with name: ${name}`);
+        return monster;
     }
 
     static getManager() {
