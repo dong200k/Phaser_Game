@@ -44,6 +44,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("frost-glaive", "images/projectiles/frost-glaive.png");
         this.load.image("doubow_icon", "images/icons/doubow_icon.png");
         this.load.image("tribow_icon", "images/icons/tribow_icon.png");
+        this.load.image("dungeon_core_background", "images/background/DungeonCoreBg.png");
 
         // ------- Loading Animations ------- //
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
