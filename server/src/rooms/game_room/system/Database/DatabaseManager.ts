@@ -21,7 +21,7 @@ export default class DatabaseManager{
     async loadData(){
         try {
             let db = await FileUtil.readJSONAsync("assets/db.json")
-
+            
             //Load artifact and weapon upgrades
             for (let upgrade of db.upgrades) {
                 if(upgrade.type === "weapon"){

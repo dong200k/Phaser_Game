@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from "express"
 import PlayerRouter from './routers/PlayerRouter';
+import MonsterRouter from './routers/MonsterRouter';
 import ApiFirebaseConnection from './firebase/ApiFirebaseConnection';
 import JsonDatabaseManager from './skilltree/JsonDatabaseManager';
 
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.use(PlayerRouter)
+app.use(MonsterRouter);
 
 app.get("*", (req, res)=>{
   console.log("404 not found")
