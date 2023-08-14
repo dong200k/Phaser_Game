@@ -11,34 +11,31 @@ import UserContextProvider, { UserContext } from './contexts/UserContextProvider
 import Monster from './components/monster/Monster.js';
 import CreateMonster from './components/monster/CreateMonster.js';
 import EditMonster from './components/monster/EditMonster.js';
+import DataContextProvider from './contexts/DataContextProvider.js';
 
 function App() {
   return (
     <UserContextProvider>
-      <BrowserRouter>
-        <NavigationBar/>
-          <UserContext.Consumer>
-            {
-              (userContext) => {
-                return (<Routes>
-                  <Route path="/" element={<Home/>}/>
-                  <Route path="/upgrade/:id" element={<Upgrade type="upgrade"/>}/>
-                  <Route path="/upgrade" element={<Upgrades type="upgrade"/>} />
-                  <Route path="/skill/:id" element={<Upgrade type="skill"/>}/>
-                  <Route path="/skill" element={<Upgrades type="skill"/>} />
-                  <Route path="/node/:id" element={<EditNodePage/>}/>
-                  <Route path="/node" element={<Nodes/>} />
-                  <Route path="/weapon/:id" element={<Weapon/>}/>
-                  <Route path="/weapon" element={<Weapons />} />
-                  <Route path="/monster/create" element={<CreateMonster user={userContext.user}/>} />
-                  <Route path="/monster/edit/:id" element={<EditMonster />} />
-                  <Route path="/monster" element={<Monster />} />
-                  <Route path="*" element={<div>404 NOT FOUND</div>} />
-                </Routes>)
-              }
-            }
-          </UserContext.Consumer>
-      </BrowserRouter>
+      <DataContextProvider>
+        <BrowserRouter>
+          <NavigationBar/>
+            <Routes>
+              <Route path="/" element={<Home/>}/>
+              <Route path="/upgrade/:id" element={<Upgrade type="upgrade"/>}/>
+              <Route path="/upgrade" element={<Upgrades type="upgrade"/>} />
+              <Route path="/skill/:id" element={<Upgrade type="skill"/>}/>
+              <Route path="/skill" element={<Upgrades type="skill"/>} />
+              <Route path="/node/:id" element={<EditNodePage/>}/>
+              <Route path="/node" element={<Nodes/>} />
+              <Route path="/weapon/:id" element={<Weapon/>}/>
+              <Route path="/weapon" element={<Weapons />} />
+              <Route path="/monster/create" element={<CreateMonster />} />
+              <Route path="/monster/edit/:id" element={<EditMonster />} />
+              <Route path="/monster" element={<Monster />} />
+              <Route path="*" element={<div>404 NOT FOUND</div>} />
+            </Routes>
+        </BrowserRouter>
+      </DataContextProvider>
     </UserContextProvider>
   );
 }

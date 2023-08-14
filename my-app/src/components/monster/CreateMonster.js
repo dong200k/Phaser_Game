@@ -1,6 +1,14 @@
+import { useContext } from "react";
 import { createMonster } from "../../services/MonsterService";
+import { UserContext } from "../../contexts/UserContextProvider";
+import { useNavigate } from "react-router-dom";
+import { DataContext } from "../../contexts/DataContextProvider";
 
-export default function CreateMonster(props) {
+export default function CreateMonster() {
+
+    let {userToken} = useContext(UserContext);
+    let navigate = useNavigate();
+    let { refetchAllMonsters } = useContext(DataContext);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -27,10 +35,13 @@ export default function CreateMonster(props) {
             critRate: statsCritRate, critDamage: statsCritDamage, attackRange: statsAttackRange,
             attackSpeed: statsAttackSpeed, speed: statsSpeed, lifeSteal: statsLifeSteal
         }
-        props.user.getIdToken().then((token) => {
-            createMonster(token, asepriteKey, monsterName, AiKey, stats);
-            formDOM.reset();
-        })
+        createMonster(userToken, asepriteKey, monsterName, AiKey, stats).then((res) => {
+            if(res.status === 200) {
+                refetchAllMonsters();
+                navigate("/monster");
+                formDOM.reset();
+            }
+        });
     }
 
     return(
@@ -39,12 +50,15 @@ export default function CreateMonster(props) {
             <form onSubmit={onSubmit} id="createMonsterForm">
 
                 <h4>General</h4>
-                <label htmlFor="asepriteKey">Aseprite Key: </label>
-                <input type="text" name="asepriteKey" className="asepriteKey"></input><br/>
                 <label htmlFor="monsterName">Name: </label>
-                <input type="text" name="monsterName" className="monsterName"></input><br/>
+                <input type="text" name="monsterName" className="monsterName"></input>
+                The name of the monster. Must be unique as the ID will be the monster name with no spaces.<br/>
+                <label htmlFor="asepriteKey">Aseprite Key: </label>
+                <input type="text" name="asepriteKey" className="asepriteKey"></input>
+                The key of the aseprite image that will be used by this monster.<br/>
                 <label htmlFor="AiKey">AI Key: </label>
-                <input type="text" name="AiKey" className="AiKey"></input><br/>
+                <input type="text" name="AiKey" className="AiKey"></input>
+                The key of the AI controller.<br/>
 
                 <br></br>
                 <h4>Main Stats</h4>
@@ -56,7 +70,7 @@ export default function CreateMonster(props) {
                 <label htmlFor="statsAttackRange">AttackRange: </label>
                 <input type="number" name="statsAttackRange" className="statsAttackRange" defaultValue={30} /><br/>
                 <label htmlFor="statsAttackSpeed">AttackSpeed: </label>
-                <input type="number" name="statsAttackSpeed" className="statsAttackSpeed" defaultValue={0.7} /><br/>
+                <input type="number" name="statsAttackSpeed" className="statsAttackSpeed" defaultValue={0.7} step={0.1}/><br/>
                 <label htmlFor="statsSpeed">Speed: </label>
                 <input type="number" name="statsSpeed" className="statsSpeed" defaultValue={30} /><br/>
                 

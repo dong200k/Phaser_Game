@@ -2,6 +2,19 @@ import { getAuth } from "firebase-admin/auth";
 import { getFirestore } from "firebase-admin/firestore";
 
 /**
+ * Convert's a monster's name to its id. This is done by removing whitespaces from the name.
+ * If the monster's id is passed in, the resulting id will be the same.
+ * @param name The monster's name.
+ */
+const getIdFromName = (name: string) => {
+    let id = "";
+    for(let i = 0; i < name.length; i++){
+        if(name[i] !== " ") id += name[i];
+    }
+    return id;
+}
+
+/**
  * Creates a new monster with a unique id. The user must be authenticated as a game master 
  * for the operation to succeed.
  * @param asepriteKey The aseprite key that this monster will be using.
@@ -12,7 +25,6 @@ import { getFirestore } from "firebase-admin/firestore";
  */
 export const CreateMonster = async (asepriteKey: string, name: string, AIKey: string, stats: any) => {
     const db = getFirestore();
-
     let monster = {
         name: name,
         asepriteKey: asepriteKey,
@@ -33,8 +45,9 @@ export const CreateMonster = async (asepriteKey: string, name: string, AIKey: st
             lifeSteal: stats?.lifeSteal ?? 0,
         }
     }
-    let docRef = db.collection("monsters").doc();
-    let res = await docRef.set(monster);
+
+    let docRef = db.collection("monsters").doc(getIdFromName(name));
+    await docRef.create(monster);
     return monster;
 }
 
@@ -49,18 +62,8 @@ export const CreateMonster = async (asepriteKey: string, name: string, AIKey: st
  * @param stats The stats of the monster.
  * @returns A monster object.
  */
-export const UpdateMonster = async (IdToken: string, id: string, asepriteKey: string, name: string, AIKey: string, stats: any) => {
-    let decodedToken = await getAuth().verifyIdToken(IdToken);
-
-    // Get player
+export const UpdateMonster = async (id: string, asepriteKey: string, name: string, AIKey: string, stats: any) => {
     const db = getFirestore();
-    let playerRef = db.collection("players").doc(decodedToken.uid);
-    let playerSnap = await playerRef.get();
-
-    if(!playerSnap.exists) throw new Error("User doesn't exist.");
-
-    let playerData = playerSnap.data();
-    if(playerData?.gameMaster !== true) throw new Error("User is not a game master.");
 
     let monster = {
         name: name,
@@ -82,7 +85,8 @@ export const UpdateMonster = async (IdToken: string, id: string, asepriteKey: st
             lifeSteal: stats?.lifeSteal ?? 0,
         }
     }
-    let docRef = db.collection("monsters").doc(id);
+    
+    let docRef = db.collection("monsters").doc(getIdFromName(name));
     let res = await docRef.update(monster);
     return monster;
 }
@@ -93,26 +97,41 @@ export const UpdateMonster = async (IdToken: string, id: string, asepriteKey: st
  * @param IdToken The token of the user.
  * @param id The id of the monster.
  */
-export const DeleteMonster = async (IdToken: string, id: string) => {
-    let decodedToken = await getAuth().verifyIdToken(IdToken);
-
-    // Get player
+export const DeleteMonster = async (id: string) => {
     const db = getFirestore();
-    let playerRef = db.collection("players").doc(decodedToken.uid);
-    let playerSnap = await playerRef.get();
-
-    if(!playerSnap.exists) throw new Error("User doesn't exist.");
-
-    let playerData = playerSnap.data();
-    if(playerData?.gameMaster !== true) throw new Error("User is not a game master.");
-
-
-    let docRef = db.collection("monsters").doc(id);
+    let docRef = db.collection("monsters").doc(getIdFromName(id));
     let res = await docRef.delete();
 }
 
+/**
+ * Gets a monster by its id.
+ * @param id The id of the monster.
+ * @returns Monster data or undefined.
+ */
 export const GetMonster = async (id: string) => {
     const db = getFirestore();
-    let docRef = db.collection("monsters").doc(id);
+    let docRef = db.collection("monsters").doc(getIdFromName(id));
     return (await docRef.get()).data();
+}
+
+/**
+ * Gets a monster by its name.
+ * @param name The name of the monster.
+ * @returns Monster data or undefined.
+ */
+export const GetMonsterByName = async (name: string) => {
+    const db = getFirestore();
+    let docRef = db.collection("monsters").doc(getIdFromName(name));
+    return (await docRef.get()).data();
+}
+
+export const GetAllMonsters = async () => {
+    const db = getFirestore();
+    let monsterColRef = db.collection("monsters");
+    let q = await monsterColRef.get();
+    let monsterData: any[] = [];
+    q.forEach((doc) => {
+        monsterData.push(doc.data());
+    })
+    return monsterData;
 }

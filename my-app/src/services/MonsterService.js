@@ -5,19 +5,55 @@ export function createMonster(IdToken, asepriteKey, name, AIKey, stats) {
     let monsterData = {
         IdToken, asepriteKey, name, AIKey, stats
     };
-    console.log(monsterData);
-    fetch(BASEURL + `/monsters/create`, {
+    console.log("Creating monster", monsterData);
+    return fetch(BASEURL + `/monsters/create`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': IdToken,
         },
         body: JSON.stringify(monsterData)
-    }).then((res) => {
-        return res.json();
-    }).then((json) => {
-        console.log(json);
-    }).catch((err) => {
-        console.log(err);
+    });
+}
+
+export function editMonster(IdToken, id, asepriteKey, name, AIKey, stats) {
+    let monsterData = {
+        id, asepriteKey, name, AIKey, stats
+    };
+    console.log("Editing monster", monsterData);
+    return fetch(BASEURL + `/monsters/edit/${id}`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': IdToken,
+        },
+        body: JSON.stringify(monsterData)
     })
+}
+
+export function deleteMonster(IdToken, id) {
+    return fetch(BASEURL + `/monsters/delete/${id}`, {
+        method: "POST",
+        headers: {
+            'Authorization': IdToken,
+        }
+    });
+}
+
+export async function getAllMonsters(IdToken) {
+    try {
+        let res = await fetch(BASEURL + `/monsters`, {
+            method: "GET",
+            headers: {
+                'Authorization': IdToken,
+            }
+        });
+        if(res.status === 200) {
+            let data = await res.json();
+            return data.monsters;
+        } else return [];
+    } catch(e) {
+        console.log(e);
+        return [];
+    }
 }

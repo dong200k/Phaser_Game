@@ -46,3 +46,18 @@ export const isGameMaster = (req: any, res: any, next: any) => {
         return res.status(403).send(err.message);
     })
 }
+
+/**
+ * A middleware that checks if the request is from a game server. 
+ * Game server are trusted and should be the one sending player changes and 
+ * requesting assets(monster/player/dungeon data).
+ */
+export const isGameServer = (req: any, res: any, next: any) => {
+    if(!req.headers.authorization) {
+        return res.status(403).json({error: 'No credentials sent!'});
+    }
+    if(req.headers.authorization !== process.env.API_KEY) {
+        return res.status(403).json({error: 'Invalid credentials!'});
+    }
+    next();
+}

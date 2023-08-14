@@ -1,4 +1,4 @@
-import React, { createContext, Component, useState } from "react";
+import React, { createContext, Component, useState, useEffect } from "react";
 import ClientFirebaseConnection from "../firebase/ClientFirebaseConnection";
 
 /** The user context contains the state of the user/cred, updated by Firebase. */
@@ -8,10 +8,22 @@ export const UserContext = createContext();
 const UserContextProvider = (props) => {
 
     const [user, setUser] = useState(ClientFirebaseConnection.singleton.user);
-    ClientFirebaseConnection.singleton.onUserStateChange = (user) => {setUser(user)};
+    const [userToken, setUserToken] = useState(null);
+
+    useEffect(() => {
+        ClientFirebaseConnection.singleton.onUserStateChange = (user) => {
+            user.getIdToken().then((token) => {
+                setUser(user);
+                setUserToken(token);
+            }).catch((e) => {
+                console.log(e);
+            })
+        };
+    }, []);
+    
 
     return (
-        <UserContext.Provider value={{user: user}}>
+        <UserContext.Provider value={{user: user, userToken: userToken}}>
             {props.children}
         </UserContext.Provider>
     );
