@@ -61,3 +61,36 @@ export const isGameServer = (req: any, res: any, next: any) => {
     }
     next();
 }
+
+/**
+ * A middleware that checks if the request is from a game master or a game server.
+ */
+export const isGameMasterOrGameServer = (req: any, res: any, next: any) => {
+    if(!req.headers.authorization) {
+        return res.status(403).json({error: 'No credentials sent!'});
+    }
+    if(req.headers.authorization === process.env.API_KEY) {
+        // return res.status(403).json({error: 'Invalid credentials!'});
+        next();
+    } else {
+        const token = req.headers.authorization;
+        getAuth().verifyIdToken(token)
+        .then((decodedToken) => {
+            // Check if player is an admin.
+            const db = getFirestore();
+            let playerRef = db.collection("players").doc(decodedToken.uid);
+            return playerRef.get();
+        })
+        .then((playerSnap) => {
+            if(!playerSnap.exists) return res.status(403).json({error: "User does not exist."});
+
+            let playerData = playerSnap.data();
+            if(playerData?.gameMaster !== true) return res.status(403).json({error: "User is not a game master."});
+
+            next();
+        })
+        .catch((err) => {
+            return res.status(403).json({error:err.message});
+        })
+    }
+}

@@ -112,10 +112,13 @@ export default class DungeonManager {
             wave.addMonster("Tiny Zombie", 1);
             newDungeon.addWave(wave);
 
-            let wave2 = this.createNewWave();
-            wave2.setAgressionLevel(2);
-            wave2.addMonster("Tiny Zombie", 20);
-            newDungeon.addWave(wave2);
+            // Load wave from dungeon data.
+            this.createWavesFromData(newDungeon, dungeonData);
+
+            // let wave2 = this.createNewWave();
+            // wave2.setAgressionLevel(2);
+            // wave2.addMonster("Tiny Zombie", 20);
+            // newDungeon.addWave(wave2);
 
             // let wave3 = this.createNewWave();
             // wave3.setAgressionLevel(5);
@@ -134,6 +137,20 @@ export default class DungeonManager {
         return new Wave((name: string) => {
             this.spawnMonster(name);
         });
+    }
+
+    public createWavesFromData(dungeon: Dungeon, dungeonData: IDungeon) {
+        dungeonData.waves.forEach((waveData) => {
+            let waveType = waveData.type; // TODO: Create wave types.
+            let wave = new Wave((name: string) => {
+                this.spawnMonster(name);
+            })
+            wave.setAgressionLevel(waveData.difficulty);
+            waveData.monsters.forEach((monsterData) => {
+                wave.addMonster(monsterData.name, monsterData.count);
+            })
+            dungeon.addWave(wave);
+        })
     }
 
     public spawnMonster(monsterName: string): Monster {

@@ -86,15 +86,20 @@ export type weapon = {
     projectile: string
 }
 
-interface IMonster {
+export interface IMonster {
+
+}
+
+// Dungeon Interface
+interface IWaveMonster {
     name: string;
     count: number;
 }
 
-interface IWave {
+interface IDungeonWave {
     type: string;
     difficulty: number;
-    monsters: IMonster[];
+    monsters: IWaveMonster[];
 }
 
 export interface IDungeon { 
@@ -103,7 +108,7 @@ export interface IDungeon {
     tilesetName: string,
     serverJsonLocation: string,
     clientTilesetLocation: string,
-    waves: IWave[],
+    waves: IDungeonWave[],
 }
 
 

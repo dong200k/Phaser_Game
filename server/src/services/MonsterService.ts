@@ -14,4 +14,15 @@ export default class MonsterService {
         if(res.status === 200) return json.monster;
         else throw new Error(json.error);
     }
+
+    static getAllMonsterData() {
+        const url = MonsterService.baseUrl + "/monsters";
+        return fetch(url, {
+            method: "GET",
+            headers: {
+                "Content-type": "application/json",
+                "Authorization" : `${process.env.API_KEY}`,
+            }
+        });
+    }
 }

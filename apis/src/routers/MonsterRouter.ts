@@ -1,5 +1,5 @@
 import { CreateMonster, DeleteMonster, GetAllMonsters, GetMonster, UpdateMonster } from "../crud/MonsterCrud";
-import { isGameMaster, isGameServer } from "../middleware";
+import { isGameMaster, isGameMasterOrGameServer, isGameServer } from "../middleware";
 
 
 const express = require('express');
@@ -64,7 +64,7 @@ MonsterRouter.get('/monsters/:id', isGameServer, (req: any, res: any) => {
     
 })
 
-MonsterRouter.get('/monsters', isGameMaster, (req: any, res:any) => {
+MonsterRouter.get('/monsters', isGameMasterOrGameServer, (req: any, res:any) => {
     console.log("Get request. Get all monsters");
     return GetAllMonsters().then((monsters) => {
         res.status(200).json({monsters});
