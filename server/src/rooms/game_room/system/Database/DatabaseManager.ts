@@ -1,3 +1,4 @@
+import DungeonService from "../../../../services/DungeonService"
 import FileUtil from "../../../../util/FileUtil"
 import { IDungeon, IMonsterConfig, skillTree, upgrade, weapon } from "../interfaces"
 
@@ -42,10 +43,17 @@ export default class DatabaseManager{
             }
 
             //Load dungeons
-            let dungeondb = await FileUtil.readJSONAsync("assets/tilemaps/dungeon.json");
-            for(let dungeon of dungeondb) {
-                this.dungeons.set(dungeon.id, dungeon);
+            let dungeonData = await (await DungeonService.getAllDungeons()).json();
+            for(let dungeon of dungeonData.dungeons) {
+                this.dungeons.set(dungeon.name, dungeon);
             }
+
+            // console.log("DUNGEON DATA");
+            // console.log(dungeonData);
+
+            // try {
+                
+            // }
 
             //Load monsters
             let monsterdb = await FileUtil.readJSONAsync("assets/monster.json");

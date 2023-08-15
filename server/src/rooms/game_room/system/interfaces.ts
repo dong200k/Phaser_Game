@@ -86,13 +86,26 @@ export type weapon = {
     projectile: string
 }
 
+interface IMonster {
+    name: string;
+    count: number;
+}
+
+interface IWave {
+    type: string;
+    difficulty: number;
+    monsters: IMonster[];
+}
+
 export interface IDungeon { 
     id: string,
     name: string,
     tilesetName: string,
     serverJsonLocation: string,
-    clientTilesetLocation: string
+    clientTilesetLocation: string,
+    waves: IWave[],
 }
+
 
 // export type dbUpgradeEffect = {
 //     effectLogicId: string,

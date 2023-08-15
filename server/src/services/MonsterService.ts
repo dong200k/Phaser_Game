@@ -6,7 +6,8 @@ export default class MonsterService {
         let res = await fetch(url, {
             method: "GET",
             headers: {
-                "Content-type": "application/json"
+                "Content-type": "application/json",
+                "Authorization" : `${process.env.API_KEY}`,
             }
         });
         let json = await res.json();

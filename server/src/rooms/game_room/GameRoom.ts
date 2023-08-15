@@ -9,6 +9,11 @@ export interface GameRoomOptions {
     dungeonSelected: string;
 }
 
+interface WaitingClient { 
+    client: Client;
+    options: any;
+}
+
 export default class GameRoom extends Room<State> {
     //autoDispose = false;
     
@@ -22,6 +27,9 @@ export default class GameRoom extends Room<State> {
     // ------- fixed tick --------
     private timePerTick = 33.33; // 20 ticks per second.
     private timeTillNextTick!: number;
+
+    // ------- client load queue -------
+    private waitingClients: WaitingClient[] = [];
 
     onCreate(options: GameRoomOptions) {
         console.log(`Created: Game room ${this.roomId}`);
@@ -91,19 +99,32 @@ export default class GameRoom extends Room<State> {
     }
 
     fixedTick(deltaT: number) {
+        this.processWaitingClients();
         this.gameManager.update(deltaT);
         this.state.serverTickCount++;
         this.broadcastPatch(); //send patch updates to clients.
+    }
+
+    private processWaitingClients() {
+        while(this.waitingClients.length > 0) {
+            let waitingClient = this.waitingClients.pop();
+            if(waitingClient) {
+                let client = waitingClient.client;
+                let options = waitingClient.options;
+                // Add a new player to the room state. The first player is the owner of the room.
+                this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.IdToken, this.gameManager).then(() => {
+                    this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
+                });
+            }
+        }
     }
 
     // update(deltaT:number) {
     //     this.gameManager?.update(deltaT);
     // }
 
-    async onJoin(client: Client, options: any) {
-        // Add a new player to the room state. The first player is the owner of the room.
-        await this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.IdToken, this.gameManager);
-        this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
+    onJoin(client: Client, options: any) {
+        this.waitingClients.push({client, options});
     }
 
     onLeave(client: Client) {
