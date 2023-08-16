@@ -1,6 +1,8 @@
 import { CreateMonster, DeleteMonster, GetAllMonsters, GetMonster, UpdateMonster } from "../crud/MonsterCrud";
 
-
+/**
+ * The monster controller contains crud functions for monsters.
+ */
 export default class MonsterController {
 
     public static getAllMonsters(req: any, res: any) {

@@ -1,5 +1,8 @@
 import { getAuth } from "firebase-admin/auth";
 
+/**
+ * The admin controller have functions specific to the admin, like assigning roles.
+ */
 export default class AdminController {
     
     public static assignRole(req: any, res: any) {
