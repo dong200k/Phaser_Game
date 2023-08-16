@@ -1,9 +1,10 @@
 
 const BASEURL = "http://localhost:3002";
 
-export function createMonster(IdToken, asepriteKey, name, AIKey, stats) {
+export async function createMonster(user, asepriteKey, name, AIKey, stats) {
+    let IdToken = await user.getIdToken();
     let monsterData = {
-        IdToken, asepriteKey, name, AIKey, stats
+        asepriteKey, name, AIKey, stats
     };
     console.log("Creating monster", monsterData);
     return fetch(BASEURL + `/monsters/create`, {
@@ -16,7 +17,8 @@ export function createMonster(IdToken, asepriteKey, name, AIKey, stats) {
     });
 }
 
-export function editMonster(IdToken, id, asepriteKey, name, AIKey, stats) {
+export async function editMonster(user, id, asepriteKey, name, AIKey, stats) {
+    let IdToken = await user.getIdToken();
     let monsterData = {
         id, asepriteKey, name, AIKey, stats
     };
@@ -31,7 +33,8 @@ export function editMonster(IdToken, id, asepriteKey, name, AIKey, stats) {
     })
 }
 
-export function deleteMonster(IdToken, id) {
+export async function deleteMonster(user, id) {
+    let IdToken = await user.getIdToken();
     return fetch(BASEURL + `/monsters/delete/${id}`, {
         method: "POST",
         headers: {
@@ -40,7 +43,8 @@ export function deleteMonster(IdToken, id) {
     });
 }
 
-export async function getAllMonsters(IdToken) {
+export async function getAllMonsters(user) {
+    let IdToken = await user.getIdToken();
     try {
         let res = await fetch(BASEURL + `/monsters`, {
             method: "GET",

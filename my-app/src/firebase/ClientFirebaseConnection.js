@@ -78,7 +78,7 @@ export default class ClientFirebaseConnection{
   async login(email, password){
     const auth = getAuth()
     const cred = await signInWithEmailAndPassword(auth, email, password);
-    console.log(`user signed in`, cred.user);
+    console.log(`user signed in`, cred.user.displayName);
   }
 
   async logout(){

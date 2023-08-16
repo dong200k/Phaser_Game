@@ -8,22 +8,16 @@ export const UserContext = createContext();
 const UserContextProvider = (props) => {
 
     const [user, setUser] = useState(ClientFirebaseConnection.singleton.user);
-    const [userToken, setUserToken] = useState(null);
 
     useEffect(() => {
         ClientFirebaseConnection.singleton.onUserStateChange = (user) => {
-            user.getIdToken().then((token) => {
-                setUser(user);
-                setUserToken(token);
-            }).catch((e) => {
-                console.log(e);
-            })
+            setUser(user);
         };
     }, []);
     
 
     return (
-        <UserContext.Provider value={{user: user, userToken: userToken}}>
+        <UserContext.Provider value={{user: user}}>
             {props.children}
         </UserContext.Provider>
     );

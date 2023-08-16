@@ -1,4 +1,4 @@
-import React, { createContext, Component, useState, useContext } from "react";
+import React, { createContext, Component, useState, useContext, useEffect } from "react";
 import { getAllMonsters } from "../services/MonsterService";
 import { UserContext } from "./UserContextProvider";
 
@@ -9,11 +9,13 @@ export const DataContext = createContext();
 
 const DataContextProvider = (props) => {
 
-    let [monsters, setMonsters] = useState(null);
-    const { userToken } = useContext(UserContext);
+    let [monsters, setMonsters] = useState([]);
+    const { user } = useContext(UserContext);
+
+    // Update monsters with data from firebase.
     const refetchAllMonsters = () => {
-        if(userToken) {
-            getAllMonsters(userToken).then((m) => {
+        if(user) {
+            getAllMonsters(user).then((m) => {
                 setMonsters(m);
             })
             .catch(e => {
@@ -23,9 +25,14 @@ const DataContextProvider = (props) => {
         }
     }
 
-    if(userToken && monsters === null) {
-        refetchAllMonsters();
-    }
+    // When the user logs in fetch data. When user logs out remove data.
+    useEffect(() => {
+        if(user) {
+            refetchAllMonsters();
+        } else {
+            setMonsters([]);
+        }
+    }, [user])
 
     return (
         <DataContext.Provider value={{monsters, refetchAllMonsters}}>

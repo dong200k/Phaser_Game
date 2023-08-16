@@ -6,7 +6,7 @@ import { DataContext } from "../../contexts/DataContextProvider";
 
 export default function CreateMonster() {
 
-    let {userToken} = useContext(UserContext);
+    let { user } = useContext(UserContext);
     let navigate = useNavigate();
     let { refetchAllMonsters } = useContext(DataContext);
 
@@ -35,7 +35,7 @@ export default function CreateMonster() {
             critRate: statsCritRate, critDamage: statsCritDamage, attackRange: statsAttackRange,
             attackSpeed: statsAttackSpeed, speed: statsSpeed, lifeSteal: statsLifeSteal
         }
-        createMonster(userToken, asepriteKey, monsterName, AiKey, stats).then((res) => {
+        createMonster(user, asepriteKey, monsterName, AiKey, stats).then((res) => {
             if(res.status === 200) {
                 refetchAllMonsters();
                 navigate("/monster");

@@ -8,7 +8,7 @@ import { DataContext } from "../../contexts/DataContextProvider";
 export default function EditMonster() {
 
     let id = useParams().id;
-    const { userToken } = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const { monsters, refetchAllMonsters } = useContext(DataContext);
     const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ export default function EditMonster() {
             critRate: statsCritRate, critDamage: statsCritDamage, attackRange: statsAttackRange,
             attackSpeed: statsAttackSpeed, speed: statsSpeed, lifeSteal: statsLifeSteal
         }
-        editMonster(userToken, id, asepriteKey, monsterName, AiKey, stats).then((res) => {
+        editMonster(user, id, asepriteKey, monsterName, AiKey, stats).then((res) => {
             if(res.status === 200) {
                 refetchAllMonsters();
                 navigate("/monster");
