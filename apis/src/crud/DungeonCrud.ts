@@ -22,3 +22,34 @@ export const getAllDungeons = async () => {
     })
     return dungeonData;
 }
+
+export const createDungeon = async (data: any) => {
+    let { clientTilesetLocation, name, serverJsonLocation, tilesetName, waves } = data;
+    const db = getFirestore();
+    let dungeon = {
+        name,
+        clientTilesetLocation,
+        serverJsonLocation,
+        tilesetName,
+        waves,
+    }
+    console.log(dungeon);
+    let docRef = db.collection("dungeons").doc(getIdFromName(name));
+    await docRef.create(dungeon);
+    return dungeon;
+}
+
+export const editDungeon = async (id: string, data: any) => {
+    let { clientTilesetLocation, name, serverJsonLocation, tilesetName, waves } = data;
+    const db = getFirestore();
+    let dungeon = {
+        name,
+        clientTilesetLocation,
+        serverJsonLocation,
+        tilesetName,
+        waves,
+    }
+    let docRef = db.collection("dungeons").doc(getIdFromName(id));
+    await docRef.update(dungeon);
+    return dungeon;
+}

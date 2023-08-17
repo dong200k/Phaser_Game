@@ -6,7 +6,7 @@ import { DataContext } from "../../contexts/DataContextProvider";
 
 export default function CreateMonster() {
 
-    let { user, userRole } = useContext(UserContext);
+    let { user } = useContext(UserContext);
     let navigate = useNavigate();
     let { refetchAllMonsters } = useContext(DataContext);
 
@@ -42,18 +42,6 @@ export default function CreateMonster() {
                 formDOM.reset();
             }
         });
-    }
-    
-    if(!user) {
-        return (
-            <h2>Sign in to view monsters. You are not authenticated!</h2>
-        )
-    }
-
-    if(userRole !== "gamemaster" && userRole !== "admin") {
-        return (
-            <h2>Only Admins and Game Master's have access. You are not authorized!</h2>
-        )
     }
 
     return(

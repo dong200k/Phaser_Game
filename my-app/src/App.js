@@ -12,6 +12,9 @@ import Monster from './components/monster/Monster.js';
 import CreateMonster from './components/monster/CreateMonster.js';
 import EditMonster from './components/monster/EditMonster.js';
 import DataContextProvider from './contexts/DataContextProvider.js';
+import Authorized from './components/Authorized.js';
+import Dungeon from './components/dungeon/Dungeon.js';
+import CreateDungeon from './components/dungeon/CreateDungeon.js';
 
 function App() {
   return (
@@ -29,9 +32,11 @@ function App() {
               <Route path="/node" element={<Nodes/>} />
               <Route path="/weapon/:id" element={<Weapon/>}/>
               <Route path="/weapon" element={<Weapons />} />
-              <Route path="/monster/create" element={<CreateMonster />} />
-              <Route path="/monster/edit/:id" element={<EditMonster />} />
-              <Route path="/monster" element={<Monster />} />
+              <Route path="/monster/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateMonster /></Authorized>} />
+              <Route path="/monster/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><EditMonster /></Authorized>} />
+              <Route path="/monster" element={<Authorized roles={["admin", "gamemaster"]}><Monster /></Authorized>} />
+              <Route path="/dungeon" element={<Authorized roles={["admin", "gamemaster"]}><Dungeon /></Authorized>} />
+              <Route path="/dungeon/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateDungeon /></Authorized>} />
               <Route path="*" element={<div>404 NOT FOUND</div>} />
             </Routes>
         </BrowserRouter>

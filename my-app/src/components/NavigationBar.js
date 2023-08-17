@@ -63,6 +63,8 @@ export default function NavigationBar(props){
                     <Link to="/weapon"><Nav.Link href="weapon">Weapon</Nav.Link></Link>
                     <Link to="/node"><Nav.Link href="node">Reusable nodes</Nav.Link></Link>
                     <Link to="/monster"><Nav.Link href="monster">Monster</Nav.Link></Link>
+                    <Link to="/dungeon"><Nav.Link href="dungeon">Dungeon</Nav.Link></Link>
+                    <Link to="/admin"><Nav.Link href="admin">Admin</Nav.Link></Link>
                 </Nav>
                 </Navbar.Collapse>
                 { displayLogin() }
