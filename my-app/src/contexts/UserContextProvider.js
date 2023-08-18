@@ -15,6 +15,7 @@ const UserContextProvider = (props) => {
             setUser(user);
             if(user) {
                 user.getIdTokenResult().then((token) => {
+                    console.log(token.claims);
                     if(token.claims.role) setUserRole(token.claims.role);
                     else setUserRole("");
                 })

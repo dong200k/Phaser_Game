@@ -14,5 +14,20 @@ AdminRouter.post("/assignrole",
     AdminController.assignRole
 )
 
+AdminRouter.post("/removerole",
+    isAuthenticated,
+    isAuthorized({
+        allowRoles: ["admin"],
+    }),
+    AdminController.removeRole
+)
+
+AdminRouter.get("/getrole/:id",
+    isAuthenticated,
+    isAuthorized({
+        allowRoles: ["admin"],
+    }),
+    AdminController.getRole
+)
 
 export default AdminRouter;

@@ -32,3 +32,16 @@ export async function createDungeon(user, data) {
         body: JSON.stringify(data)
     });
 }
+
+export async function editDungeon(user, data) {
+    let IdToken = await user.getIdToken();
+    console.log("Updating dungeon...");
+    return fetch(BASEURL + `/dungeons/edit/${data.name}`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': IdToken,
+        },
+        body: JSON.stringify(data)
+    });
+}

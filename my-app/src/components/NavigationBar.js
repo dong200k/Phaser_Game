@@ -29,7 +29,7 @@ export default function NavigationBar(props){
         let userRoleText = "";
         if(userRole === "gamemaster") userRoleText = "Game Master";
         else if(userRole === "admin") userRoleText = "Admin";
-        else userRoleText = "User";
+        else userRoleText = "";
 
         if(!user) {
             return (
@@ -45,7 +45,7 @@ export default function NavigationBar(props){
             return (
                 <div> 
                     <span>Welcome: <strong>{userRoleText}</strong> {user.displayName} </span>
-                    <button onClick={() => {ClientFirebaseConnection.singleton.logout()}}>Logout</button>
+                    <button className="btn btn-dark" onClick={() => {ClientFirebaseConnection.singleton.logout()}}>Logout</button>
                 </div>
             );
         }
@@ -58,13 +58,13 @@ export default function NavigationBar(props){
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
-                    <Link to="/upgrade"><Nav.Link href="upgrade">Upgrades</Nav.Link></Link>
-                    <Link to="/skill"><Nav.Link href="skill">Skills</Nav.Link></Link>
-                    <Link to="/weapon"><Nav.Link href="weapon">Weapon</Nav.Link></Link>
-                    <Link to="/node"><Nav.Link href="node">Reusable nodes</Nav.Link></Link>
-                    <Link to="/monster"><Nav.Link href="monster">Monster</Nav.Link></Link>
-                    <Link to="/dungeon"><Nav.Link href="dungeon">Dungeon</Nav.Link></Link>
-                    <Link to="/admin"><Nav.Link href="admin">Admin</Nav.Link></Link>
+                    <Link to="/upgrade"><button className="btn btn-light">Upgrades</button></Link>
+                    <Link to="/skill"><button className="btn btn-light">Skills</button></Link>
+                    <Link to="/weapon"><button className="btn btn-light">Weapon</button></Link>
+                    <Link to="/node"><button className="btn btn-light">Reusable nodes</button></Link>
+                    <Link to="/monster"><button className="btn btn-light">Monster</button></Link>
+                    <Link to="/dungeon"><button className="btn btn-light">Dungeon</button></Link>
+                    <Link to="/admin"><button className="btn btn-light">Admin</button></Link>
                 </Nav>
                 </Navbar.Collapse>
                 { displayLogin() }

@@ -20,7 +20,6 @@ DungeonRouter.post('/create', isAuthenticated, isAuthorized({
 
 DungeonRouter.post('/edit/:id', isAuthenticated, isAuthorized({
     allowRoles: ['admin', 'gamemaster'],
-    allowGameServer: true,
 }), DungeonController.editDungeon)
 
 export default DungeonRouter;

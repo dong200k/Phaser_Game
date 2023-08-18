@@ -14,7 +14,8 @@ import EditMonster from './components/monster/EditMonster.js';
 import DataContextProvider from './contexts/DataContextProvider.js';
 import Authorized from './components/Authorized.js';
 import Dungeon from './components/dungeon/Dungeon.js';
-import CreateDungeon from './components/dungeon/CreateDungeon.js';
+import CreateOrEditDungeon from './components/dungeon/CreateOrEditDungeon.js';
+import Admin from './components/admin/Admin.js';
 
 function App() {
   return (
@@ -32,11 +33,13 @@ function App() {
               <Route path="/node" element={<Nodes/>} />
               <Route path="/weapon/:id" element={<Weapon/>}/>
               <Route path="/weapon" element={<Weapons />} />
+              <Route path="/admin" element={<Authorized roles={["admin"]}><Admin /></Authorized>} />
               <Route path="/monster/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateMonster /></Authorized>} />
               <Route path="/monster/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><EditMonster /></Authorized>} />
               <Route path="/monster" element={<Authorized roles={["admin", "gamemaster"]}><Monster /></Authorized>} />
               <Route path="/dungeon" element={<Authorized roles={["admin", "gamemaster"]}><Dungeon /></Authorized>} />
-              <Route path="/dungeon/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateDungeon /></Authorized>} />
+              <Route path="/dungeon/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditDungeon isEdit={false}/></Authorized>} />
+              <Route path="/dungeon/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditDungeon isEdit={true}/></Authorized>} />
               <Route path="*" element={<div>404 NOT FOUND</div>} />
             </Routes>
         </BrowserRouter>

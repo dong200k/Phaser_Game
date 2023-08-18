@@ -23,15 +23,21 @@ export default function Dungeon() {
                             <div className="d-flex justify-content-between mb-3" style={{width: "50%"}} key={dungeon.name}>
                                 <div style={{textAlign: "center", display: "inline-block"}}>
                                     <h3 style={{display: "inline-block", marginRight: "10px"}}>{dungeon.name}</h3> 
-                                    <Link to={`/dungeon/edit/${dungeon.name}`}><button className="btn btn-warning">edit</button></Link>
+                                    
                                 </div>
-                                <button className="btn btn-danger" onClick={()=>{
-                                    // deleteMonster(user, monster.name).then((res) => {
-                                    //     if(res.status === 200) {
-                                    //         refetchAllDungeons();
-                                    //     }
-                                    // });
-                                }}>delete</button>
+                                <div>
+                                    <Link to={`/dungeon/edit/${dungeon.name}`}>
+                                        <button className="btn btn-primary" style={{margin: "0px 24px", width: "80px"}}>edit</button>
+                                    </Link>
+                                    <button className="btn btn-danger" onClick={()=>{
+                                        console.log("No deleting.");
+                                        // deleteMonster(user, monster.name).then((res) => {
+                                        //     if(res.status === 200) {
+                                        //         refetchAllDungeons();
+                                        //     }
+                                        // });
+                                    }}>delete</button>
+                                </div>
                             </div>
                         )
                     })

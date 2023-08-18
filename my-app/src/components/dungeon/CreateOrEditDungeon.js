@@ -1,18 +1,41 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DataContext } from "../../contexts/DataContextProvider";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { getDeepCopy } from "../../util";
-import { createDungeon } from "../../services/DungeonService";
+import { createDungeon, editDungeon } from "../../services/DungeonService";
+import { useParams } from "react-router-dom";
 
-export default function CreateDungeon() {
-    
-    const { dungeon, refetchAllDungeons } = useContext(DataContext);
+export default function CreateOrEditDungeon(props) {
+    let id = useParams().id;
+    const { dungeons, refetchAllDungeons } = useContext(DataContext);
     const { user } = useContext(UserContext);
     const [ waves, setWaves ] = useState([]);
     const [ name, setName ] = useState("");
     const [ tilesetName, setTilesetName] = useState("");
     const [ clientTilesetLocation, setClientTilesetLocation ] = useState("");
     const [ serverJsonLocation, setServerJsonLocation ] = useState("");
+
+    useEffect(() => {
+        // When editing we will load in data from firebase.
+        if(dungeons && props.isEdit) {
+            let dungeon = dungeons.filter((d) => d.name === id)[0];
+            if(dungeon) {
+                // Add id to waves and monsters in each wave. The id is used for the react key prop.
+                dungeon.waves.forEach((w) => {
+                    if(w.id === undefined) w.id = Math.random();
+                    w.monsters.forEach((m) => {
+                        if(m.id === undefined) m.id = Math.random();
+                    })
+                })
+                setWaves(dungeon.waves);
+                setName(dungeon.name);
+                setTilesetName(dungeon.tilesetName);
+                setClientTilesetLocation(dungeon.clientTilesetLocation);
+                setServerJsonLocation(dungeon.serverJsonLocation);
+            }
+        }
+    }, [dungeons]);
+    
 
     const onChangeName = (e) => { setName(e.target.value); }
     const onChangeTilesetName = (e) => { setTilesetName(e.target.value); }
@@ -67,7 +90,6 @@ export default function CreateDungeon() {
     }
     const onSubmit = (e) => {
         e.preventDefault();
-        console.log("Onsubmit");
         let data = {
             name: name,
             tilesetName: tilesetName,
@@ -75,33 +97,46 @@ export default function CreateDungeon() {
             serverJsonLocation: serverJsonLocation,
             waves: waves,
         }
-        console.log(data);
-        createDungeon(user, data).then((res) => {
-            if(res.status === 200) 
-            return res.json();
-        }).then((data) => {
-            console.log(data);
-        });
+        if(props.isEdit) {
+            editDungeon(user, data).then((res) => {
+                if(res.status === 200) {
+                    refetchAllDungeons();
+                }
+                return res.json();
+            }).then((data) => {
+                console.log(data);
+            })
+        } else {
+            createDungeon(user, data).then((res) => {
+                if(res.status === 200) {
+                    refetchAllDungeons();
+                }
+                return res.json();
+            }).then((data) => {
+                console.log(data);
+            });
+        }
+        
     }
 
     return (
         <div>
-            <h2>Create Dungeon</h2>
+            <h2>{props.isEdit ? "Edit Dungeon": "Create Dungeon"}</h2>
             <form onSubmit={onSubmit} style={{margin: "24px", backgroundColor: "lightgray", borderRadius: "5px"}}>
                 <div style={{padding: "10px"}}>
-                    <button type="submit" className="btn btn-primary">Upload New Dungeon</button>
+                    <button type="submit" className="btn btn-primary">{props.isEdit? "Upload Changes" : "Upload New Dungeon"}</button>
                     <h3>General Information</h3>
                     <label htmlFor="name" >Name: </label>
                     <input name="name" type="text" onChange={onChangeName} defaultValue={name} />
                     <br/>
                     <label htmlFor="tilesetName">Tileset Name: </label>
-                    <input name="tilesetName" type="text" onChange={onChangeTilesetName} defaultValue={tilesetName}/>
+                    <input name="tilesetName" type="text" onChange={onChangeTilesetName} defaultValue={tilesetName} />
                     <br/>
                     <label htmlFor="clientTilesetLocation">Client Tileset Location: </label>
-                    <input name="clientTilesetLocation" type="text" onChange={onChangeClientTilesetLocation} defaultValue={clientTilesetLocation}/>
+                    <input name="clientTilesetLocation" type="text" onChange={onChangeClientTilesetLocation} defaultValue={clientTilesetLocation} style={{width: "500px"}}/>
                     <br/>
                     <label htmlFor="serverJsonLocation">Server JSON Location: </label>
-                    <input name="serverJsonLocation" type="text" onChange={onChangeServerJsonLocation} defaultValue={serverJsonLocation}/>
+                    <input name="serverJsonLocation" type="text" onChange={onChangeServerJsonLocation} defaultValue={serverJsonLocation} style={{width: "500px"}}/>
                     <br/>
                 </div>
                 <div style={{padding:"12px"}}>

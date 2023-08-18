@@ -21,7 +21,7 @@ export default function Authorized(props) {
 
     if(roles && !roles.includes(userRole)){
         return (
-            <h2>Your role of <strong>{userRole}</strong> is not authroized! Please upgrade your role!</h2>
+            <h2>Your role of <strong>{userRole === "" ? "[N/A]" : userRole}</strong> is not authroized! Please upgrade your role!</h2>
         )
     }
 
