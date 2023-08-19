@@ -46,7 +46,27 @@ export default function EditMonster() {
             critRate: statsCritRate, critDamage: statsCritDamage, attackRange: statsAttackRange,
             attackSpeed: statsAttackSpeed, speed: statsSpeed, lifeSteal: statsLifeSteal
         }
-        editMonster(user, id, asepriteKey, monsterName, AiKey, stats).then((res) => {
+        // convert all stats to numbers.
+        Object.keys(stats).forEach((key) => {
+            stats[key] = parseFloat(stats[key]);
+        })
+        let boundsType = formDOM.querySelector(".boundsType").value;
+        let boundsWidth = parseInt(formDOM.querySelector(".boundsWidth").value);
+        let boundsHeight = parseInt(formDOM.querySelector(".boundsHeight").value);
+        let bounds = {
+            type: boundsType,
+            width: boundsWidth,
+            height: boundsHeight,
+        }
+        let monsterData = {
+            id:id,
+            asepriteKey: asepriteKey,
+            name:monsterName,
+            AIKey:AiKey,
+            stats:stats,
+            bounds: bounds
+        }
+        editMonster(user, monsterData).then((res) => {
             if(res.status === 200) {
                 refetchAllMonsters();
                 navigate("/monster");
@@ -61,16 +81,28 @@ export default function EditMonster() {
             <h2> Edit Monster </h2>
             <form onSubmit={onSubmit} id="createMonsterForm">
 
+                <button type="submit" className="btn btn-primary">Edit Monster And Save To Database</button>
+
                 <h4>General</h4>
                 <label htmlFor="monsterName">Name: </label>
-                <input type="text" name="monsterName" className="monsterName" defaultValue={monster?.name ?? ""}></input>
-                The name of the monster. Must be unique as the ID will be the monster name with no spaces.<br/>
+                <input type="text" name="monsterName" className="monsterName" defaultValue={monster?.name ?? ""} disabled={true}></input>
+                The name of the monster. This is used as the document id and cannot be changed.<br/>
                 <label htmlFor="asepriteKey">Aseprite Key: </label>
                 <input type="text" name="asepriteKey" className="asepriteKey" defaultValue={monster?.asepriteKey ?? ""}></input>
                 The key of the aseprite image that will be used by this monster.<br/>
                 <label htmlFor="AiKey">AI Key: </label>
                 <input type="text" name="AiKey" className="AiKey" defaultValue={monster?.AIKey ?? ""}></input>
                 The key of the AI controller.<br/>
+
+                <br></br>
+                <h4>Bounds</h4>
+                <label htmlFor="boundsType">Type: </label>
+                <input type="string" name="boundsType" className="boundsType" defaultValue={monster?.bounds?.type ?? "rect"} /><br/>
+                <label htmlFor="boundsWidth">Width: </label>
+                <input type="number" name="boundsWidth" className="boundsWidth" defaultValue={monster?.bounds?.width ?? 12} /><br/>
+                <label htmlFor="boundsHeight">Height: </label>
+                <input type="number" name="boundsHeight" className="boundsHeight" defaultValue={monster?.bounds?.height ?? 18} /><br/>
+                
 
                 <br></br>
                 <h4>Main Stats</h4>
@@ -82,7 +114,7 @@ export default function EditMonster() {
                 <label htmlFor="statsAttackRange">AttackRange: </label>
                 <input type="number" name="statsAttackRange" className="statsAttackRange" defaultValue={monster?.stats.attackRange ?? 30} /><br/>
                 <label htmlFor="statsAttackSpeed">AttackSpeed: </label>
-                <input type="number" name="statsAttackSpeed" className="statsAttackSpeed" defaultValue={monster?.stats.attackSpeed ?? 0.7} /><br/>
+                <input type="number" name="statsAttackSpeed" className="statsAttackSpeed" step={0.1} defaultValue={monster?.stats.attackSpeed ?? 0.7} /><br/>
                 <label htmlFor="statsSpeed">Speed: </label>
                 <input type="number" name="statsSpeed" className="statsSpeed" defaultValue={monster?.stats.speed ?? 30} /><br/>
                 
@@ -100,13 +132,13 @@ export default function EditMonster() {
                 <label htmlFor="statsMagicPen">MagicPen: </label>
                 <input type="number" name="statsMagicPen" className="statsMagicPen" defaultValue={monster?.stats.magicPen ?? 0} /><br/>
                 <label htmlFor="statsCritRate">CritRate: </label>
-                <input type="number" name="statsCritRate" className="statsCritRate" defaultValue={monster?.stats.critRate ?? 0} /><br/>
+                <input type="number" name="statsCritRate" className="statsCritRate" step={0.01} defaultValue={monster?.stats.critRate ?? 0} /><br/>
                 <label htmlFor="statsCritDamage">CritDamage: </label>
                 <input type="number" name="statsCritDamage" className="statsCritDamage" defaultValue={monster?.stats.critDamage ?? 0} /><br/>
                 <label htmlFor="statsLifeSteal">LifeSteal: </label>
-                <input type="number" name="statsLifeSteal" className="statsLifeSteal" defaultValue={monster?.stats.lifeSteal ?? 0} /><br/>
+                <input type="number" name="statsLifeSteal" className="statsLifeSteal" step={0.001} defaultValue={monster?.stats.lifeSteal ?? 0} /><br/>
 
-                <button type="submit" className="btn btn-secondary">Edit Monster</button>
+                
             </form>
         </div>
     )

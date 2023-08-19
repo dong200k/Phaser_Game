@@ -65,11 +65,7 @@ export default class DatabaseManager{
                     imageKey: monster.asepriteKey,
                     stats: monster.stats,
                     controllerKey: monster.AIKey,
-                    bounds: {
-                        type: "rect",
-                        width: 12,
-                        height: 18,
-                    }
+                    bounds: monster.bounds
                 })
             }
 

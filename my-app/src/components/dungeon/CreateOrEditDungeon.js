@@ -3,7 +3,7 @@ import { DataContext } from "../../contexts/DataContextProvider";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { getDeepCopy } from "../../util";
 import { createDungeon, editDungeon } from "../../services/DungeonService";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NotificationContext } from "../../contexts/NotificationContextProvider";
 
 export default function CreateOrEditDungeon(props) {
@@ -11,6 +11,7 @@ export default function CreateOrEditDungeon(props) {
     const { dungeons, refetchAllDungeons } = useContext(DataContext);
     const { user } = useContext(UserContext);
     const { notifyResponse } = useContext(NotificationContext);
+    const navigate = useNavigate();
     const [ waves, setWaves ] = useState([]);
     const [ name, setName ] = useState("");
     const [ tilesetName, setTilesetName] = useState("");
@@ -103,6 +104,7 @@ export default function CreateOrEditDungeon(props) {
             editDungeon(user, data).then((res) => {
                 if(res.status === 200) {
                     refetchAllDungeons();
+                    navigate("/dungeon");
                 }
                 notifyResponse(res);
             })
@@ -110,6 +112,7 @@ export default function CreateOrEditDungeon(props) {
             createDungeon(user, data).then((res) => {
                 if(res.status === 200) {
                     refetchAllDungeons();
+                    navigate("/dungeon");
                 }
                 notifyResponse(res);
             })
@@ -139,14 +142,14 @@ export default function CreateOrEditDungeon(props) {
                 </div>
                 <div style={{padding:"12px"}}>
                     <h3>Waves</h3>
-                    <button className="btn btn-info" onClick={onClickNewWave} style={{alignItems: "center", marginBottom: "20px"}}>Add Wave To Dungeon</button>
+                    <button type="button" className="btn btn-info" onClick={onClickNewWave} style={{alignItems: "center", marginBottom: "20px"}}>Add Wave To Dungeon</button>
                     <div style={{borderBottom: "3px solid black"}}/>
                     {
                         waves.map((wave, idx) => {
                             return (
                                 <div key={`wave${wave.id}`} style={{backgroundColor: "lightgoldenrodyellow", borderBottom: "3px solid black", padding:"10px"}}>
                                     <h4 style={{display: 'inline-block', marginRight: "10px"}}>Wave {idx + 1}</h4>
-                                    <button className="btn btn-danger" style={{marginBottom: "10px"}} onClick={() => onClickDeleteWave(idx)}>Delete Wave</button>
+                                    <button type="button" className="btn btn-danger" style={{marginBottom: "10px"}} onClick={() => onClickDeleteWave(idx)}>Delete Wave</button>
                                     <br/>
                                     <label htmlFor={`waveType${idx}`}>Type: </label>
                                     <input name={`waveType${idx}`} type="text" defaultValue={wave.type} onChange={(e) => onChangeWaveType(e, idx)}/>
@@ -155,7 +158,7 @@ export default function CreateOrEditDungeon(props) {
                                     <br/>
                                     <div style={{backgroundColor: "lightblue", margin: "30px", padding: "18px", borderRadius: "5px"}}>
                                         <h5>Monsters: </h5>
-                                        <button className="btn btn-secondary" onClick={() => onClickNewMonster(idx)}>Add Monster To Wave</button>
+                                        <button type="button" className="btn btn-secondary" onClick={() => onClickNewMonster(idx)}>Add Monster To Wave</button>
                                         {
                                             wave.monsters.map((monster, midx) => {
                                                 return (
@@ -165,7 +168,7 @@ export default function CreateOrEditDungeon(props) {
                                                         <input name={`monsterName${idx}_${midx}`} type="text" defaultValue={monster.name} onChange={(e) => onChangeMonsterName(e, idx, midx)}/>
                                                         <label htmlFor={`monsterCount${idx}_${midx}`}>Count: </label>
                                                         <input name={`monsterCount${idx}_${midx}`} type="number" defaultValue={monster.count} onChange={(e) => onChangeMonsterCount(e, idx, midx)}/>
-                                                        <button className="btn btn-danger" style={{margin: "10px"}} onClick={() => onClickDeleteMonster(idx, midx)}>Delete Monster</button>
+                                                        <button type="button" className="btn btn-danger" style={{margin: "10px"}} onClick={() => onClickDeleteMonster(idx, midx)}>Delete Monster</button>
                                                     </div>
                                                 )
                                             })

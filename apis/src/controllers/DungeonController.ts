@@ -28,7 +28,7 @@ export default class DungeonController {
     public static createDungeon(req: any, res: any) {
         console.log("Post request. create dungeon.");
         createDungeon(req.body).then((dungeon) => {
-            res.status(200).json({dungeon});
+            res.status(200).json({message: `Successfully created ${dungeon.name}`});
         }).catch((error) => {
             res.status(400).json({message: error.message});
         })
@@ -38,7 +38,7 @@ export default class DungeonController {
         console.log("Post request. edit dungeon.");
         let { id } = req.params;
         editDungeon(id, req.body).then((dungeon) => {
-            res.status(200).json({dungeon});
+            res.status(200).json({message: `Successfully edited ${dungeon.name}`});
         }).catch((error) => {
             res.status(400).json({message: error.message});
         })

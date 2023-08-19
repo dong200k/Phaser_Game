@@ -11,30 +11,34 @@ import { getIdFromName } from "../util/apputil";
  * @param stats The stats of the monster.
  * @returns A monster object.
  */
-export const CreateMonster = async (asepriteKey: string, name: string, AIKey: string, stats: any) => {
+export const CreateMonster = async (data: any) => {
     const db = getFirestore();
     let monster = {
-        name: name,
-        asepriteKey: asepriteKey,
-        AIKey: AIKey,
+        name: data.name ?? "Unnamed",
+        asepriteKey: data.asepriteKey ?? "n/a",
+        AIKey: data.AIKey ?? "Default",
         stats: {
-            hp: stats?.hp ?? 0,
-            armor: stats?.armor ?? 0,
-            magicResist: stats?.magicResist ?? 0,
-            attack: stats?.attack ?? 0,
-            armorPen: stats?.armorPen ?? 0,
-            magicAttack: stats?.magicAttack ?? 0,
-            magicPen: stats?.magicPen ?? 0,
-            critRate: stats?.critRate ?? 0,
-            critDamage: stats?.critDamage ?? 1,
-            attackRange: stats?.attackRange ?? 10,
-            attackSpeed: stats?.attackSpeed ?? 0.5,
-            speed: stats?.speed ?? 20,
-            lifeSteal: stats?.lifeSteal ?? 0,
+            hp: data.stats?.hp ?? 0,
+            armor: data.stats?.armor ?? 0,
+            magicResist: data.stats?.magicResist ?? 0,
+            attack: data.stats?.attack ?? 0,
+            armorPen: data.stats?.armorPen ?? 0,
+            magicAttack: data.stats?.magicAttack ?? 0,
+            magicPen: data.stats?.magicPen ?? 0,
+            critRate: data.stats?.critRate ?? 0,
+            critDamage: data.stats?.critDamage ?? 1,
+            attackRange: data.stats?.attackRange ?? 10,
+            attackSpeed: data.stats?.attackSpeed ?? 0.5,
+            speed: data.stats?.speed ?? 20,
+            lifeSteal: data.stats?.lifeSteal ?? 0,
+        },
+        bounds: {
+            type: data.bounds?.type ?? "rect",
+            width: data.bounds?.width ?? 10,
+            height: data.bounds?.height ?? 10,
         }
     }
-
-    let docRef = db.collection("monsters").doc(getIdFromName(name));
+    let docRef = db.collection("monsters").doc(getIdFromName(monster.name));
     await docRef.create(monster);
     return monster;
 }
@@ -50,31 +54,34 @@ export const CreateMonster = async (asepriteKey: string, name: string, AIKey: st
  * @param stats The stats of the monster.
  * @returns A monster object.
  */
-export const UpdateMonster = async (id: string, asepriteKey: string, name: string, AIKey: string, stats: any) => {
+export const UpdateMonster = async (id: string, data: any) => {
     const db = getFirestore();
-
     let monster = {
-        name: name,
-        asepriteKey: asepriteKey,
-        AIKey: AIKey,
+        name: data.name,
+        asepriteKey: data.asepriteKey,
+        AIKey: data.AIKey,
         stats: {
-            hp: stats?.hp ?? 0,
-            armor: stats?.armor ?? 0,
-            magicResist: stats?.magicResist ?? 0,
-            attack: stats?.attack ?? 0,
-            armorPen: stats?.armorPen ?? 0,
-            magicAttack: stats?.magicAttack ?? 0,
-            magicPen: stats?.magicPen ?? 0,
-            critRate: stats?.critRate ?? 0,
-            critDamage: stats?.critDamage ?? 1,
-            attackRange: stats?.attackRange ?? 10,
-            attackSpeed: stats?.attackSpeed ?? 0.5,
-            speed: stats?.speed ?? 20,
-            lifeSteal: stats?.lifeSteal ?? 0,
+            hp: data.stats?.hp ?? 0,
+            armor: data.stats?.armor ?? 0,
+            magicResist: data.stats?.magicResist ?? 0,
+            attack: data.stats?.attack ?? 0,
+            armorPen: data.stats?.armorPen ?? 0,
+            magicAttack: data.stats?.magicAttack ?? 0,
+            magicPen: data.stats?.magicPen ?? 0,
+            critRate: data.stats?.critRate ?? 0,
+            critDamage: data.stats?.critDamage ?? 1,
+            attackRange: data.stats?.attackRange ?? 10,
+            attackSpeed: data.stats?.attackSpeed ?? 0.5,
+            speed: data.stats?.speed ?? 20,
+            lifeSteal: data.stats?.lifeSteal ?? 0,
+        },
+        bounds: {
+            type: data.bounds?.type ?? "rect",
+            width: data.bounds?.width ?? 10,
+            height: data.bounds?.height ?? 10,
         }
     }
-    
-    let docRef = db.collection("monsters").doc(getIdFromName(name));
+    let docRef = db.collection("monsters").doc(getIdFromName(id));
     let res = await docRef.update(monster);
     return monster;
 }

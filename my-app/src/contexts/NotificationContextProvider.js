@@ -75,7 +75,7 @@ const NotificationContextProvider = (props) => {
     // console.log(toasts);
 
     const toastsDisplay = (
-        <ToastContainer className="p-5" position="top-center">
+        <ToastContainer className="p-5" position="top-end">
             {toasts.map((toast => {
 
                 let iconDisplay;

@@ -37,7 +37,26 @@ export default function CreateMonster() {
             critRate: statsCritRate, critDamage: statsCritDamage, attackRange: statsAttackRange,
             attackSpeed: statsAttackSpeed, speed: statsSpeed, lifeSteal: statsLifeSteal
         }
-        createMonster(user, asepriteKey, monsterName, AiKey, stats).then((res) => {
+        // convert all stats to numbers.
+        Object.keys(stats).forEach((key) => {
+            stats[key] = parseFloat(stats[key]);
+        })
+        let boundsType = formDOM.querySelector(".boundsType").value;
+        let boundsWidth = parseInt(formDOM.querySelector(".boundsWidth").value);
+        let boundsHeight = parseInt(formDOM.querySelector(".boundsHeight").value);
+        let bounds = {
+            type: boundsType,
+            width: boundsWidth,
+            height: boundsHeight,
+        }
+        let monsterData = {
+            asepriteKey: asepriteKey,
+            name:monsterName,
+            AIKey:AiKey,
+            stats:stats,
+            bounds: bounds
+        }
+        createMonster(user, monsterData).then((res) => {
             if(res.status === 200) {
                 refetchAllMonsters();
                 navigate("/monster");
@@ -52,16 +71,28 @@ export default function CreateMonster() {
             <h2> Create Monster :OOO </h2>
             <form onSubmit={onSubmit} id="createMonsterForm">
 
+                <button type="submit" className="btn btn-primary">Save New Monster To Database</button>
+
                 <h4>General</h4>
                 <label htmlFor="monsterName">Name: </label>
                 <input type="text" name="monsterName" className="monsterName"></input>
-                The name of the monster. Must be unique as the ID will be the monster name with no spaces.<br/>
+                The name of the monster. This is used as the document id and cannot be changed.<br/>
                 <label htmlFor="asepriteKey">Aseprite Key: </label>
                 <input type="text" name="asepriteKey" className="asepriteKey"></input>
                 The key of the aseprite image that will be used by this monster.<br/>
                 <label htmlFor="AiKey">AI Key: </label>
                 <input type="text" name="AiKey" className="AiKey"></input>
                 The key of the AI controller.<br/>
+
+                <br></br>
+                <h4>Bounds</h4>
+                <label htmlFor="boundsType">Type: </label>
+                <input type="string" name="boundsType" className="boundsType" defaultValue={"rect"} /><br/>
+                <label htmlFor="boundsWidth">Width: </label>
+                <input type="number" name="boundsWidth" className="boundsWidth" defaultValue={12} /><br/>
+                <label htmlFor="boundsHeight">Height: </label>
+                <input type="number" name="boundsHeight" className="boundsHeight" defaultValue={18} /><br/>
+                
 
                 <br></br>
                 <h4>Main Stats</h4>
@@ -91,13 +122,12 @@ export default function CreateMonster() {
                 <label htmlFor="statsMagicPen">MagicPen: </label>
                 <input type="number" name="statsMagicPen" className="statsMagicPen" defaultValue={0} /><br/>
                 <label htmlFor="statsCritRate">CritRate: </label>
-                <input type="number" name="statsCritRate" className="statsCritRate" defaultValue={0} /><br/>
+                <input type="number" name="statsCritRate" className="statsCritRate" step={0.01} defaultValue={0} /><br/>
                 <label htmlFor="statsCritDamage">CritDamage: </label>
                 <input type="number" name="statsCritDamage" className="statsCritDamage" defaultValue={0} /><br/>
                 <label htmlFor="statsLifeSteal">LifeSteal: </label>
-                <input type="number" name="statsLifeSteal" className="statsLifeSteal" defaultValue={0} /><br/>
+                <input type="number" name="statsLifeSteal" className="statsLifeSteal" step={0.001} defaultValue={0} /><br/>
 
-                <button type="submit" className="btn btn-primary">Create Monster</button>
             </form>
         </div>
     )

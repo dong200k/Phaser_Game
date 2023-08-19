@@ -1,35 +1,29 @@
 
 const BASEURL = "http://localhost:3002";
 
-export async function createMonster(user, asepriteKey, name, AIKey, stats) {
+export async function createMonster(user, data) {
     let IdToken = await user.getIdToken();
-    let monsterData = {
-        asepriteKey, name, AIKey, stats
-    };
-    console.log("Creating monster", monsterData);
+    console.log("Creating monster", data);
     return fetch(BASEURL + `/monsters/create`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': IdToken,
         },
-        body: JSON.stringify(monsterData)
+        body: JSON.stringify(data)
     });
 }
 
-export async function editMonster(user, id, asepriteKey, name, AIKey, stats) {
+export async function editMonster(user, data) {
     let IdToken = await user.getIdToken();
-    let monsterData = {
-        id, asepriteKey, name, AIKey, stats
-    };
-    console.log("Editing monster", monsterData);
-    return fetch(BASEURL + `/monsters/edit/${id}`, {
+    console.log("Editing monster", data);
+    return fetch(BASEURL + `/monsters/edit/${data.id}`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json',
             'Authorization': IdToken,
         },
-        body: JSON.stringify(monsterData)
+        body: JSON.stringify(data)
     })
 }
 
