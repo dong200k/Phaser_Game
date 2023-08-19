@@ -16,35 +16,38 @@ import Authorized from './components/Authorized.js';
 import Dungeon from './components/dungeon/Dungeon.js';
 import CreateOrEditDungeon from './components/dungeon/CreateOrEditDungeon.js';
 import Admin from './components/admin/Admin.js';
+import NotificationContextProvider from './contexts/NotificationContextProvider.js';
 
 function App() {
   return (
-    <UserContextProvider>
-      <DataContextProvider>
-        <BrowserRouter>
-          <NavigationBar/>
-            <Routes>
-              <Route path="/" element={<Home/>}/>
-              <Route path="/upgrade/:id" element={<Upgrade type="upgrade"/>}/>
-              <Route path="/upgrade" element={<Upgrades type="upgrade"/>} />
-              <Route path="/skill/:id" element={<Upgrade type="skill"/>}/>
-              <Route path="/skill" element={<Upgrades type="skill"/>} />
-              <Route path="/node/:id" element={<EditNodePage/>}/>
-              <Route path="/node" element={<Nodes/>} />
-              <Route path="/weapon/:id" element={<Weapon/>}/>
-              <Route path="/weapon" element={<Weapons />} />
-              <Route path="/admin" element={<Authorized roles={["admin"]}><Admin /></Authorized>} />
-              <Route path="/monster/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateMonster /></Authorized>} />
-              <Route path="/monster/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><EditMonster /></Authorized>} />
-              <Route path="/monster" element={<Authorized roles={["admin", "gamemaster"]}><Monster /></Authorized>} />
-              <Route path="/dungeon" element={<Authorized roles={["admin", "gamemaster"]}><Dungeon /></Authorized>} />
-              <Route path="/dungeon/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditDungeon isEdit={false}/></Authorized>} />
-              <Route path="/dungeon/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditDungeon isEdit={true}/></Authorized>} />
-              <Route path="*" element={<div>404 NOT FOUND</div>} />
-            </Routes>
-        </BrowserRouter>
-      </DataContextProvider>
-    </UserContextProvider>
+    <NotificationContextProvider> {/* Provides notification callbacks */}
+      <UserContextProvider> {/* Provides user authentication data */}
+        <DataContextProvider> {/* Provides monster/dungeon data */}
+          <BrowserRouter>
+            <NavigationBar/>
+              <Routes>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/upgrade/:id" element={<Upgrade type="upgrade"/>}/>
+                <Route path="/upgrade" element={<Upgrades type="upgrade"/>} />
+                <Route path="/skill/:id" element={<Upgrade type="skill"/>}/>
+                <Route path="/skill" element={<Upgrades type="skill"/>} />
+                <Route path="/node/:id" element={<EditNodePage/>}/>
+                <Route path="/node" element={<Nodes/>} />
+                <Route path="/weapon/:id" element={<Weapon/>}/>
+                <Route path="/weapon" element={<Weapons />} />
+                <Route path="/admin" element={<Authorized roles={["admin"]}><Admin /></Authorized>} />
+                <Route path="/monster/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateMonster /></Authorized>} />
+                <Route path="/monster/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><EditMonster /></Authorized>} />
+                <Route path="/monster" element={<Authorized roles={["admin", "gamemaster"]}><Monster /></Authorized>} />
+                <Route path="/dungeon" element={<Authorized roles={["admin", "gamemaster"]}><Dungeon /></Authorized>} />
+                <Route path="/dungeon/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditDungeon isEdit={false}/></Authorized>} />
+                <Route path="/dungeon/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditDungeon isEdit={true}/></Authorized>} />
+                <Route path="*" element={<div>404 NOT FOUND</div>} />
+              </Routes>
+          </BrowserRouter>
+        </DataContextProvider>
+      </UserContextProvider>
+    </NotificationContextProvider>
   );
 }
 

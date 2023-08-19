@@ -3,11 +3,13 @@ import { useContext, useEffect, useState } from "react"
 import { deleteMonster, getAllMonsters } from "../../services/MonsterService";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { DataContext } from "../../contexts/DataContextProvider";
+import { NotificationContext } from "../../contexts/NotificationContextProvider";
 
 export default function Monster() {
 
     const { monsters, refetchAllMonsters } = useContext(DataContext);
     const { user } = useContext(UserContext);
+    const { notify } = useContext(NotificationContext);
 
     return(
         <div>
@@ -27,9 +29,10 @@ export default function Monster() {
                                 </div>
                                 <button className="btn btn-danger" onClick={()=>{
                                     deleteMonster(user, monster.name).then((res) => {
-                                        if(res.status === 200) {
-                                            refetchAllMonsters();
-                                        }
+                                        // if(res.status === 200) {
+                                        //     refetchAllMonsters();
+                                        // }
+                                        notify({message: "Cannot delete on my-app. Please manually delete on firebase."})
                                     });
                                 }}>delete</button>
                             </div>

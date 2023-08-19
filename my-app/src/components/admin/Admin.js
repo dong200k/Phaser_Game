@@ -1,10 +1,12 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { adminAssignRole, adminGetRole, adminRemoveRole } from "../../services/AdminService";
+import { NotificationContext } from "../../contexts/NotificationContextProvider";
 
 
 export default function Admin() {
     const { user } = useContext(UserContext);
+    const { notifyResponse } = useContext(NotificationContext);
 
     const [uid, setUid] = useState("");
     const [getuid, setGetuid] = useState("");
@@ -20,11 +22,7 @@ export default function Admin() {
         e.preventDefault();
         let data = { uid, role };
         adminAssignRole(user, data).then(res => {
-            return res.json();
-        }).then(data => {
-            console.log(data);
-        }).catch(e => {
-            console.log(e);
+            notifyResponse(res);
         })
     }
 
@@ -32,11 +30,7 @@ export default function Admin() {
         e.preventDefault();
         let data = { uid: removeUID };
         adminRemoveRole(user, data).then(res => {
-            return res.json();
-        }).then(data => {
-            console.log(data);
-        }).catch(e => {
-            console.log(e);
+            notifyResponse(res);
         })
     }
 
@@ -44,11 +38,7 @@ export default function Admin() {
         e.preventDefault();
         let data = { uid: getuid };
         adminGetRole(user, data).then(res => {
-            return res.json();
-        }).then(data => {
-            console.log(data);
-        }).catch(e => {
-            console.log(e);
+            notifyResponse(res);
         })
     }
 

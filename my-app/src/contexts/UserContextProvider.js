@@ -13,18 +13,19 @@ const UserContextProvider = (props) => {
     useEffect(() => {
         ClientFirebaseConnection.singleton.onUserStateChange = (user) => {
             setUser(user);
-            if(user) {
-                user.getIdTokenResult().then((token) => {
-                    console.log(token.claims);
-                    if(token.claims.role) setUserRole(token.claims.role);
-                    else setUserRole("");
-                })
-            } else {
-                setUserRole("");
-            }
         };
     }, []);
     
+    useEffect(() => {
+        if(user) {
+            user.getIdTokenResult().then((token) => {
+                if(token.claims.role) setUserRole(token.claims.role);
+                else setUserRole("");
+            })
+        } else {
+            setUserRole("");
+        }
+    }, [user]);
 
     return (
         <UserContext.Provider value={{user: user, userRole: userRole}}>

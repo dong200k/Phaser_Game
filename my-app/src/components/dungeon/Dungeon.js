@@ -2,12 +2,14 @@ import { useContext } from "react";
 import { DataContext } from "../../contexts/DataContextProvider";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { Link } from "react-router-dom";
+import { NotificationContext } from "../../contexts/NotificationContextProvider";
 
 
 export default function Dungeon() {
 
     const { dungeons, refetchAllDungeons } = useContext(DataContext);
     const { user } = useContext(UserContext);
+    const { notify } = useContext(NotificationContext);
     
     return(
         <div>
@@ -31,6 +33,7 @@ export default function Dungeon() {
                                     </Link>
                                     <button className="btn btn-danger" onClick={()=>{
                                         console.log("No deleting.");
+                                        notify({message: "Cannot delete on my-app. Please manually delete on firebase."})
                                         // deleteMonster(user, monster.name).then((res) => {
                                         //     if(res.status === 200) {
                                         //         refetchAllDungeons();

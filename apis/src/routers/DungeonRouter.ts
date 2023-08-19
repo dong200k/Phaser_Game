@@ -1,5 +1,5 @@
 import DungeonController from "../controllers/DungeonController";
-import { isAuthenticated, isAuthorized, isGameServer } from "../middleware";
+import { isAuthenticated, isAuthorized } from "../middleware";
 
 const express = require('express');
 const DungeonRouter = express.Router();

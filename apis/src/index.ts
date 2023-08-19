@@ -28,8 +28,8 @@ app.use("/monsters", MonsterRouter);
 app.use("/dungeons", DungeonRouter);
 
 app.get("*", (req, res)=>{
-  console.log("404 not found")
-  res.status(404).send("404 NOT FOUND!")
+  console.log("404 not found");
+  res.status(404).send({message: "404 NOT FOUND!"});
 })
 
 app.listen(port, () => {

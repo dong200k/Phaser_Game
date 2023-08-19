@@ -3,12 +3,14 @@ import { createMonster } from "../../services/MonsterService";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { useNavigate } from "react-router-dom";
 import { DataContext } from "../../contexts/DataContextProvider";
+import { NotificationContext } from "../../contexts/NotificationContextProvider";
 
 export default function CreateMonster() {
 
     let { user } = useContext(UserContext);
     let navigate = useNavigate();
     let { refetchAllMonsters } = useContext(DataContext);
+    let { notifyResponse } = useContext(NotificationContext);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -41,6 +43,7 @@ export default function CreateMonster() {
                 navigate("/monster");
                 formDOM.reset();
             }
+            notifyResponse(res);
         });
     }
 

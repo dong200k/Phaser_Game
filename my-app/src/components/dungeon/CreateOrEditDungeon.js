@@ -4,11 +4,13 @@ import { UserContext } from "../../contexts/UserContextProvider";
 import { getDeepCopy } from "../../util";
 import { createDungeon, editDungeon } from "../../services/DungeonService";
 import { useParams } from "react-router-dom";
+import { NotificationContext } from "../../contexts/NotificationContextProvider";
 
 export default function CreateOrEditDungeon(props) {
     let id = useParams().id;
     const { dungeons, refetchAllDungeons } = useContext(DataContext);
     const { user } = useContext(UserContext);
+    const { notifyResponse } = useContext(NotificationContext);
     const [ waves, setWaves ] = useState([]);
     const [ name, setName ] = useState("");
     const [ tilesetName, setTilesetName] = useState("");
@@ -102,19 +104,15 @@ export default function CreateOrEditDungeon(props) {
                 if(res.status === 200) {
                     refetchAllDungeons();
                 }
-                return res.json();
-            }).then((data) => {
-                console.log(data);
+                notifyResponse(res);
             })
         } else {
             createDungeon(user, data).then((res) => {
                 if(res.status === 200) {
                     refetchAllDungeons();
                 }
-                return res.json();
-            }).then((data) => {
-                console.log(data);
-            });
+                notifyResponse(res);
+            })
         }
         
     }

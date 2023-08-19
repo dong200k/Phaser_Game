@@ -4,12 +4,14 @@ import { editMonster } from "../../services/MonsterService";
 import { useContext } from "react";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { DataContext } from "../../contexts/DataContextProvider";
+import { NotificationContext } from "../../contexts/NotificationContextProvider";
 
 export default function EditMonster() {
 
     let id = useParams().id;
     const { user } = useContext(UserContext);
     const { monsters, refetchAllMonsters } = useContext(DataContext);
+    const { notifyResponse } = useContext(NotificationContext);
     const navigate = useNavigate();
 
     let monster = undefined;
@@ -50,7 +52,8 @@ export default function EditMonster() {
                 navigate("/monster");
                 formDOM.reset();
             }
-        });
+            notifyResponse(res); 
+        })
     }
 
     return(
