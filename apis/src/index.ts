@@ -6,6 +6,7 @@ import ApiFirebaseConnection from './firebase/ApiFirebaseConnection';
 import JsonDatabaseManager from './skilltree/JsonDatabaseManager';
 import DungeonRouter from './routers/DungeonRouter';
 import AdminRouter from './routers/AdminRouter';
+import AssetRouter from './routers/AssetRouter';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use("/admin", AdminRouter);
 app.use(PlayerRouter)
 app.use("/monsters", MonsterRouter);
 app.use("/dungeons", DungeonRouter);
+app.use("/assets", AssetRouter);
 
 app.get("*", (req, res)=>{
   console.log("404 not found");

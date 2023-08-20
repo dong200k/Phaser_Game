@@ -23,4 +23,29 @@ export default class FileUtil {
         })
         return promise;
     }
+
+    /**
+     * Decodes a dataURL into its three parts. The mime, the encoding and the data.  data:[mine][;encoding],<data>
+     * @example 'data:image/png;base64,iVBORw0KGgoAAAA...'
+     * @param dataURL The dataURL string.
+     */
+    public static decodeDataURL(dataURL: string): { mime:string, encoding:string, data:string } {
+        let dataURLSplit = dataURL.split(",");
+        let meta = dataURLSplit[0];
+        let data = dataURLSplit[1];
+        let mime = "";
+        let encoding = "";
+        let addToMime = false;
+        let addToEncoding = false;
+        for(let i = 0; i < meta.length; i++) {
+            let current = meta.at(i);
+            if(current === ":") { addToMime = true; addToEncoding = false; }
+            else if(current === ";") { addToMime = false; addToEncoding = true}
+            else {
+                if(addToMime) mime += current;
+                if(addToEncoding) encoding += current;
+            }
+        }
+        return {mime, encoding, data};
+    }
 }
