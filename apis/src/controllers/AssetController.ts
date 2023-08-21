@@ -7,29 +7,45 @@ import { getIdFromName } from "../util/apputil";
 export default class AssetController {
 
     public static upload(req: any, res: any) {
-        let { type, name, audio, json, image, key, locType } = req.body;
+        let { type, name, audio, json, image, key, locType, locUrl } = req.body;
         let id = getIdFromName(name);
-        getFirestore().collection("assets").doc(id).get().then((doc) => {
-            if(doc.exists) throw new Error(`Asset with id ${name} already exists. Note: The id is created from the name with all spaces removed.`);
-            
-            // Step 1: Upload assets to firebase cloud storage.
-            if(type === "images") return AssetController.uploadToCloud(`${type}/${id}`, image);
-            if(type === "audios") return AssetController.uploadToCloud(`${type}/${id}`, audio);
-            
-            throw new Error(`Incorrect type: Use 'images', 'audios' or 'aseprite'`);
-        }).then(() => {
-            // Step 2: Upload asset metadata to firestore. The metadata can be used to access the asset on firebase cloud storage.
-            if(type === "images") return AssetController.uploadToFirestore({type, name, key, locType, locData: `${type}/${id}`});
-        }).then(() => {
-            res.status(200).send({message: "Upload successful!"});
-        }).catch((e) => {
-            res.status(400).send({message: e.message});
-        });
+        if(locType === "firebaseCloudStorage") {
+            getFirestore().collection("assets").doc(id).get().then((doc) => {
+                if(doc.exists) throw new Error(`Asset with id ${name} already exists. Note: The id is created from the name with all spaces removed.`);
+                
+                // Step 1: Upload assets to firebase cloud storage.
+                if(type === "images") return AssetController.uploadToCloud(`${type}/${id}`, image);
+                if(type === "audios") return AssetController.uploadToCloud(`${type}/${id}`, audio);
+                if(type === "aseprite") return AssetController.uploadToCloud(`aseprite/${id}/image`, image).then(() => {
+                    return AssetController.uploadToCloud(`aseprite/${id}/json`, json);
+                });
+                
+                throw new Error(`Incorrect type: Use 'images', 'audios' or 'aseprite'`);
+            }).then(() => {
+                // Step 2: Upload asset metadata to firestore. The metadata can be used to access the asset on firebase cloud storage.
+                if(type === "images") return AssetController.uploadToFirestore({type, name, key, locType, locData: `${type}/${id}`});
+                if(type === "audios") return AssetController.uploadToFirestore({type, name, key, locType, locData: `${type}/${id}`});
+                if(type === "aseprite") return AssetController.uploadToFirestore({type, name, key, locType, locData: `aseprite/${id}/image`, locData2: `aseprite/${id}/json`});
+
+            }).then(() => {
+                res.status(200).send({message: "Upload successful!"});
+            }).catch((e) => {
+                res.status(400).send({message: e.message});
+            });
+        } else if(locType === "locally") {
+            AssetController.uploadToFirestore({type, name, key, locType, locData: locUrl}).then(() => {
+                res.status(200).send({message: "Upload successful!"});
+            }).catch((e) => {
+                res.status(400).send({message: e.message});
+            });
+        } else {
+            res.status(400).send({message: `Incorrect locType of ${locType}, use 'locally' or 'firebaseCloudStorage'`});
+        }
     }
 
     public static getAllAssets(req: any, res: any) {
         const db = getFirestore();
-        let assetColRef = db.collection("dungeons");
+        let assetColRef = db.collection("assets");
         assetColRef.get().then((data) => {
             let assetData: any[] = [];
             data.forEach((doc) => {

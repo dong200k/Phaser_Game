@@ -28,12 +28,12 @@ export default function Monster() {
                                     <Link to={`/monster/edit/${monster.name}`}><button className="btn btn-warning">edit</button></Link>
                                 </div>
                                 <button className="btn btn-danger" onClick={()=>{
-                                    deleteMonster(user, monster.name).then((res) => {
+                                    // deleteMonster(user, monster.name).then((res) => {
                                         // if(res.status === 200) {
                                         //     refetchAllMonsters();
                                         // }
                                         notify({message: "Cannot delete on my-app. Please manually delete on firebase."})
-                                    });
+                                    // });
                                 }}>delete</button>
                             </div>
                         )

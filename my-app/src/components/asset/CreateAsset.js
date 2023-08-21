@@ -1,15 +1,29 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import DropDown from "react-bootstrap/Dropdown";
+import { uploadAsset } from "../../services/AssetService";
+import { UserContext } from "../../contexts/UserContextProvider";
+import { DataContext } from "../../contexts/DataContextProvider";
+import { useNavigate } from "react-router-dom";
+import { NotificationContext } from "../../contexts/NotificationContextProvider";
 
 export default function CreateAsset() {
 
-    const [ type, setType ] = useState("");
+    const { user } = useContext(UserContext);
+    const { refetchAllAssets } = useContext(DataContext);
+    const navigate = useNavigate();
+    const { notifyResponse } = useContext(NotificationContext);
+    const [ type, setType ] = useState("image");
     const [ name, setName ] = useState("");
     const [ image, setImage ] = useState("");
     const [ json, setJson ] = useState("");
     const [ audio, setAudio ] = useState("");
+    const [ locType, setLocType ] = useState("firebaseCloudStorage");
+    const [ locUrl, setLocUrl ] = useState("");
 
     const onChangeName = (e) => { setName(e.target.value); }
-    const onChangeType = (e) => { setType(e.target.value); }
+    const onChangeLocType = (type) => { setLocType(type); }
+    const onChangeType = (type) => { setType(type); }
+    const onChangeLocUrl = (e) => { setLocUrl(e.target.value); }
     const onChangeImage = (e) => {
         let fileReader = new FileReader();
         fileReader.readAsDataURL(e.target.files[0]);
@@ -34,27 +48,111 @@ export default function CreateAsset() {
             image: image,
             json: json,
             audio: audio,
+            key: Math.random(),
+            locType: locType,
+            locUrl: locUrl,
         }
-        console.log(image);
+        uploadAsset(user, data).then((res) => {
+            if(res.status === 200) {
+                refetchAllAssets();
+                navigate("/asset");
+            }
+            notifyResponse(res);
+        })
+    }
+
+    // Changes view based on the typeDataView value.
+    let typeDataView = ( <div>No data Needed for this asset type</div> )
+    switch(type) {
+        case "images": {
+            typeDataView = ( 
+                <div>
+                    <label htmlFor="image">Upload Image: </label>
+                    <input name="image" type="file" accept="image/*" onChange={onChangeImage}/>
+                    <br />
+                </div>
+            )
+        } break;
+        case "audios": {
+            typeDataView = ( 
+                <div>
+                    <label htmlFor="image">Upload Audio: </label>
+                    <input name="image" type="file" accept="audio/*" onChange={onChangeAudio}/>
+                    <br />
+                </div>
+            )
+        } break;
+        case "aseprite": {
+            typeDataView = ( 
+                <div>
+                    <label htmlFor="image">Upload Image: </label>
+                    <input name="image" type="file" accept="image/*" onChange={onChangeImage}/>
+                    <br />
+                    <label htmlFor="json">Upload JSON: </label>
+                    <input name="json" type="file" accept=".json" onChange={onChangeJson}/>
+                    <br />
+                </div>
+            )
+        }
+    }
+
+    // Changes view based on the locType value.
+    let locViewData = ( <div>Error no storage location.</div> )
+    switch(locType) {
+        case "firebaseCloudStorage": {
+            locViewData = (
+                <div>
+                    <label>
+                        Asset Type:
+                        <DropDown>
+                            <DropDown.Toggle variant="success"> {type} </DropDown.Toggle>
+                            <DropDown.Menu>
+                                <DropDown.Item onClick={() => onChangeType("images")}>images</DropDown.Item>
+                                <DropDown.Item onClick={() => onChangeType("audios")}>audios</DropDown.Item>
+                                <DropDown.Item onClick={() => onChangeType("aseprite")}>aseprite</DropDown.Item>
+                            </DropDown.Menu>
+                        </DropDown>
+                    </label>
+                    <br />
+                    {typeDataView}
+                </div>
+            )
+        } break;
+        case "locally": {
+            locViewData = (
+                <div>
+                    <label htmlFor="locUrl">URL of the locally stored asset data: </label>
+                    <input name="locUrl" type="string" onChange={onChangeLocUrl}/>
+                </div>
+            )
+        } break;
     }
 
     return (
         <div>
             <h2> Create Asset! </h2>
             <form onSubmit={onSubmit} id="assetForm">
-                <label htmlFor="type">Asset Type: </label>
-                <input name="type" type="string" onChange={onChangeType}/>
-                <br />
+                <button className="btn btn-primary" type="submit">Upload Asset</button>
+                <br/>
+
                 <label htmlFor="name">Name/Id: </label>
                 <input name="name" type="string" onChange={onChangeName}/>
                 <br />
-                <label htmlFor="image">Upload Image: </label>
-                <input name="image" type="file" accept="image/*" onChange={onChangeImage}/>
-                <br />
-                <label htmlFor="json">Upload JSON: </label>
-                <input name="json" type="file" accept=".json" onChange={onChangeJson}/>
-                <br />
-                <button className="btn btn-primary">Upload Asset</button>
+
+                <label>
+                    Where should the asset data be stored?
+                    <DropDown>
+                        <DropDown.Toggle variant="success"> {locType} </DropDown.Toggle>
+                        <DropDown.Menu>
+                            <DropDown.Item onClick={() => onChangeLocType("firebaseCloudStorage")}>Firebase Cloud Storage</DropDown.Item>
+                            <DropDown.Item onClick={() => onChangeLocType("locally")}>Locally</DropDown.Item>
+                        </DropDown.Menu>
+                    </DropDown>
+                </label>
+                <br />    
+
+                {locViewData}
+
             </form>
         </div>
     )

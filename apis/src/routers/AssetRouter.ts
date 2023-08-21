@@ -23,4 +23,13 @@ AssetRouter.get("/",
     AssetController.getAllAssets
 )
 
+// AssetRouter.get("/",
+//     isAuthenticated,
+//     isAuthorized({
+//         allowRoles: ["admin", "gamemaster"],
+//         allowGameServer: true,
+//     }),
+//     AssetController.getAllAssets
+// )
+
 export default AssetRouter;
