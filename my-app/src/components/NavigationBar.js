@@ -6,6 +6,8 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { UserContext } from "../contexts/UserContextProvider";
 import ClientFirebaseConnection from "../firebase/ClientFirebaseConnection";
 import { useContext } from "react";
+import Badge from 'react-bootstrap/Badge';
+
 
 export default function NavigationBar(props){
 
@@ -44,7 +46,9 @@ export default function NavigationBar(props){
         } else {
             return (
                 <div> 
-                    <span>Welcome: <strong>{userRoleText}</strong> {user.displayName} </span>
+                    <span style={{marginRight: "10px"}}>
+                        Welcome: <Badge>{userRoleText}</Badge> {user.displayName} 
+                    </span>
                     <button className="btn btn-dark" onClick={() => {ClientFirebaseConnection.singleton.logout()}}>Logout</button>
                 </div>
             );

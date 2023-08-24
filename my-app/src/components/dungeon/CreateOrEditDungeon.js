@@ -5,6 +5,12 @@ import { getDeepCopy } from "../../util";
 import { createDungeon, editDungeon } from "../../services/DungeonService";
 import { useNavigate, useParams } from "react-router-dom";
 import { NotificationContext } from "../../contexts/NotificationContextProvider";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
+import SubmitButton from "../forms/SubmitButton";
+
 
 export default function CreateOrEditDungeon(props) {
     let id = useParams().id;
@@ -17,6 +23,8 @@ export default function CreateOrEditDungeon(props) {
     const [ tilesetName, setTilesetName] = useState("");
     const [ clientTilesetLocation, setClientTilesetLocation ] = useState("");
     const [ serverJsonLocation, setServerJsonLocation ] = useState("");
+
+    const [ sendingRequest, setSendingRequest ] = useState(false);
 
     useEffect(() => {
         // When editing we will load in data from firebase.
@@ -93,6 +101,7 @@ export default function CreateOrEditDungeon(props) {
     }
     const onSubmit = (e) => {
         e.preventDefault();
+        setSendingRequest(true);
         let data = {
             name: name,
             tilesetName: tilesetName,
@@ -106,6 +115,7 @@ export default function CreateOrEditDungeon(props) {
                     refetchAllDungeons();
                     navigate("/dungeon");
                 }
+                setSendingRequest(false);
                 notifyResponse(res);
             })
         } else {
@@ -114,6 +124,7 @@ export default function CreateOrEditDungeon(props) {
                     refetchAllDungeons();
                     navigate("/dungeon");
                 }
+                setSendingRequest(false);
                 notifyResponse(res);
             })
         }
@@ -121,11 +132,13 @@ export default function CreateOrEditDungeon(props) {
     }
 
     return (
-        <div>
+        <Container>
             <h2>{props.isEdit ? "Edit Dungeon": "Create Dungeon"}</h2>
-            <form onSubmit={onSubmit} style={{margin: "24px", backgroundColor: "lightgray", borderRadius: "5px"}}>
+            <Form onSubmit={onSubmit} style={{margin: "24px", backgroundColor: "lightgray", borderRadius: "5px"}}>
                 <div style={{padding: "10px"}}>
-                    <button type="submit" className="btn btn-primary">{props.isEdit? "Upload Changes" : "Upload New Dungeon"}</button>
+                    <SubmitButton disabled={sendingRequest} variant="parmiary">
+                        {props.isEdit? "Upload Changes" : "Upload New Dungeon"}
+                    </SubmitButton>
                     <h3>General Information</h3>
                     <label htmlFor="name" >Name: </label>
                     <input name="name" type="text" onChange={onChangeName} defaultValue={name} />
@@ -179,8 +192,8 @@ export default function CreateOrEditDungeon(props) {
                         })
                     }
                 </div>
-            </form>
-        </div>
+            </Form>
+        </Container>
     )
 
 }

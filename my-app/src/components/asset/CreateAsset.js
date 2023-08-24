@@ -5,21 +5,31 @@ import { UserContext } from "../../contexts/UserContextProvider";
 import { DataContext } from "../../contexts/DataContextProvider";
 import { useNavigate } from "react-router-dom";
 import { NotificationContext } from "../../contexts/NotificationContextProvider";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
+import SubmitButton from "../forms/SubmitButton";
 
 export default function CreateAsset() {
 
+    // Load contexts
     const { user } = useContext(UserContext);
     const { refetchAllAssets } = useContext(DataContext);
-    const navigate = useNavigate();
     const { notifyResponse } = useContext(NotificationContext);
-    const [ type, setType ] = useState("image");
+
+    const navigate = useNavigate();
+    // Load states
+    const [ type, setType ] = useState("images");
     const [ name, setName ] = useState("");
     const [ image, setImage ] = useState("");
     const [ json, setJson ] = useState("");
     const [ audio, setAudio ] = useState("");
     const [ locType, setLocType ] = useState("firebaseCloudStorage");
     const [ locUrl, setLocUrl ] = useState("");
+    const [ sendingRequest, setSendingRequest ] = useState(false);
 
+    // Setup onchange handlers
     const onChangeName = (e) => { setName(e.target.value); }
     const onChangeLocType = (type) => { setLocType(type); }
     const onChangeType = (type) => { setType(type); }
@@ -42,13 +52,13 @@ export default function CreateAsset() {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        setSendingRequest(true);
         let data = {
             name: name,
             type: type,
             image: image,
             json: json,
             audio: audio,
-            key: Math.random(),
             locType: locType,
             locUrl: locUrl,
         }
@@ -58,6 +68,7 @@ export default function CreateAsset() {
                 navigate("/asset");
             }
             notifyResponse(res);
+            setSendingRequest(true);
         })
     }
 
@@ -97,10 +108,10 @@ export default function CreateAsset() {
     }
 
     // Changes view based on the locType value.
-    let locViewData = ( <div>Error no storage location.</div> )
+    let locData = ( <div>Error no storage location.</div> )
     switch(locType) {
         case "firebaseCloudStorage": {
-            locViewData = (
+            locData = (
                 <div>
                     <label>
                         Asset Type:
@@ -119,7 +130,7 @@ export default function CreateAsset() {
             )
         } break;
         case "locally": {
-            locViewData = (
+            locData = (
                 <div>
                     <label htmlFor="locUrl">URL of the locally stored asset data: </label>
                     <input name="locUrl" type="string" onChange={onChangeLocUrl}/>
@@ -129,15 +140,19 @@ export default function CreateAsset() {
     }
 
     return (
-        <div>
+        <Container>
             <h2> Create Asset! </h2>
-            <form onSubmit={onSubmit} id="assetForm">
-                <button className="btn btn-primary" type="submit">Upload Asset</button>
+            <Form onSubmit={onSubmit} id="assetForm">
+                <SubmitButton disabled={sendingRequest} variant="primary">
+                    Upload Asset
+                </SubmitButton>
                 <br/>
+                <br />
 
                 <label htmlFor="name">Name/Id: </label>
                 <input name="name" type="string" onChange={onChangeName}/>
-                <br />
+                <br/>
+                <br/>
 
                 <label>
                     Where should the asset data be stored?
@@ -149,11 +164,12 @@ export default function CreateAsset() {
                         </DropDown.Menu>
                     </DropDown>
                 </label>
-                <br />    
+                <br/> 
+                <br/>   
 
-                {locViewData}
+                {locData}
 
-            </form>
-        </div>
+            </Form>
+        </Container>
     )
 }

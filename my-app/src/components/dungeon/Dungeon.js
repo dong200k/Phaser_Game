@@ -1,51 +1,53 @@
 import { useContext } from "react";
 import { DataContext } from "../../contexts/DataContextProvider";
 import { UserContext } from "../../contexts/UserContextProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NotificationContext } from "../../contexts/NotificationContextProvider";
-
+import Container from 'react-bootstrap/Container';
+import Stack from 'react-bootstrap/Stack';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 export default function Dungeon() {
 
     const { dungeons, refetchAllDungeons } = useContext(DataContext);
     const { user } = useContext(UserContext);
     const { notify } = useContext(NotificationContext);
-    
+    const navigate = useNavigate();
+
     return(
-        <div>
-            <h2> Dungeon View </h2>
+        <Container>
+            <h2> List of dungeons </h2>
+            <p>You can add and edit dungeons. Deleting dungeons is currently not allowed.</p>
             <Link to={`/dungeon/create`}>
-                <button className="btn btn-info">Create Dungeon</button>
+                <button className="btn btn-info" style={{marginBottom: "16px"}}>Create Dungeon</button>
             </Link>
-            <div>
+            <Stack gap={3}>
                 {
                     (dungeons?.length ?? 0) === 0 ? "There are no dungeons.": 
                     dungeons.map((dungeon) => {
                         return (
-                            <div className="d-flex justify-content-between mb-3" style={{width: "50%"}} key={dungeon.name}>
+                            <div key={dungeon.name} className="d-flex justify-content-between">
                                 <div style={{textAlign: "center", display: "inline-block"}}>
-                                    <h3 style={{display: "inline-block", marginRight: "10px"}}>{dungeon.name}</h3> 
-                                    
+                                    <h3 style={{display: "inline-block", marginRight: "10px"}}>{dungeon.name}</h3>    
                                 </div>
-                                <div>
-                                    <Link to={`/dungeon/edit/${dungeon.name}`}>
-                                        <button className="btn btn-primary" style={{margin: "0px 24px", width: "80px"}}>edit</button>
-                                    </Link>
-                                    <button className="btn btn-danger" onClick={()=>{
-                                        console.log("No deleting.");
+                                <ButtonGroup>
+                                    <Button variant="primary" style={{width:"100px"}} onClick={() => {
+                                        navigate(`/dungeon/edit/${dungeon.name}`)
+                                    }}>
+                                        Edit
+                                    </Button>
+                                    <Button variant="danger" style={{width:"100px"}} onClick={() => {
                                         notify({message: "Cannot delete on my-app. Please manually delete on firebase."})
-                                        // deleteMonster(user, monster.name).then((res) => {
-                                        //     if(res.status === 200) {
-                                        //         refetchAllDungeons();
-                                        //     }
-                                        // });
-                                    }}>delete</button>
-                                </div>
+                                    }}>
+                                        Delete
+                                    </Button>
+                                </ButtonGroup>
                             </div>
                         )
                     })
                 }
-            </div>
-        </div>
+            </Stack>
+        </Container>
     )
 }

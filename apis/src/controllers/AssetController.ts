@@ -7,7 +7,7 @@ import { getIdFromName } from "../util/apputil";
 export default class AssetController {
 
     public static upload(req: any, res: any) {
-        let { type, name, audio, json, image, key, locType, locUrl } = req.body;
+        let { type, name, audio, json, image, locType, locUrl } = req.body;
         let id = getIdFromName(name);
         if(locType === "firebaseCloudStorage") {
             getFirestore().collection("assets").doc(id).get().then((doc) => {
@@ -23,9 +23,9 @@ export default class AssetController {
                 throw new Error(`Incorrect type: Use 'images', 'audios' or 'aseprite'`);
             }).then(() => {
                 // Step 2: Upload asset metadata to firestore. The metadata can be used to access the asset on firebase cloud storage.
-                if(type === "images") return AssetController.uploadToFirestore({type, name, key, locType, locData: `${type}/${id}`});
-                if(type === "audios") return AssetController.uploadToFirestore({type, name, key, locType, locData: `${type}/${id}`});
-                if(type === "aseprite") return AssetController.uploadToFirestore({type, name, key, locType, locData: `aseprite/${id}/image`, locData2: `aseprite/${id}/json`});
+                if(type === "images") return AssetController.uploadToFirestore({type, name, locType, locData: `${type}/${id}`});
+                if(type === "audios") return AssetController.uploadToFirestore({type, name, locType, locData: `${type}/${id}`});
+                if(type === "aseprite") return AssetController.uploadToFirestore({type, name, locType, locData: `aseprite/${id}/image`, locData2: `aseprite/${id}/json`});
 
             }).then(() => {
                 res.status(200).send({message: "Upload successful!"});
@@ -33,7 +33,7 @@ export default class AssetController {
                 res.status(400).send({message: e.message});
             });
         } else if(locType === "locally") {
-            AssetController.uploadToFirestore({type, name, key, locType, locData: locUrl}).then(() => {
+            AssetController.uploadToFirestore({type, name, locType, locData: locUrl}).then(() => {
                 res.status(200).send({message: "Upload successful!"});
             }).catch((e) => {
                 res.status(400).send({message: e.message});

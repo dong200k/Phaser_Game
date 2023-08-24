@@ -9,7 +9,7 @@ export default function Authorized(props) {
 
     if(!user) {
         return (
-            <h2>Sign in to view monsters. You are not authenticated!</h2>
+            <h2>Sign in to view. You are not authenticated!</h2>
         )
     }
 

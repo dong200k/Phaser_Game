@@ -9,8 +9,6 @@ import Weapons from './components/Weapons.js';
 import Weapon from './components/Weapon.js';
 import UserContextProvider, { UserContext } from './contexts/UserContextProvider.js';
 import Monster from './components/monster/Monster.js';
-import CreateMonster from './components/monster/CreateMonster.js';
-import EditMonster from './components/monster/EditMonster.js';
 import DataContextProvider from './contexts/DataContextProvider.js';
 import Authorized from './components/Authorized.js';
 import Dungeon from './components/dungeon/Dungeon.js';
@@ -19,6 +17,7 @@ import Admin from './components/admin/Admin.js';
 import NotificationContextProvider from './contexts/NotificationContextProvider.js';
 import Asset from './components/asset/Asset.js';
 import CreateAsset from './components/asset/CreateAsset.js';
+import CreateOrEditMonster from './components/monster/CreateOrEditMonster.js';
 
 function App() {
   return (
@@ -38,8 +37,8 @@ function App() {
                 <Route path="/weapon/:id" element={<Weapon/>}/>
                 <Route path="/weapon" element={<Weapons />} />
                 <Route path="/admin" element={<Authorized roles={["admin"]}><Admin /></Authorized>} />
-                <Route path="/monster/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateMonster /></Authorized>} />
-                <Route path="/monster/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><EditMonster /></Authorized>} />
+                <Route path="/monster/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditMonster isEdit={false}/> </Authorized>} />
+                <Route path="/monster/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditMonster isEdit={true}/></Authorized>} />
                 <Route path="/monster" element={<Authorized roles={["admin", "gamemaster"]}><Monster /></Authorized>} />
                 <Route path="/dungeon" element={<Authorized roles={["admin", "gamemaster"]}><Dungeon /></Authorized>} />
                 <Route path="/dungeon/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditDungeon isEdit={false}/></Authorized>} />

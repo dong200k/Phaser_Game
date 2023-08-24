@@ -1,11 +1,20 @@
-import { Link } from "react-router-dom";
+
 import { useParams, useNavigate } from "react-router-dom"
 import { editMonster } from "../../services/MonsterService";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { DataContext } from "../../contexts/DataContextProvider";
 import { NotificationContext } from "../../contexts/NotificationContextProvider";
 
+import SubmitButton from "../forms/SubmitButton";
+
+/**
+ * 
+ *  --------------------------------------------
+ *  DEPRECATED Using CreateOrEditMonster instead.
+ *  --------------------------------------------
+ * 
+ */
 export default function EditMonster() {
 
     let id = useParams().id;
@@ -13,6 +22,9 @@ export default function EditMonster() {
     const { monsters, refetchAllMonsters } = useContext(DataContext);
     const { notifyResponse } = useContext(NotificationContext);
     const navigate = useNavigate();
+
+    // Flag for if the user pressed the edit monster to database button.
+    const [ sendingRequest, setSendingRequest ] = useState(false);
 
     let monster = undefined;
     if(monsters) {
@@ -23,6 +35,7 @@ export default function EditMonster() {
 
     const onSubmit = (e) => {
         e.preventDefault();
+        setSendingRequest(true);
         let formDOM = document.getElementById("createMonsterForm");
         let asepriteKey = formDOM.querySelector(".asepriteKey").value;
         let monsterName = formDOM.querySelector(".monsterName").value;
@@ -72,6 +85,7 @@ export default function EditMonster() {
                 navigate("/monster");
                 formDOM.reset();
             }
+            setSendingRequest(false);
             notifyResponse(res); 
         })
     }
@@ -80,8 +94,9 @@ export default function EditMonster() {
         <div>
             <h2> Edit Monster </h2>
             <form onSubmit={onSubmit} id="createMonsterForm">
-
-                <button type="submit" className="btn btn-primary">Edit Monster And Save To Database</button>
+                <SubmitButton disabled={sendingRequest} variant="primary">
+                    Edit Monster And Save To Database
+                </SubmitButton>
 
                 <h4>General</h4>
                 <label htmlFor="monsterName">Name: </label>
