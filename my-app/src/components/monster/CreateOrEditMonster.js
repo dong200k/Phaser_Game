@@ -46,7 +46,7 @@ export default function CreateOrEditMonster(props) {
 
     useEffect(() => {
         if(monsters && isEdit) {
-            let monster = monsters.filter((m) => m.name === id)[0];
+            let monster = monsters.filter((m) => m.id === id)[0];
             if(monster) {
                 setName(monster.name);
                 setAsepriteKey(monster.asepriteKey ?? "");

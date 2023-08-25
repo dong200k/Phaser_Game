@@ -1,7 +1,6 @@
 import Form from 'react-bootstrap/Form';
 
-export default function NumberField(props) {
-    const { controlId, label, text="", step=1, value=0, onChange } = props;
+export default function NumberField({ controlId, label, text="", step=1, value=0, onChange }) {
     return (
         <Form.Group className="mb-1" controlId={controlId}>
             <Form.Label>{label}</Form.Label>

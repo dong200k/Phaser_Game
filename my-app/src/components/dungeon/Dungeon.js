@@ -33,7 +33,7 @@ export default function Dungeon() {
                                 </div>
                                 <ButtonGroup>
                                     <Button variant="primary" style={{width:"100px"}} onClick={() => {
-                                        navigate(`/dungeon/edit/${dungeon.name}`)
+                                        navigate(`/dungeon/edit/${dungeon.id}`)
                                     }}>
                                         Edit
                                     </Button>

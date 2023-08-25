@@ -35,7 +35,7 @@ export default function Monster() {
                                     <h3 style={{display: "inline-block", marginRight: "10px"}}>{monster.name}</h3> 
                                 </div>
                                 <ButtonGroup>
-                                    <Button variant="primary" style={{width:"100px"}} onClick={() => {navigate(`/monster/edit/${monster.name}`)}}>
+                                    <Button variant="primary" style={{width:"100px"}} onClick={() => {navigate(`/monster/edit/${monster.id}`)}}>
                                         Edit
                                     </Button>
                                     <Button variant="danger" style={{width:"100px"}} onClick={() => {

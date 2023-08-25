@@ -29,7 +29,7 @@ export default function CreateOrEditDungeon(props) {
     useEffect(() => {
         // When editing we will load in data from firebase.
         if(dungeons && props.isEdit) {
-            let dungeon = dungeons.filter((d) => d.name === id)[0];
+            let dungeon = dungeons.filter((d) => d.id === id)[0];
             if(dungeon) {
                 // Add id to waves and monsters in each wave. The id is used for the react key prop.
                 dungeon.waves.forEach((w) => {

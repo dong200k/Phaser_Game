@@ -9,7 +9,10 @@ import { getIdFromName } from "../util/apputil";
 export const getDungeon = async (idOrName: string) => {
     const db = getFirestore();
     let docRef = db.collection("dungeons").doc(getIdFromName(idOrName));
-    return (await docRef.get()).data();
+    let doc = (await docRef.get());
+    let data = doc.data();
+    if(data) data.id = doc.id;
+    return data;
 }
 
 export const getAllDungeons = async () => {
@@ -18,7 +21,9 @@ export const getAllDungeons = async () => {
     let q = await dungeonColRef.get();
     let dungeonData: any[] = [];
     q.forEach((doc) => {
-        dungeonData.push(doc.data());
+        let data = doc.data();
+        data.id = doc.id;
+        dungeonData.push(data);
     })
     return dungeonData;
 }

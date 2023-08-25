@@ -7,7 +7,7 @@ import { getIdFromName } from "../util/apputil";
 export default class AssetController {
 
     public static upload(req: any, res: any) {
-        let { type, name, audio, json, image, locType, locUrl } = req.body;
+        let { type, name, audio, json, image, locType, locUrl, locUrl2 } = req.body;
         let id = getIdFromName(name);
         if(locType === "firebaseCloudStorage") {
             getFirestore().collection("assets").doc(id).get().then((doc) => {
@@ -27,13 +27,23 @@ export default class AssetController {
                 if(type === "audios") return AssetController.uploadToFirestore({type, name, locType, locData: `${type}/${id}`});
                 if(type === "aseprite") return AssetController.uploadToFirestore({type, name, locType, locData: `aseprite/${id}/image`, locData2: `aseprite/${id}/json`});
 
+                throw new Error(`Incorrect type: Use 'images', 'audios' or 'aseprite'`);
             }).then(() => {
                 res.status(200).send({message: "Upload successful!"});
             }).catch((e) => {
                 res.status(400).send({message: e.message});
             });
         } else if(locType === "locally") {
-            AssetController.uploadToFirestore({type, name, locType, locData: locUrl}).then(() => {
+            // If the user choose locally, create an asset document but don't upload any assets to firebase cloud storage.
+            const uploadToFirestore = () => {
+                if(type === "images" || type === "audios")
+                    return AssetController.uploadToFirestore({type, name, locType, locData: locUrl});
+                if(type === "aseprite")
+                    return AssetController.uploadToFirestore({type, name, locType, locData: locUrl, locData2: locUrl2});
+                
+                throw new Error(`Incorrect type: Use 'images', 'audios' or 'aseprite'`);
+            }
+            uploadToFirestore().then(() => {
                 res.status(200).send({message: "Upload successful!"});
             }).catch((e) => {
                 res.status(400).send({message: e.message});
@@ -49,7 +59,9 @@ export default class AssetController {
         assetColRef.get().then((data) => {
             let assetData: any[] = [];
             data.forEach((doc) => {
-                assetData.push(doc.data());
+                let docData = doc.data();
+                docData.id = doc.id;
+                assetData.push(docData);
             })
             res.status(200).send({message: "Retrieved All Assets", assets: assetData});
         }).catch((e) => {

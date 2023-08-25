@@ -5,11 +5,12 @@ import { UserContext } from "../../contexts/UserContextProvider";
 import { DataContext } from "../../contexts/DataContextProvider";
 import { useNavigate } from "react-router-dom";
 import { NotificationContext } from "../../contexts/NotificationContextProvider";
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
-import Spinner from 'react-bootstrap/Spinner';
 import SubmitButton from "../forms/SubmitButton";
+import TextField from "../forms/TextField";
+import FileField from "../forms/FileField";
+import DropDownField from "../forms/DropDownField";
 
 export default function CreateAsset() {
 
@@ -26,14 +27,16 @@ export default function CreateAsset() {
     const [ json, setJson ] = useState("");
     const [ audio, setAudio ] = useState("");
     const [ locType, setLocType ] = useState("firebaseCloudStorage");
-    const [ locUrl, setLocUrl ] = useState("");
-    const [ sendingRequest, setSendingRequest ] = useState(false);
+    const [ locUrl, setLocUrl ] = useState(""); // Local url 1.
+    const [ locUrl2, setLocUrl2 ] = useState(""); // Local url 2.
+    const [ sendingRequest, setSendingRequest ] = useState(false); // Flag for if a request is being sent.
 
     // Setup onchange handlers
     const onChangeName = (e) => { setName(e.target.value); }
     const onChangeLocType = (type) => { setLocType(type); }
     const onChangeType = (type) => { setType(type); }
     const onChangeLocUrl = (e) => { setLocUrl(e.target.value); }
+    const onChangeLocUrl2 = (e) => { setLocUrl2(e.target.value); } 
     const onChangeImage = (e) => {
         let fileReader = new FileReader();
         fileReader.readAsDataURL(e.target.files[0]);
@@ -61,6 +64,7 @@ export default function CreateAsset() {
             audio: audio,
             locType: locType,
             locUrl: locUrl,
+            locUrl2: locUrl2,
         }
         uploadAsset(user, data).then((res) => {
             if(res.status === 200) {
@@ -72,71 +76,79 @@ export default function CreateAsset() {
         })
     }
 
-    // Changes view based on the typeDataView value.
-    let typeDataView = ( <div>No data Needed for this asset type</div> )
+    // The view of the assets
+    let assetInfoView = ( <div>No data Needed for this asset type</div> )
     switch(type) {
         case "images": {
-            typeDataView = ( 
-                <div>
-                    <label htmlFor="image">Upload Image: </label>
-                    <input name="image" type="file" accept="image/*" onChange={onChangeImage}/>
-                    <br />
-                </div>
+            assetInfoView = ( 
+                locType === "firebaseCloudStorage" ?
+                <FileField 
+                    controlId="image"
+                    label="Upload Image:"
+                    onChange={onChangeImage}
+                    accept="image/*"
+                />
+                : <TextField 
+                    controlId="locUrl" 
+                    label="URL of the locally stored image:" 
+                    text="E.g. images/button/button_small_active.png"
+                    value={locUrl} 
+                    onChange={onChangeLocUrl} 
+                />
             )
         } break;
         case "audios": {
-            typeDataView = ( 
-                <div>
-                    <label htmlFor="image">Upload Audio: </label>
-                    <input name="image" type="file" accept="audio/*" onChange={onChangeAudio}/>
-                    <br />
-                </div>
+            assetInfoView = ( 
+                locType === "firebaseCloudStorage" ?
+                <FileField 
+                    controlId="audio"
+                    label="Upload Audio:"
+                    onChange={onChangeAudio}
+                    accept="audio/*"
+                />
+                : 
+                <TextField 
+                    controlId="locUrl" 
+                    label="URL of the locally stored audio:" 
+                    text="E.g. audio/button_click1.mp3"
+                    value={locUrl} 
+                    onChange={onChangeLocUrl} 
+                />
             )
         } break;
         case "aseprite": {
-            typeDataView = ( 
-                <div>
-                    <label htmlFor="image">Upload Image: </label>
-                    <input name="image" type="file" accept="image/*" onChange={onChangeImage}/>
-                    <br />
-                    <label htmlFor="json">Upload JSON: </label>
-                    <input name="json" type="file" accept=".json" onChange={onChangeJson}/>
-                    <br />
-                </div>
+            assetInfoView = ( 
+                locType === "firebaseCloudStorage" ?
+                <>
+                    <FileField 
+                        controlId="image"
+                        label="Upload Image:"
+                        onChange={onChangeImage}
+                        accept="image/*"
+                    />
+                    <FileField 
+                        controlId="json"
+                        label="Upload JSON:"
+                        onChange={onChangeJson}
+                        accept=".json"
+                    />
+                </>
+                : <>
+                    <TextField 
+                        controlId="locUrl"
+                        label="URL of the locally stored aseprite image:"
+                        value={locUrl}
+                        onChange={onChangeLocUrl}
+                    />
+                    <TextField 
+                        controlId="locUrl2"
+                        label="URL of the locally stored aseprite json:"
+                        value={locUrl2}
+                        onChange={onChangeLocUrl2}
+                    />
+                </>
             )
         }
-    }
-
-    // Changes view based on the locType value.
-    let locData = ( <div>Error no storage location.</div> )
-    switch(locType) {
-        case "firebaseCloudStorage": {
-            locData = (
-                <div>
-                    <label>
-                        Asset Type:
-                        <DropDown>
-                            <DropDown.Toggle variant="success"> {type} </DropDown.Toggle>
-                            <DropDown.Menu>
-                                <DropDown.Item onClick={() => onChangeType("images")}>images</DropDown.Item>
-                                <DropDown.Item onClick={() => onChangeType("audios")}>audios</DropDown.Item>
-                                <DropDown.Item onClick={() => onChangeType("aseprite")}>aseprite</DropDown.Item>
-                            </DropDown.Menu>
-                        </DropDown>
-                    </label>
-                    <br />
-                    {typeDataView}
-                </div>
-            )
-        } break;
-        case "locally": {
-            locData = (
-                <div>
-                    <label htmlFor="locUrl">URL of the locally stored asset data: </label>
-                    <input name="locUrl" type="string" onChange={onChangeLocUrl}/>
-                </div>
-            )
-        } break;
     }
 
     return (
@@ -147,28 +159,44 @@ export default function CreateAsset() {
                     Upload Asset
                 </SubmitButton>
                 <br/>
-                <br />
+                <br/>
 
-                <label htmlFor="name">Name/Id: </label>
-                <input name="name" type="string" onChange={onChangeName}/>
+                <TextField 
+                    controlId="name" 
+                    label="Name/Id:" 
+                    value={name} 
+                    onChange={onChangeName}
+                    text="Names should be unique."
+                />
+
                 <br/>
                 <br/>
 
-                <label>
-                    Where should the asset data be stored?
-                    <DropDown>
-                        <DropDown.Toggle variant="success"> {locType} </DropDown.Toggle>
-                        <DropDown.Menu>
-                            <DropDown.Item onClick={() => onChangeLocType("firebaseCloudStorage")}>Firebase Cloud Storage</DropDown.Item>
-                            <DropDown.Item onClick={() => onChangeLocType("locally")}>Locally</DropDown.Item>
-                        </DropDown.Menu>
-                    </DropDown>
-                </label>
-                <br/> 
-                <br/>   
+                <DropDownField 
+                    controlId={"storageLocation"} 
+                    onChange={(e) => onChangeLocType(e.target.value)} 
+                    value={locType}
+                    label="Storage Location: "
+                >
+                    <option>firebaseCloudStorage</option>
+                    <option>locally</option>
+                </DropDownField>
 
-                {locData}
-
+                <DropDownField 
+                    controlId={"assetType"} 
+                    onChange={(e) => onChangeType(e.target.value)} 
+                    value={type}
+                    label="Asset Type: "
+                >
+                    <option>images</option>
+                    <option>audios</option>
+                    <option>aseprite</option>
+                </DropDownField>
+                    
+                <br/>
+                <br/>
+                <h2>Asset Data</h2>
+                {assetInfoView}
             </Form>
         </Container>
     )

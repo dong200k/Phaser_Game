@@ -106,7 +106,10 @@ export const DeleteMonster = async (id: string) => {
 export const GetMonster = async (id: string) => {
     const db = getFirestore();
     let docRef = db.collection("monsters").doc(getIdFromName(id));
-    return (await docRef.get()).data();
+    let doc = (await docRef.get());
+    let data = doc.data();
+    if(data) data.id = doc.id;
+    return data;
 }
 
 /**
@@ -126,7 +129,9 @@ export const GetAllMonsters = async () => {
     let q = await monsterColRef.get();
     let monsterData: any[] = [];
     q.forEach((doc) => {
-        monsterData.push(doc.data());
+        let data = doc.data();
+        data.id = doc.id;
+        monsterData.push(data);
     })
     return monsterData;
 }

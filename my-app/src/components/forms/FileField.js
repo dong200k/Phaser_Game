@@ -1,11 +1,12 @@
 import Form from 'react-bootstrap/Form';
 
-export default function TextField({ controlId, label, text="", onChange, placeholder="", value="" }) {
+export default function FileField({ controlId, label, text="", onChange, accept="*/*" }) {
     return (
         <Form.Group className="mb-1" controlId={controlId}>
             <Form.Label>{label}</Form.Label>
-            <Form.Control type="text" onChange={onChange} value={value} placeholder={placeholder}/>
+            <Form.Control type="file" onChange={onChange} accept={accept} />
             <Form.Text>{text}</Form.Text>
         </Form.Group>
     )
 }
+

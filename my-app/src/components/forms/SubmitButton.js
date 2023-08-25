@@ -1,14 +1,11 @@
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 
-export default function SubmitButton(props) {
-
-    const { disabled, variant } = props;
-
+export default function SubmitButton({ disabled, variant, children}) {
     return (
         <>
             <Button type="submit" variant={variant} className="btn btn-primary" disabled={disabled}>
-                {props.children}
+                {children}
             </Button>
             {
                 disabled ? 
