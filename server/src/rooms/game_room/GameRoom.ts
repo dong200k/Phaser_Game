@@ -12,6 +12,7 @@ export interface GameRoomOptions {
 interface WaitingClient { 
     client: Client;
     options: any;
+    state: "loading" | "ready" | "justjoined";
 }
 
 export default class GameRoom extends Room<State> {
@@ -77,6 +78,15 @@ export default class GameRoom extends Room<State> {
             this.gameManager.getPlayerManager().processPlayerSelectUpgrade(client.sessionId, msg);
         })
 
+        this.onMessage("loadAssetComplete", (client, msg) => {
+            console.log(client.id, " Finished loading");
+            this.waitingClients.forEach((waitingClient) => {
+                if(waitingClient.client.id === client.id) {
+                    waitingClient.state = "ready";
+                }
+            })
+        })
+
         // this.onMessage("input", (client, msg) => {
 
         // })
@@ -106,16 +116,26 @@ export default class GameRoom extends Room<State> {
     }
 
     private processWaitingClients() {
-        while(this.waitingClients.length > 0) {
-            let waitingClient = this.waitingClients.pop();
+        for(let i = this.waitingClients.length - 1; i >= 0; i--) {
+            let waitingClient = this.waitingClients.at(i);
             if(waitingClient) {
                 let client = waitingClient.client;
-                let options = waitingClient.options;
-                // Add a new player to the room state. The first player is the owner of the room.
-                this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.IdToken, this.gameManager).then(() => {
-                    this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
-                });
+                if(waitingClient.state === "justjoined") {
+                    // send client assets to load.
+                    client.send("loadAssets", ["demo_hero"]);
+                    waitingClient.state = "loading";
+                } else if(waitingClient.state === "loading") {
+
+                } else if(waitingClient.state === "ready") {
+                    let options = waitingClient.options;
+                    // Add a new player to the room state. The first player is the owner of the room.
+                    this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.IdToken, this.gameManager).then(() => {
+                        this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
+                    });
+                    this.waitingClients.splice(i, 1);
+                }
             }
+
         }
     }
 
@@ -124,7 +144,7 @@ export default class GameRoom extends Room<State> {
     // }
 
     onJoin(client: Client, options: any) {
-        this.waitingClients.push({client, options});
+        this.waitingClients.push({client, options, state: "justjoined"});
     }
 
     onLeave(client: Client) {

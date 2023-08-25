@@ -68,7 +68,7 @@ export default function CreateAsset() {
                 navigate("/asset");
             }
             notifyResponse(res);
-            setSendingRequest(true);
+            setSendingRequest(false);
         })
     }
 

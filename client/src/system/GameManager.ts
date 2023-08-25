@@ -59,7 +59,6 @@ export default class GameManager {
         this.initializeClientSidePrediction();
         this.initializeInputs();
         this.initializeListeners();
-        this.initializeSounds();
     }
 
     /**
@@ -171,10 +170,6 @@ export default class GameManager {
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
     }
 
-    private initializeSounds() {
-        this.soundManager.add("player_death", "sfx");
-    }
-
     private initializeClientSidePrediction() {
         this.csp = new ClientSidePrediction(this.scene);
     }
@@ -239,6 +234,7 @@ export default class GameManager {
 
     /** Called when the dungeon is first created on the server */
     private onChangeDungeon = (currentValue: any) => {
+        console.log("DUNGEON DDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
         currentValue.listen("tilemap", this.onChangeTilemap);
         currentValue.listen("playerBounds", this.onChangePlayerBounds);
     }

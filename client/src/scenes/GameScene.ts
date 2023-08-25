@@ -7,6 +7,7 @@ import { ColorStyle, SceneKey } from '../config';
 import SceneManager from '../system/SceneManager';
 import EventManager from '../system/EventManager';
 import LoadingScreen from '../UI/gameuis/LoadingScreen';
+import AssetService from '../services/AssetService';
 
 interface MobAsset {
     key: string;
@@ -27,7 +28,7 @@ export default class GameScene extends Phaser.Scene {
     private gameManager?: GameManager;
 
      // ------- loading screen -------
-     private loadingScreen!: LoadingScreen;
+     private loadingScreen?: LoadingScreen;
      private loading: boolean;
      private loadingProgress: number;
 
@@ -39,7 +40,7 @@ export default class GameScene extends Phaser.Scene {
 
     init () {
         this.cameras.main.setBackgroundColor(ColorStyle.neutrals[800]);
-        this.cameras.main.setZoom(2);
+        //this.cameras.main.setZoom(2);
     }
 
     preload() {
@@ -55,7 +56,7 @@ export default class GameScene extends Phaser.Scene {
         // this.anims.remove()
         this.initializeListeners();
         this.joinGameRoom();
-        this.showHUD();
+        //this.showHUD();
     }
 
     public initializeListeners() {
@@ -74,7 +75,25 @@ export default class GameScene extends Phaser.Scene {
         // When waking this scene (When sceneManager switches back to this scene) join game room and show hud.
         this.events.on("wake", () => {
             this.joinGameRoom();
-            this.showHUD();
+            //this.showHUD();
+        })
+        this.load.on("progress", (value: number) => {
+            console.log(value);
+            this.loadingScreen?.updateProgressBarValue(value);
+        })
+        this.load.on("fileprogress", (file: Phaser.Loader.File) => {
+            console.log(file.src);
+            this.loadingScreen?.updateProgressBarText(file.src);
+        })
+        this.load.on("complete", () => {
+            console.log("loading complete");
+            if(this.gameRoom) {
+                this.gameRoom.send("loadAssetComplete");
+                // Process game start.
+                this.loadingScreen?.setVisible(false);
+                this.cameras.main.setZoom(2);
+                this.showHUD();
+            }
         })
     }
 
@@ -88,6 +107,7 @@ export default class GameScene extends Phaser.Scene {
             this.tweens.killAll();
             this.gameManager = undefined;
             this.gameRoom = undefined;
+            this.loadingScreen = undefined;
             let switchToSceneKey = SceneKey.MenuScene;
             if(ClientManager.getClient().isConnectedToWaitingRoom())
                 switchToSceneKey = SceneKey.RoomScene;
@@ -114,7 +134,35 @@ export default class GameScene extends Phaser.Scene {
                 this.gameRoom = undefined;
             });
             EventManager.eventEmitter.emit(EventManager.HUDEvents.RESET_HUD);
-            this.gameManager = new GameManager(this,this.gameRoom);
+
+            // Show loading screen when loading assets.
+            this.cameras.main.setZoom(1);
+            this.cameras.main.stopFollow();
+            this.cameras.main.setScroll(0, 0);
+            this.loadingScreen = new LoadingScreen(this);
+            this.loadingScreen.setVisible(true);
+
+            this.gameRoom.onMessage("loadAssets", async (assets) => {
+                console.log(assets);
+                for(let i = 0; i < assets.length; i++) {
+                    let assetId = assets[i];
+                    let docSnap = await AssetService.getAsset(assetId);
+                    let assetDoc = docSnap.data();
+                    if(assetDoc) {
+                        if(assetDoc.locType === "locally") {
+                            if(assetDoc.type === "images") {
+                                console.log(assetId, assetDoc.locData);
+                                this.load.image(assetId, assetDoc.locData);
+                            }
+                        }
+                    }
+                }
+                this.load.start();
+                
+            })
+
+            this.gameManager = new GameManager(this, this.gameRoom);
+            
         }).catch((e) => {
             console.log("Join Game Error: ", e);
         });
