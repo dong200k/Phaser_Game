@@ -73,7 +73,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         })
         this.load.on("fileprogress", (file: Phaser.Loader.File) => {
             // console.log(file.src);
-            this.loadingScreen.updateProgressBarText(file.src);
+            this.loadingScreen.updateProgressBarText(file.key);
         })
         this.load.on("complete", () => {
             // console.log("oncomplete");

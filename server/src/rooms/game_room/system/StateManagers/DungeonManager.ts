@@ -137,8 +137,12 @@ export default class DungeonManager {
         // populate assetSet from dungeonData.
         dungeonData.waves.forEach(wave => {
             wave.monsters.forEach(monster => {
-                let monsterData = DatabaseManager.getManager().getMonsterByName(monster.name);
-                assetSet.add(monsterData.imageKey);
+                try {
+                    let monsterData = DatabaseManager.getManager().getMonsterByName(monster.name);
+                    assetSet.add(monsterData.imageKey);
+                } catch(e) {
+                    console.log(e);
+                }
             }) 
         })
     }
@@ -157,53 +161,59 @@ export default class DungeonManager {
         })
     }
 
-    public spawnMonster(monsterName: string): Monster {
+    public spawnMonster(monsterName: string): Monster | null {
         
         let monster: Monster;// = MonsterFactory.createMonster(monsterName);
         let poolType = monsterName;
-        //monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
+        try {
+            let monsterConfig = DatabaseManager.getManager().getMonsterByName(monsterName);
+            //monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
 
-        // Create the pool if it doesn't exist
-        if(!this.monsterPool.containsType(poolType)) {
-            this.monsterPool.addPoolType(poolType);
+            // Create the pool if it doesn't exist
+            if(!this.monsterPool.containsType(poolType)) {
+                this.monsterPool.addPoolType(poolType);
+            }
+            
+
+            // If the pool contains at least 1 instance
+            let pool = this.monsterPool.getPool(poolType);
+            if(pool && pool.length() > 0) {
+                // reuse instance.
+                monster = this.monsterPool.getInstance(poolType);
+                monster.reset();
+            } else {
+                // Create a new monster.
+                // monster = MonsterFactory.createMonster(this.gameManager, monsterName);
+                monster = MonsterFactory.createMonsterFromConfig(this.gameManager, monsterConfig);
+                // monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
+                this.gameManager.addGameObject(monster.getId(), monster, monster.getBody());
+            }
+            
+            // let width = 12;
+            // let height = 18;
+            
+            // monster.width = width;
+            // monster.height = height;
+
+            let randomSpawnPoint = null;
+            if(this.dungeon !== undefined)
+                randomSpawnPoint = this.dungeon.getRandomMonsterSpawnPoint();
+            let spawnX = 200;
+            let spawnY = 200;
+            if(randomSpawnPoint !== null) {
+                spawnX = randomSpawnPoint.x + Math.floor((Math.random() * 10) - 5);
+                spawnY = randomSpawnPoint.y + Math.floor((Math.random() * 10) - 5);
+            }
+
+            Matter.Body.setPosition(monster.getBody(), {x: spawnX, y: spawnY});
+            monster.x = spawnX;
+            monster.y = spawnY;
+            
+            return monster;
+        } catch(e) {
+            console.log(e);
         }
-        
-
-        // If the pool contains at least 1 instance
-        let pool = this.monsterPool.getPool(poolType);
-        if(pool && pool.length() > 0) {
-            // reuse instance.
-            monster = this.monsterPool.getInstance(poolType);
-            monster.reset();
-        } else {
-            // Create a new monster.
-            // monster = MonsterFactory.createMonster(this.gameManager, monsterName);
-            monster = MonsterFactory.createMonsterFromConfig(this.gameManager, DatabaseManager.getManager().getMonsterByName(monsterName));
-            // monster.setController(AIFactory.createSimpleAI(monster, this.gameManager.getPlayerManager()));
-            this.gameManager.addGameObject(monster.getId(), monster, monster.getBody());
-        }
-        
-        // let width = 12;
-        // let height = 18;
-        
-        // monster.width = width;
-        // monster.height = height;
-
-        let randomSpawnPoint = null;
-        if(this.dungeon !== undefined)
-            randomSpawnPoint = this.dungeon.getRandomMonsterSpawnPoint();
-        let spawnX = 200;
-        let spawnY = 200;
-        if(randomSpawnPoint !== null) {
-            spawnX = randomSpawnPoint.x + Math.floor((Math.random() * 10) - 5);
-            spawnY = randomSpawnPoint.y + Math.floor((Math.random() * 10) - 5);
-        }
-
-        Matter.Body.setPosition(monster.getBody(), {x: spawnX, y: spawnY});
-        monster.x = spawnX;
-        monster.y = spawnY;
-        
-        return monster;
+        return null;
     }
 
     public despawnMonster() {

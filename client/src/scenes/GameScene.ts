@@ -79,22 +79,24 @@ export default class GameScene extends Phaser.Scene {
             //this.showHUD();
         })
         this.load.on("progress", (value: number) => {
-            console.log(value);
+            // console.log(value);
             this.loadingScreen?.updateProgressBarValue(value);
         })
         this.load.on("fileprogress", (file: Phaser.Loader.File) => {
-            console.log(file.src);
-            this.loadingScreen?.updateProgressBarText(file.src);
+            // console.log(file.key);
+            this.loadingScreen?.updateProgressBarText(file.key);
         })
         this.load.on("complete", () => {
             console.log("loading complete");
-            if(this.gameRoom) {
-                this.gameRoom.send("loadAssetComplete");
-                // Process game start.
-                this.loadingScreen?.setVisible(false);
-                this.cameras.main.setZoom(2);
-                this.showHUD();
-            }
+            setTimeout(() => {
+                if(this.gameRoom) {
+                    this.gameRoom.send("loadAssetComplete");
+                    // Process game start.
+                    this.loadingScreen?.setVisible(false);
+                    this.cameras.main.setZoom(2);
+                    this.showHUD();
+                }
+            }, 500);
         })
     }
 

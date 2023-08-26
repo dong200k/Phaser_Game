@@ -6,9 +6,9 @@ In this document we will show you how to add your own Monster. This document is 
 
 - Assets can be gather from online or created by yourself.
 - Assets should have the monster and three animations.
-    - Moving animation
-    - Attack animation
-    - Dying animation
+    - Moving animation (walk)
+    - Attack animation (attack)
+    - Dying animation (death)
 
 - Animations can be created using Aseprite. Check out the Animations devdoc in the client's folder for more information on how to do this.
 
@@ -22,10 +22,12 @@ In this document we will show you how to add your own Monster. This document is 
 - Upload assets.
 - You can upload them locally or onto firebase.
 
-Monster stats
 
 
 ## Monster AI
 
+- Create a new monster AI inside game_room/system/AI/MonsterAI.
+- register new AI inside AIFactory.ts createAIFromKey() method.
+- Set the monster AI key with my-app.
 
 
