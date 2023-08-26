@@ -152,6 +152,7 @@ export default function CreateOrEditMonster(props) {
                     value={name}
                     onChange={onChangeName}
                     placeholder="Enter monster name..."
+                    disabled={isEdit}
                 />
                 <TextField 
                     controlId="asepriteKey"

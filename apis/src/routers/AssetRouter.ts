@@ -9,9 +9,16 @@ AssetRouter.post("/upload",
     isAuthenticated,
     isAuthorized({
         allowRoles: ["admin", "gamemaster"],
-        allowGameServer: true,
     }),
     AssetController.upload
+)
+
+AssetRouter.post("/edit/:id", 
+    isAuthenticated,
+    isAuthorized({
+        allowRoles: ["admin", "gamemaster"],
+    }),
+    AssetController.edit
 )
 
 AssetRouter.get("/",

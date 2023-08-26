@@ -140,8 +140,8 @@ export default function CreateOrEditDungeon(props) {
                         {props.isEdit? "Upload Changes" : "Upload New Dungeon"}
                     </SubmitButton>
                     <h3>General Information</h3>
-                    <label htmlFor="name" >Name: </label>
-                    <input name="name" type="text" onChange={onChangeName} defaultValue={name} />
+                    <label htmlFor="name">Name: </label>
+                    <input name="name" type="text" onChange={onChangeName} defaultValue={name}  disabled={props.isEdit} />
                     <br/>
                     <label htmlFor="tilesetName">Tileset Name: </label>
                     <input name="tilesetName" type="text" onChange={onChangeTilesetName} defaultValue={tilesetName} />

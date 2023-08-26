@@ -16,7 +16,7 @@ import CreateOrEditDungeon from './components/dungeon/CreateOrEditDungeon.js';
 import Admin from './components/admin/Admin.js';
 import NotificationContextProvider from './contexts/NotificationContextProvider.js';
 import Asset from './components/asset/Asset.js';
-import CreateAsset from './components/asset/CreateAsset.js';
+import CreateOrEditAsset from './components/asset/CreateOrEditAsset.js';
 import CreateOrEditMonster from './components/monster/CreateOrEditMonster.js';
 
 function App() {
@@ -44,7 +44,8 @@ function App() {
                 <Route path="/dungeon/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditDungeon isEdit={false}/></Authorized>} />
                 <Route path="/dungeon/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditDungeon isEdit={true}/></Authorized>} />
                 <Route path="/asset" element={<Authorized roles={["admin", "gamemaster"]}><Asset /></Authorized>} />
-                <Route path="/asset/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateAsset /></Authorized>} />
+                <Route path="/asset/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditAsset /></Authorized>} />
+                <Route path="/asset/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditAsset isEdit={true} /></Authorized>} />
                 <Route path="*" element={<div>404 NOT FOUND</div>} />
               </Routes>
           </BrowserRouter>

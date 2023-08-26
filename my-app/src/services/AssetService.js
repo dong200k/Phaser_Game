@@ -31,3 +31,16 @@ export async function uploadAsset(user, data) {
         body: JSON.stringify(data)
     });
 }
+
+export async function editAsset(user, data, id) {
+    let IdToken = await user.getIdToken();
+    console.log("Editing Asset", data);
+    return fetch(BASEURL + `/assets/edit/${id}`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': IdToken,
+        },
+        body: JSON.stringify(data)
+    });
+}

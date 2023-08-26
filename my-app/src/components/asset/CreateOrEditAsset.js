@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DropDown from "react-bootstrap/Dropdown";
-import { uploadAsset } from "../../services/AssetService";
+import { editAsset, uploadAsset } from "../../services/AssetService";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { DataContext } from "../../contexts/DataContextProvider";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { NotificationContext } from "../../contexts/NotificationContextProvider";
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
@@ -12,11 +12,13 @@ import TextField from "../forms/TextField";
 import FileField from "../forms/FileField";
 import DropDownField from "../forms/DropDownField";
 
-export default function CreateAsset() {
+export default function CreateOrEditAsset({ isEdit=false }) {
+
+    let id = useParams().id;
 
     // Load contexts
     const { user } = useContext(UserContext);
-    const { refetchAllAssets } = useContext(DataContext);
+    const { assets, refetchAllAssets } = useContext(DataContext);
     const { notifyResponse } = useContext(NotificationContext);
 
     const navigate = useNavigate();
@@ -30,6 +32,20 @@ export default function CreateAsset() {
     const [ locUrl, setLocUrl ] = useState(""); // Local url 1.
     const [ locUrl2, setLocUrl2 ] = useState(""); // Local url 2.
     const [ sendingRequest, setSendingRequest ] = useState(false); // Flag for if a request is being sent.
+
+    // If we are editing load in asset that we want to edit.
+    useEffect(() => {
+        if(assets && isEdit) {
+            let asset = assets.filter((a) => a.id === id)[0];
+            if(asset) {
+                setName(asset.name);
+                setLocType(asset.locType);
+                setType(asset.type);
+                setLocUrl(asset.locData);
+                setLocUrl2(asset.locData2);
+            }
+        }
+    }, [assets]);
 
     // Setup onchange handlers
     const onChangeName = (e) => { setName(e.target.value); }
@@ -66,14 +82,25 @@ export default function CreateAsset() {
             locUrl: locUrl,
             locUrl2: locUrl2,
         }
-        uploadAsset(user, data).then((res) => {
-            if(res.status === 200) {
-                refetchAllAssets();
-                navigate("/asset");
-            }
-            notifyResponse(res);
-            setSendingRequest(false);
-        })
+        if(isEdit) {
+            editAsset(user, data, id).then((res) => {
+                if(res.status === 200) {
+                    refetchAllAssets();
+                    navigate("/asset");
+                }
+                notifyResponse(res);
+                setSendingRequest(false);
+            })
+        } else {
+            uploadAsset(user, data).then((res) => {
+                if(res.status === 200) {
+                    refetchAllAssets();
+                    navigate("/asset");
+                }
+                notifyResponse(res);
+                setSendingRequest(false);
+            })
+        }
     }
 
     // The view of the assets
@@ -153,7 +180,7 @@ export default function CreateAsset() {
 
     return (
         <Container>
-            <h2> Create Asset! </h2>
+            <h2> {isEdit ? "Edit Asset!" : "Create Asset!"} </h2>
             <Form onSubmit={onSubmit} id="assetForm">
                 <SubmitButton disabled={sendingRequest} variant="primary">
                     Upload Asset
@@ -167,6 +194,7 @@ export default function CreateAsset() {
                     value={name} 
                     onChange={onChangeName}
                     text="Names should be unique."
+                    disabled={isEdit}
                 />
 
                 <br/>
