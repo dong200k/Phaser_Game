@@ -234,7 +234,6 @@ export default class GameManager {
 
     /** Called when the dungeon is first created on the server */
     private onChangeDungeon = (currentValue: any) => {
-        console.log("DUNGEON DDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
         currentValue.listen("tilemap", this.onChangeTilemap);
         currentValue.listen("playerBounds", this.onChangePlayerBounds);
     }

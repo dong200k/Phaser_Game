@@ -94,6 +94,7 @@ export interface IMonster {
 interface IWaveMonster {
     name: string;
     count: number;
+    monsterId: string;
 }
 
 interface IDungeonWave {

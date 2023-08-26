@@ -115,15 +115,8 @@ export default class DungeonManager {
             // Load wave from dungeon data.
             this.createWavesFromData(newDungeon, dungeonData);
 
-            // let wave2 = this.createNewWave();
-            // wave2.setAgressionLevel(2);
-            // wave2.addMonster("Tiny Zombie", 20);
-            // newDungeon.addWave(wave2);
-
-            // let wave3 = this.createNewWave();
-            // wave3.setAgressionLevel(5);
-            // wave3.addMonster("Tiny Zombie", 100);
-            // newDungeon.addWave(wave3);
+            // Sets assetList.
+            this.populateAssetSet(dungeonData);
 
             // ---- Setting new dungeon to state -----
             this.dungeon = newDungeon;
@@ -137,6 +130,17 @@ export default class DungeonManager {
         return new Wave((name: string) => {
             this.spawnMonster(name);
         });
+    }
+
+    public populateAssetSet(dungeonData: IDungeon) {
+        let assetSet = this.gameManager.getAssetSet();
+        // populate assetSet from dungeonData.
+        dungeonData.waves.forEach(wave => {
+            wave.monsters.forEach(monster => {
+                let monsterData = DatabaseManager.getManager().getMonsterByName(monster.name);
+                assetSet.add(monsterData.imageKey);
+            }) 
+        })
     }
 
     public createWavesFromData(dungeon: Dungeon, dungeonData: IDungeon) {

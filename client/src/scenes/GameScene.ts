@@ -8,6 +8,7 @@ import SceneManager from '../system/SceneManager';
 import EventManager from '../system/EventManager';
 import LoadingScreen from '../UI/gameuis/LoadingScreen';
 import AssetService from '../services/AssetService';
+import AssetManager from '../system/AssetManager';
 
 interface MobAsset {
     key: string;
@@ -144,21 +145,8 @@ export default class GameScene extends Phaser.Scene {
 
             this.gameRoom.onMessage("loadAssets", async (assets) => {
                 console.log(assets);
-                for(let i = 0; i < assets.length; i++) {
-                    let assetId = assets[i];
-                    let docSnap = await AssetService.getAsset(assetId);
-                    let assetDoc = docSnap.data();
-                    if(assetDoc) {
-                        if(assetDoc.locType === "locally") {
-                            if(assetDoc.type === "images") {
-                                console.log(assetId, assetDoc.locData);
-                                this.load.image(assetId, assetDoc.locData);
-                            }
-                        }
-                    }
-                }
+                await AssetManager.putAssetsInLoad(this, assets);
                 this.load.start();
-                
             })
 
             this.gameManager = new GameManager(this, this.gameRoom);

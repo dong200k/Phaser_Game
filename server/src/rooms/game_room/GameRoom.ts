@@ -122,7 +122,10 @@ export default class GameRoom extends Room<State> {
                 let client = waitingClient.client;
                 if(waitingClient.state === "justjoined") {
                     // send client assets to load.
-                    client.send("loadAssets", ["demo_hero"]);
+                    let assetSet = this.gameManager.getAssetSet();
+                    let assetList: string[] = [];
+                    assetSet.forEach(value => assetList.push(value));
+                    client.send("loadAssets", assetList);
                     waitingClient.state = "loading";
                 } else if(waitingClient.state === "loading") {
 

@@ -18,7 +18,7 @@ export default class SplashScene extends Phaser.Scene {
         //--------- interactive background ----------
         let gameWidth = this.game.scale.width;
         let gameHeight = this.game.scale.height;
-        let bg = this.add.image(0, 0, "dungeon_core_background");
+        let bg = this.add.image(0, 0, "SplashScreenImage"/*"dungeon_core_background"*/);
         bg.setDisplaySize(this.game.scale.width, this.game.scale.height)
             .setOrigin(0, 0)
             .texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
