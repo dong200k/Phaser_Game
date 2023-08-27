@@ -10,6 +10,7 @@ export default class LoadingScreen extends RexUIBase {
     private progressBar: ProgressBar;
     private background: RoundRectangle;
     private text: TextBox;
+    private screenSizer: OverlapSizer;
 
     constructor(scene: SceneWithRexUI) {
         super(scene);
@@ -25,7 +26,7 @@ export default class LoadingScreen extends RexUIBase {
         let progressBarTextSizer = this.rexUI.add.sizer({
             orientation: "vertical",
         })
-        this.text = UIFactory.createTextBoxDOM(this.scene, "fefe", "p5");
+        this.text = UIFactory.createTextBoxDOM(this.scene, "Loading...", "p5");
         this.progressBar = new ProgressBar(scene, {
             progressBarCreateText: true,
             progressBarHeight: 25,
@@ -39,6 +40,8 @@ export default class LoadingScreen extends RexUIBase {
 
         screenSizer.add(progressBarTextSizer, {align: "center-bottom", expand: false, padding: {bottom: 50}});
         screenSizer.layout();
+        this.screenSizer = screenSizer;
+        this.screenSizer.setDepth(1000);
     }
 
     /**
@@ -66,4 +69,7 @@ export default class LoadingScreen extends RexUIBase {
         return promise;
     }
     
+    public setVisible(value: boolean) {
+        this.screenSizer.setVisible(value);
+    }
 }

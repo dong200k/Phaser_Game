@@ -102,7 +102,7 @@ export default class Player extends Entity {
         this.type = "Player";
         this.weaponUpgradeTree = new WeaponUpgradeTree(gameManager, this)
         this.skillTree = new StatTree<SkillData>(gameManager)
-
+        this.stat.speed = 35;
         this.playerController = new PlayerController({player: this});
     }
 }

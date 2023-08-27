@@ -20,6 +20,7 @@ import GameOverModal from "../UI/modals/GameOverModal";
 import { PhaserAudio } from "../interfaces";
 import SettingsManager from "./SettingsManager";
 import SoundManager from "./SoundManager";
+import FloatingText from "../gameobjs/FloatingText";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -48,6 +49,8 @@ export default class GameManager {
     // ------ Audio -------
     private soundManager: SoundManager;
 
+    private floatingTexts: FloatingText[] = [];
+
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
@@ -56,7 +59,6 @@ export default class GameManager {
         this.initializeClientSidePrediction();
         this.initializeInputs();
         this.initializeListeners();
-        this.initializeSounds();
     }
 
     /**
@@ -73,6 +75,7 @@ export default class GameManager {
         this.interpolateGameObjects();
         this.syncGameObjectVisibility();
         this.syncGameObjectActive();
+        this.updateFloatingTexts();
     }
 
     /**
@@ -83,6 +86,12 @@ export default class GameManager {
             obj.setX(obj.serverX);
             obj.setY(obj.serverY);
         })
+    }
+
+    private updateFloatingTexts() {
+        this.floatingTexts = this.floatingTexts.filter((ft) => ft.scene !== undefined);
+        this.floatingTexts.forEach((ft) => ft.updatePosition());
+        //console.log(this.floatingTexts.length);
     }
 
     /**
@@ -159,10 +168,6 @@ export default class GameManager {
     private initializeListeners() {
         this.gameRoom.state.gameObjects.onAdd = this.onAdd;
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
-    }
-
-    private initializeSounds() {
-        this.soundManager.add("player_death", "sfx");
     }
 
     private initializeClientSidePrediction() {
@@ -276,6 +281,8 @@ export default class GameManager {
     private addProjectile(projectile: ProjectileState, key: string): Projectile{
         let proj = new Projectile(this.scene, projectile);
         this.addListenersToGameObject(proj, projectile);
+        // Play projectile spawn sound.
+        SoundManager.getManager().play(projectile.spawnSound, {detune: Math.floor(Math.random() * 300 ) - 150});
         // Play projectile animation.
         if(projectile.projectileType === "Melee") {
             proj.play("play");
@@ -398,6 +405,15 @@ export default class GameManager {
             gameObject.serverX = gameObjectState.x;
             gameObject.serverY = gameObjectState.y;
         }
+
+        // Play projectile sound if it changed from inactive to active.
+        if(gameObject instanceof Projectile) {
+            if(!gameObject.serverActive && gameObjectState.active) {
+                let projectileState = gameObjectState as ProjectileState;
+                SoundManager.getManager().play(projectileState.spawnSound, {detune: Math.floor(Math.random() * 300 ) - 150});
+            }
+        }
+
         gameObject.serverVisible = gameObjectState.visible;
         gameObject.serverActive = gameObjectState.active;
     }
@@ -432,8 +448,10 @@ export default class GameManager {
                 else if(velocityX > 0) gameObject.setFlip(false, false);
 
                 if(velocityX === 0 && velocityY === 0) {
-                    gameObject.play({key: "idle", repeat: -1});
-                    gameObject.running = false;
+                    if(gameObject.anims.getName() !== "idle") {
+                        gameObject.play({key: "idle", repeat: -1});
+                        gameObject.running = false;
+                    }
                 } else {
                     if(!gameObject.running) {
                         gameObject.play({key: "run", repeat: -1});
@@ -446,6 +464,26 @@ export default class GameManager {
 
     /** Called when the entity's stat is updated on the server. */
     private entityStatOnChange(entity: Entity, entityState: EntityState, changes: any) {
+        let hpChange = entityState.stat.hp - (entity.getStat().hp ?? 0);
+        if(hpChange < 0) {
+            // When an entity is hit, it is red tinted for 100ms.
+            entity.tint = ColorStyle.red.hex[900];
+            setTimeout(() => entity.tint = 0xffffff, 100);
+            SoundManager.getManager().play("hit", {detune: Math.floor(Math.random() * 500 - 250)});
+            let ft = new FloatingText({
+                scene: this.scene,
+                type: "damage",
+                text: `${Math.abs(hpChange)}`,
+                x: entity.x,
+                y: entity.y,
+                duration: 1000,
+                followGameObject: entity,
+            });
+            ft.setDepth(100);
+            this.scene.add.existing(ft);
+            this.floatingTexts.push(ft);
+        }
+
         if(entity instanceof Monster) {
             // console.log("Change detected");
             let monsterState = entityState as MonsterState;

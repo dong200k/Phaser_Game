@@ -1,5 +1,7 @@
+import DungeonService from "../../../../services/DungeonService"
+import MonsterService from "../../../../services/MonsterService"
 import FileUtil from "../../../../util/FileUtil"
-import { IDungeon, skillTree, upgrade, weapon } from "../interfaces"
+import { IDungeon, IMonsterConfig, skillTree, upgrade, weapon } from "../interfaces"
 
 export default class DatabaseManager{
 
@@ -11,6 +13,7 @@ export default class DatabaseManager{
     private skillTrees: Map<string, skillTree> = new Map()
 
     private dungeons: Map<string, IDungeon> = new Map();
+    private monsters: Map<string, IMonsterConfig> = new Map();
 
     private constructor() {};
 
@@ -20,7 +23,7 @@ export default class DatabaseManager{
     async loadData(){
         try {
             let db = await FileUtil.readJSONAsync("assets/db.json")
-
+            
             //Load artifact and weapon upgrades
             for (let upgrade of db.upgrades) {
                 if(upgrade.type === "weapon"){
@@ -41,9 +44,29 @@ export default class DatabaseManager{
             }
 
             //Load dungeons
-            let dungeondb = await FileUtil.readJSONAsync("assets/tilemaps/dungeon.json");
-            for(let dungeon of dungeondb) {
-                this.dungeons.set(dungeon.id, dungeon);
+            let dungeonData = await (await DungeonService.getAllDungeons()).json();
+            for(let dungeon of dungeonData.dungeons) {
+                this.dungeons.set(dungeon.name, dungeon);
+            }
+
+            // console.log("DUNGEON DATA");
+            // console.log(dungeonData);
+
+            // try {
+                
+            // }
+
+            //Load monsters
+            let monsterData = await (await MonsterService.getAllMonsterData()).json();
+            for(let monster of monsterData.monsters) {
+                this.monsters.set(monster.name, {
+                    id: monster.name,
+                    name: monster.name,
+                    imageKey: monster.asepriteKey,
+                    stats: monster.stats,
+                    controllerKey: monster.AIKey,
+                    bounds: monster.bounds
+                })
             }
 
         } catch (error: any) {
@@ -140,6 +163,23 @@ export default class DatabaseManager{
             data.push(dungeon);
         })
         return data;
+    }
+
+    public getMonster(id: string) {
+        let monster = this.monsters.get(id);
+        if(monster === undefined) throw new Error("Error: Monster Id doesn't exist " + id);
+        return monster;
+    }
+
+    public getMonsterByName(name: string): IMonsterConfig {
+        let monster: IMonsterConfig | undefined = undefined;
+        this.monsters.forEach((data) => {
+            if(data.name === name) {
+                monster = data;
+            }
+        })
+        if(monster === undefined) throw new Error(`ERROR: Cannot find monster with name: ${name}`);
+        return monster;
     }
 
     static getManager() {

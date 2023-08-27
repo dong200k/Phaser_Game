@@ -17,7 +17,7 @@ type AggressionLevelType = 1|2|3|4|5;
 
 export default class Wave {
     private monsterQueue: MonsterQueueItem[];
-    private aggressionLevel: AggressionLevelType;
+    private aggressionLevel: number;
     private timeUntilNextSpawn: number;
     private defaultTimeUntilNextSpawn: number;
     private spawnsQueued: number;
@@ -68,7 +68,7 @@ export default class Wave {
      * Sets this wave's aggression level, which will determine how agressive the wave is at spawning monsters.
      * @param aggressionLevel 1-chill, 2-easy, 3-normal, 4-hard, 5-nightmare.
      */
-    public setAgressionLevel(aggressionLevel: AggressionLevelType) {
+    public setAgressionLevel(aggressionLevel: number) {
         this.aggressionLevel = aggressionLevel;
         switch(this.aggressionLevel) {
             case 1: this.defaultTimeUntilNextSpawn = 2; break;
@@ -76,6 +76,7 @@ export default class Wave {
             case 3: this.defaultTimeUntilNextSpawn = 1; break;
             case 4: this.defaultTimeUntilNextSpawn = 0.5; break;
             case 5: this.defaultTimeUntilNextSpawn = 0.25; break;
+            default: this.defaultTimeUntilNextSpawn = 1; break;
         }
     }
 

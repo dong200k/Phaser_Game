@@ -1,0 +1,72 @@
+[
+    {
+        "id": "c248af3c-2e1d-4228-8019-6a0301d31d88",
+        "name": "Tiny Zombie",
+        "imageKey": "TinyZombie",
+        "AIKey": "default",
+        "bounds": {
+            "type": "rect",
+            "width": 12,
+            "height": 18
+        },
+        "stats": {
+            "maxHp": 20,
+            "maxMana": 0,
+            "hp": 20,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 5,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 20,
+            "attackRangePercent": 0,
+            "attackSpeed": 0.7,
+            "attackSpeedPercent": 0,
+            "speed": 25,
+            "lifeSteal": 0,
+            "level": 0
+        }
+    },
+    {
+        "id": "cd991425-739a-4f78-91f7-df817c3400cf",
+        "name": "Big Zombie",
+        "imageKey": "BigZombie",
+        "controllerKey": "default",
+        "bounds": {
+            "type": "rect",
+            "width": 12,
+            "height": 18
+        },
+        "stats": {
+            "maxHp": 200,
+            "maxMana": 0,
+            "hp": 200,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 20,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 50,
+            "attackRangePercent": 0,
+            "attackSpeed": 0.7,
+            "attackSpeedPercent": 0,
+            "speed": 20,
+            "lifeSteal": 0,
+            "level": 0
+        }
+    }
+]

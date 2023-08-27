@@ -48,6 +48,7 @@ export default class DoubowLogic extends EffectLogic{
             attackMultiplier: 1,
             magicMultiplier: 0,
             originEntityId: playerState.getId(),
+            spawnSound: "shoot_arrow",
         })
 
         // spawn projectile with direction rotated -30 degrees from player to player mouse
@@ -67,6 +68,7 @@ export default class DoubowLogic extends EffectLogic{
             attackMultiplier: 1,
             magicMultiplier: 0,
             originEntityId: playerState.getId(),
+            spawnSound: "shoot_arrow",
         })
     }
 }

@@ -160,3 +160,6 @@ export const getPlayerData = async (IdToken: string)=>{
     return docSnap.data()
   }
 }
+
+
+
