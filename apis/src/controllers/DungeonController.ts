@@ -6,6 +6,7 @@ import { createDungeon, editDungeon, getAllDungeons, getDungeon } from "../crud/
  */
 export default class DungeonController {
     
+    /** Gets a single dungeon based on provided id. */
     public static getDungeon(req: any, res: any) {
         console.log("Get request: get dungeon");
         let {id} = req.params;
@@ -16,6 +17,7 @@ export default class DungeonController {
             })
     }
 
+    /** Gets all the dungeons. */
     public static getAllDungeons(req: any, res: any) {
         console.log("Get request. get all dungeons");
         return getAllDungeons().then((dungeons) => {
@@ -25,6 +27,7 @@ export default class DungeonController {
         })
     }
 
+    /** Given the data for a dungeon, create a new dungeon. */
     public static createDungeon(req: any, res: any) {
         console.log("Post request. create dungeon.");
         createDungeon(req.body).then((dungeon) => {
@@ -34,6 +37,7 @@ export default class DungeonController {
         })
     }
 
+    /** Given the data and id of the dungeon, edit the dungeon. */
     public static editDungeon(req: any, res: any) {
         console.log("Post request. edit dungeon.");
         let { id } = req.params;

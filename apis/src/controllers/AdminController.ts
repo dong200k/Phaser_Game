@@ -5,6 +5,8 @@ import { getAuth } from "firebase-admin/auth";
  */
 export default class AdminController {
 
+    /** Assign a role to the provided user. Admins cannot be assigned a different role. 
+     * The admin role cannot be assigned to any user. There is only one admin. */
     public static assignRole(req: any, res: any) {
         let { uid, role } = req.body;
         // List of possible roles that can be assigned to users. Each user can only have one role at a time.
@@ -26,6 +28,7 @@ export default class AdminController {
         }
     }
 
+    /** Remove the role from a user. The admin role cannot be removed. */
     public static removeRole(req: any, res: any) {
         let { uid } = req.body;
         getAuth().getUser(uid).then((userData) => {
@@ -41,6 +44,7 @@ export default class AdminController {
         })
     }
 
+    /** Retrieves the role of a user. */
     public static getRole(req: any, res: any) {
         let { id } = req.params;
         getAuth().getUser(id).then((userData) => {

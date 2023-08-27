@@ -73,7 +73,7 @@ export default function Admin() {
                 <h3>Assign Role: </h3>
                 <Form.Group className="mb-3" controlId="assignRoleUID">
                     <Form.Label>User ID: </Form.Label>
-                    <Form.Control type="text" placeholder="Enter user id..." onChange={onChangeUID} />
+                    <Form.Control type="text" placeholder="Enter role name..." onChange={onChangeUID} />
                     <Form.Text>Enter user ID that is found on firebase.</Form.Text>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="assignRoleType">

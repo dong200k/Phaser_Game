@@ -17,6 +17,7 @@ export default class AssetController {
         })
     }
 
+    /** Given the id and the data, edit the asset. */
     public static edit(req: any, res: any) {
         console.log("Editing asset: ", req.params.id);
         AssetController.editHelper(req, res).then(() => {
@@ -26,6 +27,7 @@ export default class AssetController {
         })
     }
 
+    /** Gets a list of all the assets. */
     public static getAllAssets(req: any, res: any) {
         const db = getFirestore();
         let assetColRef = db.collection("assets");

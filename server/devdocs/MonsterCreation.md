@@ -2,6 +2,11 @@
 
 In this document we will show you how to add your own Monster. This document is intended for developers working on the game. 
 
+What we will need: 
+- Aseprite (pixel art editor)
+- my-app (our tool for uploading content)
+- gamemaster role (you need to have a gamemaster account)
+
 ## Prepare your assets
 
 - Assets can be gather from online or created by yourself.
@@ -14,13 +19,14 @@ In this document we will show you how to add your own Monster. This document is 
 
 ## Uploading Monster onto Firebase
 
-- Open up my-app
-- Head to the monster's page
-- Login if needed.
-- Create a new monster.
+1. Open up my-app
+2. Head to the monster's page
+3. Login if needed.
+4. Create a new monster. Make sure the name is unique. The aseprite key is used to associate the monster's image with the monster.
 
-- Upload assets.
-- You can upload them locally or onto firebase.
+5. Upload assets. Make sure the asset key matches the aseprite key of the monster.
+    - You can upload them locally or onto firebase.
+    - Make sure the upload type is aseprite.
 
 
 
