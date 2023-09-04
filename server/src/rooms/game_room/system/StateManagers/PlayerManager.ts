@@ -14,6 +14,13 @@ import WeaponManager from './WeaponManager';
 import PlayerService from '../../../../services/PlayerService';
 import { getFinalSpeed } from '../Formulas/formulas';
 import WeaponUpgradeTree from '../../schemas/Trees/WeaponUpgradeTree';
+import DatabaseManager from '../Database/DatabaseManager';
+import Node from '../../schemas/Trees/Node/Node';
+import WeaponData from '../../schemas/Trees/Node/Data/WeaponData';
+import { IAbility, IRole } from '../interfaces';
+import Stat from '../../schemas/gameobjs/Stat';
+import Ability from '../../schemas/gameobjs/Ability';
+import TriggerUpgradeEffect from '../../schemas/effects/trigger/TriggerUpgradeEffect';
 
 interface InputPlayload {
     payload: number[];
@@ -29,8 +36,19 @@ export default class PlayerManager {
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
+
+        setTimeout(()=>{
+            this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
+                if(gameObject instanceof Player){
+                    gameObject.effects.forEach(effect=>{
+                        console.log(effect.toString())
+                    })
+                }
+            })
+        }, 5000)
     }   
 
+    private bowEffectCount = 0
     /**
      * Updates this PlayerManager.
      * @param deltaT deltaT seconds.
@@ -40,8 +58,27 @@ export default class PlayerManager {
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Player){
                 // gameObject.attackCooldown.tick(deltaT)
-                gameObject.specialCooldown.tick(deltaT * 1000);
+                gameObject.currentAbility?.update(deltaT * 1000);
                 gameObject.playerController.update(deltaT);
+                let count = 0
+                let upgradeEffects: any[] = []
+                gameObject.effects.forEach(e=>{
+                    if(e instanceof TriggerUpgradeEffect){
+                        upgradeEffects.push(e)
+                        count++
+                    }
+                })
+                if(count > this.bowEffectCount) {
+                    this.bowEffectCount = count
+                    console.log(`bow effects on player is now ${upgradeEffects.length}`)
+                    let dupeCount = upgradeEffects.length > 0? 1 : 0
+                    for(let i=1;i<upgradeEffects.length;i++){
+                        if(upgradeEffects[i] === upgradeEffects[i-1]){
+                            dupeCount++
+                        }
+                    }
+                    console.log(`duplicate bow effects on player is ${dupeCount}`)
+                }
             }
         })
 
@@ -146,7 +183,7 @@ export default class PlayerManager {
         if(data[2]) x -= 1;
         if(data[3]) x += 1;
         let velocity = MathUtil.getNormalizedSpeed(x, y, speed);
-
+        // console.log(`speed: ${playerState.stat.speed}`)
         // If the velocity would send the player off bounds, update it so that the player wont go off bounds.
         let bounds = this.getGameManager().getDungeonManager().getDungeon()?.getPlayerBounds();
         if(bounds) {
@@ -180,45 +217,121 @@ export default class PlayerManager {
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
         
-        if(!useSpecial || !playerState.specialCooldown.isFinished) return
-        playerState.specialCooldown.reset()
-
-        EffectManager.useTriggerEffectsOn(playerState, "player skill")
+        if(!useSpecial) return
+        let usedAbility = playerState.currentAbility?.useAbility()
+        if(usedAbility) EffectManager.useTriggerEffectsOn(playerState, "player skill")
     }
 
     /**
      * TODO connect to a database with player information
      * Initializes the player data
-     * @param playerId identifier for the player
+     * @param playerData player data from firebase
      * @param player playerState to init
+     * @param IdToken token to identify player to firebase
+     * @param roleId string to determine role
+     * @param onlineMode boolean to determine whether to load data from firebase or not. True to load data from firebase. Default is true.
      */
-    private async initPlayerData(playerId: string, player: Player, IdToken: string){
-        //*** TODO *** initialize weapon upgrade tree based on role
-        //Set weaponupgrade tree for player with a test weapon
-        let root = WeaponUpgradeFactory.createTribowUpgrade()
-        
-        WeaponManager.equipWeaponUpgrade(player, root);
+    private async initPlayerData(playerData: any, player: Player, IdToken: string, roleId: string = "", onlineMode: boolean=true){
+        if(playerData && onlineMode){
+            this.initPlayerDataOnline(player, playerData, roleId)
+        }else{
+            this.initPlayerDataOffline(player, roleId)
+        }
+    }
 
+    /**
+     * Called when playerData from firebase is found.
+     * @param player 
+     * @param playerData 
+     * @param roleId 
+     */
+    private async initPlayerDataOnline(player: Player, playerData: any, roleId: string){
+        // Equip skill tree
+        let skillTree = SkillTreeFactory.convertFirebaseSkillTree(playerData.skillTree)
+        SkillTreeManager.equipSkillTree(player, skillTree)
+
+        // Grab player's chosen role
+        let role = DatabaseManager.getManager().getRole(roleId)
+        let roleUnlocked = playerData.unlockedRoles.find((id: string)=>id===roleId)
+
+        // Use default ranger role if role is not unlocked or found
+        if(!role || !roleUnlocked) {
+            console.log(`Role ${roleId} not found, switching to default role.`)
+            role = DatabaseManager.getManager().getRole("role-16bdfc2a-c379-42bb-983a-04592330831c") as IRole
+        }
+        console.log(`using the role: ${role.name}`)
+
+        this.initRoleData(player, role)
+        this.equipStarterArtifacts(player)
+    }
+
+    private initPlayerDataOffline(player: Player, roleId: string){
+        // Grab player's chosen role
+        let role = DatabaseManager.getManager().getRole(roleId)
+        // Use default ranger role if role is not found
+        if(!role) {
+            console.log(`Role ${roleId} not found, switching to default role.`)
+            role = DatabaseManager.getManager().getRole("role-16bdfc2a-c379-42bb-983a-04592330831c") as IRole
+        }
+        console.log(`using the role: ${role.name}`)
+
+        this.initRoleData(player, role)
+        this.equipStarterArtifacts(player)
+    }
+
+    /**
+     * Takes in a player and initializes/equips starter artifacts for the game
+     * @param player 
+     */
+    private equipStarterArtifacts(player: Player){
         // Equip aritfacts
         let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
         let upgradedFrostGlaive = ArtifactFactory.createUpgradeFrostGlaive()
         //let upgradedDemoArtifact = ArtifactFactory.createDemo()
-        this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
+        // this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
         // ArtifactManager.equipArtifact(player, upgradedFrostGlaive)
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
-
-        // Equip skill tree
-        let playerData = await PlayerService.getPlayerData(IdToken)
-        let skillTree = SkillTreeFactory.convertFirebaseSkillTree(playerData.skillTree)
-        SkillTreeManager.equipSkillTree(player, skillTree)
     }
 
-    public async createPlayer(sessionId: string, isOwner: boolean, IdToken: string, gameManager?: GameManager) {
+    /**
+     * Equips starter weapon and ability unto the input player based on input role. If weapon/ability are not found then default ones are used.
+     * @param player 
+     * @param role one of the roles from the database. Invalid role will result in default weapon/ability being used.
+     */
+    private initRoleData(player: Player, role: IRole){
+        // Equip starter weapon based on role
+        let weaponUpgradeId = role.weaponUpgradeId
+        let weapon = DatabaseManager.getManager().getUpgrade(weaponUpgradeId)
+        if(!weaponUpgradeId || !weapon){
+            console.log(`Starter weapon for ${role.name} role not found, using default weapon.`)
+            weaponUpgradeId = "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d"
+        }
+        let root = WeaponUpgradeFactory.createUpgrade(weaponUpgradeId) as Node<WeaponData>
+        WeaponManager.equipWeaponUpgrade(player, root);
+        console.log(`equiping ${role.name} weapon:`, root.data.name)
+
+        // Initialize Ability based on role
+        let ability = DatabaseManager.getManager().getAbility(role?.abilityId)
+        if(!ability){
+            console.log(`Starter ability for ${role.name} role not found, using default ability.`)
+            ability = DatabaseManager.getManager().getAbility("todo-add-default") as IAbility
+        }
+        let abilitySchema = new Ability(ability, this.gameManager)
+        abilitySchema.setOwner(player)
+        player.gameManager.getAbilityManager().equipAbility(player, abilitySchema)
+        console.log(`equiping ${role.name} ability: ${ability.name}`)
+
+        // Init base stats
+        let roleStat = new Stat(role.stat)
+        player.stat.add(roleStat)
+    }
+
+    public async createPlayer(sessionId: string, isOwner: boolean, IdToken: string, gameManager?: GameManager, roleId?: string, onlineMode: boolean = true) {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
-
-        //TODO: get player data from the database
-        let newPlayer = new Player(this.gameManager, "No Name", undefined);
+        let playerData = {username: "No Name"}
+        if(onlineMode) playerData = await PlayerService.getPlayerData(IdToken)
+        let newPlayer = new Player(this.gameManager, playerData.username, undefined);
 
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
@@ -231,7 +344,7 @@ export default class PlayerManager {
             newPlayer.y = playerSpawnPoint.y + (Math.random() * 20 - 10);
         } 
 
-        await this.initPlayerData("", newPlayer, IdToken)
+        await this.initPlayerData(playerData, newPlayer, IdToken, roleId, onlineMode)
 
         let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, newPlayer.width, newPlayer.height, {
             isStatic: false,

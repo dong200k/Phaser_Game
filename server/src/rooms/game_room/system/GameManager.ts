@@ -14,6 +14,7 @@ import WeaponManager from './StateManagers/WeaponManager';
 import EventEmitter from 'events';
 import CollisionManager from './Collisions/CollisionManager'
 import GameRoom, { GameRoomOptions } from '../GameRoom';
+import AbilityManager from './StateManagers/AbilityManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -27,6 +28,7 @@ export default class GameManager {
     private effectLogicManager!: EffectLogicManager;
     private artifactManager!: ArtifactManager;
     private collisionManager!: CollisionManager;
+    private abilityManager!: AbilityManager
 
     // Data
     public matterBodies: Map<string, Matter.Body> = new Map();
@@ -65,6 +67,7 @@ export default class GameManager {
         this.effectLogicManager = new EffectLogicManager(this)
         this.artifactManager = new ArtifactManager(this)
         this.collisionManager = new CollisionManager(this)
+        this.abilityManager = new AbilityManager(this)
 
         this.initUpdateEvents();
         this.initCollisionEvent();
@@ -182,6 +185,10 @@ export default class GameManager {
 
     public getArtifactManager() {
         return this.artifactManager
+    }
+
+    public getAbilityManager() {
+        return this.abilityManager
     }
 
     /** Gets the EventEmitter for this GameManager. Used to send events throughout this game. */

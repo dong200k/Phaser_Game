@@ -59,7 +59,7 @@ export default class Stat extends Schema {
         let zeroStat = Stat.getZeroStatObject()
         let zeroPaddedStat = {...zeroStat, ...stat}
         Object.entries(zeroPaddedStat).forEach(([key, val])=>{
-            if(val && !isNaN(val)) this[key as keyStat] = val
+            if(val && !isNaN(val)) this[key as keyStat] = Number(val)
             else this[key as keyStat] = 0
         })
         // this.hp = stat.hp;

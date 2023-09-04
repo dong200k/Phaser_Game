@@ -11,6 +11,9 @@ export default class Cooldown extends Schema{
         this.isFinished = isFinished!==undefined? isFinished : true
     }
 
+    /**
+     * Restart the cooldown timer and set state to not finished.
+     */
     public reset(){
         this.remainingTime = this.time;
         this.isFinished = false
@@ -27,6 +30,9 @@ export default class Cooldown extends Schema{
 
         // update remaining time
         this.remainingTime -= deltaT;
-        if(this.remainingTime <=0) this.isFinished = true
+        if(this.remainingTime <=0) {
+            this.isFinished = true
+            this.remainingTime = this.time
+        }
     }
 }

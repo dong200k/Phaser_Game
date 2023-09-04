@@ -6,6 +6,7 @@ import WeaponUpgradeTree from '../Trees/WeaponUpgradeTree';
 import Cooldown from './Cooldown';
 import GameManager from '../../system/GameManager';
 import PlayerController from '../../system/StateControllers/PlayerControllers/PlayerController';
+import Ability from './Ability';
 
 interface IUpgradeItemConfig {
     name: string;
@@ -75,6 +76,8 @@ export default class Player extends Entity {
     @type(WeaponUpgradeTree) weaponUpgradeTree;
     @type(StatTree) skillTree;
     @type([WeaponUpgradeTree]) artifacts = new ArraySchema<WeaponUpgradeTree>();
+    @type([Ability]) abilities = new ArraySchema<Ability>()
+    @type(Ability) currentAbility?: Ability
 
     // Levels
     @type('number') level: number;

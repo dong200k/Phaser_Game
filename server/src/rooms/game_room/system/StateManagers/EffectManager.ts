@@ -8,6 +8,7 @@ import TriggerEffect from "../../schemas/effects/trigger/TriggerEffect";
 import TriggerUpgradeEffect from "../../schemas/effects/trigger/TriggerUpgradeEffect";
 import ContinuousUpgradeEffect from "../../schemas/effects/continuous/ContinuousUpgradeEffect";
 import { IUpgradeEffect } from "../interfaces";
+import Player from "../../schemas/gameobjs/Player";
 
 const statCompoundEffectName = "!Entity Stat Compound Effect!";
 
@@ -45,7 +46,7 @@ export default class EffectManager {
             })
         } else {
             if(entity.effects) {
-                entity.effects.unshift(effect);
+                entity.effects.push(effect);
                 effect.addToEntity(entity);
             }
         }
@@ -120,7 +121,7 @@ export default class EffectManager {
     public static useTriggerEffectsOn(entity: Entity, type: string, ...args: any) {
         entity.effects.map(effect=>{
             if(effect instanceof TriggerEffect && effect.type === type){
-                effect.onTrigger(entity, ...args)
+                    effect.onTrigger(entity, ...args)
             }
         })
     }

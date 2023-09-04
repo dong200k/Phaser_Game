@@ -1,5 +1,5 @@
 import FileUtil from "../../../../util/FileUtil"
-import { IDungeon, skillTree, upgrade, weapon } from "../interfaces"
+import { IAbility, IDungeon, IRole, skillTree, upgrade, weapon } from "../interfaces"
 
 export default class DatabaseManager{
 
@@ -9,6 +9,8 @@ export default class DatabaseManager{
     private artifactUpgrades: Map<string, upgrade> = new Map()
     private weapons: Map<string, weapon> = new Map()
     private skillTrees: Map<string, skillTree> = new Map()
+    private abilities: Map<string, IAbility> = new Map()
+    private roles: Map<string, IRole> = new Map()
 
     private dungeons: Map<string, IDungeon> = new Map();
 
@@ -46,6 +48,16 @@ export default class DatabaseManager{
                 this.dungeons.set(dungeon.id, dungeon);
             }
 
+            //Load abiities
+            for (let ability of db.abilities) {
+                this.abilities.set(ability.id, ability)
+            }
+
+            //Load roles
+            for (let role of db.roles) {
+                this.roles.set(role.id, role)
+            }
+
         } catch (error: any) {
             console.log(error.message)
         }
@@ -54,7 +66,7 @@ export default class DatabaseManager{
     /**
      * Returns json object with basic weapon information such as name, description, sprite, projectile, etc based on the weaponId parameter.
      * @param weaponId 
-     * @returns 
+     * @returns  
      */
     getWeapon(weaponId: string){
         return this.weapons.get(weaponId)
@@ -108,6 +120,24 @@ export default class DatabaseManager{
 
         if(weaponUpgradeTree) return weaponUpgradeTree
         else return artifactUpgradeTree
+    }
+
+    /**
+     * Returns ability json object associated with given id.
+     * @param id id of ability
+     * @returns 
+     */
+    getAbility(id: string){
+        return this.abilities.get(id)
+    }
+
+    /**
+     * Returns role json object associated with given id.
+     * @param id id of role
+     * @returns 
+     */
+    getRole(id: string){
+        return this.roles.get(id)
     }
 
     /**
