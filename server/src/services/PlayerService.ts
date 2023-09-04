@@ -11,6 +11,9 @@ export default class PlayerService{
         });
         let json = await res.json()
         if(res.status === 200) return json.player
-        else throw new Error(json.error)
+        else {
+            console.log(json)
+            throw new Error(json.error)
+        }
     }
 }

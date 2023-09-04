@@ -330,6 +330,7 @@ export default class PlayerManager {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
         let playerData = {username: "No Name"}
+        console.log(onlineMode)
         if(onlineMode) playerData = await PlayerService.getPlayerData(IdToken)
         let newPlayer = new Player(this.gameManager, playerData.username, undefined);
 

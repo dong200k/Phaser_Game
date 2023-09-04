@@ -110,6 +110,55 @@ export function getDefaultWeapon(){
   }
 }
 
+export function getDefaultRole(){
+  return {
+    id: "role-" + window.crypto.randomUUID(),
+    name: "role-name",
+    description: "role-description",
+    displaySprite: "sprite",
+    spriteKey: "demo_hero",
+    abilityId: "",
+    weaponUpgradeId: "",
+    stat: {
+      maxHp: 0,
+      maxMana: 0,
+      hp:0,
+      mana:0,
+      armor:0,
+      magicResist:0,
+      damagePercent:0,
+      attack:0,
+      attackPercent:0,
+      armorPen:0,
+      magicAttack:0,
+      magicAttackPercent:0,
+      magicPen:0,
+      critRate:0,
+      critDamage:0,
+      attackRange:0,
+      attackRangePercent:0,
+      attackSpeed:0,
+      attackSpeedPercent:0,
+      speed:0,
+      lifeSteal:0,
+      lifeStealPercent: 0,
+      level:0,
+    },
+    coinCost: 1000,
+  }
+}
+
+export function getDefaultAbility(){
+  return {
+    id: "ability-" + window.crypto.randomUUID(),
+    name: "ability-name",
+    description: "ability-description",
+    effectLogicId: "",
+    displaySprite: "sprite",
+    cooldown: 1000
+  }
+}
+
 export function getEditForm(node, type){
   let nodeCopy = structuredClone(node)
   let defaultNode

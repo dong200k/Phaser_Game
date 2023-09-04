@@ -12,6 +12,9 @@ import RoomInfo from "../UI/roomuis/RoomInfo";
 import RPDDisplay from "../UI/roomuis/RPDDisplay";
 import type WaitingRoomState from "../../../server/src/rooms/waiting_room/schemas/State";
 import ChatBox from "../UI/ChatBox";
+import RoleService from "../services/RoleService";
+import { IRole } from "../../../server/src/rooms/game_room/system/interfaces";
+import ClientFirebaseConnection from "../firebase/ClientFirebaseConnection";
 
 interface Stats {
     hp?: number;
@@ -38,6 +41,7 @@ interface RoomPetModalData {
 }
 
 interface RoomRoleModalData {
+    id: string,
     name: string;
     imageKey?: string;
     description?: string;
@@ -107,24 +111,6 @@ export default class RoomScene extends Phaser.Scene {
                 }
             ],
             roleData: [
-                {
-                    name: "Warrior", 
-                },
-                {
-                    name: "Priest",
-                },
-                {
-                    name: "Rogue",
-                },
-                {
-                    name: "Wizard",
-                },
-                {
-                    name: "Ranger",
-                },
-                {
-                    name: "Berserker",
-                }
             ],
             dungeonData: [
                 {
@@ -147,8 +133,9 @@ export default class RoomScene extends Phaser.Scene {
         iconBorder.generateTexture("RoleModalIconBorder", 128, 128);
     }
 
-    create() {
+    async create() {
         this.playersInRoom = 0;
+        this.roomModalData.roleData = await this.getRoleData()
         this.initializeUI();
         this.joinRoom();
         // this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
@@ -160,7 +147,7 @@ export default class RoomScene extends Phaser.Scene {
     }
 
     update(time: number, delta: number): void {
-        this.playerList.update();
+        this.playerList?.update();
     }
 
     public hideDOM() {
@@ -176,8 +163,21 @@ export default class RoomScene extends Phaser.Scene {
         })
     }
 
-    private initializeUI() {
+    private async getRoleData(){
+        let roleData: RoomRoleModalData[] = []
+        let roles: [IRole] = await RoleService.getAllRoles()
+        roles.forEach((role)=>{
+            roleData.push({
+                id: role.id,
+                name: role.name,
+                description: role.description,
+                imageKey: role.spriteKey,
+            })
+        })
+        return roleData
+    }
 
+    private initializeUI() {
         // --------- Leave Room Button ----------
         let leaveButton = new Button(this, "Leave room", 0, 0, "regular", () => {
             if(SceneManager.getSceneManager().popScene() === "") {
@@ -327,7 +327,15 @@ export default class RoomScene extends Phaser.Scene {
         this.roomModalData.roleData.forEach((data, idx) => {
             if(data.name === roleName) {
                 // this.selectedRole = idx;
-                this.waitingRoom?.send("changeRole", idx);
+                // ClientFirebaseConnection.getConnection().setRole(this.roomModalData.roleData[idx].id)
+                let unlockedRoles = ClientFirebaseConnection.getConnection().playerData?.unlockedRoles
+                let onlineMode = ClientFirebaseConnection.getConnection().onlineMode
+                if(!onlineMode || (unlockedRoles && unlockedRoles.find((id: string)=>id===data.id))){
+                    this.waitingRoom?.send("changeRole", idx);
+                }else{
+                    alert(`${roleName} role has not been unlocked!`)
+                }
+                
             }
         })
     }
@@ -399,6 +407,8 @@ export default class RoomScene extends Phaser.Scene {
                             roleName: this.roomModalData.roleData[this.selectedRole].name,
                             petName: this.roomModalData.petData[this.selectedPet].name,
                         })
+                        let roleId = this.roomModalData.roleData[this.selectedRole].id
+                        ClientFirebaseConnection.getConnection().setRole(roleId)
                         this.startGameOrReadyButton.setText(this.leader ? "Start Game" : this.ready ? "Unready" : "Ready");
                     }
 

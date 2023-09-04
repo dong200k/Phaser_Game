@@ -7,6 +7,10 @@ import Nodes from './components/Nodes.js';
 import EditNodePage from './components/EditNodePage.js';
 import Weapons from './components/Weapons.js';
 import Weapon from './components/Weapon.js';
+import Roles from './components/Roles.js';
+import Role from './components/Role.js';
+import Abilities from './components/Abilities.js';
+import Ability from './components/Ability.js';
 
 function App() {
   return (
@@ -22,6 +26,10 @@ function App() {
           <Route path="/node" element={<Nodes/>} />
           <Route path="/weapon/:id" element={<Weapon/>}/>
           <Route path="/weapon" element={<Weapons />} />
+          <Route path="/role/:id" element={<Role/>}/>
+          <Route path="/role" element={<Roles />} />
+          <Route path="/abilities/:id" element={<Ability/>}/>
+          <Route path="/abilities" element={<Abilities />} />
           <Route path="*" element={<div>404 NOT FOUND</div>} />
         </Routes>
     </BrowserRouter>

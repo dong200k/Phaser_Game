@@ -3,6 +3,7 @@ import express from "express"
 import PlayerRouter from './routers/PlayerRouter';
 import ApiFirebaseConnection from './firebase/ApiFirebaseConnection';
 import JsonDatabaseManager from './skilltree/JsonDatabaseManager';
+import RoleRouter from './routers/RoleRouter';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.use(PlayerRouter)
+app.use(RoleRouter)
 
 app.get("*", (req, res)=>{
   console.log("404 not found")

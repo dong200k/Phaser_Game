@@ -21,7 +21,7 @@ export default class NavbarScene extends Phaser.Scene {
     
     private navbarData: NavbarData = {
         activeOn: "home",
-        username: "Endsider",
+        username: "Offline",
         level: 3,
         coins: 100,
         gems: 3,

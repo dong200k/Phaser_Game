@@ -16,6 +16,8 @@ export default function NavigationBar(){
                     <Link to="/skill"><Nav.Link href="skill">Skills</Nav.Link></Link>
                     <Link to="/weapon"><Nav.Link href="weapon">Weapon</Nav.Link></Link>
                     <Link to="/node"><Nav.Link href="node">Reusable nodes</Nav.Link></Link>
+                    <Link to="/role"><Nav.Link href="role">Roles</Nav.Link></Link>
+                    <Link to="/abilities"><Nav.Link href="ability">Abilities</Nav.Link></Link>
                 </Nav>
                 </Navbar.Collapse>
             </Container>

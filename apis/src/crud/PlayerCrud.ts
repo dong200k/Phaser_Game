@@ -27,7 +27,8 @@ export const CreatePlayer = async (IdToken: string, username: string)=>{
       abilities: [],
       level: 1,
       username: username,
-      skillTree: JsonDatabaseManager.getManager().getSkill("skill-bd5a5c20-d375-46eb-a2dc-dace60afbab9")
+      skillTree: JsonDatabaseManager.getManager().getSkill("skill-bd5a5c20-d375-46eb-a2dc-dace60afbab9"),
+      unlockedRoles: ["ranger"]
     }
     let res = await docRef.set(player)
     return player
@@ -79,8 +80,8 @@ export const updatePlayerSkillTree = async (IdToken: string, upgrades: string[])
   }
 
   applyUpgrades(skillTree.root)
-  console.log("upgrade count:", upgradedCount)
-  console.log("upgrade length:", upgrades.length)
+  // console.log("upgrade count:", upgradedCount)
+  // console.log("upgrade length:", upgrades.length)
   // Upgrades must all go through to save
   if(upgradedCount === upgrades.length) {
     return docRef.update({skillTree: skillTree, coins: coins})
@@ -160,3 +161,4 @@ export const getPlayerData = async (IdToken: string)=>{
     return docSnap.data()
   }
 }
+
