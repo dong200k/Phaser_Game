@@ -36,16 +36,6 @@ export default class PlayerManager {
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
-
-        setTimeout(()=>{
-            this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
-                if(gameObject instanceof Player){
-                    gameObject.effects.forEach(effect=>{
-                        console.log(effect.toString())
-                    })
-                }
-            })
-        }, 5000)
     }   
 
     private bowEffectCount = 0
@@ -60,25 +50,6 @@ export default class PlayerManager {
                 // gameObject.attackCooldown.tick(deltaT)
                 gameObject.currentAbility?.update(deltaT * 1000);
                 gameObject.playerController.update(deltaT);
-                let count = 0
-                let upgradeEffects: any[] = []
-                gameObject.effects.forEach(e=>{
-                    if(e instanceof TriggerUpgradeEffect){
-                        upgradeEffects.push(e)
-                        count++
-                    }
-                })
-                if(count > this.bowEffectCount) {
-                    this.bowEffectCount = count
-                    console.log(`bow effects on player is now ${upgradeEffects.length}`)
-                    let dupeCount = upgradeEffects.length > 0? 1 : 0
-                    for(let i=1;i<upgradeEffects.length;i++){
-                        if(upgradeEffects[i] === upgradeEffects[i-1]){
-                            dupeCount++
-                        }
-                    }
-                    console.log(`duplicate bow effects on player is ${dupeCount}`)
-                }
             }
         })
 
@@ -330,7 +301,7 @@ export default class PlayerManager {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
         let playerData = {username: "No Name"}
-        console.log(onlineMode)
+        console.log(`game mode online ${onlineMode}`)
         if(onlineMode) playerData = await PlayerService.getPlayerData(IdToken)
         let newPlayer = new Player(this.gameManager, playerData.username, undefined);
 
