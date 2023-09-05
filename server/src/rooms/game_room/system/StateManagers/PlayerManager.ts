@@ -259,9 +259,9 @@ export default class PlayerManager {
         let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
         let upgradedFrostGlaive = ArtifactFactory.createUpgradeFrostGlaive()
         let upgradedDemoArtifact = ArtifactFactory.createDemo()
-        // this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
-        // this.gameManager.getArtifactManager().equipArtifact(player, upgradedFrostGlaive)
-        // this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
+        this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
+        this.gameManager.getArtifactManager().equipArtifact(player, upgradedFrostGlaive)
+        this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
     }
 
     /**

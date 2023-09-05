@@ -28,6 +28,11 @@ export default abstract class BaseModal {
         this.scene.input.setTopOnly(true); // Makes it so that only the modal can be interacted.
         this.dialog.modalPromise({
             manualClose: true,
+            clickOutsideClose: true,
+            duration: {
+                in: 200,
+                out: 0,
+            }
         }).then(() => {
             this.scene.input.setTopOnly(this.defaultInputTopOnly);
             this.dialog.destroy();

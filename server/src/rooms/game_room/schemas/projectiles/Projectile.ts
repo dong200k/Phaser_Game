@@ -62,6 +62,9 @@ export default class Projectile extends GameObject implements Cloneable {
 
     @type("string") projectileType: string;
 
+    /** The audio that will play on the client side when this projectile spawns. */
+    @type("string") spawnSound: string;
+
     /** The entity that created this projectile. */
     originEntityId?: string;
 
@@ -90,6 +93,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.attackMultiplier = projectileConfig.attackMultiplier
         this.magicMultiplier = projectileConfig.magicMultiplier
         this.projectileSpeed = projectileConfig.projectileSpeed? projectileConfig.projectileSpeed : 1
+        this.spawnSound = projectileConfig.spawnSound ?? "";
         this.createBody()
         let velocity = {x: this.initialVelocity.x, y:this.initialVelocity.y}
         Matter.Body.setVelocity(this.getBody(), velocity);
@@ -222,6 +226,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.entity = projectileConfig.entity
         this.attackMultiplier = projectileConfig.attackMultiplier
         this.magicMultiplier = projectileConfig.magicMultiplier
+        this.spawnSound = projectileConfig.spawnSound ?? "";
         this.type = "Projectile"
         this.originEntityId = projectileConfig.originEntityId;
 

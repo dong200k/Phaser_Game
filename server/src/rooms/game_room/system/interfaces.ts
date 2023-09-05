@@ -86,6 +86,23 @@ export type weapon = {
     projectile: string
 }
 
+export interface IMonster {
+
+}
+
+// Dungeon Interface
+interface IWaveMonster {
+    name: string;
+    count: number;
+    monsterId: string;
+}
+
+interface IDungeonWave {
+    type: string;
+    difficulty: number;
+    monsters: IWaveMonster[];
+}
+
 export type IAbility = {
     id: string,
     name: string,
@@ -112,8 +129,10 @@ export interface IDungeon {
     name: string,
     tilesetName: string,
     serverJsonLocation: string,
-    clientTilesetLocation: string
+    clientTilesetLocation: string,
+    waves: IDungeonWave[],
 }
+
 
 // export type dbUpgradeEffect = {
 //     effectLogicId: string,
@@ -145,6 +164,7 @@ export type IProjectileConfig = {
     magicMultiplier: number,
     classType?: IClasses,
     originEntityId?: string,
+    spawnSound?: string,
     projectileSpeed?: number,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
@@ -152,11 +172,19 @@ export type IProjectileConfig = {
 
 // ------------ interfaces for Monsters -------------- //
 export type IMonsterConfig = {
+    id: string;
     name: string;
+    imageKey: string;
+    stats: statType;
+    poolType?: string;
+    controllerKey?: string;
+    bounds: Bounds;
+}
+
+interface Bounds {
+    type: string;
     width: number;
     height: number;
-    stat: statType;
-    poolType?: string;
 }
 
 // ------------ interfaces for Collision Manager -------------- //

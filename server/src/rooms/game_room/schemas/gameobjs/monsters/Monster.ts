@@ -8,11 +8,16 @@ import { Categories } from "../../../system/Collisions/Category";
 import MaskManager from "../../../system/Collisions/MaskManager";
 import Stat from "../Stat";
 import GameManager from "../../../system/GameManager";
+import AIFactory from "../../../system/AI/AIFactory";
 
 
 export default class Monster extends Entity {
 
+    /** The name of the monster. */
     @type("string") private monsterName: string;
+    /** The image key of the monster. Lets the client know which texture to use. */
+    @type("string") imageKey: string;
+    /** The ai of the monster. Some of the client side animations are based on the monster state. */
     @type(MonsterController) controller: MonsterController;
     private aggroTarget: Entity | null = null;
     private prevHp: number;
@@ -22,6 +27,7 @@ export default class Monster extends Entity {
         super(gameManager);
         this.config = config;
         this.monsterName = config.name;
+        this.imageKey = config.imageKey;
         this.setConfig(this.config);
         this.prevHp = this.stat.hp;
         this.type = "Monster";
@@ -36,7 +42,7 @@ export default class Monster extends Entity {
             mask: MaskManager.getManager().getMask('MONSTER'),
         }
         this.body = body;
-        this.controller = new MonsterController({monster: this, playerManager: gameManager.getPlayerManager()});
+        this.controller = AIFactory.createAIFromKey(this, config.controllerKey ?? "Default");
     }
 
     public setController(contorller: MonsterController) {
@@ -80,10 +86,11 @@ export default class Monster extends Entity {
     /** Sets this monster's fields based on the given config object. */
     public setConfig(config: IMonsterConfig) {
         this.monsterName = config.name;
-        this.width = config.width;
-        this.height = config.height;
+        this.imageKey = config.imageKey;
+        this.width = config.bounds.width;
+        this.height = config.bounds.height;
         this.poolType = config.poolType ?? config.name;
-        this.stat.setStats(config.stat);
+        this.stat.setStats(config.stats);
     }
 
     /**

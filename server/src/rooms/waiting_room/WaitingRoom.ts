@@ -2,6 +2,7 @@ import { Client, Room, RoomListingData, matchMaker } from "colyseus";
 import State from "./schemas/State";
 import globalEventEmitter from "../../util/EventUtil";
 import FileUtil from "../../util/FileUtil";
+import DungeonService from "../../services/DungeonService";
 
 interface WaitingRoomMetadata {
     inGame: boolean;
@@ -104,16 +105,31 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
         })
 
         // ----- loading dungeon data -----
-        FileUtil.readJSONAsync("assets/tilemaps/dungeon.json").then(data => {
-            data.forEach((dungeon: any) => {
+        // FileUtil.readJSONAsync("assets/tilemaps/dungeon.json").then(data => {
+        //     data.forEach((dungeon: any) => {
+        //         this.dungeonData.push({
+        //             id: dungeon.id,
+        //             name: dungeon.name,
+        //         })
+        //     });
+        //     this.broadcast("dungeonData", this.dungeonData);
+        //     this.state.dungeon = this.dungeonData[0].name;
+        // });
+
+        DungeonService.getAllDungeons().then(res => {
+            return res.json();
+        }).then(data => {
+            data.dungeons.forEach((dungeon:any) => {
                 this.dungeonData.push({
-                    id: dungeon.id,
+                    id: dungeon.name,
                     name: dungeon.name,
                 })
-            });
+            })
             this.broadcast("dungeonData", this.dungeonData);
             this.state.dungeon = this.dungeonData[0].name;
-        });
+        })
+
+
     }
     
     onJoin(client: Client) {

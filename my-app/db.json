@@ -3035,6 +3035,53 @@
       }
     },
     {
+      "id": "upgrade-4c174e0f-acee-4f3b-83bc-243d092403e0",
+      "name": "auto-generated",
+      "type": "weapon",
+      "root": {
+        "id": "node-4e683f91-079a-4906-b40c-3f304f297e60",
+        "children": [],
+        "data": {
+          "name": "auto-generated",
+          "description": "auto-generated",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0
+          },
+          "status": "none",
+          "selectionTime": 0,
+          "upgradeEffect": {
+            "effectLogicId": "",
+            "doesStack": 1,
+            "cooldown": 1000,
+            "collisionGroup": -1,
+            "type": "none"
+          }
+        }
+      }
+    },
+    {
       "id": "upgrade-9f680bac-2d8d-481f-82ba-24fb9db22fe6",
       "name": "Tome of the Fearless",
       "type": "weapon",

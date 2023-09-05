@@ -9,6 +9,12 @@ export interface GameRoomOptions {
     dungeonSelected: string;
 }
 
+interface WaitingClient { 
+    client: Client;
+    options: any;
+    state: "loading" | "ready" | "justjoined";
+}
+
 export default class GameRoom extends Room<State> {
     //autoDispose = false;
     
@@ -22,6 +28,9 @@ export default class GameRoom extends Room<State> {
     // ------- fixed tick --------
     private timePerTick = 33.33; // 20 ticks per second.
     private timeTillNextTick!: number;
+
+    // ------- client load queue -------
+    private waitingClients: WaitingClient[] = [];
 
     onCreate(options: GameRoomOptions) {
         console.log(`Created: Game room ${this.roomId}`);
@@ -69,6 +78,15 @@ export default class GameRoom extends Room<State> {
             this.gameManager.getPlayerManager().processPlayerSelectUpgrade(client.sessionId, msg);
         })
 
+        this.onMessage("loadAssetComplete", (client, msg) => {
+            console.log(client.id, " Finished loading");
+            this.waitingClients.forEach((waitingClient) => {
+                if(waitingClient.client.id === client.id) {
+                    waitingClient.state = "ready";
+                }
+            })
+        })
+
         // this.onMessage("input", (client, msg) => {
 
         // })
@@ -91,19 +109,45 @@ export default class GameRoom extends Room<State> {
     }
 
     fixedTick(deltaT: number) {
+        this.processWaitingClients();
         this.gameManager.update(deltaT);
         this.state.serverTickCount++;
         this.broadcastPatch(); //send patch updates to clients.
+    }
+
+    private processWaitingClients() {
+        for(let i = this.waitingClients.length - 1; i >= 0; i--) {
+            let waitingClient = this.waitingClients.at(i);
+            if(waitingClient) {
+                let client = waitingClient.client;
+                if(waitingClient.state === "justjoined") {
+                    // send client assets to load.
+                    let assetSet = this.gameManager.getAssetSet();
+                    let assetList: string[] = [];
+                    assetSet.forEach(value => assetList.push(value));
+                    client.send("loadAssets", assetList);
+                    waitingClient.state = "loading";
+                } else if(waitingClient.state === "loading") {
+
+                } else if(waitingClient.state === "ready") {
+                    let options = waitingClient.options;
+                    // Add a new player to the room state. The first player is the owner of the room.
+                    this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.IdToken, this.gameManager, options.roleId, options.onlineMode).then(() => {
+                        this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
+                    });
+                    this.waitingClients.splice(i, 1);
+                }
+            }
+
+        }
     }
 
     // update(deltaT:number) {
     //     this.gameManager?.update(deltaT);
     // }
 
-    async onJoin(client: Client, options: any) {
-        // Add a new player to the room state. The first player is the owner of the room.
-        await this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.IdToken, this.gameManager, options.roleId, options.onlineMode);
-        this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
+    onJoin(client: Client, options: any) {
+        this.waitingClients.push({client, options, state: "justjoined"});
     }
 
     onLeave(client: Client) {

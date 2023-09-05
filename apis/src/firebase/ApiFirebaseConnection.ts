@@ -10,7 +10,8 @@ export default class ServerFirebaseConnection{
 
     initializeApp({
       credential: applicationDefault(),
-      databaseURL: "https://phasergame-4f0d6.firebaseio.com"
+      databaseURL: "https://phasergame-4f0d6.firebaseio.com",
+      storageBucket: "phasergame-4f0d6.appspot.com"
     });
 
     // return this.login(process.env.ADMIN_EMAIL, process.env.ADMIN_PASSWORD)

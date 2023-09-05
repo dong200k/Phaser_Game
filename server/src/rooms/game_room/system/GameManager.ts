@@ -41,6 +41,9 @@ export default class GameManager {
     // Game Options/Config
     private options: GameRoomOptions;
 
+    // Asset Set. Sent to clients to load their assets.
+    private assetSet: Set<string> = new Set();
+
     constructor(state: State, options?: GameRoomOptions) {
         this.state = state;
         this.engine = Matter.Engine.create();
@@ -156,7 +159,8 @@ export default class GameManager {
         this.dungeonManager.update(deltaTSeconds);
         this.projectileManager.update(deltaT)
 
-        // console.log(deltaT)
+        // if(this.state.serverTickCount % 30 === 0)
+        //     console.log(`Heap usage: ${process.memoryUsage().heapUsed / 1000000} Mb`);
     }
 
     public startGame() {
@@ -199,5 +203,10 @@ export default class GameManager {
     /** Gets the configuration data for this game. */
     public getOptions() {
         return this.options;
+    }
+
+    /** Gets the set of assets that the client should load. */
+    public getAssetSet() {
+        return this.assetSet;
     }
 }

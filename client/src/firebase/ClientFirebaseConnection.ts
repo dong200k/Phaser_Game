@@ -10,6 +10,8 @@ export default class ClientFirebaseConnection{
 
   public onlineMode = true
   public roleId: string = ""
+  public user: User | null = null;
+
   public playerData: any
   /** JSON Web Token (JWT) used to identify the user to backend server. */
   public idToken?: string
@@ -41,6 +43,8 @@ export default class ClientFirebaseConnection{
         console.log("No user, switching to login scene")
         return SceneManager.getSceneManager().switchToScene(SceneKey.LoginScene)
       }
+
+      this.user = user;
 
       this.idToken = await user.getIdToken()
 
