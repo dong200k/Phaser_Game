@@ -14,7 +14,7 @@ export class HermesBoots extends EffectLogic{
     triggerType: ITriggerType = "player skill"
 
     public useEffect(playerState: Player){
-        EffectManager.addEffectsTo(playerState, EffectFactory.createSpeedMultiplierEffectTimed(5, 5))
+        EffectManager.addEffectsTo(playerState, EffectFactory.createSpeedMultiplierEffectTimed(5, 1))
         EffectManager.addEffectsTo(playerState, EffectFactory.createCollisionImmuneEffectTimed(1))
     }
 }

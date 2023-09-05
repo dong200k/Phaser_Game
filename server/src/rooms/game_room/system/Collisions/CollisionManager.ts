@@ -123,8 +123,14 @@ export default class CollisionManager{
         }
 
         // Melee projectile will be set inactive by its controller.
-        if(!(projectile instanceof MeleeProjectile)) projectile.setInactive();
-        else projectile.disableCollisions();
+        projectile.hitCount++
+        let exceededHitCount = projectile.hitCount === projectile.piercing
+        if(exceededHitCount){
+            if(!(projectile instanceof MeleeProjectile)) projectile.setInactive();
+            else projectile.disableCollisions();
+        }
+
+        
     }
 
     public resolveProjectileObstacleCollision(projectile: Projectile, obstacle: Tile, bodyA: Matter.Body, bodyB: Matter.Body){

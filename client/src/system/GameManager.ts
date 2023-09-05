@@ -354,7 +354,15 @@ export default class GameManager {
             if(gameObject instanceof Player) {
                 /** ----- Player Listeners ----- */
                 let playerState = entityState as PlayerState;
-                playerState.specialCooldown.onChange = (changes: any) => this.playerSpecialCooldownOnChange(gameObject, playerState, changes);
+                playerState.listen("currentAbility", (ability)=>{
+                    // console.log("listen current ability")
+                    if(ability){
+                        // console.log("ability cooldown", ability.cooldown)
+                        ability.cooldown.onChange = (ability: any) => this.playerSpecialCooldownOnChange(gameObject, playerState, ability)
+                    }
+                })
+
+                // playerState.specialCooldown.onChange = (changes: any) => this.playerSpecialCooldownOnChange(gameObject, playerState, changes);
                 playerState.playerController.onChange = (changes: any) => this.playerControllerOnChange(gameObject, playerState, changes);
                 playerState.upgradeInfo.onChange = (changes: any) => this.playerUpgradeInfoOnChange(gameObject, playerState, changes);
             }
@@ -516,22 +524,26 @@ export default class GameManager {
     }
 
     /** Called when the player's cooldown is updated on the server. */
-    private playerSpecialCooldownOnChange(player: Player, playerState: PlayerState, changes: any) {
-        let time = playerState.specialCooldown.time;
-        let remainingTime = playerState.specialCooldown.remainingTime;
-        let isFinished = playerState.specialCooldown.isFinished;
-
-        // Updates the Peer Info Display
-        EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
-            specialCooldownPercent: isFinished? 0 : remainingTime / time,
-        })
-
-        if(player === this.player1) {
-            // Updates Player Info Display
-            EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
-                specialCooldownCounter: Math.round(remainingTime / 1000),
+    private playerSpecialCooldownOnChange(player: Player, playerState: PlayerState, ability: any) {
+        if(playerState.currentAbility){
+            let time = playerState.currentAbility.cooldown.time;
+            let remainingTime = playerState.currentAbility.cooldown.remainingTime;
+            let isFinished = playerState.currentAbility.cooldown.isFinished;
+    
+            // console.log(`ability cooldown info: time: ${time}, remaining time: ${remainingTime}, isFinished: ${isFinished}`)
+    
+            // Updates the Peer Info Display
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
                 specialCooldownPercent: isFinished? 0 : remainingTime / time,
-            });
+            })
+    
+            if(player === this.player1) {
+                // Updates Player Info Display
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_PLAYER_INFO, {
+                    specialCooldownCounter: Math.round(remainingTime / 1000),
+                    specialCooldownPercent: isFinished? 0 : remainingTime / time,
+                });
+            }
         }
     }
 

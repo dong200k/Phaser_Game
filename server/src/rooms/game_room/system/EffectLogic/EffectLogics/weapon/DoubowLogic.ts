@@ -31,6 +31,8 @@ export default class DoubowLogic extends EffectLogic{
 
         let projectileSpeed = 5
 
+        let piercing = playerState.weaponUpgradeTree.getPiercing()
+
         // spawn projectile with direction rotated 30 degrees from player to player mouse
         let directionRotated30 = MathUtil.getRotatedSpeed(x, y, projectileSpeed, 5)
         gameManager.getProjectileManager().spawnProjectile({
@@ -49,6 +51,7 @@ export default class DoubowLogic extends EffectLogic{
             magicMultiplier: 0,
             originEntityId: playerState.getId(),
             spawnSound: "shoot_arrow",
+            piercing: piercing
         })
 
         // spawn projectile with direction rotated -30 degrees from player to player mouse
@@ -69,6 +72,7 @@ export default class DoubowLogic extends EffectLogic{
             magicMultiplier: 0,
             originEntityId: playerState.getId(),
             spawnSound: "shoot_arrow",
+            piercing: piercing
         })
     }
 }

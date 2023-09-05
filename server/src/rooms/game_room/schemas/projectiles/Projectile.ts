@@ -65,8 +65,14 @@ export default class Projectile extends GameObject implements Cloneable {
     /** The audio that will play on the client side when this projectile spawns. */
     @type("string") spawnSound: string;
 
+    /** Enemies this projectile can hit before going inactive */
+    @type("number") piercing: number;
+
     /** The entity that created this projectile. */
     originEntityId?: string;
+
+    /** Times the projectile has collided */
+    hitCount = 0
 
     /**
      * Creates a new projectile GameObject and a corresponding Matter.Body with the projectileConfig
@@ -101,6 +107,8 @@ export default class Projectile extends GameObject implements Cloneable {
         this.width = Math.abs(this.body.bounds.max.x - this.body.bounds.min.x);
         this.height = Math.abs(this.body.bounds.max.y - this.body.bounds.min.y);
         this.projectileController = new RangedProjectileController({projectile: this});
+
+        this.piercing = projectileConfig.piercing? projectileConfig.piercing : 1
     }
     
     /**
@@ -245,5 +253,8 @@ export default class Projectile extends GameObject implements Cloneable {
 
         this.setActive(true)    
         this.inPoolMap = false
+
+        this.piercing = projectileConfig.piercing? projectileConfig.piercing : 1
+        this.hitCount = 0
     }
 }

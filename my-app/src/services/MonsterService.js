@@ -55,14 +55,3 @@ export async function getAllMonsters(user) {
         return [];
     }
 }
-
-export async function getAllMonsterNames(user) {
-    let monsters = await getAllMonsters(user)
-    let monsterNames = []
-    
-    monsters.forEach(element => {
-        monsterNames.push(element.name)
-    });
-    console.log("monster names", monsterNames)
-    return monsterNames
-}

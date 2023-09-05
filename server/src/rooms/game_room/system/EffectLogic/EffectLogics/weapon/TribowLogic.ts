@@ -32,6 +32,8 @@ export default class TribowLogic extends EffectLogic{
 
         let projectileSpeed = 5
 
+        let piercing = playerState.weaponUpgradeTree.getPiercing()
+
         // Spawn projectile with direction from player to player mouse
         let direction = MathUtil.getNormalizedSpeed(mouseX - playerX, mouseY - playerY, projectileSpeed)
         gameManager.getProjectileManager().spawnProjectile({
@@ -50,6 +52,7 @@ export default class TribowLogic extends EffectLogic{
             magicMultiplier: 0,
             originEntityId: playerState.getId(),
             spawnSound: "shoot_arrow",
+            piercing: piercing,
         })
 
         // spawn projectile with direction rotated 30 degrees from player to player mouse
@@ -70,6 +73,7 @@ export default class TribowLogic extends EffectLogic{
             magicMultiplier: 0,
             originEntityId: playerState.getId(),
             spawnSound: "shoot_arrow",
+            piercing: piercing
         })
 
         // spawn projectile with direction rotated -30 degrees from player to player mouse
@@ -90,6 +94,7 @@ export default class TribowLogic extends EffectLogic{
             magicMultiplier: 0,
             originEntityId: playerState.getId(),
             spawnSound: "shoot_arrow",
+            piercing
         })
     }
 }

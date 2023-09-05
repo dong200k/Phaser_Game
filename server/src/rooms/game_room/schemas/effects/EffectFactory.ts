@@ -11,6 +11,7 @@ import UpgradeEffect from "../gameobjs/UpgradeEffect";
 import ContinuousUpgradeEffect from "./continuous/ContinuousUpgradeEffect";
 import CollisionImmuneEffect from "./temp/CollisionImmuneEffect";
 import Entity from "../gameobjs/Entity";
+import PiercingEffect from "./temp/PiercingEffect";
 
 
 export default class EffectFactory {
@@ -163,5 +164,15 @@ export default class EffectFactory {
             default:
                 return new ContinuousUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
         }
+    }
+
+    /**
+     * Effect that modifies piercing of a player's weaponUpgradeTree.
+     * @param piercing number that represents how many targets the weapon can hit/pierce before despawning.
+     * @param originalPiercing piercing to revert to after the effect ends.
+     * @param activeTime time the effect will last for.
+     */
+    public static createPiercingEffect(piercing: number, originalPiercing: number, activeTime: number,){
+        return new PiercingEffect(true, activeTime, piercing, originalPiercing)
     }
 }
