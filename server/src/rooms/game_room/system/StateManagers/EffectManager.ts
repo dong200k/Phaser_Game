@@ -46,7 +46,7 @@ export default class EffectManager {
             })
         } else {
             if(entity.effects) {
-                entity.effects.push(effect);
+                entity.effects.unshift(effect);
                 effect.addToEntity(entity);
             }
         }
@@ -101,6 +101,16 @@ export default class EffectManager {
      * @param deltaT The time that is used to step forward the effects in seconds.
      */
     public static updateEffectsOn(entity: Entity, deltaT: number) {
+        // let effectsToRemove: Effect[] = []
+        // entity.effects.forEach(effect=>{
+        //     effect.update(deltaT);
+        //     if(effect.isCompleted()) {
+        //         effect.removeFromEntity();
+        //         effect.reset();
+        //     }
+        // })
+        // remove effects thta are completed
+        // entity.effects.filter(effect=>!effectsToRemove.find(effectToRemove=> effect === effectToRemove))
         for(let i = entity.effects.length - 1; i >= 0; i--) {
             let effect = entity.effects.at(i);
             effect.update(deltaT);
