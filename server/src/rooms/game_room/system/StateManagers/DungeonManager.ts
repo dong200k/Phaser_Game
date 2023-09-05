@@ -107,10 +107,10 @@ export default class DungeonManager {
             // this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.matterBodies, newTilemap);
             
             // Waves
-            let wave = this.createNewWave();
-            wave.setAgressionLevel(1);
-            wave.addMonster("Tiny Zombie", 1);
-            newDungeon.addWave(wave);
+            // let wave = this.createNewWave();
+            // wave.setAgressionLevel(1);
+            // wave.addMonster("Tiny Zombie", 1);
+            // newDungeon.addWave(wave);
 
             // Load wave from dungeon data.
             this.createWavesFromData(newDungeon, dungeonData);

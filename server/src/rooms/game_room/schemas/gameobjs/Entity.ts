@@ -6,7 +6,9 @@ import GameManager from '../../system/GameManager';
 
 export default class Entity extends GameObject {
     @type(Stat) stat: Stat;
-    @type([Effect]) effects = new ArraySchema<Effect>();
+    // Note: Using Schema will break effects. Causing projectiles to spawn faster over time.
+    //@type([Effect]) effects = new ArraySchema<Effect>();
+    effects = new Array<Effect>();
 
     /** The last entity that damaged this entity. 
      * Can be used to assign xp to the player that killed the monster. */ 

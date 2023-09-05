@@ -30,7 +30,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("button_small_deactive", "images/button/button_small_deactive.png");
         this.load.image("button_small_default", "images/button/button_small_default.png");
         this.load.image("button_small_default_hover_texture", "images/button/button_small_default_hover_texture.png");
-
+        this.load.image("SplashScreenImage", "images/background/DungeonCoreBg.png");
         // ------- Loading Audio ------- //
         this.load.audio("button_click1", "audio/button_click1.mp3");
         this.load.audio("hit", "audio/hit.mp3");
@@ -56,12 +56,12 @@ export default class SystemPreloadScene extends Phaser.Scene {
 
     /** Load the assets from firebase. */
     async addOnlineAssets() {
-        // Put the asset you want to load here.
-        let assets = [
-            "SplashScreenImage",
-        ]
+        // // Put the asset you want to load here.
+        // let assets = [
+        //     "SplashScreenImage",
+        // ]
 
-        await AssetManager.putAssetsInLoad(this, assets);
+        // await AssetManager.putAssetsInLoad(this, assets);
     }
 
     create() {

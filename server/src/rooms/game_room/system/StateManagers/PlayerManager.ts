@@ -202,10 +202,10 @@ export default class PlayerManager {
         // Equip aritfacts
         let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
         let upgradedFrostGlaive = ArtifactFactory.createUpgradeFrostGlaive()
-        //let upgradedDemoArtifact = ArtifactFactory.createDemo()
+        let upgradedDemoArtifact = ArtifactFactory.createDemo()
         this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
         // ArtifactManager.equipArtifact(player, upgradedFrostGlaive)
-        // this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
+        this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
 
         // Equip skill tree
         let playerData = await PlayerService.getPlayerData(IdToken)

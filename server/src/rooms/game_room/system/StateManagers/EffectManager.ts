@@ -45,7 +45,7 @@ export default class EffectManager {
             })
         } else {
             if(entity.effects) {
-                entity.effects.unshift(effect);
+                entity.effects.push(effect);
                 effect.addToEntity(entity);
             }
         }
@@ -86,10 +86,11 @@ export default class EffectManager {
      */
     public static removeEffectFrom(entity: Entity, effect: Effect) {
         for(let i = entity.effects.length - 1; i >=0; i--) {
-            if(entity.effects.at(i) === effect) {
-                entity.effects.at(i).removeFromEntity();
-                entity.effects.at(i).reset();
-                entity.effects.deleteAt(i);
+            let currentEffect = entity.effects[i];
+            if(currentEffect && currentEffect === effect) {
+                currentEffect.removeFromEntity();
+                currentEffect.reset();
+                entity.effects.splice(i, 1);
             }
         }
     }
@@ -101,12 +102,14 @@ export default class EffectManager {
      */
     public static updateEffectsOn(entity: Entity, deltaT: number) {
         for(let i = entity.effects.length - 1; i >= 0; i--) {
-            let effect = entity.effects.at(i);
-            effect.update(deltaT);
-            if(effect.isCompleted()) {
-                entity.effects.deleteAt(i);
-                effect.removeFromEntity();
-                effect.reset();
+            let effect = entity.effects[i];
+            if(effect !== undefined) {
+                effect.update(deltaT);
+                if(effect.isCompleted()) {
+                    entity.effects.splice(i, 1);
+                    effect.removeFromEntity();
+                    effect.reset();
+                }
             }
         }
     }
@@ -185,8 +188,8 @@ export default class EffectManager {
      */
     private static getStatCompoundEffectFrom(entity: Entity): CompoundEffect {
         for(let i = 0; i < entity.effects.length; i++) {
-            let effect = entity.effects.at(i);
-            if(effect.getName() === statCompoundEffectName) {
+            let effect = entity.effects[i];
+            if(effect && effect.getName() === statCompoundEffectName) {
                 return effect as CompoundEffect;
             }
         }
