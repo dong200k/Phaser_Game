@@ -24,6 +24,7 @@ export default class Death extends StateNode {
         if(playerThatDamagedMe) playerManager.addXpToPlayer(20, playerThatDamagedMe);
 
         // console.log(playerThatDamagedMe?.xp);
+        monster.animation.playAnimation("death", false);
     }
 
     public onExit(): void {

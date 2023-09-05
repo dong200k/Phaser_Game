@@ -3,6 +3,7 @@ import MathUtil from '../../../../util/MathUtil';
 import { Cloneable } from '../../../../util/PoolUtil';
 import Matter from 'matter-js';
 import GameManager from '../../system/GameManager';
+import Animation from './Animation';
 
 export class Velocity extends Schema {
     @type('number') x = 0;
@@ -40,6 +41,9 @@ export default class GameObject extends Schema implements Cloneable {
     // -- Reference to the GameManager --
     gameManager: GameManager;
 
+    // -- animation --
+    @type(Animation) animation: Animation;
+
     constructor(gameManager: GameManager, x: number, y: number, ownerId?: string) {
         super();
         this.id = MathUtil.uid();
@@ -59,6 +63,7 @@ export default class GameObject extends Schema implements Cloneable {
         this.body = Matter.Bodies.rectangle(this.x, this.y, this.width, this.height, {
             isStatic: false,
         });
+        this.animation = new Animation();
     }
 
     /** 

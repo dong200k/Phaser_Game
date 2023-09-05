@@ -10,7 +10,9 @@ import { getFinalAttackRange, getFinalSpeed } from "../../../Formulas/formulas";
 export default class Follow extends StateNode {
 
     public onEnter(): void {
-        
+        let stateMachine = (this.getStateMachine() as MonsterController);
+        let monster = stateMachine.getMonster();
+        monster.animation.playAnimation("walk", true);
     }
     public onExit(): void {
         let body = this.getStateMachine<MonsterController>().getMonster().getBody();
