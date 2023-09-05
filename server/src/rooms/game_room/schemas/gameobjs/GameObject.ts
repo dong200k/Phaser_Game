@@ -4,6 +4,7 @@ import { Cloneable } from '../../../../util/PoolUtil';
 import Matter from 'matter-js';
 import GameManager from '../../system/GameManager';
 import Animation from './Animation';
+import Sound from './Sound';
 
 export class Velocity extends Schema {
     @type('number') x = 0;
@@ -43,6 +44,8 @@ export default class GameObject extends Schema implements Cloneable {
 
     // -- animation --
     @type(Animation) animation: Animation;
+    // -- sound --
+    @type(Sound) sound: Sound;
 
     constructor(gameManager: GameManager, x: number, y: number, ownerId?: string) {
         super();
@@ -64,6 +67,7 @@ export default class GameObject extends Schema implements Cloneable {
             isStatic: false,
         });
         this.animation = new Animation();
+        this.sound = new Sound();
     }
 
     /** 

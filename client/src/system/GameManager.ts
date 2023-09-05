@@ -342,6 +342,7 @@ export default class GameManager {
         gameObjectState.onChange = (changes:any) => this.gameObjectOnChange(gameObject, gameObjectState, changes);
         gameObjectState.velocity.onChange = (changes: any) => this.gameObjectVelocityOnChange(gameObject, gameObjectState, changes);
         gameObjectState.animation.onChange = (changes: any) => this.gameObjectAnimationOnChange(gameObject, gameObjectState, changes);
+        gameObjectState.sound.onChange = (changes: any) => this.gameObjectSoundOnChange(gameObject, gameObjectState, changes);
 
         if(gameObject instanceof Entity) {
             /** ----- Entity Listeners ----- */
@@ -472,6 +473,12 @@ export default class GameManager {
             key: gameObjectState.animation.key,
             repeat: gameObjectState.animation.loop ? -1: 0,
         })
+    }
+
+    private gameObjectSoundOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
+        SoundManager.getManager().play(gameObjectState.sound.key, {
+            detune: Math.floor(Math.random() * 500 - 250)
+        });
     }
 
     /** Called when the entity's stat is updated on the server. */

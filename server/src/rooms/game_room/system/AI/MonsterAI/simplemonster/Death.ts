@@ -25,6 +25,7 @@ export default class Death extends StateNode {
 
         // console.log(playerThatDamagedMe?.xp);
         monster.animation.playAnimation("death", false);
+        // monster.sound.playSoundEffect("player_death");
     }
 
     public onExit(): void {
