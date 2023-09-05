@@ -158,6 +158,7 @@ export default class GameManager {
 
         this.scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
             if(pointer.leftButtonDown()) this.mouseDown = true;
+            this.player1?.play("atk")
         })
 
         this.scene.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
@@ -180,6 +181,9 @@ export default class GameManager {
 
         let special = this.spaceKey?.isDown? true : false;
         this.gameRoom?.send("special", special);
+        if(special){
+            this.player1?.play("2_atk")
+        }
         
 
         //[0] mouse click, [1] mousex, [2] mousey.

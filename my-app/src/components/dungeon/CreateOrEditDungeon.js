@@ -10,6 +10,9 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner';
 import SubmitButton from "../forms/SubmitButton";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import { getAllMonsterName, getAllMonsterNames } from "../../services/MonsterService.js";
 
 
 export default function CreateOrEditDungeon(props) {
@@ -25,6 +28,7 @@ export default function CreateOrEditDungeon(props) {
     const [ serverJsonLocation, setServerJsonLocation ] = useState("");
 
     const [ sendingRequest, setSendingRequest ] = useState(false);
+    const [ monsterNames, setMonsterNames ] = useState([])
 
     useEffect(() => {
         // When editing we will load in data from firebase.
@@ -46,6 +50,12 @@ export default function CreateOrEditDungeon(props) {
             }
         }
     }, [dungeons]);
+
+    useEffect(()=>{
+        getAllMonsterNames(user)
+            .then((monsterNames)=>setMonsterNames(monsterNames))
+            .catch(e=>console.log(e))
+    }, [])
     
 
     const onChangeName = (e) => { setName(e.target.value); }
@@ -63,11 +73,11 @@ export default function CreateOrEditDungeon(props) {
         newWaves[idx].difficulty = parseInt(e.target.value);
         setWaves(newWaves);
     }
-    const onChangeMonsterName = (e, idx, midx) => {
+    const onChangeMonsterName = (name, idx, midx) => {
         let newWaves = [...waves];
         newWaves.forEach((newWave, idx2) => {
             newWave.monsters = [...waves[idx2].monsters];
-            if(idx2 === idx) newWave.monsters[midx].name = e.target.value;
+            if(idx2 === idx) newWave.monsters[midx].name = name;
         })
         setWaves(newWaves);
     }
@@ -178,7 +188,13 @@ export default function CreateOrEditDungeon(props) {
                                                     <div key={`monster${monster.id}`}>
                                                         <h6 style={{display: 'inline-block', marginRight: "10px"}}>Monster {midx + 1}</h6>
                                                         <label htmlFor={`monsterName${idx}_${midx}`}>Name: </label>
-                                                        <input name={`monsterName${idx}_${midx}`} type="text" defaultValue={monster.name} onChange={(e) => onChangeMonsterName(e, idx, midx)}/>
+                                                        
+                                                        <DropdownButton title={monster.name? monster.name : "Select Monster"} className="mx-2" defaultValue={"monster name"} style={{display: "inline-block"}} variant="warning" id="dropdown-basic-button">
+                                                            {monsterNames.map(name=>
+                                                                <Dropdown.Item onClick={(e) => {onChangeMonsterName(name, idx, midx)}} key={name} href="#/action-1">{name}</Dropdown.Item>
+                                                            )}
+                                                        </DropdownButton>
+                                                        {/* <input name={`monsterName${idx}_${midx}`} type="text" defaultValue={monster.name} onChange={(e) => onChangeMonsterName(e, idx, midx)}/> */}
                                                         <label htmlFor={`monsterCount${idx}_${midx}`}>Count: </label>
                                                         <input name={`monsterCount${idx}_${midx}`} type="number" defaultValue={monster.count} onChange={(e) => onChangeMonsterCount(e, idx, midx)}/>
                                                         <button type="button" className="btn btn-danger" style={{margin: "10px"}} onClick={() => onClickDeleteMonster(idx, midx)}>Delete Monster</button>

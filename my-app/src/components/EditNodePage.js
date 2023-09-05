@@ -170,7 +170,7 @@ export default function EditNodePage(){
     </Dropdown>
 
     return (
-      <div className="text-center bg-light">
+      <div className="text-center" style={{backgroundColor: "lightcyan"}}>
         {
             !form?
             <div>invalid id</div>

@@ -56,6 +56,7 @@ export default class Projectile extends GameObject implements Cloneable {
     @type("number") magicMultiplier: number
     // /** GameManager this projectile belongs to */
     // private gameManager: GameManager
+    @type("number") projectileSpeed: number
 
     @type(StateMachine) projectileController: StateMachine<unknown>;
 
@@ -91,8 +92,11 @@ export default class Projectile extends GameObject implements Cloneable {
         this.originEntityId = projectileConfig.originEntityId;
         this.attackMultiplier = projectileConfig.attackMultiplier
         this.magicMultiplier = projectileConfig.magicMultiplier
+        this.projectileSpeed = projectileConfig.projectileSpeed? projectileConfig.projectileSpeed : 1
         this.spawnSound = projectileConfig.spawnSound ?? "";
         this.createBody()
+        let velocity = {x: this.initialVelocity.x, y:this.initialVelocity.y}
+        Matter.Body.setVelocity(this.getBody(), velocity);
 
         this.width = Math.abs(this.body.bounds.max.x - this.body.bounds.min.x);
         this.height = Math.abs(this.body.bounds.max.y - this.body.bounds.min.y);
@@ -156,9 +160,6 @@ export default class Projectile extends GameObject implements Cloneable {
         };
 
         body.label = this.collisionCategory
-        
-        let velocity = {x: this.initialVelocity.x, y:this.initialVelocity.y}
-        Matter.Body.setVelocity(body, velocity);
         this.setBody(body)
     }
 

@@ -8,6 +8,8 @@ import PlayerService from "../services/PlayerService";
 export default class ClientFirebaseConnection{
   private static singleton = new ClientFirebaseConnection()
 
+  public onlineMode = true
+  public roleId: string = ""
   public user: User | null = null;
 
   public playerData: any
@@ -15,6 +17,7 @@ export default class ClientFirebaseConnection{
   public idToken?: string
   /** Listeners are called when player data updates */
   private playerDataListeners: Array<{key: string, f: (playerData: any)=>void}> = []
+
 
   /** Initializes FirebaseApp */
   startConnection(){
@@ -96,6 +99,21 @@ export default class ClientFirebaseConnection{
 
   removePlayerDataListener(key: string){
     this.playerDataListeners = this.playerDataListeners.filter(({key, f})=>key !== key)
+  }
+
+  setOnlineMode(mode: boolean){
+    this.onlineMode = mode
+  }
+
+  setRole(roleId: string){
+    this.roleId = roleId
+  }
+
+  /**
+   * Returns options used when a colyseus room is created
+   */
+  getOptions(){
+    return {IdToken: this.idToken, onlineMode: this.onlineMode, roleId: this.roleId}
   }
 
   static getConnection(){

@@ -132,7 +132,7 @@ export default class GameRoom extends Room<State> {
                 } else if(waitingClient.state === "ready") {
                     let options = waitingClient.options;
                     // Add a new player to the room state. The first player is the owner of the room.
-                    this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.IdToken, this.gameManager).then(() => {
+                    this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.IdToken, this.gameManager, options.roleId, options.onlineMode).then(() => {
                         this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
                     });
                     this.waitingClients.splice(i, 1);

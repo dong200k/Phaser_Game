@@ -48,7 +48,7 @@ export default class Attack extends StateNode {
             this.projectile.enableCollisions();
             this.triggered = true;
         }
-
+ 
         if(this.attackDuration < 0) {
             this.projectile.setActive(false);
             this.projectile.disableCollisions();

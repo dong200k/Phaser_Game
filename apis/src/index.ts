@@ -4,6 +4,7 @@ import PlayerRouter from './routers/PlayerRouter';
 import MonsterRouter from './routers/MonsterRouter';
 import ApiFirebaseConnection from './firebase/ApiFirebaseConnection';
 import JsonDatabaseManager from './skilltree/JsonDatabaseManager';
+import RoleRouter from './routers/RoleRouter';
 import DungeonRouter from './routers/DungeonRouter';
 import AdminRouter from './routers/AdminRouter';
 import AssetRouter from './routers/AssetRouter';
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 
 app.use("/admin", AdminRouter);
 app.use(PlayerRouter)
+app.use(RoleRouter)
 app.use("/monsters", MonsterRouter);
 app.use("/dungeons", DungeonRouter);
 app.use("/assets", AssetRouter);

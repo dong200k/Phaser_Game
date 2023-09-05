@@ -1,11 +1,14 @@
 import Entity from "../../schemas/gameobjs/Entity";
 import GameManager from "../GameManager";
 import EffectLogic from "./EffectLogic";
+import RangerAbilityLogic from "./EffectLogics/abilities/RangerAbility";
 import { DemoLogic, DemoLogicSkill } from "./EffectLogics/artifact/DemoLogic";
 import { FrostGlaive, FrostGlaiveFrenzy } from "./EffectLogics/artifact/FrostGlaiveLogic";
 import { HermesBoots } from "./EffectLogics/artifact/HermesBootLogic";
 import BowLogic from "./EffectLogics/weapon/BowLogic";
 import DoubowLogic from "./EffectLogics/weapon/DoubowLogic";
+import HomingMissile1 from "./EffectLogics/weapon/PriestTome/HomingMissile1";
+import HomingMissile2 from "./EffectLogics/weapon/PriestTome/HomingMissile2";
 import TribowLogic from "./EffectLogics/weapon/TribowLogic";
 
 export default class EffectLogicManager{
@@ -34,6 +37,10 @@ export default class EffectLogicManager{
         this.addEffectLogic(new FrostGlaiveFrenzy())
         this.addEffectLogic(new DemoLogic())
         this.addEffectLogic(new DemoLogicSkill())
+        this.addEffectLogic(new HomingMissile1())
+        this.addEffectLogic(new HomingMissile2())
+
+        this.addEffectLogic(new RangerAbilityLogic())
     }
 
     private addEffectLogic(effectLogic: EffectLogic){

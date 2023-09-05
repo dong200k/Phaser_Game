@@ -5,8 +5,12 @@ import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import UIFactory from "../UI/UIFactory";
 import { RoundRectangle, ScrollablePanel, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 import ConfirmModal from "../UI/modals/ConfirmModal";
+import { IRole } from "../../../server/src/rooms/game_room/system/interfaces";
+import RoleService from "../services/RoleService";
+import ClientFirebaseConnection from "../firebase/ClientFirebaseConnection";
 
 interface RoleItem {
+    id: string
     name: string;
     spriteKey?: string;
     description?: string;
@@ -28,60 +32,72 @@ export default class RoleScene extends Phaser.Scene {
     constructor() {
         super(SceneKey.RoleScene);
         this.roleData = {
-            roleItems: [
-                {
-                    name: "Ranger",
-                    spriteKey: "demo_hero",
-                    description: "The Ranger is a excellent sniper. They possess a unique skill SNIPER which can penetrate multiple enemies.",
-                    cost: 1000,
-                    purchased: true,
-                },
-                {
-                    name: "Warrior",
-                    spriteKey: "",
-                    description: "The Warrior is a tank. They possess a unique skill TAUNT which increase defenses and aggro enemies.",
-                    cost: 1000,
-                    purchased: false,
-                },
-                {
-                    name: "Priest",
-                    spriteKey: "",
-                    description: "The Priest is a healer. They possess a unique skill HEAL which places an area healing zone.",
-                    cost: 1000,
-                    purchased: false,
-                },
-                {
-                    name: "Rogue",
-                    spriteKey: "",
-                    description: "The Rogue is fast. They possess a unique skill DASH which slashes through enemies dealing massive damage.",
-                    cost: 1000,
-                    purchased: false,
-                },
-                {
-                    name: "Wizard",
-                    spriteKey: "",
-                    description: "The Wizard is slow. They possess a unique skill BLAST which shoots a massive fireball.",
-                    cost: 1000,
-                    purchased: false,
-                },
-                {
-                    name: "Berserker",
-                    spriteKey: "",
-                    description: "The Berserker is mad. They possess a unique skill ENDURE which increases defenses, movement speed and attack speed.",
-                    cost: 1000,
-                    purchased: false,
-                },
-            ]
+            roleItems: []
+            // roleItems: [
+            //     {
+            //         name: "Ranger",
+            //         spriteKey: "demo_hero",
+            //         description: "The Ranger is a excellent sniper. They possess a unique skill SNIPER which can penetrate multiple enemies.",
+            //         cost: 1000,
+            //         purchased: true,
+            //     },
+            //     {
+            //         name: "Warrior",
+            //         spriteKey: "",
+            //         description: "The Warrior is a tank. They possess a unique skill TAUNT which increase defenses and aggro enemies.",
+            //         cost: 1000,
+            //         purchased: false,
+            //     },
+            //     {
+            //         name: "Priest",
+            //         spriteKey: "",
+            //         description: "The Priest is a healer. They possess a unique skill HEAL which places an area healing zone.",
+            //         cost: 1000,
+            //         purchased: false,
+            //     },
+            //     {
+            //         name: "Rogue",
+            //         spriteKey: "",
+            //         description: "The Rogue is fast. They possess a unique skill DASH which slashes through enemies dealing massive damage.",
+            //         cost: 1000,
+            //         purchased: false,
+            //     },
+            //     {
+            //         name: "Wizard",
+            //         spriteKey: "",
+            //         description: "The Wizard is slow. They possess a unique skill BLAST which shoots a massive fireball.",
+            //         cost: 1000,
+            //         purchased: false,
+            //     },
+            //     {
+            //         name: "Berserker",
+            //         spriteKey: "",
+            //         description: "The Berserker is mad. They possess a unique skill ENDURE which increases defenses, movement speed and attack speed.",
+            //         cost: 1000,
+            //         purchased: false,
+            //     },
+            // ]
         }
     }
 
-    private roleItemOnClick(roleName: string) {
-
+    private roleItemOnClick(roleName: string, roleId: string) {
+        console.log("role item on click")
         //TODO: UNLOCKING ROLE 
         this.roleData.roleItems.forEach((roleItem) => {
             if(roleItem.name === roleName && (roleItem.purchased === false || roleItem.purchased === undefined)) {
-                console.log(`Player spent ${roleItem.cost} coins to unlock ${roleName}`);
-                roleItem.purchased = true;
+                console.log(`attempting to unlock role ${roleName}, roleId: ${roleId}`)
+                let idToken = ClientFirebaseConnection.getConnection().idToken
+                // if(idToken) {
+                    RoleService.unlockRole(idToken as string, roleId)
+                        .then(()=>{
+                            console.log(`Player spent ${roleItem.cost} coins to unlock ${roleName}`);
+                            roleItem.purchased = true;
+                            // TODO update ui
+                        })
+                        .catch((e)=>{
+                            alert("Role unlock failed.")
+                        })
+                // }
             }
         })
 
@@ -89,7 +105,32 @@ export default class RoleScene extends Phaser.Scene {
         if(this.scrollablePanel) this.scrollablePanel.layout();
     }
 
-    create() {
+    private async getRoleData(){
+        let roleItems: RoleItem[] = []
+        let roles: [IRole] = await RoleService.getAllRoles()
+        roles.forEach((role)=>{
+            let purchased = false
+            let unlockedRoles = ClientFirebaseConnection.getConnection().playerData.unlockedRoles
+            if(unlockedRoles){
+                if(unlockedRoles.find((id: string)=>id===role.id)){
+                    purchased = true
+                }
+            }
+
+            roleItems.push({
+                id: role.id,
+                name: role.name,
+                description: role.description,
+                spriteKey: role.spriteKey,
+                purchased: purchased, // TODO get purchased/cost from firebase
+                cost: role.coinCost
+            })
+        })
+        return {roleItems}
+    }
+
+    async create() {
+        this.roleData = await this.getRoleData()
 
         // ------- Scrollable Screen --------
         let scrollablePanel = this.rexUI.add.scrollablePanel({
@@ -171,7 +212,7 @@ export default class RoleScene extends Phaser.Scene {
                         new ConfirmModal(this, {
                             cancelButtonText: "Cancel",
                             confirmButtonText: "Unlock",
-                            confirmButtonOnclick: () => {this.roleItemOnClick(roleItems[i].name)},
+                            confirmButtonOnclick: () => {this.roleItemOnClick(roleItems[i].name, roleItems[i].id)},
                             description: desc,
                         })
                     }

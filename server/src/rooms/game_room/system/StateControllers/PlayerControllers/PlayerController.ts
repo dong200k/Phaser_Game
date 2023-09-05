@@ -19,7 +19,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         //Add States
         let aliveState = new Alive("Alive", this);
         this.addState(aliveState);
-
+        
         let deadState = new Dead("Dead", this);
         this.addState(deadState);
 

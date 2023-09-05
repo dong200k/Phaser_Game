@@ -10,7 +10,7 @@ export interface MeleeProjectileControllerData {
 
 /** The monster controller contains ai that allows a monster to follow a player, and attack a player. */
 export default class MeleeProjectileController extends StateMachine<MeleeProjectileControllerData> {
-
+    
     private projectile!: Projectile;
     private attackDuration: number = 1;
     private triggerPercent: number = 0.8;

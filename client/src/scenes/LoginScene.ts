@@ -53,13 +53,21 @@ export default class LoginScene extends Phaser.Scene {
             SceneManager.getSceneManager().switchToScene(SceneKey.SignupScene)
         }
 
+        // -------- Offline text ---------
+        let offlineText = new TextBox(this, "Or click to play without firebase", "p6");
+        offlineText.getDIVElement().style.textDecoration = 'underline';
+        offlineText.getDIVElement().onclick = ()=>{
+            SceneManager.getSceneManager().switchToScene(StartScene)
+            ClientFirebaseConnection.getConnection().setOnlineMode(false) // Set mode to offline
+        }
+
         // -------- Login form ---------
         let layout = new Layout(this, {
             x: this.game.scale.width / 2,
             y: this.game.scale.height / 2,
             gap: 42
         });
-        layout.add([title, textFieldLayout, loginButton, signupText]);
+        layout.add([title, textFieldLayout, loginButton, signupText, offlineText]);
         this.add.existing(layout);
 
         // const auth = getAuth()

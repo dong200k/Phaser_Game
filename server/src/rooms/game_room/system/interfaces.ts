@@ -103,6 +103,27 @@ interface IDungeonWave {
     monsters: IWaveMonster[];
 }
 
+export type IAbility = {
+    id: string,
+    name: string,
+    description: string,
+    effectLogicId: string,
+    displaySprite: string,
+    cooldown: number
+}
+
+export type IRole = {
+    id: string,
+    name: string,
+    description: string,
+    displaySprite: string,
+    spriteKey: string,
+    coinCost: number,
+    weaponUpgradeId: string,
+    abilityId: string,
+    stat: statType
+}
+
 export interface IDungeon { 
     id: string,
     name: string,
@@ -144,6 +165,7 @@ export type IProjectileConfig = {
     classType?: IClasses,
     originEntityId?: string,
     spawnSound?: string,
+    projectileSpeed?: number,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }

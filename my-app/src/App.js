@@ -7,7 +7,11 @@ import Nodes from './components/Nodes.js';
 import EditNodePage from './components/EditNodePage.js';
 import Weapons from './components/Weapons.js';
 import Weapon from './components/Weapon.js';
-import UserContextProvider, { UserContext } from './contexts/UserContextProvider.js';
+import Roles from './components/Roles.js';
+import Role from './components/Role.js';
+import Abilities from './components/Abilities.js';
+import Ability from './components/Ability.js';
+import UserContextProvider from './contexts/UserContextProvider.js';
 import Monster from './components/monster/Monster.js';
 import DataContextProvider from './contexts/DataContextProvider.js';
 import Authorized from './components/Authorized.js';
@@ -28,6 +32,10 @@ function App() {
             <NavigationBar/>
               <Routes>
                 <Route path="/" element={<Home/>}/>
+                <Route path="/role/:id" element={<Role/>}/>
+                <Route path="/role" element={<Roles />} />
+                <Route path="/abilities/:id" element={<Ability/>}/>
+                <Route path="/abilities" element={<Abilities />} />
                 <Route path="/upgrade/:id" element={<Upgrade type="upgrade"/>}/>
                 <Route path="/upgrade" element={<Upgrades type="upgrade"/>} />
                 <Route path="/skill/:id" element={<Upgrade type="skill"/>}/>
