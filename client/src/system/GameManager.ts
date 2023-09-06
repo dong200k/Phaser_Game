@@ -158,7 +158,7 @@ export default class GameManager {
 
         this.scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
             if(pointer.leftButtonDown()) this.mouseDown = true;
-            this.player1?.play("atk")
+            // this.player1?.play("atk")
         })
 
         this.scene.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
@@ -311,7 +311,7 @@ export default class GameManager {
             this.players.push(newPlayer);
         
         // Play idle animation.
-        newPlayer.play({key: "idle", repeat: -1});
+        // newPlayer.play({key: "idle", repeat: -1});
 
         // Create a PeerInfo display for this player.
         EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
@@ -455,12 +455,12 @@ export default class GameManager {
 
                 if(velocityX === 0 && velocityY === 0) {
                     if(gameObject.anims.getName() !== "idle") {
-                        gameObject.play({key: "idle", repeat: -1});
+                        // gameObject.play({key: "idle", repeat: -1});
                         gameObject.running = false;
                     }
                 } else {
                     if(!gameObject.running) {
-                        gameObject.play({key: "run", repeat: -1});
+                        // gameObject.play({key: "run", repeat: -1});
                         gameObject.running = true;
                     }
                 }

@@ -69,8 +69,9 @@ export default class PlayerManager {
         if(!playerBody || !playerState) return console.log("player does not exist")
         
         // trigger all player attack effect logics if there is a mouseclick
-        if(mouseClick){
-            EffectManager.useTriggerEffectsOn(playerState, "player attack", playerBody, {mouseX, mouseY})
+        if(mouseClick) {
+            playerState.playerController.startAttack(mouseX, mouseY);
+            // EffectManager.useTriggerEffectsOn(playerState, "player attack", playerBody, {mouseX, mouseY})
         }
     }
 
@@ -139,8 +140,8 @@ export default class PlayerManager {
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
 
-        // If the player is disabled stop the player
-        if(this.disabledPlayers.has(playerId)) {
+        // If the player is disabled stop the player 
+        if(this.disabledPlayers.has(playerId) || !playerState.canMove) {
             Matter.Body.setVelocity(playerBody, {x: 0, y: 0});
             return; 
         }

@@ -91,7 +91,6 @@ export default class Player extends Entity {
     // The PlayerController manages the player's dead/alive state.
     @type(PlayerController) playerController: PlayerController;
 
-
     constructor(gameManager: GameManager, name: string, role?: string) {
         super(gameManager);
         this.name = name;
