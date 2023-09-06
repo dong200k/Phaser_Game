@@ -33,8 +33,8 @@ export default class BowLogic extends EffectLogic{
         gameManager.getProjectileManager().spawnProjectile({
             sprite: projectileName,
             stat: playerState.stat,
-            spawnX: playerX,
-            spawnY: playerY,
+            spawnX: playerX + playerState.projectileSpawnOffsetX,
+            spawnY: playerY + playerState.projectileSpawnOffsetY,
             width: 10,
             height: 10,
             initialVelocity: velocity,

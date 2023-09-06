@@ -60,10 +60,12 @@ export default class Attack extends StateNode {
     public onEnter(): void {
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
-        this.player.animation.playAnimation("attack");
+        this.attackDuration = this.player.stat.attackSpeed;
         this.timePassed = 0;
         this.player.canMove = this.canMove;
         this.triggered = false;
+
+        this.player.animation.playAnimation("attack", {duration: this.attackDuration});
     }
 
     public onExit(): void {

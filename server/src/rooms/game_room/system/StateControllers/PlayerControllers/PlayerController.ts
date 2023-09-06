@@ -29,8 +29,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         this.attackState = attackState;
         attackState.setConfig({
             canMove: false,
-            attackDuration: 1,
-            triggerPercent: 0.3,
+            triggerPercent: 0.9,
         });
 
         let moveState = new Move("Move", this);
@@ -44,7 +43,12 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     }
 
     public postUpdate(deltaT: number): void {
-
+        let currentState = this.getState();
+        // If the player has 0 hp, change to the death state.
+        if(this.player.active && this.player.stat.hp <= 0 && 
+            currentState !== null && currentState.getStateName() !== "Dead") {
+            this.changeState("Dead");
+        }
     }
 
     public getPlayer() {

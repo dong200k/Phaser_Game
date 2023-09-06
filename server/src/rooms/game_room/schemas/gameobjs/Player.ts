@@ -106,5 +106,10 @@ export default class Player extends Entity {
         this.skillTree = new StatTree<SkillData>(gameManager)
         this.stat.speed = 35;
         this.playerController = new PlayerController({player: this});
+
+        if(this.role === "Ranger") {
+            this.projectileSpawnOffsetX = 0;
+            this.projectileSpawnOffsetY = -12;
+        }
     }
 }

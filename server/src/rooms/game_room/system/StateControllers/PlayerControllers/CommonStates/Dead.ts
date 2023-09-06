@@ -11,7 +11,7 @@ export default class Dead extends StateNode {
     public onEnter(): void {
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
-        this.player.animation.playAnimation("death", false);
+        this.player.animation.playAnimation("death");
     }
 
     public onExit(): void {

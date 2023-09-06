@@ -17,6 +17,9 @@ export default class Entity extends GameObject {
     /** Flag for if this entity can move. */
     @type("boolean") canMove: boolean = true;
 
+    projectileSpawnOffsetX: number = 0;
+    projectileSpawnOffsetY: number = 0;
+
     constructor(gameManager: GameManager) {
         super(gameManager, 0, 0);
         this.stat = new Stat()

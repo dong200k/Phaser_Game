@@ -11,7 +11,7 @@ export default class Idle extends StateNode {
     public onEnter(): void {
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
-        this.player.animation.playAnimation("idle", true);
+        this.player.animation.playAnimation("idle", {loop: true});
     }
 
     public onExit(): void {

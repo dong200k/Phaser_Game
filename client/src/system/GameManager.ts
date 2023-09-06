@@ -469,9 +469,17 @@ export default class GameManager {
     }
 
     private gameObjectAnimationOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
+        let duration = gameObjectState.animation.duration;
+        let frameRate = 24;
+
+        if(duration != -1) {
+            frameRate = gameObject.anims.get(gameObjectState.animation.key).getTotalFrames() / duration;
+        }
+
         gameObject.play({
             key: gameObjectState.animation.key,
             repeat: gameObjectState.animation.loop ? -1: 0,
+            frameRate: frameRate,
         })
     }
 

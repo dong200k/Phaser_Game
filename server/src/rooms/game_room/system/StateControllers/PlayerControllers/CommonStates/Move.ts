@@ -10,7 +10,7 @@ export default class Move extends StateNode {
     public onEnter(): void {
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
-        this.player.animation.playAnimation("walk", true);
+        this.player.animation.playAnimation("walk", {loop: true});
     }
 
     public onExit(): void {
