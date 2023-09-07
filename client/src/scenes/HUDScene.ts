@@ -48,6 +48,7 @@ export default class HUDScene extends Phaser.Scene {
         this.peerInfoPopup.removeAllPeerInfo();
         if(this.menuModal) this.menuModal.closeModal();
         if(this.gameOverModal) this.gameOverModal.closeModal();
+        this.waPopup.destroyPopup();
     }
 
     private initializeListeners() {
