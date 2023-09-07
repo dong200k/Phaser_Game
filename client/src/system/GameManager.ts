@@ -158,7 +158,7 @@ export default class GameManager {
 
         this.scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
             if(pointer.leftButtonDown()) this.mouseDown = true;
-            this.player1?.play("atk")
+            // this.player1?.play("atk")
         })
 
         this.scene.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
@@ -311,7 +311,7 @@ export default class GameManager {
             this.players.push(newPlayer);
         
         // Play idle animation.
-        newPlayer.play({key: "idle", repeat: -1});
+        // newPlayer.play({key: "idle", repeat: -1});
 
         // Create a PeerInfo display for this player.
         EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
@@ -327,11 +327,6 @@ export default class GameManager {
     private addMonster(monster:any, key: string): Monster {
         let newMonster = new Monster(this.scene, monster);
         this.scene.add.existing(newMonster);
-
-        // Play the walking animation.
-        newMonster.play({key: "walk", repeat: -1});
-        newMonster.walking = true;
-
         this.addListenersToGameObject(newMonster, monster);
         return newMonster;
     }
@@ -341,6 +336,8 @@ export default class GameManager {
         /** ----- GameObject Listeners ----- */
         gameObjectState.onChange = (changes:any) => this.gameObjectOnChange(gameObject, gameObjectState, changes);
         gameObjectState.velocity.onChange = (changes: any) => this.gameObjectVelocityOnChange(gameObject, gameObjectState, changes);
+        gameObjectState.animation.onChange = (changes: any) => this.gameObjectAnimationOnChange(gameObject, gameObjectState, changes);
+        gameObjectState.sound.onChange = (changes: any) => this.gameObjectSoundOnChange(gameObject, gameObjectState, changes);
 
         if(gameObject instanceof Entity) {
             /** ----- Entity Listeners ----- */
@@ -375,13 +372,6 @@ export default class GameManager {
 
     /** Called when the gameObjectState field changes. This doesn't account for object fields only primitive fields. */
     private gameObjectOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
-        if(gameObject instanceof Monster) {
-            // Makes the monster walk again after it comes out of deactivation.
-            if(gameObject.serverActive === false && gameObjectState.active === true) {
-                gameObject.play({key: "walk", repeat: -1});
-                gameObject.walking = true;
-            }
-        }
         if(gameObject instanceof Player) {
             let playerState = gameObjectState as PlayerState;
             if(gameObject === this.player1) {
@@ -438,10 +428,6 @@ export default class GameManager {
             let velocityY = monsterState.velocity.y;
             if(velocityX < 0) gameObject.setFlip(true, false);
             else if(velocityX > 0) gameObject.setFlip(false, false);
-            if((velocityX > 0 || velocityY > 0) && !gameObject.walking) {
-                gameObject.play({key: "walk", repeat: -1});
-                gameObject.walking = true;
-            }
         }
         if(gameObject instanceof Player && gameObject !== this.player1) {
             if((gameObjectState as PlayerState).playerController.stateName !== "Dead") {
@@ -451,19 +437,54 @@ export default class GameManager {
                 if(velocityX < 0) gameObject.setFlip(true, false);
                 else if(velocityX > 0) gameObject.setFlip(false, false);
 
-                if(velocityX === 0 && velocityY === 0) {
-                    if(gameObject.anims.getName() !== "idle") {
-                        gameObject.play({key: "idle", repeat: -1});
-                        gameObject.running = false;
-                    }
-                } else {
-                    if(!gameObject.running) {
-                        gameObject.play({key: "run", repeat: -1});
-                        gameObject.running = true;
-                    }
-                }
+                // if(velocityX === 0 && velocityY === 0) {
+                //     if(gameObject.anims.getName() !== "idle") {
+                //         // gameObject.play({key: "idle", repeat: -1});
+                //         gameObject.running = false;
+                //     }
+                // } else {
+                //     if(!gameObject.running) {
+                //         // gameObject.play({key: "run", repeat: -1});
+                //         gameObject.running = true;
+                //     }
+                // }
             }
         }
+    }
+
+    private gameObjectAnimationOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
+        let duration = gameObjectState.animation.duration;
+        let timeScale = 1;
+
+        // If the animation key is empty do nothing.
+        let key = gameObjectState.animation.key;
+        if(key === "") return;
+        let animation = gameObject.anims.get(key);
+
+        // Updates the timeScale based on the duration passed by the server.
+        if(duration !== -1 && animation){
+            let animationDuration = animation.msPerFrame * animation.getTotalFrames();
+            let ourDuration = duration * 1000;
+            timeScale = animationDuration / ourDuration;
+        }
+
+        // Plays the animation.
+        gameObject.play({
+            key: key,
+            repeat: gameObjectState.animation.loop ? -1: 0,
+            timeScale: timeScale,
+        })
+
+        // Flips the gameobject if the server request it.
+        if(gameObjectState.animation.filpOverride) {
+            gameObject.setFlip(gameObjectState.animation.flip, false);
+        }
+    }
+
+    private gameObjectSoundOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
+        SoundManager.getManager().play(gameObjectState.sound.key, {
+            detune: Math.floor(Math.random() * 500 - 250)
+        });
     }
 
     /** Called when the entity's stat is updated on the server. */
@@ -538,7 +559,7 @@ export default class GameManager {
     private playerControllerOnChange(player: Player, playerState: PlayerState, changes: any) {
         let currentState = playerState.playerController.stateName;
         if(currentState === "Dead") {
-            player.play("death");
+            // player.play("death");
             this.soundManager.play("player_death");
             // Open up the game over screen.
             setTimeout(() => {
@@ -557,7 +578,7 @@ export default class GameManager {
     private monsterControllerOnChange(monster: Monster, monsterState: MonsterState, changes:any) {
         let currentState = monsterState.controller.stateName;
         if(currentState === "Death") {
-            monster.play({key: "death"});
+            // monster.play({key: "death"});
             this.soundManager.play("monster_death", {detune: Math.floor(Math.random() * 300 - 150)});
             monster.walking = false;
         }

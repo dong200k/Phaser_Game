@@ -295,8 +295,9 @@ export default class ClientSidePrediction {
         //calculate new player velocity
         if(player1 && body) {
 
-            // If the player is dead prevent movement.
-            if(player1.getPlayerState().playerController.stateName === "Dead") {
+            // If the player is dead prevent movement. If the player cannot move prevent movement.
+            if(player1.getPlayerState().playerController.stateName === "Dead"
+            || !player1.getPlayerState().canMove ) {
                 Matter.Body.setVelocity(body, {x: 0, y: 0});
                 return; 
             }
@@ -344,23 +345,27 @@ export default class ClientSidePrediction {
             let velocityX = body.velocity.x;
             let velocityY = body.velocity.y;
 
-            /** Flip the player's sprite based on if they are pressing left or right. */
-            if(!(movementData[2] && movementData[3])) {
-                if(movementData[2]) player1.setFlip(true, false);
-                else if(movementData[3]) player1.setFlip(false, false);
+            // Dont flip if the player is attacking.
+            if(player1.getPlayerState().canMove) {
+                /** Flip the player's sprite based on if they are pressing left or right. */
+                if(!(movementData[2] && movementData[3])) {
+                    if(movementData[2]) player1.setFlip(true, false);
+                    else if(movementData[3]) player1.setFlip(false, false);
+                }
             }
+            
     
-            if(velocityX === 0 && velocityY === 0) {
-                if(player1.anims.getName() !== "idle") {
-                    player1.play({key: "idle", repeat: -1});
-                    player1.running = false;
-                }
-            } else {
-                if(!player1.running) {
-                    player1.play({key: "run", repeat: -1});
-                    player1.running = true;
-                }
-            }
+            // if(velocityX === 0 && velocityY === 0) {
+            //     if(player1.anims.getName() !== "idle") {
+            //         //player1.play({key: "idle", repeat: -1});
+            //         player1.running = false;
+            //     }
+            // } else {
+            //     if(!player1.running) {
+            //         //player1.play({key: "run", repeat: -1});
+            //         player1.running = true;
+            //     }
+            // }
         }
     }
 

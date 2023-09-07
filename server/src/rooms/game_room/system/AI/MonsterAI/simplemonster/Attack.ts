@@ -49,6 +49,7 @@ export default class Attack extends StateNode {
         if(!this.attackTriggered) {
             if(this.attackCooldown <= this.defaultAttackCooldown * (this.attackTriggerPercent)) {
                 // Trigger an attack.
+                // monster.animation.playAnimation("death", false);
                 if(target) {
                     let projectileConfig: IProjectileConfig;
                     projectileConfig = {
