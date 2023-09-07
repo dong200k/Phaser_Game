@@ -4,6 +4,7 @@ import { User, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sign
 import SceneManager from "../system/SceneManager";
 import { SceneKey, StartScene } from "../config";
 import PlayerService from "../services/PlayerService";
+import { startPhaserGame, stopPhaserGame } from "../app";
 
 export default class ClientFirebaseConnection{
   private static singleton = new ClientFirebaseConnection()
@@ -18,9 +19,11 @@ export default class ClientFirebaseConnection{
   /** Listeners are called when player data updates */
   private playerDataListeners: Array<{key: string, f: (playerData: any)=>void}> = []
 
+  /** Toggle used to check if the phaser game is opened or not for login logic */
+  private phaserGameOpened = false
 
-  /** Initializes FirebaseApp */
-  startConnection(){
+  /** Initializes FirebaseApp*/
+  startConnection(){  
     const firebaseConfig = {
       apiKey: "AIzaSyARha5xMck2m4eOv4-gK8iTifHOZz_ZQJs",
       authDomain: "phasergame-4f0d6.firebaseapp.com",
@@ -40,16 +43,20 @@ export default class ClientFirebaseConnection{
     onAuthStateChanged(auth, async user=>{
       console.log(`user: ${user?.email}`)
       if(!user) {
-        console.log("No user, switching to login scene")
-        return SceneManager.getSceneManager().switchToScene(SceneKey.LoginScene)
+        if(this.phaserGameOpened){
+          /** TODO add close phaser game logic here*/
+          this.phaserGameOpened = false
+          stopPhaserGame()
+        }
+        return
       }
 
       this.user = user;
-
       this.idToken = await user.getIdToken()
 
       // retrieve player data
       const docRef = doc(db, "players", user.uid);
+
       // When player data updates
       onSnapshot(docRef, (docSnap)=>{
         this.playerData = docSnap.data()
@@ -59,15 +66,26 @@ export default class ClientFirebaseConnection{
           f(this.playerData)
         })
 
-        let currentScene = SceneManager.getSceneManager().getCurrentScene()
-        if(this.playerData && (currentScene === "LoginScene" || currentScene === "SignupScene")) {
-          console.log("Switching to start scene", this.playerData)
-          SceneManager.getSceneManager().switchToScene(StartScene)
+        // Start phaser game if it has not been started
+        if(this.playerData && !this.phaserGameOpened){
+          this.startPhaserGame()
+          this.phaserGameOpened = true
         }
       })
     })
   }
 
+  startPhaserGame(){
+    let loginForm = document.getElementById("loginForm")
+    if(loginForm) loginForm.setAttribute("display", "none")
+    startPhaserGame()
+  }
+
+  exitPhaserGame(){
+    let loginForm = document.getElementById("loginForm")
+    if(loginForm) loginForm.setAttribute("display", "block")
+    // TODO add way to exit phaser game
+  }
 
   async signup(email: string, username: string, password: string,){
     const auth = getAuth()

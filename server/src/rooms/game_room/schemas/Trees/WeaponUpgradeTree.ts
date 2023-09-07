@@ -14,6 +14,9 @@ export default class WeaponUpgradeTree extends StatTree<WeaponData>{
 
     owner!: Player
 
+    /** Amount of enemies the weapon's projectiles can hit before being inactive */
+    public piercing: number = 1
+
     constructor(gameManager?: GameManager, owner?: Player, root?: Node<WeaponData>, name: string = "name", description: string = "description"){
         super(gameManager, root, name, description)
         this.weaponId = root?.data.weaponId
@@ -36,5 +39,15 @@ export default class WeaponUpgradeTree extends StatTree<WeaponData>{
         this.weaponId = undefined
         while(this.effects.length > 0) this.effects.pop()
         return this
+    }
+
+    /** Sets piercing which is the number of targets this weapon's projectiles will hit before going inactive. */
+    setPiercing(piercing: number){
+        this.piercing = piercing
+        // console.log(`piercing on weapon is now: ${piercing}`)
+    }
+
+    getPiercing(){
+        return this.piercing
     }
 }

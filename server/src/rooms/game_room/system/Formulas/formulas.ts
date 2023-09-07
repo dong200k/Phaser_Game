@@ -33,6 +33,7 @@ export const getTrueAttackDamage = function({attack, attackPercent, damagePercen
     let effectiveArmor = armor * reductionMultiplier
 
     const trueDamage = damage - effectiveArmor;
+    console.log(`damage: ${damage}, armor: ${armor}, attack: ${attack}, attackMult ${attackMultiplier}`)
     return trueDamage < 1 ? 1 : trueDamage;
 }
 

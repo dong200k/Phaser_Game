@@ -159,11 +159,13 @@ export default class EffectManager {
          * @returns true if there is a collision else false
          */
         function collides(effect1: Effect, effect2: Effect){
-            return ("tree" in effect1) && ("tree" in effect2) && effect1.tree === effect2.tree
+            let collides = ("tree" in effect1) && ("tree" in effect2) && effect1.tree === effect2.tree
                 && ("collisionGroup" in effect1) && ("doesStack" in effect1) 
                 && ("collisionGroup" in effect2) && ("doesStack" in effect2)
                 && effect1.collisionGroup === effect2.collisionGroup 
                 && effect1.collisionGroup !== -1 && (!effect1.doesStack || !effect2.doesStack)
+            console.log(`e1: ${effect1.toString()}, e2: ${effect2.toString()} collides: ${collides}` )
+            return collides
         }
 
         /** Adds one upgrade effect to the entity and replaces any upgrade effect that collides with this effect*/

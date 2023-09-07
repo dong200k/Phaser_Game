@@ -29,6 +29,7 @@ export default function CreateOrEditDungeon(props) {
 
     const [ sendingRequest, setSendingRequest ] = useState(false);
     const [ monsterNames, setMonsterNames ] = useState([])
+    const { monsters, refetchAllMonsters } = useContext(DataContext);
 
     useEffect(() => {
         // When editing we will load in data from firebase.
@@ -52,10 +53,8 @@ export default function CreateOrEditDungeon(props) {
     }, [dungeons]);
 
     useEffect(()=>{
-        getAllMonsterNames(user)
-            .then((monsterNames)=>setMonsterNames(monsterNames))
-            .catch(e=>console.log(e))
-    }, [])
+        setMonsterNames(monsters.map(monster=>monster.name))
+    }, [monsters])
     
 
     const onChangeName = (e) => { setName(e.target.value); }

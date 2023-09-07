@@ -30,6 +30,8 @@ export default class BowLogic extends EffectLogic{
         let projectileSpeed = 5
         let velocity = MathUtil.getNormalizedSpeed(mouseX - playerX, mouseY - playerY, projectileSpeed)
 
+        let piercing = playerState.weaponUpgradeTree.getPiercing()
+
         gameManager.getProjectileManager().spawnProjectile({
             sprite: projectileName,
             stat: playerState.stat,
@@ -46,6 +48,7 @@ export default class BowLogic extends EffectLogic{
             magicMultiplier: 0,
             originEntityId: playerState.getId(),
             spawnSound: "shoot_arrow",
+            piercing: piercing,
         })
     }
 }

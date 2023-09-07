@@ -166,6 +166,7 @@ export type IProjectileConfig = {
     originEntityId?: string,
     spawnSound?: string,
     projectileSpeed?: number,
+    piercing?: number,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }

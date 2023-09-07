@@ -107,6 +107,7 @@ export default class CollisionManager{
         // console.log(`Collision detected: attack:${trueAttackDamage}, magic:${trueMagicDamage}, player armor: ${entity.stat.armor}`);
 
         // Entity colliding with projectile takes attack and magic damage
+        console.log(`true attack damage ${trueAttackDamage}, trueMagicdmg ${trueMagicDamage}`)
         let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage, projectile.originEntityId)
         EffectManager.addEffectsTo(entity, damageEffect)
 
@@ -123,8 +124,12 @@ export default class CollisionManager{
         }
 
         // Melee projectile will be set inactive by its controller.
-        if(!(projectile instanceof MeleeProjectile)) projectile.setInactive();
-        else projectile.disableCollisions();
+        projectile.hitCount++
+        let exceededHitCount = projectile.hitCount === projectile.piercing
+        if(exceededHitCount){
+            if(!(projectile instanceof MeleeProjectile)) projectile.setInactive();
+            else projectile.disableCollisions();
+        }
     }
 
     public resolveProjectileObstacleCollision(projectile: Projectile, obstacle: Tile, bodyA: Matter.Body, bodyB: Matter.Body){
