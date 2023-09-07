@@ -91,7 +91,6 @@ export default class Player extends Entity {
     // The PlayerController manages the player's dead/alive state.
     @type(PlayerController) playerController: PlayerController;
 
-
     constructor(gameManager: GameManager, name: string, role?: string) {
         super(gameManager);
         this.name = name;
@@ -106,6 +105,14 @@ export default class Player extends Entity {
         this.weaponUpgradeTree = new WeaponUpgradeTree(gameManager, this)
         this.skillTree = new StatTree<SkillData>(gameManager)
         this.stat.speed = 35;
+        // this.stat.attackSpeed = 10;
         this.playerController = new PlayerController({player: this});
+
+        if(this.role === "Ranger") {
+            this.projectileSpawnOffsetX = 0;
+            this.projectileSpawnOffsetY = -12;
+        }
+
+
     }
 }
