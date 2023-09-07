@@ -475,6 +475,19 @@ export default class PlayerManager {
     }
 
     /**
+     * Gives all the alive player's coins.
+     * @param coins The amount of coins to give.
+     */
+    public giveAllPlayersCoin(coins: number) {
+        this.gameManager.state.gameObjects.forEach((gameObject, key) => {
+            if(gameObject instanceof Player) {
+                if(gameObject.playerController.stateName !== "Dead")
+                    gameObject.coinsEarned += coins;
+            }
+        })
+    }
+
+    /**
      * Gets the Player with the given id.
      * @param id The id.
      * @returns The Player with the given id or undefined if no such player was found.

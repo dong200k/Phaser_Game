@@ -563,7 +563,12 @@ export default class GameManager {
             this.soundManager.play("player_death");
             // Open up the game over screen.
             setTimeout(() => {
-                EventManager.eventEmitter.emit(EventManager.HUDEvents.PLAYER_DIED);
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.PLAYER_DIED, {
+                    coins: this.player1 ? this.player1.getPlayerState().coinsEarned : 0,
+                    monstersKilledByYou: this.player1 ? this.player1.getPlayerState().monstersKilled: 0,
+                    totalMonstersKilled: this.gameRoom.state.monstersKilled,
+                    timeSurvivedMs: this.player1 ? new Date().getTime() - this.player1.getPlayerState().joinTime : 0,
+                });
             }, 1000);
         }
     }

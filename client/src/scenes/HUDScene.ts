@@ -121,13 +121,18 @@ export default class HUDScene extends Phaser.Scene {
         this.input.keyboard?.on("keyup-SHIFT", () => this.peerInfoPopup.setVisible(false));
     }
 
-    public playerDied() {
+    public playerDied(data: any) {
+        let coins = data?.coins ?? 0;
+        let monstersKilledByYou = data?.monstersKilledByYou ?? 0;
+        let totalMonstersKilled = data?.totalMonstersKilled ?? 0;
+        let timeSurvivedMs = data?.timeSurvivedMs ?? 0;
         this.gameOverModal = new GameOverModal(this, {
             texts: [
-                "Coins Earned: 100",
-                "Gems Earned: 100",
-                "Monsters Killed: 100",
-                "Time Survived: 3:00",
+                `Coins Earned: ${coins}`,
+                `Gems Earned: 0`,
+                `Monsters Killed By You: ${monstersKilledByYou}`,
+                `Total Monsters Killed: ${totalMonstersKilled}`,
+                `Time Survived: ${timeSurvivedMs} ms`,
             ],
             leaveGameOnclick: () => {
                 this.resetHUD();
