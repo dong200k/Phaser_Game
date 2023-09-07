@@ -470,17 +470,31 @@ export default class GameManager {
 
     private gameObjectAnimationOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
         let duration = gameObjectState.animation.duration;
-        let frameRate = 24;
+        let timeScale = 1;
 
-        if(duration != -1) {
-            frameRate = gameObject.anims.get(gameObjectState.animation.key).getTotalFrames() / duration;
+        // If the animation key is empty do nothing.
+        let key = gameObjectState.animation.key;
+        if(key === "") return;
+        let animation = gameObject.anims.get(key);
+
+        // Updates the timeScale based on the duration passed by the server.
+        if(duration !== -1 && animation){
+            let animationDuration = animation.msPerFrame * animation.getTotalFrames();
+            let ourDuration = duration * 1000;
+            timeScale = animationDuration / ourDuration;
         }
 
+        // Plays the animation.
         gameObject.play({
-            key: gameObjectState.animation.key,
+            key: key,
             repeat: gameObjectState.animation.loop ? -1: 0,
-            frameRate: frameRate,
+            timeScale: timeScale,
         })
+
+        // Flips the gameobject if the server request it.
+        if(gameObjectState.animation.filpOverride) {
+            gameObject.setFlip(gameObjectState.animation.flip, false);
+        }
     }
 
     private gameObjectSoundOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {

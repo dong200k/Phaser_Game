@@ -1,8 +1,15 @@
 import { Schema, type } from '@colyseus/schema';
 
 interface AnimationConfig {
+    /** Is the animation looping or not. */
     loop?: boolean;
+    /** The total time it will take to go through all frames in an animation. (in seconds)
+     * This will change the frame rate of the image on the client side. 
+     * If the duration is -1 the default 24 frames per second will be used.
+     */
     duration?: number;
+    /** flips the sprite horizontally. */
+    flip?: boolean;
 }
 
 export default class Animation extends Schema {
@@ -15,11 +22,17 @@ export default class Animation extends Schema {
     /** Is the animation looping or not. */
     @type('boolean') loop: boolean = false;
 
-    /** The total time it will take to go through all frames in an animation. 
+    /** The total time it will take to go through all frames in an animation(in seconds).
      * This will change the frame rate of the image on the client side. 
      * If the duration is -1 the default 24 frames per second will be used.
      */
-    @type('boolean') duration: number = -1;
+    @type('number') duration: number = -1;
+
+    /** flips the sprite horizontally. */
+    @type('boolean') flip: boolean = false;
+
+    /** Lets the client know if the filp should be set to the flip field. */
+    @type('boolean') filpOverride: boolean = false;
 
     /**
      * Plays the animation with the specified key.
@@ -31,9 +44,13 @@ export default class Animation extends Schema {
         this.count += 1;
         if(this.count === 100) this.count = 0;
         this.key = key;
-        if(config) {
-            this.loop = config.loop ?? false;
-            this.duration = config.duration ?? -1;
+        this.loop = config?.loop ?? false;
+        this.duration = config?.duration ?? -1;
+        if(config && config.flip !== undefined) {
+            this.flip = config.flip;
+            this.filpOverride = true;
+        } else {
+            this.filpOverride = false; 
         }
     }
 }

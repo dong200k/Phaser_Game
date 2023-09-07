@@ -65,7 +65,15 @@ export default class Attack extends StateNode {
         this.player.canMove = this.canMove;
         this.triggered = false;
 
-        this.player.animation.playAnimation("attack", {duration: this.attackDuration});
+        // Checks if the player's sprite should flip or not.
+        let flip = (this.player.x - this.mouseX) > 0;
+
+        this.player.animation.playAnimation("attack", {
+            duration: this.attackDuration,
+            flip: flip,
+        });
+
+        // console.log("Flip", flip);
     }
 
     public onExit(): void {

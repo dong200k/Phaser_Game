@@ -345,11 +345,15 @@ export default class ClientSidePrediction {
             let velocityX = body.velocity.x;
             let velocityY = body.velocity.y;
 
-            /** Flip the player's sprite based on if they are pressing left or right. */
-            if(!(movementData[2] && movementData[3])) {
-                if(movementData[2]) player1.setFlip(true, false);
-                else if(movementData[3]) player1.setFlip(false, false);
+            // Dont flip if the player is attacking.
+            if(player1.getPlayerState().canMove) {
+                /** Flip the player's sprite based on if they are pressing left or right. */
+                if(!(movementData[2] && movementData[3])) {
+                    if(movementData[2]) player1.setFlip(true, false);
+                    else if(movementData[3]) player1.setFlip(false, false);
+                }
             }
+            
     
             if(velocityX === 0 && velocityY === 0) {
                 if(player1.anims.getName() !== "idle") {
