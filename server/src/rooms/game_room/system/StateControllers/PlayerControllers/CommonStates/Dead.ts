@@ -12,10 +12,11 @@ export default class Dead extends StateNode {
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
         this.player.animation.playAnimation("death");
+        this.player.canMove = false;
     }
 
     public onExit(): void {
-
+        this.player.canMove = true;
     }
 
     public update(deltaT: number): void {

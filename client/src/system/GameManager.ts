@@ -327,11 +327,6 @@ export default class GameManager {
     private addMonster(monster:any, key: string): Monster {
         let newMonster = new Monster(this.scene, monster);
         this.scene.add.existing(newMonster);
-
-        // Play the walking animation.
-        // newMonster.play({key: "walk", repeat: -1});
-        // newMonster.walking = true;
-
         this.addListenersToGameObject(newMonster, monster);
         return newMonster;
     }
@@ -377,13 +372,6 @@ export default class GameManager {
 
     /** Called when the gameObjectState field changes. This doesn't account for object fields only primitive fields. */
     private gameObjectOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
-        // if(gameObject instanceof Monster) {
-        //     // Makes the monster walk again after it comes out of deactivation.
-        //     // if(gameObject.serverActive === false && gameObjectState.active === true) {
-        //     //     // gameObject.play({key: "walk", repeat: -1});
-        //     //     gameObject.walking = true;
-        //     // }
-        // }
         if(gameObject instanceof Player) {
             let playerState = gameObjectState as PlayerState;
             if(gameObject === this.player1) {
@@ -440,10 +428,6 @@ export default class GameManager {
             let velocityY = monsterState.velocity.y;
             if(velocityX < 0) gameObject.setFlip(true, false);
             else if(velocityX > 0) gameObject.setFlip(false, false);
-            // if((velocityX > 0 || velocityY > 0) && !gameObject.walking) {
-            //     // gameObject.play({key: "walk", repeat: -1});
-            //     gameObject.walking = true;
-            // }
         }
         if(gameObject instanceof Player && gameObject !== this.player1) {
             if((gameObjectState as PlayerState).playerController.stateName !== "Dead") {
@@ -453,17 +437,17 @@ export default class GameManager {
                 if(velocityX < 0) gameObject.setFlip(true, false);
                 else if(velocityX > 0) gameObject.setFlip(false, false);
 
-                if(velocityX === 0 && velocityY === 0) {
-                    if(gameObject.anims.getName() !== "idle") {
-                        // gameObject.play({key: "idle", repeat: -1});
-                        gameObject.running = false;
-                    }
-                } else {
-                    if(!gameObject.running) {
-                        // gameObject.play({key: "run", repeat: -1});
-                        gameObject.running = true;
-                    }
-                }
+                // if(velocityX === 0 && velocityY === 0) {
+                //     if(gameObject.anims.getName() !== "idle") {
+                //         // gameObject.play({key: "idle", repeat: -1});
+                //         gameObject.running = false;
+                //     }
+                // } else {
+                //     if(!gameObject.running) {
+                //         // gameObject.play({key: "run", repeat: -1});
+                //         gameObject.running = true;
+                //     }
+                // }
             }
         }
     }
@@ -575,7 +559,7 @@ export default class GameManager {
     private playerControllerOnChange(player: Player, playerState: PlayerState, changes: any) {
         let currentState = playerState.playerController.stateName;
         if(currentState === "Dead") {
-            player.play("death");
+            // player.play("death");
             this.soundManager.play("player_death");
             // Open up the game over screen.
             setTimeout(() => {

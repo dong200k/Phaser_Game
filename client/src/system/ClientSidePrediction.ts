@@ -355,17 +355,17 @@ export default class ClientSidePrediction {
             }
             
     
-            if(velocityX === 0 && velocityY === 0) {
-                if(player1.anims.getName() !== "idle") {
-                    //player1.play({key: "idle", repeat: -1});
-                    player1.running = false;
-                }
-            } else {
-                if(!player1.running) {
-                    //player1.play({key: "run", repeat: -1});
-                    player1.running = true;
-                }
-            }
+            // if(velocityX === 0 && velocityY === 0) {
+            //     if(player1.anims.getName() !== "idle") {
+            //         //player1.play({key: "idle", repeat: -1});
+            //         player1.running = false;
+            //     }
+            // } else {
+            //     if(!player1.running) {
+            //         //player1.play({key: "run", repeat: -1});
+            //         player1.running = true;
+            //     }
+            // }
         }
     }
 
