@@ -191,7 +191,7 @@ export default class PlayerManager {
         
         if(!useSpecial) return
         let usedAbility = playerState.currentAbility?.useAbility()
-        if(usedAbility) EffectManager.useTriggerEffectsOn(playerState, "player skill")
+        if(usedAbility) EffectManager.useTriggerEffectsOn(playerState, "player skill", playerBody, {mouseX: 0, mouseY: 0})
     }
 
     /**

@@ -55,13 +55,13 @@ export default class SystemPreloadScene extends Phaser.Scene {
     }
 
     /** Load the assets from firebase. */
-    async addOnlineAssets() {
+    async   addOnlineAssets() {
         // // Put the asset you want to load here.
-        // let assets = [
-        //     "SplashScreenImage",
-        // ]
+        let assets = [
+            "SplashScreenImage",
+        ]
 
-        // await AssetManager.putAssetsInLoad(this, assets);
+        await AssetManager.putAssetsInLoad(this, assets);
     }
 
     create() {
@@ -80,15 +80,12 @@ export default class SystemPreloadScene extends Phaser.Scene {
             this.afterLoad();
         })
         this.addLocalData();
+        
         this.addOnlineAssets().then(() => {
             // Start the loading system.
             this.load.start();
         })
     }
-
-
-
-
 
     afterLoad() {
         /** Initialize the SoundManager. */

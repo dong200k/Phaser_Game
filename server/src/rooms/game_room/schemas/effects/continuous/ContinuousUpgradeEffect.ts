@@ -51,6 +51,7 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
     }
 
     public toString(): string {
-        return super.toString() + `(effectLogicId: ${this.effectLogicId}, does stack?: ${this.doesStack}, collisionGroup: ${this.collisionGroup})`;
+        return `${this.effectLogicId}, ds: ${this.doesStack}, cg : ${this.collisionGroup}`
+        // return super.toString() + `(effectLogicId: ${this.effectLogicId}, does stack?: ${this.doesStack}, collisionGroup: ${this.collisionGroup})`;
     }
 }

@@ -65,9 +65,9 @@ export default class DatabaseManager{
                     id: monster.name,
                     name: monster.name,
                     imageKey: monster.asepriteKey,
-                    stats: monster.stats,
+                    stats: {...monster.stats, maxHp: monster.stats.hp, maxMana: monster.stats.mana},
                     controllerKey: monster.AIKey,
-                    bounds: monster.bounds
+                    bounds: monster.bounds  
                 })
             }
 

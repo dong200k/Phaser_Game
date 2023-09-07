@@ -56,7 +56,8 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
     }
     
     public toString(): string {
-       return `${super.toString()}(effectLogicId: ${this.effectLogicId}, does stack?: ${this.doesStack}, collisionGroup: ${this.collisionGroup}, cooldown finished?: ${this.cooldown.isFinished}, original time: ${this.cooldown.time}, time remaining: ${this.cooldown.remainingTime})`;
+        return `${this.effectLogicId}, ds: ${this.doesStack}, cg : ${this.collisionGroup}`
+    //    return `${super.toString()}(effectLogicId: ${this.effectLogicId}, does stack?: ${this.doesStack}, collisionGroup: ${this.collisionGroup}, cooldown finished?: ${this.cooldown.isFinished}, original time: ${this.cooldown.time}, time remaining: ${this.cooldown.remainingTime})`;
     }
 
     public applyEffect(entity: Entity): boolean {

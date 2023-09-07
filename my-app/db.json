@@ -797,7 +797,7 @@
                       "upgradeEffect": {
                         "effectLogicId": "Frost-glaive-frenzy",
                         "doesStack": 1,
-                        "cooldown": 10000,
+                        "cooldown": 1000,
                         "collisionGroup": -1,
                         "type": "player skill"
                       },
@@ -807,7 +807,7 @@
                       "coinCost": null
                     },
                     "__rd3t": {
-                      "id": "7f7ed21a-400f-452f-9aac-d3bf58c45707",
+                      "id": "f5725b2b-ea75-4565-a2f7-645f2fd06e8f",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -2874,6 +2874,155 @@
             },
             "__rd3t": {
               "id": "0cedc2bc-d9e8-472d-b689-1d6f0e8b282b",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-9b6018ad-217c-4e01-8b3b-7881bfea0e47",
+            "children": [],
+            "data": {
+              "name": "BowLogic",
+              "description": "test",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "BowLogic",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": "-1",
+                "type": "player attack"
+              },
+              "doesStack": false,
+              "collisionGroup": 0,
+              "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
+            },
+            "__rd3t": {
+              "id": "95a18e57-2606-45f0-bb8d-ca8cff4b39c3",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-3d179212-8042-4e02-979f-99196aef61cf",
+            "children": [],
+            "data": {
+              "name": "Tribow",
+              "description": "test",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "Tribow",
+                "doesStack": 0,
+                "cooldown": 1000,
+                "collisionGroup": "1",
+                "type": "player skill"
+              },
+              "doesStack": false,
+              "collisionGroup": 0,
+              "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
+            },
+            "__rd3t": {
+              "id": "9724f2c4-3eb1-46ac-b814-74fd3cb5f584",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-83275f63-6015-44e8-9b4c-a4f104869a13",
+            "children": [],
+            "data": {
+              "name": "Doubow ability",
+              "description": "auto-generated",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "Doubow",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": "-1",
+                "type": "player skill"
+              },
+              "doesStack": false,
+              "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
+            },
+            "__rd3t": {
+              "id": "2d9a2766-dba9-492b-87d1-034df016bdd1",
               "depth": 1,
               "collapsed": false
             }
@@ -7959,6 +8108,51 @@
         "doesStack": false,
         "collisionGroup": null
       }
+    },
+    {
+      "id": "node-8f260704-739f-4690-b285-d047fd4986fa",
+      "children": [],
+      "data": {
+        "name": "BowLogic",
+        "description": "test",
+        "stat": {
+          "maxHp": 0,
+          "maxMana": 0,
+          "hp": 0,
+          "mana": 0,
+          "armor": 0,
+          "magicResist": 0,
+          "damagePercent": 0,
+          "attack": 0,
+          "attackPercent": 0,
+          "armorPen": 0,
+          "magicAttack": 0,
+          "magicAttackPercent": 0,
+          "magicPen": 0,
+          "critRate": 0,
+          "critDamage": 0,
+          "attackRange": 0,
+          "attackRangePercent": 0,
+          "attackSpeed": 0,
+          "attackSpeedPercent": 0,
+          "speed": 0,
+          "lifeSteal": 0,
+          "lifeStealPercent": 0,
+          "level": 0
+        },
+        "status": "none",
+        "selectionTime": 0,
+        "upgradeEffect": {
+          "effectLogicId": "BowLogic",
+          "doesStack": 0,
+          "cooldown": 1000,
+          "collisionGroup": "1",
+          "type": "player attack"
+        },
+        "coinCost": 0,
+        "doesStack": false,
+        "collisionGroup": 0
+      }
     }
   ],
   "weapons": [
@@ -8280,7 +8474,7 @@
       "description": "Ranger's ability.",
       "effectLogicId": "ranger-ability",
       "displaySprite": "sprite",
-      "cooldown": "5000"
+      "cooldown": "1000"
     }
   ]
 }
