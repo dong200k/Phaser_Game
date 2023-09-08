@@ -105,6 +105,7 @@ export default class GameRoom extends Room<State> {
                 this.timeTillNextTick += this.timePerTick;
                 this.fixedTick(this.timePerTick);
             }
+            if(this.gameManager.gameOver) this.disconnect();
         }, this.simulationInterval);
     }
 

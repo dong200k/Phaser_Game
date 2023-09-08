@@ -37,19 +37,20 @@ export default class Dungeon extends Schema {
     @type("string") private dungeonName: string;
     @type("number") currentWave: number;
     @type("number") maxWave: number;
-    @type("boolean") private conquered: boolean;
+    @type("boolean") conquered: boolean;
     @type(Tilemap) tilemap: Tilemap | null = null;
     @type([SpawnPoint]) private playerSpawnPoints = new ArraySchema<SpawnPoint>();
     @type([SpawnPoint]) private monsterSpawnPoints = new ArraySchema<SpawnPoint>(); 
     @type(PlayerBounds) playerBounds: PlayerBounds | null = null;
     
     private waves: Wave[];
-    private waitingForWaveStart: boolean;
+    /** False if a wave is running. True otherwise.*/
+    waitingForWaveStart: boolean;
     
 
     constructor(dungeonName: string) {
         super();
-        this.currentWave = 0;
+        this.currentWave = -1;
         this.maxWave = -1;
         this.dungeonName = dungeonName;
         this.waitingForWaveStart = true;
@@ -73,7 +74,6 @@ export default class Dungeon extends Schema {
     public update(deltaT: number) {
         if(!this.waitingForWaveStart && this.currentWave < this.waves.length) {
             if(this.waves[this.currentWave].update(deltaT)) {
-                this.currentWave++;
                 this.waitingForWaveStart = true;
             }
         }
@@ -88,6 +88,7 @@ export default class Dungeon extends Schema {
 
     public startNextWave() {
         this.waitingForWaveStart = false;
+        this.currentWave++;
     }
 
     public setTilemap(tilemap: Tilemap) {

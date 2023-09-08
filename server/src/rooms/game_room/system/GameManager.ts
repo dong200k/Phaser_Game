@@ -44,6 +44,8 @@ export default class GameManager {
     // Asset Set. Sent to clients to load their assets.
     private assetSet: Set<string> = new Set();
 
+    gameOver: boolean = false;
+
     constructor(state: State, options?: GameRoomOptions) {
         this.state = state;
         this.engine = Matter.Engine.create();
@@ -165,6 +167,20 @@ export default class GameManager {
 
     public startGame() {
         // code to run when starting the game.
+    }
+
+    /** 
+     * Ends the game. Stopping all player movements. 
+     * Disconnecting all clients after 10 seconds.
+     * Closing game room.
+     *  */ 
+    public endGame() {
+        // TODO: Give player's coins and gems.
+
+        // End the game.
+        setTimeout(() => {
+            this.gameOver = true;
+        }, 10000)
     }
 
     public getEngine() {

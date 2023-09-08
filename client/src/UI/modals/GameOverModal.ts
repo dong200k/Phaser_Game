@@ -9,9 +9,11 @@ interface SceneWithRexUI extends Phaser.Scene {
 }
 
 interface GameOverModalConfig extends BaseModalConfig {
-    texts: string[];   
+    texts: string[];
+    title?: string;
     leaveGameOnclick?: Function;
     spectateOnclick?: Function;
+    showSpectateButton: boolean;
 }
 
 /**
@@ -61,7 +63,7 @@ export default class GameOverModal extends BaseModal {
             },
         });
         descriptionBox.addBackground(this.scene.rexUI.add.roundRectangle(0, 0, 100, 100, 0, ColorStyle.primary.hex[500]));
-        descriptionBox.add(UIFactory.createTextBoxPhaser(this.scene, "Game Over", "h2"), {padding: {bottom: 20}});
+        descriptionBox.add(UIFactory.createTextBoxPhaser(this.scene, config.title, "h2"), {padding: {bottom: 20}});
         config.texts.forEach((text) => {
             descriptionBox.add(UIFactory.createTextBoxPhaser(this.scene, text, "p3"));
         })
@@ -69,15 +71,17 @@ export default class GameOverModal extends BaseModal {
         modalContent.add(descriptionBox);
         modalContent.addNewLine();
 
-        // Spectate Button
-        modalContent.add(UIFactory.createButtonRex(this.scene, {
-            text: "Spectate",
-            buttonSize: "large",
-        }).onClick((click, gameObject, pointer) => {
-            if(config.spectateOnclick !== undefined)
-                config.spectateOnclick();
-            this.closeModal();
-        }));
+        if(config.showSpectateButton) {
+            // Spectate Button
+            modalContent.add(UIFactory.createButtonRex(this.scene, {
+                text: "Spectate",
+                buttonSize: "large",
+            }).onClick((click, gameObject, pointer) => {
+                if(config.spectateOnclick !== undefined)
+                    config.spectateOnclick();
+                this.closeModal();
+            }));
+        }
 
         // Leave Game Button
         modalContent.add(UIFactory.createButtonRex(this.scene, {

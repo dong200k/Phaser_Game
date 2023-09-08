@@ -135,7 +135,11 @@ export default class HUDScene extends Phaser.Scene {
         let monstersKilledByYou = data?.monstersKilledByYou ?? 0;
         let totalMonstersKilled = data?.totalMonstersKilled ?? 0;
         let timeSurvivedMs = data?.timeSurvivedMs ?? 0;
+        let title = data?.title ?? "Game Over";
+        let showSpectateButton = data?.showSpectateButton ?? true;
         this.gameOverModal = new GameOverModal(this, {
+            showSpectateButton: showSpectateButton,
+            title: title,
             texts: [
                 `Coins Earned: ${coins}`,
                 `Gems Earned: 0`,
@@ -150,6 +154,7 @@ export default class HUDScene extends Phaser.Scene {
             },
             spectateOnclick: () => console.log("Spectate onclick")
         })
+        this.waPopup.destroyPopup();
     }
 
     
