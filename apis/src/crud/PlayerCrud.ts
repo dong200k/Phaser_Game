@@ -158,7 +158,7 @@ export const getPlayerData = async (IdToken: string)=>{
   const docSnap = await db.collection("players").doc(uid).get()
   
   if(docSnap.exists){
-    return docSnap.data()
+    return {...docSnap.data(), uid: uid};
   }
 }
 

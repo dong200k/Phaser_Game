@@ -1,8 +1,10 @@
-import { Client, Room, matchMaker } from "colyseus";
+import { Client, Room, ServerError, matchMaker } from "colyseus";
 import State from "./schemas/State";
 import GameManager from "./system/GameManager";
 import ReconciliationInfo from "./schemas/ReconciliationInfo";
 import globalEventEmitter from "../../util/EventUtil";
+import { IncomingMessage } from "http";
+import PlayerService from "../../services/PlayerService";
 
 export interface GameRoomOptions {
     /** The name of the selected dungeon. */
@@ -133,13 +135,12 @@ export default class GameRoom extends Room<State> {
                 } else if(waitingClient.state === "ready") {
                     let options = waitingClient.options;
                     // Add a new player to the room state. The first player is the owner of the room.
-                    this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.IdToken, this.gameManager, options.roleId, options.onlineMode).then(() => {
+                    this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.playerData, this.gameManager, options.roleId, options.onlineMode).then(() => {
                         this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
                     });
                     this.waitingClients.splice(i, 1);
                 }
             }
-
         }
     }
 
@@ -147,15 +148,34 @@ export default class GameRoom extends Room<State> {
     //     this.gameManager?.update(deltaT);
     // }
 
-    onJoin(client: Client, options: any) {
+    onJoin(client: Client, options: any, auth: any) {
+        options.playerData = auth;
         this.waitingClients.push({client, options, state: "justjoined"});
+    }
+
+    async onAuth(client: Client, options: any, request?: IncomingMessage | undefined) {
+        // Authenticate the user before continuing. This will be called before onJoin.
+        const playerData = await PlayerService.getPlayerData(options.IdToken);
+        if(playerData) {
+            return playerData;
+        } else {
+            throw new ServerError(400, "Bad ID Token");
+        }
     }
 
     onLeave(client: Client) {
         // removes player from list of gameobjects
-        this.gameManager.getPlayerManager().removePlayer(client.sessionId);
+        let player = this.gameManager.getPlayerManager().removePlayer(client.sessionId);
         for(let i = this.state.reconciliationInfos.length - 1; i >= 0; i--) {
             if(this.state.reconciliationInfos[i].clientId === client.sessionId) this.state.reconciliationInfos.deleteAt(i);
+        }
+        if(player !== undefined) {
+            // console.log("Client with UID: ", client.auth.uid, " is leaving");
+            // Give the player coins.
+            let coinsEarned = player.coinsEarned;
+            PlayerService.addCoins(client.auth.uid, coinsEarned);
+        } else {
+            console.log("Error: A player that disconnected has no Player object.");
         }
     }
 

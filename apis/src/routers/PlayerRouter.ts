@@ -1,4 +1,6 @@
+import PlayerController from "../controllers/PlayerController"
 import { CreatePlayer, getPlayerData, unUpgradePlayerSkillTree, updatePlayerSkillTree } from "../crud/PlayerCrud"
+import { isAuthenticated, isAuthorized } from "../middleware"
 
 const express = require('express')
 const PlayerRouter = express.Router()
@@ -73,5 +75,14 @@ PlayerRouter.get('/players/:id', (req: any, res: any)=>{
             res.status(403).json({error})
         })
 })
+
+PlayerRouter.post('/players/addcoins', 
+    isAuthenticated,
+    isAuthorized({
+        allowRoles: ["admin"],
+        allowGameServer: true,
+    }),
+    PlayerController.addCoins,
+);
 
 export default PlayerRouter
