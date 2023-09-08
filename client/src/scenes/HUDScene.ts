@@ -10,6 +10,7 @@ import PeerInfo from "../UI/gameuis/PeerInfo";
 import PeerInfoPopup from "../UI/gameuis/PeerInfoPopup";
 import WAPopup, { WAPopupData } from "../UI/gameuis/WAPopup";
 import GameOverModal from "../UI/modals/GameOverModal";
+import TopRightInfo from "../UI/gameuis/TopRightInfo";
 
 export default class HUDScene extends Phaser.Scene {
 
@@ -21,6 +22,7 @@ export default class HUDScene extends Phaser.Scene {
     private waPopup!: WAPopup;
     private menuModal?: MenuModal;
     private gameOverModal?: GameOverModal;
+    private topRightInfo!: TopRightInfo;
 
     constructor() {
         super(SceneKey.HUDScene);
@@ -29,6 +31,7 @@ export default class HUDScene extends Phaser.Scene {
     create() {
         this.initializeUI();
         this.initializeListeners();
+        EventManager.eventEmitter.emit("HUDCreate");
     }
 
     public updatePlayerInfoData(data: Partial<PlayerInfoData>) {
@@ -59,6 +62,7 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.on(EventManager.HUDEvents.RESET_HUD, this.resetHUD, this);
         EventManager.eventEmitter.on(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, this.showWAPopup, this);
         EventManager.eventEmitter.on(EventManager.HUDEvents.PLAYER_DIED, this.playerDied, this);
+        EventManager.eventEmitter.on(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, this.topRightInfo.updateInfoSizer, this.topRightInfo);
         this.events.once("shutdown", () => this.removeListeners());
         this.events.on("sleep", () => this.peerInfoPopup.setVisible(false));
     }
@@ -70,6 +74,7 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.off(EventManager.HUDEvents.DELETE_PEER_INFO, this.peerInfoPopup.removePeerInfo, this.peerInfoPopup);
         EventManager.eventEmitter.off(EventManager.HUDEvents.RESET_HUD, this.resetHUD, this);
         EventManager.eventEmitter.off(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, this.showWAPopup, this);
+        EventManager.eventEmitter.off(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, this.topRightInfo.updateInfoSizer, this.topRightInfo);
     }
 
     private initializeUI() {
@@ -120,6 +125,9 @@ export default class HUDScene extends Phaser.Scene {
         this.peerInfoPopup.setVisible(false);
         this.input.keyboard?.on("keydown-SHIFT", () => this.peerInfoPopup.setVisible(true));
         this.input.keyboard?.on("keyup-SHIFT", () => this.peerInfoPopup.setVisible(false));
+
+        // ----- Top Right Info Display -----
+        this.topRightInfo = new TopRightInfo(this);
     }
 
     public playerDied(data: any) {

@@ -9,11 +9,12 @@ import GameObject from "../gameobjs/GameObject";
 import ClientSidePrediction from "./ClientSidePrediction";
 import Tile from "../gameobjs/Tile";
 import EventManager from "./EventManager";
-import PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
+import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
 import type MonsterState from "../../../server/src/rooms/game_room/schemas/gameobjs/monsters/Monster";
 import type ProjectileState from "../../../server/src/rooms/game_room/schemas/projectiles/Projectile";
 import type GameObjectState from "../../../server/src/rooms/game_room/schemas/gameobjs/GameObject";
-import EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
+import type EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
+import type DungeonState from "../../../server/src/rooms/game_room/schemas/dungeon/Dungeon";
 import { ColorStyle } from "../config";
 import InvisObstacle from "../gameobjs/InvisObstacle";
 import GameOverModal from "../UI/modals/GameOverModal";
@@ -237,9 +238,28 @@ export default class GameManager {
     }
 
     /** Called when the dungeon is first created on the server */
-    private onChangeDungeon = (currentValue: any) => {
+    private onChangeDungeon = (currentValue: DungeonState) => {
         currentValue.listen("tilemap", this.onChangeTilemap);
         currentValue.listen("playerBounds", this.onChangePlayerBounds);
+        // Workaround to send the wave count when the hud is first created.
+        EventManager.eventEmitter.off("HUDCreate");
+        EventManager.eventEmitter.once("HUDCreate", () => {
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
+                wave: currentValue.currentWave + 1,
+                maxWave: currentValue.maxWave,
+            })
+        })
+        currentValue.listen("currentWave", (currentWave) => {
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
+                wave: currentWave + 1,
+            })
+        })
+        currentValue.listen("maxWave", (maxWave) => {
+            console.log("MAX WAVE: ", maxWave);
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
+                maxWave: maxWave,
+            })
+        })
     }
 
     private onChangePlayerBounds = (currentValue: any) => {
@@ -386,6 +406,10 @@ export default class GameManager {
                     gameObject.serverLevel = playerState.level;
                     SoundManager.getManager().play("level_up");
                 }
+                // Update coin display.
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
+                    coins: playerState.coinsEarned,
+                })
             }
             // Updates the Peer Info Display. This display popup when holding SHIFT.
             EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {

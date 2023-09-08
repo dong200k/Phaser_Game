@@ -132,6 +132,23 @@ namespace EventManager {
 
         /** Player died event. This will open up the game over modal. */
         export const PLAYER_DIED = "HUDScenePlayerDied";
+
+        /**
+         * Emitting this event will update the top right info display.
+         * 
+         * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, data)```
+         * 
+         * @param data
+         * ```
+         * {
+                wave?: number;
+                maxWave?: number;
+                coins?: number; 
+            }
+         * ```
+         * 
+         */
+        export const UPDATE_TOP_RIGHT_INFO = "HUDSceneUpdateTopRightInfo";
     }
 
     export namespace GameEvents {

@@ -72,8 +72,11 @@ export default class DungeonManager {
         this.dungeon?.update(deltaT);
 
         // SPAM THE WAVES!!!
-        this.dungeon?.startNextWave();
+        if(this.dungeon && this.dungeon.hasNextWave()) {
+            this.dungeon.startNextWave();
+        }
     }
+    
 
     private cleanUpMonsters() {
 
