@@ -9,7 +9,8 @@ export const onSubmitLoginForm = (e: any)=>{
 
     ClientFirebaseConnection.getConnection().login(email, password)
         .then(()=>{
-            document.getElementById("loginForm")?.setAttribute("display", "none")
+            (<HTMLInputElement>document.getElementById("login-email")).value = "";
+            (<HTMLInputElement>document.getElementById("login-password")).value = "";
         })
         .catch((e)=>{
             alert(e.message)
@@ -27,7 +28,10 @@ export const onSubmitRegisterForm = (e: any)=>{
     if(password === confirmPassword){
         ClientFirebaseConnection.getConnection().signup(email, username, password)
             .then(()=>{
-                document.getElementById("signupForm")?.setAttribute("display", "none")
+                (<HTMLInputElement>document.getElementById("signup-username")).value = "";
+                (<HTMLInputElement>document.getElementById("signup-email")).value = "";
+                (<HTMLInputElement>document.getElementById("signup-password")).value = "";
+                (<HTMLInputElement>document.getElementById("signup-confirm-password")).value = "";
             })
             .catch((e)=>{
                 alert(e.message)
@@ -35,4 +39,17 @@ export const onSubmitRegisterForm = (e: any)=>{
     }else{
         alert("Passwords must match!")
     }
+}
+
+let showLogin = true
+
+/** Changes form to type to login/register based on current state */
+export const toggleForm = (e: any, toggle?: any)=>{
+    if(toggle) showLogin = toggle;
+    else showLogin = !showLogin;
+
+    // (<HTMLInputElement>document.getElementById("loginForm")).classList.add(showLogin? "visible" : "");
+    // (<HTMLInputElement>document.getElementById("signupForm")).classList.add(showLogin? "" : "visible");
+    (<HTMLInputElement>document.getElementById("loginForm")).style.display = (showLogin? "block" : "none");
+    (<HTMLInputElement>document.getElementById("signupForm")).style.display = (showLogin? "none" : "block");
 }

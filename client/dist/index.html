@@ -8,25 +8,52 @@
     <link rel="preload" as="font" href="fonts/aldrich/Aldrich-Regular.ttf" type="font/ttf" crossorigin>
     <link rel="preload" as="font" href="fonts/press-start-2p/PressStart2P-Regular.ttf" type="font/ttf" crossorigin>
     <link rel="stylesheet" href="index.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>Dungeon and Adventurers</title>
 </head>
-<body style="background-color: aliceblue;">
+<body id="body" style="background-color: white;">
     <script src="bundle.js"></script> 
-      
-    <form id="loginForm" style="background-color: antiquewhite;">
-        Login Form
-        <input id="login-email" type="text" placeholder="email"/>
-        <input id="login-password" type="password" placeholder="password"/>
-        <button type="submit">login</button>
-    </form>  
+    <div class="mt-5" id="forms">
+        <form class="mx-auto px-1 py-2" id="loginForm" style="width: 50%; background-color: white;"> 
+          <h1 class="display-3 mb-5">Dungeons & Adventurers</h1>
+            <div class="form-group">
+              <label for="login-email">Email address</label>
+              <input type="email" class="form-control" id="login-email" aria-describedby="emailHelp" placeholder="Enter email">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" class="form-control" id="login-password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-light">Login</button>
+            <span class="ml-1" id="showregister"><a class="link-opacity-50-hover text-dark" href="#">Register</a></span>
+          </form>
 
-    <form id="signupForm" style="background-color: antiquewhite;">
-        Register Form
-        <input id="signup-username" type="text" placeholder="username"/>
-        <input id="signup-email" type="text" placeholder="email"/>
-        <input id="signup-password" type="password" placeholder="password"/>
-        <input id="signup-confirm-password" type="password" placeholder="confirm password"/>
-        <button type="submit">login</button>
-    </form>  
+          <form class="mx-auto" id="signupForm" style="width: 50%; display: none"> 
+            <h1 class="display-3 mb-5">Dungeons & Adventurers</h1>
+            <div class="form-group">
+              <label for="signup-username">Username</label>
+              <input type="text" class="form-control" id="signup-username" placeholder="Username">
+            </div>
+            <div class="form-group">
+              <label for="signup-email">Email address</label>
+              <input type="email" class="form-control" id="signup-email" aria-describedby="emailHelp" placeholder="Enter email">
+              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+              <label for="signup-password">Password</label>
+              <input type="password" class="form-control" id="signup-password" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <label for="signup-confirm-password">Confirm Password</label>
+              <input type="password" class="form-control" id="signup-confirm-password" placeholder="Reenter Password">
+            </div>
+            <button type="submit" class="btn btn-light">Register</button>
+            <span class="ml-1" id="showlogin"><a class="link-opacity-50-hover text-dark" href="#">Login</a></span>
+          </form>
+    </div>
 </body>
 </html> 
