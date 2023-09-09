@@ -38,11 +38,13 @@ export default class SkillTreeScene extends Phaser.Scene {
 
     constructor() {
         super(SceneKey.SkillTreeScene);
-        let playerData = ClientFirebaseConnection.getConnection().playerData
-        if(playerData) {
-            this.skillTreeData = this.convertSkillTree(playerData.skillTree.root)
-        }
-        else {
+        // let playerData = ClientFirebaseConnection.getConnection().playerData
+        // if(playerData) {
+        //     this.skillTreeData = this.convertSkillTree(playerData.skillTree.root)
+        //     console.log("SKILL TREE DATA");
+        //     console.log(this.skillTreeData);
+        // }
+        // else {
             this.skillTreeData = {
                 skillItems : [
                     {
@@ -62,7 +64,7 @@ export default class SkillTreeScene extends Phaser.Scene {
                     },
                 ]
             }
-        }
+        // }
     }
 
     /**
@@ -114,7 +116,9 @@ export default class SkillTreeScene extends Phaser.Scene {
         // Listen for player data changes
         let initPlayerData = (playerData: any)=>{
             if(playerData) this.skillTreeData = this.convertSkillTree(ClientFirebaseConnection.getConnection().playerData.skillTree.root)
-            // this.createOrUpdatePanel()
+            // // this.createOrUpdatePanel()
+            // console.log("SKILL TREE DATA");
+            // console.log(this.skillTreeData);
         }
         ClientFirebaseConnection.getConnection().addPlayerDataListener("SkillTree", initPlayerData)  
 
@@ -350,9 +354,10 @@ export default class SkillTreeScene extends Phaser.Scene {
         return this.panelSizer;
     }
 
+    /** Creates the main panel where all the upgrades are housed. */
     private createPanelContent() {
         let content = this.rexUI.add.fixWidthSizer({
-            width: 1058,
+            width: 1100,
             space: {
                 top: 50, 
                 left: 50,
@@ -402,19 +407,8 @@ export default class SkillTreeScene extends Phaser.Scene {
                     (skillItemUI.getByName("background") as RoundRectangle).setStrokeStyle(0, ColorStyle.neutrals.hex.white);
                 })
             content.add(skillItemUI);
-            if(i % 3 == 2 && i + 1 < totalItems) content.addNewLine();
+            // if(i % 3 == 2 && i + 1 < totalItems) content.addNewLine();
         }
-
-        // content.setChildrenInteractive({
-        //     click: {
-        //         enable: true,
-        //         clickInterval: 0.2
-        //     },
-        //     over: true,
-        // });
-        // content.on("child.over", () => {
-        //     console.log("over");
-        // })
 
         return content;
     }
@@ -485,7 +479,7 @@ export default class SkillTreeScene extends Phaser.Scene {
                 line: 2
             }
         });
-        textSizer.add(UIFactory.createTextBoxPhaser(this, skillItem.name.toUpperCase(), "l4"));
+        textSizer.add(UIFactory.createTextBoxPhaser(this, skillItem.name.toUpperCase(), "l4").setWordWrapWidth(220).setAlign("left"));
         textSizer.addNewLine();
         textSizer.add(UIFactory.createTextBoxPhaser(this, `${skillItem.currentLevel === 0 ? "None" : skillItem.levels[skillItem.currentLevel - 1].value}` , "l4"));
         if(skillItem.currentLevel < skillItem.levels.length)

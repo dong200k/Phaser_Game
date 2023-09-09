@@ -79,7 +79,7 @@ export default class DungeonManager {
         // Check if the dungeon is over.
         // A dungeon is over if there are no more waves, current wave is finished, and all monsters are killed.
         if(this.dungeon && !this.dungeon.hasNextWave() && 
-            !this.dungeon.isConquered() && this.dungeon.waitingForWaveStart) {
+            !this.dungeon.isConquered() && this.dungeon.waveEnded) {
             let dungeonOver = true;
             // Check if the are any more active monsters.
             this.gameManager.gameObjects.forEach((obj) => {

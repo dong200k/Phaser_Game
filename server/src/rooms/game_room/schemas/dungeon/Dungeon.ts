@@ -45,7 +45,7 @@ export default class Dungeon extends Schema {
     
     private waves: Wave[];
     /** False if a wave is running. True otherwise.*/
-    waitingForWaveStart: boolean;
+    waveEnded: boolean;
     
 
     constructor(dungeonName: string) {
@@ -53,7 +53,7 @@ export default class Dungeon extends Schema {
         this.currentWave = -1;
         this.maxWave = -1;
         this.dungeonName = dungeonName;
-        this.waitingForWaveStart = true;
+        this.waveEnded = true;
         this.conquered = false;
         this.waves = [];
     }
@@ -72,9 +72,9 @@ export default class Dungeon extends Schema {
      * @param deltaT Time passed in seconds.
      */
     public update(deltaT: number) {
-        if(!this.waitingForWaveStart && this.currentWave < this.waves.length) {
+        if(!this.waveEnded && this.currentWave < this.waves.length) {
             if(this.waves[this.currentWave].update(deltaT)) {
-                this.waitingForWaveStart = true;
+                this.waveEnded = true;
             }
         }
     }
@@ -87,8 +87,10 @@ export default class Dungeon extends Schema {
     }
 
     public startNextWave() {
-        this.waitingForWaveStart = false;
-        this.currentWave++;
+        if(this.waveEnded === true) {
+            this.currentWave++;
+        }
+        this.waveEnded = false;
     }
 
     public setTilemap(tilemap: Tilemap) {

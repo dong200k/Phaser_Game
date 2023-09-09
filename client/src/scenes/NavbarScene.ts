@@ -8,6 +8,10 @@ import DataManager from "../system/DataManager";
 import SceneManager from "../system/SceneManager";
 import EventManager from "../system/EventManager";
 import ClientFirebaseConnection from "../firebase/ClientFirebaseConnection";
+import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
+import UIFactory from "../UI/UIFactory";
+import TextBoxRex from "../UI/TextBoxRex";
+import { Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 
 interface NavbarData {
     activeOn: "home" | "play" | "shop" | "skill tree" | "role";
@@ -27,10 +31,13 @@ export default class NavbarScene extends Phaser.Scene {
         gems: 3,
     }
 
+    // Plugin for UI elements that will be injected at scene creation.
+    rexUI!: UIPlugins;
+
     private userNameText!: TextBox;
-    private levelText!: TextBox;
-    private coinsText!: TextBox;
-    private gemsText!: TextBox;
+
+    /** Displays level, coins, and gems. */
+    private infoDisplay!: Sizer;
 
     private statLayout!: Layout;
 
@@ -47,20 +54,12 @@ export default class NavbarScene extends Phaser.Scene {
         this.initializeListeners();
     }
 
-    public updateNavbar(data: Partial<NavbarData>) {
-        console.log("updated navbar");
-        console.log(this.navbarData);
-        Object.assign(this.navbarData, data);
-        this.userNameText.setText(this.navbarData.username);
-        this.levelText.setText(`Level: ${this.navbarData.level}`);
-        this.coinsText.setText(`Coins: ${this.navbarData.coins}`);
-        this.gemsText.setText(`Gems: ${this.navbarData.gems}`);
-        this.statLayout.setAlignItems('start');
-    }
+    
 
     private initializeListeners() {
         EventManager.eventEmitter.on(EventManager.NavbarEvents.UPDATE_NAVBAR, this.updateNavbar, this);
         this.events.once("shutdown", () => this.removeListeners());
+        this.events.on("wake", () => this.updateNavbar({}));
     }
 
     private removeListeners() {
@@ -161,15 +160,10 @@ export default class NavbarScene extends Phaser.Scene {
         });
         logoutLayout.add([this.userNameText, logoutButton]);
 
-        this.statLayout = new Layout(this, {x:this.game.scale.width - 200, y:22});
-        this.levelText = new TextBox(this, `Level: ${this.navbarData.level}`, "l4");
-        this.coinsText = new TextBox(this, `Coins: ${this.navbarData.coins}`, "l4");
-        this.gemsText = new TextBox(this, `Gems: ${this.navbarData.gems}`, "l4");
-        this.statLayout.add([this.levelText, this.coinsText, this.gemsText]);
-        this.statLayout.setAlignItems('start');
         
+        this.infoDisplay = this.createInfoDisplay();
 
-        navRightSideLayout.add([this.statLayout, logoutLayout]);
+        navRightSideLayout.add([logoutLayout]);
         this.add.existing(navRightSideLayout);
 
         // Listen for player data changes
@@ -189,5 +183,32 @@ export default class NavbarScene extends Phaser.Scene {
         // init player data
         initPlayerData(ClientFirebaseConnection.getConnection().playerData)
 
+        this.updateNavbar({});
+    }
+
+    public updateNavbar(data: Partial<NavbarData>) {
+        Object.assign(this.navbarData, data);
+        this.userNameText.setText(this.navbarData.username);
+        (this.infoDisplay.getByName("LevelText", true) as TextBoxRex).setText(`Level: ${this.navbarData.level}`);
+        (this.infoDisplay.getByName("CoinsText", true) as TextBoxRex).setText(`Coins: ${this.navbarData.coins}`);
+        (this.infoDisplay.getByName("GemsText", true) as TextBoxRex).setText(`Gems: ${this.navbarData.gems}`);
+        this.infoDisplay.layout();
+    }
+
+    /** Create the info display that shows the level, coins, and gems. */
+    private createInfoDisplay() {
+        let sizer = this.rexUI.add.sizer({
+            orientation: "vertical",
+            anchor: {
+                top: "top+15",
+                right: "right-200",
+            }
+        });
+
+        sizer.add(UIFactory.createTextBoxRex(this, "Level: 1", "l4").setName("LevelText"), {expand:false, align:"left"});
+        sizer.add(UIFactory.createTextBoxRex(this, "Coins: 0", "l4").setName("CoinsText"), {expand:false, align:"left"});
+        sizer.add(UIFactory.createTextBoxRex(this, "Gems: 0", "l4").setName("GemsText"), {expand:false, align:"left"});
+
+        return sizer;
     }
 }
