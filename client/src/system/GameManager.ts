@@ -622,7 +622,7 @@ export default class GameManager {
     private playerControllerOnChange(player: Player, playerState: PlayerState, changes: any) {
         let currentState = playerState.playerController.stateName;
         if(currentState === "Dead") {
-            // player.play("death");
+            player.forcePlay("death");
             this.soundManager.play("player_death");
             // Player 1 gets to see the screen.
             if(this.player1 === player) {

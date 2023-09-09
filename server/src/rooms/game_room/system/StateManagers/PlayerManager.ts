@@ -48,8 +48,10 @@ export default class PlayerManager {
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Player){
                 // gameObject.attackCooldown.tick(deltaT)
-                gameObject.currentAbility?.update(deltaT * 1000);
-                gameObject.playerController.update(deltaT);
+                if(gameObject.playerController.stateName !== "Dead") {
+                    gameObject.currentAbility?.update(deltaT * 1000);
+                    gameObject.playerController.update(deltaT);
+                }
             }
         })
 
@@ -68,6 +70,9 @@ export default class PlayerManager {
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
         
+        // Do nothing if the player is dead.
+        if(playerState.playerController.stateName === "Dead") return;
+
         // trigger all player attack effect logics if there is a mouseclick
         if(mouseClick) {
             playerState.playerController.startAttack(mouseX, mouseY);
@@ -140,8 +145,10 @@ export default class PlayerManager {
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
 
-        // If the player is disabled stop the player 
-        if(this.disabledPlayers.has(playerId) || !playerState.canMove) {
+        // If the player is disabled, cant move, or is dead stop the player 
+        if(this.disabledPlayers.has(playerId) || 
+                !playerState.canMove || 
+                playerState.playerController.stateName === "Dead") {
             Matter.Body.setVelocity(playerBody, {x: 0, y: 0});
             return; 
         }
@@ -189,6 +196,9 @@ export default class PlayerManager {
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
         
+        // If the player is dead, do nothing.
+        if(playerState.playerController.stateName === "Dead") return;
+
         if(!useSpecial) return
         let usedAbility = playerState.currentAbility?.useAbility()
         if(usedAbility) EffectManager.useTriggerEffectsOn(playerState, "player skill")

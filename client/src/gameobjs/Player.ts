@@ -46,4 +46,21 @@ export default class Player extends Entity
         return this;
     }
 
+    /**
+     * @description The animation only plays when the player is not dead.
+     */
+    public play(key: string | Phaser.Animations.Animation | Phaser.Types.Animations.PlayAnimationConfig, ignoreIfPlaying?: boolean | undefined): this {
+        if(this.playerState.playerController.stateName !== "Dead")
+            super.play(key, ignoreIfPlaying);
+        return this;
+    }
+
+    /**
+     * The same as play. But the animation will run even if the player is dead.
+     * Used to play the player death animation.
+     */
+    public forcePlay(key: string | Phaser.Animations.Animation | Phaser.Types.Animations.PlayAnimationConfig, ignoreIfPlaying?: boolean | undefined): this {
+        return super.play(key, ignoreIfPlaying);
+    }
+
 }
