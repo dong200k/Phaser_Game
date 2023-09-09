@@ -152,7 +152,8 @@ export default class HUDScene extends Phaser.Scene {
                 EventManager.eventEmitter.emit(EventManager.GameEvents.LEAVE_GAME)
                 
             },
-            spectateOnclick: () => console.log("Spectate onclick")
+            spectateOnclick: () => EventManager.eventEmitter.emit(EventManager.GameEvents.SPECTATATE)
+
         })
         this.waPopup.destroyPopup();
     }

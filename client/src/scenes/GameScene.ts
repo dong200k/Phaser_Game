@@ -63,8 +63,10 @@ export default class GameScene extends Phaser.Scene {
     public initializeListeners() {
         
         EventManager.eventEmitter.on(EventManager.GameEvents.LEAVE_GAME, this.leaveGame, this);
+        EventManager.eventEmitter.on(EventManager.GameEvents.SPECTATATE, this.spectate, this);
         this.events.on("shutdown", () => {
             EventManager.eventEmitter.off(EventManager.GameEvents.LEAVE_GAME, this.leaveGame, this);
+            EventManager.eventEmitter.off(EventManager.GameEvents.SPECTATATE, this.spectate, this);
             this.events.removeAllListeners();
             this.hideHUD();
             
@@ -115,6 +117,13 @@ export default class GameScene extends Phaser.Scene {
             if(ClientManager.getClient().isConnectedToWaitingRoom())
                 switchToSceneKey = SceneKey.RoomScene;
             SceneManager.getSceneManager().switchToScene(switchToSceneKey);
+        }
+    }
+
+    /** Changes the game manager to spectate mode. */
+    public spectate() {
+        if(this.gameManager) {
+            this.gameManager.setSpectating(true);
         }
     }
 

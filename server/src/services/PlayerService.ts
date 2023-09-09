@@ -13,6 +13,7 @@ export default class PlayerService {
         if(res.status === 200) return json.player
         else {
             console.log(json)
+            // TODO: Catch the error on client side when token expires.
             throw new Error(json.error)
         }
     }

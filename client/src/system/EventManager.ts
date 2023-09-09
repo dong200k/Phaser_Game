@@ -154,6 +154,9 @@ namespace EventManager {
     export namespace GameEvents {
         /** Event to notify the GameScene to leave the game. Should only be emitted when GameScene is running.*/
         export const LEAVE_GAME = "GameSceneLeaveGame";
+
+        /** Event to notify the GameManager to change to spectate mode. */
+        export const SPECTATATE = "GameSceneSpectate";
     }
 
     export namespace NavbarEvents {

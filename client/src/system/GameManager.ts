@@ -30,6 +30,8 @@ export default class GameManager {
     private gameObjects: GameObject[] = [];
     private player1?: Player;
     private players: Player[] = [];
+    private spectating: boolean = false;
+    private spectatingIdx: number = 0;
 
     // ------- Inputs ---------
     private upKey?: Phaser.Input.Keyboard.Key;
@@ -77,6 +79,24 @@ export default class GameManager {
         this.syncGameObjectVisibility();
         this.syncGameObjectActive();
         this.updateFloatingTexts();
+    }
+
+    /** Changes the value of spectating. */
+    public setSpectating(value: boolean) {
+        this.spectating = value;
+    }
+
+    /** Changes the player that is being watched. */
+    private rotateSpectateTarget() {
+        // If there are no more player's do nothing.
+        if(this.players.length === 0) return;
+
+        // Changes the player to spectate.
+        this.spectatingIdx += 1;
+        if(this.spectatingIdx >= this.players.length) {
+            this.spectatingIdx = 0;
+        }
+        this.scene.cameras.main.startFollow(this.players[this.spectatingIdx]);
     }
 
     /**
@@ -163,7 +183,13 @@ export default class GameManager {
         })
 
         this.scene.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
-            if(pointer.leftButtonReleased()) this.mouseDown = false;
+            if(pointer.leftButtonReleased()) {
+                this.mouseDown = false;
+                if(this.spectating) {
+                    // If spectating change perspective.
+                    this.rotateSpectateTarget();
+                }
+            }
         })
     }
 
@@ -598,15 +624,19 @@ export default class GameManager {
         if(currentState === "Dead") {
             // player.play("death");
             this.soundManager.play("player_death");
-            // Open up the game over screen.
-            setTimeout(() => {
-                EventManager.eventEmitter.emit(EventManager.HUDEvents.PLAYER_DIED, {
-                    coins: this.player1 ? this.player1.getPlayerState().coinsEarned : 0,
-                    monstersKilledByYou: this.player1 ? this.player1.getPlayerState().monstersKilled: 0,
-                    totalMonstersKilled: this.gameRoom.state.monstersKilled,
-                    timeSurvivedMs: this.player1 ? new Date().getTime() - this.player1.getPlayerState().joinTime : 0,
-                });
-            }, 1000);
+            // Player 1 gets to see the screen.
+            if(this.player1 === player) {
+                // Open up the game over screen.
+                setTimeout(() => {
+                    EventManager.eventEmitter.emit(EventManager.HUDEvents.PLAYER_DIED, {
+                        coins: this.player1 ? this.player1.getPlayerState().coinsEarned : 0,
+                        monstersKilledByYou: this.player1 ? this.player1.getPlayerState().monstersKilled: 0,
+                        totalMonstersKilled: this.gameRoom.state.monstersKilled,
+                        timeSurvivedMs: this.player1 ? new Date().getTime() - this.player1.getPlayerState().joinTime : 0,
+                    });
+                }, 1000);
+            }
+            
         }
     }
 
