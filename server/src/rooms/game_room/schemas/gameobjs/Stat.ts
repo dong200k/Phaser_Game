@@ -176,9 +176,15 @@ export default class Stat extends Schema {
      * Adds the stat by another stat in place
      */
     public add(stat: Stat){
+        if(stat.maxHp !== undefined)
+            this.hp += stat.maxHp;
+        if(stat.maxMana !== undefined)
+            this.mana += stat.maxMana;
         Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
             this[key as keyStat] = this[key as keyStat] + stat[key as keyStat]
         })
+
+        this.fixOverflow();
     }
 
     /**
@@ -188,6 +194,8 @@ export default class Stat extends Schema {
         Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
             this[key as keyStat] = this[key as keyStat] - stat[key as keyStat]
         })
+
+        this.fixOverflow();
     }
 
     /**
@@ -198,6 +206,14 @@ export default class Stat extends Schema {
         Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
             this[key as keyStat] = this[key as keyStat] + scalar
         })
+    }
+
+    /** Fixes overflow problem when hp is greater than maxHp, and 
+     * when mana is greater then maxMana.
+     */
+    public fixOverflow() {
+        if(this.hp > this.maxHp) this.hp = this.maxHp;
+        if(this.mana > this.maxMana) this.mana = this.maxMana;
     }
 
     static getDefaultPlayerStat(){

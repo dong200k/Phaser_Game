@@ -43,17 +43,27 @@ export default class PlayerManager {
      * Updates this PlayerManager.
      * @param deltaT deltaT seconds.
      */
-    update(deltaT: number){
+    update(deltaT: number) {
+        let playerCount = 0;
+        let allPlayersDead = true;
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Player){
+                playerCount++;
                 // gameObject.attackCooldown.tick(deltaT)
                 if(gameObject.playerController.stateName !== "Dead") {
+                    allPlayersDead = false;
                     gameObject.currentAbility?.update(deltaT * 1000);
                     gameObject.playerController.update(deltaT);
                 }
             }
         })
+
+        // If player count is more than zero and all players are dead end the game.
+        // For player count of zero the game room will close automatically.
+        if(playerCount > 0 && allPlayersDead) {
+            this.gameManager.endGame();
+        }
 
         this.processMovementInputPayload(deltaT);
     }
@@ -75,7 +85,13 @@ export default class PlayerManager {
 
         // trigger all player attack effect logics if there is a mouseclick
         if(mouseClick) {
-            playerState.playerController.startAttack(mouseX, mouseY);
+            playerState.effects.forEach((effect) => {
+                if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack") {
+                    if (effect.cooldown.isFinished) 
+                        playerState.playerController.startAttack(mouseX, mouseY);
+                }
+            })
+            
             // EffectManager.useTriggerEffectsOn(playerState, "player attack", playerBody, {mouseX, mouseY})
         }
     }
@@ -341,6 +357,8 @@ export default class PlayerManager {
                 mask: MaskManager.getManager().getMask("PLAYER")
             }
         })
+
+        // console.log(JSON.stringify(newPlayer.stat));
 
         newPlayer.setId(sessionId);
         newPlayer.setBody(body)
