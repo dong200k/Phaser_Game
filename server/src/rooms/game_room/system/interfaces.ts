@@ -9,6 +9,7 @@ import GameObject, { Velocity } from "../schemas/gameobjs/GameObject";
 import Entity from "../schemas/gameobjs/Entity";
 import MonsterController from "./AI/MonsterAI/simplemonster/MonsterController";
 import { IClasses } from "../schemas/projectiles/projectileClasses";
+import OneTimeUpgradeEffect from "../schemas/effects/onetime/OneTimeUpgradeEffect";
 
 // ------------ Math -------------
 
@@ -143,8 +144,8 @@ export interface IDungeon {
 // }
 
 // ------------ interfaces for Upgrade Effects -------------- //
-export type IUpgradeEffect = TriggerUpgradeEffect | ContinuousUpgradeEffect
-export type ITriggerType = "player skill" | "player attack" | "none"
+export type IUpgradeEffect = TriggerUpgradeEffect | ContinuousUpgradeEffect | OneTimeUpgradeEffect
+export type ITriggerType = "player skill" | "player attack" | "none" | "one time"
 
 // ------------ interfaces for Projectiles -------------- //
 export type IProjectileConfig = {

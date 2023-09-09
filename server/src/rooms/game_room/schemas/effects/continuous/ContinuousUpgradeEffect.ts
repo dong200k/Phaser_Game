@@ -1,3 +1,4 @@
+import EffectLogic from "../../../system/EffectLogic/EffectLogic";
 import EffectLogicManager from "../../../system/EffectLogic/EffectLogicManager";
 import GameManager from "../../../system/GameManager";
 import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
@@ -20,6 +21,7 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
     collisionGroup: number
     tree?: WeaponUpgradeTree
     gameManager!: GameManager
+    effectLogic?: EffectLogic
 
     constructor(effectLogicId: string, cooldown: number, type: string, doesStack: boolean, collisionGroup: number){
         super(cooldown/100)
@@ -34,8 +36,8 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
         // console.log(`using continuous effect for ${this.effectLogicId}`)
         try{
             // use effect that effectLogicId references
-            let used = this.tree?.getGameManager()?.getEffectLogicManager().useEffect(this.effectLogicId, entity, this.tree)
-            return used? true : false
+            this.effectLogic?.useEffect(entity, this.gameManager, this.tree)
+            return true
         }catch(e: any){
             console.log(e?.message)
             return false
@@ -44,6 +46,15 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
 
     public setTree(tree: WeaponUpgradeTree){
         this.tree = tree
+        this.createEffectLogic
+    }
+
+    public createEffectLogic(){
+        let effectLogicManager = this.gameManager.getEffectLogicManager()
+        if(effectLogicManager){
+            let ctor = effectLogicManager.getEffectLogicConstructor(this.effectLogicId)
+            if(ctor) this.effectLogic = new ctor()
+        }
     }
 
     public setGameManager(gameManager: GameManager){
