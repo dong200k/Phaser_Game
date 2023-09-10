@@ -181,7 +181,7 @@ export default class GameManager {
         // When they disconnect from the server.
         setTimeout(() => {
             this.gameOver = true;
-        }, 10000)
+        }, 6000)
     }
 
     public getEngine() {
