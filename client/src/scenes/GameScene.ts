@@ -41,30 +41,20 @@ export default class GameScene extends Phaser.Scene {
 
     init () {
         this.cameras.main.setBackgroundColor(ColorStyle.neutrals[800]);
-        //this.cameras.main.setZoom(2);
-    }
-
-    preload() {
-        // this.loadingScreen = new LoadingScreen(this);
     }
 
     create() {
-        //Initialize fields
-        //this.anims.createFromAseprite("TinyZombie");
-        //this.anims.createFromAseprite("Ranger");
-        //this.anims.createFromAseprite("RangerArrow");
-        
-        // this.anims.remove()
         this.initializeListeners();
         this.joinGameRoom();
-        //this.showHUD();
     }
 
     public initializeListeners() {
         
         EventManager.eventEmitter.on(EventManager.GameEvents.LEAVE_GAME, this.leaveGame, this);
+        EventManager.eventEmitter.on(EventManager.GameEvents.SPECTATATE, this.spectate, this);
         this.events.on("shutdown", () => {
             EventManager.eventEmitter.off(EventManager.GameEvents.LEAVE_GAME, this.leaveGame, this);
+            EventManager.eventEmitter.off(EventManager.GameEvents.SPECTATATE, this.spectate, this);
             this.events.removeAllListeners();
             this.hideHUD();
             
@@ -76,7 +66,6 @@ export default class GameScene extends Phaser.Scene {
         // When waking this scene (When sceneManager switches back to this scene) join game room and show hud.
         this.events.on("wake", () => {
             this.joinGameRoom();
-            //this.showHUD();
         })
         this.load.on("progress", (value: number) => {
             // console.log(value);
@@ -100,7 +89,8 @@ export default class GameScene extends Phaser.Scene {
         })
     }
 
-
+    /** Clean up the resources used by this GameScene. 
+     * This will allow the GameScene to be reused the next time it is open. */
     public leaveGame() {
         if(this.scene.isActive(SceneKey.GameScene)) {
             this.gameRoom?.leave();
@@ -115,6 +105,15 @@ export default class GameScene extends Phaser.Scene {
             if(ClientManager.getClient().isConnectedToWaitingRoom())
                 switchToSceneKey = SceneKey.RoomScene;
             SceneManager.getSceneManager().switchToScene(switchToSceneKey);
+        }
+    }
+
+    /** Changes the game manager to spectate mode. 
+     * In spectate mode the player can left click to follow another player.
+    */
+    public spectate() {
+        if(this.gameManager) {
+            this.gameManager.setSpectating(true);
         }
     }
 
@@ -133,28 +132,49 @@ export default class GameScene extends Phaser.Scene {
     private joinGameRoom() {
         ClientManager.getClient().joinGameRoom().then((room) => {
             this.gameRoom = room;
-            this.gameRoom.onLeave(() => {
-                this.gameRoom = undefined;
-            });
+
+            // Reset the HUD.
             EventManager.eventEmitter.emit(EventManager.HUDEvents.RESET_HUD);
 
-            // Show loading screen when loading assets.
+            // Reset the camera when the loading screen is showing.
             this.cameras.main.setZoom(1);
             this.cameras.main.stopFollow();
             this.cameras.main.setScroll(0, 0);
+
+            // Show loading screen when loading assets.
             this.loadingScreen = new LoadingScreen(this);
             this.loadingScreen.setVisible(true);
 
-            this.gameRoom.onMessage("loadAssets", async (assets) => {
-                console.log(assets);
-                await AssetManager.putAssetsInLoad(this, assets);
-                this.load.start();
-            })
+            // Create listeners for the new gameroom.
+            this.initializeGameRoomListeners(this.gameRoom);
 
             this.gameManager = new GameManager(this, this.gameRoom);
             
         }).catch((e) => {
             console.log("Join Game Error: ", e);
         });
+    }
+
+    private initializeGameRoomListeners(gameRoom: Colyseus.Room) {
+        gameRoom.onMessage("loadAssets", async (assets) => {
+            console.log(assets);
+            await AssetManager.putAssetsInLoad(this, assets);
+            this.load.start();
+        })
+
+        gameRoom.onLeave((code) => this.onLeaveHandler(code));
+        gameRoom.onError((code, message) => this.onErrorHandler(code, message));
+    }
+
+    /** Handles the cleanup of the game room when the client leaves the game. */ 
+    private onLeaveHandler(code: number) {
+        console.log(`Client left the game room! Code: ${code}`);
+        this.leaveGame();
+    }
+
+    /** Handles the cleanup of the game room when the server crashes. */ 
+    private onErrorHandler(code: number, message: string | undefined) {
+        console.log(`Error Code: ${code} Message: ${message}`);
+        this.leaveGame();
     }
 }

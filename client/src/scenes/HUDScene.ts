@@ -10,6 +10,7 @@ import PeerInfo from "../UI/gameuis/PeerInfo";
 import PeerInfoPopup from "../UI/gameuis/PeerInfoPopup";
 import WAPopup, { WAPopupData } from "../UI/gameuis/WAPopup";
 import GameOverModal from "../UI/modals/GameOverModal";
+import TopRightInfo from "../UI/gameuis/TopRightInfo";
 
 export default class HUDScene extends Phaser.Scene {
 
@@ -21,6 +22,7 @@ export default class HUDScene extends Phaser.Scene {
     private waPopup!: WAPopup;
     private menuModal?: MenuModal;
     private gameOverModal?: GameOverModal;
+    private topRightInfo!: TopRightInfo;
 
     constructor() {
         super(SceneKey.HUDScene);
@@ -29,6 +31,7 @@ export default class HUDScene extends Phaser.Scene {
     create() {
         this.initializeUI();
         this.initializeListeners();
+        EventManager.eventEmitter.emit("HUDCreate");
     }
 
     public updatePlayerInfoData(data: Partial<PlayerInfoData>) {
@@ -48,6 +51,7 @@ export default class HUDScene extends Phaser.Scene {
         this.peerInfoPopup.removeAllPeerInfo();
         if(this.menuModal) this.menuModal.closeModal();
         if(this.gameOverModal) this.gameOverModal.closeModal();
+        this.waPopup.destroyPopup();
     }
 
     private initializeListeners() {
@@ -58,6 +62,7 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.on(EventManager.HUDEvents.RESET_HUD, this.resetHUD, this);
         EventManager.eventEmitter.on(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, this.showWAPopup, this);
         EventManager.eventEmitter.on(EventManager.HUDEvents.PLAYER_DIED, this.playerDied, this);
+        EventManager.eventEmitter.on(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, this.topRightInfo.updateInfoSizer, this.topRightInfo);
         this.events.once("shutdown", () => this.removeListeners());
         this.events.on("sleep", () => this.peerInfoPopup.setVisible(false));
     }
@@ -69,6 +74,7 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.off(EventManager.HUDEvents.DELETE_PEER_INFO, this.peerInfoPopup.removePeerInfo, this.peerInfoPopup);
         EventManager.eventEmitter.off(EventManager.HUDEvents.RESET_HUD, this.resetHUD, this);
         EventManager.eventEmitter.off(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, this.showWAPopup, this);
+        EventManager.eventEmitter.off(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, this.topRightInfo.updateInfoSizer, this.topRightInfo);
     }
 
     private initializeUI() {
@@ -119,23 +125,37 @@ export default class HUDScene extends Phaser.Scene {
         this.peerInfoPopup.setVisible(false);
         this.input.keyboard?.on("keydown-SHIFT", () => this.peerInfoPopup.setVisible(true));
         this.input.keyboard?.on("keyup-SHIFT", () => this.peerInfoPopup.setVisible(false));
+
+        // ----- Top Right Info Display -----
+        this.topRightInfo = new TopRightInfo(this);
     }
 
-    public playerDied() {
+    public playerDied(data: any) {
+        let coins = data?.coins ?? 0;
+        let monstersKilledByYou = data?.monstersKilledByYou ?? 0;
+        let totalMonstersKilled = data?.totalMonstersKilled ?? 0;
+        let timeSurvivedMs = data?.timeSurvivedMs ?? 0;
+        let title = data?.title ?? "Game Over";
+        let showSpectateButton = data?.showSpectateButton ?? true;
         this.gameOverModal = new GameOverModal(this, {
+            showSpectateButton: showSpectateButton,
+            title: title,
             texts: [
-                "Coins Earned: 100",
-                "Gems Earned: 100",
-                "Monsters Killed: 100",
-                "Time Survived: 3:00",
+                `Coins Earned: ${coins}`,
+                `Gems Earned: 0`,
+                `Monsters Killed By You: ${monstersKilledByYou}`,
+                `Total Monsters Killed: ${totalMonstersKilled}`,
+                `Time Survived: ${timeSurvivedMs} ms`,
             ],
             leaveGameOnclick: () => {
                 this.resetHUD();
                 EventManager.eventEmitter.emit(EventManager.GameEvents.LEAVE_GAME)
                 
             },
-            spectateOnclick: () => console.log("Spectate onclick")
+            spectateOnclick: () => EventManager.eventEmitter.emit(EventManager.GameEvents.SPECTATATE)
+
         })
+        this.waPopup.destroyPopup();
     }
 
     

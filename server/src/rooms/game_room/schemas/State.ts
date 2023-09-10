@@ -20,6 +20,10 @@ export default class State extends Schema {
     @type("number") 
     serverTickCount = 0;
 
+    /** Stats for the total monsters killed. */
+    @type("number") 
+    monstersKilled = 0;
+
     @filterChildren((client, key, value: ReconciliationInfo, root) => {
         return client.sessionId === value.clientId;
     })

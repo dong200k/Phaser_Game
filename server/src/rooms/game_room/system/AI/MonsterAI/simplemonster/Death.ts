@@ -23,6 +23,14 @@ export default class Death extends StateNode {
         let playerThatDamagedMe = playerManager.getPlayerWithId(monster.getLastToDamage() ?? "");
         if(playerThatDamagedMe) playerManager.addXpToPlayer(20, playerThatDamagedMe);
 
+        // --- Give coins to player ---
+        playerManager.giveAllPlayersCoin(10);
+
+        // --- Tally up monster killed --- 
+        playerManager.getGameManager().state.monstersKilled++;
+        if(playerThatDamagedMe) playerThatDamagedMe.monstersKilled++;
+
+
         // console.log(playerThatDamagedMe?.xp);
         monster.animation.playAnimation("death");
         // monster.sound.playSoundEffect("player_death");

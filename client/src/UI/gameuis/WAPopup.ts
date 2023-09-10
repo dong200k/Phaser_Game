@@ -59,7 +59,14 @@ export default class WAPopup extends RexUIBase {
         
         // Set popup initial position.
         this.popup.setPosition(this.scene.game.scale.width - this.popup.width / 2, this.scene.game.scale.height + this.popup.height / 2);
-        this.sideDownPopup();
+        this.sideUpPopup();
+    }
+
+    /** Destroys the popup. This wont destroy this class. Popups can 
+     * still be shown with display popup.
+     */
+    public destroyPopup() {
+        if(this.popup) this.popup.destroy();
     }
 
     /** Move the popup so that only the top tab is visible. */
