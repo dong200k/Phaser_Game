@@ -6,11 +6,15 @@ import RangerAbilityLogic from "./EffectLogics/abilities/RangerAbility";
 import { DemoLogic, DemoLogicSkill } from "./EffectLogics/artifact/DemoLogic";
 import { FrostGlaive, FrostGlaiveFrenzy } from "./EffectLogics/artifact/FrostGlaiveLogic";
 import { HermesBoots } from "./EffectLogics/artifact/HermesBootLogic";
-import BowLogic from "./EffectLogics/weapon/BowLogic";
-import DoubowLogic from "./EffectLogics/weapon/DoubowLogic";
+import BowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/BowLogic";
+import DoubowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/DoubowLogic";
 import HomingMissile1 from "./EffectLogics/weapon/PriestTome/HomingMissile1";
 import HomingMissile2 from "./EffectLogics/weapon/PriestTome/HomingMissile2";
-import TribowLogic from "./EffectLogics/weapon/TribowLogic";
+import TribowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/TribowLogic";
+import Piercing1Logic from "./EffectLogics/weapon/RangerBow/Piercing/Piercing1Logic";
+import Piercing2Logic from "./EffectLogics/weapon/RangerBow/Piercing/Piercing2Logic";
+import PentabowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/PentabowLogic";
+import SexagintibowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/SexagintibowLogic";
 
 export default class EffectLogicManager{
 
@@ -33,6 +37,9 @@ export default class EffectLogicManager{
         this.addEffectLogic(BowLogic)
         this.addEffectLogic(DoubowLogic)
         this.addEffectLogic(TribowLogic)
+        this.addEffectLogic(PentabowLogic)
+        this.addEffectLogic(SexagintibowLogic)
+
         this.addEffectLogic(HermesBoots)
         this.addEffectLogic(FrostGlaive)
         this.addEffectLogic(FrostGlaiveFrenzy)
@@ -42,6 +49,9 @@ export default class EffectLogicManager{
         this.addEffectLogic(HomingMissile2)
 
         this.addEffectLogic(RangerAbilityLogic)
+
+        this.addEffectLogic(Piercing1Logic)
+        this.addEffectLogic(Piercing2Logic)
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass){

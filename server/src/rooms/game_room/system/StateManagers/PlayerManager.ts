@@ -498,6 +498,7 @@ export default class PlayerManager {
             let upgrades = WeaponManager.getAvailableUpgrades(player);
             if(upgrades.length > choice) {
                 WeaponManager.selectUpgrade(player, upgrades, choice);
+                console.log('selected upgrade: ', upgrades[choice].data.name)
 
                 // Update the fields in upgradeInfo.
                 player.upgradeInfo.playerSelectedUpgrade();
@@ -521,6 +522,7 @@ export default class PlayerManager {
         let upgradeItems: UpgradeItem[] = [];
         weaponUpgrades.forEach((weaponUpgrade) => {
             upgradeItems.push(new UpgradeItem({
+                
                 name: weaponUpgrade.data.name,
                 type: "weapon",
                 description: weaponUpgrade.data.description,

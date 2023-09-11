@@ -28,4 +28,10 @@ export default abstract class EffectLogic{
     */
     public removeEffect(entity: Entity, gameManager: GameManager, ...args: any){
     }
+
+    /** Use to update the effectLogic.
+     * Note triggerType: one time effect logics do not get their update methods called.
+    */
+    public udpate(deltaT: number){
+    }
 }

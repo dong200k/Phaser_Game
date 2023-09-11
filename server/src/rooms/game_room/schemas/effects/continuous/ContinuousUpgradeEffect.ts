@@ -44,6 +44,11 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
         }
     }
 
+    public update(deltaT: number){
+        this.effectLogic?.udpate(deltaT)
+        return super.update(deltaT)
+    }
+
     public setTree(tree: WeaponUpgradeTree){
         this.tree = tree
         this.createEffectLogic

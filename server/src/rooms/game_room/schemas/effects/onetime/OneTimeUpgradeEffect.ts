@@ -36,9 +36,11 @@ export default class OneTimeUpgradeEffect extends Effect {
     }
 
     public applyEffect(entity: Entity){
+        console.log("applying onetime upgrade effect")
         let gameManager = this.tree?.getGameManager()
         try{
             // use effect that effectLogicId references
+            console.log("piercing effect's effect logic", this.effectLogic)
             if(gameManager) this.effectLogic?.useEffect(entity, gameManager, this.tree)
             return true
         }catch(e: any){
@@ -59,6 +61,10 @@ export default class OneTimeUpgradeEffect extends Effect {
             let ctor = effectLogicManager.getEffectLogicConstructor(this.effectLogicId)
             if(ctor) this.effectLogic = new ctor()
         }
+    }
+
+    public toString(): string {
+        return `${this.effectLogicId}, ds: ${this.doesStack}, cg : ${this.collisionGroup}`
     }
 
     protected onComplete(): void {}

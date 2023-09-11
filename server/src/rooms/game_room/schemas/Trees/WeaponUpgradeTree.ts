@@ -41,10 +41,18 @@ export default class WeaponUpgradeTree extends StatTree<WeaponData>{
         return this
     }
 
-    /** Sets piercing which is the number of targets this weapon's projectiles will hit before going inactive. */
+    /** Sets piercing which is the number of targets this weapon's projectiles will hit before going inactive.
+     * Careful using this as it may overwrite piercing when you may not want it to
+     */
     setPiercing(piercing: number){
         this.piercing = piercing
+        // console.log("setting piercing", piercing)
         // console.log(`piercing on weapon is now: ${piercing}`)
+    }
+
+    addPiercing(piercing: number){
+        this.piercing += piercing
+        // console.log(`Adding ${piercing}, piercing is now ${this.piercing}`)
     }
 
     getPiercing(){

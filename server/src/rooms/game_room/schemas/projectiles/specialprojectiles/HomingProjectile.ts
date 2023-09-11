@@ -41,7 +41,7 @@ export default class HomingProjectile extends Projectile{
                     let monsterY = gameObject.getBody().position.y
                     let playerX = this.position.x
                     let playerY = this.position.y
-                    console.log(playerX, playerY)
+                    // console.log(playerX, playerY)
                     let distance = Math.sqrt((monsterX - playerX) ** 2 + (monsterY - playerY) ** 2)
                     // console.log(`distance: ${distance}`)
                     if(distance < closestDistance){

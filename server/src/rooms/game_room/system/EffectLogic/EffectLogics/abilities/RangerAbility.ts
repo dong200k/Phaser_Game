@@ -9,6 +9,6 @@ export default class RangerAbilityLogic extends EffectLogic{
 
     public useEffect(playerState: Player, gameManager: GameManager){
         console.log("Using ranger ability")
-        EffectManager.addEffectsTo(playerState, EffectFactory.createPiercingEffect(10, playerState.weaponUpgradeTree.piercing, 2))
+        // EffectManager.addEffectsTo(playerState, EffectFactory.createPiercingEffect(10, true, 2))
     }
 }
