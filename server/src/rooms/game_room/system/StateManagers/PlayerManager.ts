@@ -43,15 +43,27 @@ export default class PlayerManager {
      * Updates this PlayerManager.
      * @param deltaT deltaT seconds.
      */
-    update(deltaT: number){
+    update(deltaT: number) {
+        let playerCount = 0;
+        let allPlayersDead = true;
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Player){
+                playerCount++;
                 // gameObject.attackCooldown.tick(deltaT)
-                gameObject.currentAbility?.update(deltaT * 1000);
-                gameObject.playerController.update(deltaT);
+                if(gameObject.playerController.stateName !== "Dead") {
+                    allPlayersDead = false;
+                    gameObject.currentAbility?.update(deltaT * 1000);
+                    gameObject.playerController.update(deltaT);
+                }
             }
         })
+
+        // If player count is more than zero and all players are dead end the game.
+        // For player count of zero the game room will close automatically.
+        if(playerCount > 0 && allPlayersDead) {
+            this.gameManager.endGame();
+        }
 
         this.processMovementInputPayload(deltaT);
     }
@@ -68,9 +80,18 @@ export default class PlayerManager {
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
         
+        // Do nothing if the player is dead.
+        if(playerState.playerController.stateName === "Dead") return;
+
         // trigger all player attack effect logics if there is a mouseclick
         if(mouseClick) {
-            playerState.playerController.startAttack(mouseX, mouseY);
+            playerState.effects.forEach((effect) => {
+                if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack") {
+                    if (effect.cooldown.isFinished) 
+                        playerState.playerController.startAttack(mouseX, mouseY);
+                }
+            })
+            
             // EffectManager.useTriggerEffectsOn(playerState, "player attack", playerBody, {mouseX, mouseY})
         }
     }
@@ -140,8 +161,10 @@ export default class PlayerManager {
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
 
-        // If the player is disabled stop the player 
-        if(this.disabledPlayers.has(playerId) || !playerState.canMove) {
+        // If the player is disabled, cant move, or is dead stop the player 
+        if(this.disabledPlayers.has(playerId) || 
+                !playerState.canMove || 
+                playerState.playerController.stateName === "Dead") {
             Matter.Body.setVelocity(playerBody, {x: 0, y: 0});
             return; 
         }
@@ -189,6 +212,9 @@ export default class PlayerManager {
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist")
         
+        // If the player is dead, do nothing.
+        if(playerState.playerController.stateName === "Dead") return;
+
         if(!useSpecial) return
         let usedAbility = playerState.currentAbility?.useAbility()
         if(usedAbility) EffectManager.useTriggerEffectsOn(playerState, "player skill", playerBody, {mouseX: 0, mouseY: 0})
@@ -203,7 +229,7 @@ export default class PlayerManager {
      * @param roleId string to determine role
      * @param onlineMode boolean to determine whether to load data from firebase or not. True to load data from firebase. Default is true.
      */
-    private async initPlayerData(playerData: any, player: Player, IdToken: string, roleId: string = "", onlineMode: boolean=true){
+    private async initPlayerData(playerData: any, player: Player, roleId: string = "", onlineMode: boolean=true){
         if(playerData && onlineMode){
             this.initPlayerDataOnline(player, playerData, roleId)
         }else{
@@ -298,16 +324,17 @@ export default class PlayerManager {
         player.stat.add(roleStat)
     }
 
-    public async createPlayer(sessionId: string, isOwner: boolean, IdToken: string, gameManager?: GameManager, roleId?: string, onlineMode: boolean = true) {
+    public async createPlayer(sessionId: string, isOwner: boolean, playerData: any, gameManager?: GameManager, roleId?: string, onlineMode: boolean = true) {
         if(isOwner) this.gameManager.setOwner(sessionId)
 
-        let playerData = {username: "No Name"}
+        // let playerData = {username: "No Name"}
         console.log(`game mode online ${onlineMode}`)
-        if(onlineMode) playerData = await PlayerService.getPlayerData(IdToken)
+        //if(onlineMode) playerData = await PlayerService.getPlayerData(IdToken)
         let newPlayer = new Player(this.gameManager, playerData.username, undefined);
 
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;
+
         newPlayer.width = 46; // 49
         newPlayer.height = 42; // 44
 
@@ -317,7 +344,7 @@ export default class PlayerManager {
             newPlayer.y = playerSpawnPoint.y + (Math.random() * 20 - 10);
         } 
 
-        await this.initPlayerData(playerData, newPlayer, IdToken, roleId, onlineMode)
+        await this.initPlayerData(playerData, newPlayer, roleId, onlineMode);
 
         let body = Matter.Bodies.rectangle(newPlayer.x, newPlayer.y, newPlayer.width, newPlayer.height, {
             isStatic: false,
@@ -331,13 +358,15 @@ export default class PlayerManager {
             }
         })
 
+        // console.log(JSON.stringify(newPlayer.stat));
+
         newPlayer.setId(sessionId);
         newPlayer.setBody(body)
         this.gameManager.addGameObject(sessionId, newPlayer, body);
     } 
 
     public removePlayer(sessionId: string) {
-        this.gameManager.removeGameObject(sessionId);
+        return this.gameManager.removeGameObject(sessionId) as Player | undefined;
     }
 
     /**
@@ -472,6 +501,19 @@ export default class PlayerManager {
      */
     public splitXpToPlayersWithinRange(xp: number, x: number, y: number, range: number) {
         this.splitXpToPlayers(xp, this.getAllPlayersWithinRange(x, y, range));
+    }
+
+    /**
+     * Gives all the alive player's coins.
+     * @param coins The amount of coins to give.
+     */
+    public giveAllPlayersCoin(coins: number) {
+        this.gameManager.state.gameObjects.forEach((gameObject, key) => {
+            if(gameObject instanceof Player) {
+                if(gameObject.playerController.stateName !== "Dead")
+                    gameObject.coinsEarned += coins;
+            }
+        })
     }
 
     /**

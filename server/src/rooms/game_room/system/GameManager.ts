@@ -44,6 +44,8 @@ export default class GameManager {
     // Asset Set. Sent to clients to load their assets.
     private assetSet: Set<string> = new Set();
 
+    gameOver: boolean = false;
+
     constructor(state: State, options?: GameRoomOptions) {
         this.state = state;
         this.engine = Matter.Engine.create();
@@ -118,6 +120,7 @@ export default class GameManager {
      * @param id unique identifer for game object
      */
     public removeGameObject(id: string) {
+        let gameObject = this.state.gameObjects.get(id);
         this.state.gameObjects.delete(id);
 
         let body = this.matterBodies.get(id);
@@ -125,6 +128,7 @@ export default class GameManager {
             Matter.Composite.remove(this.world, body);
             this.matterBodies.delete(id);
         }
+        return gameObject;
     }
 
     public playerCount(){
@@ -165,6 +169,19 @@ export default class GameManager {
 
     public startGame() {
         // code to run when starting the game.
+    }
+
+    /** 
+     * Ends the game. Stopping all player movements. 
+     * Disconnecting all clients after 10 seconds.
+     * Closing game room.
+     *  */ 
+    public endGame() {
+        // End the game. Note that the server give the player coins 
+        // When they disconnect from the server.
+        setTimeout(() => {
+            this.gameOver = true;
+        }, 6000)
     }
 
     public getEngine() {

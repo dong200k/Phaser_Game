@@ -72,8 +72,30 @@ export default class DungeonManager {
         this.dungeon?.update(deltaT);
 
         // SPAM THE WAVES!!!
-        this.dungeon?.startNextWave();
+        if(this.dungeon && this.dungeon.hasNextWave()) {
+            this.dungeon.startNextWave();
+        }
+
+        // Check if the dungeon is over.
+        // A dungeon is over if there are no more waves, current wave is finished, and all monsters are killed.
+        if(this.dungeon && !this.dungeon.hasNextWave() && 
+            !this.dungeon.isConquered() && this.dungeon.waveEnded) {
+            let dungeonOver = true;
+            // Check if the are any more active monsters.
+            this.gameManager.gameObjects.forEach((obj) => {
+                if(obj instanceof Monster) {
+                    if(obj.isActive()) {
+                        dungeonOver = false;
+                    }
+                }
+            })
+            if(dungeonOver) {
+                this.dungeon.setConquered(true);
+                this.gameManager.endGame();
+            }
+        }
     }
+    
 
     private cleanUpMonsters() {
 

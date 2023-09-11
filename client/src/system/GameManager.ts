@@ -9,11 +9,12 @@ import GameObject from "../gameobjs/GameObject";
 import ClientSidePrediction from "./ClientSidePrediction";
 import Tile from "../gameobjs/Tile";
 import EventManager from "./EventManager";
-import PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
+import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
 import type MonsterState from "../../../server/src/rooms/game_room/schemas/gameobjs/monsters/Monster";
 import type ProjectileState from "../../../server/src/rooms/game_room/schemas/projectiles/Projectile";
 import type GameObjectState from "../../../server/src/rooms/game_room/schemas/gameobjs/GameObject";
-import EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
+import type EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
+import type DungeonState from "../../../server/src/rooms/game_room/schemas/dungeon/Dungeon";
 import { ColorStyle } from "../config";
 import InvisObstacle from "../gameobjs/InvisObstacle";
 import GameOverModal from "../UI/modals/GameOverModal";
@@ -29,6 +30,8 @@ export default class GameManager {
     private gameObjects: GameObject[] = [];
     private player1?: Player;
     private players: Player[] = [];
+    private spectating: boolean = false;
+    private spectatingIdx: number = 0;
 
     // ------- Inputs ---------
     private upKey?: Phaser.Input.Keyboard.Key;
@@ -76,6 +79,24 @@ export default class GameManager {
         this.syncGameObjectVisibility();
         this.syncGameObjectActive();
         this.updateFloatingTexts();
+    }
+
+    /** Changes the value of spectating. */
+    public setSpectating(value: boolean) {
+        this.spectating = value;
+    }
+
+    /** Changes the player that is being watched. */
+    private rotateSpectateTarget() {
+        // If there are no more player's do nothing.
+        if(this.players.length === 0) return;
+
+        // Changes the player to spectate.
+        this.spectatingIdx += 1;
+        if(this.spectatingIdx >= this.players.length) {
+            this.spectatingIdx = 0;
+        }
+        this.scene.cameras.main.startFollow(this.players[this.spectatingIdx]);
     }
 
     /**
@@ -162,7 +183,13 @@ export default class GameManager {
         })
 
         this.scene.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
-            if(pointer.leftButtonReleased()) this.mouseDown = false;
+            if(pointer.leftButtonReleased()) {
+                this.mouseDown = false;
+                if(this.spectating) {
+                    // If spectating change perspective.
+                    this.rotateSpectateTarget();
+                }
+            }
         })
     }
 
@@ -237,9 +264,41 @@ export default class GameManager {
     }
 
     /** Called when the dungeon is first created on the server */
-    private onChangeDungeon = (currentValue: any) => {
+    private onChangeDungeon = (currentValue: DungeonState) => {
         currentValue.listen("tilemap", this.onChangeTilemap);
         currentValue.listen("playerBounds", this.onChangePlayerBounds);
+        // Workaround to send the wave count when the hud is first created.
+        EventManager.eventEmitter.off("HUDCreate");
+        EventManager.eventEmitter.once("HUDCreate", () => {
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
+                wave: currentValue.currentWave + 1,
+                maxWave: currentValue.maxWave,
+            })
+        })
+        currentValue.listen("currentWave", (currentWave) => {
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
+                wave: currentWave + 1,
+            })
+        })
+        currentValue.listen("maxWave", (maxWave) => {
+            console.log("MAX WAVE: ", maxWave);
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
+                maxWave: maxWave,
+            })
+        })
+        currentValue.listen("conquered", (conquered) => {
+            if(conquered) {
+                console.log("Dungeon Conquered !!!");
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.PLAYER_DIED, {
+                    coins: this.player1 ? this.player1.getPlayerState().coinsEarned : 0,
+                    monstersKilledByYou: this.player1 ? this.player1.getPlayerState().monstersKilled: 0,
+                    totalMonstersKilled: this.gameRoom.state.monstersKilled,
+                    timeSurvivedMs: this.player1 ? new Date().getTime() - this.player1.getPlayerState().joinTime : 0,
+                    title: "Dungeon Conquered!",
+                    showSpectateButton: false,
+                });
+            }
+        })
     }
 
     private onChangePlayerBounds = (currentValue: any) => {
@@ -394,6 +453,10 @@ export default class GameManager {
                     gameObject.serverLevel = playerState.level;
                     SoundManager.getManager().play("level_up");
                 }
+                // Update coin display.
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
+                    coins: playerState.coinsEarned,
+                })
             }
             // Updates the Peer Info Display. This display popup when holding SHIFT.
             EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
@@ -571,12 +634,21 @@ export default class GameManager {
     private playerControllerOnChange(player: Player, playerState: PlayerState, changes: any) {
         let currentState = playerState.playerController.stateName;
         if(currentState === "Dead") {
-            // player.play("death");
+            player.forcePlay("death");
             this.soundManager.play("player_death");
-            // Open up the game over screen.
-            setTimeout(() => {
-                EventManager.eventEmitter.emit(EventManager.HUDEvents.PLAYER_DIED);
-            }, 1000);
+            // Player 1 gets to see the screen.
+            if(this.player1 === player) {
+                // Open up the game over screen.
+                setTimeout(() => {
+                    EventManager.eventEmitter.emit(EventManager.HUDEvents.PLAYER_DIED, {
+                        coins: this.player1 ? this.player1.getPlayerState().coinsEarned : 0,
+                        monstersKilledByYou: this.player1 ? this.player1.getPlayerState().monstersKilled: 0,
+                        totalMonstersKilled: this.gameRoom.state.monstersKilled,
+                        timeSurvivedMs: this.player1 ? new Date().getTime() - this.player1.getPlayerState().joinTime : 0,
+                    });
+                }, 1000);
+            }
+            
         }
     }
 

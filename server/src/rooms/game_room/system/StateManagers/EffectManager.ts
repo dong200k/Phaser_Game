@@ -29,6 +29,9 @@ export default class EffectManager {
         // loop through gameManager's gameObjects.
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Entity){
+                if(gameObject instanceof Player) {
+                    if(gameObject.playerController.stateName === "Dead") return;
+                }
                 EffectManager.updateEffectsOn(gameObject, deltaT);
             }
         })

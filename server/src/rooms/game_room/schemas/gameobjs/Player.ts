@@ -84,6 +84,13 @@ export default class Player extends Entity {
     @type('number') xp: number;
     @type('number') maxXp: number;
 
+    // Coins
+    @type('number') coinsEarned: number = 0;
+    @type('number') monstersKilled: number = 0;
+
+    /** The time this player was created. */
+    @type("number") joinTime = new Date().getTime();
+
     /** Upgrade information. Used for the player to select level up upgrades. */
     // @filter((client, value: UpgradeInfo, root) => client.sessionId === value.playerId)
     @type(UpgradeInfo) upgradeInfo: UpgradeInfo;

@@ -1,8 +1,10 @@
-import { Client, Room, matchMaker } from "colyseus";
+import { Client, Room, ServerError, matchMaker } from "colyseus";
 import State from "./schemas/State";
 import GameManager from "./system/GameManager";
 import ReconciliationInfo from "./schemas/ReconciliationInfo";
 import globalEventEmitter from "../../util/EventUtil";
+import { IncomingMessage } from "http";
+import PlayerService from "../../services/PlayerService";
 
 export interface GameRoomOptions {
     /** The name of the selected dungeon. */
@@ -97,6 +99,7 @@ export default class GameRoom extends Room<State> {
         // Game Loop
         this.setSimulationInterval((deltaT) => {
             this.timeTillNextTick -= deltaT;
+            // Runs the server ticks.
             while(this.timeTillNextTick <= 0) {
                 if(this.timeTillNextTick < -this.timePerTick * 5) {
                     console.warn(`Game Room: ${this.roomId} is more than 5 ticks behind, dropping ticks.`);
@@ -105,6 +108,8 @@ export default class GameRoom extends Room<State> {
                 this.timeTillNextTick += this.timePerTick;
                 this.fixedTick(this.timePerTick);
             }
+            // Game Over Check. Close the GameRoom.
+            if(this.gameManager.gameOver) this.disconnect();
         }, this.simulationInterval);
     }
 
@@ -115,6 +120,7 @@ export default class GameRoom extends Room<State> {
         this.broadcastPatch(); //send patch updates to clients.
     }
 
+    /** Called when the game room finish preloading. This will process all the clients that have joined. */
     private processWaitingClients() {
         for(let i = this.waitingClients.length - 1; i >= 0; i--) {
             let waitingClient = this.waitingClients.at(i);
@@ -128,33 +134,51 @@ export default class GameRoom extends Room<State> {
                     client.send("loadAssets", assetList);
                     waitingClient.state = "loading";
                 } else if(waitingClient.state === "loading") {
-
+                    // Client is loading. Very nice.
                 } else if(waitingClient.state === "ready") {
                     let options = waitingClient.options;
                     // Add a new player to the room state. The first player is the owner of the room.
-                    this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.IdToken, this.gameManager, options.roleId, options.onlineMode).then(() => {
+                    this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.playerData, this.gameManager, options.roleId, options.onlineMode).then(() => {
                         this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));
                     });
                     this.waitingClients.splice(i, 1);
                 }
             }
-
         }
     }
 
-    // update(deltaT:number) {
-    //     this.gameManager?.update(deltaT);
-    // }
-
-    onJoin(client: Client, options: any) {
+    onJoin(client: Client, options: any, auth: any) {
+        options.playerData = auth;
         this.waitingClients.push({client, options, state: "justjoined"});
+    }
+
+    /**
+     * Called before onJoin to authenticate the client.
+     */
+    async onAuth(client: Client, options: any, request?: IncomingMessage | undefined) {
+        // Authenticate the user before continuing. This will be called before onJoin.
+        const playerData = await PlayerService.getPlayerData(options.IdToken);
+        if(playerData) {
+            return playerData;
+        } else {
+            throw new ServerError(400, "Bad ID Token: Player data not found!");
+        }
     }
 
     onLeave(client: Client) {
         // removes player from list of gameobjects
-        this.gameManager.getPlayerManager().removePlayer(client.sessionId);
+        let player = this.gameManager.getPlayerManager().removePlayer(client.sessionId);
         for(let i = this.state.reconciliationInfos.length - 1; i >= 0; i--) {
             if(this.state.reconciliationInfos[i].clientId === client.sessionId) this.state.reconciliationInfos.deleteAt(i);
+        }
+        if(player !== undefined) {
+            // Give the player coins.
+            let coinsEarned = player.coinsEarned;
+            PlayerService.addCoins(client.auth.uid, coinsEarned).catch((e) => {
+                console.log("Error Adding Coins: ", e);
+            });
+        } else {
+            console.log("Error: Client has no Player object.");
         }
     }
 

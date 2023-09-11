@@ -86,7 +86,7 @@ export default class SettingsScreen extends RexUIBase{
         })
         let initialMasterVolumePercent = Math.floor(SettingsManager.getManager().getMasterVolume() * 100);
         masterVolumeSizer.add(UIFactory.createTextBoxPhaser(this.scene, `Master Volume: ${initialMasterVolumePercent}`).setName("masterVolumeText"), {
-            expand: true,
+            expand: false,
         });
         masterVolumeSizer.add(this.rexUI.add.slider({
             width: 350,
@@ -114,7 +114,7 @@ export default class SettingsScreen extends RexUIBase{
         })
         let initialSoundEffectsVolumePercent = Math.floor(SettingsManager.getManager().getSoundEffectsVolume() * 100);
         soundEffectsVolumeSizer.add(UIFactory.createTextBoxPhaser(this.scene, `Sound Effects: ${initialSoundEffectsVolumePercent}`).setName("soundEffectsVolumeText"), {
-            expand: true,
+            expand: false,
         });
         soundEffectsVolumeSizer.add(this.rexUI.add.slider({
             width: 350,
@@ -142,7 +142,7 @@ export default class SettingsScreen extends RexUIBase{
         })
         let initialBackgroundMusicVolumePercent = Math.floor(SettingsManager.getManager().getBackgroundMusicVolume() * 100);
         backgroundMusicVolumeSizer.add(UIFactory.createTextBoxPhaser(this.scene, `Background Music: ${initialBackgroundMusicVolumePercent}`).setName("backgroundMusicVolumeText"), {
-            expand: true,
+            expand: false,
         });
         backgroundMusicVolumeSizer.add(this.rexUI.add.slider({
             width: 350,
