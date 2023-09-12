@@ -15,6 +15,8 @@ import ChatBox from "../UI/ChatBox";
 import RoleService from "../services/RoleService";
 import { IRole } from "../../../server/src/rooms/game_room/system/interfaces";
 import ClientFirebaseConnection from "../firebase/ClientFirebaseConnection";
+import type PlayerState from "../../../server/src/rooms/waiting_room/schemas/Player";
+import LoadSystem from "../system/LoadSystem";
 
 interface Stats {
     hp?: number;
@@ -82,6 +84,10 @@ export default class RoomScene extends Phaser.Scene {
 
     private startGameOrReadyButton!: Button;
 
+    // Load System. 
+    private loadSystem!: LoadSystem;
+    private dungeonDataLoaded: boolean = false;
+
     // Plugin for UI elements that will be injected at scene creation.
     rexUI!: UIPlugins;
 
@@ -127,13 +133,14 @@ export default class RoomScene extends Phaser.Scene {
     }
 
     preload() {
-        let iconBorder = new Phaser.GameObjects.Graphics(this);
-        iconBorder.lineStyle(10, ColorStyle.neutrals.hex[100]);
-        iconBorder.strokeRoundedRect(0, 0, 128, 128, 10);
-        iconBorder.generateTexture("RoleModalIconBorder", 128, 128);
+        // let iconBorder = new Phaser.GameObjects.Graphics(this);
+        // iconBorder.lineStyle(10, ColorStyle.neutrals.hex[100]);
+        // iconBorder.strokeRoundedRect(0, 0, 128, 128, 10);
+        // iconBorder.generateTexture("RoleModalIconBorder", 128, 128);
     }
 
     async create() {
+        this.loadSystem = new LoadSystem(this);
         this.playersInRoom = 0;
         this.roomModalData.roleData = await this.getRoleData()
         this.initializeUI();
@@ -307,7 +314,7 @@ export default class RoomScene extends Phaser.Scene {
     /** Slides the chatbox out of view. */
     private hideChatBox() {
         let chatBoxSizer = this.chatBox.getChatBoxSizer();
-        chatBoxSizer.moveTo(500, -chatBoxSizer.width/2, this.game.scale.height - chatBoxSizer.height/2 - 10, "Back");
+        chatBoxSizer.moveTo(0, -chatBoxSizer.width/2, this.game.scale.height - chatBoxSizer.height/2 - 10, "Back");
     }
 
     /** Called when the start/ready button has been clicked. */
@@ -368,11 +375,15 @@ export default class RoomScene extends Phaser.Scene {
         this.playerList.updatePlayerList(this.playerListData);
     }
 
+    /** Called when the player switches to the room scene. */
     private joinRoom() {
+        this.showLoadingScreen();
+
         if(!this.waitingRoom) {
             ClientManager.getClient().joinWaitingRoom().then((room) => {
                 this.waitingRoom = room;
                 this.roomInfo.update({roomID: room.id});
+                this.dungeonDataLoaded = false;
                 this.onJoin();
             }).catch(e => {
                 console.log("Failed to join waiting room ", e);
@@ -382,62 +393,11 @@ export default class RoomScene extends Phaser.Scene {
 
     private onJoin() {
         this.playersInRoom = 0;
+
         if(this.waitingRoom) {
-            this.waitingRoom.state.players.onAdd = (player, key:string) => {
+            this.waitingRoom.state.players.onAdd = (player, key:string) => { this.onAddPlayer(player, key) }
+            this.waitingRoom.state.players.onRemove = (player, key:string) => { this.onRemovePlayer(player, key) }
 
-                this.playerListData.items.push({
-                    name: player.name,
-                    imageKey: "",
-                    key: key,
-                    level: 1,
-                    role: this.roomModalData.roleData[player.role].name,
-                    status: player.isLeader ? "Leader": player.isReady ? "Ready" : "",
-                })
-
-                this.updatePlayerList();
-
-                player.onChange = () => {
-                    //For the player of this client.
-                    if(key === this.waitingRoom?.sessionId) {
-                        this.leader = player.isLeader;
-                        this.ready = player.isReady;
-                        this.selectedRole = player.role;
-                        this.selectedPet = player.pet;
-                        this.rolePetDungeonDisplay.updateDisplay({
-                            roleName: this.roomModalData.roleData[this.selectedRole].name,
-                            petName: this.roomModalData.petData[this.selectedPet].name,
-                        })
-                        let roleId = this.roomModalData.roleData[this.selectedRole].id
-                        ClientFirebaseConnection.getConnection().setRole(roleId)
-                        this.startGameOrReadyButton.setText(this.leader ? "Start Game" : this.ready ? "Unready" : "Ready");
-                    }
-
-                    this.playerListData.items.forEach((item) => {
-                        if(item.key === key) {
-                            item.name = key === this.waitingRoom?.sessionId ? player.name + " (You)": player.name;
-                            item.imageKey = "";
-                            item.level = player.level;
-                            item.role = this.roomModalData.roleData[player.role].name;
-                            item.status = player.isLeader ? "Leader": player.isReady ? "Ready" : "";
-                        }
-                    })
-                    //Update PlayerList
-                    this.updatePlayerList();
-                }
-
-                //console.log(player, "added at ", key);
-                this.playersInRoom++;
-                this.updatePlayersInRoom(this.playersInRoom);
-            }
-            this.waitingRoom.state.players.onRemove = (player, key:string) => {
-                //console.log(player, "removed at ", key);
-                this.playerListData.items = this.playerListData.items.filter((item) => {
-                    return item.key !== key;
-                })
-                this.updatePlayerList();
-                this.playersInRoom--;
-                this.updatePlayersInRoom(this.playersInRoom);
-            }
             // ------- JOIN GAME MESSAGE FROM SERVER -----------
             this.waitingRoom.onMessage("joinGame", (message) => {
                 // Sets the game room Id for the client.
@@ -454,6 +414,8 @@ export default class RoomScene extends Phaser.Scene {
             })
 
             this.waitingRoom.onMessage("dungeonData", (message) => {
+                // Loaded before the player can start the game.
+                this.dungeonDataLoaded = true;
                 this.roomModalData.dungeonData = message;
                 if(this.roomModalData.dungeonData.length > 0) {
                     this.rolePetDungeonDisplay.updateDisplay({
@@ -466,28 +428,112 @@ export default class RoomScene extends Phaser.Scene {
                 console.log(`code: ${code}, message: ${message}`);
             })
 
-            this.waitingRoom.state.onChange = () => {
-                // Update max players in room number.
-                this.roomInfo.update({
-                    maxPlayersInRoom: this.waitingRoom?.state.maxPlayerCount,
-                })
-                
-                // Update dungeon name.
-                let dungeonName = this.waitingRoom?.state.dungeon;
-                if(dungeonName) {
-                    this.roomModalData.dungeonData.forEach((data, idx) => {
-                        if(data.name === dungeonName) {
-                            this.selectedDungeon = idx;
+            this.waitingRoom.state.onChange = () => { this.waitingRoomStateOnChange() }
+        }
+    }
+
+    private showLoadingScreen() {
+        this.playerList.hide();
+        this.hideChatBox();
+        
+        this.loadSystem.addLoadItem({
+            name: "Loading...",
+            loadFunction: async () => { 
+                // Waits for the load to finish.
+                await new Promise<void>((resolve, reject) => {
+                    const intervalIdx = setInterval(() => {
+                        // Periodically checks the loadCompleteFlag.
+                        if(this.dungeonDataLoaded === true) {
+                            clearInterval(intervalIdx);
+                            resolve();
                         }
-                    })
-                } else {
-                    this.selectedDungeon = 0;
-                }
-                this.rolePetDungeonDisplay.updateDisplay({
-                    dungeonName: dungeonName,
+                    }, 500)
                 })
             }
+        })
+
+        this.loadSystem.startLoad().then(() => {
+            this.playerList.show();
+            this.showChatBox();
+        });
+    }
+
+    private onAddPlayer(player: PlayerState, key:string) {
+        this.playerListData.items.push({
+            name: player.name,
+            imageKey: "",
+            key: key,
+            level: 1,
+            role: this.roomModalData.roleData[player.role].name,
+            status: player.isLeader ? "Leader": player.isReady ? "Ready" : "",
+        })
+
+        this.updatePlayerList();
+
+        player.onChange = () => {
+            //For the player of this client.
+            if(key === this.waitingRoom?.sessionId) {
+                this.leader = player.isLeader;
+                this.ready = player.isReady;
+                this.selectedRole = player.role;
+                this.selectedPet = player.pet;
+                this.rolePetDungeonDisplay.updateDisplay({
+                    roleName: this.roomModalData.roleData[this.selectedRole].name,
+                    petName: this.roomModalData.petData[this.selectedPet].name,
+                })
+                let roleId = this.roomModalData.roleData[this.selectedRole].id
+                ClientFirebaseConnection.getConnection().setRole(roleId)
+                this.startGameOrReadyButton.setText(this.leader ? "Start Game" : this.ready ? "Unready" : "Ready");
+            }
+
+            this.playerListData.items.forEach((item) => {
+                if(item.key === key) {
+                    item.name = key === this.waitingRoom?.sessionId ? player.name + " (You)": player.name;
+                    item.imageKey = "";
+                    item.level = player.level;
+                    item.role = this.roomModalData.roleData[player.role].name;
+                    item.status = player.isLeader ? "Leader": player.isReady ? "Ready" : "";
+                }
+            })
+            //Update PlayerList
+            this.updatePlayerList();
         }
+
+        //console.log(player, "added at ", key);
+        this.playersInRoom++;
+        this.updatePlayersInRoom(this.playersInRoom);
+    }
+
+    private onRemovePlayer(player: PlayerState, key:string) {
+        //console.log(player, "removed at ", key);
+        this.playerListData.items = this.playerListData.items.filter((item) => {
+            return item.key !== key;
+        })
+        this.updatePlayerList();
+        this.playersInRoom--;
+        this.updatePlayersInRoom(this.playersInRoom);
+    }
+
+    private waitingRoomStateOnChange() {
+        // Update max players in room number.
+        this.roomInfo.update({
+            maxPlayersInRoom: this.waitingRoom?.state.maxPlayerCount,
+        })
+
+        // Update dungeon name.
+        let dungeonName = this.waitingRoom?.state.dungeon;
+        if(dungeonName) {
+            this.roomModalData.dungeonData.forEach((data, idx) => {
+                if(data.name === dungeonName) {
+                    this.selectedDungeon = idx;
+                }
+            })
+        } else {
+            this.selectedDungeon = 0;
+        }
+        this.rolePetDungeonDisplay.updateDisplay({
+            dungeonName: dungeonName,
+        })
     }
 
     private clearPlayerListData() {

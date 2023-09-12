@@ -50,7 +50,7 @@ export default class LoadSystem {
         loadingScreen.updateProgressBarText("Loading Complete!");
         loadingScreen.updateProgressBarValue(1);
         await loadingScreen.waitFor(500);
-        loadingScreen.destroy();
+        loadingScreen.destroy(200);
     }
 
     /**

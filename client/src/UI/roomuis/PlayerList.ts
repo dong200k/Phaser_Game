@@ -61,7 +61,7 @@ export default class PlayerList extends RexUIBase {
     }
 
     public hide() {
-        this.playerListSizer.moveTo(500, this.scene.game.scale.width + this.playerListSizer.width / 2, this.scene.game.scale.height / 2, "Back");
+        this.playerListSizer.moveTo(0, this.scene.game.scale.width + this.playerListSizer.width / 2, this.scene.game.scale.height / 2, "Back");
     }
 
     public show() {
