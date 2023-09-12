@@ -1,8 +1,11 @@
-import { Schema, type } from '@colyseus/schema';
+import { DataChange, Schema, type } from '@colyseus/schema';
 import GameObject from './GameObject';
 
 export type statType = typeof Stat.defaultStatObject
-type keyStat = keyof statType
+export type keyStat = keyof statType
+type IChanges = {
+    [key in keyof statType]: boolean
+}
 export default class Stat extends Schema {
     @type('number') hp!: number;
     @type('number') maxHp!: number;
@@ -39,6 +42,47 @@ export default class Stat extends Schema {
 
     @type('number') level!: number;
 
+    private listeners: Map<string, {listener: Function, statsToListen: Set<keyStat>}> = new Map()
+    private changes: IChanges = this.getInitialChanges()
+    
+    /** 
+     * Calls listeners when corresponding stat changes. For example when attack speed changes, all listeners listening for attack speed gets called.
+     * Called when stat is modified by add mul etc., even if it remains the same after modification. */
+    onChangeStat(){
+        // For each listener if any of the stat it is listening for changed call the listener
+        this.listeners.forEach((val, key)=>{
+            let {listener, statsToListen} = val
+            Object.entries(this.changes).forEach(([key, val]) => {
+                if(val && statsToListen.has(key as keyStat)) listener(this)
+            });
+        })
+
+        // Set stats to not changed
+        Object.entries(this.changes).forEach(([key, val]) => {
+            this.changes[key as keyStat] = false
+        });
+    }
+
+    /**
+     * Adds a listener to listen for changes of different attributes of a Stat class.
+     * @param key unique key to track the listener
+     * @param listener function that gets called when correct stats changes.
+     * @param statsToListen determines which stat to listen for. E.g. ["attackSpeed", "maxMana"] means when those stat changes listener will be called.
+     */
+    addListener(key: string, listener: Function, statsToListen: Set<keyStat>){
+        this.listeners.set(key, {listener, statsToListen})
+    }
+
+    /**
+     * Removes listener with the corresponding key. 
+     * 
+     * Note: Be sure to remove listeners after finishing using them.
+     * @param key unique key to track the listener
+     */
+    removeListener(key: string){
+        this.listeners.delete(key)
+    }
+
     static defaultStatObject = {
         maxHp: 100, maxMana: 100,
         hp: 100, mana: 100, 
@@ -62,48 +106,54 @@ export default class Stat extends Schema {
             if(val && !isNaN(val)) this[key as keyStat] = Number(val)
             else this[key as keyStat] = 0
         })
-        // this.hp = stat.hp;
-        // this.maxHp = stat.maxHp;
-        // this.mana = stat.mana;
-        // this.maxMana = stat.maxMana;
-
-        // this.armor = stat.armor;
-        // this.magicResist = stat.magicResist;
-
-        // this.damagePercent = stat.damagePercent
-
-        // this.attack = stat.attack;
-        // this.attackPercent = stat.attackPercent;
-        // this.armorPen = stat.armorPen;
-
-
-        // this.magicAttack = stat.magicAttack;
-        // this.magicAttackPercent = stat.magicAttackPercent;
-        // this.magicPen = stat.magicPen;
-
-        // this.critRate = stat.critRate;
-        // this.critDamage = stat.critDamage;
-
-        // this.attackRange = stat.attackRange;
-        // this.attackRangePercent = stat.attackRangePercent;
-
-        // this.attackSpeed = stat.attackSpeed;
-        // this.attackSpeedPercent = stat.attackSpeedPercent;
-
-        // this.speed = stat.speed;
-
-        // this.lifeSteal = stat.lifeSteal;
-        // this.lifeStealPercent = stat.lifeStealPercent
-
-        // this.level = stat.level;
     }
 
+    getInitialChanges(){
+        let changes: IChanges = {
+            maxHp: false,
+            maxMana: false,
+            hp: false,
+            mana: false,
+            armor: false,
+            magicResist: false,
+            damagePercent: false,
+            attack: false,
+            armorPen: false,
+            attackPercent: false,
+            magicAttack: false,
+            magicAttackPercent: false,
+            magicPen: false,
+            critRate: false,
+            critDamage: false,
+            attackRange: false,
+            attackRangePercent: false,
+            attackSpeed: false,
+            attackSpeedPercent: false,
+            speed: false,
+            lifeSteal: false,
+            lifeStealPercent: false,
+            level: false
+        }
+        return changes
+    }
+
+    setAttributeChanged(attribute: keyStat){
+        this.changes[attribute] = true
+    }
+
+    setAllAttributeChanged(){
+        Object.entries(this.changes).forEach(([key, val])=>{
+            this.changes[key as keyStat] = true
+        })
+    }
     /**
      * Copy the values provided into this Stat.
      * @param stat The stat.
      */
     public setStats(stat: Partial<statType>) {
         Object.assign(this, stat);
+        this.setAllAttributeChanged()
+        this.onChangeStat()
     }
 
     /**
@@ -156,7 +206,9 @@ export default class Stat extends Schema {
     public mul(scalar: number){
         Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
             this[key as keyStat] = this[key as keyStat] * scalar
+            this.setAttributeChanged(key as keyStat)
         })
+        this.onChangeStat()
     }
 
     /**
@@ -182,9 +234,11 @@ export default class Stat extends Schema {
             this.mana += stat.maxMana;
         Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
             this[key as keyStat] = this[key as keyStat] + stat[key as keyStat]
+            this.setAttributeChanged(key as keyStat)
         })
 
         this.fixOverflow();
+        this.onChangeStat()
     }
 
     /**
@@ -193,9 +247,11 @@ export default class Stat extends Schema {
     public sub(stat: Stat){
         Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
             this[key as keyStat] = this[key as keyStat] - stat[key as keyStat]
+            this.setAttributeChanged(key as keyStat)
         })
 
         this.fixOverflow();
+        this.onChangeStat()
     }
 
     /**
@@ -205,7 +261,9 @@ export default class Stat extends Schema {
     public addScalar(scalar: number){
         Object.entries(Stat.defaultStatObject).forEach(([key, val])=>{
             this[key as keyStat] = this[key as keyStat] + scalar
+            this.setAttributeChanged(key as keyStat)
         })
+        this.onChangeStat()
     }
 
     /** Fixes overflow problem when hp is greater than maxHp, and 

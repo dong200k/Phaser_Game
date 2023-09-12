@@ -38,7 +38,6 @@ export default class PlayerManager {
         this.gameManager = gameManager
     }   
 
-    private bowEffectCount = 0
     /**
      * Updates this PlayerManager.
      * @param deltaT deltaT seconds.

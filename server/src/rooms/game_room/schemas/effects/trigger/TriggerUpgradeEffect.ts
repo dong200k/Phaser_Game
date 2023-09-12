@@ -5,6 +5,9 @@ import EffectLogicManager from "../../../system/EffectLogic/EffectLogicManager";
 import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
 import GameManager from "../../../system/GameManager";
 import EffectLogic from "../../../system/EffectLogic/EffectLogic";
+import Stat, { keyStat } from "../../gameobjs/Stat";
+import { getFinalAttackCooldown } from "../../../system/Formulas/formulas";
+import MathUtil from "../../../../../util/MathUtil";
 
 /** TriggerEffect, but with cooldown. Used for Weapon Upgrade and Artifact Upgrade trees logics that are triggered by player input. */
 export default class TriggerUpgradeEffect extends TriggerEffect {
@@ -21,6 +24,7 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
     collisionGroup: number
     tree?: WeaponUpgradeTree
     effectLogic?: EffectLogic
+    originalCooldownTime: number
 
     constructor(effectLogicId: string, cooldown:number=1000, type: string, doesStack: boolean, collisionGroup: number) {
         super(type);
@@ -30,6 +34,35 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
         this.effectLogicId = effectLogicId
         this.doesStack = doesStack
         this.collisionGroup = collisionGroup
+        this.originalCooldownTime = cooldown
+    }
+
+    protected onAddToEntity(entity: Entity): void {
+        super.onAddToEntity(entity)
+        this.initListeners()
+        this.changeCooldown(this)(entity.stat)
+    }
+
+    initListeners(){
+        // Listen for attack speed changes to update cooldown
+        let key = MathUtil.uid()
+        let statsToListen = new Set<keyStat>()
+        statsToListen.add("attackSpeed")
+        statsToListen.add("attackSpeedPercent")
+        this.getEntity()?.stat.addListener(key, this.changeCooldown(this), statsToListen)
+        
+    }
+
+    /** Changes cooldown based on stat. This should be called in a listener to player's stat changes. */
+    public changeCooldown(triggerUpgradeEffect: TriggerUpgradeEffect){
+        return (stat: Stat)=>{
+            let newCooldownTime = getFinalAttackCooldown(stat, triggerUpgradeEffect.originalCooldownTime)
+            if(triggerUpgradeEffect.cooldown.remainingTime > newCooldownTime) {
+                triggerUpgradeEffect.cooldown.remainingTime = newCooldownTime
+            }
+            triggerUpgradeEffect.cooldown.time = newCooldownTime
+            console.log(`cooldown changed: from ${triggerUpgradeEffect.originalCooldownTime} to ${newCooldownTime}`)
+        }
     }
 
     /**
