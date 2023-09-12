@@ -9,6 +9,7 @@ import EventManager from '../system/EventManager';
 import LoadingScreen from '../UI/gameuis/LoadingScreen';
 import AssetService from '../services/AssetService';
 import AssetManager from '../system/AssetManager';
+import LoadSystem from '../system/LoadSystem';
 
 interface MobAsset {
     key: string;
@@ -28,15 +29,12 @@ export default class GameScene extends Phaser.Scene {
     private gameRoom?: Colyseus.Room;
     private gameManager?: GameManager;
 
-     // ------- loading screen -------
-     private loadingScreen?: LoadingScreen;
-     private loading: boolean;
-     private loadingProgress: number;
+    // ------- loading screen -------
+    private loadSystem!: LoadSystem;
+    private loadFinished: boolean = false; // Flag that keep track of the loading status.
 
     constructor() {
         super(SceneKey.GameScene);
-        this.loading = true;
-        this.loadingProgress = 0;
     }
 
     init () {
@@ -44,12 +42,12 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
+        this.loadSystem = new LoadSystem(this);
         this.initializeListeners();
         this.joinGameRoom();
     }
 
     public initializeListeners() {
-        
         EventManager.eventEmitter.on(EventManager.GameEvents.LEAVE_GAME, this.leaveGame, this);
         EventManager.eventEmitter.on(EventManager.GameEvents.SPECTATATE, this.spectate, this);
         this.events.on("shutdown", () => {
@@ -67,26 +65,6 @@ export default class GameScene extends Phaser.Scene {
         this.events.on("wake", () => {
             this.joinGameRoom();
         })
-        this.load.on("progress", (value: number) => {
-            // console.log(value);
-            this.loadingScreen?.updateProgressBarValue(value);
-        })
-        this.load.on("fileprogress", (file: Phaser.Loader.File) => {
-            // console.log(file.key);
-            this.loadingScreen?.updateProgressBarText(file.key);
-        })
-        this.load.on("complete", () => {
-            console.log("loading complete");
-            setTimeout(() => {
-                if(this.gameRoom) {
-                    this.gameRoom.send("loadAssetComplete");
-                    // Process game start.
-                    this.loadingScreen?.setVisible(false);
-                    this.cameras.main.setZoom(2);
-                    this.showHUD();
-                }
-            }, 500);
-        })
     }
 
     /** Clean up the resources used by this GameScene. 
@@ -100,7 +78,6 @@ export default class GameScene extends Phaser.Scene {
             this.tweens.killAll();
             this.gameManager = undefined;
             this.gameRoom = undefined;
-            this.loadingScreen = undefined;
             let switchToSceneKey = SceneKey.MenuScene;
             if(ClientManager.getClient().isConnectedToWaitingRoom())
                 switchToSceneKey = SceneKey.RoomScene;
@@ -118,7 +95,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(time: number, deltaT: number) {
-        this.gameManager?.update(time, deltaT);
+        if(this.loadFinished) this.gameManager?.update(time, deltaT);
     }
 
     public showHUD() {
@@ -130,20 +107,12 @@ export default class GameScene extends Phaser.Scene {
     }
 
     private joinGameRoom() {
+        this.loadFinished = false;
         ClientManager.getClient().joinGameRoom().then((room) => {
             this.gameRoom = room;
 
             // Reset the HUD.
             EventManager.eventEmitter.emit(EventManager.HUDEvents.RESET_HUD);
-
-            // Reset the camera when the loading screen is showing.
-            this.cameras.main.setZoom(1);
-            this.cameras.main.stopFollow();
-            this.cameras.main.setScroll(0, 0);
-
-            // Show loading screen when loading assets.
-            this.loadingScreen = new LoadingScreen(this);
-            this.loadingScreen.setVisible(true);
 
             // Create listeners for the new gameroom.
             this.initializeGameRoomListeners(this.gameRoom);
@@ -156,10 +125,24 @@ export default class GameScene extends Phaser.Scene {
     }
 
     private initializeGameRoomListeners(gameRoom: Colyseus.Room) {
-        gameRoom.onMessage("loadAssets", async (assets) => {
+        gameRoom.onMessage("loadAssets", (assets) => {
             console.log(assets);
-            await AssetManager.putAssetsInLoad(this, assets);
-            this.load.start();
+            // Create load item for grabbing online asset documents.
+            this.loadSystem.addLoadItem({
+                name: "Grabbing Assets...",
+                loadFunction: () => AssetManager.putAssetsInLoad(this, assets),
+            })
+            // Create load item for running the phaser loader.
+            this.loadSystem.addLoadItemPhaserLoader(this, "Loading Assets...");
+            this.loadSystem.startLoad().then(() => {
+                // Done Loading! We can start the game.
+                if(this.gameRoom) {
+                    this.gameRoom.send("loadAssetComplete");
+                    this.cameras.main.setZoom(2);
+                    this.showHUD();
+                    this.loadFinished = true;
+                }
+            })
         })
 
         gameRoom.onLeave((code) => this.onLeaveHandler(code));

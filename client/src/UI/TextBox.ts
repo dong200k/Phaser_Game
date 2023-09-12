@@ -20,6 +20,7 @@ export default class TextBox extends Phaser.GameObjects.DOMElement implements La
         });
         this.fontType = fontType;
         this.divElement = this.node as HTMLDivElement;
+        this.divElement.style.lineHeight = "1.25";
         this.setOrigin(0.5, 0.5);
         this.setColor(color);
         this.setText(text);

@@ -24,6 +24,7 @@ export default class TextBoxRex extends OverlapSizer {
         this.domElementBorder = this.scene.add.rectangle(0, 0, 2, 2, 0, 0); // Used as a trick to layout the DOM Element in RexUI.
         this.fontType = fontType;
         this.divElement = this.domElement.node as HTMLDivElement;
+        this.divElement.style.lineHeight = "1.25";
 
         this.add(this.domElementBorder, {expand: false});
         this.add(this.domElement, {expand: false});

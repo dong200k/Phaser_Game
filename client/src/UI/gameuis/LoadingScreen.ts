@@ -44,6 +44,14 @@ export default class LoadingScreen extends RexUIBase {
         this.screenSizer.setDepth(1000);
     }
 
+    public layout() {
+        this.screenSizer.layout();
+    }
+
+    /** Fade out destroy. */
+    public destroy(ms: number = 500) {
+        this.screenSizer.fadeOutDestroy(ms);
+    } 
     /**
      * Updates the progress bar's value.
      * @param value The value of the progress bar, from 0 to 1.
@@ -59,14 +67,24 @@ export default class LoadingScreen extends RexUIBase {
      * @param text The text.
      */
     public updateProgressBarText(text: string) {
-        this.text.setText(`Loading ${text}...`);
+        this.text.setText(text);
     }
 
+    /** DEPRECATED: USED FOR TESING ONLY. */
     public startLoading(): Promise<unknown> {
         let promise = new Promise((resolve, reject) => {
             setTimeout(resolve, 2000);
         })
         return promise;
+    }
+
+    /** Waits the specified amount of milliseconds. This is used to give
+     * the loading screen a bit of a delay when finished loading.
+     */
+    public async waitFor(ms: number) {
+        await new Promise((resolve, reject) => {
+            setTimeout(resolve, ms);
+        })
     }
     
     public setVisible(value: boolean) {

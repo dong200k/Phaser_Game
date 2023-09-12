@@ -47,11 +47,21 @@ export default class WaitingRoom extends Room<State, WaitingRoomMetadata> {
                     if(this.state.inGame) {
                         client.send("serverMessage", "Game already in session!");
                     } else {
-                        matchMaker.createRoom('game', {dungeonSelected: this.state.dungeon}).then((room) => {
-                        this.onCreateGameRoom(room);
-                        }).catch(e => {
-                            console.log(e);
+                        // Handle incorrect dungeon choice.
+                        let dungeonSelected = this.state.dungeon;
+                        let dungeonExist = false;
+                        this.dungeonData.forEach((data) => {
+                            if(data.id === dungeonSelected) dungeonExist = true;
                         })
+                        if(dungeonExist) {
+                            matchMaker.createRoom('game', {dungeonSelected: this.state.dungeon}).then((room) => {
+                                this.onCreateGameRoom(room);
+                            }).catch(e => {
+                                console.log(e);
+                            })
+                        } else {
+                            client.send("serverMessage", `Error: Dungeon with id ${dungeonSelected} does not exist!`);
+                        }
                     }
                 } else {
                     client.send("serverMessage", "All players need to be ready to start game!");

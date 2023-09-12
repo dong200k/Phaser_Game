@@ -7,6 +7,7 @@ import UIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import SoundManager from "../system/SoundManager";
 import AssetService from "../services/AssetService";
 import AssetManager from "../system/AssetManager";
+import LoadSystem from "../system/LoadSystem";
 
 /**
  * The purpose of this Scene is to preload important managers such as the SceneManager. 
@@ -15,7 +16,8 @@ import AssetManager from "../system/AssetManager";
 export default class SystemPreloadScene extends Phaser.Scene {
     
     rexUI!: UIPlugin;
-    loadingScreen!: LoadingScreen;
+    // loadingScreen!: LoadingScreen;
+    loadSystem!: LoadSystem;
 
     constructor() {
         super(SceneKey.SystemPreloadScene);
@@ -30,7 +32,8 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("button_small_deactive", "images/button/button_small_deactive.png");
         this.load.image("button_small_default", "images/button/button_small_default.png");
         this.load.image("button_small_default_hover_texture", "images/button/button_small_default_hover_texture.png");
-        this.load.image("SplashScreenImage", "images/background/DungeonCoreBg.png");
+        // this.load.image("SplashScreenImage", "images/background/DungeonCoreBg.png");
+
         // ------- Loading Audio ------- //
         this.load.audio("button_click1", "audio/button_click1.mp3");
         this.load.audio("hit", "audio/hit.mp3");
@@ -55,35 +58,29 @@ export default class SystemPreloadScene extends Phaser.Scene {
     }
 
     /** Load the assets from firebase. */
-    async   addOnlineAssets() {
-        // // Put the asset you want to load here.
+    async addOnlineAssets() {
+        // Put the asset you want to load here.
         let assets = [
             "SplashScreenImage",
         ]
-
         await AssetManager.putAssetsInLoad(this, assets);
     }
 
     create() {
-        // Show loading screen
-        this.loadingScreen = new LoadingScreen(this);
-        this.load.on("progress", (value: number) => {
-            // console.log(value);
-            this.loadingScreen.updateProgressBarValue(value);
-        })
-        this.load.on("fileprogress", (file: Phaser.Loader.File) => {
-            // console.log(file.src);
-            this.loadingScreen.updateProgressBarText(file.key);
-        })
-        this.load.on("complete", () => {
-            // console.log("oncomplete");
-            this.afterLoad();
-        })
+        // Adds local assets to the phaser loader.
         this.addLocalData();
         
-        this.addOnlineAssets().then(() => {
-            // Start the loading system.
-            this.load.start();
+        // --------- Create Load System ----------
+        this.loadSystem = new LoadSystem(this);
+        // Create load item for grabbing online asset documents.
+        this.loadSystem.addLoadItem({
+            name: "Grabbing Assets...",
+            loadFunction: () => this.addOnlineAssets(),
+        })
+        // Create load item for running the phaser loader.
+        this.loadSystem.addLoadItemPhaserLoader(this, "Loading Assets...");
+        this.loadSystem.startLoad().then(() => {
+            this.afterLoad();
         })
     }
 
