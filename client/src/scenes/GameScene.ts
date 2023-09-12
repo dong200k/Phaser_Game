@@ -31,6 +31,7 @@ export default class GameScene extends Phaser.Scene {
 
     // ------- loading screen -------
     private loadSystem!: LoadSystem;
+    private loadFinished: boolean = false; // Flag that keep track of the loading status.
 
     constructor() {
         super(SceneKey.GameScene);
@@ -94,7 +95,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     update(time: number, deltaT: number) {
-        this.gameManager?.update(time, deltaT);
+        if(this.loadFinished) this.gameManager?.update(time, deltaT);
     }
 
     public showHUD() {
@@ -106,6 +107,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     private joinGameRoom() {
+        this.loadFinished = false;
         ClientManager.getClient().joinGameRoom().then((room) => {
             this.gameRoom = room;
 
@@ -138,6 +140,7 @@ export default class GameScene extends Phaser.Scene {
                     this.gameRoom.send("loadAssetComplete");
                     this.cameras.main.setZoom(2);
                     this.showHUD();
+                    this.loadFinished = true;
                 }
             })
         })

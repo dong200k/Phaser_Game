@@ -17,6 +17,7 @@ import { IRole } from "../../../server/src/rooms/game_room/system/interfaces";
 import ClientFirebaseConnection from "../firebase/ClientFirebaseConnection";
 import type PlayerState from "../../../server/src/rooms/waiting_room/schemas/Player";
 import LoadSystem from "../system/LoadSystem";
+import ErrorModal from "../UI/modals/ErrorModal";
 
 interface Stats {
     hp?: number;
@@ -132,22 +133,12 @@ export default class RoomScene extends Phaser.Scene {
         }
     }
 
-    preload() {
-        // let iconBorder = new Phaser.GameObjects.Graphics(this);
-        // iconBorder.lineStyle(10, ColorStyle.neutrals.hex[100]);
-        // iconBorder.strokeRoundedRect(0, 0, 128, 128, 10);
-        // iconBorder.generateTexture("RoleModalIconBorder", 128, 128);
-    }
-
     async create() {
         this.loadSystem = new LoadSystem(this);
         this.playersInRoom = 0;
         this.roomModalData.roleData = await this.getRoleData()
         this.initializeUI();
         this.joinRoom();
-        // this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
-        //     // this.leaveRoom();
-        // });
         this.events.on("wake", (sys: Phaser.Scenes.Systems) => {
             this.joinRoom();
         });
@@ -186,13 +177,7 @@ export default class RoomScene extends Phaser.Scene {
 
     private initializeUI() {
         // --------- Leave Room Button ----------
-        let leaveButton = new Button(this, "Leave room", 0, 0, "regular", () => {
-            if(SceneManager.getSceneManager().popScene() === "") {
-                // If there is no scene to pop return to the main menu.
-                SceneManager.getSceneManager().switchToScene(SceneKey.MenuScene);
-            }
-            this.leaveRoom();
-        });
+        let leaveButton = new Button(this, "Leave room", 0, 0, "regular", () => { this.leaveRoom() });
         let leaveButtonLayout = new Layout(this, {x: 80, y: 120});
         leaveButtonLayout.add(leaveButton);
         this.add.existing(leaveButtonLayout);
@@ -385,9 +370,7 @@ export default class RoomScene extends Phaser.Scene {
                 this.roomInfo.update({roomID: room.id});
                 this.dungeonDataLoaded = false;
                 this.onJoin();
-            }).catch(e => {
-                console.log("Failed to join waiting room ", e);
-            });
+            }).catch(e => this.handleJoinRoomError(e));
         }
     }
 
@@ -425,7 +408,13 @@ export default class RoomScene extends Phaser.Scene {
             })
 
             this.waitingRoom.onError((code, message) => {
-                console.log(`code: ${code}, message: ${message}`);
+                console.log(`Error: Waiting Room Error. code: ${code}, message: ${message}`);
+                this.leaveRoom();
+            })
+
+            this.waitingRoom.onLeave((code) => {
+                console.log(`Note: Client left the room. Code: ${code}`);
+                this.leaveRoom();
             })
 
             this.waitingRoom.state.onChange = () => { this.waitingRoomStateOnChange() }
@@ -540,10 +529,24 @@ export default class RoomScene extends Phaser.Scene {
         while(this.playerListData.items.length > 0) this.playerListData.items.pop();
     }
 
+    /** Perform room cleanup and leaves the room. */
     private leaveRoom() {
         this.waitingRoom?.leave();
         this.waitingRoom = undefined;
         this.clearPlayerListData();
+        if(SceneManager.getSceneManager().popScene() === "") {
+            // If there is no scene to pop return to the main menu.
+            SceneManager.getSceneManager().switchToScene(SceneKey.MenuScene);
+        }
+    }
+
+    /** Handles room join errors by displaying an error popup and leaving the room. */
+    private handleJoinRoomError(e: any) {
+        console.log("Failed to join waiting room ", e);
+        new ErrorModal(this, {
+            description: "Error! Cannot connect to room!",
+            closeOnClick: () => { this.leaveRoom() }
+        })
     }
 
 }

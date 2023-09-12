@@ -78,7 +78,7 @@ export default class PlayerManager {
 
         let [mouseClick, mouseX, mouseY] = data
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
-        if(!playerBody || !playerState) return console.log("player does not exist")
+        if(!playerBody || !playerState) return console.log("player does not exist, Attack")
         
         // Do nothing if the player is dead.
         if(playerState.playerController.stateName === "Dead") return;
@@ -159,7 +159,7 @@ export default class PlayerManager {
 
     processPlayerMovement(playerId: string, data: number[], deltaT: number){
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
-        if(!playerBody || !playerState) return console.log("player does not exist")
+        if(!playerBody || !playerState) return console.log("player does not exist, movement")
 
         // If the player is disabled, cant move, or is dead stop the player 
         if(this.disabledPlayers.has(playerId) || 
@@ -210,7 +210,7 @@ export default class PlayerManager {
         if(this.disabledPlayers.has(playerId)) return;
 
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
-        if(!playerBody || !playerState) return console.log("player does not exist")
+        if(!playerBody || !playerState) return console.log("player does not exist, special")
         
         // If the player is dead, do nothing.
         if(playerState.playerController.stateName === "Dead") return;
