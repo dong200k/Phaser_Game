@@ -8941,7 +8941,7 @@
         "armor": 0,
         "magicResist": 0,
         "damagePercent": 0,
-        "attack": "100",
+        "attack": "",
         "attackPercent": 0,
         "armorPen": 0,
         "magicAttack": 0,
@@ -8953,7 +8953,7 @@
         "attackRangePercent": 0,
         "attackSpeed": 0,
         "attackSpeedPercent": 0,
-        "speed": "50",
+        "speed": "",
         "lifeSteal": 0,
         "lifeStealPercent": 0,
         "level": 0
