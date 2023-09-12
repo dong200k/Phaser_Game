@@ -9,6 +9,7 @@ import TriggerUpgradeEffect from "../../schemas/effects/trigger/TriggerUpgradeEf
 import ContinuousUpgradeEffect from "../../schemas/effects/continuous/ContinuousUpgradeEffect";
 import { IUpgradeEffect } from "../interfaces";
 import Player from "../../schemas/gameobjs/Player";
+import UpgradeEffect from "../../schemas/gameobjs/UpgradeEffect";
 
 const statCompoundEffectName = "!Entity Stat Compound Effect!";
 
@@ -167,7 +168,9 @@ export default class EffectManager {
                 && ("collisionGroup" in effect2) && ("doesStack" in effect2)
                 && effect1.collisionGroup === effect2.collisionGroup 
                 && effect1.collisionGroup !== -1 && (!effect1.doesStack || !effect2.doesStack)
-            console.log(`e1: ${effect1.toString()}, e2: ${effect2.toString()} collides: ${collides}` )
+            if("tree" in effect1 && "tree" in effect2) {
+                // console.log(`e1: ${effect1.toString()}, e2: ${effect2.toString()} collides: ${collides}`)
+            }
             return collides
         }
 
@@ -191,8 +194,10 @@ export default class EffectManager {
             effect.forEach((e) => {
                 addOneUpgradeEffect(e)
             })
+            // console.log("\n")
         } else {
             addOneUpgradeEffect(effect)
+            // console.log("\n")
         }
     }
 

@@ -1,20 +1,25 @@
 import Entity from "../../schemas/gameobjs/Entity";
+import Player from "../../schemas/gameobjs/Player";
 import GameManager from "../GameManager";
-import EffectLogic from "./EffectLogic";
+import EffectLogic, { IEffectLogicClass } from "./EffectLogic";
 import RangerAbilityLogic from "./EffectLogics/abilities/RangerAbility";
 import { DemoLogic, DemoLogicSkill } from "./EffectLogics/artifact/DemoLogic";
 import { FrostGlaive, FrostGlaiveFrenzy } from "./EffectLogics/artifact/FrostGlaiveLogic";
 import { HermesBoots } from "./EffectLogics/artifact/HermesBootLogic";
-import BowLogic from "./EffectLogics/weapon/BowLogic";
-import DoubowLogic from "./EffectLogics/weapon/DoubowLogic";
+import BowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/BowLogic";
+import DoubowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/DoubowLogic";
 import HomingMissile1 from "./EffectLogics/weapon/PriestTome/HomingMissile1";
 import HomingMissile2 from "./EffectLogics/weapon/PriestTome/HomingMissile2";
-import TribowLogic from "./EffectLogics/weapon/TribowLogic";
+import TribowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/TribowLogic";
+import Piercing1Logic from "./EffectLogics/weapon/RangerBow/Piercing/Piercing1Logic";
+import Piercing2Logic from "./EffectLogics/weapon/RangerBow/Piercing/Piercing2Logic";
+import PentabowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/PentabowLogic";
+import SexagintibowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/SexagintibowLogic";
 
 export default class EffectLogicManager{
 
     /** effectLogic replaces the old weaponLogic. It holds a logic that could be used as a weapon or artifacts or any entity's effect/attack.*/
-    private effectLogics: Map<string, EffectLogic> = new Map()
+    private effectLogics: Map<string, IEffectLogicClass> = new Map()
     private gameManager: GameManager
 
     constructor(gameManager: GameManager){
@@ -29,44 +34,37 @@ export default class EffectLogicManager{
 
     /** Initialize all EffectLogics that will be used in the game here. */
     private initEffectLogics(){
-        this.addEffectLogic(new BowLogic())
-        this.addEffectLogic(new DoubowLogic())
-        this.addEffectLogic(new TribowLogic())
-        this.addEffectLogic(new HermesBoots())
-        this.addEffectLogic(new FrostGlaive())
-        this.addEffectLogic(new FrostGlaiveFrenzy())
-        this.addEffectLogic(new DemoLogic())
-        this.addEffectLogic(new DemoLogicSkill())
-        this.addEffectLogic(new HomingMissile1())
-        this.addEffectLogic(new HomingMissile2())
+        this.addEffectLogic(BowLogic)
+        this.addEffectLogic(DoubowLogic)
+        this.addEffectLogic(TribowLogic)
+        this.addEffectLogic(PentabowLogic)
+        this.addEffectLogic(SexagintibowLogic)
 
-        this.addEffectLogic(new RangerAbilityLogic())
+        this.addEffectLogic(HermesBoots)
+        this.addEffectLogic(FrostGlaive)
+        this.addEffectLogic(FrostGlaiveFrenzy)
+        this.addEffectLogic(DemoLogic)
+        this.addEffectLogic(DemoLogicSkill)
+        this.addEffectLogic(HomingMissile1)
+        this.addEffectLogic(HomingMissile2)
+
+        this.addEffectLogic(RangerAbilityLogic)
+
+        this.addEffectLogic(Piercing1Logic)
+        this.addEffectLogic(Piercing2Logic)
     }
 
-    private addEffectLogic(effectLogic: EffectLogic){
-        this.effectLogics.set(effectLogic.effectLogicId, effectLogic)
+    private addEffectLogic(effectLogic: IEffectLogicClass){
+        let effectLogicId = new effectLogic().effectLogicId
+        this.effectLogics.set(effectLogicId, effectLogic)
     }
 
     /**
-     * Uses effect corresponding to effectLogicId.
-     * @param effectLogicId id of effectLogic to use
-     * @param entity origin entity using the effectLogic
-     * @param args any other arguments that may be needed such as mouse data
-     * @returns true if the effect is used else false
+     * Returns the constructor of the Effect Logic associated with effectLogicId
+     * @param effectLogicId 
+     * @returns 
      */
-    public useEffect(effectLogicId: string, entity: Entity, ...args: any): boolean{
-        let effectLogic = this.effectLogics.get(effectLogicId)
-        
-        // Effect does not exist return
-        if(!effectLogic) return false
-
-        // Effect does exist so try to use it
-        try{
-            effectLogic.useEffect(entity, this.gameManager, ...args)
-            return true
-        }catch(e: any){
-            console.log(e.message)
-            return false
-        }
+    public getEffectLogicConstructor(effectLogicId: string): IEffectLogicClass | undefined{
+        return this.effectLogics.get(effectLogicId)
     }
 }   

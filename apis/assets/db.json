@@ -3026,6 +3026,54 @@
               "depth": 1,
               "collapsed": false
             }
+          },
+          {
+            "id": "node-75e73b99-81fb-41e4-915a-1099e67d9016",
+            "children": [],
+            "data": {
+              "name": "10x piercing boost",
+              "description": "test",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "Piercing2",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": "-1",
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "7be5df9c-b73e-4d59-931a-66464bd4e900",
+              "depth": 1,
+              "collapsed": false
+            }
           }
         ],
         "data": {
@@ -3379,6 +3427,697 @@
         },
         "__rd3t": {
           "id": "8ab86552-3bc3-4235-a4d7-cea67d540b85",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
+    },
+    {
+      "id": "upgrade-902915f3-326b-443c-8d7a-8e4cf13a018e",
+      "name": "auto-generated",
+      "type": "weapon",
+      "root": {
+        "id": "node-a4210a00-28cc-4ae3-8cad-8bc150cfb768",
+        "children": [],
+        "data": {
+          "name": "auto-generated",
+          "description": "auto-generated",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0
+          },
+          "status": "none",
+          "selectionTime": 0,
+          "upgradeEffect": {
+            "effectLogicId": "",
+            "doesStack": 1,
+            "cooldown": 1000,
+            "collisionGroup": -1,
+            "type": "none"
+          }
+        }
+      }
+    },
+    {
+      "id": "upgrade-ebdf4176-868e-49ae-97e5-7716e2b99047",
+      "name": "Ranger's Bow",
+      "type": "weapon",
+      "root": {
+        "id": "node-cf69ecc9-04a8-4613-8d3a-e5b5c761c07e",
+        "children": [
+          {
+            "id": "node-3819b9ee-101a-4e4b-8c10-85cbfbc9f674",
+            "children": [
+              {
+                "id": "node-8376ca81-3c8f-4286-a95e-46009cb26bd2",
+                "children": [
+                  {
+                    "id": "node-21e16bda-386b-4ec8-ba92-c7c0b95151a5",
+                    "children": [
+                      {
+                        "id": "node-1814b9b3-42d4-454e-a779-1398e4c75713",
+                        "children": [],
+                        "data": {
+                          "name": "Sexaginti",
+                          "description": "Shoots 60 arrows!!!",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "upgradeEffect": {
+                            "effectLogicId": "Sexagintibow",
+                            "doesStack": 0,
+                            "cooldown": 1000,
+                            "collisionGroup": "1",
+                            "type": "player attack"
+                          },
+                          "doesStack": false
+                        },
+                        "__rd3t": {
+                          "id": "ff9b27d6-54f2-430a-b9d7-07276cdaa306",
+                          "depth": 4,
+                          "collapsed": false
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "PentaBow",
+                      "description": "Shoots 5 shots",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "Pentabow",
+                        "doesStack": 0,
+                        "cooldown": 1000,
+                        "collisionGroup": "1",
+                        "type": "player attack"
+                      },
+                      "weaponId": "weapon-26f83100-c741-46b3-81b3-861922871ca6",
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "de94bdc0-5481-422f-95aa-5fad670cf851",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Tribow",
+                  "description": "Shoots three shots!",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "Tribow",
+                    "doesStack": 0,
+                    "cooldown": 1000,
+                    "collisionGroup": "1",
+                    "type": "player attack"
+                  },
+                  "weaponId": "",
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "e55e4c6b-e68a-4ff8-ba47-fa66f5ba104b",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "DouBow",
+              "description": "Shoots double the shots.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "Doubow",
+                "doesStack": 0,
+                "cooldown": 1000,
+                "collisionGroup": "1",
+                "type": "player attack"
+              },
+              "weaponId": "",
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "7424b4c1-52ba-431f-8f26-fbffdf009125",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-54392b71-023f-44e5-8fd7-ce20f034f207",
+            "children": [
+              {
+                "id": "node-c5c8fa42-5410-413f-8811-1f294e3d16d5",
+                "children": [
+                  {
+                    "id": "node-e08ed307-a3f3-4bf5-bdb6-611eae141f03",
+                    "children": [
+                      {
+                        "id": "node-f48339b7-c57b-443f-a8cf-ed7d5fe34336",
+                        "children": [],
+                        "data": {
+                          "name": "Piercing 2",
+                          "description": "Arrows can hit 2 extra targets!",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "upgradeEffect": {
+                            "effectLogicId": "Piercing2",
+                            "doesStack": 1,
+                            "cooldown": 1000,
+                            "collisionGroup": -1,
+                            "type": "one time"
+                          },
+                          "doesStack": false
+                        },
+                        "__rd3t": {
+                          "id": "bcfc15ec-d2fd-4d92-aa3d-8ef82b7e7c28",
+                          "depth": 4,
+                          "collapsed": false
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Piercing 2",
+                      "description": "Arrows can hit an extra 2 targets!",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "Piercing2",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "one time"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "76a4e7ef-cb9e-4c9a-8dc3-6c81a6b279c2",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Piercing 1",
+                  "description": "Arrows can hit an extra target!",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "Piercing1",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "1867bbe6-f94b-4bdc-9415-573d9a4d8339",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Piercing 1",
+              "description": "Arrows can hit an extra target",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "Piercing1",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": "-1",
+                "type": "one time"
+              },
+              "weaponId": "",
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "2e9d4bbb-6e5f-4f4a-953c-caf31764afbe",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-71a10879-1a13-4154-8db8-9e8b715e86f6",
+            "children": [
+              {
+                "id": "node-b2d37003-79cd-4ca8-afa3-7a0d25224b7e",
+                "children": [
+                  {
+                    "id": "node-edaa4611-5cd8-4b91-9fce-854037f93654",
+                    "children": [
+                      {
+                        "id": "node-9e8e4218-8b9e-47a3-8399-f74ba2bd53ae",
+                        "children": [],
+                        "data": {
+                          "name": "Attack speed 40%",
+                          "description": "Increases attack speed by 40%",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0.4,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "upgradeEffect": {
+                            "effectLogicId": "",
+                            "doesStack": 0,
+                            "cooldown": 1000,
+                            "collisionGroup": -1,
+                            "type": "none"
+                          },
+                          "doesStack": false
+                        },
+                        "__rd3t": {
+                          "id": "51c86183-e6e7-49fe-a505-b3a8cba5ee1b",
+                          "depth": 4,
+                          "collapsed": false
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Attack Speed 30%",
+                      "description": "Increases attack speed by 30%",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0.3,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "none"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "981ae992-b98e-4ffb-8106-cf98032ff200",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Attack Speed 20%",
+                  "description": "Increases attack speed by 20%",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "none"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "0c62ebcc-a475-4ff7-9edc-743bce17116f",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Attack Speed 10%",
+              "description": "10% attack speed bonus",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0.1,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "",
+                "doesStack": 1,
+                "cooldown": 0,
+                "collisionGroup": -1,
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "bb060630-195a-4c90-a14c-cd6ccdec995b",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "name": "Ranger's Bow",
+          "description": "Just a the Ranger's Bow.",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0
+          },
+          "status": "selected",
+          "selectionTime": 0,
+          "upgradeEffect": {
+            "effectLogicId": "BowLogic",
+            "doesStack": 0,
+            "cooldown": 1000,
+            "collisionGroup": "1",
+            "type": "player attack"
+          },
+          "weaponId": "",
+          "doesStack": false
+        },
+        "__rd3t": {
+          "id": "7c98052f-9ca3-4694-a008-40de32b1f6d3",
           "depth": 0,
           "collapsed": false
         }
@@ -8193,7 +8932,7 @@
       "displaySprite": "sprite",
       "spriteKey": "demo_hero",
       "abilityId": "ability-deb2f8fa-7d65-482b-9801-462229bbf922",
-      "weaponUpgradeId": "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d",
+      "weaponUpgradeId": "upgrade-ebdf4176-868e-49ae-97e5-7716e2b99047",
       "stat": {
         "maxHp": 0,
         "maxMana": 0,
@@ -8214,7 +8953,7 @@
         "attackRangePercent": 0,
         "attackSpeed": 0,
         "attackSpeedPercent": 0,
-        "speed": "5",
+        "speed": "50",
         "lifeSteal": 0,
         "lifeStealPercent": 0,
         "level": 0

@@ -1,4 +1,5 @@
 import MathUtil from "../../../../../util/MathUtil";
+import GameManager from "../../../system/GameManager";
 import Entity from "../../gameobjs/Entity";
 import Effect from "../Effect";
 import { type } from '@colyseus/schema';

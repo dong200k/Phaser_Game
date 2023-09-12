@@ -33,8 +33,8 @@ export const getTrueAttackDamage = function({attack, attackPercent, damagePercen
     let effectiveArmor = armor * reductionMultiplier
 
     const trueDamage = damage - effectiveArmor;
-    console.log(`damage: ${damage}, armor: ${armor}, attack: ${attack}, attackMult ${attackMultiplier}`)
-    return trueDamage < 1 ? 1 : trueDamage;
+    // console.log(`damage: ${damage}, armor: ${armor}, attack: ${attack}, attackMult ${attackMultiplier}`)
+    return trueDamage < 1 ? 1 : Math.floor(trueDamage);
 }
 
 /**
@@ -54,7 +54,7 @@ export const getTrueMagicDamage = function({magicAttack, magicAttackPercent, dam
     const effectiveMagicResist = magicResist * reductionMultiplier
     
     const trueDamage = damage - effectiveMagicResist;
-    return trueDamage < 0? 0 : trueDamage
+    return trueDamage < 0? 0 : Math.floor(trueDamage)
 }
 
 /**
@@ -65,7 +65,7 @@ export const getTrueMagicDamage = function({magicAttack, magicAttackPercent, dam
  * @returns total life steal
  */
 export const getFinalLifeSteal = function(trueDamage: number, lifeSteal: number, lifeStealPercent: number){
-    return lifeStealPercent * trueDamage + lifeSteal;
+    return Math.floor(lifeStealPercent * trueDamage + lifeSteal);
 }
 
 /**

@@ -4,6 +4,7 @@ import Node from "../../schemas/Trees/Node/Node";
 import StatTree from "../../schemas/Trees/StatTree";
 import WeaponUpgradeTree from "../../schemas/Trees/WeaponUpgradeTree";
 import EffectFactory from "../../schemas/effects/EffectFactory";
+import OneTimeUpgradeEffect from "../../schemas/effects/onetime/OneTimeUpgradeEffect";
 import Player from "../../schemas/gameobjs/Player";
 import Stat from "../../schemas/gameobjs/Stat";
 import UpgradeEffect from "../../schemas/gameobjs/UpgradeEffect";
@@ -47,6 +48,7 @@ export default class TreeManager{
                 let effect = EffectFactory.createEffectFromUpgradeEffect(selectedUpgrade.data.upgradeEffect)
                 effect.setTree(tree as WeaponUpgradeTree)
                 // effect.setGameManager(this.gameManager)
+                if(effect instanceof OneTimeUpgradeEffect) console.log(`effect ${effect}, setting tree`)
 
                 // Add effect to player
                 EffectManager.addUpgradeEffectsTo(playerState, effect)
@@ -181,9 +183,9 @@ export default class TreeManager{
 
         //dfs traversal to get stats that have been selected
         function dfs(root: Node<WeaponData> | Node<SkillData>){
-            if(name === "Adventurer's Stat"){
-                console.log(root.data.name, root.data.status)
-            }
+            // if(name === "Adventurer's Stat"){
+            //     console.log(root.data.name, root.data.status)
+            // }
             switch(root.data.status){
                 case "selected":
                     // Increase total in place

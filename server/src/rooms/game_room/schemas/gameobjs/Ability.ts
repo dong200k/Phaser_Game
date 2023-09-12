@@ -3,6 +3,7 @@ import Cooldown from './Cooldown';
 import Player from './Player';
 import GameManager from '../../system/GameManager';
 import { IAbility } from '../../system/interfaces';
+import EffectLogic from '../../system/EffectLogic/EffectLogic';
 export default class Ability extends Schema{
     @type(Cooldown) cooldown: Cooldown
     @type("string") effectLogicId: string
@@ -13,6 +14,7 @@ export default class Ability extends Schema{
 
     private gameManager: GameManager
     private owner?: Player
+    private effectLogic?: EffectLogic
     
     constructor(IAbility: IAbility, gameManager: GameManager){
         super()
@@ -23,6 +25,8 @@ export default class Ability extends Schema{
         this.description = IAbility.description
         this.id = IAbility.id
         // this.sprite = IAbility.displaySprite
+        let ctor = gameManager.getEffectLogicManager().getEffectLogicConstructor(this.effectLogicId)
+        if(ctor) this.effectLogic = new ctor()
     }
 
     update(deltaT: number){
@@ -31,9 +35,9 @@ export default class Ability extends Schema{
 
     useAbility(){
         // use logic referenced by ability's effectLogicId when cooldown is finished.
-        if(this.cooldown.isFinished && this.owner){
+        if(this.cooldown.isFinished && this.owner && this.effectLogic){
             this.cooldown.reset()
-            this.gameManager.getEffectLogicManager().useEffect(this.effectLogicId, this.owner)
+            this.effectLogic.useEffect(this.owner, this.gameManager)
             return true
         }
         return false

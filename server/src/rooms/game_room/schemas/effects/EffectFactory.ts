@@ -12,6 +12,7 @@ import ContinuousUpgradeEffect from "./continuous/ContinuousUpgradeEffect";
 import CollisionImmuneEffect from "./temp/CollisionImmuneEffect";
 import Entity from "../gameobjs/Entity";
 import PiercingEffect from "./temp/PiercingEffect";
+import OneTimeUpgradeEffect from "./onetime/OneTimeUpgradeEffect";
 
 
 export default class EffectFactory {
@@ -155,9 +156,9 @@ export default class EffectFactory {
             case "player skill":
                 // Creates a UpgradeTriggerEffect which uses the effect when the EffectManager.useOnTriggerEffectsOn is called with the corresponding type, "player attack" in this case
                 return new TriggerUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
-            // case "one time":
-            //     // Creates a onetime upgrade effect that is used once
-            //     return new OneTimeUpgradeEffect(effectLogicId, cooldown, doesStack, collisionGroup)
+            case "one time":
+                // Creates a onetime upgrade effect that is used once
+                return new OneTimeUpgradeEffect(effectLogicId, doesStack, collisionGroup)
             case "none":
                 // Creates a ContinuousUpgradeEffect which uses the effect's logic automatically
                 return new ContinuousUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
@@ -169,10 +170,10 @@ export default class EffectFactory {
     /**
      * Effect that modifies piercing of a player's weaponUpgradeTree.
      * @param piercing number that represents how many targets the weapon can hit/pierce before despawning.
-     * @param originalPiercing piercing to revert to after the effect ends.
      * @param activeTime time the effect will last for.
+     * @param isTimed boolean to determine whether to used active time or not
      */
-    public static createPiercingEffect(piercing: number, originalPiercing: number, activeTime: number,){
-        return new PiercingEffect(true, activeTime, piercing, originalPiercing)
+    public static createPiercingEffect(piercing: number, isTimed?: boolean, activeTime: number = 0){
+        return new PiercingEffect(isTimed, activeTime, piercing)
     }
 }
