@@ -7,22 +7,24 @@ import Layoutable from './Layoutable';
 import Button from './Button';
 import SceneManager from '../system/SceneManager';
 import ClientManager from '../system/ClientManager';
+import TextBoxPhaser from './TextBoxPhaser';
+import UIFactory from './UIFactory';
 
 /** RoomPost is the UI for a single room posting in the lobby. This should only be used in the LobbyScene not elsewhere. */
 export default class RoomPost extends Phaser.GameObjects.Container implements Layoutable {
     
     private room: Colyseus.RoomAvailable | null = null;
-    private roomNameText: TextBox;
-    private roomPlayerCountText: TextBox;
-    private roomStateText: TextBox;
+    private roomNameText: TextBoxPhaser;
+    private roomPlayerCountText: TextBoxPhaser;
+    private roomStateText: TextBoxPhaser;
     private background: Phaser.GameObjects.Rectangle;
     private joinButton: Button;
 
     constructor(scene: Phaser.Scene, x=0, y=0) {
         super(scene, x, y);
-        this.roomNameText = new TextBox(this.scene, "Room name: N/A", "l6");
-        this.roomPlayerCountText = new TextBox(this.scene, "Player count: 0/0", 'l6');
-        this.roomStateText = new TextBox(this.scene, "None", "l6");
+        this.roomNameText = UIFactory.createTextBoxPhaser(this.scene, "Room name: N/A", "l6");
+        this.roomPlayerCountText = UIFactory.createTextBoxPhaser(this.scene, "Player count: 0/0", 'l6');
+        this.roomStateText = UIFactory.createTextBoxPhaser(this.scene, "None", "l6");
         this.roomNameText.setOrigin(0, 0);
         this.roomPlayerCountText.setOrigin(0, 0);
         this.roomStateText.setOrigin(0, 0);

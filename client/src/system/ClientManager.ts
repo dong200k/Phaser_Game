@@ -52,6 +52,8 @@ export default class ClientManager {
                     })
                     console.log("---Joined Lobby!---");
                     resolve(this.lobbyRoom);
+                }).catch((error) => {
+                    reject(error);
                 })
             }
         })

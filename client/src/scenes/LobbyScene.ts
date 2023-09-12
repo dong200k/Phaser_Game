@@ -8,8 +8,12 @@ import TextField from "../UI/TextField";
 import Button from "../UI/Button";
 import SceneManager from "../system/SceneManager";
 import RoomPost from "../UI/RoomPost";
+import ErrorModal from "../UI/modals/ErrorModal";
+import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 
 export default class LobbyScene extends Phaser.Scene {
+    
+    rexUI!: UIPlugins;
     
     private lobbyRoom?: Colyseus.Room;
     private allRooms: (Colyseus.RoomAvailable | null)[] = [];
@@ -28,9 +32,9 @@ export default class LobbyScene extends Phaser.Scene {
         this.page = 1;
         this.initializeUI();
         this.joinLobby();
-        this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
-            this.leaveLobby();
-        });
+        // this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
+        //     this.leaveLobby();
+        // });
         this.events.on("wake", (sys: Phaser.Scenes.Systems) => {
             this.page = 1;
             this.joinLobby();
@@ -67,7 +71,7 @@ export default class LobbyScene extends Phaser.Scene {
         this.add.existing(layout);
 
         // ------ Back Button And Host Game Button ------
-        let backButton = new Button(this, "Back to menu", 0, 0, "regular", () => SceneManager.getSceneManager().switchToScene("GameModeScene"));
+        let backButton = new Button(this, "Back to menu", 0, 0, "regular", () => this.leaveLobby());
         let hostGameButton = new Button(this, "Host Game", 0, 0, "regular", () => SceneManager.getSceneManager().pushScene("RoomScene"));
         let layout2 = new Layout(this, {
             x:this.game.scale.width / 2 - layout.getLayoutWidth() / 2,
@@ -138,7 +142,9 @@ export default class LobbyScene extends Phaser.Scene {
 
     private leaveLobby() {
         this.lobbyRoom?.leave();
+        this.lobbyRoom = undefined;
         this.allRooms.splice(0, this.allRooms.length);
+        SceneManager.getSceneManager().switchToScene("GameModeScene");
     }
 
     private joinLobby() {
@@ -146,9 +152,7 @@ export default class LobbyScene extends Phaser.Scene {
         ClientManager.getClient().joinLobby().then((room) => {
             this.lobbyRoom = room;
             this.onJoin();
-        }).catch((e) => {
-            console.log("Join Lobby Error: ", e);
-        });
+        }).catch((e) => this.handleJoinLobbyError(e))
     }
 
     update(deltaT:number) {
@@ -200,9 +204,24 @@ export default class LobbyScene extends Phaser.Scene {
 
             this.lobbyRoom.onLeave((code) => {
                 this.updateLobbyDisplay();
+                this.leaveLobby();
             });
+
+            this.lobbyRoom.onError((code, message) => {
+                this.updateLobbyDisplay();
+                this.leaveLobby();
+                console.log(`Lobby Error. Code: ${code} Message: ${message}`);
+            })
         } else {
             console.log("Error: Lobby Room is undefined");
         }
+    }
+
+    private handleJoinLobbyError(e: any) {
+        console.log("Failed to join lobby ", e);
+        new ErrorModal(this, {
+            description: "Error! Cannot connect to lobby!",
+            closeOnClick: () => { this.leaveLobby() }
+        })
     }
 }

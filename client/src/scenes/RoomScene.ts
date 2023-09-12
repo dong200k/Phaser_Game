@@ -363,6 +363,7 @@ export default class RoomScene extends Phaser.Scene {
     /** Called when the player switches to the room scene. */
     private joinRoom() {
         this.showLoadingScreen();
+        this.dungeonDataLoaded = false;
 
         if(!this.waitingRoom) {
             ClientManager.getClient().joinWaitingRoom().then((room) => {
