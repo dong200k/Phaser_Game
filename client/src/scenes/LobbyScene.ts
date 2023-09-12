@@ -219,9 +219,9 @@ export default class LobbyScene extends Phaser.Scene {
 
     private handleJoinLobbyError(e: any) {
         console.log("Failed to join lobby ", e);
-        new ErrorModal(this, {
-            description: "Error! Cannot connect to lobby!",
-            closeOnClick: () => { this.leaveLobby() }
-        })
+        // new ErrorModal(this, {
+        //     description: "Error! Cannot connect to lobby!",
+        //     closeOnClick: () => { this.leaveLobby() }
+        // })
     }
 }
