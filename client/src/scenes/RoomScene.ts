@@ -363,7 +363,7 @@ export default class RoomScene extends Phaser.Scene {
     /** Called when the player switches to the room scene. */
     private joinRoom() {
         this.showLoadingScreen();
-        this.dungeonDataLoaded = false;
+        // this.dungeonDataLoaded = false;
 
         if(!this.waitingRoom) {
             ClientManager.getClient().joinWaitingRoom().then((room) => {
@@ -399,13 +399,14 @@ export default class RoomScene extends Phaser.Scene {
 
             this.waitingRoom.onMessage("dungeonData", (message) => {
                 // Loaded before the player can start the game.
-                this.dungeonDataLoaded = true;
                 this.roomModalData.dungeonData = message;
                 if(this.roomModalData.dungeonData.length > 0) {
                     this.rolePetDungeonDisplay.updateDisplay({
                         dungeonName: this.roomModalData.dungeonData[0].name,
                     })
                 }
+
+                this.dungeonDataLoaded = true;
             })
 
             this.waitingRoom.onError((code, message) => {
