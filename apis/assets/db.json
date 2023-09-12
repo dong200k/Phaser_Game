@@ -6972,7 +6972,7 @@
                         "children": [],
                         "data": {
                           "name": "Speed",
-                          "description": "Increases speed by 8 percent.",
+                          "description": "Increases speed by 10",
                           "stat": {
                             "maxHp": 0,
                             "maxMana": 0,
@@ -6993,7 +6993,7 @@
                             "attackRangePercent": 0,
                             "attackSpeed": 0,
                             "attackSpeedPercent": 0,
-                            "speed": 0.08,
+                            "speed": 10,
                             "lifeSteal": 0,
                             "lifeStealPercent": 0,
                             "level": 0
@@ -7003,7 +7003,7 @@
                           "coinCost": 80
                         },
                         "__rd3t": {
-                          "id": "469be4af-9c97-451c-8a63-d0d342c887c6",
+                          "id": "11be87ba-ab80-4dc6-aa5c-2372df1f4abd",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -7011,7 +7011,7 @@
                     ],
                     "data": {
                       "name": "Speed",
-                      "description": "Increases speed by 4 percent.",
+                      "description": "Increases speed by 8",
                       "stat": {
                         "maxHp": 0,
                         "maxMana": 0,
@@ -7032,7 +7032,7 @@
                         "attackRangePercent": 0,
                         "attackSpeed": 0,
                         "attackSpeedPercent": 0,
-                        "speed": 0.04,
+                        "speed": 8,
                         "lifeSteal": 0,
                         "lifeStealPercent": 0,
                         "level": 0
@@ -7042,7 +7042,7 @@
                       "coinCost": 40
                     },
                     "__rd3t": {
-                      "id": "e1d62953-8b54-4a1a-bfc4-0bcbd67e9053",
+                      "id": "6358b4bf-2bcb-4361-a321-aa4a9dd1ec4c",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -7050,7 +7050,7 @@
                 ],
                 "data": {
                   "name": "Speed",
-                  "description": "Increases speed by 2 percent.",
+                  "description": "Increases speed by 7",
                   "stat": {
                     "maxHp": 0,
                     "maxMana": 0,
@@ -7071,7 +7071,7 @@
                     "attackRangePercent": 0,
                     "attackSpeed": 0,
                     "attackSpeedPercent": 0,
-                    "speed": 0.02,
+                    "speed": 7,
                     "lifeSteal": 0,
                     "lifeStealPercent": 0,
                     "level": 0
@@ -7081,7 +7081,7 @@
                   "coinCost": 20
                 },
                 "__rd3t": {
-                  "id": "53532d45-d87c-4906-91b3-ae375d0ee744",
+                  "id": "d48e3419-2826-4c19-b022-bd7e46eed6d1",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -7089,7 +7089,7 @@
             ],
             "data": {
               "name": "Speed",
-              "description": "Increases speed by 1 percent",
+              "description": "Increases speed by 5",
               "stat": {
                 "maxHp": 0,
                 "maxMana": 0,
@@ -7110,7 +7110,7 @@
                 "attackRangePercent": 0,
                 "attackSpeed": 0,
                 "attackSpeedPercent": 0,
-                "speed": 0.01,
+                "speed": 5,
                 "lifeSteal": 0,
                 "lifeStealPercent": 0,
                 "level": 0
@@ -7120,7 +7120,7 @@
               "coinCost": 10
             },
             "__rd3t": {
-              "id": "441f3a60-54d6-4a9b-971e-75de247b1b55",
+              "id": "532920b2-4f82-4ab7-8819-6e1b923f2bf5",
               "depth": 1,
               "collapsed": false
             }
@@ -8953,7 +8953,7 @@
         "attackRangePercent": 0,
         "attackSpeed": 0,
         "attackSpeedPercent": 0,
-        "speed": "",
+        "speed": "0",
         "lifeSteal": 0,
         "lifeStealPercent": 0,
         "level": 0
