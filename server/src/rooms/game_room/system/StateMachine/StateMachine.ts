@@ -1,5 +1,6 @@
 import { type, Schema } from "@colyseus/schema";
 import StateNode from "./StateNode";
+import RangerAbilityController from "../EffectLogic/EffectLogics/abilities/RangerAbility/RangerAbilityController";
 
 /**
  * The StateMachine will store all the state of a particular Mob. It will provide 
@@ -75,6 +76,8 @@ export default abstract class StateMachine<Data> extends Schema{
     changeState(stateName: string) {
         this.states.forEach((state) => {
             if(state.getStateName() === stateName) {
+                // if("attackState" in this)
+                //     console.log(`state is now: ${stateName}`)
                 this.stateName = stateName;
                 this.changeStateHelper(state);
             }

@@ -10,6 +10,7 @@ import Entity from "../schemas/gameobjs/Entity";
 import MonsterController from "./AI/MonsterAI/simplemonster/MonsterController";
 import { IClasses } from "../schemas/projectiles/projectileClasses";
 import OneTimeUpgradeEffect from "../schemas/effects/onetime/OneTimeUpgradeEffect";
+import StateMachine from "./StateMachine/StateMachine";
 
 // ------------ Math -------------
 
@@ -153,8 +154,8 @@ export type IProjectileConfig = {
     stat: Stat,
     spawnX: number,
     spawnY: number,
-    width: number,
-    height: number,
+    width?: number,
+    height?: number,
     initialVelocity: {x: number, y: number},
     collisionCategory: CategoryType,
     entity?: Entity,

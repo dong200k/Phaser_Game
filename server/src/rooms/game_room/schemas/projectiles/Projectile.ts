@@ -100,15 +100,16 @@ export default class Projectile extends GameObject implements Cloneable {
         this.magicMultiplier = projectileConfig.magicMultiplier
         this.projectileSpeed = projectileConfig.projectileSpeed? projectileConfig.projectileSpeed : 1
         this.spawnSound = projectileConfig.spawnSound ?? "";
-        this.createBody()
-        let velocity = {x: this.initialVelocity.x, y:this.initialVelocity.y}
-        Matter.Body.setVelocity(this.getBody(), velocity);
-
-        this.width = Math.abs(this.body.bounds.max.x - this.body.bounds.min.x);
-        this.height = Math.abs(this.body.bounds.max.y - this.body.bounds.min.y);
+        
+        this.width = projectileConfig.width ?? Math.abs(this.body.bounds.max.x - this.body.bounds.min.x);
+        this.height = projectileConfig.height ?? Math.abs(this.body.bounds.max.y - this.body.bounds.min.y);
         this.projectileController = new RangedProjectileController({projectile: this});
 
         this.piercing = projectileConfig.piercing? projectileConfig.piercing : 1
+        this.createBody()
+
+        let velocity = {x: this.initialVelocity.x, y:this.initialVelocity.y}
+        Matter.Body.setVelocity(this.getBody(), velocity);
     }
     
     /**
@@ -148,10 +149,10 @@ export default class Projectile extends GameObject implements Cloneable {
 
     /** Used to create the Matter body of this projectile. Override this to create projectiles with different bodies. */
     protected createBody(){
-        let width = 10
-        let height = 10
+        // let width = 10
+        // let height = 10
 
-        let body = Matter.Bodies.rectangle(this.x, this.y, width, height, {
+        let body = Matter.Bodies.rectangle(this.x, this.y, this.width, this.height, {
             isStatic: false,
             isSensor: true,
             inertia: Infinity,
@@ -169,6 +170,24 @@ export default class Projectile extends GameObject implements Cloneable {
 
         body.label = this.collisionCategory
         this.setBody(body)
+    }
+
+    /**
+     * Changes the collision category and mask of this projectile
+     * @param category of projectile such as PLAYER_PROJECTILE etc.
+     */
+    setCollision(category: CategoryType){
+        let body = this.getBody()
+
+        this.collisionCategory = category
+        body.collisionFilter = {
+            ...body.collisionFilter,
+            group: 0,
+            category: Categories[this.collisionCategory],
+            mask: MaskManager.getManager().getMask(this.collisionCategory) 
+        };
+
+        body.label = this.collisionCategory
     }
 
     /**

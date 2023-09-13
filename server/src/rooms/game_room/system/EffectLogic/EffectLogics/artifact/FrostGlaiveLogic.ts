@@ -33,6 +33,7 @@ export class FrostGlaive extends EffectLogic{
             attackMultiplier: 1,
             magicMultiplier: 1,
             originEntityId: playerState.getId(),
+            piercing: artifact?.piercing,
             data: {
                 radius: 50,
                 startDegree: 30,
@@ -72,6 +73,7 @@ export class FrostGlaiveFrenzy extends EffectLogic{
                 attackMultiplier: 1,
                 magicMultiplier: 1,
                 originEntityId: playerState.getId(),
+                piercing: artifact?.piercing,
                 data: {
                     radius: radius,
                     startDegree: startDegree,

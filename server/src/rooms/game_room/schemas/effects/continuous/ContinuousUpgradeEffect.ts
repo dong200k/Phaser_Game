@@ -45,7 +45,7 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
     }
 
     public update(deltaT: number){
-        this.effectLogic?.udpate(deltaT)
+        this.effectLogic?.update(deltaT)
         return super.update(deltaT)
     }
 
