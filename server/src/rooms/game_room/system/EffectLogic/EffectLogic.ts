@@ -32,6 +32,6 @@ export default abstract class EffectLogic{
     /** Use to update the effectLogic.
      * Note triggerType: one time effect logics do not get their update methods called.
     */
-    public udpate(deltaT: number){
+    public update(deltaT: number){
     }
 }

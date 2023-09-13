@@ -807,7 +807,7 @@
                       "coinCost": null
                     },
                     "__rd3t": {
-                      "id": "f5725b2b-ea75-4565-a2f7-645f2fd06e8f",
+                      "id": "5f65846a-0fda-4fcd-89d7-dd1bb7d26cdf",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -856,15 +856,15 @@
                   "coinCost": null
                 },
                 "__rd3t": {
-                  "id": "9e52ab66-0489-4890-85e0-dd0edc665d3c",
+                  "id": "840972d9-a554-44eb-8f48-b0f15b46930b",
                   "depth": 2,
                   "collapsed": false
                 }
               }
             ],
             "data": {
-              "name": "Sharpening",
-              "description": "Grants 10 bonus attack.",
+              "name": "Piercing Glaives",
+              "description": "Grants 10 bonus attack and pierce up to 2 targets.",
               "stat": {
                 "maxHp": 0,
                 "maxMana": 0,
@@ -890,17 +890,20 @@
                 "lifeStealPercent": 0,
                 "level": 0
               },
+              "status": "none",
+              "selectionTime": 0,
               "upgradeEffect": {
-                "effectLogicId": "",
+                "effectLogicId": "Piercing10",
                 "doesStack": 1,
                 "cooldown": 3000,
                 "collisionGroup": -1,
-                "type": "none"
+                "type": "one time"
               },
-              "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72"
+              "weaponId": "weapon-26f83100-c741-46b3-81b3-861922871ca6",
+              "doesStack": false
             },
             "__rd3t": {
-              "id": "29034a3a-1523-4797-8dd8-2526cb0a44c5",
+              "id": "6228199a-02a5-4cca-9070-3ad5909a2ed5",
               "depth": 1,
               "collapsed": false
             }
@@ -8941,7 +8944,7 @@
         "armor": 0,
         "magicResist": 0,
         "damagePercent": 0,
-        "attack": "",
+        "attack": "0",
         "attackPercent": 0,
         "armorPen": 0,
         "magicAttack": 0,

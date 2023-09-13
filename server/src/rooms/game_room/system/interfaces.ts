@@ -10,6 +10,7 @@ import Entity from "../schemas/gameobjs/Entity";
 import MonsterController from "./AI/MonsterAI/simplemonster/MonsterController";
 import { IClasses } from "../schemas/projectiles/projectileClasses";
 import OneTimeUpgradeEffect from "../schemas/effects/onetime/OneTimeUpgradeEffect";
+import StateMachine from "./StateMachine/StateMachine";
 
 // ------------ Math -------------
 

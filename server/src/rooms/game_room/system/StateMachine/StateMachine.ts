@@ -1,5 +1,6 @@
 import { type, Schema } from "@colyseus/schema";
 import StateNode from "./StateNode";
+import RangerAbilityController from "../EffectLogic/EffectLogics/abilities/RangerAbility/RangerAbilityController";
 
 /**
  * The StateMachine will store all the state of a particular Mob. It will provide 

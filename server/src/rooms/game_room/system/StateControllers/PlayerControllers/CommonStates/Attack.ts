@@ -60,7 +60,7 @@ export default class Attack extends StateNode {
     public onEnter(): void {
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
-        this.attackDuration = this.player.stat.attackSpeed / 5;
+        this.attackDuration = this.player.stat.attackSpeed / 3;
         this.timePassed = 0;
         // this.player.canMove = this.canMove;
         this.triggered = false;

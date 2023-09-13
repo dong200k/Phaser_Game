@@ -60,7 +60,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
      */
     public startAttack(mouseX:number, mouseY:number) {
         if(this.stateName !== "Dead" && this.stateName !== "Attack") {
-            this.attackState.setConfig({mouseX, mouseY});
+            this.attackState?.setConfig({mouseX, mouseY});
             this.changeState("Attack");
         }
     }

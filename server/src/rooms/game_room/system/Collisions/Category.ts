@@ -1,4 +1,7 @@
 export let Categories = Object.freeze({
+    // No Category aka doesnt collide
+    'NONE': 0x0000,
+
     // Projectiles or Skills
     'PLAYER_PROJECTILE': 0x0001,
     // 'PLAYER_PROJECTILE_FRIENDLY_FIRE': 0x0002,

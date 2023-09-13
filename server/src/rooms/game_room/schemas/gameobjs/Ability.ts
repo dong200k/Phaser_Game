@@ -31,6 +31,7 @@ export default class Ability extends Schema{
 
     update(deltaT: number){
         this.cooldown.tick(deltaT)
+        this.effectLogic?.update(deltaT)
     }
 
     useAbility(){
