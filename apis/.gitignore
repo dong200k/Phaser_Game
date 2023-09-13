@@ -1,3 +1,4 @@
 .env
 privatekey.json
 node_modules/
+build/

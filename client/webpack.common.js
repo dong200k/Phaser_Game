@@ -1,8 +1,8 @@
 const path = require('path');
 
 module.exports = {
-    mode: 'development', // development build or production build
-    devtool: 'inline-source-map', // source maps provide useful information durning development
+    // mode: 'development', // development build or production build
+    // devtool: 'inline-source-map', // source maps provide useful information durning development
     entry: './src/app.js', // Webpack will initilally look here
     output: {
         path: path.resolve(__dirname, 'dist'), // The output file path
@@ -24,5 +24,5 @@ module.exports = {
             { test: /\.([cm]?ts|tsx)$/, loader: "ts-loader" }
         ]
     },
-    watch: true // Reload when changes have been made to the source code.
+    // watch: true // Reload when changes have been made to the source code.
 }
