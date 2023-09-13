@@ -28,7 +28,7 @@ export default class MathUtil {
      * @param velocityX 
      * @param velocityY 
      */
-    public static getRotationDegree(velocityX: number, velocityY: number){
+    public static getRotationRadians(velocityX: number, velocityY: number){
         let direction = this.getNormalizedSpeed(velocityX, velocityY, 1)
         let angle = Math.acos(direction.x)
         if(direction.y < 0) angle = -angle
