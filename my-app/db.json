@@ -9216,7 +9216,7 @@
       "description": "Ranger's ability.",
       "effectLogicId": "ranger-ability",
       "displaySprite": "sprite",
-      "cooldown": "1000"
+      "cooldown": "5000"
     }
   ]
 }

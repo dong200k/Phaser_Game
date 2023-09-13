@@ -206,19 +206,15 @@ export default class GameManager {
         
         this.gameRoom?.send("move", movementData);
 
-        let special = this.spaceKey?.isDown? true : false;
-        this.gameRoom?.send("special", special);
-        if(special){
-            this.player1?.play("2_atk")
-        }
-        
-
         //[0] mouse click, [1] mousex, [2] mousey.
         let mouseData = [0, 0, 0]
         mouseData[0] = this.mouseDown? 1 : 0;
         mouseData[1] = this.scene.input.mousePointer.worldX;
         mouseData[2] = this.scene.input.mousePointer.worldY;
         this.gameRoom?.send("attack", mouseData);
+
+        let special = this.spaceKey?.isDown? true : false;
+        this.gameRoom?.send("special", {special, mouseData});
 
         // Client-side prediction.
         // this.updatePlayer1(movementData, special, mouseData);

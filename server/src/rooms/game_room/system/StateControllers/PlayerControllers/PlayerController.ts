@@ -4,6 +4,7 @@ import Idle from "./CommonStates/Idle";
 import Dead from "./CommonStates/Dead";
 import Attack from "./CommonStates/Attack";
 import Move from "./CommonStates/Move";
+import Special from "./CommonStates/Special";
 
 
 export interface PlayerControllerData {
@@ -16,6 +17,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     private player!: Player;
 
     private attackState!: Attack;
+    private specialState!: Special;
 
     protected create(data: PlayerControllerData): void {
         this.player = data.player;
@@ -38,6 +40,14 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         let deadState = new Dead("Dead", this);
         this.addState(deadState);
 
+        let specialState = new Special("Special", this)
+        this.specialState = specialState
+        specialState.setConfig({
+            canMove: false,
+            triggerPercent: 0.9,
+        })
+        this.addState(specialState)
+
         //Set initial state
         this.changeState("Idle");
     }
@@ -56,12 +66,22 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     }
 
     /** Changes this player's state to attack, but only if the 
-     * player is not dead.
+     * player is not dead, using special or attacking already.
      */
     public startAttack(mouseX:number, mouseY:number) {
-        if(this.stateName !== "Dead" && this.stateName !== "Attack") {
+        if(this.stateName !== "Dead" && this.stateName !== "Attack" && this.stateName !== "Special") {
             this.attackState?.setConfig({mouseX, mouseY});
             this.changeState("Attack");
         }
     }
+
+    /** Changes this player's state to special, but only if the 
+     * player is not dead or using special already.
+     */
+    public startSpceial(mouseX:number, mouseY:number) {
+        if(this.stateName !== "Dead" && this.stateName !== "Special") {
+            this.specialState?.setConfig({mouseX, mouseY});
+            this.changeState("Special");
+        }
+    } 
 }

@@ -8944,7 +8944,7 @@
         "armor": 0,
         "magicResist": 0,
         "damagePercent": 0,
-        "attack": "",
+        "attack": "0",
         "attackPercent": 0,
         "armorPen": 0,
         "magicAttack": 0,
@@ -9216,7 +9216,7 @@
       "description": "Ranger's ability.",
       "effectLogicId": "ranger-ability",
       "displaySprite": "sprite",
-      "cooldown": "1000"
+      "cooldown": "5000"
     }
   ]
 }

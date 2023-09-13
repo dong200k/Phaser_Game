@@ -76,6 +76,8 @@ export default abstract class StateMachine<Data> extends Schema{
     changeState(stateName: string) {
         this.states.forEach((state) => {
             if(state.getStateName() === stateName) {
+                // if("attackState" in this)
+                //     console.log(`state is now: ${stateName}`)
                 this.stateName = stateName;
                 this.changeStateHelper(state);
             }

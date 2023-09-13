@@ -12,7 +12,6 @@ export interface ArrowRainProjectileControllerData {
     /** Y line that once the projectile hits/passes will change the state to explode */
     explodeThresholdY: number
     /** */
-    explosionRadius?: number
 }
 
 /** Controls the arrows in the ranger's arrow rain ability when they fall down */
@@ -23,16 +22,19 @@ export default class ArrowRainProjectileController extends StateMachine<ArrowRai
     /** Projectile controlled by this controller */
     private projectile!: Projectile
     private explodeThresholdY!: number
-    private explosionRadius!: number
 
     protected create(data: ArrowRainProjectileControllerData): void {
         this.player = data.player;
         this.gameManager = data.gameManager
         this.projectile = data.projectile
         this.explodeThresholdY = data.explodeThresholdY
-        this.explosionRadius = data.explosionRadius ?? 50
 
         let explode = new Explode("Explode", this)
+        explode.setConfig({
+            piercing: 100,
+            attackMultiplier: 5,
+            duration: 1000,
+        })
         this.addState(explode)
 
         let falling = new Falling("Falling", this)
@@ -46,10 +48,6 @@ export default class ArrowRainProjectileController extends StateMachine<ArrowRai
 
     public getProjectile(){
         return this.projectile
-    }
-    
-    public getExplosionRadius(){
-        return this.explosionRadius
     }
 
     public getExplodeThresholdY(){
@@ -67,7 +65,6 @@ export default class ArrowRainProjectileController extends StateMachine<ArrowRai
     /** Resets config so that the projectile this controller is controlling can be reused */
     public resetConfig(data: Partial<ArrowRainProjectileControllerData>){
         if(data.explodeThresholdY) this.explodeThresholdY = data.explodeThresholdY
-        if(data.explosionRadius) this.explosionRadius = data.explosionRadius
         this.changeState("Falling")
     }
 }

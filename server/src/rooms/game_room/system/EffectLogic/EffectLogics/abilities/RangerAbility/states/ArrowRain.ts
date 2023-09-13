@@ -7,13 +7,12 @@ import RangerAbilityController from "../RangerAbilityController";
 
 interface ArrowRainConfig {
     projectileSpeed?: number;
-    attackMultiplier?: number;
     spawnSound?: string;
     arrowCount?: number;
     arrowWaves?: number;
     timeBetweenWaves?: number;
     /** Width (horizontal) around the location arrows were shot that arrows could start falling from */
-    width?: number;
+    fallWidthOffset?: number;
 
     /** Offset from player position where arrows begin falling */
     fallHeightOffset?: number;
@@ -23,6 +22,11 @@ interface ArrowRainConfig {
 
     /** Y range around the origin location where arrows can explode  */
     impactRangeY?: number;
+
+    /** Dimensions of the the collision body */
+    width?: number;
+    /** Dimensions of the the collision body */
+    height?: number;
 }
 
 export default class ArrowRain extends StateNode {
@@ -31,7 +35,7 @@ export default class ArrowRain extends StateNode {
     private player!: Player;
     private gameManager!: GameManager;
 
-    private width = 100
+    private fallWidthOffset = 100
     private projectileSpeed = 5
     private attackMultiplier = 3
     private spawnSound = "shoot_arrow"
@@ -43,6 +47,9 @@ export default class ArrowRain extends StateNode {
     private fallHeightOffset = 200
     private explosionRadius = 20
     private impactRangeY = 200
+    private width = 100
+    private height = 100
+    private arrowsShot = 0
 
     /**
      * Initialize this attack with some values.
@@ -51,14 +58,15 @@ export default class ArrowRain extends StateNode {
     public setConfig(config?: ArrowRainConfig) {
         if(config) {
             this.projectileSpeed = config.projectileSpeed ?? 20
-            this.attackMultiplier = config.attackMultiplier ?? 2
             this.spawnSound = config.spawnSound ?? "shoot_arrow"
             this.arrowCount = config.arrowCount ?? 50
-            this.width = config.width ?? 100
+            this.fallWidthOffset = config.fallWidthOffset ?? 100
             this.timeBetweenWaves = config.timeBetweenWaves ?? 100
             this.fallHeightOffset = config.fallHeightOffset ?? 200
             this.explosionRadius = config.explosionRadius ?? 20
             this.impactRangeY = config.impactRangeY ?? 200
+            this.width = config.width ?? 20
+            this.height = config.height ?? 20
         }
     }
 
@@ -76,13 +84,14 @@ export default class ArrowRain extends StateNode {
 
     public onExit(): void {
         this.player.canMove = true;
+        this.arrowsShot = 0
     }
 
     public update(deltaT: number): void {
-        if(this.currentWave >= this.arrowWaves) return this.rangerAbilityController.changeState("Inactive")
+        if(this.currentWave >= this.arrowWaves || this.arrowsShot >= this.arrowCount) return this.rangerAbilityController.changeState("Inactive")
 
         this.timePassedSinceWave += deltaT
-        if(this.timePassedSinceWave >= this.timeBetweenWaves){
+        if(this.timePassedSinceWave >= this.timeBetweenWaves && this.arrowsShot < this.arrowCount){
             this.timePassedSinceWave = 0
             this.currentWave += 1
             let arrowCount = this.arrowCount/this.arrowWaves
@@ -90,8 +99,9 @@ export default class ArrowRain extends StateNode {
 
             // Spawn arrows and make them drop down
             for(let i=0;i<arrowCount;i++){
+                this.arrowsShot += 1
                 // Calculate where arrows start falling from
-                let xOffset = Math.random() * this.width
+                let xOffset = Math.random() * this.fallWidthOffset
                 let spawnX = x + (Math.random() < 0.5? xOffset: -xOffset)
                 let spawnY = this.player.getBody().position.y  - this.fallHeightOffset
 
@@ -104,13 +114,11 @@ export default class ArrowRain extends StateNode {
                     stat: this.player.stat,
                     spawnX: spawnX,
                     spawnY: spawnY,
-                    width: 100,
-                    height: 100,
+                    width: this.width,
+                    height: this.height,
                     initialVelocity: MathUtil.getNormalizedSpeed(0, 1, Math.random()*5 + this.projectileSpeed),
                     collisionCategory: "NONE",
                     poolType: "Arrow Rain",
-                    range: 500,
-                    activeTime: 2000,
                     attackMultiplier: this.attackMultiplier,
                     magicMultiplier: 0,
                     originEntityId: this.player.getId(),

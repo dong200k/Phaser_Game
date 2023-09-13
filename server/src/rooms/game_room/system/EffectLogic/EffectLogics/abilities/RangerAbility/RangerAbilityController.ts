@@ -25,7 +25,7 @@ export default class RangerAbilityController extends StateMachine<RangerAbilityC
         let arrowFly = new ArrowFly("Arrow Fly", this)
         arrowFly.setConfig({
             timeTilChangeState: 100,
-            attackDuration: 1000,
+            attackDuration: 400,
             triggerPercent: 0.3,
             projectileSpeed: 15,
             spawnSound: "shoot_arrow",
@@ -36,15 +36,15 @@ export default class RangerAbilityController extends StateMachine<RangerAbilityC
 
         let arrowRain = new ArrowRain("Arrow Rain", this)
         arrowRain.setConfig({
-            attackMultiplier: 2,
             projectileSpeed: 10,
             spawnSound: "shoot_arrow",
-            arrowCount: 25,
-            width: 150,
-            timeBetweenWaves: 100,
+            arrowCount: 50,
+            fallWidthOffset: 150,
+            timeBetweenWaves: 50,
             fallHeightOffset: 200,
-            explosionRadius: 100,
-            impactRangeY: 100
+            impactRangeY: 150,
+            width: 50,
+            height: 50
         })
         this.addState(arrowRain)
 
