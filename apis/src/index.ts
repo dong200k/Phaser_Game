@@ -8,6 +8,7 @@ import RoleRouter from './routers/RoleRouter';
 import DungeonRouter from './routers/DungeonRouter';
 import AdminRouter from './routers/AdminRouter';
 import AssetRouter from './routers/AssetRouter';
+import APIRouter from './routers/APIRouter';
 
 dotenv.config();
 
@@ -24,12 +25,7 @@ app.get('/', (req, res) => {
   res.send('Express + TypeScript Server');
 });
 
-app.use("/admin", AdminRouter);
-app.use(PlayerRouter)
-app.use(RoleRouter)
-app.use("/monsters", MonsterRouter);
-app.use("/dungeons", DungeonRouter);
-app.use("/assets", AssetRouter);
+app.use("/apis", APIRouter);
 
 app.get("*", (req, res)=>{
   console.log("404 not found");

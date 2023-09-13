@@ -1,8 +1,7 @@
 export default class PlayerService {
-    static baseUrl = "http://localhost:3002"
 
     static async getPlayerData(idToken: string) {
-        const url = PlayerService.baseUrl + "/players/" + idToken
+        const url = process.env.API_SERVER + "/players/" + idToken
         let res = await fetch(url, {
             method: "GET",
             headers: {
@@ -23,7 +22,7 @@ export default class PlayerService {
             uid: uid,
             coins: coins,
         }
-        const url = PlayerService.baseUrl + "/players/addcoins";
+        const url = process.env.API_SERVER + "/players/addcoins";
         let res = await fetch(url, {
             method: "POST",
             headers: {

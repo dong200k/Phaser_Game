@@ -2,6 +2,7 @@ import * as Colyseus from 'colyseus.js';
 import type WaitingRoomState from "../../../server/src/rooms/waiting_room/schemas/State";
 import type GameRoomState from "../../../server/src/rooms/game_room/schemas/State";
 import ClientFirebaseConnection from '../firebase/ClientFirebaseConnection';
+import { GAME_SERVER_URL } from '../config';
 
 type room = "waiting" | "game" | "lobby" | "none";
 
@@ -22,7 +23,7 @@ export default class ClientManager {
     // The rooms should then be accessable to the programmer.
 
     private constructor() {
-        this.client = new Colyseus.Client('ws://localhost:3000');
+        this.client = new Colyseus.Client(GAME_SERVER_URL);
     }
 
     public static getClient(): ClientManager {

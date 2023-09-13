@@ -201,3 +201,6 @@ export const ColorStyle = {
         }
     }
 }
+
+export const APIServerURL = "http://localhost:3002/apis";
+export const GAME_SERVER_URL = 'ws://localhost:3000/game';

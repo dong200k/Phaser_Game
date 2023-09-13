@@ -1,8 +1,7 @@
 export default class MonsterService {
-    static baseUrl = "http://localhost:3002";
 
     static async getMonsterData(monsterId: string) {
-        const url = MonsterService.baseUrl + "/monsters/" + monsterId;
+        const url = process.env.API_SERVER + "/monsters/" + monsterId;
         let res = await fetch(url, {
             method: "GET",
             headers: {
@@ -16,7 +15,7 @@ export default class MonsterService {
     }
 
     static getAllMonsterData() {
-        const url = MonsterService.baseUrl + "/monsters";
+        const url = process.env.API_SERVER + "/monsters";
         return fetch(url, {
             method: "GET",
             headers: {
