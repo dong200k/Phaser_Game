@@ -61,7 +61,7 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
                 triggerUpgradeEffect.cooldown.remainingTime = newCooldownTime
             }
             triggerUpgradeEffect.cooldown.time = newCooldownTime
-            console.log(`cooldown changed: from ${triggerUpgradeEffect.originalCooldownTime} to ${newCooldownTime}`)
+            // console.log(`cooldown changed: from ${triggerUpgradeEffect.originalCooldownTime} to ${newCooldownTime}`)
         }
     }
 
@@ -70,7 +70,7 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
      */
     public update(deltaT: number): number {
         this.cooldown.tick(deltaT * 1000) // pass in miliseconds
-        this.effectLogic?.udpate(deltaT * 1000)
+        this.effectLogic?.update(deltaT * 1000)
         return 0
     }
 

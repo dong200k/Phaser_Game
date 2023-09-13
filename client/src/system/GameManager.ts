@@ -206,19 +206,15 @@ export default class GameManager {
         
         this.gameRoom?.send("move", movementData);
 
-        let special = this.spaceKey?.isDown? true : false;
-        this.gameRoom?.send("special", special);
-        if(special){
-            this.player1?.play("2_atk")
-        }
-        
-
         //[0] mouse click, [1] mousex, [2] mousey.
         let mouseData = [0, 0, 0]
         mouseData[0] = this.mouseDown? 1 : 0;
         mouseData[1] = this.scene.input.mousePointer.worldX;
         mouseData[2] = this.scene.input.mousePointer.worldY;
         this.gameRoom?.send("attack", mouseData);
+
+        let special = this.spaceKey?.isDown? true : false;
+        this.gameRoom?.send("special", {special, mouseData});
 
         // Client-side prediction.
         // this.updatePlayer1(movementData, special, mouseData);
@@ -490,7 +486,7 @@ export default class GameManager {
             let projectileState = gameObjectState as ProjectileState;
             let velocityX = projectileState.velocity.x;
             let velocityY = projectileState.velocity.y;
-            if(velocityX !== 0) gameObject.setRotation(Phaser.Math.Angle.Between(0, 0, velocityX, velocityY));
+            gameObject.setRotation(MathUtil.getRotationRadians(velocityX, velocityY))
         }
         if(gameObject instanceof Monster) {
             // Updates the monster's movement animations based on its velocity.

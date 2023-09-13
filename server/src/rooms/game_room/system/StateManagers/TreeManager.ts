@@ -32,11 +32,12 @@ export default class TreeManager{
         
         // Special Logic for selecting Weapon/Artifact Upgrade Tree node
         if(selectedUpgrade.data instanceof WeaponData){
+            // *** Note: uncomment this if upgrade on the same level as the selected upgrade should be skipped ***
             // Mark nodes on same depth as selected
-            if(upgrades.length > 1)
-            upgrades.forEach((upgrade, i)=>{
-                if(i!==choice) upgrade.data.setStatus("skipped")
-            })
+            // if(upgrades.length > 1)
+            // upgrades.forEach((upgrade, i)=>{
+            //     if(i!==choice) upgrade.data.setStatus("skipped")
+            // })
 
             // Change base weapon which provides sprites if node has a weaponId
             let data = selectedUpgrade.data as WeaponData

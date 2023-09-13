@@ -13,6 +13,7 @@ import CollisionImmuneEffect from "./temp/CollisionImmuneEffect";
 import Entity from "../gameobjs/Entity";
 import PiercingEffect from "./temp/PiercingEffect";
 import OneTimeUpgradeEffect from "./onetime/OneTimeUpgradeEffect";
+import WeaponUpgradeTree from "../Trees/WeaponUpgradeTree";
 
 
 export default class EffectFactory {
@@ -168,12 +169,12 @@ export default class EffectFactory {
     }
 
     /**
-     * Effect that modifies piercing of a player's weaponUpgradeTree.
+     * Effect that modifies piercing of a player's artifact/weapon tree.
      * @param piercing number that represents how many targets the weapon can hit/pierce before despawning.
      * @param activeTime time the effect will last for.
      * @param isTimed boolean to determine whether to used active time or not
      */
-    public static createPiercingEffect(piercing: number, isTimed?: boolean, activeTime: number = 0){
-        return new PiercingEffect(isTimed, activeTime, piercing)
+    public static createPiercingEffect(piercing: number, tree: WeaponUpgradeTree, isTimed?: boolean, activeTime: number = 0){
+        return new PiercingEffect(tree, isTimed, activeTime, piercing)
     }
 }

@@ -204,7 +204,10 @@ export default class PlayerManager {
         Matter.Body.setVelocity(playerBody, velocity);
     }
 
-    processPlayerSpecial(playerId: string, useSpecial: boolean) {
+    processPlayerSpecial(playerId: string, data: any) {
+        let {special: useSpecial, mouseData} = data
+        let [mouseClick, mouseX, mouseY] = mouseData
+
         // Do nothing if the player is diabled.
         if(this.disabledPlayers.has(playerId)) return;
 
@@ -216,7 +219,7 @@ export default class PlayerManager {
 
         if(!useSpecial) return
         let usedAbility = playerState.currentAbility?.useAbility()
-        if(usedAbility) EffectManager.useTriggerEffectsOn(playerState, "player skill", playerBody, {mouseX: 0, mouseY: 0})
+        if(usedAbility) playerState.playerController.startSpceial(mouseX, mouseY);
     }
 
     /**
@@ -282,12 +285,12 @@ export default class PlayerManager {
      */
     private equipStarterArtifacts(player: Player){
         // Equip aritfacts
-        let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
-        let upgradedFrostGlaive = ArtifactFactory.createUpgradeFrostGlaive()
-        let upgradedDemoArtifact = ArtifactFactory.createDemo()
-        this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
-        this.gameManager.getArtifactManager().equipArtifact(player, upgradedFrostGlaive)
-        this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
+        // let upgradedHermesBoots = ArtifactFactory.createUpgradedHermesBoot()
+        // let upgradedFrostGlaive = ArtifactFactory.createUpgradeFrostGlaive()
+        // let upgradedDemoArtifact = ArtifactFactory.createDemo()
+        // this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
+        // this.gameManager.getArtifactManager().equipArtifact(player, upgradedFrostGlaive)
+        // this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
     }
 
     /**

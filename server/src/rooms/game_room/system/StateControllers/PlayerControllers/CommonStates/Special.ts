@@ -21,7 +21,7 @@ interface AttackConfig {
     mouseY?: number;
 }
 
-export default class Attack extends StateNode {
+export default class Special extends StateNode {
 
     private playerController!: PlayerController;
     private player!: Player;
@@ -60,15 +60,15 @@ export default class Attack extends StateNode {
     public onEnter(): void {
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
-        this.attackDuration = this.player.stat.attackSpeed / 3;
+        this.attackDuration = this.player.stat.attackSpeed/2;
         this.timePassed = 0;
-        // this.player.canMove = this.canMove;
+        this.player.canMove = this.canMove;
         this.triggered = false;
 
         // Checks if the player's sprite should flip or not.
         let flip = (this.player.x - this.mouseX) > 0;
-
-        this.player.animation.playAnimation("attack", {
+        console.log("playing special animation")
+        this.player.animation.playAnimation("2_atk", {
             duration: this.attackDuration,
             flip: flip,
         });
@@ -83,11 +83,12 @@ export default class Attack extends StateNode {
     public update(deltaT: number): void {
         this.timePassed += deltaT;
 
-        // Trigger an attack if it hasn't been triggered and the timePassed is at the triggerPercent.
+        // Trigger a skill if it hasn't been triggered and the timePassed is at the triggerPercent.
         if(!this.triggered && this.timePassed >= this.triggerPercent * this.attackDuration) {
             this.triggered = true;
-            // Trigger the attack.
-            EffectManager.useTriggerEffectsOn(this.player, "player attack", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY})
+            // Trigger skills.
+            console.log("arrow fly")
+            EffectManager.useTriggerEffectsOn(this.player, "player skill", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY})
         }
 
         // End attack once we pass the attackDuration.
