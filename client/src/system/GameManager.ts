@@ -490,7 +490,9 @@ export default class GameManager {
             let projectileState = gameObjectState as ProjectileState;
             let velocityX = projectileState.velocity.x;
             let velocityY = projectileState.velocity.y;
-            if(velocityX !== 0) gameObject.setRotation(Phaser.Math.Angle.Between(0, 0, velocityX, velocityY));
+
+            // gameObject.setRotation(Phaser.Math.Angle.Between(0, 0, velocityX, velocityY));
+            gameObject.setRotation(MathUtil.getRotationDegree(velocityX, velocityY))
         }
         if(gameObject instanceof Monster) {
             // Updates the monster's movement animations based on its velocity.

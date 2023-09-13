@@ -118,7 +118,7 @@ export default class ArrowFly extends StateNode {
                     spawnY: playerY + Math.random() * 100 + 30,
                     width: 100,
                     height: 100,
-                    initialVelocity: MathUtil.getNormalizedSpeed(0.01, -1, Math.random()*5 + this.projectileSpeed),
+                    initialVelocity: MathUtil.getNormalizedSpeed(0, -1, Math.random()*5 + this.projectileSpeed),
                     collisionCategory: "NONE",
                     poolType: "Arrow Fly",
                     range: 500,
