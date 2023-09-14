@@ -5,6 +5,8 @@ import Dead from "./CommonStates/Dead";
 import Attack from "./CommonStates/Attack";
 import Move from "./CommonStates/Move";
 import Special from "./CommonStates/Special";
+import ChargeAttack from "./CommonStates/ChargeAttack";
+import TriggerUpgradeEffect from "../../../schemas/effects/trigger/TriggerUpgradeEffect";
 
 
 export interface PlayerControllerData {
@@ -18,6 +20,11 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
     private attackState!: Attack;
     private specialState!: Special;
+    private chargeAttackState!: ChargeAttack;
+    
+    private chargeTimeSoFar= 0
+    private totalChargeTime = 3000
+    private charging = false
 
     protected create(data: PlayerControllerData): void {
         this.player = data.player;
@@ -48,8 +55,20 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         })
         this.addState(specialState)
 
+        let chargeAttackState = new ChargeAttack("ChargeAttack", this);
+        this.chargeAttackState = chargeAttackState
+        chargeAttackState.setConfig({
+            triggerPercent: 0.9,
+        })
+        this.addState(chargeAttackState)
+
         //Set initial state
         this.changeState("Idle");
+    }
+
+    public update(deltaT: number): void {
+        super.update(deltaT)
+        if(this.charging) this.chargeTimeSoFar += deltaT * 1000
     }
 
     public postUpdate(deltaT: number): void {
@@ -63,6 +82,46 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
     public getPlayer() {
         return this.player;
+    }
+
+    public processMouseInput(mouseClick: number, mouseDown: number, mouseX:number, mouseY:number){
+        if(mouseDown){
+            this.charging = true
+        }else{
+            this.charging = false
+        }
+
+        if(mouseClick){
+            // Check if player has any charge attacks
+            let hasChargeAttack = false
+            this.player.effects.forEach(e=>{
+                if(e instanceof TriggerUpgradeEffect && e.type === "player charge attack"){
+                    hasChargeAttack = true
+                }
+            })
+
+            if(hasChargeAttack && this.chargeTimeSoFar >= this.totalChargeTime){
+                // Charge attack cooldown is on the player controller
+                this.startChargeAttack(mouseX, mouseY)
+            }else{
+                // If an attack is off cooldown
+                this.player.effects.forEach((effect) => {
+                    if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack") {
+                        if (effect.cooldown.isFinished) 
+                            this.startAttack(mouseX, mouseY);
+                    }
+                })
+            }
+            this.charging = false
+            this.chargeTimeSoFar = 0
+        }
+    }
+
+    public startChargeAttack(mouseX: number, mouseY: number){
+        if(this.stateName !== "Dead"){
+            this.chargeAttackState.setConfig({mouseX, mouseY})
+            this.changeState("ChargeAttack")
+        }
     }
 
     /** Changes this player's state to attack, but only if the 
@@ -83,5 +142,5 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
             this.specialState?.setConfig({mouseX, mouseY});
             this.changeState("Special");
         }
-    } 
+    }
 }

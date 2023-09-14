@@ -3541,7 +3541,7 @@
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "ff9b27d6-54f2-430a-b9d7-07276cdaa306",
+                          "id": "a7f86a23-32ab-4c04-ab5b-3d7f5573ea6e",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -3588,7 +3588,7 @@
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "de94bdc0-5481-422f-95aa-5fad670cf851",
+                      "id": "d9c03153-7c32-463d-8f92-cc9df931d84f",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -3635,7 +3635,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "e55e4c6b-e68a-4ff8-ba47-fa66f5ba104b",
+                  "id": "8706459b-4675-437e-8565-450097f5140b",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -3682,7 +3682,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "7424b4c1-52ba-431f-8f26-fbffdf009125",
+              "id": "dc4c3d68-95da-49ea-8b42-24f7f81def42",
               "depth": 1,
               "collapsed": false
             }
@@ -3739,7 +3739,7 @@
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "bcfc15ec-d2fd-4d92-aa3d-8ef82b7e7c28",
+                          "id": "9a0a4bbe-aec2-4c44-a390-9f729dab58ae",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -3785,7 +3785,7 @@
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "76a4e7ef-cb9e-4c9a-8dc3-6c81a6b279c2",
+                      "id": "2a60432c-fcc8-4be6-b874-55d56e56a8e2",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -3831,7 +3831,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "1867bbe6-f94b-4bdc-9415-573d9a4d8339",
+                  "id": "2c0c5ba8-8ab2-4e4e-872e-fa2ceb2b9ce7",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -3878,7 +3878,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "2e9d4bbb-6e5f-4f4a-953c-caf31764afbe",
+              "id": "a30dd5a5-343f-4a00-9a21-4bf9da7fd7f3",
               "depth": 1,
               "collapsed": false
             }
@@ -3935,7 +3935,7 @@
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "51c86183-e6e7-49fe-a505-b3a8cba5ee1b",
+                          "id": "bd564511-d3f5-41c8-b7a6-168b93e42d25",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -3981,7 +3981,7 @@
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "981ae992-b98e-4ffb-8106-cf98032ff200",
+                      "id": "a6b2edd0-284b-496b-bd57-7732f53c3683",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4027,7 +4027,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "0c62ebcc-a475-4ff7-9edc-743bce17116f",
+                  "id": "8347f828-8499-400a-83fa-3611b6179836",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4073,7 +4073,57 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "bb060630-195a-4c90-a14c-cd6ccdec995b",
+              "id": "0ce220ee-799d-490e-b687-e13b310541e8",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-1fec98f9-8ef0-41e4-8235-aee5c88bdec2",
+            "children": [],
+            "data": {
+              "name": "Charge Attack",
+              "description": "Holding attack button will charge a stronger attack that pierces enemies and explodes on hit.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "ChargeAttackLogic1",
+                "doesStack": 1,
+                "cooldown": 0,
+                "collisionGroup": -1,
+                "type": "player charge attack"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "98ef1b33-14c5-486f-8cce-3799594541d6",
               "depth": 1,
               "collapsed": false
             }
@@ -4105,7 +4155,9 @@
             "speed": 0,
             "lifeSteal": 0,
             "lifeStealPercent": 0,
-            "level": 0
+            "level": 0,
+            "chargeAttackSpeed": 1,
+            "chargeAttackSpeedPercent": 0
           },
           "status": "selected",
           "selectionTime": 0,
@@ -4120,7 +4172,7 @@
           "doesStack": false
         },
         "__rd3t": {
-          "id": "7c98052f-9ca3-4694-a008-40de32b1f6d3",
+          "id": "aafaf726-635a-4981-a027-f2f166580a4a",
           "depth": 0,
           "collapsed": false
         }

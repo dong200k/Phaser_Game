@@ -6,7 +6,7 @@ import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
 import GameManager from "../../../system/GameManager";
 import EffectLogic from "../../../system/EffectLogic/EffectLogic";
 import Stat, { keyStat } from "../../gameobjs/Stat";
-import { getFinalAttackCooldown } from "../../../system/Formulas/formulas";
+import { getFinalAttackCooldown, getFinalAttackSpeed, getFinalChargeAttackSpeed } from "../../../system/Formulas/formulas";
 import MathUtil from "../../../../../util/MathUtil";
 
 /** TriggerEffect, but with cooldown. Used for Weapon Upgrade and Artifact Upgrade trees logics that are triggered by player input. */
@@ -37,40 +37,52 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
         this.originalCooldownTime = cooldown
     }
 
-    protected onAddToEntity(entity: Entity): void {
-        super.onAddToEntity(entity)
-        this.initListeners()
-        this.changeCooldown(this)(entity.stat)
-    }
+    // protected onAddToEntity(entity: Entity): void {
+    //     super.onAddToEntity(entity)
+    //     this.initListeners()
+    //     this.changeCooldown(this)(entity.stat)
+    // }
 
-    initListeners(){
-        // Listen for attack speed changes to update cooldown
-        let key = MathUtil.uid()
-        let statsToListen = new Set<keyStat>()
-        statsToListen.add("attackSpeed")
-        statsToListen.add("attackSpeedPercent")
-        this.getEntity()?.stat.addListener(key, this.changeCooldown(this), statsToListen)
-        
-    }
+    // initListeners(){
+    //     // Listen for attack speed changes to update cooldown
+    //     let key = MathUtil.uid()
+    //     let statsToListen = new Set<keyStat>()
+    //     statsToListen.add("attackSpeed")
+    //     statsToListen.add("attackSpeedPercent")
+    //     this.getEntity()?.stat.addListener(key, this.changeCooldown(this), statsToListen)
+    // }
 
     /** Changes cooldown based on stat. This should be called in a listener to player's stat changes. */
-    public changeCooldown(triggerUpgradeEffect: TriggerUpgradeEffect){
-        return (stat: Stat)=>{
-            let newCooldownTime = getFinalAttackCooldown(stat, triggerUpgradeEffect.originalCooldownTime)
-            if(triggerUpgradeEffect.cooldown.remainingTime > newCooldownTime) {
-                triggerUpgradeEffect.cooldown.remainingTime = newCooldownTime
-            }
-            triggerUpgradeEffect.cooldown.time = newCooldownTime
-            // console.log(`cooldown changed: from ${triggerUpgradeEffect.originalCooldownTime} to ${newCooldownTime}`)
-        }
-    }
+    // public changeCooldown(triggerUpgradeEffect: TriggerUpgradeEffect){
+    //     return (stat: Stat)=>{
+    //         let newCooldownTime = getFinalAttackCooldown(stat, triggerUpgradeEffect.originalCooldownTime)
+    //         if(triggerUpgradeEffect.cooldown.remainingTime > newCooldownTime) {
+    //             triggerUpgradeEffect.cooldown.remainingTime = newCooldownTime
+    //         }
+    //         triggerUpgradeEffect.cooldown.time = newCooldownTime
+    //         // console.log(`cooldown changed: from ${triggerUpgradeEffect.originalCooldownTime} to ${newCooldownTime}`)
+    //     }
+    // }
 
     /**
      * Updates this UpgradeTriggerEffect's cooldown
      */
     public update(deltaT: number): number {
-        this.cooldown.tick(deltaT * 1000) // pass in miliseconds
-        this.effectLogic?.update(deltaT * 1000)
+        deltaT *= 1000 // get milLiseconds
+        let newDeltaT = deltaT
+        // Grab deltaT in miliseconds depending on attackSpeed/chargeAttackSpeed
+        if(this.type === "player attack"){
+            let atkSpeed = 1
+            if(this.tree?.owner) atkSpeed = getFinalAttackSpeed(this.tree?.owner.stat)
+            newDeltaT = deltaT * atkSpeed
+        }else if(this.type === "player charge attack"){
+            let chargeAtkSpeed = 1
+            if(this.tree?.owner) chargeAtkSpeed = getFinalChargeAttackSpeed(this.tree?.owner.stat)
+            newDeltaT = deltaT * chargeAtkSpeed 
+        }
+        
+        this.cooldown.tick(newDeltaT)
+        this.effectLogic?.update(deltaT)
         return 0
     }
 

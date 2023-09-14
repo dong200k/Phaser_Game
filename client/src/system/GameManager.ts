@@ -178,13 +178,16 @@ export default class GameManager {
         })
 
         this.scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-            if(pointer.leftButtonDown()) this.mouseDown = true;
+            if(pointer.leftButtonDown()) {
+                this.mouseDown = true;
+            }
             // this.player1?.play("atk")
         })
 
         this.scene.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
             if(pointer.leftButtonReleased()) {
                 this.mouseDown = false;
+                this.sendMouseUpMessage()
                 if(this.spectating) {
                     // If spectating change perspective.
                     this.rotateSpectateTarget();
@@ -207,17 +210,28 @@ export default class GameManager {
         this.gameRoom?.send("move", movementData);
 
         //[0] mouse click, [1] mousex, [2] mousey.
-        let mouseData = [0, 0, 0]
+        let mouseData = [0, 0, 0, 0]
         mouseData[0] = this.mouseDown? 1 : 0;
         mouseData[1] = this.scene.input.mousePointer.worldX;
         mouseData[2] = this.scene.input.mousePointer.worldY;
+        
         this.gameRoom?.send("attack", mouseData);
 
         let special = this.spaceKey?.isDown? true : false;
-        this.gameRoom?.send("special", {special, mouseData});
+        if(special) this.gameRoom?.send("special", {special, mouseData});
 
         // Client-side prediction.
         // this.updatePlayer1(movementData, special, mouseData);
+    }
+
+    private sendMouseUpMessage(){
+        let mouseData = [0, 0, 0, 0]
+        mouseData[0] = this.mouseDown? 1 : 0;
+        mouseData[1] = this.scene.input.mousePointer.worldX;
+        mouseData[2] = this.scene.input.mousePointer.worldY;
+        mouseData[3] = 1 // Pointer Up
+
+        this.gameRoom?.send("attack", mouseData)
     }
 
     private getPlayerMovementData() {

@@ -75,24 +75,14 @@ export default class PlayerManager {
         // Do nothing if the player is diabled.
         if(this.disabledPlayers.has(playerId)) return;
 
-        let [mouseClick, mouseX, mouseY] = data
+        let [mouseDown, mouseX, mouseY, mouseClick] = data
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist, Attack")
         
         // Do nothing if the player is dead.
         if(playerState.playerController.stateName === "Dead") return;
 
-        // trigger all player attack effect logics if there is a mouseclick
-        if(mouseClick) {
-            playerState.effects.forEach((effect) => {
-                if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack") {
-                    if (effect.cooldown.isFinished) 
-                        playerState.playerController.startAttack(mouseX, mouseY);
-                }
-            })
-            
-            // EffectManager.useTriggerEffectsOn(playerState, "player attack", playerBody, {mouseX, mouseY})
-        }
+        playerState.playerController.processMouseInput(mouseClick, mouseDown, mouseX, mouseY)
     }
 
     queuePlayerMovement(playerId: string, data: number[]) {

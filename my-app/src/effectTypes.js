@@ -5,7 +5,8 @@ const effectTypes = [
     "none", // Default - Continuously activated
     "player attack", // Triggered by player attack
     "player skill", // Triggered by player skill
-    "one time" // Applied one time 
+    "one time", // Applied one time 
+    "player charge attack" // Trigger by player charge attacks
 ]
 
 export default effectTypes

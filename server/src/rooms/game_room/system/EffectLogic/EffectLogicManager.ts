@@ -16,6 +16,7 @@ import Piercing2Logic from "./EffectLogics/weapon/RangerBow/Piercing/Piercing2Lo
 import PentabowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/PentabowLogic";
 import SexagintibowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/SexagintibowLogic";
 import Piercing10Logic from "./EffectLogics/common/Piercing10Logic";
+import ChargeAttackLogic1 from "./EffectLogics/weapon/RangerBow/ChargeShot/ChargeAttackLogic1";
 
 export default class EffectLogicManager{
 
@@ -54,6 +55,8 @@ export default class EffectLogicManager{
         this.addEffectLogic(Piercing1Logic)
         this.addEffectLogic(Piercing2Logic)
         this.addEffectLogic(Piercing10Logic)
+
+        this.addEffectLogic(ChargeAttackLogic1)
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass){

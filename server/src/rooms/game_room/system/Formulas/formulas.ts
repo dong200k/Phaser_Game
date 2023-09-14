@@ -105,3 +105,24 @@ export const getFinalAttackCooldown = function({attackSpeed, attackSpeedPercent}
 export const getFinalAttackRange = function({attackRangePercent, attackRange}: Stat, baseRange: number){
     return (1 + attackRangePercent) * attackRange * baseRange;
 }
+
+
+/**
+ * 
+ * @param stat
+ * @returns attack speed after accounting stat
+ */
+export const getFinalAttackSpeed = function({attackSpeed, attackSpeedPercent}: Stat){
+    let finalAttackSpeed = attackSpeed * (1 + attackSpeedPercent)
+    return Math.abs(finalAttackSpeed)
+}
+
+/**
+ * 
+ * @param stat 
+ * @returns charge attack speed after accounting stat
+ */
+export const getFinalChargeAttackSpeed = function({chargeAttackSpeed, chargeAttackSpeedPercent}: Stat){
+    let finalChargeAttackSpeed = chargeAttackSpeed * (1 + chargeAttackSpeedPercent)
+    return Math.abs(finalChargeAttackSpeed)
+}
