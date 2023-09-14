@@ -14,6 +14,9 @@ export default class Falling extends StateNode {
         this.arrowRainProjectileController = this.getStateMachine<ArrowRainProjectileController>()
         this.projectile = this.arrowRainProjectileController.getProjectile()
         this.explodeThresholdY = this.arrowRainProjectileController.getExplodeThresholdY()
+        this.projectile.animation.playAnimation("Fall",{
+            loop: true
+        })
     }
 
     public onExit(): void {

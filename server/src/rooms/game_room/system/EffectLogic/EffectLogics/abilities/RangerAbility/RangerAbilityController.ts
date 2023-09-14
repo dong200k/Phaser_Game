@@ -36,7 +36,7 @@ export default class RangerAbilityController extends StateMachine<RangerAbilityC
 
         let arrowRain = new ArrowRain("Arrow Rain", this)
         arrowRain.setConfig({
-            projectileSpeed: 10,
+            projectileSpeed: 5,
             spawnSound: "shoot_arrow",
             arrowCount: 50,
             fallWidthOffset: 150,
