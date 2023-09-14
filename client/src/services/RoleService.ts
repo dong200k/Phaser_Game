@@ -1,9 +1,9 @@
-import { APIServerURL } from "../config";
+import { API_SERVER_URL } from "../config";
 
 export default class RoleService {
 
     static async unlockRole(IdToken: string, role: string){
-        const url = APIServerURL + "/roles"
+        const url = API_SERVER_URL + "/roles"
         let res = await fetch(url, {
             method: "POST",
             body: JSON.stringify({
@@ -20,7 +20,7 @@ export default class RoleService {
     }
 
     static async getAllRoles(){
-        const url = APIServerURL + "/roles"
+        const url = API_SERVER_URL + "/roles"
         console.log(url);
         let res = await fetch(url, {
             method: "GET",

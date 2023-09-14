@@ -1,9 +1,9 @@
-import { APIServerURL } from "../config";
+import { API_SERVER_URL } from "../config";
 
 export default class PlayerService{
 
     static async createPlayer(username: string | null, IdToken?: string){
-        const url = APIServerURL + "/players"
+        const url = API_SERVER_URL + "/players"
         let res = await fetch(url, {
             method: "POST",
             body: JSON.stringify({
@@ -20,7 +20,7 @@ export default class PlayerService{
     }
 
     static async updatePlayerSkillTree(upgrades: string[], IdToken: string){
-        const url = APIServerURL + "/players/skillTree"
+        const url = API_SERVER_URL + "/players/skillTree"
         let res = await fetch(url, {
             method: "POST",
             body: JSON.stringify({
@@ -37,7 +37,7 @@ export default class PlayerService{
     }
 
     static async unUpgradePlayerSkillTree(upgrades: string[], IdToken: string){
-        const url = APIServerURL + "/players/skillTree/remove"
+        const url = API_SERVER_URL + "/players/skillTree/remove"
         let res = await fetch(url, {
             method: "POST",
             body: JSON.stringify({
