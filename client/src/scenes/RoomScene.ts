@@ -88,6 +88,7 @@ export default class RoomScene extends Phaser.Scene {
     // Load System. 
     private loadSystem!: LoadSystem;
     private dungeonDataLoaded: boolean = false;
+    private roomLoaded: boolean = false;
 
     // Plugin for UI elements that will be injected at scene creation.
     rexUI!: UIPlugins;
@@ -148,13 +149,14 @@ export default class RoomScene extends Phaser.Scene {
         this.playerList?.update();
     }
 
+    /** Sets all dom elements to not visible. */
     public hideDOM() {
         this.children.each((child) => {
             if(child instanceof Phaser.GameObjects.DOMElement) child.setVisible(false);
-            
         })
     }
 
+    /** Sets all dom elements to visible. */
     public showDOM() {
         this.children.each((child) => {
             if(child instanceof Phaser.GameObjects.DOMElement) child.setVisible(true);
@@ -363,64 +365,67 @@ export default class RoomScene extends Phaser.Scene {
     /** Called when the player switches to the room scene. */
     private joinRoom() {
         this.showLoadingScreen();
-        // this.dungeonDataLoaded = false;
-
         if(!this.waitingRoom) {
             ClientManager.getClient().joinWaitingRoom().then((room) => {
                 this.waitingRoom = room;
                 this.roomInfo.update({roomID: room.id});
                 this.dungeonDataLoaded = false;
-                this.onJoin();
+                this.roomLoaded = false;
+                this.waitingRoom.onMessage("roomLoaded", () => {
+                    this.roomLoaded = true;
+                })
+                this.onJoin(this.waitingRoom);
             }).catch(e => this.handleJoinRoomError(e));
         }
     }
 
-    private onJoin() {
+    /** Called when the player joins the waiting room. 
+     * Adds waitingRoom message and state change handlers.
+    */
+    private onJoin(waitingRoom: Colyseus.Room<WaitingRoomState>) {
         this.playersInRoom = 0;
 
-        if(this.waitingRoom) {
-            this.waitingRoom.state.players.onAdd = (player, key:string) => { this.onAddPlayer(player, key) }
-            this.waitingRoom.state.players.onRemove = (player, key:string) => { this.onRemovePlayer(player, key) }
+        waitingRoom.state.players.onAdd = (player, key:string) => { this.onAddPlayer(player, key) }
+        waitingRoom.state.players.onRemove = (player, key:string) => { this.onRemovePlayer(player, key) }
 
-            // ------- JOIN GAME MESSAGE FROM SERVER -----------
-            this.waitingRoom.onMessage("joinGame", (message) => {
-                // Sets the game room Id for the client.
-                ClientManager.getClient().setGameRoomId(message);
-                SceneManager.getSceneManager().pushScene("GameScene");
-            })
+        // ------- JOIN GAME MESSAGE FROM SERVER -----------
+        waitingRoom.onMessage("joinGame", (message) => {
+            // Sets the game room Id for the client.
+            ClientManager.getClient().setGameRoomId(message);
+            SceneManager.getSceneManager().pushScene("GameScene");
+        })
 
-            this.waitingRoom.onMessage("serverMessage", (message) => {
-                this.chatBox.appendText(`[System] ${message}`);
-            })
+        waitingRoom.onMessage("serverMessage", (message) => {
+            this.chatBox.appendText(`[System] ${message}`);
+        })
 
-            this.waitingRoom.onMessage("playerMessage", (message) => {
-                this.chatBox.appendText(`${message.name}: ${message.message}`);
-            })
+        waitingRoom.onMessage("playerMessage", (message) => {
+            this.chatBox.appendText(`${message.name}: ${message.message}`);
+        })
 
-            this.waitingRoom.onMessage("dungeonData", (message) => {
-                // Loaded before the player can start the game.
-                this.roomModalData.dungeonData = message;
-                if(this.roomModalData.dungeonData.length > 0) {
-                    this.rolePetDungeonDisplay.updateDisplay({
-                        dungeonName: this.roomModalData.dungeonData[0].name,
-                    })
-                }
+        waitingRoom.onMessage("dungeonData", (message) => {
+            // Loaded before the player can start the game.
+            this.roomModalData.dungeonData = message;
+            if(this.roomModalData.dungeonData.length > 0) {
+                this.rolePetDungeonDisplay.updateDisplay({
+                    dungeonName: this.roomModalData.dungeonData[0].name,
+                })
+            }
 
-                this.dungeonDataLoaded = true;
-            })
+            this.dungeonDataLoaded = true;
+        })
 
-            this.waitingRoom.onError((code, message) => {
-                console.log(`Error: Waiting Room Error. code: ${code}, message: ${message}`);
-                this.leaveRoom();
-            })
+        waitingRoom.onError((code, message) => {
+            console.log(`Error: Waiting Room Error. code: ${code}, message: ${message}`);
+            this.leaveRoom();
+        })
 
-            this.waitingRoom.onLeave((code) => {
-                console.log(`Note: Client left the room. Code: ${code}`);
-                this.leaveRoom();
-            })
+        waitingRoom.onLeave((code) => {
+            console.log(`Note: Client left the room. Code: ${code}`);
+            this.leaveRoom();
+        })
 
-            this.waitingRoom.state.onChange = () => { this.waitingRoomStateOnChange() }
-        }
+        waitingRoom.state.onChange = () => { this.waitingRoomStateOnChange() }
     }
 
     private showLoadingScreen() {

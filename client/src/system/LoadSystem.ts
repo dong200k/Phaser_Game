@@ -43,7 +43,16 @@ export default class LoadSystem {
                 // When all items are loaded, percenatge should be below 100%. Then load complete will make it 100%.
                 let percentage = Math.min(1 - ((allLoadItems.length + 1) / (totalLoadItems + 1)), 0.99) * 100;
                 loadingScreen.updateProgressBarValue(Math.round(percentage) / 100);
-                await loadItem.loadFunction();
+                // Tries to load the load item. If it fails perform load system clean up and throw an error.
+                try {
+                    await loadItem.loadFunction();
+                } catch(e: any) {
+                    // Load error.
+                    loadingScreen.updateProgressBarText("Loading Error!");
+                    await loadingScreen.waitFor(500);
+                    loadingScreen.destroy(0);
+                    throw new Error(`Error while loading ${loadItem.name}. Error: ${e}`);
+                }
             }
         }
         // Load complete.

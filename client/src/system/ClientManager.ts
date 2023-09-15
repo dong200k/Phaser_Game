@@ -3,8 +3,10 @@ import type WaitingRoomState from "../../../server/src/rooms/waiting_room/schema
 import type GameRoomState from "../../../server/src/rooms/game_room/schemas/State";
 import ClientFirebaseConnection from '../firebase/ClientFirebaseConnection';
 
-type room = "waiting" | "game" | "lobby" | "none";
-
+/**
+ * ClientManager is a singleton that manages the connection to the Colyseus Server.
+ * There are methods to connect to the lobby, game, and waiting room.
+ */
 export default class ClientManager {
     private static singleton: ClientManager;
     
@@ -13,51 +15,37 @@ export default class ClientManager {
     private waitingRoom?: Colyseus.Room<WaitingRoomState>;
     private gameRoom?: Colyseus.Room<GameRoomState>;
 
-    private state: room = "none";
+    private state: "none"|"lobby"|"waiting"|"waitingAndGame"|"game" = "none";
     private waitingRoomId: string = "";
     private gameRoomId: string = "";
-
-    // ClientManager is a singleton that manages the connection to the Colyseus Server.
-    // There should be methods on here to connect to the lobby, game, and waiting rooms.
-    // The rooms should then be accessable to the programmer.
 
     private constructor() {
         this.client = new Colyseus.Client('ws://localhost:3000');
     }
 
     public static getClient(): ClientManager {
-        if(!this.singleton) {
-            this.singleton = new ClientManager();
-        }
+        if(!this.singleton) this.singleton = new ClientManager();
         return this.singleton; 
     }
-
-    // public connectToServer() {
-    //     this.client = new Colyseus.Client('ws://localhost:3000');
-    // }
 
     /**
      * Joins the lobby. If the user is already in the lobby the current lobby is returned.
      */
-    public joinLobby(): Promise<Colyseus.Room> {
-        const promise = new Promise<Colyseus.Room>((resolve, reject) => {
-            if(this.state === 'lobby' && this.lobbyRoom != null)
-                resolve(this.lobbyRoom);
-            else {
-                this.client.joinOrCreate('lobby', ClientFirebaseConnection.getConnection().getOptions()).then((room) => {
-                    this.lobbyRoom = room;
-                    this.lobbyRoom.onLeave((code) => {
-                        this.lobbyRoom = undefined;
-                        console.log(`---Leaving Lobby, Code: ${code}---`);
-                    })
-                    console.log("---Joined Lobby!---");
-                    resolve(this.lobbyRoom);
-                }).catch((error) => {
-                    reject(error);
-                })
-            }
+    public async joinLobby(): Promise<Colyseus.Room> {
+        // If the user is already in the lobby the current lobby is returned.
+        if(this.state === "lobby" && this.lobbyRoom) {
+            return this.lobbyRoom;
+        }
+        let options = await ClientFirebaseConnection.getConnection().getOptions();
+        let room = await this.client.joinOrCreate("lobby", options);
+        this.lobbyRoom = room;
+        this.lobbyRoom.onLeave((code) => {
+            this.lobbyRoom = undefined;
+            console.log(`---Leaving Lobby, Code: ${code}---`);
         })
-        return promise;
+        console.log("---Joined Lobby!---");
+        this.state = "lobby";
+        return this.lobbyRoom;
     }
 
     public leaveLobby() {
