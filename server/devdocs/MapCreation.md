@@ -34,7 +34,7 @@ After Tiled is installed we can now begin creating a map.
     - Name: dirt_dungeon_tileset. Note: We will need this name later in Phaser.
     - Type: Based on Tileset Image.
     - Check the "Embed in map" checkbox.
-    - For the image source click on browse and find your tileset image file.
+    - For the image source click on browse and find your tileset image file. (Make sure the image is saved in the location where you want to save your tilemap.)
     - Do not check the "Use Transparent color" checkbox.
     - Set the tilewidth, tileheight, margin, and spaceing based on your tileset image. For us we have tilewidth = 16px, tileheight = 16px, margin = 0px, and spacing = 0px.
 5. On the Layer's panel we are going to create some new layers:
@@ -70,7 +70,7 @@ Now we will add some spawn points for the player's spawn location and monster's 
 1. Select the SpawnPoints layer. 
 2. Then select the Insert point icon on top of the map editor. 
 3. Click on the map to add your spawn point.
-4. Update the Class of the spawn point in the left menu. If we want a player spawn point enter "player" if we want a monster spawn point enter "monster".
+4. Update the Class of the spawn point in the left menu. If we want a player spawn point enter player, if we want a monster spawn point enter monster.
 
 Note: There should only be one player spawn point. There can be multiple monster spawn points.
 
