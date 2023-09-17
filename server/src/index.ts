@@ -3,8 +3,9 @@ import WaitingRoom from "./rooms/waiting_room/WaitingRoom";
 import GameRoom from "./rooms/game_room/GameRoom";
 import "dotenv/config";
 
-const PORT = 3000;
+const PORT = parseInt(process.env.PORT || "3000");
 const gameServer = new Server();
+const simulateLatency = parseInt(process.env.SIMULATE_LATENCY || "0");
 
 gameServer.define('lobby', LobbyRoom);
     
@@ -18,4 +19,5 @@ gameServer.listen(PORT).then(() => {
     console.log("Game Server is listening on port: ", PORT);
 });
 
-gameServer.simulateLatency(33);
+if(simulateLatency > 0)
+    gameServer.simulateLatency(simulateLatency);
