@@ -130,8 +130,9 @@ export default class ClientFirebaseConnection{
   /**
    * Returns options used when a colyseus room is created
    */
-  getOptions(){
-    return {IdToken: this.idToken, onlineMode: this.onlineMode, roleId: this.roleId}
+  async getOptions() {
+    let newIdToken = await this.user?.getIdToken();
+    return {IdToken: newIdToken, onlineMode: this.onlineMode, roleId: this.roleId}
   }
 
   static getConnection(){

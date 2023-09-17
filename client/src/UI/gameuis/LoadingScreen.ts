@@ -11,6 +11,7 @@ export default class LoadingScreen extends RexUIBase {
     private background: RoundRectangle;
     private text: TextBox;
     private screenSizer: OverlapSizer;
+    private defaultInputTopOnly: boolean;
 
     constructor(scene: SceneWithRexUI) {
         super(scene);
@@ -42,6 +43,9 @@ export default class LoadingScreen extends RexUIBase {
         screenSizer.layout();
         this.screenSizer = screenSizer;
         this.screenSizer.setDepth(1000);
+
+        this.defaultInputTopOnly = this.scene.input.topOnly;
+        this.scene.input.setTopOnly(true); // Makes it so that only the modal can be interacted.
     }
 
     public layout() {
@@ -51,6 +55,7 @@ export default class LoadingScreen extends RexUIBase {
     /** Fade out destroy. */
     public destroy(ms: number = 500) {
         this.screenSizer.fadeOutDestroy(ms);
+        this.scene.input.setTopOnly(this.defaultInputTopOnly);
     } 
     /**
      * Updates the progress bar's value.
