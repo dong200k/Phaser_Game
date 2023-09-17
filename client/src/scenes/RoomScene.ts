@@ -88,6 +88,7 @@ export default class RoomScene extends Phaser.Scene {
     // Load System. 
     private loadSystem!: LoadSystem;
     private dungeonDataLoaded: boolean = false;
+    private roomLoaded: boolean = false;
 
     // Plugin for UI elements that will be injected at scene creation.
     rexUI!: UIPlugins;
@@ -140,7 +141,8 @@ export default class RoomScene extends Phaser.Scene {
         this.initializeUI();
         this.joinRoom();
         this.events.on("wake", (sys: Phaser.Scenes.Systems) => {
-            this.joinRoom();
+            if(!this.waitingRoom) this.joinRoom();
+            else this.resumeRoom();
         });
     }
 
@@ -148,13 +150,14 @@ export default class RoomScene extends Phaser.Scene {
         this.playerList?.update();
     }
 
+    /** Sets all dom elements to not visible. */
     public hideDOM() {
         this.children.each((child) => {
             if(child instanceof Phaser.GameObjects.DOMElement) child.setVisible(false);
-            
         })
     }
 
+    /** Sets all dom elements to visible. */
     public showDOM() {
         this.children.each((child) => {
             if(child instanceof Phaser.GameObjects.DOMElement) child.setVisible(true);
@@ -363,89 +366,99 @@ export default class RoomScene extends Phaser.Scene {
     /** Called when the player switches to the room scene. */
     private joinRoom() {
         this.showLoadingScreen();
-        // this.dungeonDataLoaded = false;
-
-        if(!this.waitingRoom) {
-            ClientManager.getClient().joinWaitingRoom().then((room) => {
-                this.waitingRoom = room;
-                this.roomInfo.update({roomID: room.id});
-                this.dungeonDataLoaded = false;
-                this.onJoin();
-            }).catch(e => this.handleJoinRoomError(e));
-        }
+        
+        ClientManager.getClient().joinWaitingRoom()
+        .then((room) => this.onJoin(room))
+        .catch(e => this.handleJoinRoomError(e));
     }
 
-    private onJoin() {
+    /**
+     * Called when we return to the waiting room.
+     * Should be called when the previous waiting room still exist.
+     * E.g. Waiting room still exist after finishing a game.
+     */
+    private resumeRoom() {
+        this.updatePlayerList();
+        this.updatePlayersInRoom(this.playersInRoom);
+    }
+
+    /** Called when the player joins the waiting room. 
+     * Adds waitingRoom message and state change handlers.
+    */
+    private onJoin(room: Colyseus.Room<WaitingRoomState>) {
+        this.waitingRoom = room;
+        this.roomInfo.update({roomID: room.id});
+        this.dungeonDataLoaded = false;
+        this.roomLoaded = false;
         this.playersInRoom = 0;
 
-        if(this.waitingRoom) {
-            this.waitingRoom.state.players.onAdd = (player, key:string) => { this.onAddPlayer(player, key) }
-            this.waitingRoom.state.players.onRemove = (player, key:string) => { this.onRemovePlayer(player, key) }
+        this.waitingRoom.state.players.onAdd = (player, key:string) => { this.onAddPlayer(player, key) }
+        this.waitingRoom.state.players.onRemove = (player, key:string) => { this.onRemovePlayer(player, key) }
 
-            // ------- JOIN GAME MESSAGE FROM SERVER -----------
-            this.waitingRoom.onMessage("joinGame", (message) => {
-                // Sets the game room Id for the client.
-                ClientManager.getClient().setGameRoomId(message);
-                SceneManager.getSceneManager().pushScene("GameScene");
-            })
+        
+        // ------- JOIN GAME MESSAGE FROM SERVER -----------
+        this.waitingRoom.onMessage("roomLoaded", () => {
+            this.roomLoaded = true;
+        })
 
-            this.waitingRoom.onMessage("serverMessage", (message) => {
-                this.chatBox.appendText(`[System] ${message}`);
-            })
+        this.waitingRoom.onMessage("joinGame", (message) => {
+            // Sets the game room Id for the client.
+            ClientManager.getClient().setGameRoomId(message);
+            SceneManager.getSceneManager().pushScene("GameScene");
+        })
 
-            this.waitingRoom.onMessage("playerMessage", (message) => {
-                this.chatBox.appendText(`${message.name}: ${message.message}`);
-            })
+        this.waitingRoom.onMessage("serverMessage", (message) => {
+            this.chatBox.appendText(`[System] ${message}`);
+        })
 
-            this.waitingRoom.onMessage("dungeonData", (message) => {
-                // Loaded before the player can start the game.
-                this.roomModalData.dungeonData = message;
-                if(this.roomModalData.dungeonData.length > 0) {
-                    this.rolePetDungeonDisplay.updateDisplay({
-                        dungeonName: this.roomModalData.dungeonData[0].name,
-                    })
-                }
+        this.waitingRoom.onMessage("playerMessage", (message) => {
+            this.chatBox.appendText(`${message.name}: ${message.message}`);
+        })
 
-                this.dungeonDataLoaded = true;
-            })
+        this.waitingRoom.onMessage("dungeonData", (message) => {
+            // Loaded before the player can start the game.
+            this.roomModalData.dungeonData = message;
+            if(this.roomModalData.dungeonData.length > 0) {
+                this.rolePetDungeonDisplay.updateDisplay({
+                    dungeonName: this.roomModalData.dungeonData[0].name,
+                })
+            }
 
-            this.waitingRoom.onError((code, message) => {
-                console.log(`Error: Waiting Room Error. code: ${code}, message: ${message}`);
-                this.leaveRoom();
-            })
+            this.dungeonDataLoaded = true;
+        })
 
-            this.waitingRoom.onLeave((code) => {
-                console.log(`Note: Client left the room. Code: ${code}`);
-                this.leaveRoom();
-            })
+        this.waitingRoom.onError((code, message) => {
+            console.log(`Error: Waiting Room Error. code: ${code}, message: ${message}`);
+            this.leaveRoom();
+        })
 
-            this.waitingRoom.state.onChange = () => { this.waitingRoomStateOnChange() }
-        }
+        this.waitingRoom.onLeave((code) => {
+            console.log(`Note: Client left the room. Code: ${code}`);
+            this.leaveRoom();
+        })
+
+        this.waitingRoom.state.onChange = () => { this.waitingRoomStateOnChange() }
     }
 
+    /** Initilize the load system and displays the loading screen. */
     private showLoadingScreen() {
         this.playerList.hide();
         this.hideChatBox();
         
-        this.loadSystem.addLoadItem({
-            name: "Loading...",
-            loadFunction: async () => { 
-                // Waits for the load to finish.
-                await new Promise<void>((resolve, reject) => {
-                    const intervalIdx = setInterval(() => {
-                        // Periodically checks the loadCompleteFlag.
-                        if(this.dungeonDataLoaded === true) {
-                            clearInterval(intervalIdx);
-                            resolve();
-                        }
-                    }, 500)
-                })
-            }
-        })
+        this.loadSystem.addLoadItemWithCheck("Joining Room...", () => {
+            return this.waitingRoom !== undefined;
+        }, 500, 10000);
+
+        this.loadSystem.addLoadItemWithCheck("Loading...", () => {
+            return this.dungeonDataLoaded;
+        });
 
         this.loadSystem.startLoad().then(() => {
             this.playerList.show();
             this.showChatBox();
+        }).catch(e => {
+            console.log(e.message);
+            this.leaveRoom(true);
         });
     }
 
@@ -531,24 +544,34 @@ export default class RoomScene extends Phaser.Scene {
         while(this.playerListData.items.length > 0) this.playerListData.items.pop();
     }
 
-    /** Perform room cleanup and leaves the room. */
-    private leaveRoom() {
-        this.waitingRoom?.leave();
-        this.waitingRoom = undefined;
-        this.clearPlayerListData();
-        if(SceneManager.getSceneManager().popScene() === "") {
-            // If there is no scene to pop return to the main menu.
-            SceneManager.getSceneManager().switchToScene(SceneKey.MenuScene);
+    /** Perform room cleanup and leaves the room.
+     * @param force Force the leave room, used to guarantee scene change.
+     */
+    private leaveRoom(force?: boolean) {
+
+        if(this.waitingRoom) {
+            this.waitingRoom.leave();
+            this.clearPlayerListData();
         }
+
+        if(force || this.waitingRoom) {
+            
+            if(this.scene.isActive(SceneKey.RoomScene) && 
+                SceneManager.getSceneManager().popScene() === "") {
+                SceneManager.getSceneManager().switchToScene(SceneKey.MenuScene);
+            }
+        }
+
+        this.waitingRoom = undefined;
     }
 
     /** Handles room join errors by displaying an error popup and leaving the room. */
     private handleJoinRoomError(e: any) {
         console.log("Failed to join waiting room ", e);
-        new ErrorModal(this, {
-            description: "Error! Cannot connect to room!",
-            closeOnClick: () => { this.leaveRoom() }
-        })
+        // new ErrorModal(this, {
+        //     description: "Error! Cannot connect to room!",
+        //     closeOnClick: () => { this.leaveRoom() }
+        // })
     }
 
 }

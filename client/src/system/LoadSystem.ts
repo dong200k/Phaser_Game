@@ -43,7 +43,16 @@ export default class LoadSystem {
                 // When all items are loaded, percenatge should be below 100%. Then load complete will make it 100%.
                 let percentage = Math.min(1 - ((allLoadItems.length + 1) / (totalLoadItems + 1)), 0.99) * 100;
                 loadingScreen.updateProgressBarValue(Math.round(percentage) / 100);
-                await loadItem.loadFunction();
+                // Tries to load the load item. If it fails perform load system clean up and throw an error.
+                try {
+                    await loadItem.loadFunction();
+                } catch(e: any) {
+                    // Load error.
+                    loadingScreen.updateProgressBarText("Loading Error!");
+                    await loadingScreen.waitFor(500);
+                    loadingScreen.destroy(0);
+                    throw e;
+                }
             }
         }
         // Load complete.
@@ -68,12 +77,44 @@ export default class LoadSystem {
      * Adds the phaser loader to this loader. This will start the phaser loader durning the 
      * loading process.
      * @param scene The phaser scene.
+     * @param loadText The text to display when loading this item.
      */
     public addLoadItemPhaserLoader(scene: Phaser.Scene, loadText?: string) {
         this.addLoadItem({
             name: loadText ?? "Loading Assets...",
             loadFunction: () => new SceneLoader(scene).startLoad()
         });
+    }
+
+    /**
+     * Adds an load item to this loader that completes when a condition is satisfied.
+     * @param loadText The text to display when loading this item.
+     * @param checkFunction An arrow function that is called every checkInterval time. This function
+     * should return true to complete this loadItem, false otherwise.
+     * @param checkInterval The interval to call checkFunction in ms. Default 500ms.
+     * @param checkTimeout The time before rejecting with an error in ms. This is 
+     * used as a fall back in case the checkFunction() never returns true. Default 60000ms.
+     */
+    public addLoadItemWithCheck(loadText: string, checkFunction: ()=>boolean, checkInterval=200, checkTimeout=60000) {
+        this.addLoadItem({
+            name: loadText,
+            loadFunction: () => { 
+                return new Promise<void>((resolve, reject) => {
+                    const intervalIdx = setInterval(() => {
+                        // Periodically checks if we can proceed to resolve().
+                        if(checkFunction()) {
+                            clearInterval(intervalIdx);
+                            resolve();
+                        }
+                    }, checkInterval);
+                    // When the maximum wait time is reached perform cleanup and reject().
+                    setTimeout(() => {
+                        clearInterval(intervalIdx);
+                        reject(new Error(`Error. Failed to load: ${loadText}`));
+                    }, checkTimeout);
+                })
+            }
+        })
     }
 
     /** Reset the camera of the given scene. */
