@@ -32,6 +32,7 @@ export default class GameScene extends Phaser.Scene {
     // ------- loading screen -------
     private loadSystem!: LoadSystem;
     private loadFinished: boolean = false; // Flag that keep track of the loading status.
+    private assetsLoaded: boolean = false; // Flag that checks if the assets are loaded or not.
 
     constructor() {
         super(SceneKey.GameScene);
@@ -69,20 +70,37 @@ export default class GameScene extends Phaser.Scene {
 
     /** Clean up the resources used by this GameScene. 
      * This will allow the GameScene to be reused the next time it is open. */
-    public leaveGame() {
-        if(this.scene.isActive(SceneKey.GameScene)) {
-            this.gameRoom?.leave();
-            this.children.getAll().forEach((obj) => {
-                obj.destroy();
-            })
+    public leaveGame(force?: boolean) {
+        // if(this.scene.isActive(SceneKey.GameScene)) {
+        //     this.gameRoom?.leave();
+        //     this.children.getAll().forEach((obj) => {
+        //         obj.destroy();
+        //     })
+        //     this.tweens.killAll();
+        //     this.gameManager = undefined;
+        //     this.gameRoom = undefined;
+        //     let switchToSceneKey = SceneKey.MenuScene;
+        //     if(ClientManager.getClient().isConnectedToWaitingRoom())
+        //         switchToSceneKey = SceneKey.RoomScene;
+        //     SceneManager.getSceneManager().switchToScene(switchToSceneKey);
+        // }
+
+        if(this.gameRoom) {
+            this.gameRoom.leave();
+            this.children.getAll().forEach(obj => obj.destroy());
             this.tweens.killAll();
-            this.gameManager = undefined;
-            this.gameRoom = undefined;
-            let switchToSceneKey = SceneKey.MenuScene;
-            if(ClientManager.getClient().isConnectedToWaitingRoom())
-                switchToSceneKey = SceneKey.RoomScene;
-            SceneManager.getSceneManager().switchToScene(switchToSceneKey);
         }
+
+        if(force || this.gameRoom) {
+            
+            if(this.scene.isActive(SceneKey.GameScene) && 
+                SceneManager.getSceneManager().popScene() === "") {
+                SceneManager.getSceneManager().switchToScene(SceneKey.MenuScene);
+            }
+        }
+
+        this.gameManager = undefined;
+        this.gameRoom = undefined;
     }
 
     /** Changes the game manager to spectate mode. 
@@ -108,6 +126,9 @@ export default class GameScene extends Phaser.Scene {
 
     private joinGameRoom() {
         this.loadFinished = false;
+
+        this.showLoadingScreen();
+
         ClientManager.getClient().joinGameRoom().then((room) => {
             this.gameRoom = room;
 
@@ -121,28 +142,41 @@ export default class GameScene extends Phaser.Scene {
             
         }).catch((e) => {
             console.log("Join Game Error: ", e);
+            this.leaveGame(true);
         });
+    }
+
+    private showLoadingScreen() {
+
+        this.loadSystem.addLoadItemWithCheck("Joining Room...", () => {
+            return this.gameRoom !== undefined;
+        }, 200, 20000);
+
+        this.loadSystem.addLoadItemWithCheck("Grabbing Assets...", () => {
+            return this.assetsLoaded;
+        });
+        // Create load item for running the phaser loader.
+        this.loadSystem.addLoadItemPhaserLoader(this, "Loading Assets...");
+        this.loadSystem.startLoad().then(() => {
+            // Done Loading! We can start the game.
+            if(this.gameRoom) {
+                this.gameRoom.send("loadAssetComplete");
+                this.cameras.main.setZoom(2);
+                this.showHUD();
+                this.loadFinished = true;
+            }
+        }).catch((e) => {
+            console.log(e.message);
+            this.leaveGame();
+        })
     }
 
     private initializeGameRoomListeners(gameRoom: Colyseus.Room) {
         gameRoom.onMessage("loadAssets", (assets) => {
             console.log(assets);
-            // Create load item for grabbing online asset documents.
-            this.loadSystem.addLoadItem({
-                name: "Grabbing Assets...",
-                loadFunction: () => AssetManager.putAssetsInLoad(this, assets),
-            })
-            // Create load item for running the phaser loader.
-            this.loadSystem.addLoadItemPhaserLoader(this, "Loading Assets...");
-            this.loadSystem.startLoad().then(() => {
-                // Done Loading! We can start the game.
-                if(this.gameRoom) {
-                    this.gameRoom.send("loadAssetComplete");
-                    this.cameras.main.setZoom(2);
-                    this.showHUD();
-                    this.loadFinished = true;
-                }
-            })
+            AssetManager.putAssetsInLoad(this, assets).then(() => {
+                this.assetsLoaded = true;
+            });
         })
 
         gameRoom.onLeave((code) => this.onLeaveHandler(code));

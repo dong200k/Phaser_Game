@@ -8,7 +8,6 @@ import TextField from "../UI/TextField";
 import Button from "../UI/Button";
 import SceneManager from "../system/SceneManager";
 import RoomPost from "../UI/RoomPost";
-import ErrorModal from "../UI/modals/ErrorModal";
 import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 
 export default class LobbyScene extends Phaser.Scene {
@@ -32,13 +31,13 @@ export default class LobbyScene extends Phaser.Scene {
         this.page = 1;
         this.initializeUI();
         this.joinLobby();
-        // this.events.on("sleep", (sys: Phaser.Scenes.Systems) => {
-        //     this.leaveLobby();
-        // });
         this.events.on("wake", (sys: Phaser.Scenes.Systems) => {
             this.page = 1;
             this.joinLobby();
         });
+        this.events.on("sleep", () => {
+            this.leaveLobbyNoSceneChange();
+        })
     }
 
     private initializeUI() {
@@ -139,26 +138,34 @@ export default class LobbyScene extends Phaser.Scene {
         else this.pageNextButton?.setButtonActive(true);
     }
 
-
+    /** Leaves the lobby room and switches to the GameModeScene. */
     private leaveLobby() {
-        this.lobbyRoom?.leave();
+        if(this.lobbyRoom) {
+            this.lobbyRoom.leave();
+            this.allRooms.splice(0, this.allRooms.length);
+            if(SceneManager.getSceneManager().popScene() === "")
+                SceneManager.getSceneManager().switchToScene("GameModeScene");
+        }
         this.lobbyRoom = undefined;
-        this.allRooms.splice(0, this.allRooms.length);
-        SceneManager.getSceneManager().switchToScene("GameModeScene");
+    }
+
+    /** Leaves the lobby room. */
+    private leaveLobbyNoSceneChange() {
+        if(this.lobbyRoom) {
+            this.lobbyRoom.leave();
+            this.allRooms.splice(0, this.allRooms.length);
+        }
+        this.lobbyRoom = undefined;
     }
 
     private joinLobby() {
         // Connecting to the server
-        ClientManager.getClient().joinLobby().then((room) => {
-            this.lobbyRoom = room;
-            this.onJoin();
-        }).catch((e) => this.handleJoinLobbyError(e))
+        ClientManager.getClient().joinLobby()
+        .then((room) => this.onJoin(room))
+        .catch((e) => this.handleJoinLobbyError(e))
     }
 
-    update(deltaT:number) {
-        
-    }
-
+    // Updates the list of rooms that is displayed on the lobby.
     private updateRoomPost() {
         let numberOfRoomPostPerPage = this.roomPosts.length;
         let start = (this.page - 1) * numberOfRoomPostPerPage;
@@ -168,57 +175,57 @@ export default class LobbyScene extends Phaser.Scene {
         })
     }
 
-    private onJoin() {
-        if(this.lobbyRoom) {
-            this.lobbyRoom.onMessage("rooms", (rooms) => {
-                this.allRooms = rooms;
-                this.updateLobbyDisplay();
-            });
+    private onJoin(room: Colyseus.Room) {
 
-            this.lobbyRoom.onMessage("+", ([roomId, room]) => {
-                // Added/Updated room.
-                // First make sure that a room with the same id is not added twice.
-                let idx = this.allRooms.findIndex((r) => r?.roomId === roomId);
-                if(idx !== -1) {
-                    this.allRooms[idx] = room;
-                } else {
-                    // Add new room, seaching for empty slots first.
-                    let added = false;
-                    for(let i = 0; i < this.allRooms.length; i++) {
-                        if(this.allRooms[i] === null) {
-                            this.allRooms[i] = room;
-                            added = true;
-                            i = this.allRooms.length;
-                        }
+        this.lobbyRoom = room;
+        this.lobbyRoom.onMessage("rooms", (rooms) => {
+            this.allRooms = rooms;
+            this.updateLobbyDisplay();
+        });
+
+        this.lobbyRoom.onMessage("+", ([roomId, room]) => {
+            // Added/Updated room.
+            // First make sure that a room with the same id is not added twice.
+            let idx = this.allRooms.findIndex((r) => r?.roomId === roomId);
+            if(idx !== -1) {
+                this.allRooms[idx] = room;
+            } else {
+                // Add new room, seaching for empty slots first.
+                let added = false;
+                for(let i = 0; i < this.allRooms.length; i++) {
+                    if(this.allRooms[i] === null) {
+                        this.allRooms[i] = room;
+                        added = true;
+                        i = this.allRooms.length;
                     }
-                    if(!added) this.allRooms.push(room);
                 }
-                this.updateLobbyDisplay();
-            });
+                if(!added) this.allRooms.push(room);
+            }
+            this.updateLobbyDisplay();
+        });
 
-            this.lobbyRoom.onMessage("-", (roomId: string) => {
-                // Removed Rooms are marked as null and becomes a vacant slot.
-                this.allRooms.forEach((r, idx) => {if(r?.roomId === roomId) this.allRooms[idx] = null}); // flagged as null
-                this.updateLobbyDisplay();
-            });
+        this.lobbyRoom.onMessage("-", (roomId: string) => {
+            // Removed Rooms are marked as null and becomes a vacant slot.
+            this.allRooms.forEach((r, idx) => {if(r?.roomId === roomId) this.allRooms[idx] = null}); // flagged as null
+            this.updateLobbyDisplay();
+        });
 
-            this.lobbyRoom.onLeave((code) => {
-                this.updateLobbyDisplay();
-                this.leaveLobby();
-            });
+        this.lobbyRoom.onLeave((code) => {
+            this.updateLobbyDisplay();
+            this.leaveLobby();
+        });
 
-            this.lobbyRoom.onError((code, message) => {
-                this.updateLobbyDisplay();
-                this.leaveLobby();
-                console.log(`Lobby Error. Code: ${code} Message: ${message}`);
-            })
-        } else {
-            console.log("Error: Lobby Room is undefined");
-        }
+        this.lobbyRoom.onError((code, message) => {
+            this.updateLobbyDisplay();
+            this.leaveLobby();
+            console.log(`Lobby Error. Code: ${code} Message: ${message}`);
+        })
+        
     }
 
     private handleJoinLobbyError(e: any) {
         console.log("Failed to join lobby ", e);
+        // TODO: Add a indication that the lobby join failed.
         // new ErrorModal(this, {
         //     description: "Error! Cannot connect to lobby!",
         //     closeOnClick: () => { this.leaveLobby() }

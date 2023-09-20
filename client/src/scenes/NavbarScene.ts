@@ -148,10 +148,10 @@ export default class NavbarScene extends Phaser.Scene {
         });
         
         let logoutButton = new Button(this, "Logout", 0, 0, "small", () => {
-            ClientFirebaseConnection.getConnection().logout()
-                .then(()=>{
-                    SceneManager.getSceneManager().switchToScene(SceneKey.LoginScene)
-                })
+            ClientFirebaseConnection.getConnection().logout();
+                // .then(()=>{
+                //     SceneManager.getSceneManager().switchToScene(SceneKey.LoginScene)
+                // })
         });
         this.userNameText = new TextBox(this, `${this.navbarData.username}`, 'l4');
         let logoutLayout = new Layout(this, {
