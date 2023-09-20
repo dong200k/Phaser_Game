@@ -22,7 +22,7 @@ export default class BerserkerAbilityLogic extends EffectLogic{
     private id?: string
 
     private statMultiplier = 0.5
-    private flameAuraDamageMultiplier = 1
+    private flameAuraDamageMultiplier = 1   
     private boostWhenUnder10Percent = false
     private chargeAttackSpeedBoost = false
 
