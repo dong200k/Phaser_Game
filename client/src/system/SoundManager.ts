@@ -9,7 +9,8 @@ interface ISound {
 }
 
 interface ISoundConfig {
-    detune: number,
+    detune?: number,
+    loop?: boolean
 }
 
 export default class SoundManager {
@@ -80,14 +81,25 @@ export default class SoundManager {
                 soundObj.audio.play({
                     volume: SettingsManager.getManager().getBackgroundMusicVolumeAdjusted(),
                     detune: config?.detune,
+                    loop: config?.loop
                 })
             } else if(soundObj.type === "sfx") {
                 soundObj.audio.play({
                     volume: SettingsManager.getManager().getSoundEffectsVolumeAdjusted(),
                     detune: config?.detune,
+                    loop: config?.loop
                 })
             }
         }
+    }
+
+    /**
+     * Stops the sound specifed by the key.
+     * @param key The sound key.
+     */
+    public stop(key: string){
+        let soundObj = this.map.get(key);
+        soundObj?.audio.stop()
     }
 
 }

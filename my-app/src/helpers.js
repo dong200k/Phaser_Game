@@ -69,6 +69,8 @@ export function getDefaultNode(){
         lifeSteal:0,
         lifeStealPercent: 0,
         level:0,
+        chargeAttackSpeed: 0,
+        chargeAttackSpeedPercent: 0,
       },
       status: "none",
       selectionTime: 0
@@ -143,6 +145,8 @@ export function getDefaultRole(){
       lifeSteal:0,
       lifeStealPercent: 0,
       level:0,
+      chargeAttackSpeed: 0,
+      chargeAttackSpeedPercent: 0,
     },
     coinCost: 1000,
   }

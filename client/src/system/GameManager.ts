@@ -22,6 +22,7 @@ import { PhaserAudio } from "../interfaces";
 import SettingsManager from "./SettingsManager";
 import SoundManager from "./SoundManager";
 import FloatingText from "../gameobjs/FloatingText";
+import ClientManager from "./ClientManager";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -79,6 +80,18 @@ export default class GameManager {
         this.syncGameObjectVisibility();
         this.syncGameObjectActive();
         this.updateFloatingTexts();
+        this.renderFollowPlayerObjects()
+    }
+
+    public renderFollowPlayerObjects(){
+        this.gameObjects.forEach(gameObject=>{
+            if(gameObject.gameObjectState.type === "Projectile"){
+                if(gameObject.active && gameObject.gameObjectState.name === "FollowingMeleeProjectile" && this.player1 && gameObject.gameObjectState.ownerId === this.gameRoom.sessionId){
+                    gameObject.setX(this.player1.x)
+                    gameObject.setY(this.player1.y)
+                }
+            }
+        })
     }
 
     /** Changes the value of spectating. */
@@ -178,13 +191,16 @@ export default class GameManager {
         })
 
         this.scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-            if(pointer.leftButtonDown()) this.mouseDown = true;
+            if(pointer.leftButtonDown()) {
+                this.mouseDown = true;
+            }
             // this.player1?.play("atk")
         })
 
         this.scene.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
             if(pointer.leftButtonReleased()) {
                 this.mouseDown = false;
+                this.sendMouseUpMessage()
                 if(this.spectating) {
                     // If spectating change perspective.
                     this.rotateSpectateTarget();
@@ -207,17 +223,28 @@ export default class GameManager {
         this.gameRoom?.send("move", movementData);
 
         //[0] mouse click, [1] mousex, [2] mousey.
-        let mouseData = [0, 0, 0]
+        let mouseData = [0, 0, 0, 0]
         mouseData[0] = this.mouseDown? 1 : 0;
         mouseData[1] = this.scene.input.mousePointer.worldX;
         mouseData[2] = this.scene.input.mousePointer.worldY;
+        
         this.gameRoom?.send("attack", mouseData);
 
         let special = this.spaceKey?.isDown? true : false;
-        this.gameRoom?.send("special", {special, mouseData});
+        if(special) this.gameRoom?.send("special", {special, mouseData});
 
         // Client-side prediction.
         // this.updatePlayer1(movementData, special, mouseData);
+    }
+
+    private sendMouseUpMessage(){
+        let mouseData = [0, 0, 0, 0]
+        mouseData[0] = this.mouseDown? 1 : 0;
+        mouseData[1] = this.scene.input.mousePointer.worldX;
+        mouseData[2] = this.scene.input.mousePointer.worldY;
+        mouseData[3] = 1 // Pointer Up
+
+        this.gameRoom?.send("attack", mouseData)
     }
 
     private getPlayerMovementData() {
@@ -349,6 +376,7 @@ export default class GameManager {
             proj.play({key: "play", repeat: -1});
         }  
         this.scene.add.existing(proj)
+        proj.depth = -1
         return proj;
     }
     
@@ -486,7 +514,8 @@ export default class GameManager {
             let projectileState = gameObjectState as ProjectileState;
             let velocityX = projectileState.velocity.x;
             let velocityY = projectileState.velocity.y;
-            gameObject.setRotation(MathUtil.getRotationRadians(velocityX, velocityY))
+            if(!(velocityX === 0 && velocityY === 0))
+                gameObject.setRotation(MathUtil.getRotationRadians(velocityX, velocityY))
         }
         if(gameObject instanceof Monster) {
             // Updates the monster's movement animations based on its velocity.
@@ -549,9 +578,19 @@ export default class GameManager {
     }
 
     private gameObjectSoundOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
-        SoundManager.getManager().play(gameObjectState.sound.key, {
-            detune: Math.floor(Math.random() * 500 - 250)
-        });
+        if(gameObject.gameObjectState.sound.type === "sfx"){
+            SoundManager.getManager().play(gameObjectState.sound.key, {
+                detune: Math.floor(Math.random() * 500 - 250)
+            });
+        }else if(gameObject.gameObjectState.sound.type === "bg"){
+            SoundManager.getManager().play(gameObjectState.sound.key, {
+                loop: true
+            });
+        }
+
+        if(gameObjectState.sound.status === "Stopped"){
+            SoundManager.getManager().stop(gameObject.gameObjectState.sound.keyToStop)
+        }
     }
 
     /** Called when the entity's stat is updated on the server. */

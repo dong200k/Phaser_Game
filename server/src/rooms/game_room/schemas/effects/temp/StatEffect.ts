@@ -28,6 +28,8 @@ export interface StatConfig {
     speed?: number;
     lifeSteal?: number;
     //level?:number;
+    chargeAttackSpeed?: number;
+    chargeAttackSpeedPercent?: number;
 }
 
 export default class StatEffect extends TempEffect {

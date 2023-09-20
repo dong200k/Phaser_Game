@@ -47,6 +47,9 @@ export default class GameObject extends Schema implements Cloneable {
     // -- sound --
     @type(Sound) sound: Sound;
 
+    // -- Extra identifier --
+    @type("string") name: string
+
     constructor(gameManager: GameManager, x: number, y: number, ownerId?: string) {
         super();
         this.id = MathUtil.uid();
@@ -68,6 +71,7 @@ export default class GameObject extends Schema implements Cloneable {
         });
         this.animation = new Animation();
         this.sound = new Sound();
+        this.name = ""
     }
 
     /** 

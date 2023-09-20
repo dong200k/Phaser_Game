@@ -1,7 +1,5 @@
 import { type, Schema } from "@colyseus/schema";
 import StateNode from "./StateNode";
-import RangerAbilityController from "../EffectLogic/EffectLogics/abilities/RangerAbility/RangerAbilityController";
-
 /**
  * The StateMachine will store all the state of a particular Mob. It will provide 
  * methods to change the state, as well as revert to a previous state. The 
@@ -62,6 +60,14 @@ export default abstract class StateMachine<Data> extends Schema{
         let dupName = this.states.filter((s) => s.getStateName() === state.getStateName());
         if(dupName.length > 0) throw new Error(`Duplicate state name {${dupName[0].getStateName()}} when adding to the StateMachine!`);
         this.states.push(state);
+    }
+
+    /**
+     * Removes a state from the state controller.
+     * @param stateName
+     */
+    public removeState(stateName: string){
+        this.states = this.states.filter(state=>state.getStateName() !== stateName)
     }
 
     /** Clear all the states inside this StateMachine. */

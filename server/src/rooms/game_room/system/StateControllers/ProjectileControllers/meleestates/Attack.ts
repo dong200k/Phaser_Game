@@ -24,6 +24,7 @@ export default class Attack extends StateNode {
         this.controller = this.getStateMachine<MeleeProjectileController>();
         this.projectile = this.controller.getProjectile();
         this.projectile.disableCollisions();
+        this.projectile.visible = false
         this.attackDuration = this.controller.getAttackDuration();
         this.triggerPercent = this.controller.getTriggerPercent();
         this.unTriggerPercent = this.controller.getUntriggerPercent();

@@ -54,7 +54,7 @@ export default class Explode extends StateNode {
             this.projectile.piercing = this.piercing
             this.projectile.attackMultiplier = this.attackMultiplier
             this.projectile.setCollision("PLAYER_PROJECTILE")
-            this.projectile.animation.playAnimation("play", {
+            this.projectile.animation.playAnimation("Explode", {
                 // flip: true,
                 loop: false
             })

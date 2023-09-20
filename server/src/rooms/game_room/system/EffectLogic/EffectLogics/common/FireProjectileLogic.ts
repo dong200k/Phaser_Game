@@ -36,6 +36,8 @@ export default class FireProjectileLogic extends EffectLogic{
     /** Multipliers for damage calculation */
     attackMultiplier = 1
     magicMultiplier = 0
+    /** Targets each projectile can pierce, by default it uses the piercing of the weapon upgrade. */
+    piercing?: number
 
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Matter.Body, {mouseX, mouseY}: {mouseX: number, mouseY: number}){
         let playerX = playerBody.position.x
@@ -57,7 +59,7 @@ export default class FireProjectileLogic extends EffectLogic{
             magicMultiplier: this.magicMultiplier,
             originEntityId: playerState.getId(),
             spawnSound: this.spawnSound,
-            piercing: playerState.weaponUpgradeTree.getPiercing(),
+            piercing: this.piercing ?? playerState.weaponUpgradeTree.getPiercing(),
         }
 
         this.fireProjectile(playerState, gameManager, tree, playerBody, {mouseX, mouseY}, projectileConfig)

@@ -58,9 +58,9 @@ export default class Attack extends StateNode {
     }
 
     public onEnter(): void {
+        console.log("player controller attack state on enter")
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
-        this.attackDuration = this.player.stat.attackSpeed / 3;
         this.timePassed = 0;
         // this.player.canMove = this.canMove;
         this.triggered = false;
@@ -68,7 +68,7 @@ export default class Attack extends StateNode {
         // Checks if the player's sprite should flip or not.
         let flip = (this.player.x - this.mouseX) > 0;
 
-        this.player.animation.playAnimation("attack", {
+        this.player.animation.playAnimation("1_atk", {
             duration: this.attackDuration,
             flip: flip,
         });
@@ -82,11 +82,11 @@ export default class Attack extends StateNode {
 
     public update(deltaT: number): void {
         this.timePassed += deltaT;
-
         // Trigger an attack if it hasn't been triggered and the timePassed is at the triggerPercent.
         if(!this.triggered && this.timePassed >= this.triggerPercent * this.attackDuration) {
             this.triggered = true;
             // Trigger the attack.
+            console.log("use trigger effects: player attack")
             EffectManager.useTriggerEffectsOn(this.player, "player attack", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY})
         }
 

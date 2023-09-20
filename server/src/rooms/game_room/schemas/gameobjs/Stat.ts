@@ -34,6 +34,8 @@ export default class Stat extends Schema {
 
     @type('number') attackSpeed!: number;
     @type('number') attackSpeedPercent!: number;
+    @type('number') chargeAttackSpeed!: number;
+    @type('number') chargeAttackSpeedPercent!: number;
 
     @type('number') speed!: number;
 
@@ -92,7 +94,8 @@ export default class Stat extends Schema {
         critRate: 0.5, critDamage: 1, 
         attackRange: 1, attackRangePercent: 0,
         attackSpeed: 1, attackSpeedPercent: 0, 
-        speed: 50, lifeSteal: 0, lifeStealPercent: 0, level: 1
+        speed: 50, lifeSteal: 0, lifeStealPercent: 0, level: 1,
+        chargeAttackSpeed: 0, chargeAttackSpeedPercent: 0,
     }
 
     /** Creates a new stat object based on the stat config passed in. Stat properties not initialized in the config
@@ -132,7 +135,9 @@ export default class Stat extends Schema {
             speed: false,
             lifeSteal: false,
             lifeStealPercent: false,
-            level: false
+            level: false,
+            chargeAttackSpeed: false,
+            chargeAttackSpeedPercent: false
         }
         return changes
     }
