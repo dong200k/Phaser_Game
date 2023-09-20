@@ -1,4 +1,4 @@
-# Role/Character Creation
+# Abiltiy creation
 
 This document will explain how to add an ability and a logic on the server for it.
 
@@ -43,15 +43,29 @@ export default class DemoAbility extends EffectLogic{
 
 ```
 
-5. An update method can also be added to this class if it needs to update in the game time. You can add variables to the class as needed for its logic to work.
+5. Now we need to link your effectLogicId from part 1 to this new effectLogic we created. To do this just overwrite the effectLogicId variable.
+
+```
+export default class DemoAbility extends EffectLogic{
+    effectLogicId: string = "your-id"
+
+    public useEffect(entity: Entity, gameManager: GameManager, ...args: any): void {
+        console.log("hello world from DemoAbility")
+    }
+    
+}
+
+```
+
+6. An update method can also be added to this class if it needs to update in the game time. You can add variables to the class as needed for its logic to work.
 
 ```
 public update(deltaT: number){}
 ```
 
-6. Next we will add our newly created effectLogic to the game through the EffectLogicManager. First head to the file server/src/rooms/game_room/system/EffectLogic/EffectLogicManager.ts.
+7. Next we will add our newly created effectLogic to the game through the EffectLogicManager. First head to the file server/src/rooms/game_room/system/EffectLogic/EffectLogicManager.ts.
 
-7. After opening this file head to the method
+8. After opening this file head to the method
 
 ```
 private initEffectLogics(){
@@ -62,7 +76,7 @@ private initEffectLogics(){
 }
 ```
 
-8. Inside this method there should many effectLogics already. We want to add our own here by calling this.addEffectLogic() and passing in our class name from step 4. Make sure to import our class so it doesn't throw an error. It should look something like this:
+9. Inside this method there should many effectLogics already. We want to add our own here by calling this.addEffectLogic() and passing in our class name from step 4. Make sure to import our class so it doesn't throw an error. It should look something like this:
 
 ```
 private initEffectLogics(){
@@ -76,13 +90,13 @@ private initEffectLogics(){
 }
 ```
 
-9. Remember to save all files that we have changed.
+10. Remember to save all files that we have changed.
 
-10. Now when we load up our game and unlock/use our role inside a dungeon. Pressing spacebar will activate our ability's effectLogic when its off cooldown(added in part 1). 
+11. Now when we load up our game and unlock/use our role inside a dungeon. Pressing spacebar will activate our ability's effectLogic when its off cooldown(added in part 1). 
 
     If you added console.log("hello world from DemoAbility") inside the ability like me in step 4, then it should print out 
 "hello world from DemoAbility" in the terminal where the server is running.
 
-11. Now you can edit the ability's logic as you see fit and create an ability.
+12. Now you can edit the ability's logic as you see fit and create an ability.
 
 
