@@ -9827,6 +9827,14 @@
       "effectLogicId": "berserker-ability",
       "displaySprite": "sprite",
       "cooldown": "15000"
+    },
+    {
+      "id": "ability-c87d86c4-655b-4a57-840e-0b143d7562ae",
+      "name": "ability-name",
+      "description": "ability-description",
+      "effectLogicId": "",
+      "displaySprite": "sprite",
+      "cooldown": 1000
     }
   ]
 }
