@@ -4340,7 +4340,7 @@
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "b21d1e1b-61b0-4296-98c6-43874fdcab33",
+                          "id": "43fb7aa5-7f04-4946-be1c-70c55d54e98b",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -4348,7 +4348,7 @@
                     ],
                     "data": {
                       "name": "Unlock level 3 charge attack",
-                      "description": "Slash out a flame Getsuga Tenshou",
+                      "description": "Unlock level 3 charge attack that slashes out a flame Getsuga Tenshou.",
                       "stat": {
                         "maxHp": 0,
                         "maxMana": 0,
@@ -4388,7 +4388,7 @@
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "6fabf411-9bff-47b7-9f06-82abd3cc88d4",
+                      "id": "fc3fe384-70de-4025-9dc9-cbac9e8d0fcf",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4396,7 +4396,7 @@
                 ],
                 "data": {
                   "name": "Unlock level 2 charge attack",
-                  "description": "",
+                  "description": "Unlock level 2 charge attack",
                   "stat": {
                     "maxHp": 0,
                     "maxMana": 0,
@@ -4436,7 +4436,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "efe6c966-cc4b-4e6a-9934-cdea5cc29352",
+                  "id": "cc18917c-340e-4c92-92ee-99c8a42d0874",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -9789,7 +9789,7 @@
       "description": "Berserker's Ability",
       "effectLogicId": "berserker-ability",
       "displaySprite": "sprite",
-      "cooldown": 1000
+      "cooldown": "15000"
     }
   ]
 }

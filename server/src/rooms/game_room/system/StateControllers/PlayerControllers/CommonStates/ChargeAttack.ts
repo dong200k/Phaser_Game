@@ -68,7 +68,7 @@ export default class ChargeAttack extends StateNode {
         this.player = this.playerController.getPlayer();
         // this.attackDuration = this.player.stat.attackSpeed/2;
         this.timePassed = 0;
-        this.player.canMove = this.canMove;
+        // this.player.canMove = this.canMove;
         this.triggered = false;
     }
 

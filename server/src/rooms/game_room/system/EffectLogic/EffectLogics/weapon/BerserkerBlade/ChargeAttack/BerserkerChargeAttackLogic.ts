@@ -23,11 +23,11 @@ export default class BerserkerChargeAttackLogic extends ChargeAttackLogic{
 
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Matter.Body, {mouseX, mouseY}: {mouseX: number, mouseY: number}, chargeRatio: number): void {
         if(this.level === 0){
-            if(chargeRatio >= this.chargeRatiosRequired[0]) this.level1ChargeAttack(playerState, gameManager, {mouseX, mouseY}) // Fully charged
+            if(chargeRatio >= this.chargeRatiosRequired[2]) this.level1ChargeAttack(playerState, gameManager, {mouseX, mouseY}) // Fully charged
         }
         else if(this.level === 1){
-            if(chargeRatio >= this.chargeRatiosRequired[0]) this.level2ChargeAttack(playerState, gameManager, {mouseX, mouseY}) // Fully charged
-            else if(chargeRatio >= this.chargeRatiosRequired[1]) this.level1ChargeAttack(playerState, gameManager, {mouseX, mouseY}) // Partially charged
+            if(chargeRatio >= this.chargeRatiosRequired[1]) this.level2ChargeAttack(playerState, gameManager, {mouseX, mouseY}) // Fully charged
+            else if(chargeRatio >= this.chargeRatiosRequired[2]) this.level1ChargeAttack(playerState, gameManager, {mouseX, mouseY}) // Partially charged
         }
         else if(this.level === 2){
             if(chargeRatio >= this.chargeRatiosRequired[0]) this.level3ChargeAttack(playerState, gameManager, {mouseX, mouseY}) // Fully charged
@@ -176,7 +176,16 @@ export default class BerserkerChargeAttackLogic extends ChargeAttackLogic{
     }
 
     public chargeThresholdReached(chargeRatio: number): boolean {
-        return chargeRatio >= this.chargeRatiosRequired[this.level]
+        if(this.level === 0){
+            if(chargeRatio >= this.chargeRatiosRequired[2]) return true
+        }
+        else if(this.level === 1){
+            return chargeRatio >= this.chargeRatiosRequired[1] || chargeRatio >= this.chargeRatiosRequired[2]
+        }
+        else if(this.level === 2){
+            return chargeRatio >= this.chargeRatiosRequired[0] || chargeRatio >= this.chargeRatiosRequired[1] || chargeRatio >= this.chargeRatiosRequired[2]
+        }
+        return false
     }
 
     public incrementLevel(){
@@ -187,12 +196,21 @@ export default class BerserkerChargeAttackLogic extends ChargeAttackLogic{
         this.getsugaCount += 1
     }
 
+    /** Returns the charge animation for the highest charge attack unlocked */
     public getChargeAnimation(chargeRatio: number){
         let animations = ["Charge_1", "Charge_2", "Charge_3"]
-        
-        // Returns the animation with the highest Charge Ratio met based on levels. So animation is to show that the charge attack is ready.
-        for(let i=0;i<=this.level;i++){
-            if(chargeRatio > this.chargeRatiosRequired[i]) return animations[this.level - i]
+        console.log(chargeRatio)
+        if(this.level === 0 && chargeRatio >= this.chargeRatiosRequired[2]){
+            return "Charge_1"
+        }
+        else if(this.level === 1){
+            if(chargeRatio >= this.chargeRatiosRequired[1]) return "Charge_2"
+            if(chargeRatio >= this.chargeRatiosRequired[2]) return "Charge_1"
+        }
+        else if(this.level === 2){
+            if(chargeRatio >= this.chargeRatiosRequired[0]) return "Charge_3"
+            if(chargeRatio >= this.chargeRatiosRequired[1]) return "Charge_2"
+            if(chargeRatio >= this.chargeRatiosRequired[2]) return "Charge_1"
         }
 
         return ""

@@ -26,6 +26,8 @@ export default class BerserkerAbilityLogic extends EffectLogic{
     private boostWhenUnder10Percent = false
     private chargeAttackSpeedBoost = false
 
+    private duration = 7000
+    private timeInAbility = 0
     public useEffect(playerState: Player, gameManager: GameManager, ){
         console.log("berserker ability logic use effect")
         this.playerState = playerState
@@ -54,8 +56,16 @@ export default class BerserkerAbilityLogic extends EffectLogic{
         this.flameAura.sound.stopMusic("ultra_instinct")
     }
 
-    public update(deltaT: number){
+    public update(deltaT: number){        
         if(!this.playerState) return
+
+        if(this.currentlyUsingAbility){
+            this.timeInAbility += deltaT
+            if(this.timeInAbility >= this.duration){
+                this.turnOffAbility()
+                this.timeInAbility = 0
+            }
+        }
 
         if(this.currentlyUsingAbility && this.playerState){
             if(this.playerState.stat.hp <= 0){
