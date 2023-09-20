@@ -9671,7 +9671,7 @@
     {
       "id": "role-327154d5-3930-449a-83b9-bce096b0b12b",
       "name": "Berserker",
-      "description": "The Berserker is mad. They possess a unique skill ENDURE which increases defenses, movement speed and attack speed.",
+      "description": "The Berserker is mad. They possess a unique skill BERSERK which increases defenses, movement speed and attack speed.",
       "displaySprite": "sprite",
       "spriteKey": "demo_hero",
       "abilityId": "ability-3065d180-9f0d-481e-98c7-b8cbfe408a2a",
@@ -9772,6 +9772,43 @@
         "level": 0
       },
       "coinCost": 1000
+    },
+    {
+      "id": "role-b373d4a8-6b01-4356-a1d5-5827d8f98161",
+      "name": "role-name",
+      "description": "role-description",
+      "displaySprite": "sprite",
+      "spriteKey": "demo_hero",
+      "abilityId": "",
+      "weaponUpgradeId": "",
+      "stat": {
+        "maxHp": 0,
+        "maxMana": 0,
+        "hp": 0,
+        "mana": 0,
+        "armor": 0,
+        "magicResist": 0,
+        "damagePercent": 0,
+        "attack": 0,
+        "attackPercent": 0,
+        "armorPen": 0,
+        "magicAttack": 0,
+        "magicAttackPercent": 0,
+        "magicPen": 0,
+        "critRate": 0,
+        "critDamage": 0,
+        "attackRange": 0,
+        "attackRangePercent": 0,
+        "attackSpeed": 0,
+        "attackSpeedPercent": 0,
+        "speed": 0,
+        "lifeSteal": 0,
+        "lifeStealPercent": 0,
+        "level": 0,
+        "chargeAttackSpeed": 0,
+        "chargeAttackSpeedPercent": 0
+      },
+      "coinCost": 1000
     }
   ],
   "abilities": [
@@ -9790,6 +9827,14 @@
       "effectLogicId": "berserker-ability",
       "displaySprite": "sprite",
       "cooldown": "15000"
+    },
+    {
+      "id": "ability-c87d86c4-655b-4a57-840e-0b143d7562ae",
+      "name": "ability-name",
+      "description": "ability-description",
+      "effectLogicId": "",
+      "displaySprite": "sprite",
+      "cooldown": 1000
     }
   ]
 }
