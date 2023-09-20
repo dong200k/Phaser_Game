@@ -68,10 +68,13 @@ export default class Special extends StateNode {
         // Checks if the player's sprite should flip or not.
         let flip = (this.player.x - this.mouseX) > 0;
         console.log("playing special animation")
-        this.player.animation.playAnimation("2_atk", {
-            duration: this.attackDuration,
-            flip: flip,
-        });
+        if(this.player.role === "Ranger"){
+             this.player.animation.playAnimation("2_atk", {
+                duration: this.attackDuration,
+                flip: flip,
+            });
+        }
+       
 
         // console.log("Flip", flip);
     }
@@ -87,7 +90,6 @@ export default class Special extends StateNode {
         if(!this.triggered && this.timePassed >= this.triggerPercent * this.attackDuration) {
             this.triggered = true;
             // Trigger skills.
-            console.log("arrow fly")
             EffectManager.useTriggerEffectsOn(this.player, "player skill", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY})
         }
 

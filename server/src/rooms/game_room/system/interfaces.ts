@@ -168,7 +168,11 @@ export type IProjectileConfig = {
     originEntityId?: string,
     spawnSound?: string,
     projectileSpeed?: number,
+    /** How many targets a PLAYER_PROJECTILE, MONSTER_PROJECTILE etc. can hit before going inactive. Set to -1 to hit infinite targets */
     piercing?: number,
+    visible?: boolean,
+    /** Set this value to to true if projectile should not despawn on colliding with an obstacle. By default it is set to false. */
+    dontDespawnOnObstacleCollision?: boolean,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }

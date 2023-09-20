@@ -7,6 +7,9 @@ import Move from "./CommonStates/Move";
 import Special from "./CommonStates/Special";
 import ChargeAttack from "./CommonStates/ChargeAttack";
 import TriggerUpgradeEffect from "../../../schemas/effects/trigger/TriggerUpgradeEffect";
+import { getFinalAttackSpeed, getFinalChargeAttackSpeed } from "../../Formulas/formulas";
+import ChargeAttackLogic from "../../EffectLogic/EffectLogics/common/ChargeAttackLogic";
+import ChargeState from "./CommonStates/ChargeState";
 
 
 export interface PlayerControllerData {
@@ -20,14 +23,20 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
     private attackState!: Attack;
     private specialState!: Special;
-    private chargeAttackState!: ChargeAttack;
-    
-    private chargeTimeSoFar= 0
-    private totalChargeTime = 3000
-    private charging = false
+    protected chargeState!: ChargeState;
+    public chargeAttackState!: ChargeAttack;
+
+    /** If this is set to true start attack will be called regardless of if there are effects on the player
+     * or if the effects cooldown are finished. Created this so that combo attacks go through when using another controller that extends the PlayerController e.g. berserker controller.
+     */
+    public callStartAttackAnyways: boolean = false
+
+    private currentlyCharging: boolean = false
 
     protected create(data: PlayerControllerData): void {
         this.player = data.player;
+        // let chargeAttackSpeed = getFinalChargeAttackSpeed(this.player.stat)
+        // if(chargeAttackSpeed > 0) this.totalChargeTime *= 1 / chargeAttackSpeed
 
         //Add States
         let idleState = new Idle("Idle", this);
@@ -38,7 +47,9 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         this.attackState = attackState;
         attackState.setConfig({
             canMove: false,
-            triggerPercent: 0.9,
+            triggerPercent: 0,
+            // attackDuration: 1 / getFinalAttackSpeed(this.player.stat) - 0.5,
+            attackDuration: 200
         });
 
         let moveState = new Move("Move", this);
@@ -58,17 +69,18 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         let chargeAttackState = new ChargeAttack("ChargeAttack", this);
         this.chargeAttackState = chargeAttackState
         chargeAttackState.setConfig({
-            triggerPercent: 0.9,
+            triggerPercent: 0,
+            // attackDuration: 1 / getFinalChargeAttackSpeed(this.player.stat),
+            attackDuration: 1
         })
         this.addState(chargeAttackState)
 
+        let chargeState = new ChargeState("ChargeState", this)
+        this.chargeState = chargeState
+        this.addState(chargeState)
+
         //Set initial state
         this.changeState("Idle");
-    }
-
-    public update(deltaT: number): void {
-        super.update(deltaT)
-        if(this.charging) this.chargeTimeSoFar += deltaT * 1000
     }
 
     public postUpdate(deltaT: number): void {
@@ -85,42 +97,54 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     }
 
     public processMouseInput(mouseClick: number, mouseDown: number, mouseX:number, mouseY:number){
-        if(mouseDown){
-            this.charging = true
-        }else{
-            this.charging = false
+        if(!this.player) return
+
+        // If the state is not idle/move/charge then it must be a combo/attack state in which case return
+        if(this.stateName !== "Idle" && this.stateName !== "Move" && this.stateName !== "ChargeState") return
+
+        // Check if player has any charge attacks
+        let hasChargeAttack = false
+        this.player?.effects.forEach(e=>{
+            if(e instanceof TriggerUpgradeEffect && e.type === "player charge attack"){
+                hasChargeAttack = true
+            }
+        })
+        
+        // Start charge attack if there is mouse click and any of the charge threshold is met
+        if(mouseClick && hasChargeAttack && this.chargeState.chargeThresholdMetFor1Attack()){
+            console.log("charge treshold met and mosueclick")
+            this.chargeState.startChargeAttack(mouseX, mouseY)
+            return
         }
 
-        if(mouseClick){
-            // Check if player has any charge attacks
-            let hasChargeAttack = false
-            this.player.effects.forEach(e=>{
-                if(e instanceof TriggerUpgradeEffect && e.type === "player charge attack"){
-                    hasChargeAttack = true
+        // Switch to charge state if mouse is down and there is charge attack
+        if(mouseDown && hasChargeAttack){
+            // console.log("has chargr attack and mousedown")/
+            // Set config for charge state
+            this.chargeState.setConfig({mouseClick, mouseX, mouseY})
+
+            if(this.stateName !== "ChargeState") this.changeState("ChargeState")
+            return
+        }
+
+        // Holding the mouse down will activate the player's attack if they dont have charge attack. Mouse click will activate player attack regardless.
+        if(mouseDown || mouseClick){
+            if(mouseClick && this.stateName === "ChargeState") {
+                this.changeState("Idle")
+            }
+
+            // If an attack is off cooldown
+            this.player.effects.forEach((effect) => {
+                if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack") {
+                    if (effect.cooldown.isFinished) {
+                        this.startAttack(mouseX, mouseY);
+                        return
+                    }
                 }
             })
 
-            if(hasChargeAttack && this.chargeTimeSoFar >= this.totalChargeTime){
-                // Charge attack cooldown is on the player controller
-                this.startChargeAttack(mouseX, mouseY)
-            }else{
-                // If an attack is off cooldown
-                this.player.effects.forEach((effect) => {
-                    if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack") {
-                        if (effect.cooldown.isFinished) 
-                            this.startAttack(mouseX, mouseY);
-                    }
-                })
-            }
-            this.charging = false
-            this.chargeTimeSoFar = 0
-        }
-    }
-
-    public startChargeAttack(mouseX: number, mouseY: number){
-        if(this.stateName !== "Dead"){
-            this.chargeAttackState.setConfig({mouseX, mouseY})
-            this.changeState("ChargeAttack")
+            // For combo attacks that dont use EffectLogic with combos directly on the controller.
+            if(this.callStartAttackAnyways) this.startAttack(mouseX, mouseY)
         }
     }
 

@@ -17,6 +17,14 @@ import PentabowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/PentabowLog
 import SexagintibowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/SexagintibowLogic";
 import Piercing10Logic from "./EffectLogics/common/Piercing10Logic";
 import ChargeAttackLogic1 from "./EffectLogics/weapon/RangerBow/ChargeShot/ChargeAttackLogic1";
+import AddComboLogic from "./EffectLogics/weapon/BerserkerBlade/ComboUpgrades/AddComboLogic";
+import BerserkerChargeAttackLogic from "./EffectLogics/weapon/BerserkerBlade/ChargeAttack/BerserkerChargeAttackLogic";
+import BerserkerAbilityLogic from "./EffectLogics/abilities/BerserkerAbility/BerserkerAbility";
+import AddChargeAttackLogic from "./EffectLogics/weapon/BerserkerBlade/ChargeAttack/AddChargeAttackLogic";
+import DoubleFlameAuraLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUpgrades/DoubleFlameAuraLogic";
+import FlameAuraChargeBoostLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUpgrades/FlameAuraChargeBoost";
+import FlameAuraStatBoostLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUpgrades/FlameAuraStatBoostLogic";
+import DoubleGetsugaLogic from "./EffectLogics/weapon/BerserkerBlade/ChargeAttack/DoubleGetsugaLogic";
 
 export default class EffectLogicManager{
 
@@ -57,6 +65,15 @@ export default class EffectLogicManager{
         this.addEffectLogic(Piercing10Logic)
 
         this.addEffectLogic(ChargeAttackLogic1)
+
+        this.addEffectLogic(AddComboLogic)
+        this.addEffectLogic(BerserkerChargeAttackLogic)
+        this.addEffectLogic(BerserkerAbilityLogic)
+        this.addEffectLogic(AddChargeAttackLogic)
+        this.addEffectLogic(DoubleFlameAuraLogic)
+        this.addEffectLogic(FlameAuraChargeBoostLogic)
+        this.addEffectLogic(FlameAuraStatBoostLogic)
+        this.addEffectLogic(DoubleGetsugaLogic)
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass){

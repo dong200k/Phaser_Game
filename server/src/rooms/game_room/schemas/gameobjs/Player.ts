@@ -7,6 +7,7 @@ import Cooldown from './Cooldown';
 import GameManager from '../../system/GameManager';
 import PlayerController from '../../system/StateControllers/PlayerControllers/PlayerController';
 import Ability from './Ability';
+import ctors, { IRoleControllerClasses } from '../../system/StateControllers/RoleControllerClasses';
 
 interface IUpgradeItemConfig {
     name: string;
@@ -69,8 +70,7 @@ class UpgradeInfo extends Schema {
 }
 
 export default class Player extends Entity {
-    @type('string') name;
-    @type('string') role;
+    @type('string') role!: string;
     // @type(Cooldown) attackCooldown;
     @type(Cooldown) specialCooldown;
     @type(WeaponUpgradeTree) weaponUpgradeTree;
@@ -96,7 +96,9 @@ export default class Player extends Entity {
     @type(UpgradeInfo) upgradeInfo: UpgradeInfo;
 
     // The PlayerController manages the player's dead/alive state.
-    @type(PlayerController) playerController: PlayerController;
+    @type(PlayerController) playerController!: PlayerController;
+
+    @type("boolean") overwriteClientMoveFlip: boolean = false
 
     constructor(gameManager: GameManager, name: string, role?: string) {
         super(gameManager);
@@ -105,7 +107,6 @@ export default class Player extends Entity {
         this.upgradeInfo = new UpgradeInfo(this.getId());
         this.xp = 0;
         this.maxXp = 100;
-        this.role = role? role: "Ranger";
         // this.attackCooldown = new Cooldown(1000)
         this.specialCooldown = new Cooldown(5000)
         this.type = "Player";
@@ -113,13 +114,40 @@ export default class Player extends Entity {
         this.skillTree = new StatTree<SkillData>(gameManager)
         this.stat.speed = 35;
         // this.stat.attackSpeed = 10;
-        this.playerController = new PlayerController({player: this});
+        // this.playerController = new PlayerController({player: this});
+        this.setRole(role)
+    }
 
+    setRole(role?: string){
+        this.role = role? role: "Ranger";
         if(this.role === "Ranger") {
             this.projectileSpawnOffsetX = 0;
             this.projectileSpawnOffsetY = -12;
         }
+    }
 
+    /**
+     * If there is a controller tied to the role then the player's controller will be set to that. Else it will be set to the default PlayerController.
+     * @param role 
+     */
+    setController(role: string){
+        if(ctors.hasOwnProperty(role)){
+            this.playerController = new ctors[role as IRoleControllerClasses]({
+                player: this,
+            })
+        }else{
+            this.playerController = new PlayerController({player: this});
+        }
+    }
 
+    /**
+     * Call this method with value = true to overwrite client side prediction flipping based on arrow key presses.
+     * Call this method with value = false to allow client side prediction flipping based on arrow key presses.
+     * 
+     * Note: Usually used so that the flip is kept and not overwritten when server wants player to attack and face a certain way
+     * @param value 
+     */
+    setOverwriteClientMoveFlip(value: boolean){
+        this.overwriteClientMoveFlip = value
     }
 }

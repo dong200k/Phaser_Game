@@ -346,7 +346,7 @@ export default class ClientSidePrediction {
             let velocityY = body.velocity.y;
 
             // Dont flip if the player is attacking.
-            if(player1.getPlayerState().canMove) {
+            if(player1.getPlayerState().canMove && !player1.getPlayerState().overwriteClientMoveFlip) {
                 /** Flip the player's sprite based on if they are pressing left or right. */
                 if(!(movementData[2] && movementData[3])) {
                     if(movementData[2]) player1.setFlip(true, false);

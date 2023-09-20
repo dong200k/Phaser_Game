@@ -35,6 +35,7 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
         this.doesStack = doesStack
         this.collisionGroup = collisionGroup
         this.originalCooldownTime = cooldown
+        this.cooldown.setTime(0, true)
     }
 
     // protected onAddToEntity(entity: Entity): void {
@@ -102,7 +103,7 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
 
     /** Uses the effect referenced by effectLogicId if cooldown is finished */
     public onTrigger(entity: Entity, ...args: any): boolean {
-        // console.log(`using trigger effect for ${this.effectLogicId}`)
+        console.log(`using trigger effect for ${this.effectLogicId}`)
 
         // cooldown not finished return
         if(!this.cooldown.isFinished) return false

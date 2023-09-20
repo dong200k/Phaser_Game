@@ -4177,6 +4177,519 @@
           "collapsed": false
         }
       }
+    },
+    {
+      "id": "upgrade-e4d77350-7976-4d49-a8f6-30f160c99f1f",
+      "name": "Berserker's Blade",
+      "type": "weapon",
+      "root": {
+        "id": "node-88685b18-cc5c-4d64-a295-ce49f2598104",
+        "children": [
+          {
+            "id": "node-c1c90ba2-8e61-4cad-bf28-c182a6ee023c",
+            "children": [
+              {
+                "id": "node-e447a54d-e686-4f79-9fa2-b25d44b0352b",
+                "children": [],
+                "data": {
+                  "name": "Combo 3",
+                  "description": "Unlock 3 hit combo.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "AddComboLogic",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "e4dcb00f-3b33-4d14-8dab-1201f5a709d7",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Combo 2",
+              "description": "Unlock 2 hit combo.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "AddComboLogic",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "970fc8ac-fcb3-4e41-8c47-f151c4eae588",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-282d029e-ec96-4bcf-8ec2-b178310ef2a7",
+            "children": [
+              {
+                "id": "node-5eef3c29-3464-4374-a732-78713b750ee1",
+                "children": [
+                  {
+                    "id": "node-170bc7ab-fbee-4bf3-9da0-a952cb23d1a0",
+                    "children": [
+                      {
+                        "id": "node-4971c405-1e0d-437f-ae5a-e04223fef54f",
+                        "children": [],
+                        "data": {
+                          "name": "Double Getsuga",
+                          "description": "Final charge attack slashes out 2 Getsugas",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0,
+                            "chargeAttackSpeed": 0,
+                            "chargeAttackSpeedPercent": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "upgradeEffect": {
+                            "effectLogicId": "DoubleGetsugaLogic",
+                            "doesStack": 1,
+                            "cooldown": 1000,
+                            "collisionGroup": -1,
+                            "type": "one time"
+                          },
+                          "doesStack": false
+                        },
+                        "__rd3t": {
+                          "id": "b21d1e1b-61b0-4296-98c6-43874fdcab33",
+                          "depth": 4,
+                          "collapsed": false
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Unlock level 3 charge attack",
+                      "description": "Slash out a flame Getsuga Tenshou",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0,
+                        "chargeAttackSpeed": 0,
+                        "chargeAttackSpeedPercent": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "AddChargeAttackLogic",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "one time"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "6fabf411-9bff-47b7-9f06-82abd3cc88d4",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Unlock level 2 charge attack",
+                  "description": "",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "AddChargeAttackLogic",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "efe6c966-cc4b-4e6a-9934-cdea5cc29352",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Charge Attack",
+              "description": "Holding mouse down for a duration then letting go releases a forwards knock back slash.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "selected",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "BerserkerChargeAttackLogic",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "player charge attack"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "f3ccfc78-0d94-46eb-8acc-e0a0907a97c1",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-fc9487f8-ac99-4ba5-8585-4f56069e36d9",
+            "children": [
+              {
+                "id": "node-9ec6455a-b18d-47e0-92b2-83a6b6cccff7",
+                "children": [
+                  {
+                    "id": "node-632acf06-c9be-4c52-894e-891d78780bb0",
+                    "children": [],
+                    "data": {
+                      "name": "Berserk",
+                      "description": "Gain charge attack speed in special form at the cost of more health.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0,
+                        "chargeAttackSpeed": 0,
+                        "chargeAttackSpeedPercent": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "FlameAuraChargeBoost",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "one time"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "bfe5d2e0-b63b-4317-91c2-fb52f75625ee",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Unyielding",
+                  "description": "Double stat boost when under 10% health in special form.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "FlameAuraStatBoost",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "a77ba719-f7a4-4346-9e5b-29c88092a60a",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Fiery Flames",
+              "description": "Flame aura deals double damage at the cost of 10% current health reduction per second while in special.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "DoubleFlameAura",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "5e6abe8d-1b8a-4818-816b-7dd8a97b1fa0",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "name": "Berserker's Blade",
+          "description": "This great flame sword holds great power.",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0,
+            "chargeAttackSpeed": 0,
+            "chargeAttackSpeedPercent": 0
+          },
+          "status": "selected",
+          "selectionTime": 0,
+          "upgradeEffect": {
+            "effectLogicId": "",
+            "doesStack": 1,
+            "cooldown": 1000,
+            "collisionGroup": -1,
+            "type": "player attack"
+          },
+          "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
+          "doesStack": false
+        },
+        "__rd3t": {
+          "id": "19b69964-c4f8-48c1-a283-089c9337ce98",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
     }
   ],
   "skills": [
@@ -9161,31 +9674,31 @@
       "description": "The Berserker is mad. They possess a unique skill ENDURE which increases defenses, movement speed and attack speed.",
       "displaySprite": "sprite",
       "spriteKey": "demo_hero",
-      "abilityId": "ability-deb2f8fa-7d65-482b-9801-462229bbf922",
-      "weaponUpgradeId": "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d",
+      "abilityId": "ability-3065d180-9f0d-481e-98c7-b8cbfe408a2a",
+      "weaponUpgradeId": "upgrade-e4d77350-7976-4d49-a8f6-30f160c99f1f",
       "stat": {
-        "maxHp": "20",
+        "maxHp": "1000",
         "maxMana": 0,
         "hp": "0",
         "mana": 0,
-        "armor": 0,
+        "armor": "100",
         "magicResist": 0,
         "damagePercent": 0,
-        "attack": "0",
+        "attack": "100",
         "attackPercent": 0,
         "armorPen": 0,
         "magicAttack": 0,
         "magicAttackPercent": 0,
         "magicPen": 0,
-        "critRate": "0.5",
-        "critDamage": "1",
+        "critRate": "0",
+        "critDamage": "",
         "attackRange": 0,
         "attackRangePercent": 0,
-        "attackSpeed": 0,
+        "attackSpeed": "0",
         "attackSpeedPercent": 0,
-        "speed": "5",
+        "speed": "",
         "lifeSteal": 0,
-        "lifeStealPercent": "0.01",
+        "lifeStealPercent": "0.0",
         "level": 0
       },
       "coinCost": "1000"
@@ -9269,6 +9782,14 @@
       "effectLogicId": "ranger-ability",
       "displaySprite": "sprite",
       "cooldown": "5000"
+    },
+    {
+      "id": "ability-3065d180-9f0d-481e-98c7-b8cbfe408a2a",
+      "name": "Berserker's Ability",
+      "description": "Berserker's Ability",
+      "effectLogicId": "berserker-ability",
+      "displaySprite": "sprite",
+      "cooldown": 1000
     }
   ]
 }

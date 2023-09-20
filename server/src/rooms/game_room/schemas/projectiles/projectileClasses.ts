@@ -1,6 +1,7 @@
 import Projectile from "./Projectile"
 import ArrowRainProjectile from "./specialprojectiles/ArrowRainProjectile"
 import CircularFollowProjectle from "./specialprojectiles/CircularFollowProjectile"
+import FollowingMeleeProjectile from "./specialprojectiles/FollowingMeleeProjectile"
 import HomingProjectile from "./specialprojectiles/HomingProjectile"
 import MeleeProjectile from "./specialprojectiles/MeleeProjectile"
 
@@ -10,7 +11,8 @@ let ctors = {
     "CircularFollowProjectile": CircularFollowProjectle,
     "MeleeProjectile": MeleeProjectile,
     "HomingProjectile": HomingProjectile,
-    "ArrowRainProjectile": ArrowRainProjectile
+    "ArrowRainProjectile": ArrowRainProjectile,
+    "FollowingMeleeProjectile": FollowingMeleeProjectile
 }
 
 export default ctors

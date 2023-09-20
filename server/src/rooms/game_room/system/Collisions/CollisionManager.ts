@@ -132,8 +132,9 @@ export default class CollisionManager{
         }
     }
 
-    public resolveProjectileObstacleCollision(projectile: Projectile, obstacle: Tile, bodyA: Matter.Body, bodyB: Matter.Body){
-        projectile.setInactive()
+    public resolveProjectileObstacleCollision(projectile: Projectile, obstacle: Tile, bodyA: Matter.Body, bodyB: Matter.Body){  
+        // MeleeProjectiles and projectiles marked with dontDespawnOnObstacleCollision dont go inactive when an obstacle
+        if(!(projectile instanceof MeleeProjectile) && !projectile.dontDespawnOnObstacleCollision)projectile.setInactive()
     }
 
     public resolveObstacleCollision(){

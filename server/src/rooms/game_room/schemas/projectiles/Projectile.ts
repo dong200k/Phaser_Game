@@ -74,6 +74,8 @@ export default class Projectile extends GameObject implements Cloneable {
     /** Times the projectile has collided */
     hitCount = 0
 
+    dontDespawnOnObstacleCollision?: boolean
+
     /**
      * Creates a new projectile GameObject and a corresponding Matter.Body with the projectileConfig
      * @param projectileConfig 
@@ -110,6 +112,9 @@ export default class Projectile extends GameObject implements Cloneable {
 
         let velocity = {x: this.initialVelocity.x, y:this.initialVelocity.y}
         Matter.Body.setVelocity(this.getBody(), velocity);
+
+        if(projectileConfig.visible === false) this.setVisible(false)
+        this.dontDespawnOnObstacleCollision = projectileConfig.dontDespawnOnObstacleCollision
     }
     
     /**
@@ -232,6 +237,13 @@ export default class Projectile extends GameObject implements Cloneable {
         this.reset()
     }
 
+    public getOriginEntity(): Entity | undefined{
+        this.gameManager.gameObjects.forEach(gameObject=>{
+            if(gameObject.id === this.originEntityId) return gameObject
+        })
+        return undefined
+    }
+
     /**
      * Sets config of the projectile. To be called when a projectile instance is being reused and needs to be initialized
      * with a new projectile's config.
@@ -275,5 +287,7 @@ export default class Projectile extends GameObject implements Cloneable {
 
         this.piercing = projectileConfig.piercing? projectileConfig.piercing : 1
         this.hitCount = 0
+
+        if(projectileConfig.visible === false) this.setVisible(false)
     }
 }
