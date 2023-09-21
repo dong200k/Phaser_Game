@@ -71,10 +71,7 @@ export default class ChargeState extends StateNode {
 
     public update(deltaT: number): void {
         this.timePassed += deltaT;
-
         this.chargeTimeSoFar += deltaT * 1000
-        // console.log(`charge ratio: ${this.chargeTimeSoFar/this.totalChargeTime}`)
-
         this.handleChargeAnimation(deltaT)
     }
     
