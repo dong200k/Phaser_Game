@@ -70,11 +70,6 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
         let chargeAttackState = new ChargeAttack("ChargeAttack", this);
         this.chargeAttackState = chargeAttackState
-        chargeAttackState.setConfig({
-            triggerPercent: 0,
-            // attackDuration: 1 / getFinalChargeAttackSpeed(this.player.stat),
-            attackDuration: 1
-        })
         this.addState(chargeAttackState)
 
         let chargeState = new ChargeState("ChargeState", this)

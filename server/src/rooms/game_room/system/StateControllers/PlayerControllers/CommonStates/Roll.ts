@@ -2,6 +2,7 @@ import MathUtil from "../../../../../../util/MathUtil";
 import EffectFactory from "../../../../schemas/effects/EffectFactory";
 import SpeedMultiEffect from "../../../../schemas/effects/temp/SpeedMultiEffect";
 import Player from "../../../../schemas/gameobjs/Player";
+import { getFinalSpeed } from "../../../Formulas/formulas";
 import StateNode from "../../../StateMachine/StateNode";
 import EffectManager from "../../../StateManagers/EffectManager";
 import PlayerController from "../PlayerController";
@@ -27,7 +28,7 @@ export default class Roll extends StateNode {
     public onEnter(): void {
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
-        this.player.animation.playAnimation("roll", {duration: this.duration * 50/this.player.stat.speed});
+        this.player.animation.playAnimation("roll", {duration: this.duration * 50/getFinalSpeed(this.player.stat)});
         this.originPosition = {...this.player.getBody().position}
 
         this.speedMultiEffect = EffectFactory.createSpeedMultiplierEffectTimed(this.speedBoostMult, this.speedBoostDuration)
@@ -51,7 +52,6 @@ export default class Roll extends StateNode {
 
         let currentPosition = this.player.getBody().position
         let distance = MathUtil.distanceSquared(this.originPosition.x, this.originPosition.y, currentPosition.x, currentPosition.y)
-        console.log(distance)
         if(distance > this.maxDistance){
             this.playerController.changeState("Idle")
         }

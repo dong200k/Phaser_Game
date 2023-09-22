@@ -121,7 +121,7 @@ In this part we will talk about howto add states to our newly created controller
     }
     ```
 
-8. Now are state is ready to be used. However do note that we haven't changed/entered into this state anywhere and that is up to you to implement. But if by default we want to enter the demo state we can just add a line.
+8. Now our state is ready to be used. However do note that we haven't changed/entered into this state anywhere and that is up to you to implement. But if by default we want to enter the demo state we can just add a line.
 
     ```
     export default class DemoController extends PlayerController{
@@ -141,7 +141,7 @@ In this part we will talk about howto add states to our newly created controller
 ## Part 5: Overwriting a PlayerController State
 In this part we will discuss howto overwrite a player controller state. This happens when we want to write a new state in our Controller that replaces a state in the PlayerController.
 
-1. First figure out the name of the state that we want to overwrite. For example a few states the player controller has are "Move" and "Idle". In this case lets overwrite the "Idle state".
+1. First figure out the name of the state that we want to overwrite. For example a few states the player controller has are "Move" and "Idle". In this case lets overwrite the "Idle" state.
 
 2. Follow part 4 to create a new state and name it "Idle" instead of "DemoState". 
 

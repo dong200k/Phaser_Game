@@ -67,7 +67,6 @@ export default class Special extends StateNode {
 
         // Checks if the player's sprite should flip or not.
         let flip = (this.player.x - this.mouseX) > 0;
-        console.log("playing special animation")
         if(this.player.role === "Ranger"){
              this.player.animation.playAnimation("2_atk", {
                 duration: this.attackDuration,

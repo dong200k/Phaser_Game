@@ -22,6 +22,7 @@ export default class BerserkerChargeAttackLogic extends ChargeAttackLogic{
     private getsugaCount = 1
 
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Matter.Body, {mouseX, mouseY}: {mouseX: number, mouseY: number}, chargeRatio: number): void {
+        console.log("use effct berserker charge attack")
         if(this.level === 0){
             if(chargeRatio >= this.chargeRatiosRequired[2]) this.level1ChargeAttack(playerState, gameManager, {mouseX, mouseY}) // Fully charged
         }
