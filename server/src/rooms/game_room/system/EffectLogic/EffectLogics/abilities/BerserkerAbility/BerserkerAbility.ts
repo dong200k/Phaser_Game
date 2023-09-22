@@ -29,7 +29,6 @@ export default class BerserkerAbilityLogic extends EffectLogic{
     private duration = 7000
     private timeInAbility = 0
     public useEffect(playerState: Player, gameManager: GameManager, ){
-        console.log("berserker ability logic use effect")
         this.playerState = playerState
         this.gameManager = gameManager
 
@@ -128,13 +127,11 @@ export default class BerserkerAbilityLogic extends EffectLogic{
 
     /** Turns on stat boost when using ability and health is <= 10 percent */
     public toggleStatBoostWhenUnder10Percent(){
-        console.log("toggle stat bost when udner 10 percent")
         this.boostWhenUnder10Percent = true
     }
 
     /** Turns on charge attack speed boost when special is active */
     public toggleChargeAttackSpeedBoost(){
-        console.log("toggle charge attack speed boosta")
         this.chargeAttackSpeedBoost = true
         if(this.currentlyUsingAbility) {
             this.removeStatBoost()
@@ -145,7 +142,6 @@ export default class BerserkerAbilityLogic extends EffectLogic{
 
     /** Turns on double flame aura damage when special is active */
     public toggleDoubleFlameAuraDamage(){
-        console.log("toggle double flame aura damage")
         this.flameAuraDamageMultiplier *= 2
         this.flameAura.attackMultiplier *= this.flameAuraDamageMultiplier
         this.damagePercent += 5

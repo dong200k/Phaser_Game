@@ -44,6 +44,14 @@ export default class GameManager {
 
     private mouseDown: boolean = false;
 
+    // ------- Double tap timer -------
+    private wasdPressTime = {
+        "w": 0,
+        "a": 0,
+        "s": 0,
+        "d": 0
+    }
+
     // ------- fixed tick --------
     private timePerTick = 33.33; // 30 ticks per second.
     private timeTillNextTick: number;
@@ -66,6 +74,14 @@ export default class GameManager {
     }
 
     /**
+     * 
+     * @returns the stored time value in milliseconds since midnight, January 1, 1970 UTC
+     */
+    getTime(){
+        return new Date().getTime()
+    }
+
+    /**
      * Updates the gameManager.
      * @param time The current time in ms.
      * @param deltaT The time that passed in ms.
@@ -81,6 +97,30 @@ export default class GameManager {
         this.syncGameObjectActive();
         this.updateFloatingTexts();
         this.renderFollowPlayerObjects()
+    }
+
+    onWASDPress(key: "w"|"a"|"s"|"d"){
+        console.log(key)
+        return ()=>{
+            console.log("key pressed: ", key)
+            // First press
+            if(this.wasdPressTime[key] === 0){
+                this.wasdPressTime[key] = this.getTime()
+                return
+            }
+
+            // Second press 
+            let secondPressTime = this.getTime()
+            if(secondPressTime - this.wasdPressTime[key] < 400){
+                this.sendDoubleTap(key)
+                console.log('send double tap', key)
+            }
+            this.wasdPressTime[key] = this.getTime()
+        }   
+    }
+
+    sendDoubleTap(key: "w"|"a"|"s"|"d"){
+        this.gameRoom?.send("doubleTap", key)
     }
 
     public renderFollowPlayerObjects(){
@@ -207,6 +247,12 @@ export default class GameManager {
                 }
             }
         })
+
+        /** wasd keys */
+        this.upKey?.on('down', this.onWASDPress("w"))
+        this.downKey?.on('down', this.onWASDPress("s"))
+        this.leftKey?.on('down', this.onWASDPress("a"))
+        this.rightKey?.on('down', this.onWASDPress("d"))
     }
 
     private initializeListeners() {

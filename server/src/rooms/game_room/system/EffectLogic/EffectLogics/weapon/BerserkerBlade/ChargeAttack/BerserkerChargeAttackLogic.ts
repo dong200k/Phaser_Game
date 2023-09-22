@@ -12,7 +12,7 @@ export default class BerserkerChargeAttackLogic extends ChargeAttackLogic{
     /** Level determines which charge attacks are available and what charge ratios are required at minimum to use this effect */
     private level = 0
     /** list of minimum charge ratios required based on level to use this effect */
-    private chargeRatiosRequired = [1, 0.5, 0.33]
+    private chargeRatiosRequired = [1, 0.33, 0.1]
 
     private level1Multiplier = 5
     private level2Multiplier = 10
@@ -199,7 +199,6 @@ export default class BerserkerChargeAttackLogic extends ChargeAttackLogic{
     /** Returns the charge animation for the highest charge attack unlocked */
     public getChargeAnimation(chargeRatio: number){
         let animations = ["Charge_1", "Charge_2", "Charge_3"]
-        console.log(chargeRatio)
         if(this.level === 0 && chargeRatio >= this.chargeRatiosRequired[2]){
             return "Charge_1"
         }

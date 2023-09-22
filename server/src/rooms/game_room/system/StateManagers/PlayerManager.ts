@@ -146,6 +146,18 @@ export default class PlayerManager {
         }
     }
 
+    processPlayerDoubleTap(playerId: string, key: "w"|"a"|"s"|"d"){
+        let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
+        if(!playerBody || !playerState) return console.log("player does not exist, double tap")
+
+        // If the player is disabled, cant move, or is dead stop the player 
+        if(this.disabledPlayers.has(playerId) || !playerState.canMove || playerState.playerController.stateName === "Dead") {
+            return; 
+        }
+        playerState.playerController.startRoll(key)
+
+    }
+
     processPlayerMovement(playerId: string, data: number[], deltaT: number){
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist, movement")

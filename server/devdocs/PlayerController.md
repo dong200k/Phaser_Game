@@ -1,4 +1,4 @@
-# Player Controller
+    # Player Controller
 
 This document will outline briefly how the PlayerController controls the players action. 
 

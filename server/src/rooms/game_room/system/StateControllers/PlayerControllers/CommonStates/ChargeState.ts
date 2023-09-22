@@ -52,8 +52,8 @@ export default class ChargeState extends StateNode {
         this.timePassed = 0;
         let chargeAttackSpeed = getFinalChargeAttackSpeed(this.player.stat)
         if(chargeAttackSpeed > 0) this.totalChargeTime = this.originalTotalChargeTime / getFinalChargeAttackSpeed(this.player.stat)
-        
-        // this.player.canMove = this.canMove;
+        else this.totalChargeTime = this.originalTotalChargeTime
+        // this.player.canMove = this.canMove;  
 
         // Checks if the player's sprite should flip or not.
         let flip = (this.player.x - this.mouseX) > 0;
