@@ -64,6 +64,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("RangerArrow", "images/projectiles/arrow_1.png", "images/projectiles/arrow_1.json");
         this.load.aseprite("TinyZombieAttack", "images/projectiles/bite_1.png", "images/projectiles/bite_1.json");
         this.load.aseprite("Berserker", "images/roles/Berserker.png", "images/roles/Berserker.json");
+        this.load.aseprite("Warrior", "images/roles/warrior.png", "images/roles/warrior.json");
         this.load.aseprite("FlameAura", "images/projectiles/FlameAura.png", "images/projectiles/FlameAura.json");
         this.load.aseprite("GetsugaTenshou", "images/projectiles/GetsugaTenshou.png", "images/projectiles/GetsugaTenshou.json");
 
