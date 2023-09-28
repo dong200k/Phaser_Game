@@ -345,9 +345,9 @@
   "scale": "1",
   "frameTags": [
    { "name": "idle", "from": 0, "to": 7, "direction": "forward" },
-   { "name": "run", "from": 8, "to": 15, "direction": "forward" },
-   { "name": "atk_1", "from": 16, "to": 22, "direction": "forward" },
-   { "name": "atk_2", "from": 23, "to": 29, "direction": "forward" },
+   { "name": "walk", "from": 8, "to": 15, "direction": "forward" },
+   { "name": "1_atk", "from": 16, "to": 22, "direction": "forward" },
+   { "name": "2_atk", "from": 23, "to": 29, "direction": "forward" },
    { "name": "death", "from": 30, "to": 41, "direction": "forward" }
   ],
   "layers": [
