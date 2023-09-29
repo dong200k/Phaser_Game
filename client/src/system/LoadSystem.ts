@@ -151,7 +151,11 @@ class SceneLoader {
         this.scene.load.start();
 
         // Waits for the load to finish.
-        await new Promise<void>((resolve, reject) => {
+        await this.loadCompletePromise();
+    }
+
+    private loadCompletePromise() {
+        return new Promise<void>((resolve, reject) => {
             const intervalIdx = setInterval(() => {
                 // Periodically checks the loadCompleteFlag.
                 if(this.loadComplete === true) {
