@@ -194,6 +194,6 @@ console.log(`equiping ${role.name} weapon:`, root.data.name)
 
 ## Final Summary
 1. Create your upgrade on the my-app tool with the appropriate nodes.
-2. Create the EffectLogics used by the upgrade's nodes .
+2. Create the EffectLogics used by the upgrade's nodes on the server.
 3. Use the server's ArtifactFactory/WeaponUpgradeFactory's createUpgrade method to create an upgrade that a player can equip.
 4. Use the WeaponUpgradeManager and the ArtifactManager's equip methods to equip the artifact/weapon onto a player.
