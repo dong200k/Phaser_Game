@@ -76,7 +76,16 @@ export default class Projectile extends GameObject implements Cloneable {
 
     dontDespawnOnObstacleCollision?: boolean
 
-    /**
+    private setInactiveCallback?: Function
+    private onCollideCallback?: Function
+
+    
+    /** Animation to play default is "play" */
+    @type("string") animationKey: string = "play"
+    /** Whether to repeat animation or not default is repeat true */
+    @type("boolean") repeatAnimation: boolean = true
+
+    /**s
      * Creates a new projectile GameObject and a corresponding Matter.Body with the projectileConfig
      * @param projectileConfig 
      * @param gameManager
@@ -115,6 +124,11 @@ export default class Projectile extends GameObject implements Cloneable {
 
         if(projectileConfig.visible === false) this.setVisible(false)
         this.dontDespawnOnObstacleCollision = projectileConfig.dontDespawnOnObstacleCollision
+    
+        this.setInactiveCallback = projectileConfig.setInactiveCallback
+        this.repeatAnimation = projectileConfig.repeatAnimation ?? this.repeatAnimation
+        this.animationKey = projectileConfig.animationKey ?? this.animationKey
+        this.onCollideCallback = projectileConfig.onCollideCallback ?? this.onCollideCallback
     }
     
     /**
@@ -234,14 +248,35 @@ export default class Projectile extends GameObject implements Cloneable {
     */
     public setInactive(){
         this.active = false
+        this.onInactive()
         this.reset()
     }
 
     public getOriginEntity(): Entity | undefined{
+        let originEntity = undefined
         this.gameManager.gameObjects.forEach(gameObject=>{
-            if(gameObject.id === this.originEntityId) return gameObject
+            if(gameObject.id === this.originEntityId) {
+                originEntity = gameObject
+            }
         })
-        return undefined
+        return originEntity
+    }
+
+    /**
+     * This method is called when the projectile is set to inactive.
+     */
+    public onInactive(){
+        if(this.setInactiveCallback) this.setInactiveCallback(this)
+    }
+
+    /**
+     * Called by the collision manager when projectile collides with something it can collide with.
+     */
+    public onCollide(){
+        if(this.onCollideCallback){
+            this.onCollideCallback(this)
+            console.log("projectile on collide")
+        } 
     }
 
     /**
@@ -289,5 +324,8 @@ export default class Projectile extends GameObject implements Cloneable {
         this.hitCount = 0
 
         if(projectileConfig.visible === false) this.setVisible(false)
+        this.repeatAnimation = projectileConfig.repeatAnimation ?? this.repeatAnimation
+        this.animationKey = projectileConfig.animationKey ?? this.animationKey
+        this.onCollideCallback = projectileConfig.onCollideCallback ?? this.onCollideCallback
     }
 }

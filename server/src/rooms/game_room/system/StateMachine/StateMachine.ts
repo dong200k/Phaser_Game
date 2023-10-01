@@ -127,4 +127,8 @@ export default abstract class StateMachine<Data> extends Schema{
         if (this.currentState) this.currentState.update(deltaT);
         this.postUpdate(deltaT);
     }
+
+    public getPrevState(){
+        return this.previousState
+    }
 }

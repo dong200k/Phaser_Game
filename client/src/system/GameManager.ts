@@ -100,9 +100,9 @@ export default class GameManager {
     }
 
     onWASDPress(key: "w"|"a"|"s"|"d"){
-        console.log(key)
+        // console.log(key)
         return ()=>{
-            console.log("key pressed: ", key)
+            // console.log("key pressed: ", key)
             // First press
             if(this.wasdPressTime[key] === 0){
                 this.wasdPressTime[key] = this.getTime()
@@ -113,7 +113,7 @@ export default class GameManager {
             let secondPressTime = this.getTime()
             if(secondPressTime - this.wasdPressTime[key] < 400){
                 this.sendDoubleTap(key)
-                console.log('send double tap', key)
+                // console.log('send double tap', key)
             }
             this.wasdPressTime[key] = this.getTime()
         }   
@@ -253,6 +253,10 @@ export default class GameManager {
         this.downKey?.on('down', this.onWASDPress("s"))
         this.leftKey?.on('down', this.onWASDPress("a"))
         this.rightKey?.on('down', this.onWASDPress("d"))
+
+        /** shift key */
+        let shiftKey = this.scene.input.keyboard?.addKey("SHIFT")
+        shiftKey?.on("down", ()=>this.sendDoubleTap("w"))
     }
 
     private initializeListeners() {
@@ -419,7 +423,12 @@ export default class GameManager {
         if(projectile.projectileType === "Melee") {
             proj.play("play");
         } else {
-            proj.play({key: "play", repeat: -1});
+            if(projectile.repeatAnimation){
+                proj.play({key: projectile.animationKey, repeat: -1});
+            }else{
+                proj.play({key: projectile.animationKey});
+            }
+            
         }  
         this.scene.add.existing(proj)
         proj.depth = -1

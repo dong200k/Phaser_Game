@@ -62,11 +62,20 @@ export default class ChargeState extends StateNode {
         //     duration: this.attackDuration,
         //     flip: flip,
         // });
+        this.resetChargeTimeSoFar()
+    }
+
+    /**
+     * Resets the charge time if prev state was not the roll state.
+     */
+    protected resetChargeTimeSoFar(){
+        if("Roll" !== this.playerController.getPrevState()?.getStateName()){
+            this.chargeTimeSoFar = 0
+        }
     }
 
     public onExit(): void {
         this.player.canMove = true;
-        this.chargeTimeSoFar = 0
     }
 
     public update(deltaT: number): void {

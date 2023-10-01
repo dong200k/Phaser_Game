@@ -6,6 +6,7 @@ import EffectManager from "../../StateManagers/EffectManager";
 import PlayerController, { PlayerControllerData } from "../PlayerControllers/PlayerController";
 import BerserkerChargeAttackState from "./states/BerserkerChargeAttackState";
 import BerserkerChargeState from "./states/BerserkerChargeState";
+import BerserkerSpecial from "./states/BerserkerSpecial";
 import Combo1 from "./states/Combo1";
 import Combo2 from "./states/Combo2";
 import Combo3 from "./states/Combo3";
@@ -51,6 +52,9 @@ export default class BerserkerComboController extends PlayerController {
         this.chargeAttackState = new BerserkerChargeAttackState("ChargeAttack", this)
         this.addState(this.chargeAttackState)
 
+        this.removeState("Special")
+        this.addState(new BerserkerSpecial("Special", this))
+        
         this.changeState("Idle")
     }
 

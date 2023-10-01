@@ -13,6 +13,13 @@ export default class BerserkerChargeState extends ChargeState {
         this.currentAnimation = ""
     }
 
+    protected resetChargeTimeSoFar(){
+        let prevStateName = this.playerController.getPrevState()?.getStateName()
+        if("Roll" !==  prevStateName && "Special" !== prevStateName){
+            this.chargeTimeSoFar = 0
+        }
+    }
+
     /**
      * Controls when to play a charge animation.
      * 

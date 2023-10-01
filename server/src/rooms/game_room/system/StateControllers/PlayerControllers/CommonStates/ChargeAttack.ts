@@ -82,7 +82,6 @@ export default class ChargeAttack extends StateNode {
         // Trigger a charge attack if it hasn't been triggered and the timePassed is at the triggerPercent.
         if(!this.triggered && this.timePassed >= this.triggerPercent * this.attackDuration) {
             this.triggered = true;
-            console.log("calling useTriggerEffecton player charege attack")
             EffectManager.useTriggerEffectsOn(this.player, "player charge attack", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY}, this.chargeRatio)
         }
 

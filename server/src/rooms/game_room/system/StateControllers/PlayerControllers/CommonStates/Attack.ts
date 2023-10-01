@@ -86,7 +86,6 @@ export default class Attack extends StateNode {
         if(!this.triggered && this.timePassed >= this.triggerPercent * this.attackDuration) {
             this.triggered = true;
             // Trigger the attack.
-            console.log("use trigger effects: player attack")
             EffectManager.useTriggerEffectsOn(this.player, "player attack", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY})
         }
 
