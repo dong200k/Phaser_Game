@@ -19,6 +19,12 @@ Check out the [tiled documentation](https://doc.mapeditor.org/en/stable/) for mo
 
 ## Creating a dungeon
 
+### Preparing your tileset image
+
+First we should prepare a tileset image for our map. You can either create your own or find one online. We wont be showing you how to create an tileset image. 
+
+After you have your tileset image, create a new folder on your desktop to store the image in. We will also be storing the tmx(tiled) file and json file in the same folder later on.
+
 ### Setting up the map.
 
 After Tiled is installed we can now begin creating a map. 
@@ -51,6 +57,7 @@ After Tiled is installed we can now begin creating a map.
         3. Obstacle
         4. Ground
         5. Background
+6. Make sure to save your tilemap, as a tmx file, regularly into the folder you created earlier on. The same place where you stored your tileset image.
 
 ### Designing the map
 
@@ -89,7 +96,7 @@ Note: If the rectangle is in the way of editing other things on your map you can
 
 ## Exporting your dungeon
 
-Once you created a tilemap that you like we can now save our files to the correct locations.
+Once you created a tilemap that you like we can now save our files to the correct locations. This means copying our tileset image and tmx files into the correct location and creating a json file.
 We will save a total of three files: 
 
 ### The tileset image
@@ -136,7 +143,9 @@ The tilemap json file is the file that will be read by our server.
 
 ## Adding your dungeon in the game
 
-After we saved our files into their respective location, we can now let our server know about our new dungeon.
+After we saved our files into their respective location, we can now let our server know about our new dungeon. 
+
+Note: Step's 1 and 2 is now done through my-app. When creating a new dungeon with my-app the name, tilesetName, serverJsonLocation, and clientTilesetLocation should be filled out based on what is described by step 2 below.
 
 1. Open up the json file in "server/assets/tilemaps/dungeon.json".
 2. Create a new object under existing ones.
