@@ -75,6 +75,53 @@ public onExit(): void {
 }
 ```
 
+
+### Roll State
+The roll state handles player rolling actions. When the player double taps the movement keys they will enter the roll state if appropriate.
+
+#### onEnter
+Entering the roll state will trigger the roll animation. The duration of the animation is based on the duration variable of the roll state and the player's speed. The player's position when they enter the roll state is also stored to make sure that they can't roll too far. Lastly the player also receives a speed boost when entering the roll state.
+```
+public onEnter(): void {
+    this.player.animation.playAnimation("roll", {duration: this.duration * 50/getFinalSpeed(this.player.stat)});
+    this.originPosition = {...this.player.getBody().position}
+
+    this.speedMultiEffect = EffectFactory.createSpeedMultiplierEffectTimed(this.speedBoostMult, this.speedBoostDuration)
+    EffectManager.addEffectsTo(this.player, this.speedMultiEffect)
+}
+```
+
+#### onExit
+Exiting the roll state will remove the speed bonus from the player.
+```
+public onExit(): void {
+    this.timePassed = 0
+    if(this.speedMultiEffect) {
+        EffectManager.removeEffectFrom(this.player, this.speedMultiEffect)
+        this.speedMultiEffect = undefined
+    }
+
+}
+```
+
+#### Update
+The update method of the roll state just checks if the roll state duration has passed or if the player has exceeded the maximum roll distance. In either case the controller will change to the idle state.
+```
+public update(deltaT: number): void {
+    this.timePassed += deltaT
+    if(this.timePassed >= this.duration){
+        this.playerController.changeState("Idle")
+    }
+
+    let currentPosition = this.player.getBody().position
+    let distance = MathUtil.distanceSquared(this.originPosition.x, this.originPosition.y, currentPosition.x, currentPosition.y)
+    console.log(distance)
+    if(distance > this.maxDistance){
+        this.playerController.changeState("Idle")
+    }
+}
+```
+
 ### Special State
 The special state handles using the player's special abilities.
 #### Entering the special state

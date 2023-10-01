@@ -92,6 +92,10 @@ export default class GameRoom extends Room<State> {
         // this.onMessage("input", (client, msg) => {
 
         // })
+
+        this.onMessage("doubleTap", (client, msg)=>{
+            this.gameManager.getPlayerManager().processPlayerDoubleTap(client.id, msg)
+        })
     }
 
     startGame() {

@@ -23,8 +23,8 @@ interface SpecialConfig {
 
 export default class Special extends StateNode {
 
-    private playerController!: PlayerController;
-    private player!: Player;
+    protected playerController!: PlayerController;
+    protected player!: Player;
     
     /** Total attack time. Including windup(for animations) time and trigger time. */
     private attackDuration: number = 1;
@@ -62,12 +62,11 @@ export default class Special extends StateNode {
         this.player = this.playerController.getPlayer();
         this.attackDuration = this.player.stat.attackSpeed/2;
         this.timePassed = 0;
-        this.player.canMove = this.canMove;
+        // this.player.canMove = this.canMove;
         this.triggered = false;
 
         // Checks if the player's sprite should flip or not.
         let flip = (this.player.x - this.mouseX) > 0;
-        console.log("playing special animation")
         if(this.player.role === "Ranger"){
              this.player.animation.playAnimation("2_atk", {
                 duration: this.attackDuration,
@@ -83,6 +82,11 @@ export default class Special extends StateNode {
         this.player.canMove = true;
     }
 
+    /** Called to change states to the exit state */
+    protected changeToExitState(){
+        this.playerController.changeState("Idle");
+    }
+
     public update(deltaT: number): void {
         this.timePassed += deltaT;
 
@@ -95,7 +99,7 @@ export default class Special extends StateNode {
 
         // End attack once we pass the attackDuration.
         if(this.timePassed >= this.attackDuration) {
-            this.playerController.changeState("Idle");
+            this.changeToExitState()
         }
     }
     

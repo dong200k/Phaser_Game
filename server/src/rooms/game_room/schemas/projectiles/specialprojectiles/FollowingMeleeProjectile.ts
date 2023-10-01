@@ -44,6 +44,7 @@ export default class FollowingMeleeProjectile extends Projectile {
             x: body.position.x + this.offsetX,
             y: body.position.y + this.offsetY
         }
+        // console.log(`x: ${newPos.x}, y: ${newPos.y}, entity x: ${body.position.x}, y: ${body.position.y}`)
         if(body) Matter.Body.setPosition(this.getBody(), newPos)
     }
 }

@@ -59,7 +59,8 @@ export default class DungeonManager {
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Monster){
-                // console.log(`Active:${gameObject.active}, x:${gameObject.x}, y:${gameObject.y}, `);
+                // console.log(`Active:${gameObject.active}, x:${gameObject.x}, y:${gameObject.y}, `);\
+                if(gameObject.name === "Berserker Boss")console.log(gameObject.name, gameObject.active)
                 if(gameObject.active) {
                     gameObject.update(deltaT);
                 } else if(!gameObject.isInPoolMap()) {

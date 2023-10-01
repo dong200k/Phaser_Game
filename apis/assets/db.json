@@ -4500,7 +4500,7 @@
                     "children": [],
                     "data": {
                       "name": "Berserk",
-                      "description": "Gain charge attack speed in special form at the cost of more health.",
+                      "description": "Gain 4x charge attack speed in special form.",
                       "stat": {
                         "maxHp": 0,
                         "maxMana": 0,
@@ -4540,7 +4540,7 @@
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "bfe5d2e0-b63b-4317-91c2-fb52f75625ee",
+                      "id": "2062bc16-88a5-44fa-b36d-cc303dc1047b",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4548,7 +4548,7 @@
                 ],
                 "data": {
                   "name": "Unyielding",
-                  "description": "Double stat boost when under 10% health in special form.",
+                  "description": "While special is active receive more stat bonus as heath lowers.",
                   "stat": {
                     "maxHp": 0,
                     "maxMana": 0,
@@ -4588,7 +4588,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "a77ba719-f7a4-4346-9e5b-29c88092a60a",
+                  "id": "54d24fef-d848-471e-b54a-6c406262822b",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4596,7 +4596,7 @@
             ],
             "data": {
               "name": "Fiery Flames",
-              "description": "Flame aura deals double damage at the cost of 10% current health reduction per second while in special.",
+              "description": "Flame aura deals double damage.",
               "stat": {
                 "maxHp": 0,
                 "maxMana": 0,
@@ -4636,7 +4636,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "5e6abe8d-1b8a-4818-816b-7dd8a97b1fa0",
+              "id": "c4393741-f54a-448e-a161-8da5b3c1321c",
               "depth": 1,
               "collapsed": false
             }
@@ -9671,7 +9671,7 @@
     {
       "id": "role-327154d5-3930-449a-83b9-bce096b0b12b",
       "name": "Berserker",
-      "description": "The Berserker is mad. They possess a unique skill ENDURE which increases defenses, movement speed and attack speed.",
+      "description": "The Berserker is mad. They possess a unique skill BERSERK which increases defenses, movement speed and attack speed.",
       "displaySprite": "sprite",
       "spriteKey": "demo_hero",
       "abilityId": "ability-3065d180-9f0d-481e-98c7-b8cbfe408a2a",
@@ -9772,6 +9772,43 @@
         "level": 0
       },
       "coinCost": 1000
+    },
+    {
+      "id": "role-b373d4a8-6b01-4356-a1d5-5827d8f98161",
+      "name": "role-name",
+      "description": "role-description",
+      "displaySprite": "sprite",
+      "spriteKey": "demo_hero",
+      "abilityId": "",
+      "weaponUpgradeId": "",
+      "stat": {
+        "maxHp": 0,
+        "maxMana": 0,
+        "hp": 0,
+        "mana": 0,
+        "armor": 0,
+        "magicResist": 0,
+        "damagePercent": 0,
+        "attack": 0,
+        "attackPercent": 0,
+        "armorPen": 0,
+        "magicAttack": 0,
+        "magicAttackPercent": 0,
+        "magicPen": 0,
+        "critRate": 0,
+        "critDamage": 0,
+        "attackRange": 0,
+        "attackRangePercent": 0,
+        "attackSpeed": 0,
+        "attackSpeedPercent": 0,
+        "speed": 0,
+        "lifeSteal": 0,
+        "lifeStealPercent": 0,
+        "level": 0,
+        "chargeAttackSpeed": 0,
+        "chargeAttackSpeedPercent": 0
+      },
+      "coinCost": 1000
     }
   ],
   "abilities": [
@@ -9790,6 +9827,14 @@
       "effectLogicId": "berserker-ability",
       "displaySprite": "sprite",
       "cooldown": "15000"
+    },
+    {
+      "id": "ability-c87d86c4-655b-4a57-840e-0b143d7562ae",
+      "name": "ability-name",
+      "description": "ability-description",
+      "effectLogicId": "",
+      "displaySprite": "sprite",
+      "cooldown": 1000
     }
   ]
 }

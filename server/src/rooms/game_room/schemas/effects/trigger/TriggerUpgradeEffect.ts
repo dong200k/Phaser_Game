@@ -76,10 +76,6 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
             let atkSpeed = 1
             if(this.tree?.owner) atkSpeed = getFinalAttackSpeed(this.tree?.owner.stat)
             newDeltaT = deltaT * atkSpeed
-        }else if(this.type === "player charge attack"){
-            let chargeAtkSpeed = 1
-            if(this.tree?.owner) chargeAtkSpeed = getFinalChargeAttackSpeed(this.tree?.owner.stat)
-            newDeltaT = deltaT * chargeAtkSpeed 
         }
         
         this.cooldown.tick(newDeltaT)
@@ -103,7 +99,7 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
 
     /** Uses the effect referenced by effectLogicId if cooldown is finished */
     public onTrigger(entity: Entity, ...args: any): boolean {
-        console.log(`using trigger effect for ${this.effectLogicId}`)
+        // console.log(`using trigger effect for ${this.effectLogicId}`)
 
         // cooldown not finished return
         if(!this.cooldown.isFinished) return false

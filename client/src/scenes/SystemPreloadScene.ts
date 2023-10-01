@@ -48,6 +48,9 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("sword_swish", "audio/sword_swish.mp3")
         this.load.audio("clean_fast_slash", "audio/clean_fast_slash.mp3")
         this.load.audio("small_explosion", "audio/small_explosion.mp3")
+        this.load.audio("roll", "audio/roll.mp3")
+        this.load.audio("ultra_instinct_boss", "audio/ultra_instinct_boss.mp3")
+        this.load.audio("boss_getting_dark", "audio/boss_getting_dark.mp3")
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");
@@ -112,8 +115,11 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("sword_swish", "sfx")
         soundManager.add("clean_fast_slash", "sfx")
         soundManager.add("small_explosion", "sfx")
+        soundManager.add("roll", "sfx")
 
         soundManager.add("ultra_instinct", "bg")
+        soundManager.add("ultra_instinct_boss", "bg")
+        soundManager.add("boss_getting_dark", "bg")
 
         /** Initialize the SceneManager and sets this scene as the current scene. */
         let sceneManager = SceneManager.getSceneManager();

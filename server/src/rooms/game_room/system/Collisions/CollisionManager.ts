@@ -9,6 +9,7 @@ import { ICollisionRule } from "../interfaces";
 import Tile from "../../schemas/gameobjs/Tile";
 import Player from "../../schemas/gameobjs/Player";
 import MeleeProjectile from "../../schemas/projectiles/specialprojectiles/MeleeProjectile";
+import Matter from "matter-js";
 
 export default class CollisionManager{
     private gameManager: GameManager
@@ -97,6 +98,9 @@ export default class CollisionManager{
         // Do nothing if the projectile is not active. This is to prevent a projectile from hitting more than one monster.
         if(!projectile.active) return;
 
+        // If entity fired projectile they wont get hit
+        if(entity.getId() === projectile.originEntityId) return
+
         let trueAttackDamage = getTrueAttackDamage(projectile.stat, entity.stat, projectile.attackMultiplier)
         let trueMagicDamage = getTrueMagicDamage(projectile.stat, entity.stat, projectile.magicMultiplier)
 
@@ -123,13 +127,19 @@ export default class CollisionManager{
             EffectManager.addEffectsTo(attackingEntity, healEffect)
         }
 
+        projectile.onCollide()
+
         // Melee projectile will be set inactive by its controller.
         projectile.hitCount++
         let exceededHitCount = projectile.hitCount === projectile.piercing
         if(exceededHitCount){
-            if(!(projectile instanceof MeleeProjectile)) projectile.setInactive();
+            if(!(projectile instanceof MeleeProjectile)) {
+                projectile.setInactive();
+                let body = projectile.getBody()
+                Matter.Body.setVelocity(body, {x: 0, y:0})
+            }
             else projectile.disableCollisions();
-        }
+        }   
     }
 
     public resolveProjectileObstacleCollision(projectile: Projectile, obstacle: Tile, bodyA: Matter.Body, bodyB: Matter.Body){  

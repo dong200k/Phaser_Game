@@ -14,7 +14,7 @@ export default class FlameAuraStatBoostLogic extends EffectLogic{
     public useEffect(playerState: Player, gameManager: GameManager, ...args: any): void {
         let effectLogic = playerState.currentAbility?.getEffectLogic()
         if(effectLogic && effectLogic instanceof BerserkerAbilityLogic){
-            effectLogic.toggleStatBoostWhenUnder10Percent()
+            effectLogic.toggleStatBoostWhenAtLowerHealth()
         }
     }
 
