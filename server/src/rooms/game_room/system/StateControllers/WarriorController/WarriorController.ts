@@ -1,11 +1,8 @@
-import Player from "../../../schemas/gameobjs/Player";
-import { getFinalAttackSpeed } from "../../Formulas/formulas";
 import GameManager from "../../GameManager";
-import StateMachine from "../../StateMachine/StateMachine";
-import EffectManager from "../../StateManagers/EffectManager";
 import PlayerController, { PlayerControllerData } from "../PlayerControllers/PlayerController";
+import DemoState from "./states/DemoState";
 
-export default class BerserkerComboController extends PlayerController {
+export default class WarriorController extends PlayerController {
 
     private gameManager!: GameManager
 
@@ -14,7 +11,10 @@ export default class BerserkerComboController extends PlayerController {
         this.callStartAttackAnyways = true
         this.gameManager = this.getPlayer().gameManager;
 
-        this.changeState("Idle")
+        let demoState = new DemoState("DemoState", this);
+        this.addState(demoState);
+
+        this.changeState("Idle");
     }
 
     public getGameManager() {

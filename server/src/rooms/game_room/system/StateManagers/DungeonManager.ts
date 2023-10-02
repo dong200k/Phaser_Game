@@ -17,6 +17,7 @@ import MonsterPool from "../../schemas/gameobjs/monsters/MonsterPool"
 import TinyZombie from "../../schemas/gameobjs/monsters/zombie/TinyZombie"
 import InvisObstacle from "../../schemas/gameobjs/InvisObstacle"
 import DatabaseManager from "../Database/DatabaseManager"
+import Entity from "../../schemas/gameobjs/Entity"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -496,5 +497,29 @@ export default class DungeonManager {
      */
     public getDungeon() {
         return this.dungeon;
+    }
+
+    /**
+     * Gets all the monsters that are active.
+     * @returns A monster array.
+     */
+    public getAllActiveMonsters() {
+        let monsters: Monster[] = [];
+        this.gameManager.gameObjects.forEach((obj) => {
+            if(obj instanceof Monster && obj.active) monsters.push(obj);
+        })
+        return monsters;
+    }
+
+    /**
+     * Aggro all the active monsters to the provided aggroTarget.
+     * @param aggroTarget - The target that the monsters will attack.
+     */
+    public aggroAllMonstersOnto(aggroTarget: Entity) {
+        this.gameManager.gameObjects.forEach((obj) => {
+            if(obj instanceof Monster && obj.active) {
+                obj.setAggroTarget(aggroTarget);
+            } 
+        })
     }
 }

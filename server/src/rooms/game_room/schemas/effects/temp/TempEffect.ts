@@ -19,7 +19,7 @@ export default abstract class TempEffect extends Effect {
     /**
      * Creates a temp effect.
      * @param isTimed Is this effect timed or not. Non timed effects needs to be reverted manually, by calling setAsCompleted().
-     * @param totalTime The time before this effect automatically reverts. Must be an positive integer (decimals will be rounded).   
+     * @param totalTime The time before this effect automatically reverts in seconds. Must be an positive integer (decimals will be rounded).   
      */
     constructor(isTimed:boolean=true, totalTime:number=5) {
         super();

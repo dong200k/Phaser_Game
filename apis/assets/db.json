@@ -9534,15 +9534,15 @@
       "description": "The Warrior is a tank. They possess a unique skill TAUNT which increase defenses and aggro enemies.",
       "displaySprite": "sprite",
       "spriteKey": "demo_hero",
-      "abilityId": "ability-deb2f8fa-7d65-482b-9801-462229bbf922",
+      "abilityId": "ability-e655e1cc-e95e-4020-b279-060057ff816b",
       "weaponUpgradeId": "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d",
       "stat": {
-        "maxHp": 0,
+        "maxHp": "1000",
         "maxMana": 0,
-        "hp": 0,
+        "hp": "1000",
         "mana": 0,
-        "armor": 0,
-        "magicResist": 0,
+        "armor": "30",
+        "magicResist": "30",
         "damagePercent": 0,
         "attack": "1000",
         "attackPercent": 0,
@@ -9671,7 +9671,7 @@
     {
       "id": "role-327154d5-3930-449a-83b9-bce096b0b12b",
       "name": "Berserker",
-      "description": "The Berserker is mad. They possess a unique skill ENDURE which increases defenses, movement speed and attack speed.",
+      "description": "The Berserker is mad. They possess a unique skill BERSERK which increases defenses, movement speed and attack speed.",
       "displaySprite": "sprite",
       "spriteKey": "demo_hero",
       "abilityId": "ability-3065d180-9f0d-481e-98c7-b8cbfe408a2a",
@@ -9790,6 +9790,14 @@
       "effectLogicId": "berserker-ability",
       "displaySprite": "sprite",
       "cooldown": "15000"
+    },
+    {
+      "id": "ability-e655e1cc-e95e-4020-b279-060057ff816b",
+      "name": "Warrior's Ability",
+      "description": "The warrior unleashes a shockwave that taunts and slows enemies",
+      "effectLogicId": "warrior-ability",
+      "displaySprite": "sprite",
+      "cooldown": "10000"
     }
   ]
 }

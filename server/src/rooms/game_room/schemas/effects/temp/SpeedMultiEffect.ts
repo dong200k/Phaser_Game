@@ -11,7 +11,7 @@ export default class SpeedMultiEffect extends TempEffect {
      * Creates a speed multiplier effect.
      * @param speedMultiplier The speed multipler that will be applied to the entity.
      * @param isTimed Is this effect timed or not.
-     * @param totalTime The time that will pass before this effect is unapplied.
+     * @param totalTime The time that will pass before this effect is unapplied (in secs).
      */
     constructor(speedMultiplier:number, isTimed?:boolean, totalTime?:number) {
         super(isTimed, totalTime);

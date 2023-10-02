@@ -25,6 +25,7 @@ import DoubleFlameAuraLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUp
 import FlameAuraChargeBoostLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUpgrades/FlameAuraChargeBoost";
 import FlameAuraStatBoostLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUpgrades/FlameAuraStatBoostLogic";
 import DoubleGetsugaLogic from "./EffectLogics/weapon/BerserkerBlade/ChargeAttack/DoubleGetsugaLogic";
+import WarriorAbilityLogic from "./EffectLogics/abilities/WarriorAbility/WarriorAbility";
 
 export default class EffectLogicManager{
 
@@ -74,6 +75,8 @@ export default class EffectLogicManager{
         this.addEffectLogic(FlameAuraChargeBoostLogic)
         this.addEffectLogic(FlameAuraStatBoostLogic)
         this.addEffectLogic(DoubleGetsugaLogic)
+
+        this.addEffectLogic(WarriorAbilityLogic);
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass){
