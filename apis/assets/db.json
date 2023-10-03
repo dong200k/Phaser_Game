@@ -5007,61 +5007,10 @@
             "children": [
               {
                 "id": "node-9ec6455a-b18d-47e0-92b2-83a6b6cccff7",
-                "children": [
-                  {
-                    "id": "node-632acf06-c9be-4c52-894e-891d78780bb0",
-                    "children": [],
-                    "data": {
-                      "name": "Berserk",
-                      "description": "Gain charge attack speed in special form at the cost of more health.",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": 0,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0,
-                        "chargeAttackSpeed": 0,
-                        "chargeAttackSpeedPercent": 0
-                      },
-                      "status": "none",
-                      "selectionTime": 0,
-                      "upgradeEffect": {
-                        "effectLogicId": "FlameAuraChargeBoost",
-                        "doesStack": 1,
-                        "cooldown": 1000,
-                        "collisionGroup": -1,
-                        "type": "one time"
-                      },
-                      "doesStack": false
-                    },
-                    "__rd3t": {
-                      "id": "6f4d305a-2f7d-4f05-9bca-2291080ae739",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
+                "children": [],
                 "data": {
-                  "name": "Unyielding",
-                  "description": "Double stat boost when under 10% health in special form.",
+                  "name": "Taunt++",
+                  "description": "Increase slow when using taunt to 9 seconds.",
                   "stat": {
                     "maxHp": 0,
                     "maxMana": 0,
@@ -5092,7 +5041,7 @@
                   "status": "none",
                   "selectionTime": 0,
                   "upgradeEffect": {
-                    "effectLogicId": "FlameAuraStatBoost",
+                    "effectLogicId": "WarriorShieldUpgradeAbilityLogic",
                     "doesStack": 1,
                     "cooldown": 1000,
                     "collisionGroup": -1,
@@ -5101,15 +5050,15 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "2a333a04-cafb-4dc0-a66e-7adf2364c557",
+                  "id": "0d389138-41ea-4f30-9ade-d289a3e45cbf",
                   "depth": 2,
                   "collapsed": false
                 }
               }
             ],
             "data": {
-              "name": "Fiery Flames",
-              "description": "Flame aura deals double damage at the cost of 10% current health reduction per second while in special.",
+              "name": "Taunt+",
+              "description": "Increase slow duration when using taunt to 6 seconds. ",
               "stat": {
                 "maxHp": 0,
                 "maxMana": 0,
@@ -5140,7 +5089,7 @@
               "status": "none",
               "selectionTime": 0,
               "upgradeEffect": {
-                "effectLogicId": "DoubleFlameAura",
+                "effectLogicId": "WarriorShieldUpgradeAbilityLogic",
                 "doesStack": 1,
                 "cooldown": 1000,
                 "collisionGroup": -1,
@@ -5149,7 +5098,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "26ae381a-2e78-4e71-90b9-09eda4ba4354",
+              "id": "fb7ff38a-b020-4d1b-acc6-06c38e6fc27c",
               "depth": 1,
               "collapsed": false
             }

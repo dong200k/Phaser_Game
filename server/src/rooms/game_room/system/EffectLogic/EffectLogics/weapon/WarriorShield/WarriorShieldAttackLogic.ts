@@ -12,10 +12,15 @@ export default class WarriorShieldAttackLogic extends EffectLogic {
         let playerState = entity;
         let playerX = playerState.x;
         let playerY = playerState.y;
-        let offsetX = 0;
+        let offsetX = 10;
         let offsetY = 0;
-        let width = 200;
-        let height = 50;
+        let width = 60;
+        let height = 45;
+
+        console.log("ARGS: ");
+        args.forEach((arg: any) => {
+            console.log(arg);
+        })
         
         let projectileConfig: IProjectileConfig = {
             sprite: "invisible",
@@ -25,7 +30,7 @@ export default class WarriorShieldAttackLogic extends EffectLogic {
             initialVelocity: {x: 0, y: 0},
             collisionCategory: "PLAYER_PROJECTILE",
             poolType: "Berserker Charge 1",
-            activeTime: 500,
+            activeTime: 300,
             attackMultiplier: 1,
             magicMultiplier: 0,
             originEntityId: playerState.getId(),
