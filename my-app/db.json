@@ -4746,7 +4746,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "e4dcb00f-3b33-4d14-8dab-1201f5a709d7",
+                  "id": "903c2683-da74-4a7b-ae14-80670266494e",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4794,7 +4794,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "970fc8ac-fcb3-4e41-8c47-f151c4eae588",
+              "id": "7bbb6d2a-0e29-4263-8937-d8aea8eb2366",
               "depth": 1,
               "collapsed": false
             }
@@ -4853,7 +4853,7 @@
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "43fb7aa5-7f04-4946-be1c-70c55d54e98b",
+                          "id": "37b1e3ca-1f97-4763-8430-cdbe5a31b5b6",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -4901,7 +4901,7 @@
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "fc3fe384-70de-4025-9dc9-cbac9e8d0fcf",
+                      "id": "3919f190-c17a-40ee-8a37-7aa7dc782a66",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4949,7 +4949,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "cc18917c-340e-4c92-92ee-99c8a42d0874",
+                  "id": "956f0edf-c57a-46d6-98d2-17710055c1b7",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4997,7 +4997,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "f3ccfc78-0d94-46eb-8acc-e0a0907a97c1",
+              "id": "04c6cfae-2701-4ef8-a7c1-e9dd7ad8d678",
               "depth": 1,
               "collapsed": false
             }
@@ -5053,7 +5053,7 @@
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "bfe5d2e0-b63b-4317-91c2-fb52f75625ee",
+                      "id": "6f4d305a-2f7d-4f05-9bca-2291080ae739",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -5101,7 +5101,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "a77ba719-f7a4-4346-9e5b-29c88092a60a",
+                  "id": "2a333a04-cafb-4dc0-a66e-7adf2364c557",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -5149,15 +5149,15 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "5e6abe8d-1b8a-4818-816b-7dd8a97b1fa0",
+              "id": "26ae381a-2e78-4e71-90b9-09eda4ba4354",
               "depth": 1,
               "collapsed": false
             }
           }
         ],
         "data": {
-          "name": "Berserker's Blade",
-          "description": "This great flame sword holds great power.",
+          "name": "Warrior's Shield",
+          "description": "This shield contains multiple magic gemstones with unique abilities.",
           "stat": {
             "maxHp": 0,
             "maxMana": 0,
@@ -5188,7 +5188,7 @@
           "status": "selected",
           "selectionTime": 0,
           "upgradeEffect": {
-            "effectLogicId": "",
+            "effectLogicId": "WarriorShieldAttackLogic",
             "doesStack": 1,
             "cooldown": 1000,
             "collisionGroup": -1,
@@ -5198,7 +5198,7 @@
           "doesStack": false
         },
         "__rd3t": {
-          "id": "19b69964-c4f8-48c1-a283-089c9337ce98",
+          "id": "581c02a6-8842-4b4a-adec-039b18402c38",
           "depth": 0,
           "collapsed": false
         }
@@ -10048,7 +10048,7 @@
       "displaySprite": "sprite",
       "spriteKey": "demo_hero",
       "abilityId": "ability-e655e1cc-e95e-4020-b279-060057ff816b",
-      "weaponUpgradeId": "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d",
+      "weaponUpgradeId": "upgrade-36b4d9b6-9070-4e0e-bb34-caabc766439a",
       "stat": {
         "maxHp": "1000",
         "maxMana": 0,
