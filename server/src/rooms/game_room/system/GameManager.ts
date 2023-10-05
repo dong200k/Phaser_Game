@@ -15,6 +15,7 @@ import EventEmitter from 'events';
 import CollisionManager from './Collisions/CollisionManager'
 import GameRoom, { GameRoomOptions } from '../GameRoom';
 import AbilityManager from './StateManagers/AbilityManager';
+import AuraManager from './StateManagers/AuraManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -28,7 +29,8 @@ export default class GameManager {
     private effectLogicManager!: EffectLogicManager;
     private artifactManager!: ArtifactManager;
     private collisionManager!: CollisionManager;
-    private abilityManager!: AbilityManager
+    private abilityManager!: AbilityManager;
+    private auraManager!: AuraManager;
 
     // Data
     public matterBodies: Map<string, Matter.Body> = new Map();
@@ -73,6 +75,7 @@ export default class GameManager {
         this.artifactManager = new ArtifactManager(this)
         this.collisionManager = new CollisionManager(this)
         this.abilityManager = new AbilityManager(this)
+        this.auraManager = new AuraManager(this);
 
         this.initUpdateEvents();
         this.initCollisionEvent();
@@ -150,6 +153,13 @@ export default class GameManager {
             // console.log(event.source)
             pairs.forEach((pair, idx) => {
                 this.collisionManager.resolveCollisions(pair.bodyA, pair.bodyB)
+            })
+        })
+        Matter.Events.on(this.engine, "collisionEnd", (event) => {
+            // console.log("collision ended");
+            let pairs = event.pairs;
+            pairs.forEach((pair) => {
+                this.collisionManager.resolveCollisionEnd(pair.bodyA, pair.bodyB);
             })
         })
     }

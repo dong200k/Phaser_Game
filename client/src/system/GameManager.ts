@@ -23,6 +23,7 @@ import SettingsManager from "./SettingsManager";
 import SoundManager from "./SoundManager";
 import FloatingText from "../gameobjs/FloatingText";
 import ClientManager from "./ClientManager";
+import Aura from "../gameobjs/Aura";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -277,6 +278,9 @@ export default class GameManager {
                 break;
             case 'InvisObstacle':
                 newGameObject = new InvisObstacle(this.scene, gameObj);
+                break;
+            case 'Aura':
+                newGameObject = new Aura(this.scene, gameObj);
                 break;
         }
         if(newGameObject) {

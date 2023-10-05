@@ -26,12 +26,14 @@ export default class MaskManager {
         this.setCollideable("PLAYER", "ITEM")
         this.setCollideable("PLAYER", "NPC")
         this.setCollideable("PLAYER", "PLAYER_BARRIER")
+        this.setCollideable("PLAYER", "AURA")
     }
 
     private initMonsterMasks(){
         this.setCollideable("MONSTER", "PLAYER_PROJECTILE")
         this.setCollideable("MONSTER", "DAMAGE_ALL_PROJECTILE")
         this.setCollideable("MONSTER", "MONSTER")
+        this.setCollideable("MONSTER", "AURA")
     }
 
     private initPetMasks(){

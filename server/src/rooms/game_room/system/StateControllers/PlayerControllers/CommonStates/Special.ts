@@ -75,7 +75,12 @@ export default class Special extends StateNode {
             });
         }
        
-
+        if(this.player.role === "Warrior"){
+            this.player.animation.playAnimation("2_atk", {
+                duration: this.attackDuration,
+                flip: flip,
+            })
+        }
         // console.log("Flip", flip);
     }
 

@@ -21,8 +21,8 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
     private player!: Player;
 
-    private attackState!: Attack;
-    private specialState!: Special;
+    protected attackState!: Attack;
+    protected specialState!: Special;
     protected chargeState!: ChargeState;
     public chargeAttackState!: ChargeAttack;
 

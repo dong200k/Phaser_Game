@@ -1,3 +1,4 @@
+import WeaponUpgradeTree from "../../../../../schemas/Trees/WeaponUpgradeTree";
 import Entity from "../../../../../schemas/gameobjs/Entity";
 import GameManager from "../../../../GameManager";
 import { GameEvents, IProjectileConfig } from "../../../../interfaces";
@@ -8,20 +9,20 @@ export default class WarriorShieldAttackLogic extends EffectLogic {
 
     effectLogicId: string = "WarriorShieldAttackLogic";
 
-    public useEffect(entity: Entity, gameManager: GameManager, ...args: any): void {
+    public useEffect(entity: Entity, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Matter.Body, {mouseX, mouseY}: {mouseX: number, mouseY: number}, chargeRatio: number): void {
         let playerState = entity;
         let playerX = playerState.x;
         let playerY = playerState.y;
-        let offsetX = 10;
-        let offsetY = 0;
-        let width = 60;
-        let height = 45;
+        let offsetX = 15;
+        let offsetY = -5;
+        let width = 70;
+        let height = 40;
 
-        console.log("ARGS: ");
-        args.forEach((arg: any) => {
-            console.log(arg);
-        })
         
+
+        // If the mouseX position is less than the player's position change offsetX to -offsetX.
+        if(mouseX < playerX) offsetX *= -1;
+
         let projectileConfig: IProjectileConfig = {
             sprite: "invisible",
             stat: playerState.stat,

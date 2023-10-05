@@ -194,8 +194,23 @@ interface Bounds {
     height: number;
 }
 
+// ------------ interfaces for Aura -------------- //
+export interface IAuraConfig {
+    radius?: number;
+    timed?: boolean;
+    timeoutTime?: number;
+    color?: number;
+    x?: number;
+    y?: number;
+    name?: string;
+}
+
 // ------------ interfaces for Collision Manager -------------- //
 export type ICollisionRule = {
+    typeA: CategoryType, typeB: CategoryType, resolve: (gameObjectA: any, gameObjectB: any, bodyA: Matter.Body, bodyB: Matter.Body)=> void
+}
+
+export type ICollisionEndRule = {
     typeA: CategoryType, typeB: CategoryType, resolve: (gameObjectA: any, gameObjectB: any, bodyA: Matter.Body, bodyB: Matter.Body)=> void
 }
 

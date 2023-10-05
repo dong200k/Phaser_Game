@@ -9,6 +9,7 @@ import { ICollisionRule } from "../interfaces";
 import Tile from "../../schemas/gameobjs/Tile";
 import Player from "../../schemas/gameobjs/Player";
 import MeleeProjectile from "../../schemas/projectiles/specialprojectiles/MeleeProjectile";
+import Aura from "../../schemas/gameobjs/aura/Aura";
 
 export default class CollisionManager{
     private gameManager: GameManager
@@ -41,8 +42,19 @@ export default class CollisionManager{
         {typeA: "PET", typeB: "CHEST", resolve: ()=>{}},
         {typeA: "PET", typeB: "ITEM", resolve: ()=>{}},
 
+        // Aura Collisions
+        {typeA: "PLAYER", typeB: "AURA", resolve: this.resolveAuraCollision},
+        {typeA: "MONSTER", typeB: "AURA", resolve: this.resolveAuraCollision},
+
         // **TODO** Add more 
     ]
+
+    /** Collision Rules for collisionEnd events */
+    private collisionEndRules: ICollisionRule[] = [
+        // Aura Collisions
+        {typeA: "PLAYER", typeB: "AURA", resolve: this.resolveAuraCollisionEnd},
+        {typeA: "MONSTER", typeB: "AURA", resolve: this.resolveAuraCollisionEnd},
+    ];
 
     constructor(gameManager: GameManager){
         this.gameManager = gameManager
@@ -78,6 +90,46 @@ export default class CollisionManager{
 
         // Find collision match and resolve the collision
         this.collisionRules.forEach(({typeA, typeB, resolve})=>{
+            // Order is based on what appears first/category number of the matter bodies's collision filter.
+            // Check Category.ts to see order
+            if((typeA === categoryA && typeB === categoryB)){
+                //console.log(`${typeA}, ${typeB}`)
+                resolve(gameObjectA, gameObjectB, bodyA, bodyB)
+                return
+            }
+        })
+    }
+
+    public resolveCollisionEnd(bodyA: Matter.Body, bodyB: Matter.Body) {
+        // Get Category number
+        let categoryNumberA = bodyA.collisionFilter.category
+        let categoryNumberB = bodyB.collisionFilter.category
+
+        if(categoryNumberA === undefined || categoryNumberB === undefined) return
+
+        // Sort body by the category, bodyA will be one with smaller category
+        if(categoryNumberA > categoryNumberB){
+            // Swap matter bodies
+            let temp = bodyA
+            bodyA = bodyB
+            bodyB = temp
+
+            // Swap category numbers
+            let temp2 = categoryNumberA
+            categoryNumberA = categoryNumberB
+            categoryNumberB = temp2
+        }
+
+        // Get Category type/string
+        let categoryA = getCategoryType(categoryNumberA)
+        let categoryB = getCategoryType(categoryNumberB)
+
+        // Get each matterBody's corresponding gameObjects
+        let gameObjectA = this.gameManager.gameObjects.get(bodyA.id)
+        let gameObjectB = this.gameManager.gameObjects.get(bodyB.id)
+
+        // Find collision match and resolve the collision
+        this.collisionEndRules.forEach(({typeA, typeB, resolve})=>{
             // Order is based on what appears first/category number of the matter bodies's collision filter.
             // Check Category.ts to see order
             if((typeA === categoryA && typeB === categoryB)){
@@ -138,5 +190,13 @@ export default class CollisionManager{
     }
 
     public resolveObstacleCollision(){
+    }
+
+    public resolveAuraCollision(entity: Entity, aura: Aura, bodyA: Matter.Body, bodyB: Matter.Body) {
+        console.log(`Aura Collision Start: Entity: ${entity.name}, Aura: ${aura.poolType}`);
+    }
+
+    public resolveAuraCollisionEnd(entity: Entity, aura: Aura, bodyA: Matter.Body, bodyB: Matter.Body) {
+        console.log(`Aura Collision End: Entity: ${entity.name}, Aura: ${aura.poolType}`);
     }
 }

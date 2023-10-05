@@ -1,4 +1,5 @@
 import GameManager from "../../GameManager";
+import Attack from "../PlayerControllers/CommonStates/Attack";
 import PlayerController, { PlayerControllerData } from "../PlayerControllers/PlayerController";
 import DemoState from "./states/DemoState";
 
@@ -11,8 +12,11 @@ export default class WarriorController extends PlayerController {
         this.callStartAttackAnyways = true
         this.gameManager = this.getPlayer().gameManager;
 
-        let demoState = new DemoState("DemoState", this);
-        this.addState(demoState);
+        this.attackState.setConfig({
+            canMove: false,
+            triggerPercent: 0.3,
+            attackDuration: 1
+        })
 
         this.changeState("Idle");
     }

@@ -4705,8 +4705,8 @@
                 "id": "node-e447a54d-e686-4f79-9fa2-b25d44b0352b",
                 "children": [],
                 "data": {
-                  "name": "Combo 3",
-                  "description": "Unlock 3 hit combo.",
+                  "name": "Protect+",
+                  "description": "Players near you will gain 20 armor.",
                   "stat": {
                     "maxHp": 0,
                     "maxMana": 0,
@@ -4737,7 +4737,7 @@
                   "status": "none",
                   "selectionTime": 0,
                   "upgradeEffect": {
-                    "effectLogicId": "AddComboLogic",
+                    "effectLogicId": "WarriorProtectLogic",
                     "doesStack": 1,
                     "cooldown": 1000,
                     "collisionGroup": -1,
@@ -4746,15 +4746,15 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "903c2683-da74-4a7b-ae14-80670266494e",
+                  "id": "90a9126e-86ed-4299-9129-4b1e7f45f951",
                   "depth": 2,
                   "collapsed": false
                 }
               }
             ],
             "data": {
-              "name": "Combo 2",
-              "description": "Unlock 2 hit combo.",
+              "name": "Protect",
+              "description": "Players near you will gain 10 armor.",
               "stat": {
                 "maxHp": 0,
                 "maxMana": 0,
@@ -4785,7 +4785,7 @@
               "status": "none",
               "selectionTime": 0,
               "upgradeEffect": {
-                "effectLogicId": "AddComboLogic",
+                "effectLogicId": "WarriorProtectLogic",
                 "doesStack": 1,
                 "cooldown": 1000,
                 "collisionGroup": -1,
@@ -4794,7 +4794,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "7bbb6d2a-0e29-4263-8937-d8aea8eb2366",
+              "id": "faf9998c-1f59-437f-a5cf-51407da100ce",
               "depth": 1,
               "collapsed": false
             }
@@ -4804,112 +4804,10 @@
             "children": [
               {
                 "id": "node-5eef3c29-3464-4374-a732-78713b750ee1",
-                "children": [
-                  {
-                    "id": "node-170bc7ab-fbee-4bf3-9da0-a952cb23d1a0",
-                    "children": [
-                      {
-                        "id": "node-4971c405-1e0d-437f-ae5a-e04223fef54f",
-                        "children": [],
-                        "data": {
-                          "name": "Double Getsuga",
-                          "description": "Final charge attack slashes out 2 Getsugas",
-                          "stat": {
-                            "maxHp": 0,
-                            "maxMana": 0,
-                            "hp": 0,
-                            "mana": 0,
-                            "armor": 0,
-                            "magicResist": 0,
-                            "damagePercent": 0,
-                            "attack": 0,
-                            "attackPercent": 0,
-                            "armorPen": 0,
-                            "magicAttack": 0,
-                            "magicAttackPercent": 0,
-                            "magicPen": 0,
-                            "critRate": 0,
-                            "critDamage": 0,
-                            "attackRange": 0,
-                            "attackRangePercent": 0,
-                            "attackSpeed": 0,
-                            "attackSpeedPercent": 0,
-                            "speed": 0,
-                            "lifeSteal": 0,
-                            "lifeStealPercent": 0,
-                            "level": 0,
-                            "chargeAttackSpeed": 0,
-                            "chargeAttackSpeedPercent": 0
-                          },
-                          "status": "none",
-                          "selectionTime": 0,
-                          "upgradeEffect": {
-                            "effectLogicId": "DoubleGetsugaLogic",
-                            "doesStack": 1,
-                            "cooldown": 1000,
-                            "collisionGroup": -1,
-                            "type": "one time"
-                          },
-                          "doesStack": false
-                        },
-                        "__rd3t": {
-                          "id": "37b1e3ca-1f97-4763-8430-cdbe5a31b5b6",
-                          "depth": 4,
-                          "collapsed": false
-                        }
-                      }
-                    ],
-                    "data": {
-                      "name": "Unlock level 3 charge attack",
-                      "description": "Unlock level 3 charge attack that slashes out a flame Getsuga Tenshou.",
-                      "stat": {
-                        "maxHp": 0,
-                        "maxMana": 0,
-                        "hp": 0,
-                        "mana": 0,
-                        "armor": 0,
-                        "magicResist": 0,
-                        "damagePercent": 0,
-                        "attack": 0,
-                        "attackPercent": 0,
-                        "armorPen": 0,
-                        "magicAttack": 0,
-                        "magicAttackPercent": 0,
-                        "magicPen": 0,
-                        "critRate": 0,
-                        "critDamage": 0,
-                        "attackRange": 0,
-                        "attackRangePercent": 0,
-                        "attackSpeed": 0,
-                        "attackSpeedPercent": 0,
-                        "speed": 0,
-                        "lifeSteal": 0,
-                        "lifeStealPercent": 0,
-                        "level": 0,
-                        "chargeAttackSpeed": 0,
-                        "chargeAttackSpeedPercent": 0
-                      },
-                      "status": "none",
-                      "selectionTime": 0,
-                      "upgradeEffect": {
-                        "effectLogicId": "AddChargeAttackLogic",
-                        "doesStack": 1,
-                        "cooldown": 1000,
-                        "collisionGroup": -1,
-                        "type": "one time"
-                      },
-                      "doesStack": false
-                    },
-                    "__rd3t": {
-                      "id": "3919f190-c17a-40ee-8a37-7aa7dc782a66",
-                      "depth": 3,
-                      "collapsed": false
-                    }
-                  }
-                ],
+                "children": [],
                 "data": {
-                  "name": "Unlock level 2 charge attack",
-                  "description": "Unlock level 2 charge attack",
+                  "name": "Knockback+",
+                  "description": "Increase the knockback on ability.",
                   "stat": {
                     "maxHp": 0,
                     "maxMana": 0,
@@ -4940,7 +4838,7 @@
                   "status": "none",
                   "selectionTime": 0,
                   "upgradeEffect": {
-                    "effectLogicId": "AddChargeAttackLogic",
+                    "effectLogicId": "WarriorKnockbackAbilityLogic",
                     "doesStack": 1,
                     "cooldown": 1000,
                     "collisionGroup": -1,
@@ -4949,15 +4847,15 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "956f0edf-c57a-46d6-98d2-17710055c1b7",
+                  "id": "29342a84-3f5a-4f78-89ce-eb7ec2f58059",
                   "depth": 2,
                   "collapsed": false
                 }
               }
             ],
             "data": {
-              "name": "Charge Attack",
-              "description": "Holding mouse down for a duration then letting go releases a forwards knock back slash.",
+              "name": "Knockback",
+              "description": "Abilities and attacks now knocks back enemies.",
               "stat": {
                 "maxHp": 0,
                 "maxMana": 0,
@@ -4985,19 +4883,19 @@
                 "chargeAttackSpeed": 0,
                 "chargeAttackSpeedPercent": 0
               },
-              "status": "selected",
+              "status": "none",
               "selectionTime": 0,
               "upgradeEffect": {
-                "effectLogicId": "BerserkerChargeAttackLogic",
+                "effectLogicId": "WarriorKnockbackLogic",
                 "doesStack": 1,
                 "cooldown": 1000,
                 "collisionGroup": -1,
-                "type": "player charge attack"
+                "type": "one time"
               },
               "doesStack": false
             },
             "__rd3t": {
-              "id": "04c6cfae-2701-4ef8-a7c1-e9dd7ad8d678",
+              "id": "9e6dbfd1-e767-4b31-a98e-9c4f36006ba1",
               "depth": 1,
               "collapsed": false
             }
