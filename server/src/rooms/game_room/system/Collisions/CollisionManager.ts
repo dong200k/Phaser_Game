@@ -135,7 +135,6 @@ export default class CollisionManager{
             if((typeA === categoryA && typeB === categoryB)){
                 //console.log(`${typeA}, ${typeB}`)
                 resolve(gameObjectA, gameObjectB, bodyA, bodyB)
-                return
             }
         })
     }
@@ -193,10 +192,10 @@ export default class CollisionManager{
     }
 
     public resolveAuraCollision(entity: Entity, aura: Aura, bodyA: Matter.Body, bodyB: Matter.Body) {
-        console.log(`Aura Collision Start: Entity: ${entity.name}, Aura: ${aura.poolType}`);
+        aura.auraController.onEnterAura(entity);
     }
 
     public resolveAuraCollisionEnd(entity: Entity, aura: Aura, bodyA: Matter.Body, bodyB: Matter.Body) {
-        console.log(`Aura Collision End: Entity: ${entity.name}, Aura: ${aura.poolType}`);
+        aura.auraController.onExitAura(entity);
     }
 }

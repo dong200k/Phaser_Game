@@ -81,7 +81,16 @@ export default class GameManager {
         this.syncGameObjectVisibility();
         this.syncGameObjectActive();
         this.updateFloatingTexts();
-        this.renderFollowPlayerObjects()
+        this.renderFollowPlayerObjects();
+        this.updateAuraPosition();
+    }
+
+    public updateAuraPosition() {
+        this.gameObjects.forEach(gameObject => {
+            if(gameObject instanceof Aura) {
+                gameObject.updateGraphicsPosition();
+            }
+        })
     }
 
     public renderFollowPlayerObjects(){
@@ -280,7 +289,7 @@ export default class GameManager {
                 newGameObject = new InvisObstacle(this.scene, gameObj);
                 break;
             case 'Aura':
-                newGameObject = new Aura(this.scene, gameObj);
+                newGameObject = this.addAura(gameObj, key);
                 break;
         }
         if(newGameObject) {
@@ -416,6 +425,13 @@ export default class GameManager {
         this.scene.add.existing(newMonster);
         this.addListenersToGameObject(newMonster, monster);
         return newMonster;
+    }
+
+    private addAura(aura: any, key: string): Aura {
+        let newAura = new Aura(this.scene, aura);
+        this.scene.add.existing(newAura);
+        this.addListenersToGameObject(newAura, aura);
+        return newAura;
     }
 
     /** Adds a listener to an entity to respond to server updates on that entity. */

@@ -202,7 +202,8 @@ export interface IAuraConfig {
     color?: number;
     x?: number;
     y?: number;
-    name?: string;
+    name: string;
+    controller?: string;
 }
 
 // ------------ interfaces for Collision Manager -------------- //

@@ -7,15 +7,15 @@ export default class Aura extends GameObject {
     graphics: Phaser.GameObjects.Graphics;
 
     constructor(scene:Phaser.Scene, auraState:AuraState) {
-        super(scene, auraState.x, auraState.y, "", auraState);
+        super(scene, auraState.x, auraState.y, "invisible", auraState);
         this.auraState = auraState;
         this.graphics = this.scene.add.graphics();
 
-        this.graphics.fillStyle(auraState.color);
+        this.graphics.fillStyle(auraState.color, 0.12);
         this.graphics.fillCircle(0, 0, auraState.radius);
     }
 
-    update() {
+    updateGraphicsPosition() {
         this.graphics.setX(this.x);
         this.graphics.setY(this.y);
     }

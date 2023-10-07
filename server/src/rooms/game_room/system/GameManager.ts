@@ -171,7 +171,8 @@ export default class GameManager {
         this.playerManager.update(deltaTSeconds);
         this.effectManager.update(deltaTSeconds);
         this.dungeonManager.update(deltaTSeconds);
-        this.projectileManager.update(deltaT)
+        this.projectileManager.update(deltaT);
+        this.auraManager.update(deltaTSeconds);
 
         // if(this.state.serverTickCount % 30 === 0)
         //     console.log(`Heap usage: ${process.memoryUsage().heapUsed / 1000000} Mb`);
