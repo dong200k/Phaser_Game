@@ -4744,12 +4744,12 @@
                         "doesStack": 1,
                         "cooldown": 1000,
                         "collisionGroup": -1,
-                        "type": "none"
+                        "type": "one time"
                       },
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "d40d32fb-4aa4-4af5-9a95-5cc3c94fa06e",
+                      "id": "94fd96dc-bbfa-4b2b-a8d5-0b829f39e969",
                       "depth": 3,
                       "collapsed": false
                     }

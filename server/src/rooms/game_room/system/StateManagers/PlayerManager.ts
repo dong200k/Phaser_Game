@@ -54,8 +54,8 @@ export default class PlayerManager {
                     allPlayersDead = false;
                     gameObject.currentAbility?.update(deltaT * 1000);
                     gameObject.playerController.update(deltaT);
-                    if(this.gameManager.state.serverTickCount % 20 === 0)
-                        console.log("Player Armor: ", gameObject.stat.armor);
+                    // if(this.gameManager.state.serverTickCount % 20 === 0)
+                    //     console.log("Player Armor: ", gameObject.stat.armor);
                 }
             }
         })
