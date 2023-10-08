@@ -19,4 +19,10 @@ export default class Aura extends GameObject {
         this.graphics.setX(this.x);
         this.graphics.setY(this.y);
     }
+
+    setVisible(value: boolean): this {
+        super.setVisible(value);
+        this.graphics.setVisible(value);
+        return this;
+    }
 }

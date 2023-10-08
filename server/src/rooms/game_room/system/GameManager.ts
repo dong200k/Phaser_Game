@@ -223,6 +223,10 @@ export default class GameManager {
         return this.abilityManager
     }
 
+    public getAuraManager() {
+        return this.auraManager;
+    }
+
     /** Gets the EventEmitter for this GameManager. Used to send events throughout this game. */
     public getEventEmitter() {
         return this.eventEmitter;

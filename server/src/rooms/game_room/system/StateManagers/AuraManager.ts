@@ -64,6 +64,7 @@ export default class AuraManager {
                 aura = builder(this.gameManager);
             else 
                 aura = new Aura(this.gameManager, config);
+            aura.setConfig(config);
             let body = aura.getBody() as Matter.Body;
             this.gameManager.addGameObject(aura.id, aura, body);
         }

@@ -4703,10 +4703,61 @@
             "children": [
               {
                 "id": "node-e447a54d-e686-4f79-9fa2-b25d44b0352b",
-                "children": [],
+                "children": [
+                  {
+                    "id": "node-0b4dbd41-da58-4897-ad70-a04275bb21f8",
+                    "children": [],
+                    "data": {
+                      "name": "Protect++",
+                      "description": "You and players near you will gain 30 armor.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0,
+                        "chargeAttackSpeed": 0,
+                        "chargeAttackSpeedPercent": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "WarriorProtectLogic",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "none"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "d40d32fb-4aa4-4af5-9a95-5cc3c94fa06e",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
                 "data": {
                   "name": "Protect+",
-                  "description": "Players near you will gain 20 armor.",
+                  "description": "You and players near you will gain 20 armor.",
                   "stat": {
                     "maxHp": 0,
                     "maxMana": 0,
@@ -4746,7 +4797,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "90a9126e-86ed-4299-9129-4b1e7f45f951",
+                  "id": "28b67910-3cd4-4d19-8c19-989033d11bce",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4754,7 +4805,7 @@
             ],
             "data": {
               "name": "Protect",
-              "description": "Players near you will gain 10 armor.",
+              "description": "You and players near you will gain 10 armor.",
               "stat": {
                 "maxHp": 0,
                 "maxMana": 0,
@@ -4794,7 +4845,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "faf9998c-1f59-437f-a5cf-51407da100ce",
+              "id": "fe8e70fa-1bbc-4ba9-b30f-201cac1638a3",
               "depth": 1,
               "collapsed": false
             }

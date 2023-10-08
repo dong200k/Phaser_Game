@@ -24,7 +24,9 @@ export default class Aura extends GameObject {
         this.type = "Aura";
         this.active = true;
         this.visible = true;
+        this.setController("Aura");
         this.setConfig(config ?? {name: "Aura"});
+        this.createBody();
     }
 
     /**
@@ -32,16 +34,17 @@ export default class Aura extends GameObject {
      * @param config IAuraConfig.
      */
     public setConfig(config: IAuraConfig) {
-        this.setController(config.controller ?? "Aura");
-        this.createBody(config);
-        this.color = config.color ?? this.DEFAULT_COLOR;
-        this.radius = config.radius ?? 100;
-        this.name = config.name ?? "";
+        this.color = config.color ?? this.color;
+        this.radius = config.radius ?? this.radius;
+        this.name = config.name ?? this.name;
+        this.x = config.x ?? this.x;
+        this.y = config.y ?? this.y;
+        if(config.controller) this.setController(config.controller);
     }
 
     /** Helper method to create the matter body for this aura. */
-    private createBody(config: IAuraConfig) {
-        let body = Matter.Bodies.circle(this.x, this.y, config.radius ?? 100, {
+    private createBody() {
+        let body = Matter.Bodies.circle(this.x, this.y, this.radius, {
             isStatic: false,
             isSensor: true,
             inertia: Infinity,
@@ -75,4 +78,35 @@ export default class Aura extends GameObject {
         }
     }
 
+    /** Disable collision on the Matter body associated with this object. */
+    public disableCollisions() {
+        this.body.collisionFilter = {
+            ...this.body.collisionFilter,
+            group: -1,
+            mask: 0,
+        }
+    }
+
+    /** Enable collision on the Matter body associated with this object. */
+    public enableCollisions() {
+        this.body.collisionFilter = {
+            ...this.body.collisionFilter,
+            group: 0,
+            category: Categories["AURA"],
+            mask: MaskManager.getManager().getMask("AURA") 
+        };
+    }
+
+    /** Makes the aura active and enable collistions, or deactive and 
+     * disable collisions.
+     * @param value A boolean.
+     */
+    public setActive(value: boolean): void {
+        super.setActive(value);
+        if(!value) {
+            this.disableCollisions();
+        } else {
+            this.enableCollisions();
+        }
+    }
 }

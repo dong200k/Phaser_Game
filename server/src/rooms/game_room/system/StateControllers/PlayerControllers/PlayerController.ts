@@ -19,7 +19,7 @@ export interface PlayerControllerData {
 /** The monster controller contains ai that allows a monster to follow a player, and attack a player. */
 export default class PlayerController extends StateMachine<PlayerControllerData> {
 
-    private player!: Player;
+    protected player!: Player;
 
     protected attackState!: Attack;
     protected specialState!: Special;
