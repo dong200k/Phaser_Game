@@ -153,12 +153,6 @@ export default class CollisionManager{
         let trueAttackDamage = getTrueAttackDamage(projectile.stat, entity.stat, projectile.attackMultiplier)
         let trueMagicDamage = getTrueMagicDamage(projectile.stat, entity.stat, projectile.magicMultiplier)
 
-        if(!(entity instanceof Player)) {
-            trueAttackDamage = 200;
-        } else {
-            trueAttackDamage = 1;
-        }
-
         // if(entity instanceof Player) {
         //     console.log("Player hit, ", trueAttackDamage + trueMagicDamage);
         //     console.log(entity.stat.hp);
@@ -192,17 +186,22 @@ export default class CollisionManager{
         
         // Apply knockback
         if(projectile.knockback && projectile instanceof MeleeProjectile) {
-            let direction = projectile.knockback.direction;
-            if(direction) {
-                direction = MathUtil.normalize(direction);
+            if(projectile instanceof MeleeProjectile) {
+                let direction = projectile.knockback.direction;
+                if(direction) {
+                    direction = MathUtil.normalize(direction);
+                } else {
+                    direction = {x: 1, y: 0}
+                }
+                let entityPosition = entity.getBody().position;
+                Matter.Body.setPosition(entity.getBody(), {
+                    x: entityPosition.x + projectile.knockback.distance * direction.x,
+                    y: entityPosition.y + projectile.knockback.distance * direction.y,
+                })
             } else {
-                direction = {x: 1, y: 0}
+                // TODO: Handle knockback for all other projectiles.
             }
-            let entityPosition = entity.getBody().position;
-            Matter.Body.setPosition(entity.getBody(), {
-                x: entityPosition.x + projectile.knockback.distance * direction.x,
-                y: entityPosition.y + projectile.knockback.distance * direction.y,
-            })
+            
         }
     }
 

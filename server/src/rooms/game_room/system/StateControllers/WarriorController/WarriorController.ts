@@ -17,8 +17,8 @@ export default class WarriorController extends PlayerController {
 
     // Knockback upgrades.
     private knockbackLevel = -1;
-    private knockbackAttack = [5, 10, 10];
-    private knockbackAbility = [0, 20, 50];
+    private knockbackAttack = [10, 20, 20];
+    private knockbackAbility = [0, 20, 60];
 
     // Slow upgrades.
     private slowTimes = [3, 6, 9]; // An array of the slow times that can be upgraded. Starts at index 0.

@@ -95,8 +95,27 @@ export default class DungeonManager {
                 this.gameManager.endGame();
             }
         }
+
+        // Check for out of bounds monsters every 30 tick
+        if(this.gameManager.state.serverTickCount % 30 === 0) {
+            this.handleOutOfBoundsMonsters();
+        }
     }
     
+    /** Kill all outof bounds monsters. */
+    private handleOutOfBoundsMonsters() {
+        let playerBounds = this.dungeon?.getPlayerBounds();
+        if(playerBounds) {
+            let width = playerBounds.maxX - playerBounds.minX;
+            let height = playerBounds.maxY - playerBounds.minY;
+            let bounds = Matter.Bodies.rectangle(playerBounds.minX + width / 2, playerBounds.minY + height / 2, width, height, {isStatic: true, isSensor: true});
+            this.gameManager.gameObjects.forEach((obj) => {
+                if(obj instanceof Monster && Matter.Collision.collides(bounds, obj.getBody(), Matter.Pairs.create({})) === null) {
+                    obj.stat.hp = 0;
+                }
+            })
+        }
+    }
 
     private cleanUpMonsters() {
 

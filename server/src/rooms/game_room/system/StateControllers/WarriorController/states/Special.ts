@@ -20,6 +20,8 @@ export default class Special extends SpecialState {
             // Trigger skills.
             EffectManager.useTriggerEffectsOn(this.player, "player skill", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY});
             this.useSpecial();
+            // Play sound.
+            this.player.sound.playSoundEffect("warrior_slam_sfx");
         }
 
         // End attack once we pass the attackDuration.
