@@ -25,8 +25,6 @@ export default class Special extends StateNode {
 
     protected playerController!: PlayerController;
     protected player!: Player;
-    protected playerController!: PlayerController;
-    protected player!: Player;
     
     /** Total attack time. Including windup(for animations) time and trigger time. */
     protected attackDuration: number = 1;
