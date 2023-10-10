@@ -4739,6 +4739,468 @@
           }
         }
       }
+    },
+    {
+      "id": "upgrade-36b4d9b6-9070-4e0e-bb34-caabc766439a",
+      "name": "Warrior's Shield",
+      "type": "weapon",
+      "root": {
+        "id": "node-88685b18-cc5c-4d64-a295-ce49f2598104",
+        "children": [
+          {
+            "id": "node-c1c90ba2-8e61-4cad-bf28-c182a6ee023c",
+            "children": [
+              {
+                "id": "node-e447a54d-e686-4f79-9fa2-b25d44b0352b",
+                "children": [
+                  {
+                    "id": "node-0b4dbd41-da58-4897-ad70-a04275bb21f8",
+                    "children": [],
+                    "data": {
+                      "name": "Protect++",
+                      "description": "You and players near you will gain 30 armor.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0,
+                        "chargeAttackSpeed": 0,
+                        "chargeAttackSpeedPercent": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "WarriorProtectLogic",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "one time"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "94fd96dc-bbfa-4b2b-a8d5-0b829f39e969",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Protect+",
+                  "description": "You and players near you will gain 20 armor.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "WarriorProtectLogic",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "28b67910-3cd4-4d19-8c19-989033d11bce",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Protect",
+              "description": "You and players near you will gain 10 armor.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "WarriorProtectLogic",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "fe8e70fa-1bbc-4ba9-b30f-201cac1638a3",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-282d029e-ec96-4bcf-8ec2-b178310ef2a7",
+            "children": [
+              {
+                "id": "node-5eef3c29-3464-4374-a732-78713b750ee1",
+                "children": [
+                  {
+                    "id": "node-18d0f82c-f800-4ce8-a94a-6e64a32c6313",
+                    "children": [],
+                    "data": {
+                      "name": "Knockback++",
+                      "description": "Massive increase in knockback from ability.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0,
+                        "chargeAttackSpeed": 0,
+                        "chargeAttackSpeedPercent": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "WarriorKnockbackLogic",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "one time"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "5053170d-fdcb-4d9f-a791-a096cd45de72",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Knockback+",
+                  "description": "Your ability now knockback enemies.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "WarriorKnockbackLogic",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "abd2f13f-0a15-4864-8938-b217eec45a72",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Knockback",
+              "description": "Your attacks now knockback enemies.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "WarriorKnockbackLogic",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "1466d777-cfc5-4304-9272-5962d34a32e3",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-fc9487f8-ac99-4ba5-8585-4f56069e36d9",
+            "children": [
+              {
+                "id": "node-9ec6455a-b18d-47e0-92b2-83a6b6cccff7",
+                "children": [],
+                "data": {
+                  "name": "Taunt++",
+                  "description": "Increase slow when using taunt to 9 seconds.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "WarriorShieldUpgradeAbilityLogic",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "0d389138-41ea-4f30-9ade-d289a3e45cbf",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Taunt+",
+              "description": "Increase slow duration when using taunt to 6 seconds. ",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "WarriorShieldUpgradeAbilityLogic",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "fb7ff38a-b020-4d1b-acc6-06c38e6fc27c",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "name": "Warrior's Shield",
+          "description": "This shield contains multiple magic gemstones with unique abilities.",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0,
+            "chargeAttackSpeed": 0,
+            "chargeAttackSpeedPercent": 0
+          },
+          "status": "selected",
+          "selectionTime": 0,
+          "upgradeEffect": {
+            "effectLogicId": "WarriorShieldAttackLogic",
+            "doesStack": 1,
+            "cooldown": 1000,
+            "collisionGroup": -1,
+            "type": "player attack"
+          },
+          "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
+          "doesStack": false
+        },
+        "__rd3t": {
+          "id": "581c02a6-8842-4b4a-adec-039b18402c38",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
     }
   ],
   "skills": [
@@ -9583,15 +10045,15 @@
       "description": "The Warrior is a tank. They possess a unique skill TAUNT which increase defenses and aggro enemies.",
       "displaySprite": "sprite",
       "spriteKey": "demo_hero",
-      "abilityId": "ability-deb2f8fa-7d65-482b-9801-462229bbf922",
-      "weaponUpgradeId": "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d",
+      "abilityId": "ability-e655e1cc-e95e-4020-b279-060057ff816b",
+      "weaponUpgradeId": "upgrade-36b4d9b6-9070-4e0e-bb34-caabc766439a",
       "stat": {
-        "maxHp": 0,
+        "maxHp": "1000",
         "maxMana": 0,
-        "hp": 0,
+        "hp": "1000",
         "mana": 0,
-        "armor": 0,
-        "magicResist": 0,
+        "armor": "30",
+        "magicResist": "30",
         "damagePercent": 0,
         "attack": "1000",
         "attackPercent": 0,
@@ -9821,43 +10283,6 @@
         "level": 0
       },
       "coinCost": 1000
-    },
-    {
-      "id": "role-b373d4a8-6b01-4356-a1d5-5827d8f98161",
-      "name": "role-name",
-      "description": "role-description",
-      "displaySprite": "sprite",
-      "spriteKey": "demo_hero",
-      "abilityId": "",
-      "weaponUpgradeId": "",
-      "stat": {
-        "maxHp": 0,
-        "maxMana": 0,
-        "hp": 0,
-        "mana": 0,
-        "armor": 0,
-        "magicResist": 0,
-        "damagePercent": 0,
-        "attack": 0,
-        "attackPercent": 0,
-        "armorPen": 0,
-        "magicAttack": 0,
-        "magicAttackPercent": 0,
-        "magicPen": 0,
-        "critRate": 0,
-        "critDamage": 0,
-        "attackRange": 0,
-        "attackRangePercent": 0,
-        "attackSpeed": 0,
-        "attackSpeedPercent": 0,
-        "speed": 0,
-        "lifeSteal": 0,
-        "lifeStealPercent": 0,
-        "level": 0,
-        "chargeAttackSpeed": 0,
-        "chargeAttackSpeedPercent": 0
-      },
-      "coinCost": 1000
     }
   ],
   "abilities": [
@@ -9878,12 +10303,12 @@
       "cooldown": "15000"
     },
     {
-      "id": "ability-c87d86c4-655b-4a57-840e-0b143d7562ae",
-      "name": "ability-name",
-      "description": "ability-description",
-      "effectLogicId": "",
+      "id": "ability-e655e1cc-e95e-4020-b279-060057ff816b",
+      "name": "Warrior's Ability",
+      "description": "The warrior unleashes a shockwave that taunts and slows enemies",
+      "effectLogicId": "warrior-ability",
       "displaySprite": "sprite",
-      "cooldown": 1000
+      "cooldown": "10000"
     }
   ]
 }

@@ -174,6 +174,16 @@ export type IProjectileConfig = {
     visible?: boolean,
     /** Set this value to to true if projectile should not despawn on colliding with an obstacle. By default it is set to false. */
     dontDespawnOnObstacleCollision?: boolean,
+    /** Knockback information for this projectile. */
+    knockback?: {
+        /** The distance of the knockback. */
+        distance: number,
+        /** The direction of the knockback (optional). */
+        direction?: {
+            x: number,
+            y: number,
+        }
+    }
     /** Called when the projectile is set to inactive by the projectile.setInactive function */
     setInactiveCallback?: (projectile: Projectile)=>void,
     onCollideCallback?: (projectile: Projectile)=>void,
@@ -202,8 +212,24 @@ interface Bounds {
     height: number;
 }
 
+// ------------ interfaces for Aura -------------- //
+export interface IAuraConfig {
+    radius?: number;
+    timed?: boolean;
+    timeoutTime?: number;
+    color?: number;
+    x?: number;
+    y?: number;
+    name: string;
+    controller?: string;
+}
+
 // ------------ interfaces for Collision Manager -------------- //
 export type ICollisionRule = {
+    typeA: CategoryType, typeB: CategoryType, resolve: (gameObjectA: any, gameObjectB: any, bodyA: Matter.Body, bodyB: Matter.Body)=> void
+}
+
+export type ICollisionEndRule = {
     typeA: CategoryType, typeB: CategoryType, resolve: (gameObjectA: any, gameObjectB: any, bodyA: Matter.Body, bodyB: Matter.Body)=> void
 }
 

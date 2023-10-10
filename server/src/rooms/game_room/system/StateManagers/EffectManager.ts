@@ -58,7 +58,8 @@ export default class EffectManager {
 
     /**
      * Adds a StatEffect to the entity. Call this method if you wish to remove the effect later by an key. 
-     * Note: This is a helper method that uses CompoundEffect to store the StatEffect.
+     * Note: This is a helper method that uses CompoundEffect to store the StatEffect. Note that this 
+     * or addEffectsTo can be used to add StatEffects.
      * @param entity The entity.
      * @param statEffect The statEffect.
      * @returns A uuid key that is used to reference the added StatEffect.

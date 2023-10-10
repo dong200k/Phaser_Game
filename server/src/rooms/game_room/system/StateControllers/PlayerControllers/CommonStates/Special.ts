@@ -27,31 +27,31 @@ export default class Special extends StateNode {
     protected player!: Player;
     
     /** Total attack time. Including windup(for animations) time and trigger time. */
-    private attackDuration: number = 1;
+    protected attackDuration: number = 1;
     /** A percentage of attackDuration that passes before the attack triggers. E.g. if attackDuration=1 and 
      * triggerPercent=0.7, the attack will trigger at 0.7 seconds.
      */
-    private triggerPercent: number = 0.3;
+    protected triggerPercent: number = 0.3;
 
     /** Has the attack been triggered or not. */
-    private triggered: boolean = false;
+    protected triggered: boolean = false;
 
     /** Can the player move when attacking. */
-    private canMove: boolean = false;
+    protected canMove: boolean = false;
 
-    private timePassed: number = 0;
+    protected timePassed: number = 0;
     
-    private mouseX: number = 0;
-    private mouseY: number = 0;
+    protected mouseX: number = 0;
+    protected mouseY: number = 0;
     /**
      * Initialize this attack with some values.
      * @param config The AttackConfig.
      */
     public setConfig(config?: SpecialConfig) {
         if(config) {
-            this.attackDuration = config.attackDuration ?? 1;
-            this.triggerPercent = config.triggerPercent ?? 0.3;
-            this.canMove = config.canMove ?? false;
+            this.attackDuration = config.attackDuration ?? this.attackDuration;
+            this.triggerPercent = config.triggerPercent ?? this.triggerPercent;
+            this.canMove = config.canMove ?? this.canMove;
             this.mouseX = config.mouseX ?? this.mouseX;
             this.mouseY = config.mouseY ?? this.mouseY;
         }
@@ -60,21 +60,27 @@ export default class Special extends StateNode {
     public onEnter(): void {
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
-        this.attackDuration = this.player.stat.attackSpeed/2;
+        // this.attackDuration = this.player.stat.attackSpeed/2;
         this.timePassed = 0;
         // this.player.canMove = this.canMove;
         this.triggered = false;
 
         // Checks if the player's sprite should flip or not.
         let flip = (this.player.x - this.mouseX) > 0;
-        if(this.player.role === "Ranger"){
+        // console.log("playing special animation")
+        if(this.player.role === "Ranger" || this.player.role === "Warrior"){
              this.player.animation.playAnimation("2_atk", {
                 duration: this.attackDuration,
                 flip: flip,
             });
         }
        
-
+        // if(this.player.role === "Warrior"){
+        //     this.player.animation.playAnimation("2_atk", {
+        //         duration: this.attackDuration,
+        //         flip: flip,
+        //     })
+        // }
         // console.log("Flip", flip);
     }
 

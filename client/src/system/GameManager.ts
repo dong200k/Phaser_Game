@@ -23,6 +23,7 @@ import SettingsManager from "./SettingsManager";
 import SoundManager from "./SoundManager";
 import FloatingText from "../gameobjs/FloatingText";
 import ClientManager from "./ClientManager";
+import Aura from "../gameobjs/Aura";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -96,7 +97,16 @@ export default class GameManager {
         this.syncGameObjectVisibility();
         this.syncGameObjectActive();
         this.updateFloatingTexts();
-        this.renderFollowPlayerObjects()
+        this.renderFollowPlayerObjects();
+        this.updateAuraPosition();
+    }
+
+    public updateAuraPosition() {
+        this.gameObjects.forEach(gameObject => {
+            if(gameObject instanceof Aura) {
+                gameObject.updateGraphicsPosition();
+            }
+        })
     }
 
     onWASDPress(key: "w"|"a"|"s"|"d"){
@@ -328,6 +338,9 @@ export default class GameManager {
             case 'InvisObstacle':
                 newGameObject = new InvisObstacle(this.scene, gameObj);
                 break;
+            case 'Aura':
+                newGameObject = this.addAura(gameObj, key);
+                break;
         }
         if(newGameObject) {
             // newGameObject.setServerState(gameObj);
@@ -467,6 +480,13 @@ export default class GameManager {
         this.scene.add.existing(newMonster);
         this.addListenersToGameObject(newMonster, monster);
         return newMonster;
+    }
+
+    private addAura(aura: any, key: string): Aura {
+        let newAura = new Aura(this.scene, aura);
+        this.scene.add.existing(newAura);
+        this.addListenersToGameObject(newAura, aura);
+        return newAura;
     }
 
     /** Adds a listener to an entity to respond to server updates on that entity. */

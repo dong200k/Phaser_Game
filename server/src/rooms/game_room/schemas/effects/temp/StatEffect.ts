@@ -79,4 +79,5 @@ export default class StatEffect extends TempEffect {
     public getStat() {
         return this.stat;
     }
+
 }

@@ -5,7 +5,12 @@ This document will explain how to add a new role/character to the game. At the m
 Note: Editing an existing role is done in a similar fashion except that step 3 is not done.
 
 ## 
-1. Open the my-app tool and login to admin account.
+1. Open the my-app tool and login to admin account. And open the json-server.
+```bash
+cd my-app
+npm start
+npm run json-server
+```
 
 2. Click on Roles in the navigation bar at the top.
 

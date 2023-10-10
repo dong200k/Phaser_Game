@@ -58,11 +58,11 @@ export default class Attack extends StateNode {
     }
 
     public onEnter(): void {
-        console.log("player controller attack state on enter")
+        // console.log("player controller attack state on enter")
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
         this.timePassed = 0;
-        // this.player.canMove = this.canMove;
+        this.player.canMove = this.canMove; // Uncommented so player wont move when attacking.
         this.triggered = false;
 
         // Checks if the player's sprite should flip or not.

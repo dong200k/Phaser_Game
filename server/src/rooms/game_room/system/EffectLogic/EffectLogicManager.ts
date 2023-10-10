@@ -25,6 +25,11 @@ import DoubleFlameAuraLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUp
 import FlameAuraChargeBoostLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUpgrades/FlameAuraChargeBoost";
 import FlameAuraStatBoostLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUpgrades/FlameAuraStatBoostLogic";
 import DoubleGetsugaLogic from "./EffectLogics/weapon/BerserkerBlade/ChargeAttack/DoubleGetsugaLogic";
+import WarriorAbilityLogic from "./EffectLogics/abilities/WarriorAbility/WarriorAbility";
+import WarriorShieldAttackLogic from "./EffectLogics/weapon/WarriorShield/WarriorShieldAttackLogic";
+import WarriorShieldUpgradeAbilityLogic from "./EffectLogics/weapon/WarriorShield/WarriorShieldUpgradeAbilityLogic";
+import WarriorKnockbackLogic from "./EffectLogics/weapon/WarriorShield/WarriorKnockbackLogic";
+import WarriorProtectLogic from "./EffectLogics/weapon/WarriorShield/WarriorProtectLogic";
 
 export default class EffectLogicManager{
 
@@ -74,6 +79,12 @@ export default class EffectLogicManager{
         this.addEffectLogic(FlameAuraChargeBoostLogic)
         this.addEffectLogic(FlameAuraStatBoostLogic)
         this.addEffectLogic(DoubleGetsugaLogic)
+
+        this.addEffectLogic(WarriorAbilityLogic);
+        this.addEffectLogic(WarriorShieldAttackLogic);
+        this.addEffectLogic(WarriorShieldUpgradeAbilityLogic);
+        this.addEffectLogic(WarriorKnockbackLogic);
+        this.addEffectLogic(WarriorProtectLogic);
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass){

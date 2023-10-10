@@ -19,6 +19,7 @@ import { Categories } from './Collisions/Category';
 import MaskManager from './Collisions/MaskManager';
 import Entity from '../schemas/gameobjs/Entity';
 import Monster from '../schemas/gameobjs/monsters/Monster';
+import AuraManager from './StateManagers/AuraManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -32,7 +33,8 @@ export default class GameManager {
     private effectLogicManager!: EffectLogicManager;
     private artifactManager!: ArtifactManager;
     private collisionManager!: CollisionManager;
-    private abilityManager!: AbilityManager
+    private abilityManager!: AbilityManager;
+    private auraManager!: AuraManager;
 
     // Data
     public matterBodies: Map<string, Matter.Body> = new Map();
@@ -77,6 +79,7 @@ export default class GameManager {
         this.artifactManager = new ArtifactManager(this)
         this.collisionManager = new CollisionManager(this)
         this.abilityManager = new AbilityManager(this)
+        this.auraManager = new AuraManager(this);
 
         this.initUpdateEvents();
         this.initCollisionEvent();
@@ -156,6 +159,13 @@ export default class GameManager {
                 this.collisionManager.resolveCollisions(pair.bodyA, pair.bodyB)
             })
         })
+        Matter.Events.on(this.engine, "collisionEnd", (event) => {
+            // console.log("collision ended");
+            let pairs = event.pairs;
+            pairs.forEach((pair) => {
+                this.collisionManager.resolveCollisionEnd(pair.bodyA, pair.bodyB);
+            })
+        })
     }
 
     public update(deltaT:number) {
@@ -165,7 +175,8 @@ export default class GameManager {
         this.playerManager.update(deltaTSeconds);
         this.effectManager.update(deltaTSeconds);
         this.dungeonManager.update(deltaTSeconds);
-        this.projectileManager.update(deltaT)
+        this.projectileManager.update(deltaT);
+        this.auraManager.update(deltaTSeconds);
 
         // if(this.state.serverTickCount % 30 === 0)
         //     console.log(`Heap usage: ${process.memoryUsage().heapUsed / 1000000} Mb`);
@@ -268,6 +279,10 @@ export default class GameManager {
 
     public getAbilityManager() {
         return this.abilityManager
+    }
+
+    public getAuraManager() {
+        return this.auraManager;
     }
 
     /** Gets the EventEmitter for this GameManager. Used to send events throughout this game. */

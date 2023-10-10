@@ -76,6 +76,18 @@ export default class Projectile extends GameObject implements Cloneable {
 
     dontDespawnOnObstacleCollision?: boolean
 
+    /** The knockback of this projectile. */
+    knockback?: {
+        distance: number,
+        direction?: {x: number, y: number}
+    };
+
+    // /** The knockback of this projectile. */
+    // knockback?: {
+    //     distance: number,
+    //     direction?: {x: number, y: number}
+    // };
+
     private setInactiveCallback?: Function
     private onCollideCallback?: Function
 
@@ -117,6 +129,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.projectileController = new RangedProjectileController({projectile: this});
 
         this.piercing = projectileConfig.piercing? projectileConfig.piercing : 1
+        this.knockback = projectileConfig.knockback;
         this.createBody()
 
         let velocity = {x: this.initialVelocity.x, y:this.initialVelocity.y}
@@ -303,6 +316,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.spawnSound = projectileConfig.spawnSound ?? "";
         this.type = "Projectile"
         this.originEntityId = projectileConfig.originEntityId;
+        this.knockback = projectileConfig.knockback ?? this.knockback;
 
         // Make body collideable again
         let body = this.getBody()

@@ -51,6 +51,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("roll", "audio/roll.mp3")
         this.load.audio("ultra_instinct_boss", "audio/ultra_instinct_boss.mp3")
         this.load.audio("boss_getting_dark", "audio/boss_getting_dark.mp3")
+        this.load.audio("warrior_slam_sfx", "audio/warrior_slam_sfx.mp3");
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");
@@ -67,6 +68,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("RangerArrow", "images/projectiles/arrow_1.png", "images/projectiles/arrow_1.json");
         this.load.aseprite("TinyZombieAttack", "images/projectiles/bite_1.png", "images/projectiles/bite_1.json");
         this.load.aseprite("Berserker", "images/roles/Berserker.png", "images/roles/Berserker.json");
+        this.load.aseprite("Warrior", "images/roles/warrior.png", "images/roles/warrior.json");
         this.load.aseprite("FlameAura", "images/projectiles/FlameAura.png", "images/projectiles/FlameAura.json");
         this.load.aseprite("GetsugaTenshou", "images/projectiles/GetsugaTenshou.png", "images/projectiles/GetsugaTenshou.json");
 
@@ -116,6 +118,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("clean_fast_slash", "sfx")
         soundManager.add("small_explosion", "sfx")
         soundManager.add("roll", "sfx")
+        soundManager.add("warrior_slam_sfx", "sfx");
 
         soundManager.add("ultra_instinct", "bg")
         soundManager.add("ultra_instinct_boss", "bg")

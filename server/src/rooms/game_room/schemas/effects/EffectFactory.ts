@@ -89,7 +89,7 @@ export default class EffectFactory {
     /**
      * Creates a speed multiplier effect that will change the player's speed by a multiplier.
      * @param speedMultiplier The multiplier.
-     * @param activeTime The time the effect will last for.
+     * @param activeTime The time the effect will last for in seconds.
      * @returns A SpeedMultiEffect
      */
     public static createSpeedMultiplierEffectTimed(speedMultiplier: number, activeTime: number) {

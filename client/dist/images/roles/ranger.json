@@ -676,7 +676,7 @@
   "frameTags": [
    { "name": "idle", "from": 0, "to": 11, "direction": "forward" },
    { "name": "walk", "from": 12, "to": 21, "direction": "forward" },
-   { "name": "attack", "from": 22, "to": 36, "direction": "forward" },
+   { "name": "1_atk", "from": 22, "to": 36, "direction": "forward" },
    { "name": "2_atk", "from": 37, "to": 48, "direction": "forward" },
    { "name": "take_hit", "from": 49, "to": 54, "direction": "forward" },
    { "name": "death", "from": 55, "to": 73, "direction": "forward" }

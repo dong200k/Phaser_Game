@@ -92,7 +92,7 @@ private initEffectLogics(){
 
 10. Remember to save all files that we have changed.
 
-11. Now when we load up our game and unlock/use our role inside a dungeon. Pressing spacebar will activate our ability's effectLogic when its off cooldown(added in part 1). 
+11. Now when we load up our game and unlock/use our role inside a dungeon. (Make sure to follow the instructions in RoleCreation.md to add the new ability to a role.) Pressing spacebar will activate our ability's effectLogic when its off cooldown(added in part 1). 
 
     If you added console.log("hello world from DemoAbility") inside the ability like me in step 4, then it should print out 
 "hello world from DemoAbility" in the terminal where the server is running.
