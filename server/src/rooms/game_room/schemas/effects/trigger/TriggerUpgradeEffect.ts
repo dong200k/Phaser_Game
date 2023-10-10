@@ -76,10 +76,6 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
             let atkSpeed = 1
             if(this.tree?.owner) atkSpeed = getFinalAttackSpeed(this.tree?.owner.stat)
             newDeltaT = deltaT * atkSpeed
-        }else if(this.type === "player charge attack"){
-            let chargeAtkSpeed = 1
-            if(this.tree?.owner) chargeAtkSpeed = getFinalChargeAttackSpeed(this.tree?.owner.stat)
-            newDeltaT = deltaT * chargeAtkSpeed 
         }
         
         this.cooldown.tick(newDeltaT)

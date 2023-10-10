@@ -7,6 +7,8 @@ export default class SpeedMultiEffect extends TempEffect {
     /** The speed multipler is applied to the entity. */
     @type('number') private speedMultiplier;
 
+    private speedGained = 0
+
     /**
      * Creates a speed multiplier effect.
      * @param speedMultiplier The speed multipler that will be applied to the entity.
@@ -20,12 +22,13 @@ export default class SpeedMultiEffect extends TempEffect {
     }
 
     public applyEffect(entity:Entity): boolean {
-        entity.stat.speed *= this.speedMultiplier;
+        this.speedGained = entity.stat.speed * this.speedMultiplier - entity.stat.speed
+        entity.stat.speed += this.speedGained;
         return true;
     }
 
     protected unapplyEffect(entity:Entity): boolean {
-        entity.stat.speed *= 1 / this.speedMultiplier;
+        entity.stat.speed -= this.speedGained
         return true;
     }
 }

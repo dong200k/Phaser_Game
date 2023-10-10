@@ -4500,7 +4500,7 @@
                     "children": [],
                     "data": {
                       "name": "Berserk",
-                      "description": "Gain charge attack speed in special form at the cost of more health.",
+                      "description": "Gain 4x charge attack speed in special form.",
                       "stat": {
                         "maxHp": 0,
                         "maxMana": 0,
@@ -4540,7 +4540,7 @@
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "bfe5d2e0-b63b-4317-91c2-fb52f75625ee",
+                      "id": "2062bc16-88a5-44fa-b36d-cc303dc1047b",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4548,7 +4548,7 @@
                 ],
                 "data": {
                   "name": "Unyielding",
-                  "description": "Double stat boost when under 10% health in special form.",
+                  "description": "While special is active receive more stat bonus as heath lowers.",
                   "stat": {
                     "maxHp": 0,
                     "maxMana": 0,
@@ -4588,7 +4588,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "a77ba719-f7a4-4346-9e5b-29c88092a60a",
+                  "id": "54d24fef-d848-471e-b54a-6c406262822b",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4596,7 +4596,7 @@
             ],
             "data": {
               "name": "Fiery Flames",
-              "description": "Flame aura deals double damage at the cost of 10% current health reduction per second while in special.",
+              "description": "Flame aura deals double damage.",
               "stat": {
                 "maxHp": 0,
                 "maxMana": 0,
@@ -4636,7 +4636,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "5e6abe8d-1b8a-4818-816b-7dd8a97b1fa0",
+              "id": "c4393741-f54a-448e-a161-8da5b3c1321c",
               "depth": 1,
               "collapsed": false
             }
@@ -4688,6 +4688,55 @@
           "id": "19b69964-c4f8-48c1-a283-089c9337ce98",
           "depth": 0,
           "collapsed": false
+        }
+      }
+    },
+    {
+      "id": "upgrade-6f07d324-c727-462d-b51e-44c24ca27234",
+      "name": "auto-generated",
+      "type": "weapon",
+      "root": {
+        "id": "node-7c521764-87f8-4a5f-b33e-8bf58de0e166",
+        "children": [],
+        "data": {
+          "name": "auto-generated",
+          "description": "auto-generated",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0,
+            "chargeAttackSpeed": 0,
+            "chargeAttackSpeedPercent": 0
+          },
+          "status": "none",
+          "selectionTime": 0,
+          "upgradeEffect": {
+            "effectLogicId": "",
+            "doesStack": 1,
+            "cooldown": 1000,
+            "collisionGroup": -1,
+            "type": "none"
+          }
         }
       }
     },

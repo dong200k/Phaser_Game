@@ -148,6 +148,18 @@ export default class PlayerManager {
         }
     }
 
+    processPlayerDoubleTap(playerId: string, key: "w"|"a"|"s"|"d"){
+        let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
+        if(!playerBody || !playerState) return console.log("player does not exist, double tap")
+
+        // If the player is disabled, cant move, or is dead stop the player 
+        if(this.disabledPlayers.has(playerId) || playerState.playerController.stateName === "Dead") {
+            return; 
+        }
+        playerState.playerController.startRoll(key)
+
+    }
+
     processPlayerMovement(playerId: string, data: number[], deltaT: number){
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist, movement")
@@ -301,7 +313,8 @@ export default class PlayerManager {
             console.log(`Starter weapon for ${role.name} role not found, using default weapon.`)
             weaponUpgradeId = "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d"
         }
-        let root = WeaponUpgradeFactory.createUpgrade(weaponUpgradeId) as Node<WeaponData>
+        // let root = WeaponUpgradeFactory.createUpgrade(weaponUpgradeId) as Node<WeaponData>
+        let root = WeaponUpgradeFactory.createMaxUpgrade(weaponUpgradeId) as Node<WeaponData>
         WeaponManager.equipWeaponUpgrade(player, root);
         console.log(`equiping ${role.name} weapon:`, root.data.name)
 

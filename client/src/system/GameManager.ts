@@ -45,6 +45,14 @@ export default class GameManager {
 
     private mouseDown: boolean = false;
 
+    // ------- Double tap timer -------
+    private wasdPressTime = {
+        "w": 0,
+        "a": 0,
+        "s": 0,
+        "d": 0
+    }
+
     // ------- fixed tick --------
     private timePerTick = 33.33; // 30 ticks per second.
     private timeTillNextTick: number;
@@ -64,6 +72,14 @@ export default class GameManager {
         this.initializeClientSidePrediction();
         this.initializeInputs();
         this.initializeListeners();
+    }
+
+    /**
+     * 
+     * @returns the stored time value in milliseconds since midnight, January 1, 1970 UTC
+     */
+    getTime(){
+        return new Date().getTime()
     }
 
     /**
@@ -91,6 +107,30 @@ export default class GameManager {
                 gameObject.updateGraphicsPosition();
             }
         })
+    }
+
+    onWASDPress(key: "w"|"a"|"s"|"d"){
+        // console.log(key)
+        return ()=>{
+            // console.log("key pressed: ", key)
+            // First press
+            if(this.wasdPressTime[key] === 0){
+                this.wasdPressTime[key] = this.getTime()
+                return
+            }
+
+            // Second press 
+            let secondPressTime = this.getTime()
+            if(secondPressTime - this.wasdPressTime[key] < 400){
+                this.sendDoubleTap(key)
+                // console.log('send double tap', key)
+            }
+            this.wasdPressTime[key] = this.getTime()
+        }   
+    }
+
+    sendDoubleTap(key: "w"|"a"|"s"|"d"){
+        this.gameRoom?.send("doubleTap", key)
     }
 
     public renderFollowPlayerObjects(){
@@ -217,6 +257,16 @@ export default class GameManager {
                 }
             }
         })
+
+        /** wasd keys */
+        this.upKey?.on('down', this.onWASDPress("w"))
+        this.downKey?.on('down', this.onWASDPress("s"))
+        this.leftKey?.on('down', this.onWASDPress("a"))
+        this.rightKey?.on('down', this.onWASDPress("d"))
+
+        /** shift key */
+        let shiftKey = this.scene.input.keyboard?.addKey("SHIFT")
+        shiftKey?.on("down", ()=>this.sendDoubleTap("w"))
     }
 
     private initializeListeners() {
@@ -386,7 +436,12 @@ export default class GameManager {
         if(projectile.projectileType === "Melee") {
             proj.play("play");
         } else {
-            proj.play({key: "play", repeat: -1});
+            if(projectile.repeatAnimation){
+                proj.play({key: projectile.animationKey, repeat: -1});
+            }else{
+                proj.play({key: projectile.animationKey});
+            }
+            
         }  
         this.scene.add.existing(proj)
         proj.depth = -1

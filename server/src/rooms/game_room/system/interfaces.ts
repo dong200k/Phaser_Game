@@ -11,6 +11,7 @@ import MonsterController from "./AI/MonsterAI/simplemonster/MonsterController";
 import { IClasses } from "../schemas/projectiles/projectileClasses";
 import OneTimeUpgradeEffect from "../schemas/effects/onetime/OneTimeUpgradeEffect";
 import StateMachine from "./StateMachine/StateMachine";
+import Projectile from "../schemas/projectiles/Projectile";
 
 // ------------ Math -------------
 
@@ -183,6 +184,13 @@ export type IProjectileConfig = {
             y: number,
         }
     }
+    /** Called when the projectile is set to inactive by the projectile.setInactive function */
+    setInactiveCallback?: (projectile: Projectile)=>void,
+    onCollideCallback?: (projectile: Projectile)=>void,
+    /** Key for animation if undefined is passed the default is "play" */
+    animationKey?: string,
+    /** Whether to repeat animation if undefined then default is true */
+    repeatAnimation?: boolean,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }

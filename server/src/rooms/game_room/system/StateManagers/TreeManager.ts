@@ -49,7 +49,6 @@ export default class TreeManager{
                 let effect = EffectFactory.createEffectFromUpgradeEffect(selectedUpgrade.data.upgradeEffect)
                 effect.setTree(tree as WeaponUpgradeTree)
                 // effect.setGameManager(this.gameManager)
-                if(effect instanceof OneTimeUpgradeEffect) console.log(`effect ${effect}, setting tree`)
 
                 // Add effect to player
                 EffectManager.addUpgradeEffectsTo(playerState, effect)

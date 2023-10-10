@@ -10,6 +10,7 @@ import TriggerUpgradeEffect from "../../../schemas/effects/trigger/TriggerUpgrad
 import { getFinalAttackSpeed, getFinalChargeAttackSpeed } from "../../Formulas/formulas";
 import ChargeAttackLogic from "../../EffectLogic/EffectLogics/common/ChargeAttackLogic";
 import ChargeState from "./CommonStates/ChargeState";
+import Roll from "./CommonStates/Roll";
 
 
 export interface PlayerControllerData {
@@ -23,6 +24,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
     protected attackState!: Attack;
     protected specialState!: Special;
+    private rollState!: Roll;
     protected chargeState!: ChargeState;
     public chargeAttackState!: ChargeAttack;
 
@@ -68,16 +70,14 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
         let chargeAttackState = new ChargeAttack("ChargeAttack", this);
         this.chargeAttackState = chargeAttackState
-        chargeAttackState.setConfig({
-            triggerPercent: 0,
-            // attackDuration: 1 / getFinalChargeAttackSpeed(this.player.stat),
-            attackDuration: 1
-        })
         this.addState(chargeAttackState)
 
         let chargeState = new ChargeState("ChargeState", this)
         this.chargeState = chargeState
         this.addState(chargeState)
+
+        this.rollState = new Roll("Roll", this)
+        this.addState(this.rollState)
 
         //Set initial state
         this.changeState("Idle");
@@ -112,14 +112,12 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         
         // Start charge attack if there is mouse click and any of the charge threshold is met
         if(mouseClick && hasChargeAttack && this.chargeState.chargeThresholdMetFor1Attack()){
-            console.log("charge treshold met and mosueclick")
             this.chargeState.startChargeAttack(mouseX, mouseY)
             return
         }
 
         // Switch to charge state if mouse is down and there is charge attack
         if(mouseDown && hasChargeAttack){
-            // console.log("has chargr attack and mousedown")/
             // Set config for charge state
             this.chargeState.setConfig({mouseClick, mouseX, mouseY})
 
@@ -165,6 +163,12 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         if(this.stateName !== "Dead" && this.stateName !== "Special") {
             this.specialState?.setConfig({mouseX, mouseY});
             this.changeState("Special");
+        }
+    }
+
+    public startRoll(key: "w"|"a"|"s"|"d"){
+        if(this.stateName !== "Dead" && this.stateName !== "Special" && this.stateName !== "Roll"){
+            this.changeState("Roll")
         }
     }
 }

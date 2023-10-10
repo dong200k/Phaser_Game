@@ -24,7 +24,7 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
     effectLogic?: EffectLogic
 
     constructor(effectLogicId: string, cooldown: number, type: string, doesStack: boolean, collisionGroup: number){
-        super(cooldown/100)
+        super(cooldown/1000)
         this.setName("Continuous Upgrade Effect")
         this.setDescription("Type of ContinuousEffecftUntime that repeatedly calls the effectLogic referenced by effectLogicId")
         this.effectLogicId = effectLogicId
@@ -59,6 +59,14 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
         if(effectLogicManager){
             let ctor = effectLogicManager.getEffectLogicConstructor(this.effectLogicId)
             if(ctor) this.effectLogic = new ctor()
+        }
+    }
+
+    protected onRemoveFromEntity(): void {
+        let entity = this.getEntity()
+        let gameManager = this.tree?.getGameManager()
+        if(entity && this.effectLogic && gameManager) {
+            this.effectLogic.removeEffect(entity, gameManager)
         }
     }
 

@@ -154,9 +154,11 @@ export default class EffectFactory {
         // Creates appropriate effect based on type. To add types change logic here and also add a type to my-app/src/effectTypes.js
         switch(upgradeEffect.type){
             case "player attack":
-            case "player charge attack":
-                // Cooldown of charge attack and attack is 1000 ms. It is affected by attackSpeed etc. inside TriggerUpgradeEffect's update method
+                // Cooldown of player attack is 1000 ms. It is affected by attackSpeed etc. inside TriggerUpgradeEffect's update method
                 return new TriggerUpgradeEffect(effectLogicId, 1000, type, doesStack, collisionGroup)
+            case "player charge attack":
+                // Charge attack cooldowns are managed by their own effect logics.
+                return new TriggerUpgradeEffect(effectLogicId, 0, type, doesStack, collisionGroup)
             case "player skill":
                 // Creates a UpgradeTriggerEffect which uses the effect when the EffectManager.useOnTriggerEffectsOn is called with the corresponding type, "player skill" in this case
                 return new TriggerUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)

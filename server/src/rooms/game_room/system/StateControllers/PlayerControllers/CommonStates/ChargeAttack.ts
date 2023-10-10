@@ -31,11 +31,11 @@ export default class ChargeAttack extends StateNode {
     private player!: Player;
     
     /** Total attack time. Including windup(for animations) time and trigger time. */
-    private attackDuration: number = 1;
+    protected attackDuration: number = 1;
     /** A percentage of attackDuration that passes before the attack triggers. E.g. if attackDuration=1 and 
      * triggerPercent=0.7, the attack will trigger at 0.7 seconds.
      */
-    private triggerPercent: number = 0.3;
+    protected triggerPercent: number = 0;
 
     /** Has the attack been triggered or not. */
     private triggered: boolean = false;
@@ -54,9 +54,9 @@ export default class ChargeAttack extends StateNode {
      */
     public setConfig(config?: ChargeAttackConfig) {
         if(config) {
-            this.attackDuration = config.attackDuration ?? 1;
-            this.triggerPercent = config.triggerPercent ?? 0.3;
-            this.canMove = config.canMove ?? false;
+            this.attackDuration = config.attackDuration ?? this.attackDuration;
+            this.triggerPercent = config.triggerPercent ?? this.attackDuration;
+            this.canMove = config.canMove ?? this.canMove;
             this.mouseX = config.mouseX ?? this.mouseX;
             this.mouseY = config.mouseY ?? this.mouseY;
             this.chargeRatio = config.chargeRatio ?? this.chargeRatio;
