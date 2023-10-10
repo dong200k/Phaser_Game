@@ -1,6 +1,8 @@
 import WeaponUpgradeTree from "../../../../../schemas/Trees/WeaponUpgradeTree";
 import Entity from "../../../../../schemas/gameobjs/Entity";
+import Player from "../../../../../schemas/gameobjs/Player";
 import GameManager from "../../../../GameManager";
+import WarriorController from "../../../../StateControllers/WarriorController/WarriorController";
 import { GameEvents, IProjectileConfig } from "../../../../interfaces";
 import EffectLogic from "../../../EffectLogic";
 
@@ -17,8 +19,12 @@ export default class WarriorShieldAttackLogic extends EffectLogic {
         let offsetY = -5;
         let width = 70;
         let height = 40;
+        let knockback = 0;
 
-        
+        if(entity instanceof Player && entity.playerController instanceof WarriorController) {
+            knockback = entity.playerController.getKnockbackAttack();
+            console.log(knockback);
+        }
 
         // If the mouseX position is less than the player's position change offsetX to -offsetX.
         if(mouseX < playerX) offsetX *= -1;
@@ -39,7 +45,14 @@ export default class WarriorShieldAttackLogic extends EffectLogic {
             width: width,
             height: height,
             visible: false,
-            classType: "MeleeProjectile"
+            classType: "MeleeProjectile",
+            knockback: {
+                distance: knockback,
+                direction: {
+                    x: offsetX,
+                    y: 0,
+                }
+            },
         }
 
         gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, projectileConfig);

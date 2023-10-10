@@ -173,6 +173,16 @@ export type IProjectileConfig = {
     visible?: boolean,
     /** Set this value to to true if projectile should not despawn on colliding with an obstacle. By default it is set to false. */
     dontDespawnOnObstacleCollision?: boolean,
+    /** Knockback information for this projectile. */
+    knockback?: {
+        /** The distance of the knockback. */
+        distance: number,
+        /** The direction of the knockback (optional). */
+        direction?: {
+            x: number,
+            y: number,
+        }
+    }
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }

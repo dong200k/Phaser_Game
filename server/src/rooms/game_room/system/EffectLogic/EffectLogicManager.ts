@@ -29,7 +29,6 @@ import WarriorAbilityLogic from "./EffectLogics/abilities/WarriorAbility/Warrior
 import WarriorShieldAttackLogic from "./EffectLogics/weapon/WarriorShield/WarriorShieldAttackLogic";
 import WarriorShieldUpgradeAbilityLogic from "./EffectLogics/weapon/WarriorShield/WarriorShieldUpgradeAbilityLogic";
 import WarriorKnockbackLogic from "./EffectLogics/weapon/WarriorShield/WarriorKnockbackLogic";
-import WarriorKnockbackAbilityLogic from "./EffectLogics/weapon/WarriorShield/WarriorKnockbackAbilityLogic";
 import WarriorProtectLogic from "./EffectLogics/weapon/WarriorShield/WarriorProtectLogic";
 
 export default class EffectLogicManager{
@@ -85,7 +84,6 @@ export default class EffectLogicManager{
         this.addEffectLogic(WarriorShieldAttackLogic);
         this.addEffectLogic(WarriorShieldUpgradeAbilityLogic);
         this.addEffectLogic(WarriorKnockbackLogic);
-        this.addEffectLogic(WarriorKnockbackAbilityLogic);
         this.addEffectLogic(WarriorProtectLogic);
     }
 

@@ -4,13 +4,25 @@ import GameManager from "../../GameManager";
 import Attack from "../PlayerControllers/CommonStates/Attack";
 import PlayerController, { PlayerControllerData } from "../PlayerControllers/PlayerController";
 import DemoState from "./states/DemoState";
+import Special from "./states/Special";
 
 export default class WarriorController extends PlayerController {
 
     private gameManager!: GameManager
     private warriorAura?: Aura;
+
+    // Aura upgrades.
     private auraUpgrades = [10, 20, 30];
     private auraLevel = -1;
+
+    // Knockback upgrades.
+    private knockbackLevel = -1;
+    private knockbackAttack = [5, 10, 10];
+    private knockbackAbility = [0, 20, 50];
+
+    // Slow upgrades.
+    private slowTimes = [3, 6, 9]; // An array of the slow times that can be upgraded. Starts at index 0.
+    private slowTimeLevel = 0; // The slowTime index. Starting from 0.
 
     protected create(data: PlayerControllerData): void {
         super.create(data)
@@ -21,6 +33,15 @@ export default class WarriorController extends PlayerController {
             canMove: false,
             triggerPercent: 0.3,
             attackDuration: 1
+        })
+
+        this.specialState = new Special("Special", this);
+        this.removeState("Special");
+        this.addState(this.specialState);
+
+        this.specialState.setConfig({
+            attackDuration: 1,
+            triggerPercent: 0.5,
         })
 
         this.changeState("Idle");
@@ -51,11 +72,52 @@ export default class WarriorController extends PlayerController {
         this.warriorAura.auraController.setFollowTarget(this.player);
     }
 
+    /** Increase the knockback level. This will update the value that is returned from 
+     * getKnockbackAttack() and getKnockbackAbility().
+     */
+    public upgradeWarriorKnockback() {
+        // Set knockback level.
+        this.knockbackLevel++;
+        let maxKnockbackLevel = Math.min(this.knockbackAbility.length - 1, this.knockbackAttack.length - 1);
+        if(this.knockbackLevel > maxKnockbackLevel) {
+            this.knockbackLevel = maxKnockbackLevel;
+        }
+    }
+
     public getGameManager() {
         return this.gameManager;
     }
 
     update(deltaT: number){
         super.update(deltaT);
+    }
+
+    /** Returns the distance attacks should knockback enemies. */
+    public getKnockbackAttack() {
+        if(this.knockbackLevel === -1) return 0;
+        return this.knockbackAttack[this.knockbackLevel];
+    }
+
+    /** Returns the distance ability should knockback enemies. */
+    public getKnockbackAbility() {
+        if(this.knockbackLevel === -1) return 0;
+        return this.knockbackAbility[this.knockbackLevel];
+    }
+
+    /** Upgrades the slow time of the warrior ability. This method wont do anything when the level is 
+     * maxxed out.
+     * @returns True if the upgrade was successful. False otherwise.
+     */
+    public upgradeSlowTime() {
+        this.slowTimeLevel++;
+        if(this.slowTimeLevel >= this.slowTimes.length) {
+            this.slowTimeLevel = this.slowTimes.length - 1;
+            return false;
+        } 
+        return true;
+    }
+
+    public getSlowTime() {
+        return this.slowTimes[this.slowTimeLevel];
     }
 }

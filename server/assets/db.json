@@ -4855,10 +4855,61 @@
             "children": [
               {
                 "id": "node-5eef3c29-3464-4374-a732-78713b750ee1",
-                "children": [],
+                "children": [
+                  {
+                    "id": "node-18d0f82c-f800-4ce8-a94a-6e64a32c6313",
+                    "children": [],
+                    "data": {
+                      "name": "Knockback++",
+                      "description": "Massive increase in knockback from ability.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0,
+                        "chargeAttackSpeed": 0,
+                        "chargeAttackSpeedPercent": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "WarriorKnockbackLogic",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "one time"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "5053170d-fdcb-4d9f-a791-a096cd45de72",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
                 "data": {
                   "name": "Knockback+",
-                  "description": "Increase the knockback on ability.",
+                  "description": "Your ability now knockback enemies.",
                   "stat": {
                     "maxHp": 0,
                     "maxMana": 0,
@@ -4889,7 +4940,7 @@
                   "status": "none",
                   "selectionTime": 0,
                   "upgradeEffect": {
-                    "effectLogicId": "WarriorKnockbackAbilityLogic",
+                    "effectLogicId": "WarriorKnockbackLogic",
                     "doesStack": 1,
                     "cooldown": 1000,
                     "collisionGroup": -1,
@@ -4898,7 +4949,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "29342a84-3f5a-4f78-89ce-eb7ec2f58059",
+                  "id": "abd2f13f-0a15-4864-8938-b217eec45a72",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4906,7 +4957,7 @@
             ],
             "data": {
               "name": "Knockback",
-              "description": "Abilities and attacks now knocks back enemies.",
+              "description": "Your attacks now knockback enemies.",
               "stat": {
                 "maxHp": 0,
                 "maxMana": 0,
@@ -4946,7 +4997,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "9e6dbfd1-e767-4b31-a98e-9c4f36006ba1",
+              "id": "1466d777-cfc5-4304-9272-5962d34a32e3",
               "depth": 1,
               "collapsed": false
             }
