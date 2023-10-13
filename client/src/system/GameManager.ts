@@ -155,6 +155,7 @@ export default class GameManager {
 
     /** Changes the player that is being watched. */
     private rotateSpectateTarget() {
+        console.log("Rotating spectating target.")
         // If there are no more player's do nothing.
         if(this.players.length === 0) return;
 
@@ -256,6 +257,7 @@ export default class GameManager {
                 this.mouseDown = false;
                 this.sendMouseUpMessage()
                 if(this.spectating) {
+                    console.log("Pointer up called", this.spectating);
                     // If spectating change perspective.
                     this.rotateSpectateTarget();
                 }
@@ -271,6 +273,19 @@ export default class GameManager {
         /** shift key */
         let shiftKey = this.scene.input.keyboard?.addKey("SHIFT")
         shiftKey?.on("down", ()=>this.sendDoubleTap("w"))
+    }
+
+    /** Destroys the game manager and cleans up listeners.
+     * This should be called when a game is finished.
+     */
+    public destroy() {
+        this.cleanUpListeners();
+    }
+
+    private cleanUpListeners() {
+        this.debugKey?.off("down");
+        this.scene.input.off("pointerdown");
+        this.scene.input.off("pointerup");
     }
 
     private initializeListeners() {
