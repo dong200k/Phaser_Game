@@ -24,6 +24,7 @@ import SoundManager from "./SoundManager";
 import FloatingText from "../gameobjs/FloatingText";
 import ClientManager from "./ClientManager";
 import Aura from "../gameobjs/Aura";
+import StatusIconManager from "./StatusIconManager";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -63,12 +64,14 @@ export default class GameManager {
     private soundManager: SoundManager;
 
     private floatingTexts: FloatingText[] = [];
+    private statusIconManager: StatusIconManager;
 
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
         this.timeTillNextTick = this.timePerTick;
         this.soundManager = SoundManager.getManager();
+        this.statusIconManager = new StatusIconManager(scene);
         this.initializeClientSidePrediction();
         this.initializeInputs();
         this.initializeListeners();
@@ -99,6 +102,7 @@ export default class GameManager {
         this.updateFloatingTexts();
         this.renderFollowPlayerObjects();
         this.updateAuraPosition();
+        this.statusIconManager.update(deltaT / 1000);
     }
 
     public updateAuraPosition() {
@@ -496,6 +500,7 @@ export default class GameManager {
         gameObjectState.velocity.onChange = (changes: any) => this.gameObjectVelocityOnChange(gameObject, gameObjectState, changes);
         gameObjectState.animation.onChange = (changes: any) => this.gameObjectAnimationOnChange(gameObject, gameObjectState, changes);
         gameObjectState.sound.onChange = (changes: any) => this.gameObjectSoundOnChange(gameObject, gameObjectState, changes);
+        gameObjectState.statusIcon.onChange = (changes: any) => this.gameObjectStatusIconOnChange(gameObject, gameObjectState, changes);
 
         if(gameObject instanceof Entity) {
             /** ----- Entity Listeners ----- */
@@ -666,6 +671,12 @@ export default class GameManager {
         if(gameObjectState.sound.status === "Stopped"){
             SoundManager.getManager().stop(gameObject.gameObjectState.sound.keyToStop)
         }
+    }
+
+    private gameObjectStatusIconOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
+        let statusIconData = gameObjectState.statusIcon;
+        if(statusIconData.key !== "")
+            this.statusIconManager.addStatusIcon(statusIconData.key, statusIconData.timeout, gameObject);
     }
 
     /** Called when the entity's stat is updated on the server. */

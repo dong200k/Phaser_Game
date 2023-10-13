@@ -21,6 +21,7 @@ export default class WarriorController extends PlayerController {
     private knockbackAbility = [0, 20, 60];
 
     // Slow upgrades.
+    private speedFactor = 0.3; // The monster's speed will be multiplied by this number. E.g. 0.3 means the monster will be at 30% speed.
     private slowTimes = [3, 6, 9]; // An array of the slow times that can be upgraded. Starts at index 0.
     private slowTimeLevel = 0; // The slowTime index. Starting from 0.
 
@@ -119,5 +120,12 @@ export default class WarriorController extends PlayerController {
 
     public getSlowTime() {
         return this.slowTimes[this.slowTimeLevel];
+    }
+
+    /**
+     * The monster's speed will be multiplied by this number. E.g. 0.6 means the monster will be at 60% speed.
+     */
+    public getSpeedFactor() {
+        return this.speedFactor;
     }
 }

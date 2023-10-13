@@ -35,6 +35,7 @@ export default class Special extends SpecialState {
         let gameManager = this.player.gameManager;
         let entity = this.player;
         let slowAmount = (this.playerController as WarriorController).getSlowTime();
+        let speedFactor = (this.playerController as WarriorController).getSpeedFactor();
         // Taunt Logic
         gameManager.getDungeonManager().aggroAllMonstersOnto(entity);
         let knockback = 0;
@@ -43,7 +44,7 @@ export default class Special extends SpecialState {
         }
         gameManager.getDungeonManager().getAllActiveMonsters().forEach((monster) => {
             // Slow Logic           
-            EffectManager.addEffectsTo(monster, EffectFactory.createSpeedMultiplierEffectTimed(0.6, slowAmount));
+            EffectManager.addEffectsTo(monster, EffectFactory.createSpeedMultiplierEffectTimed(speedFactor, slowAmount));
             // Knockback Logic
             if(knockback !== 0) {
                 // Handle knockback.
