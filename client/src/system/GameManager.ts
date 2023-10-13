@@ -280,6 +280,7 @@ export default class GameManager {
      */
     public destroy() {
         this.cleanUpListeners();
+        this.soundManager.stopAll();
     }
 
     private cleanUpListeners() {
