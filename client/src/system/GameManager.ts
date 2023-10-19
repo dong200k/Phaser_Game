@@ -25,6 +25,7 @@ import FloatingText from "../gameobjs/FloatingText";
 import ClientManager from "./ClientManager";
 import Aura from "../gameobjs/Aura";
 import StatusIconManager from "./StatusIconManager";
+import CircleImage from "../UI/CircleImage";
 
 export default class GameManager {
     private scene: Phaser.Scene;
