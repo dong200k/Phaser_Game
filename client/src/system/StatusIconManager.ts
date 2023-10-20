@@ -12,7 +12,7 @@ export default class StatusIconManager {
     private statusIconGroup: Phaser.GameObjects.Group;
 
     private statusIcons: StatusIconData[] = [];
-    private counter: number = 0;
+    // private counter: number = 0;
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
@@ -35,10 +35,10 @@ export default class StatusIconManager {
             }
         }
 
-        this.counter ++;
-        if(this.counter % 200 === 0) {
-            console.log(this.statusIcons);
-        }
+        // this.counter ++;
+        // if(this.counter % 200 === 0) {
+        //     console.log(this.statusIcons);
+        // }
     }
 
     public addStatusIcon(key: string, time: number, followTarget: GameObject) {

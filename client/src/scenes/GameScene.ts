@@ -128,7 +128,7 @@ export default class GameScene extends Phaser.Scene {
             this.initializeGameRoomListeners(this.gameRoom);
 
             this.gameManager = new GameManager(this, this.gameRoom);
-            
+
         }).catch((e) => {
             console.log("Join Game Error: ", e);
             this.leaveGame(true);
@@ -149,10 +149,14 @@ export default class GameScene extends Phaser.Scene {
         this.loadSystem.startLoad().then(() => {
             // Done Loading! We can start the game.
             if(this.gameRoom) {
+                this.gameManager?.setAssetFinishedLoading();
                 this.gameRoom.send("loadAssetComplete");
                 this.cameras.main.setZoom(2);
                 this.showHUD();
                 this.loadFinished = true;
+            } else {
+                console.log("Error: Game Room is not defined.");
+                this.leaveGame();
             }
         }).catch((e) => {
             console.log(e.message);

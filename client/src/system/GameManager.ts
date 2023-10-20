@@ -47,6 +47,10 @@ export default class GameManager {
 
     private mouseDown: boolean = false;
 
+    // ------- Queued GameObjects ------
+    private assetsLoaded: boolean = false;
+    private queuedOnAddGameObjects: {obj: any, key: string}[] = [];
+
     // ------- Double tap timer -------
     private wasdPressTime = {
         "w": 0,
@@ -290,8 +294,28 @@ export default class GameManager {
         this.scene.input.off("pointerup");
     }
 
+    /** Called by the GameScene when all the assets have finished loading.
+     * This will start adding the gameobjects that were previously added
+     * to a queue.
+     */
+    public setAssetFinishedLoading() {
+        this.assetsLoaded = true;
+    }
+
+    // Queue up the changes and load them only when the game starts.
     private initializeListeners() {
-        this.gameRoom.state.gameObjects.onAdd = this.onAdd;
+        this.gameRoom.state.gameObjects.onAdd = (gameObj: any, key: string) => {
+            if(this.assetsLoaded) {
+                this.onAdd(gameObj, key);
+                while(this.queuedOnAddGameObjects.length > 0) {
+                    let queuedObj = this.queuedOnAddGameObjects.shift();
+                    if(queuedObj) 
+                        this.onAdd(queuedObj.obj, queuedObj.key);
+                }
+            }
+            else 
+                this.queuedOnAddGameObjects.push({obj: gameObj, key: key});
+        };
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
     }
 
