@@ -4,6 +4,7 @@ interface StatusIconData {
     statusIcon: Phaser.GameObjects.Sprite;
     timeout: number;
     followTarget: GameObject;
+    iconId: number;
 }
 
 export default class StatusIconManager {
@@ -12,6 +13,7 @@ export default class StatusIconManager {
     private statusIconGroup: Phaser.GameObjects.Group;
 
     private statusIcons: StatusIconData[] = [];
+    // private followTargetSet: Set<GameObject> = new Set();
     // private counter: number = 0;
 
     constructor(scene: Phaser.Scene) {
@@ -22,26 +24,32 @@ export default class StatusIconManager {
     public update(deltaT: number) {
         for(let i = this.statusIcons.length - 1; i >= 0; i--) {
             let statusIconData = this.statusIcons[i];
-            statusIconData.timeout -= deltaT;
             
             let followTarget = statusIconData.followTarget;
             statusIconData.statusIcon.setPosition(followTarget.x, followTarget.y - followTarget.height / 2);
 
-            if(statusIconData.timeout <= 0 || !followTarget.active) {
-                statusIconData.statusIcon.setActive(false);
-                statusIconData.statusIcon.setVisible(false);
-                // this.statusIconGroup.
-                this.statusIcons.splice(i, 1);
+            if(!followTarget.active) {
+                this.spliceStatusIcon(i);
+            } else {
+                // A -1 timeout means that there is no timeout and so we dont automatically remove the status icon.
+                if(statusIconData.timeout !== -1) {
+                    statusIconData.timeout -= deltaT;
+                    if(statusIconData.timeout <= 0) {
+                        this.spliceStatusIcon(i);
+                    }
+                }
             }
         }
-
-        // this.counter ++;
-        // if(this.counter % 200 === 0) {
-        //     console.log(this.statusIcons);
-        // }
     }
 
-    public addStatusIcon(key: string, time: number, followTarget: GameObject) {
+    /**
+     * Adds and displays a status icon that follows a followTarget.
+     * @param key The texture key.
+     * @param time The timer for icon removal.
+     * @param followTarget The followTarget.
+     * @param iconId The iconId. Can be used to manually remove icon.
+     */
+    public addStatusIcon(key: string, time: number, followTarget: GameObject, iconId: number) {
         let statusIcon = this.statusIconGroup.get(followTarget.x, followTarget.y, key);
         statusIcon.setVisible(true);
         statusIcon.setActive(true);
@@ -50,7 +58,37 @@ export default class StatusIconManager {
             statusIcon: statusIcon,
             timeout: time,
             followTarget: followTarget,
-        })
+            iconId,
+        });
+    }
+
+    /**
+     * Manually removes the status icon.
+     * @param iconId The iconId.
+     */
+    public removeStatusIcon(iconId: number) {
+        for(let i = this.statusIcons.length - 1; i >= 0; i--) {
+            let statusIconData = this.statusIcons[i];
+            if(statusIconData.iconId === iconId) {
+                this.spliceStatusIcon(i);
+            }
+        }
+    }
+
+    /** Performs status icon removal operations and splices the icon data from 
+     * the statusIcons list.
+     * @param idx The idx of the statusIcon to remove.
+     */
+    private spliceStatusIcon(idx: number) {
+        let statusIconData = this.statusIcons[idx];
+        // Removes and returns the status icon to pool.
+        statusIconData.statusIcon.setActive(false);
+        statusIconData.statusIcon.setVisible(false);
+        this.statusIcons.splice(idx, 1);
+    }
+
+    private removeStackedStatusIcons() {
+
     }
 
 }

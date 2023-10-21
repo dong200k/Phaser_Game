@@ -715,9 +715,11 @@ export default class GameManager {
     }
 
     private gameObjectStatusIconOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
-        let statusIconData = gameObjectState.statusIcon;
-        if(statusIconData.key !== "")
-            this.statusIconManager.addStatusIcon(statusIconData.key, statusIconData.timeout, gameObject);
+        let {type, key, timeout, iconId} = gameObjectState.statusIcon;
+        if(type === "add")
+            this.statusIconManager.addStatusIcon(key, timeout, gameObject, iconId);
+        if(type === "rm") 
+            this.statusIconManager.removeStatusIcon(iconId);
     }
 
     /** Called when the entity's stat is updated on the server. */
