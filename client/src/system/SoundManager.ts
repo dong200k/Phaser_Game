@@ -102,4 +102,13 @@ export default class SoundManager {
         soundObj?.audio.stop()
     }
 
+    /**
+     * Stops all sound effects and background music.
+     */
+    public stopAll() {
+        for(let [soundKey, soundObject] of this.map.entries()) {
+            soundObject.audio.stop();
+        }
+    }
+
 }

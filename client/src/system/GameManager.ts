@@ -24,6 +24,8 @@ import SoundManager from "./SoundManager";
 import FloatingText from "../gameobjs/FloatingText";
 import ClientManager from "./ClientManager";
 import Aura from "../gameobjs/Aura";
+import StatusIconManager from "./StatusIconManager";
+import CircleImage from "../UI/CircleImage";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -45,6 +47,10 @@ export default class GameManager {
 
     private mouseDown: boolean = false;
 
+    // ------- Queued GameObjects ------
+    private assetsLoaded: boolean = false;
+    private queuedOnAddGameObjects: {obj: any, key: string}[] = [];
+
     // ------- Double tap timer -------
     private wasdPressTime = {
         "w": 0,
@@ -63,12 +69,14 @@ export default class GameManager {
     private soundManager: SoundManager;
 
     private floatingTexts: FloatingText[] = [];
+    private statusIconManager: StatusIconManager;
 
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
         this.timeTillNextTick = this.timePerTick;
         this.soundManager = SoundManager.getManager();
+        this.statusIconManager = new StatusIconManager(scene);
         this.initializeClientSidePrediction();
         this.initializeInputs();
         this.initializeListeners();
@@ -99,6 +107,7 @@ export default class GameManager {
         this.updateFloatingTexts();
         this.renderFollowPlayerObjects();
         this.updateAuraPosition();
+        this.statusIconManager.update(deltaT / 1000);
     }
 
     public updateAuraPosition() {
@@ -151,6 +160,7 @@ export default class GameManager {
 
     /** Changes the player that is being watched. */
     private rotateSpectateTarget() {
+        console.log("Rotating spectating target.")
         // If there are no more player's do nothing.
         if(this.players.length === 0) return;
 
@@ -252,6 +262,7 @@ export default class GameManager {
                 this.mouseDown = false;
                 this.sendMouseUpMessage()
                 if(this.spectating) {
+                    console.log("Pointer up called", this.spectating);
                     // If spectating change perspective.
                     this.rotateSpectateTarget();
                 }
@@ -269,8 +280,42 @@ export default class GameManager {
         shiftKey?.on("down", ()=>this.sendDoubleTap("w"))
     }
 
+    /** Destroys the game manager and cleans up listeners.
+     * This should be called when a game is finished.
+     */
+    public destroy() {
+        this.cleanUpListeners();
+        this.soundManager.stopAll();
+    }
+
+    private cleanUpListeners() {
+        this.debugKey?.off("down");
+        this.scene.input.off("pointerdown");
+        this.scene.input.off("pointerup");
+    }
+
+    /** Called by the GameScene when all the assets have finished loading.
+     * This will start adding the gameobjects that were previously added
+     * to a queue.
+     */
+    public setAssetFinishedLoading() {
+        this.assetsLoaded = true;
+    }
+
+    // Queue up the changes and load them only when the game starts.
     private initializeListeners() {
-        this.gameRoom.state.gameObjects.onAdd = this.onAdd;
+        this.gameRoom.state.gameObjects.onAdd = (gameObj: any, key: string) => {
+            if(this.assetsLoaded) {
+                this.onAdd(gameObj, key);
+                while(this.queuedOnAddGameObjects.length > 0) {
+                    let queuedObj = this.queuedOnAddGameObjects.shift();
+                    if(queuedObj) 
+                        this.onAdd(queuedObj.obj, queuedObj.key);
+                }
+            }
+            else 
+                this.queuedOnAddGameObjects.push({obj: gameObj, key: key});
+        };
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
     }
 
@@ -496,6 +541,7 @@ export default class GameManager {
         gameObjectState.velocity.onChange = (changes: any) => this.gameObjectVelocityOnChange(gameObject, gameObjectState, changes);
         gameObjectState.animation.onChange = (changes: any) => this.gameObjectAnimationOnChange(gameObject, gameObjectState, changes);
         gameObjectState.sound.onChange = (changes: any) => this.gameObjectSoundOnChange(gameObject, gameObjectState, changes);
+        gameObjectState.statusIcon.onChange = (changes: any) => this.gameObjectStatusIconOnChange(gameObject, gameObjectState, changes);
 
         if(gameObject instanceof Entity) {
             /** ----- Entity Listeners ----- */
@@ -666,6 +712,14 @@ export default class GameManager {
         if(gameObjectState.sound.status === "Stopped"){
             SoundManager.getManager().stop(gameObject.gameObjectState.sound.keyToStop)
         }
+    }
+
+    private gameObjectStatusIconOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
+        let {type, key, timeout, iconId} = gameObjectState.statusIcon;
+        if(type === "add")
+            this.statusIconManager.addStatusIcon(key, timeout, gameObject, iconId);
+        if(type === "rm") 
+            this.statusIconManager.removeStatusIcon(iconId);
     }
 
     /** Called when the entity's stat is updated on the server. */

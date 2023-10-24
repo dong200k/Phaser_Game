@@ -71,7 +71,10 @@ export default class LobbyScene extends Phaser.Scene {
 
         // ------ Back Button And Host Game Button ------
         let backButton = new Button(this, "Back to menu", 0, 0, "regular", () => this.leaveLobby());
-        let hostGameButton = new Button(this, "Host Game", 0, 0, "regular", () => SceneManager.getSceneManager().pushScene("RoomScene"));
+        let hostGameButton = new Button(this, "Host Game", 0, 0, "regular", () => {
+            ClientManager.getClient().clearWaitingRoomId();
+            SceneManager.getSceneManager().pushScene("RoomScene");
+        });
         let layout2 = new Layout(this, {
             x:this.game.scale.width / 2 - layout.getLayoutWidth() / 2,
             y:720,

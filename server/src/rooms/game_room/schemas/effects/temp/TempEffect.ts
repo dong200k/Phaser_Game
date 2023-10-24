@@ -8,8 +8,8 @@ export default abstract class TempEffect extends Effect {
     
     /** Timed effect are ended by a timer. Non timed effect are ended manually. */
     @type("boolean") private isTimed;
-    /** The time that is remaining before this effect ends. */
-    @type("number") private timeRemaining;
+    /** The time that is remaining before this effect ends(in seconds). */
+    @type("number") protected timeRemaining;
     /** The state the effect is in. Either the effect hasn't been applied, it is currently being applied, or it has finished applied and is reverted. */
     @type("string") private effectState: EffectStateType = "Haven't Applied";
 

@@ -9,6 +9,7 @@ import { bakeBorderGraphicsFromLayout } from "../UI/Layoutable";
 import NavButton from "../UI/NavButton";
 import RoomPost from "../UI/RoomPost";
 import TextBox from "../UI/TextBox";
+import ClientManager from "../system/ClientManager";
 
 export default class HostGameScene extends Phaser.Scene {
     
@@ -61,7 +62,10 @@ export default class HostGameScene extends Phaser.Scene {
         privateRoomLayout.add([this.privateRoomCheckbox, privateRoomText]);
         
         // ----------- Buttons ------------ 
-        let createRoomButton = new Button(this, "Create room", 0, 0, "regular", () => SceneManager.getSceneManager().pushScene("RoomScene"));
+        let createRoomButton = new Button(this, "Create room", 0, 0, "regular", () => {
+            ClientManager.getClient().clearWaitingRoomId();
+            SceneManager.getSceneManager().pushScene("RoomScene");
+        });
         let backButton = new Button(this, "Back", 0, 0, "regular", () => SceneManager.getSceneManager().popScene());
         let buttonLayout = new Layout(this, {
             x:this.game.scale.width / 2,

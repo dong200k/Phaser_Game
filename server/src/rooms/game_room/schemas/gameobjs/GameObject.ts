@@ -5,6 +5,7 @@ import Matter from 'matter-js';
 import GameManager from '../../system/GameManager';
 import Animation from './Animation';
 import Sound from './Sound';
+import StatusIcon from './StatusIcon';
 
 export class Velocity extends Schema {
     @type('number') x = 0;
@@ -46,6 +47,8 @@ export default class GameObject extends Schema implements Cloneable {
     @type(Animation) animation: Animation;
     // -- sound --
     @type(Sound) sound: Sound;
+    // -- status effect --
+    @type(StatusIcon) statusIcon: StatusIcon;
 
     // -- Extra identifier --
     @type("string") name: string
@@ -71,6 +74,7 @@ export default class GameObject extends Schema implements Cloneable {
         });
         this.animation = new Animation();
         this.sound = new Sound();
+        this.statusIcon = new StatusIcon();
         this.name = ""
     }
 

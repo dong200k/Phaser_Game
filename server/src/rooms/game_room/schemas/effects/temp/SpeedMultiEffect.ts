@@ -24,6 +24,10 @@ export default class SpeedMultiEffect extends TempEffect {
     public applyEffect(entity:Entity): boolean {
         this.speedGained = entity.stat.speed * this.speedMultiplier - entity.stat.speed
         entity.stat.speed += this.speedGained;
+        // Slowed entity will display a status icon.
+        if(this.speedGained < 0) {
+            entity.statusIcon.showStatusIcon("slow_icon", this.timeRemaining);
+        }
         return true;
     }
 

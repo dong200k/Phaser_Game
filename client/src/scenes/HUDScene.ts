@@ -11,6 +11,7 @@ import PeerInfoPopup from "../UI/gameuis/PeerInfoPopup";
 import WAPopup, { WAPopupData } from "../UI/gameuis/WAPopup";
 import GameOverModal from "../UI/modals/GameOverModal";
 import TopRightInfo from "../UI/gameuis/TopRightInfo";
+import CircleImage from "../UI/CircleImage";
 
 export default class HUDScene extends Phaser.Scene {
 
@@ -23,6 +24,7 @@ export default class HUDScene extends Phaser.Scene {
     private menuModal?: MenuModal;
     private gameOverModal?: GameOverModal;
     private topRightInfo!: TopRightInfo;
+    private ticks: number = 0;
 
     constructor() {
         super(SceneKey.HUDScene);
@@ -158,5 +160,21 @@ export default class HUDScene extends Phaser.Scene {
         this.waPopup.destroyPopup();
     }
 
-    
+    update(time: number, delta: number): void {
+        this.ticks++;
+        if(this.ticks % 100 === 0) {
+            this.updateCircleImageMasks();
+            this.ticks = 1;
+        }
+    }
+
+    /** Called every 100 phaser ticks. This will update the mask of the circle image to match
+     * the position of the circle image.
+     */
+    private updateCircleImageMasks() {
+        this.children.getAll().forEach((obj) => {
+            if(obj instanceof CircleImage)
+                obj.updateMask();
+        })
+    }
 }
