@@ -24,6 +24,7 @@ CollectionRouter.get("/:colName",
     isAuthenticated, 
     isAuthorized({
         allowRoles: ["admin", "gamemaster"],
+        allowGameServer: true
     }),
     CollectionController.getAllDocuments
 )

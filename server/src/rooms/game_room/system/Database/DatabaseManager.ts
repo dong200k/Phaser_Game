@@ -1,3 +1,4 @@
+import CollectionService from "../../../../services/CollectionService"
 import DungeonService from "../../../../services/DungeonService"
 import MonsterService from "../../../../services/MonsterService"
 import FileUtil from "../../../../util/FileUtil"
@@ -24,10 +25,11 @@ export default class DatabaseManager{
      */
     async loadData(){
         try {
-            let db = await FileUtil.readJSONAsync("assets/db.json")
+            // let db = await FileUtil.readJSONAsync("assets/db.json")
             
             //Load artifact and weapon upgrades
-            for (let upgrade of db.upgrades) {
+            let upgrades = await CollectionService.getAllDocuments("upgrades")
+            for (let upgrade of upgrades) {
                 if(upgrade.type === "weapon"){
                     this.weaponUpgrades.set(upgrade.id, upgrade)
                 }else{
@@ -36,12 +38,14 @@ export default class DatabaseManager{
             }
 
             //Load skill trees
-            for (let skillTree of db.skills) {
+            let skills = await CollectionService.getAllDocuments("skills")
+            for (let skillTree of skills) {
                 this.skillTrees.set(skillTree.id, skillTree)
             }
 
             //Load weapons
-            for (let weapon of db.weapons) {
+            let weapons = await CollectionService.getAllDocuments("weapons")
+            for (let weapon of weapons) {
                 this.weapons.set(weapon.id, weapon)
             }
 
@@ -71,13 +75,15 @@ export default class DatabaseManager{
                 })
             }
 
-            //Load abiities
-            for (let ability of db.abilities) {
+            //Load abilities
+            let abilities = await CollectionService.getAllDocuments("abilities")
+            for (let ability of abilities) {
                 this.abilities.set(ability.id, ability)
             }
 
             //Load roles
-            for (let role of db.roles) {
+            let roles = await CollectionService.getAllDocuments("roles")
+            for (let role of roles) {
                 this.roles.set(role.id, role)
             }
 

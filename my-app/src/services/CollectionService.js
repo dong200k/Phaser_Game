@@ -1,5 +1,4 @@
 import { BASEURL_API_SERVER } from "../constants.js"
-import { getDefaultWeapon } from "../helpers.js"
 
 const BASEURL = BASEURL_API_SERVER + "/col"
 
@@ -18,7 +17,7 @@ export default class CollectionService{
             return await res.json()
         }catch(e){
             console.log(e.message)
-            console.log(`error getting upgrade with the id: ${id}`)
+            console.log(`error getting document with the id: ${id}`)
             return null
         }
     }
@@ -88,7 +87,7 @@ export default class CollectionService{
             return await res.json()
         }catch(e){
             console.log(e.message)
-            console.log("error getting all upgrades")
+            console.log("error getting all documents")
             return []
         }
     }
