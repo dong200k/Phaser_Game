@@ -22,6 +22,7 @@ import NotificationContextProvider from './contexts/NotificationContextProvider.
 import Asset from './components/asset/Asset.js';
 import CreateOrEditAsset from './components/asset/CreateOrEditAsset.js';
 import CreateOrEditMonster from './components/monster/CreateOrEditMonster.js';
+import { JsonDB } from './components/JsonDB.js';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <NavigationBar/>
               <Routes>
                 <Route path="/" element={<Home/>}/>
+                <Route path="/json" element={<Authorized roles={["admin", "gamemaster"]}><JsonDB/></Authorized>}/>
                 <Route path="/role/:id" element={<Authorized roles={["admin", "gamemaster"]}><Role/></Authorized>}/>
                 <Route path="/role" element={<Authorized roles={["admin", "gamemaster"]}><Roles /></Authorized>} />
                 <Route path="/abilities/:id" element={<Authorized roles={["admin", "gamemaster"]}><Ability/></Authorized>}/>

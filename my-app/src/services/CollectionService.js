@@ -4,9 +4,16 @@ import { getDefaultWeapon } from "../helpers.js"
 const BASEURL = BASEURL_API_SERVER + "/col"
 
 export default class CollectionService{
-    static async getDocument(id, colName){
+    static async getDocument(id, colName, user){
+        let IdToken = await user.getIdToken();
         try{
-            let res = await fetch(BASEURL + `/${colName}/${id}`)
+            let res = await fetch(BASEURL + `/${colName}/${id}`, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': IdToken,
+                },
+            })
             if(res.status !== 200) throw new Error()
             return await res.json()
         }catch(e){
@@ -15,12 +22,14 @@ export default class CollectionService{
             return null
         }
     }
-    static async saveDocument(document, colName){
+    static async saveDocument(document, colName, user){
+        let IdToken = await user.getIdToken();
         try {
             let result = await fetch(BASEURL + `/${colName}/${document.id}` + `/save`, {
                 method: "PUT",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': IdToken,
                 },
                 body: JSON.stringify({document})
             })
@@ -31,12 +40,14 @@ export default class CollectionService{
         }
     
     }
-    static async createDocument(document, colName){
+    static async createDocument(document, colName, user){
+        let IdToken = await user.getIdToken();
         try {
             let result = await fetch(BASEURL + `/${colName}/${document.id}`, {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': IdToken,
                 },
                 body: JSON.stringify({document})
             })
@@ -47,12 +58,14 @@ export default class CollectionService{
         }
     }
 
-    static async deleteDocument(id, colName){
+    static async deleteDocument(id, colName, user){
+        let IdToken = await user.getIdToken();
         try {
             let result = await fetch(BASEURL + `/${colName}/${id}`, {
                 method: "delete",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': IdToken,
                 },
             })
             if(result.status !== 200) throw new Error()
@@ -62,9 +75,15 @@ export default class CollectionService{
         }
     }
 
-    static async getAllDocuments(colName){
+    static async getAllDocuments(colName, user){
+        let IdToken = await user.getIdToken();
         try{
-            let res = await fetch(BASEURL + `/${colName}`)
+            let res = await fetch(BASEURL + `/${colName}`, {
+                method: "GET",
+                headers: {
+                    'Authorization': IdToken,
+                }
+            })
             if(res.status !== 200) throw new Error()
             return await res.json()
         }catch(e){

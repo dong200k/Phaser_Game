@@ -54,7 +54,7 @@ const DataContextProvider = (props) => {
     const refetchFromCollection = (colName) => {
         assertColNameValidity(colName)
         if(user){
-            CollectionService.getAllDocuments(colName)
+            CollectionService.getAllDocuments(colName, user)
                 .then((res)=>{
                     let {documents} = res
                     let [docs, setDocs] = getColState(colName)
@@ -72,7 +72,7 @@ const DataContextProvider = (props) => {
         let [docs, setDocs] = getColState(colName)
 
         try {
-            await CollectionService.deleteDocument(id, colName);
+            await CollectionService.deleteDocument(id, colName, user);
             setDocs(prevDocs => {
                 return prevDocs.filter(prevDoc => prevDoc.id !== id);
             });
@@ -87,7 +87,7 @@ const DataContextProvider = (props) => {
         assertColNameValidity(colName)
 
         try {
-            const res = await CollectionService.getDocument(id, colName);
+            const res = await CollectionService.getDocument(id, colName, user);
             return res.document;
         } catch (e) {
             console.log(`Error getting document ${id}`);
@@ -103,7 +103,7 @@ const DataContextProvider = (props) => {
         }
 
         try {
-            await CollectionService.saveDocument(document, colName);
+            await CollectionService.saveDocument(document, colName, user);
             setDocs(prevDocs => {
                 return prevDocs.map(prevDoc => {
                     if (prevDoc.id === document.id) {
@@ -146,7 +146,7 @@ const DataContextProvider = (props) => {
         }
         
         try {
-            await CollectionService.createDocument(defaultDoc, colName);
+            await CollectionService.createDocument(defaultDoc, colName, user);
             setDocs(prevDocs => {
                 return [defaultDoc, ...prevDocs];
             });

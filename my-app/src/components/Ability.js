@@ -10,6 +10,7 @@ export default function Ability(){
 
     useEffect(()=>{
         getDocument(id, "abilities")
+            .then(ability=> setAbility(ability))
     }, [id, getDocument])
 
     const save = (e)=>{

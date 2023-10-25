@@ -9,6 +9,7 @@ import DungeonRouter from './routers/DungeonRouter';
 import AdminRouter from './routers/AdminRouter';
 import AssetRouter from './routers/AssetRouter';
 import CollectionRouter from './routers/CollectionRouter';
+import JsonDBRouter from './routers/JsonDBRouter';
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use("/monsters", MonsterRouter);
 app.use("/dungeons", DungeonRouter);
 app.use("/assets", AssetRouter);
 app.use("/col", CollectionRouter);
+app.use("/json", JsonDBRouter);
 
 app.get("*", (req, res)=>{
   console.log("404 not found");
