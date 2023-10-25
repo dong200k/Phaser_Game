@@ -1,37 +1,24 @@
-import { useEffect, useState } from "react"
-import { getDefaultNode, getDefaultUpgradeNode, getEditForm } from "../helpers.js"
-import NodeService from "../services/NodeService.js"
+import { useContext, useEffect, useState } from "react"
+import { getDefaultUpgradeNode, getEditForm } from "../helpers.js"
 import { useParams } from "react-router-dom"
 import Dropdown from 'react-bootstrap/Dropdown';
 import effectTypes from "../effectTypes.js";
-import WeaponService from "../services/WeaponService.js";
+import { DataContext } from "../contexts/DataContextProvider.js";
 
 export default function EditNodePage(){
     let id = useParams().id
     let [form, setForm] = useState(getDefaultUpgradeNode())
     let [showZeroStat, setShowZeroStat] = useState(false)
     let dataKeys = ["name", "description", "stat", "weaponId", "upgradeEffect", "status", "selectionTime"]
-    let [nodes, setNodes] = useState([])
-    let [weapons, setWeapons] = useState([])
     let nodeStatuses = ["none", "selected", "skipped"]
 
+    const {nodes, weapons, getDocument, saveDocument} = useContext(DataContext)
 
     // Load node to edit by id
     useEffect(()=>{
-        NodeService.getNode(id)
+        getDocument(id, "nodes")
             .then((data)=>setForm(getEditForm(data, "upgrade")))
-    }, [id])
-
-    // Load reusable nodes to copy
-    useEffect(()=>{
-        NodeService.getAllNodes()
-        .then(nodes=>setNodes(nodes))
-    },[])
-
-    useEffect(()=>{
-        WeaponService.getAllWeapons()
-            .then(weapons=>setWeapons(weapons))
-    }, [])
+    }, [id, getDocument])
 
     function onChange(type, key){
         return (e)=>{
@@ -79,7 +66,7 @@ export default function EditNodePage(){
         })
     }
 
-    function save(e){
+    async function save(e){
         e.preventDefault()
         Object.entries(form.data.stat).forEach(([key,val])=>{
             form.data.stat[key] = Number(val)
@@ -93,11 +80,7 @@ export default function EditNodePage(){
         form.data.collisionGroup = Number(form.data.collisionGroup)
         form.data.coinCost = Number(form.data.coinCost)
 
-        let success = NodeService.saveNode(form)
-
-        if(success){
-            alert("saved to database")
-        }
+        saveDocument(form, "nodes")
     }
 
     let dropDown =

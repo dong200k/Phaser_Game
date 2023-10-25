@@ -1,35 +1,16 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import AbilityService from "../services/AbilityService.js"
+import { DataContext } from "../contexts/DataContextProvider.js"
 
 export default function Abilities(){
-    let [abilities, setAbilities] = useState([])
+    const {abilities, createDocument, deleteDocument} = useContext(DataContext)
 
-    useEffect(()=>{
-        AbilityService.getAllAbilities()
-            .then(abilities=>setAbilities(abilities))
-    }, [])
-
-    const createNewAbility = async ()=>{
-        let result = await AbilityService.createAbility()
-
-        if(result.status === 201){
-            let role = await result.json()
-            setAbilities(prev=>[role, ...prev])
-        }
+    const createNewAbility = ()=>{
+        createDocument("abilities")
     }
 
-    const deleteAbility = async (id)=>{
-        let name = abilities.filter(role=>role.id==id)[0].name
-
-        if(window.confirm(`are you sure you want to delete "${name}"`)){
-            let result = await AbilityService.deleteAbility(id)
-
-            if(result.status === 200) {
-                alert(`deleted ${name} successfully`)
-                setAbilities(prev=>prev.filter((ability)=>ability.id !== id))
-            }
-        }
+    const deleteAbility = (id)=>{
+        deleteDocument(id, "abilities")
     }
 
     return <div style={{backgroundColor: "#ff8080"}}>

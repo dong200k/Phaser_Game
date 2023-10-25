@@ -1,27 +1,16 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { getEditForm } from "../helpers.js"
 import Dropdown from 'react-bootstrap/Dropdown';
-import NodeService from "../services/NodeService.js";
-import WeaponService from "../services/WeaponService.js"
 import effectTypes from "../effectTypes.js";
+import { DataContext } from "../contexts/DataContextProvider.js";
 
 export default function EditNode({node, updateUpgrade, setEditNode, type}){
     let [form, setForm] = useState(getEditForm(node, type))
-    let [nodes, setNodes] = useState([])
-    let [weapons, setWeapons] = useState([])
     let dataKeys = ["name", "description", "stat", "weaponId", "upgradeEffect", "status", "selectionTime"]
     let nodeStatuses = ["none", "selected", "skipped"]
     let [showZeroStat, setShowZeroStat] = useState(false)
 
-    useEffect(()=>{
-        NodeService.getAllNodes()
-        .then(nodes=>setNodes(nodes))
-    },[])
-
-    useEffect(()=>{
-        WeaponService.getAllWeapons()
-            .then(weapons=>setWeapons(weapons))
-    }, [])
+    const {nodes, weapons} = useContext(DataContext)
 
     function loadDefaultNode(node){
         setForm(prevForm=>{
@@ -38,10 +27,6 @@ export default function EditNode({node, updateUpgrade, setEditNode, type}){
             return newForm
         })
     }
-
-    useEffect(()=>{
-        console.log(form)
-    }, [form])
 
     function onChange(type, key){
         return (e)=>{

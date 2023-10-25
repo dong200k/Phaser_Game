@@ -211,7 +211,38 @@ export function padUpgradeStat(upgrade){
   return newUpgrade
 }
 
+/** Removes the information that the d3 library uses for the tree view. 
+ * @returns a new document with the d3 info removed.
+ */
+export function removeD3TreeInfo(document){
+  let newDoc = structuredClone(document)
 
+  function dfsHelper(node){
+    if(node === undefined) return
+
+    delete node["__rd3t"]
+
+    for(let child of node.children){
+      dfsHelper(child)
+    }
+  }
+
+  dfsHelper(newDoc.root)
+  return newDoc
+}
+
+/** Returns a new obj with its property sorted */
+export function sortObject(obj){
+  let newObj = {}
+  let keysSorted = Object.keys(obj).sort((a,b)=>{
+    return ('' + a).localeCompare(b);
+  })
+  keysSorted.forEach(key=>{
+    newObj[key] = obj[key]
+  })
+  // console.log(keysSorted)
+  return newObj
+}
 
 // export default function isValidStat(stat){
 //   let message = ""

@@ -1,23 +1,22 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import AbilityService from "../services/AbilityService.js"
+import { DataContext } from "../contexts/DataContextProvider.js"
+import { sortObject } from "../helpers.js"
 
 export default function Ability(){
+    const {getDocument, saveDocument} = useContext(DataContext)
     let [ability, setAbility] = useState(undefined)
     let id = useParams().id
     let objectKeys = ["id"]
 
     useEffect(()=>{
-       AbilityService.getAbility(id)
-        .then(ability=>setAbility(ability))
-    }, [id])
+        getDocument(id, "abilities")
+            .then(ability=> setAbility(ability))
+    }, [id, getDocument])
 
-    const save = async (e)=>{
+    const save = (e)=>{
         e.preventDefault()
-        let success = await AbilityService.saveAbility(ability)
-
-        if(success) alert("saved to db successfully")
-        else alert("failed to save")
+        saveDocument(ability, "abilities")
     }
 
     const onChange = (key)=>{
@@ -40,7 +39,7 @@ export default function Ability(){
                     <span className="text-primary">id:<span className="text-dark">{ability.id}</span> </span>
                 </h3>
                 {
-                    Object.entries(ability).filter(([key, val])=>!objectKeys.includes(key)).map(([key, val])=>
+                    Object.entries(sortObject(ability)).filter(([key, val])=>!objectKeys.includes(key)).map(([key, val])=>
                         <label key={key} className="d-flex justify-content-center">
                             <span className="text-danger">{key}:</span><input style={{width: "25%"}} type="text" value={val} onChange={onChange(key)}/>
                         </label>

@@ -1,35 +1,29 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import RoleService from "../services/RoleService.js"
 import Dropdown from 'react-bootstrap/Dropdown';
-import UpgradeService from "../services/UpgradeService.js";
-import AbilityService from "../services/AbilityService.js";
+import { DataContext } from "../contexts/DataContextProvider.js";
+import { sortObject } from "../helpers.js";
 
 export default function Role(){
     let [weaponUpgrades, setWeaponUpgrades] = useState([])
-    let [abilities, setAbilities] = useState([])
     let [showZeroStat, setShowZeroStat] = useState(false)
     let [role, setRole] = useState(undefined)
     let id = useParams().id
     let objectKeys = ["stat", "weaponUpgradeId", "abilityId", "id", "coinCost"]
 
+    const {roles, upgrades, abilities, getDocument, saveDocument} = useContext(DataContext)
+
     useEffect(()=>{
-        RoleService.getRole(id)
-            .then(role=>setRole(role))
-    
-        UpgradeService.getAllUpgrades()
-            .then(upgrades=>setWeaponUpgrades(upgrades.filter(upgrade=>upgrade.type==="weapon")))
+        getDocument(id, "roles")
+            .then((document)=>setRole(document))
+            
+        setWeaponUpgrades(upgrades.filter(upgrade=>upgrade.type==="weapon"))
         
-        AbilityService.getAllAbilities()
-            .then(abilities=>setAbilities(abilities))
-    }, [id])
+    }, [getDocument, id, upgrades])
 
-    const save = async (e)=>{
+    const save = (e)=>{
         e.preventDefault()
-        let success = await RoleService.saveRole(role)
-
-        if(success) alert("saved to db successfully")
-        else alert("failed to save")
+        saveDocument(role, "roles")
     }
 
     const onChange = (name, key)=>{
@@ -104,7 +98,7 @@ export default function Role(){
                     <span className="text-primary">id:<span className="text-dark">{role.id}</span> </span>
                 </h3>
                 {
-                    Object.entries(role).filter(([key, val])=>!objectKeys.includes(key)).map(([key, val])=>
+                    Object.entries(sortObject(role)).filter(([key, val])=>!objectKeys.includes(key)).map(([key, val])=>
                         <label key={key} className="d-flex justify-content-center">
                             <span className="text-danger">{key}:</span><input style={{width: "25%"}} type="text" value={val} onChange={onChange("", key)}/>
                         </label>

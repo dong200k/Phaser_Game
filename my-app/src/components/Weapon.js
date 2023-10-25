@@ -1,23 +1,22 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import WeaponService from "../services/WeaponService.js"
-import { getDefaultWeapon } from "../helpers.js"
+import { DataContext } from "../contexts/DataContextProvider.js"
+import { sortObject } from "../helpers.js"
 
 export default function Weapon(){
     let [weapon, setWeapon] = useState(undefined)
     let id = useParams().id
 
+    const {getDocument, saveDocument} = useContext(DataContext)
+
     useEffect(()=>{
-       WeaponService.getWeapon(id)
+       getDocument(id, "weapons")
         .then(weapon=>setWeapon(weapon))
-    }, [id])
+    }, [getDocument, id])
 
-    const save = async (e)=>{
+    const save = (e)=>{
         e.preventDefault()
-        let success = await WeaponService.saveWeapon(weapon)
-
-        if(success) alert("saved to db successfully")
-        else alert("failed to save")
+        saveDocument(weapon, "weapons")
     }
 
     const onChange = (key)=>{
@@ -40,7 +39,7 @@ export default function Weapon(){
                     <span className="text-primary">id:<span className="text-dark">{weapon.id}</span> </span>
                 </h3>
                 {
-                    Object.entries(weapon).filter(([key, val])=>key!=="id").map(([key, val])=>
+                    Object.entries(sortObject(weapon)).filter(([key, val])=>key!=="id").map(([key, val])=>
                         <label key={key} className="d-flex justify-content-center">
                             <span className="text-danger">{key}:</span><input style={{width: "25%"}} type="text" value={val} onChange={onChange(key)}/>
                         </label>
