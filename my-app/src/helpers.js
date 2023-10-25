@@ -231,6 +231,18 @@ export function removeD3TreeInfo(document){
   return newDoc
 }
 
+/** Returns a new obj with its property sorted */
+export function sortObject(obj){
+  let newObj = {}
+  let keysSorted = Object.keys(obj).sort((a,b)=>{
+    return ('' + a).localeCompare(b);
+  })
+  keysSorted.forEach(key=>{
+    newObj[key] = obj[key]
+  })
+  // console.log(keysSorted)
+  return newObj
+}
 
 // export default function isValidStat(stat){
 //   let message = ""

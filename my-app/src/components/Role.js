@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import Dropdown from 'react-bootstrap/Dropdown';
 import { DataContext } from "../contexts/DataContextProvider.js";
+import { sortObject } from "../helpers.js";
 
 export default function Role(){
     let [weaponUpgrades, setWeaponUpgrades] = useState([])
@@ -97,7 +98,7 @@ export default function Role(){
                     <span className="text-primary">id:<span className="text-dark">{role.id}</span> </span>
                 </h3>
                 {
-                    Object.entries(role).filter(([key, val])=>!objectKeys.includes(key)).map(([key, val])=>
+                    Object.entries(sortObject(role)).filter(([key, val])=>!objectKeys.includes(key)).map(([key, val])=>
                         <label key={key} className="d-flex justify-content-center">
                             <span className="text-danger">{key}:</span><input style={{width: "25%"}} type="text" value={val} onChange={onChange("", key)}/>
                         </label>

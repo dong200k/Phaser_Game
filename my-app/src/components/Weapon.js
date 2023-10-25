@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { DataContext } from "../contexts/DataContextProvider.js"
+import { sortObject } from "../helpers.js"
 
 export default function Weapon(){
     let [weapon, setWeapon] = useState(undefined)
@@ -38,7 +39,7 @@ export default function Weapon(){
                     <span className="text-primary">id:<span className="text-dark">{weapon.id}</span> </span>
                 </h3>
                 {
-                    Object.entries(weapon).filter(([key, val])=>key!=="id").map(([key, val])=>
+                    Object.entries(sortObject(weapon)).filter(([key, val])=>key!=="id").map(([key, val])=>
                         <label key={key} className="d-flex justify-content-center">
                             <span className="text-danger">{key}:</span><input style={{width: "25%"}} type="text" value={val} onChange={onChange(key)}/>
                         </label>
