@@ -1,6 +1,7 @@
 import FileUtil from "../util/fileutil"
 import { IAbility, IRole, skillTree, weapon } from "../../../server/src/rooms/game_room/system/interfaces"
 
+/** */
 export default class JsonDatabaseManager{
 
     static singleton = new JsonDatabaseManager()

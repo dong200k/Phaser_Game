@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import AbilityService from "../services/AbilityService.js"
+import { DataContext } from "../contexts/DataContextProvider.js"
 
 export default function Ability(){
+    const {getDocument, saveDocument} = useContext(DataContext)
     let [ability, setAbility] = useState(undefined)
     let id = useParams().id
     let objectKeys = ["id"]
 
     useEffect(()=>{
-       AbilityService.getAbility(id)
-        .then(ability=>setAbility(ability))
-    }, [id])
+        getDocument(id, "abilities")
+    }, [id, getDocument])
 
     const save = async (e)=>{
         e.preventDefault()
-        let success = await AbilityService.saveAbility(ability)
+        let success = await saveDocument(ability, "abilities")
 
         if(success) alert("saved to db successfully")
         else alert("failed to save")

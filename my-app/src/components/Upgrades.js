@@ -1,41 +1,31 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import UpgradeContainer from "./UpgradeContainer.js";
-import UpgradeService from "../services/UpgradeService.js";
-import SkillService from "../services/SkillService.js";
 import SkillContainer from "./SkillContainer.js";
 import Dropdown from 'react-bootstrap/Dropdown';
+import { DataContext } from "../contexts/DataContextProvider.js";
 
 export default function Upgrades(props){
     let [upgrades, setUpgrades] = useState([])
+    const {skills, upgrades: upgradeData, createDocument, deleteDocument, saveDocument} = useContext(DataContext)
     
     useEffect(()=>{
         if(props.type==="upgrade"){
-            UpgradeService.getAllUpgrades()
-            .then((upgrades)=>{
-              setUpgrades(upgrades)
-            })
+            setUpgrades(upgradeData)
         }else if(props.type==="skill"){
-            SkillService.getAllSkills()
-            .then((upgrades)=>{
-                setUpgrades(upgrades)
-            })
+            setUpgrades(skills)
         }
-    }, [props])
+    }, [props.type, skills, upgradeData])
 
     async function createTree(type){
-        let result
+        let success
 
         if(props.type === "upgrade"){
-          result = await UpgradeService.createUpgrade(type)  
+            success = await createDocument("upgrades", type)
         }else if(props.type==="skill"){
-            result = await SkillService.createSkill() 
+            success = await createDocument("skills")
         }
-        
-        
-        if(result.status === 201){
-            let upgrade = await result.json()
-            setUpgrades(prevUpgrade=>[...prevUpgrade, upgrade])
-        }
+
+        if(success) alert("Created Tree Successfully")
     }
 
     function deleteTree(id){
@@ -43,14 +33,9 @@ export default function Upgrades(props){
             let name = upgrades.filter(upgrade=>upgrade.id==id)[0].name
 
             if(window.confirm(`are you sure you want to delete "${name}"`)){
-                let result
-                if(props.type==="upgrade"){
-                    result = await UpgradeService.deleteUpgrade(id)
-                }else if(props.type==="skill"){
-                    result = await SkillService.deleteSkill(id)
-                }
+                let success = await deleteDocument(id, props.type + 's')
                 
-                if(result.status === 200) {
+                if(success === 200) {
                     alert(`deleted ${name} successfully`)
                     setUpgrades(prevUpgrade=>prevUpgrade.filter((upgrade)=>upgrade.id !== id))
                 }
@@ -70,34 +55,18 @@ export default function Upgrades(props){
     }
 
     async function createTreeCopy(tree, type){
-        let result
-
+        let document
         // Create new tree in db
         if(props.type === "upgrade"){
-          result = await UpgradeService.createUpgrade(type)  
+            document = await createDocument("upgrades", type)
         }else if(props.type==="skill"){
-            result = await SkillService.createSkill() 
+            document = await createDocument("skills")
         }
-        
-        if(result.status === 201){
-            let upgrade = await result.json()
 
-            // Init tree info
-            upgrade.name = "copy of " + tree.name
-            upgrade.description = tree.description
-            if(tree.type) upgrade.type = tree.type
-            upgrade.root = tree.root
-
-            // Save tree to database
-            let success
-            if(props.type === "upgrade"){
-                success = UpgradeService.saveUpgrade(upgrade)
-            }else{
-                success = SkillService.saveSkill(upgrade)
-            }
-            
-            if(success) setUpgrades(prevUpgrade=>[...prevUpgrade, upgrade])
-        }
+        // Save the tree over new tree
+        let docToSave = {...tree, id: document.id, name: "copy of " + tree.name}
+        let success = await saveDocument(docToSave, props.type + "s")
+        if(success) alert("Successfully copied tree")
     }
 
     let copyDropDown = (type) =>
@@ -120,9 +89,9 @@ export default function Upgrades(props){
     return(
         <div style={{backgroundColor: props.type==="upgrade"? "lightgreen":"lightblue"}}> 
             <h1>{props.type}s</h1> 
-            {upgrades.length===0? 
+            {/* {upgrades.length===0? 
                 <div>No upgrades or json server is down</div> 
-                : 
+                :  */}
                 <div>
                     {props.type==="skill"?
                     <div>
@@ -159,7 +128,7 @@ export default function Upgrades(props){
                     }
                 </div>
                     
-            }
+            {/* } */}
         </div>
     )
 }   

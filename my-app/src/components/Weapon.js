@@ -1,20 +1,21 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import WeaponService from "../services/WeaponService.js"
-import { getDefaultWeapon } from "../helpers.js"
+import { DataContext } from "../contexts/DataContextProvider.js"
 
 export default function Weapon(){
     let [weapon, setWeapon] = useState(undefined)
     let id = useParams().id
 
+    const {getDocument, saveDocument} = useContext(DataContext)
+
     useEffect(()=>{
-       WeaponService.getWeapon(id)
+       getDocument(id, "weapons")
         .then(weapon=>setWeapon(weapon))
-    }, [id])
+    }, [getDocument, id])
 
     const save = async (e)=>{
         e.preventDefault()
-        let success = await WeaponService.saveWeapon(weapon)
+        let success = await saveDocument(weapon, "weapons")
 
         if(success) alert("saved to db successfully")
         else alert("failed to save")

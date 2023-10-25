@@ -1,32 +1,28 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import RoleService from "../services/RoleService.js"
 import Dropdown from 'react-bootstrap/Dropdown';
-import UpgradeService from "../services/UpgradeService.js";
-import AbilityService from "../services/AbilityService.js";
+import { DataContext } from "../contexts/DataContextProvider.js";
 
 export default function Role(){
     let [weaponUpgrades, setWeaponUpgrades] = useState([])
-    let [abilities, setAbilities] = useState([])
     let [showZeroStat, setShowZeroStat] = useState(false)
     let [role, setRole] = useState(undefined)
     let id = useParams().id
     let objectKeys = ["stat", "weaponUpgradeId", "abilityId", "id", "coinCost"]
 
+    const {roles, upgrades, abilities, getDocument, saveDocument} = useContext(DataContext)
+
     useEffect(()=>{
-        RoleService.getRole(id)
-            .then(role=>setRole(role))
-    
-        UpgradeService.getAllUpgrades()
-            .then(upgrades=>setWeaponUpgrades(upgrades.filter(upgrade=>upgrade.type==="weapon")))
+        getDocument(id, "roles")
+            .then((document)=>setRole(document))
+            
+        setWeaponUpgrades(upgrades.filter(upgrade=>upgrade.type==="weapon"))
         
-        AbilityService.getAllAbilities()
-            .then(abilities=>setAbilities(abilities))
-    }, [id])
+    }, [getDocument, id, upgrades])
 
     const save = async (e)=>{
         e.preventDefault()
-        let success = await RoleService.saveRole(role)
+        let success = await saveDocument(role, "roles")
 
         if(success) alert("saved to db successfully")
         else alert("failed to save")

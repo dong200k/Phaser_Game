@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Tree from "react-d3-tree";
 import { getDefaultNode, getDefaultSkillNode, getDefaultUpgradeNode, useCenteredTree } from "../helpers.js";
 import { useParams } from "react-router";
-import UpgradeService from "../services/UpgradeService.js";
 import EditNode from "./EditNode.js";
 import NodeDetails from "./NodeDetails.js";
-import SkillService from "../services/SkillService.js";
 import Dropdown from 'react-bootstrap/Dropdown';
+import { DataContext } from "../contexts/DataContextProvider.js";
 
 
 const containerStyles = {
@@ -51,20 +50,12 @@ export default function Upgrade(props) {
   let [editNode, setEditNode] = useState(undefined)
   let statuses = ["selected", "none", "skipped"]
 
+  const {getDocument, saveDocument} = useContext(DataContext)
+
   useEffect(()=>{
-    if(props.type === "upgrade"){
-      UpgradeService.getUpgrade(id)
-      .then((data)=>{
-        setUpgrade(data)
-      })
-    }else if(props.type === "skill"){
-      SkillService.getSkill(id)
-      .then((data)=>{
-        setUpgrade(data)
-      })
-    }
-    
-  }, [id, props])
+    getDocument(id, props.type + "s")
+      .then(doc=>setUpgrade(doc))
+  }, [getDocument, id, props])
 
   const setEdit = (node)=>{
     return () => {
@@ -107,14 +98,8 @@ export default function Upgrade(props) {
   }
 
   async function saveUpgrade(){
-    let success
-    if(props.type === "upgrade"){
-      success = await UpgradeService.saveUpgrade(upgrade)
-    }else if(props.type==="skill"){
-      success = await SkillService.saveSkill(upgrade)
-    }
+    let success = saveDocument(upgrade, props.type + 's')
 
-    
     if(success) alert(`saved ${props.type} successfully!`)
   }
 

@@ -8,6 +8,7 @@ import RoleRouter from './routers/RoleRouter';
 import DungeonRouter from './routers/DungeonRouter';
 import AdminRouter from './routers/AdminRouter';
 import AssetRouter from './routers/AssetRouter';
+import CollectionRouter from './routers/CollectionRouter';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ app.use(RoleRouter)
 app.use("/monsters", MonsterRouter);
 app.use("/dungeons", DungeonRouter);
 app.use("/assets", AssetRouter);
+app.use("/col", CollectionRouter);
 
 app.get("*", (req, res)=>{
   console.log("404 not found");

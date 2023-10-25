@@ -1,0 +1,1 @@
+export const BASEURL_API_SERVER = "http://localhost:3002"

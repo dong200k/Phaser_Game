@@ -1,33 +1,22 @@
-import { useEffect, useState } from "react"
+import { useContext } from "react"
 import { Link } from "react-router-dom"
-import RoleService from "../services/RoleService.js"
+import { DataContext } from "../contexts/DataContextProvider.js"
 
 export default function Roles(){
-    let [roles, setRoles] = useState([])
-
-    useEffect(()=>{
-        RoleService.getAllRoles()
-            .then(roles=>setRoles(roles))
-    }, [])
+    const {roles, createDocument, deleteDocument} = useContext(DataContext)
 
     const createNewRole = async ()=>{
-        let result = await RoleService.createRole()
-
-        if(result.status === 201){
-            let role = await result.json()
-            setRoles(prev=>[role, ...prev])
-        }
+        createDocument("roles")
     }
 
     const deleteRole = async (id)=>{
         let name = roles.filter(role=>role.id==id)[0].name
 
         if(window.confirm(`are you sure you want to delete "${name}"`)){
-            let result = await RoleService.deleteRole(id)
+            let result = await deleteDocument(id, "roles")
 
             if(result.status === 200) {
                 alert(`deleted ${name} successfully`)
-                setRoles(prev=>prev.filter((role)=>role.id !== id))
             }
         }
     }
