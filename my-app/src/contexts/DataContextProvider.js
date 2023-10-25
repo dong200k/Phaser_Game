@@ -4,7 +4,7 @@ import { UserContext } from "./UserContextProvider";
 import { getAllDungeons } from "../services/DungeonService";
 import { getAllAssets } from "../services/AssetService";
 import CollectionService from "../services/CollectionService.js";
-import { getDefaultAbility, getDefaultArtifact, getDefaultNode, getDefaultRole, getDefaultSkill, getDefaultUpgrade, getDefaultWeapon } from "../helpers.js";
+import { getDefaultAbility, getDefaultArtifact, getDefaultNode, getDefaultRole, getDefaultSkill, getDefaultUpgrade, getDefaultWeapon, removeD3TreeInfo } from "../helpers.js";
 
 /** The data context contains the data the is fetched from firebase. 
  * These include monster data, dungeon data, etc.
@@ -97,6 +97,10 @@ const DataContextProvider = (props) => {
     const saveDocument = async (document, colName, doAlert=true) => {
         assertColNameValidity(colName)
         let [, setDocs] = getColState(colName)
+
+        if(["upgrades", "skills"].find(name=>name===colName)){
+            document = removeD3TreeInfo(document)
+        }
 
         try {
             await CollectionService.saveDocument(document, colName);
