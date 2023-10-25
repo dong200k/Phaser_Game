@@ -14,10 +14,7 @@ export default function Nodes(props){
             let name = nodes.filter(node=>node.id==id)[0].data.name
 
             if(window.confirm(`are you sure you want to delete "${name}"`)){
-                let success = await deleteDocument(id, "nodes")
-                if(success) {
-                    alert(`deleted ${name} successfully`)
-                }
+                deleteDocument(id, "nodes")
             } 
         }
     }

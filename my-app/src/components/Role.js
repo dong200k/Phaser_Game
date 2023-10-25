@@ -20,12 +20,9 @@ export default function Role(){
         
     }, [getDocument, id, upgrades])
 
-    const save = async (e)=>{
+    const save = (e)=>{
         e.preventDefault()
-        let success = await saveDocument(role, "roles")
-
-        if(success) alert("saved to db successfully")
-        else alert("failed to save")
+        saveDocument(role, "roles")
     }
 
     const onChange = (name, key)=>{

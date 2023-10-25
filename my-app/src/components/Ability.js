@@ -12,12 +12,9 @@ export default function Ability(){
         getDocument(id, "abilities")
     }, [id, getDocument])
 
-    const save = async (e)=>{
+    const save = (e)=>{
         e.preventDefault()
-        let success = await saveDocument(ability, "abilities")
-
-        if(success) alert("saved to db successfully")
-        else alert("failed to save")
+        saveDocument(ability, "abilities")
     }
 
     const onChange = (key)=>{

@@ -67,56 +67,55 @@ const DataContextProvider = (props) => {
         }
     }
 
-    const deleteDocument = (id, colName) => {
+    const deleteDocument = async (id, colName) => {
         assertColNameValidity(colName)
         let [docs, setDocs] = getColState(colName)
 
-        return CollectionService.deleteDocument(id, colName)
-            .then(()=>{
-                setDocs(prevDocs=>{
-                    return prevDocs.filter(prevDoc=>prevDoc.id !== id)
-                })
-                return true
-            })
-            .catch(e=>{
-                console.log(`Error deleting document ${id}`)
-            })
+        try {
+            await CollectionService.deleteDocument(id, colName);
+            setDocs(prevDocs => {
+                return prevDocs.filter(prevDoc => prevDoc.id !== id);
+            });
+            alert("Document deleted successfully");
+            return true;
+        } catch (e) {
+            console.log(`Error deleting document ${id}`);
+        }
     }
 
-    const getDocument = (id, colName) => {
+    const getDocument = async (id, colName) => {
         assertColNameValidity(colName)
 
-        return CollectionService.getDocument(id, colName)
-            .then(res=>{
-                return res.document
-            })
-            .catch(e=>{
-                console.log(`Error getting document ${id}`)
-            })
+        try {
+            const res = await CollectionService.getDocument(id, colName);
+            return res.document;
+        } catch (e) {
+            console.log(`Error getting document ${id}`);
+        }
     }
 
-    const saveDocument = (document, colName) => {
+    const saveDocument = async (document, colName, doAlert=true) => {
         assertColNameValidity(colName)
         let [, setDocs] = getColState(colName)
 
-        return CollectionService.saveDocument(document, colName)
-            .then(()=>{
-                setDocs(prevDocs=>{
-                    return prevDocs.map(prevDoc=>{
-                        if(prevDoc.id === document.id){
-                            return document
-                        }
-                        return prevDoc
-                    })
-                })
-                return true
-            })
-            .catch(e=>{
-                console.log(`Error saving document ${document.id}`)
-            })
+        try {
+            await CollectionService.saveDocument(document, colName);
+            setDocs(prevDocs => {
+                return prevDocs.map(prevDoc => {
+                    if (prevDoc.id === document.id) {
+                        return document;
+                    }
+                    return prevDoc;
+                });
+            });
+            if (doAlert) alert("Document saved successfully");
+            return true;
+        } catch (e) {
+            console.log(`Error saving document ${document.id}`);
+        }
     }
 
-    const createDocument = (colName, type) => {
+    const createDocument = async (colName, type) => {
         assertColNameValidity(colName)
         let [, setDocs] = getColState(colName)
         let defaultDoc
@@ -142,16 +141,16 @@ const DataContextProvider = (props) => {
                 break;
         }
         
-        return CollectionService.createDocument(defaultDoc, colName)
-            .then(()=>{
-                setDocs(prevDocs=>{
-                    return [defaultDoc, ...prevDocs]
-                })
-                return defaultDoc
-            })
-            .catch(e=>{
-                console.log(`Error creating document ${defaultDoc.id}`)
-            })
+        try {
+            await CollectionService.createDocument(defaultDoc, colName);
+            setDocs(prevDocs => {
+                return [defaultDoc, ...prevDocs];
+            });
+            alert("Document created successfully");
+            return defaultDoc;
+        } catch (e) {
+            console.log(`Error creating document ${defaultDoc.id}`);
+        }
     }
 
     const getDocFromLocalCollection = (id, colName) => {
@@ -208,6 +207,10 @@ const DataContextProvider = (props) => {
             setMonsters([]);
             setDungeons([]);
             setAssets([]);
+            allowedCols.forEach(colName=>{
+                let [, setDocs] = getColState(colName)
+                setDocs([])
+            })
         }
     }, [user])
 

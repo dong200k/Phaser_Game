@@ -17,15 +17,11 @@ export default function Upgrades(props){
     }, [props.type, skills, upgradeData])
 
     async function createTree(type){
-        let success
-
         if(props.type === "upgrade"){
-            success = await createDocument("upgrades", type)
+            createDocument("upgrades", type)
         }else if(props.type==="skill"){
-            success = await createDocument("skills")
+            createDocument("skills")
         }
-
-        if(success) alert("Created Tree Successfully")
     }
 
     function deleteTree(id){
@@ -35,8 +31,7 @@ export default function Upgrades(props){
             if(window.confirm(`are you sure you want to delete "${name}"`)){
                 let success = await deleteDocument(id, props.type + 's')
                 
-                if(success === 200) {
-                    alert(`deleted ${name} successfully`)
+                if(success) {
                     setUpgrades(prevUpgrade=>prevUpgrade.filter((upgrade)=>upgrade.id !== id))
                 }
             } 
@@ -65,7 +60,7 @@ export default function Upgrades(props){
 
         // Save the tree over new tree
         let docToSave = {...tree, id: document.id, name: "copy of " + tree.name}
-        let success = await saveDocument(docToSave, props.type + "s")
+        let success = await saveDocument(docToSave, props.type + "s", false)
         if(success) alert("Successfully copied tree")
     }
 

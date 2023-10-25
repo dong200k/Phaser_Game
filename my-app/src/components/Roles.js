@@ -13,11 +13,7 @@ export default function Roles(){
         let name = roles.filter(role=>role.id==id)[0].name
 
         if(window.confirm(`are you sure you want to delete "${name}"`)){
-            let result = await deleteDocument(id, "roles")
-
-            if(result.status === 200) {
-                alert(`deleted ${name} successfully`)
-            }
+            deleteDocument(id, "roles")
         }
     }
 

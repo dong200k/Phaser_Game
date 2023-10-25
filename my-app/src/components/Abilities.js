@@ -9,7 +9,7 @@ export default function Abilities(){
         createDocument("abilities")
     }
 
-    const deleteAbility = async (id)=>{
+    const deleteAbility = (id)=>{
         deleteDocument(id, "abilities")
     }
 

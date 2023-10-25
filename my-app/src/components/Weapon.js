@@ -13,12 +13,9 @@ export default function Weapon(){
         .then(weapon=>setWeapon(weapon))
     }, [getDocument, id])
 
-    const save = async (e)=>{
+    const save = (e)=>{
         e.preventDefault()
-        let success = await saveDocument(weapon, "weapons")
-
-        if(success) alert("saved to db successfully")
-        else alert("failed to save")
+        saveDocument(weapon, "weapons")
     }
 
     const onChange = (key)=>{

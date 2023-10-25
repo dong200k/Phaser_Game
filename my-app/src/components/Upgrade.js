@@ -98,9 +98,7 @@ export default function Upgrade(props) {
   }
 
   async function saveUpgrade(){
-    let success = saveDocument(upgrade, props.type + 's')
-
-    if(success) alert(`saved ${props.type} successfully!`)
+    saveDocument(upgrade, props.type + 's')
   }
 
   function addChild(node){
@@ -181,7 +179,7 @@ export default function Upgrade(props) {
 
         <Dropdown.Menu>
             {statuses.map(status=>{
-                return <Dropdown.Item onClick={()=>setAllStatus(status)}>{status}</Dropdown.Item>
+                return <Dropdown.Item key={status} onClick={()=>setAllStatus(status)}>{status}</Dropdown.Item>
             })}
         </Dropdown.Menu>
     </Dropdown>

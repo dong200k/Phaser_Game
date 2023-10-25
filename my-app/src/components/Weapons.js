@@ -5,23 +5,15 @@ import { DataContext } from "../contexts/DataContextProvider.js"
 export default function Weapons(){
     const {weapons, createDocument, deleteDocument} = useContext(DataContext)
 
-    const createNewWeapon = async ()=>{
-        let success = await createDocument("weapons")
-
-        if(success){
-            alert("created weapon successfully")
-        }
+    const createNewWeapon = ()=>{
+        createDocument("weapons")
     }
 
-    const deleteWeapon = async (id)=>{
+    const deleteWeapon = (id)=>{
         let name = weapons.filter(weapon=>weapon.id==id)[0].name
 
         if(window.confirm(`are you sure you want to delete "${name}"`)){
-            let success = await deleteDocument(id, "weapons")
-
-            if(success) {
-                alert(`deleted ${name} successfully`)
-            }
+            deleteDocument(id, "weapons")
         }
     }
 

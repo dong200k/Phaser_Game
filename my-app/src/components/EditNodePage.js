@@ -80,11 +80,7 @@ export default function EditNodePage(){
         form.data.collisionGroup = Number(form.data.collisionGroup)
         form.data.coinCost = Number(form.data.coinCost)
 
-        let success = await saveDocument(form, "nodes")
-
-        if(success){
-            alert("saved to database")
-        }
+        saveDocument(form, "nodes")
     }
 
     let dropDown =
