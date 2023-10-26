@@ -36,6 +36,8 @@ export default class CollectionCrud {
         
         querySnapShot.forEach(snapShot=>{
             let document = snapShot.data()
+            // The document's id will be saved inside the document object.
+            document.id = snapShot.id;
             documents.push(document)
         })
 

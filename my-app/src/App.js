@@ -23,6 +23,9 @@ import Asset from './components/asset/Asset.js';
 import CreateOrEditAsset from './components/asset/CreateOrEditAsset.js';
 import CreateOrEditMonster from './components/monster/CreateOrEditMonster.js';
 import { JsonDB } from './components/JsonDB.js';
+import BackupHome from './components/backup/BackupHome.js';
+import BackupView from './components/backup/BackupView.js';
+import RestoreView from './components/backup/RestoreView.js';
 
 function App() {
   return (
@@ -56,6 +59,9 @@ function App() {
                 <Route path="/asset" element={<Authorized roles={["admin", "gamemaster"]}><Asset /></Authorized>} />
                 <Route path="/asset/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditAsset /></Authorized>} />
                 <Route path="/asset/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditAsset isEdit={true} /></Authorized>} />
+                <Route path="/backup" element={<Authorized roles={["admin", "gamemaster"]}><BackupHome /></Authorized>} />
+                <Route path="/backup/backup" element={<Authorized roles={["admin", "gamemaster"]}><BackupView /></Authorized>} />
+                <Route path="/backup/restore" element={<Authorized roles={["admin", "gamemaster"]}><RestoreView /></Authorized>} />
                 <Route path="*" element={<div>404 NOT FOUND</div>} />
               </Routes>
           </BrowserRouter>

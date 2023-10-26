@@ -72,6 +72,7 @@ export default function NavigationBar(props){
                     <Link to="/monster"><button className="btn btn-light">Monster</button></Link>
                     <Link to="/dungeon"><button className="btn btn-light">Dungeon</button></Link>
                     <Link to="/asset"><button className="btn btn-light">Asset</button></Link>
+                    <Link to="/backup"><button className="btn btn-light">Backup</button></Link>
                     <Link to="/admin"><button className="btn btn-light">Admin</button></Link>
                 </Nav>
                 </Navbar.Collapse>
