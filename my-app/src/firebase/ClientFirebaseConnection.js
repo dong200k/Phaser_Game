@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { connectFirestoreEmulator, doc, getDoc, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
 import { User, connectAuthEmulator, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth"
+import { connectStorageEmulator, getStorage } from "firebase/storage";
 // import SceneManager from "../system/SceneManager";
 // import { SceneKey, StartScene } from "../config";
 
@@ -35,6 +36,9 @@ initFirebaseApp(env){
 
       const auth = getAuth()
       connectAuthEmulator(auth, "http://127.0.0.1:9099")
+
+      const storage = getStorage();
+      connectStorageEmulator(storage, "127.0.0.1", 9199);
       
       break;
     case "beta":

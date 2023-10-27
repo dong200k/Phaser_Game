@@ -1,4 +1,6 @@
-const BASEURL = "http://localhost:3002";
+import { BASEURL_API_SERVER } from "../constants";
+
+const BASEURL = BASEURL_API_SERVER;
 
 export async function getAllAssets(user) {
     let IdToken = await user.getIdToken();
@@ -42,5 +44,18 @@ export async function editAsset(user, data, id) {
             'Authorization': IdToken,
         },
         body: JSON.stringify(data)
+    });
+}
+
+export async function restoreAsset(user, loc, data, mime) {
+    let IdToken = await user.getIdToken();
+    console.log("Restoring asset to: ", loc);
+    return fetch(BASEURL + `/assets/restore`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': IdToken,
+        },
+        body: JSON.stringify({loc, data, mime})
     });
 }
