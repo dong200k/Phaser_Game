@@ -38,7 +38,7 @@ initFirebaseApp(env){
       connectAuthEmulator(auth, "http://127.0.0.1:9099")
 
       const storage = getStorage();
-      connectStorageEmulator(storage, "http://127.0.0.1", 9199);
+      connectStorageEmulator(storage, "127.0.0.1", 9199);
       
       break;
     case "beta":

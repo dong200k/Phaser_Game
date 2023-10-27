@@ -30,4 +30,8 @@ AssetRouter.get("/",
     AssetController.getAllAssets
 )
 
+AssetRouter.post("/restore", 
+    AssetController.restoreAsset
+)
+
 export default AssetRouter;

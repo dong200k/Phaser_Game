@@ -81,11 +81,12 @@ export default function BackupView() {
 `Please do not modify the contents of this backup.
 This backup should be restored through the my-app tool.
 Backup Date: ${date.toString()}
-Backup Date V2: ${date.toLocaleString()}`
+Backup Date V2: ${date.toLocaleString()}
+Backup environment: ${process.env.REACT_APP_FIREBASE_ENV}`
         );
 
         let blobContent = await zip.generateAsync({type: "blob"});
-        saveAs(blobContent, `db_${date.toLocaleDateString()}.zip`);
+        saveAs(blobContent, `db_${date.toLocaleDateString()}_${process.env.REACT_APP_FIREBASE_ENV}.zip`);
 
     }
 
