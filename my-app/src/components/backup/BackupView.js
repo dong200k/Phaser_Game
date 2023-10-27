@@ -1,6 +1,8 @@
 import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
+import Accordion from "react-bootstrap/Accordion";
+import Form from 'react-bootstrap/Form';
 import { DataContext } from "../../contexts/DataContextProvider";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -23,6 +25,9 @@ export default function BackupView() {
         { name: "upgrades", type: "json", data: upgrades, selected: true },
         { name: "skills", type: "json", data: skills, selected: true },
         { name: "weapons", type: "json", data: weapons, selected: true },
+    ]);
+    let [cloudStorageBackupList, setCloudStorageBackupList] = useState([
+        
     ]);
 
     const addCloudStorageDirectoryToJSZip = async (directoyPath = "", zip) => {
@@ -70,6 +75,8 @@ export default function BackupView() {
         await addCloudStorageDirectoryToJSZip("", cloudStorageZip);
         
         let date = new Date();
+
+        // Do not indent the following readme lines. Will show indents inside readme.
         zip.file("README.txt", 
 `Please do not modify the contents of this backup.
 This backup should be restored through the my-app tool.
@@ -87,6 +94,49 @@ Backup Date V2: ${date.toLocaleString()}`
             <Button variant="primary" onClick={backupNowOnclick}>
                 Download backup file
             </Button>
+            {/* <Accordion defaultActiveKey={['0']} alwaysOpen>
+                <Accordion.Item eventKey="0">
+                    <Accordion.Header>
+                        <input
+                            type="checkbox"
+                            className="form-check-input"
+                            aria-label="option 1" 
+                            style={{marginRight: 20, fontSize: 20}}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                            }}
+                            onChange={(e) => {
+                                console.log("Value", e.target.checked);
+                            }}
+                        />
+                        Accordion Item #1
+                    </Accordion.Header>
+                    <Accordion.Body>
+                        {
+                            firestoreBackupList.map((backupItem) => {
+                                return (
+                                    <div>
+                                        <Form.Check aria-label={`option ${backupItem.name}`} style={{marginRight: 20, fontSize: 20, display:"inline"}}/>
+                                        {backupItem.name}
+                                    </div>
+                                )
+                            })
+                        }
+                    </Accordion.Body>
+                </Accordion.Item>
+                <Accordion.Item eventKey="1">
+                    <Accordion.Header>Accordion Item #2</Accordion.Header>
+                    <Accordion.Body>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                    minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip ex ea commodo consequat. Duis aute irure dolor in
+                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                    culpa qui officia deserunt mollit anim id est laborum.
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion> */}
         </Container>
     )
 }
