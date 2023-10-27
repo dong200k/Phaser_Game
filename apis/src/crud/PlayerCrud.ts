@@ -3,6 +3,7 @@ import {getAuth} from "firebase-admin/auth"
 import Node from "../../../server/src/rooms/game_room/schemas/Trees/Node/Node"
 import SkillData from "../../../server/src/rooms/game_room/schemas/Trees/Node/Data/SkillData"
 import JsonDatabaseManager from "../skilltree/JsonDatabaseManager"
+import { removeD3TreeInfo } from "../util/jsondbutil"
 
 /**
  * Creates new player if it doesnt exist. Requires IdToken from client side to verify user's permission.
@@ -27,7 +28,7 @@ export const CreatePlayer = async (IdToken: string, username: string)=>{
       abilities: [],
       level: 1,
       username: username,
-      skillTree: JsonDatabaseManager.getManager().getSkill("skill-bd5a5c20-d375-46eb-a2dc-dace60afbab9"),
+      skillTree: removeD3TreeInfo(JsonDatabaseManager.getManager().getSkill("skill-bd5a5c20-d375-46eb-a2dc-dace60afbab9")),
       unlockedRoles: ["ranger"]
     }
     let res = await docRef.set(player)

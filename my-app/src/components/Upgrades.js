@@ -7,7 +7,6 @@ import { DataContext } from "../contexts/DataContextProvider.js";
 export default function Upgrades(props){
     let [upgrades, setUpgrades] = useState([])
     const {skills, upgrades: upgradeData, createDocument, deleteDocument, saveDocument} = useContext(DataContext)
-    
     useEffect(()=>{
         if(props.type==="upgrade"){
             setUpgrades(upgradeData)
