@@ -1,4 +1,5 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
     mode: 'development', // development build or production build
@@ -24,5 +25,8 @@ module.exports = {
             { test: /\.([cm]?ts|tsx)$/, loader: "ts-loader" }
         ]
     },
-    watch: true // Reload when changes have been made to the source code.
+    watch: true, // Reload when changes have been made to the source code.
+    plugins: [
+        new Dotenv()
+    ]
 }
