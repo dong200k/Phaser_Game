@@ -10,6 +10,7 @@ import AdminRouter from './routers/AdminRouter';
 import AssetRouter from './routers/AssetRouter';
 import CollectionRouter from './routers/CollectionRouter';
 import JsonDBRouter from './routers/JsonDBRouter';
+import { auth } from 'firebase-admin';
 
 dotenv.config();
 
