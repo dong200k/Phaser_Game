@@ -5,6 +5,7 @@ import SceneManager from "../system/SceneManager";
 import { SceneKey, StartScene } from "../config";
 import PlayerService from "../services/PlayerService";
 import { startPhaserGame, stopPhaserGame } from "../app";
+import { connectStorageEmulator, getStorage } from "firebase/storage";
 
 export default class ClientFirebaseConnection{
   private static singleton = new ClientFirebaseConnection()
@@ -41,6 +42,9 @@ export default class ClientFirebaseConnection{
 
         const auth = getAuth()
         connectAuthEmulator(auth, "http://127.0.0.1:9099")
+
+        const storage = getStorage();
+        connectStorageEmulator(storage, "http://127.0.0.1", 9199);
         
         break;
       case "beta":
