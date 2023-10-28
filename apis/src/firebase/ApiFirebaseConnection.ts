@@ -12,7 +12,11 @@ export default class ServerFirebaseConnection{
         // Local emulator
         process.env['FIRESTORE_EMULATOR_HOST'] = "127.0.0.1:8080"
         process.env['FIREBASE_AUTH_EMULATOR_HOST'] = "127.0.0.1:9099"
-        initializeApp({projectId: "phasergame-4f0d6",})
+        process.env['FIREBASE_STORAGE_EMULATOR_HOST'] = "127.0.0.1:9199"
+        initializeApp({
+          projectId: "phasergame-4f0d6",
+          storageBucket: "phasergame-4f0d6.appspot.com"
+        })
         break;
       case "beta":
         // Original firebase project

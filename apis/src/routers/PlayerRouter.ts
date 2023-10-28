@@ -76,6 +76,15 @@ PlayerRouter.get('/players/:id', (req: any, res: any)=>{
         })
 })
 
+PlayerRouter.get('/players', 
+    isAuthenticated,
+    isAuthorized({
+        allowRoles: ["admin"],
+        allowGameServer: false,
+    }),
+    PlayerController.getAllPlayers,
+)
+
 PlayerRouter.post('/players/addcoins', 
     isAuthenticated,
     isAuthorized({

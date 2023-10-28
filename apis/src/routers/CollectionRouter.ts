@@ -29,6 +29,15 @@ CollectionRouter.get("/:colName",
     CollectionController.getAllDocuments
 )
 
+CollectionRouter.post("/:colName", 
+    isAuthenticated,
+    isAuthorized({
+        allowRoles: ["admin"],
+        allowGameServer: false
+    }),
+    CollectionController.restoreCollection,
+)
+
 CollectionRouter.delete("/:colName/:id",
     isAuthenticated, 
     isAuthorized({
