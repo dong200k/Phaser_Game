@@ -42,6 +42,10 @@ export default class Stat extends Schema {
     @type('number') lifeSteal!: number;
     @type('number') lifeStealPercent!: number;
 
+    @type('number') healthRegen!: number;
+    @type('number') shieldHp!: number;
+    @type('number') shieldMaxHp!: number;
+
     @type('number') level!: number;
 
     private listeners: Map<string, {listener: Function, statsToListen: Set<keyStat>}> = new Map()
@@ -95,7 +99,7 @@ export default class Stat extends Schema {
         attackRange: 1, attackRangePercent: 0,
         attackSpeed: 1, attackSpeedPercent: 0, 
         speed: 50, lifeSteal: 0, lifeStealPercent: 0, level: 1,
-        chargeAttackSpeed: 0, chargeAttackSpeedPercent: 0,
+        chargeAttackSpeed: 0, chargeAttackSpeedPercent: 0, healthRegen: 0, shieldHp: 0, shieldMaxHp: 0,
     }
 
     /** Creates a new stat object based on the stat config passed in. Stat properties not initialized in the config
@@ -137,7 +141,10 @@ export default class Stat extends Schema {
             lifeStealPercent: false,
             level: false,
             chargeAttackSpeed: false,
-            chargeAttackSpeedPercent: false
+            chargeAttackSpeedPercent: false,
+            healthRegen: false,
+            shieldHp: false, 
+            shieldMaxHp: false
         }
         return changes
     }
@@ -272,11 +279,12 @@ export default class Stat extends Schema {
     }
 
     /** Fixes overflow problem when hp is greater than maxHp, and 
-     * when mana is greater then maxMana.
+     * when mana is greater then maxMana. Also when shieldHp is greater than shieldMaxHp
      */
     public fixOverflow() {
         if(this.hp > this.maxHp) this.hp = this.maxHp;
         if(this.mana > this.maxMana) this.mana = this.maxMana;
+        if(this.shieldHp > this.shieldMaxHp) this.shieldHp = this.shieldMaxHp
     }
 
     static getDefaultPlayerStat(){

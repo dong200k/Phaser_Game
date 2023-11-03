@@ -136,3 +136,19 @@ export const getFinalChargeAttackSpeed = function({chargeAttackSpeed, chargeAtta
     let finalChargeAttackSpeed = chargeAttackSpeed * (1 + chargeAttackSpeedPercent)
     return Math.abs(finalChargeAttackSpeed)
 }
+
+/**
+ * Returns remaining shield health and damage that did not go through shield.
+ * @param shieldHp health of shield (>=0)
+ * @param damage true damage player will take (positive number)
+ * Returns the remaining shieldHp and damage that still needs to be taken
+ */
+export const getRemainingShieldAndDamageFromCollision = (shieldHp: number, damage: number) => {
+    let remainingShieldHp = shieldHp -= damage
+    if(remainingShieldHp < 0) shieldHp = 0
+
+    let damageLeftAfterShield = damage - shieldHp
+    if(damage < 0) damage = 0
+
+    return {shieldHp: remainingShieldHp, damage: damageLeftAfterShield}
+}

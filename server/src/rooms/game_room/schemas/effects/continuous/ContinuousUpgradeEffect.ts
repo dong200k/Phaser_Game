@@ -51,14 +51,20 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
 
     public setTree(tree: WeaponUpgradeTree){
         this.tree = tree
-        this.createEffectLogic
+        this.createEffectLogic()
     }
 
     public createEffectLogic(){
-        let effectLogicManager = this.gameManager.getEffectLogicManager()
+        let gameManager = this.tree?.getGameManager()
+        let effectLogicManager = gameManager?.getEffectLogicManager()
         if(effectLogicManager){
-            let ctor = effectLogicManager.getEffectLogicConstructor(this.effectLogicId)
-            if(ctor) this.effectLogic = new ctor()
+            let temp = effectLogicManager.getEffectLogicCtorAndConfig(this.effectLogicId)
+            if(temp){
+                let {config, ctor} = temp
+                this.effectLogic = new ctor(config) 
+            }
+            if(this.effectLogic?.effectLogicId.startsWith("Ancient"))
+                console.log(this.effectLogic.effectLogicId, this)
         }
     }
 

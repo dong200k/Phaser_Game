@@ -216,7 +216,10 @@ export default class GameManager {
                 lifeStealPercent: 0,
                 level: 100,
                 chargeAttackSpeed: 0,
-                chargeAttackSpeedPercent: 0
+                chargeAttackSpeedPercent: 0,
+                healthRegen: 0,
+                shieldHp: 0,
+                shieldMaxHp: 0
             },
             poolType: "Berserker Boss",
             controllerKey: "BerserkerBoss",

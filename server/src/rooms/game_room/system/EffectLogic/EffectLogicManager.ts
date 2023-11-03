@@ -30,11 +30,12 @@ import WarriorShieldAttackLogic from "./EffectLogics/weapon/WarriorShield/Warrio
 import WarriorShieldUpgradeAbilityLogic from "./EffectLogics/weapon/WarriorShield/WarriorShieldUpgradeAbilityLogic";
 import WarriorKnockbackLogic from "./EffectLogics/weapon/WarriorShield/WarriorKnockbackLogic";
 import WarriorProtectLogic from "./EffectLogics/weapon/WarriorShield/WarriorProtectLogic";
+import { AncientGuard } from "./EffectLogics/artifact/AncientGuard";
 
 export default class EffectLogicManager{
 
     /** effectLogic replaces the old weaponLogic. It holds a logic that could be used as a weapon or artifacts or any entity's effect/attack.*/
-    private effectLogics: Map<string, IEffectLogicClass> = new Map()
+    private effectLogics: Map<string, {ctor: IEffectLogicClass, config: any}> = new Map()
     private gameManager: GameManager
 
     constructor(gameManager: GameManager){
@@ -85,11 +86,15 @@ export default class EffectLogicManager{
         this.addEffectLogic(WarriorShieldUpgradeAbilityLogic);
         this.addEffectLogic(WarriorKnockbackLogic);
         this.addEffectLogic(WarriorProtectLogic);
+
+        this.addEffectLogic(AncientGuard)
+        this.addEffectLogic(AncientGuard, {effectLogicId: "Ancient-Guard-5", shieldPercent: 15})
+        this.addEffectLogic(AncientGuard, {effectLogicId: "Ancient-Guard-10", shieldPercent: 20})
     }
 
-    private addEffectLogic(effectLogic: IEffectLogicClass){
-        let effectLogicId = new effectLogic().effectLogicId
-        this.effectLogics.set(effectLogicId, effectLogic)
+    private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){
+        let effectLogicId = new effectLogic(config).effectLogicId
+        this.effectLogics.set(effectLogicId, {ctor: effectLogic, config})
     }
 
     /**
@@ -97,7 +102,7 @@ export default class EffectLogicManager{
      * @param effectLogicId 
      * @returns 
      */
-    public getEffectLogicConstructor(effectLogicId: string): IEffectLogicClass | undefined{
+    public getEffectLogicCtorAndConfig(effectLogicId: string): {ctor: IEffectLogicClass, config: any} | undefined{
         return this.effectLogics.get(effectLogicId)
     }
 }

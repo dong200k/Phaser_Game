@@ -62,6 +62,8 @@ export default class ArtifactManager{
         artifacts.push(artifactTree)
         artifactTree.setOwner(playerState)
 
+        console.log(`Equiping artifact: ${artifactTree.root.data.name}`)
+
         // playerState.effects.forEach(e=>console.log(e.toString() + '\n'))
         return artifactTree
     }

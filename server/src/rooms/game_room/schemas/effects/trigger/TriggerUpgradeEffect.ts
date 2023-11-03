@@ -92,8 +92,11 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
         let gameManager = this.tree?.getGameManager()
         let effectLogicManager = gameManager?.getEffectLogicManager()
         if(gameManager && effectLogicManager){
-            let ctor = effectLogicManager.getEffectLogicConstructor(this.effectLogicId)
-            if(ctor) this.effectLogic = new ctor()
+            let temp = effectLogicManager.getEffectLogicCtorAndConfig(this.effectLogicId)
+            if(temp){
+                let {config, ctor} = temp
+                this.effectLogic = new ctor(config) 
+            }
         }
     }
 

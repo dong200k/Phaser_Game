@@ -118,6 +118,11 @@ export default class Player extends Entity {
         this.setRole(role)
     }
 
+    update(deltaT: number){
+        this.currentAbility?.update(deltaT * 1000);
+        this.playerController.update(deltaT);
+    }
+
     setRole(role?: string){
         this.role = role? role: "Ranger";
         if(this.role === "Ranger") {

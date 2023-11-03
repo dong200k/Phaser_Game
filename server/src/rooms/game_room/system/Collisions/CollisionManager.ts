@@ -3,7 +3,7 @@ import Entity from "../../schemas/gameobjs/Entity";
 import Projectile from "../../schemas/projectiles/Projectile";
 import GameManager from "../GameManager";
 import EffectManager from "../StateManagers/EffectManager";
-import { getTrueAttackDamage, getFinalLifeSteal, getTrueMagicDamage } from "../Formulas/formulas";
+import { getTrueAttackDamage, getFinalLifeSteal, getTrueMagicDamage, getRemainingShieldAndDamageFromCollision } from "../Formulas/formulas";
 import { CategoryType, getCategoryType } from "./Category";
 import { ICollisionRule } from "../interfaces";
 import Tile from "../../schemas/gameobjs/Tile";
@@ -163,12 +163,21 @@ export default class CollisionManager{
         // console.log(`Collision detected: attack:${trueAttackDamage}, magic:${trueMagicDamage}, player armor: ${entity.stat.armor}`);
 
         // Entity colliding with projectile takes attack and magic damage
-        // console.log(`true attack damage ${trueAttackDamage}, trueMagicdmg ${trueMagicDamage}`)
-        let damageEffect = EffectFactory.createDamageEffect(trueAttackDamage, projectile.originEntityId)
+        // console.log(`true attack damage ${trueAttackDamage}, trueMagicdmg ${trueMagicDamage}. (Note: Before Shield is applied)`)
+        
+        // Reduce attack damage based on shield
+        let {shieldHp: shieldHpAfterAttack, damage: attackDamageLeft} = getRemainingShieldAndDamageFromCollision(entity.stat.shieldHp, trueAttackDamage)
+        let damageEffect = EffectFactory.createDamageEffect(attackDamageLeft, projectile.originEntityId)
         EffectManager.addEffectsTo(entity, damageEffect)
 
-        damageEffect = EffectFactory.createDamageEffect(trueMagicDamage, projectile.originEntityId)
+        // Reduce magic attack damage based on remaining shield
+        let {shieldHp: shieldHpAfterMagicAttack, damage: magicDamageLeft} = getRemainingShieldAndDamageFromCollision(shieldHpAfterAttack, trueMagicDamage)
+        damageEffect = EffectFactory.createDamageEffect(magicDamageLeft, projectile.originEntityId)
         EffectManager.addEffectsTo(entity, damageEffect)
+
+        // console.log(`Player shield before attack: ${entity.stat.shieldHp}`)
+        entity.stat.shieldHp = shieldHpAfterMagicAttack < 0? 0 : shieldHpAfterMagicAttack
+        // console.log(`Player shield after attack: ${entity.stat.shieldHp}`)
 
         // Entity shooting projectile heals based on their lifesteal
         let attackingEntity = projectile.entity

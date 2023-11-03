@@ -52,8 +52,7 @@ export default class PlayerManager {
                 // gameObject.attackCooldown.tick(deltaT)
                 if(gameObject.playerController.stateName !== "Dead") {
                     allPlayersDead = false;
-                    gameObject.currentAbility?.update(deltaT * 1000);
-                    gameObject.playerController.update(deltaT);
+                    gameObject.update(deltaT)
                     // if(this.gameManager.state.serverTickCount % 20 === 0)
                     //     console.log("Player Armor: ", gameObject.stat.armor);
                 }
@@ -295,6 +294,11 @@ export default class PlayerManager {
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedFrostGlaive)
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
+        let healthRegenArtifact = ArtifactFactory.createMaxedArtifact("upgrade-fd94a403-d217-4d92-9b5d-221a7553773f")
+        this.gameManager.getArtifactManager().equipArtifact(player, healthRegenArtifact)
+
+        let shieldArtifact = ArtifactFactory.createMaxedArtifact("upgrade-cbcacef1-d615-4d28-ab54-2aded061c7e2")
+        this.gameManager.getArtifactManager().equipArtifact(player, shieldArtifact)
     }
 
     /**

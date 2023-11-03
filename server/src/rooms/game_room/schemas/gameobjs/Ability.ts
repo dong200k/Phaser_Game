@@ -25,8 +25,11 @@ export default class Ability extends Schema{
         this.description = IAbility.description
         this.id = IAbility.id
         // this.sprite = IAbility.displaySprite
-        let ctor = gameManager.getEffectLogicManager().getEffectLogicConstructor(this.effectLogicId)
-        if(ctor) this.effectLogic = new ctor()
+        let temp = gameManager.getEffectLogicManager().getEffectLogicCtorAndConfig(this.effectLogicId)
+        if(temp){
+            let {config, ctor} = temp
+            this.effectLogic = new ctor(config) 
+        }
     }
 
     update(deltaT: number){
