@@ -74,7 +74,7 @@ export default class WAPopup extends RexUIBase {
         if(this.popup) {
             let gameWidth = this.scene.game.scale.width;
             let gameHeight = this.scene.game.scale.height;
-            this.popup.moveTo(700, gameWidth - this.popup.width / 2, gameHeight + this.popup.height / 2 - 35, "Back");
+            this.popup.moveTo(700, gameWidth/2, gameHeight/2, "Back");
         }
     }
 
@@ -83,7 +83,7 @@ export default class WAPopup extends RexUIBase {
         if(this.popup) {
             let gameWidth = this.scene.game.scale.width;
             let gameHeight = this.scene.game.scale.height;
-            this.popup.moveTo(700, gameWidth - this.popup.width / 2, gameHeight - this.popup.height / 2, "Cubic");
+            this.popup.moveTo(700, gameWidth/2, gameHeight/2, "Cubic");
         }
     }
 
@@ -112,19 +112,21 @@ export default class WAPopup extends RexUIBase {
             .addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[500]).setName("waTitleBackground"))
             .add(UIFactory.createTextBoxDOM(this.scene, data.title ?? "UPGRADES", "h4"), {padding: {top: 6}}),
             actions: data.items?.map((item) => {
+                // Create upgrade items.
                 let sizer = this.rexUI.add.sizer({
                     orientation: "vertical",
-                    width: 280,
+                    width: 314,
+                    height: 500,
                     space: {
-                        item: 15,
-                        top: 15,
-                        bottom: 10,
+                        item: 40,
+                        top: 33,
+                        bottom: 40,
                     },
                 });
                 let sizer2 = this.rexUI.add.sizer({
                     orientation: "vertical",
                     space: {
-                        item: 0,
+                        item: 8,
                     }
                 })
 
@@ -140,12 +142,19 @@ export default class WAPopup extends RexUIBase {
 
                 sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.name?.substring(0, 15), "h5"), {expand: false});
 
-                sizer.addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[500]).setName("waItemBackground"));
+                // Background of the upgrade items.
+                let backgroundSizer = this.rexUI.add.overlapSizer();
+                backgroundSizer.add(this.scene.add.image(0, 0, "upgrade_bg").setDisplaySize(314, 500));
+                backgroundSizer.add(this.rexUI.add.roundRectangle(0, 0, 314, 500, 0, ColorStyle.primary.hex[500], 0).setName("waItemBackground"));
+                sizer.addBackground(backgroundSizer);
+                //sizer.addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[500]).setName("waItemBackground"));
+                // sizer.addBackground(this.scene.add.image(0, 0, "demo_hero").setName("waItemBackground"));
+
                 sizer.add(sizer2, {align: "center"});
                 let image = this.scene.add.image(0, 0, item.imageKey).setDisplaySize(64, 64);
                 image.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
-                sizer.add(image, {align: "center"});
-                sizer.add(UIFactory.createTextBoxPhaser(this.scene, item.description, "p5").setWordWrapWidth(500, false), {expand: false, align: "center"});
+                sizer2.add(image, {align: "center"});
+                sizer.add(UIFactory.createTextBoxPhaser(this.scene, item.description, "p5").setWordWrapWidth(250, false), {expand: false, align: "center"});
 
                 sizer.setData("onClick", item.onClick);
                 return sizer;
@@ -160,10 +169,10 @@ export default class WAPopup extends RexUIBase {
             },
         })
             .on("button.over", (button: Sizer) => {
-                (button.getByName("waItemBackground") as RoundRectangle).setStrokeStyle(1, ColorStyle.neutrals.hex.white);
+                (button.getByName("waItemBackground", true) as RoundRectangle).setStrokeStyle(1, ColorStyle.neutrals.hex.white);
             })
             .on("button.out", (button: Sizer) => {
-                (button.getByName("waItemBackground") as RoundRectangle).setStrokeStyle();
+                (button.getByName("waItemBackground", true) as RoundRectangle).setStrokeStyle();
             })
             .on("button.click", (button: Sizer, groupName: string, index: number) => {
                 // Hide upgrades. And destroy.
