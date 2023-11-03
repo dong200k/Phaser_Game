@@ -81,6 +81,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         // Put the asset you want to load here.
         let assets = [
             "SplashScreenImage",
+            "upgrade_aicon",
         ]
         await AssetManager.putAssetsInLoad(this, assets);
     }

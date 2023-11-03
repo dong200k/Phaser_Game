@@ -55,11 +55,21 @@ export default class WAPopup extends RexUIBase {
         }
         this.popup = this.createPopup(data)
             .setVisible(true)
-            .layout();
+            .layout()
+            .on("destroy", () => {
+                this.popup = undefined;
+            });
         
         // Set popup initial position.
         this.popup.setPosition(this.scene.game.scale.width - this.popup.width / 2, this.scene.game.scale.height + this.popup.height / 2);
         this.sideUpPopup();
+    }
+
+    /** Returns true if the popup exists and can be shown. False otherwise.
+     * Used to update the upgrade_icon from enabled to disabled.
+     */
+    public isPopupActive() {
+        return this.popup !== undefined;
     }
 
     /** Destroys the popup. This wont destroy this class. Popups can 
@@ -74,7 +84,7 @@ export default class WAPopup extends RexUIBase {
         if(this.popup) {
             let gameWidth = this.scene.game.scale.width;
             let gameHeight = this.scene.game.scale.height;
-            this.popup.moveTo(700, gameWidth/2, gameHeight/2, "Back");
+            this.popup.moveTo(700, gameWidth/2, gameHeight + this.popup.height/2, "Back");
         }
     }
 
