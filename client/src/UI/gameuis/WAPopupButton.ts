@@ -19,11 +19,9 @@ export default class WAPopupButton extends RexUIBase {
                 left: "left+350",
             }
         });
+
+        // The border of the button.
         this.buttonBorder = this.rexUI.add.roundRectangle(0, 0, 50, 50, 0, ColorStyle.primary.hex[500]);
-        this.buttonSprite = this.scene.add.sprite(0, 0, "upgrade_aicon").setDisplaySize(50, 50);
-        this.scene.anims.createFromAseprite("upgrade_aicon", undefined, this.buttonSprite);
-        this.buttonSizer.add(this.buttonSprite);
-        this.buttonSizer.add(this.buttonBorder);
         this.buttonBorder.setInteractive();
         this.buttonBorder.on(Phaser.Input.Events.POINTER_OUT, () => {
             this.buttonBorder.setStrokeStyle();
@@ -38,6 +36,15 @@ export default class WAPopupButton extends RexUIBase {
                 SoundManager.getManager().play("button_click1");
             }
         })
+
+        // The animated sprite of the button.
+        this.buttonSprite = this.scene.add.sprite(0, 0, "upgrade_aicon").setDisplaySize(50, 50);
+        this.scene.anims.createFromAseprite("upgrade_aicon", undefined, this.buttonSprite);
+        
+        // Add border and sprite to overlapsizer.
+        this.buttonSizer.add(this.buttonSprite);
+        this.buttonSizer.add(this.buttonBorder);
+        
         this.buttonSizer.layout();
     }
 

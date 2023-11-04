@@ -2,6 +2,7 @@ import { ColorStyle } from "../../config";
 import UIFactory from "../UIFactory";
 import { Dialog, FixWidthSizer, RoundRectangle, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 import RexUIBase from "../RexUIBase";
+import Button from "phaser3-rex-plugins/plugins/button";
 
 export interface WAPopupItem {
     typeName: string;
@@ -85,6 +86,7 @@ export default class WAPopup extends RexUIBase {
             let gameWidth = this.scene.game.scale.width;
             let gameHeight = this.scene.game.scale.height;
             this.popup.moveTo(700, gameWidth/2, gameHeight + this.popup.height/2, "Back");
+            this.scene.input.setTopOnly(true);
         }
     }
 
@@ -94,6 +96,7 @@ export default class WAPopup extends RexUIBase {
             let gameWidth = this.scene.game.scale.width;
             let gameHeight = this.scene.game.scale.height;
             this.popup.moveTo(700, gameWidth/2, gameHeight/2, "Cubic");
+            this.scene.input.setTopOnly(false);
         }
     }
 
@@ -111,7 +114,7 @@ export default class WAPopup extends RexUIBase {
 
     private createPopup(data: WAPopupData) {
         let dialog = this.rexUI.add.dialog({
-            width: 600,
+            width: 1000,
             background: this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[900]),
             title: this.rexUI.add.fixWidthSizer({
                 width: 600,
@@ -121,54 +124,53 @@ export default class WAPopup extends RexUIBase {
             .setName("waTitleButton")
             .addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[500]).setName("waTitleBackground"))
             .add(UIFactory.createTextBoxDOM(this.scene, data.title ?? "UPGRADES", "h4"), {padding: {top: 6}}),
-            actions: data.items?.map((item) => {
-                // Create upgrade items.
-                let sizer = this.rexUI.add.sizer({
-                    orientation: "vertical",
-                    width: 314,
-                    height: 500,
-                    space: {
-                        item: 40,
-                        top: 33,
-                        bottom: 40,
-                    },
-                });
-                let sizer2 = this.rexUI.add.sizer({
-                    orientation: "vertical",
-                    space: {
-                        item: 8,
-                    }
-                })
+            // actions: data.items?.map((item) => {
+            //     // Create upgrade items.
+            //     let sizer = this.rexUI.add.sizer({
+            //         orientation: "vertical",
+            //         width: 314,
+            //         height: 500,
+            //         space: {
+            //             item: 40,
+            //             top: 33,
+            //             bottom: 40,
+            //         },
+            //     });
+            //     let sizer2 = this.rexUI.add.sizer({
+            //         orientation: "vertical",
+            //         space: {
+            //             item: 8,
+            //         }
+            //     })
 
-                if(item.typeName) {
-                    if(item.typeName.toLowerCase().includes("weapon")) {
-                        sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.typeName, "p6").setColor("#FF9E2D"), {expand: false});
-                    } else if(item.typeName.toLowerCase().includes("artifact")) {
-                        sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.typeName, "p6").setColor("#2D8EFF"), {expand: false});
-                    } else {
-                        sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.typeName, "p6").setColor("#2D8EFF"), {expand: false});
-                    }
-                }
+            //     if(item.typeName) {
+            //         if(item.typeName.toLowerCase().includes("weapon")) {
+            //             sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.typeName, "p6").setColor("#FF9E2D"), {expand: false});
+            //         } else if(item.typeName.toLowerCase().includes("artifact")) {
+            //             sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.typeName, "p6").setColor("#2D8EFF"), {expand: false});
+            //         } else {
+            //             sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.typeName, "p6").setColor("#2D8EFF"), {expand: false});
+            //         }
+            //     }
 
-                sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.name?.substring(0, 15), "h5"), {expand: false});
+            //     sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.name?.substring(0, 15), "h5"), {expand: false});
 
-                // Background of the upgrade items.
-                let backgroundSizer = this.rexUI.add.overlapSizer();
-                backgroundSizer.add(this.scene.add.image(0, 0, "upgrade_bg").setDisplaySize(314, 500));
-                backgroundSizer.add(this.rexUI.add.roundRectangle(0, 0, 314, 500, 0, ColorStyle.primary.hex[500], 0).setName("waItemBackground"));
-                sizer.addBackground(backgroundSizer);
-                //sizer.addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[500]).setName("waItemBackground"));
-                // sizer.addBackground(this.scene.add.image(0, 0, "demo_hero").setName("waItemBackground"));
+            //     // Background of the upgrade items.
+            //     let backgroundSizer = this.rexUI.add.overlapSizer();
+            //     backgroundSizer.add(this.scene.add.image(0, 0, "upgrade_bg").setDisplaySize(314, 500));
+            //     backgroundSizer.add(this.rexUI.add.roundRectangle(0, 0, 314, 500, 0, ColorStyle.primary.hex[500], 0).setName("waItemBackground"));
+            //     sizer.addBackground(backgroundSizer);
 
-                sizer.add(sizer2, {align: "center"});
-                let image = this.scene.add.image(0, 0, item.imageKey).setDisplaySize(64, 64);
-                image.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
-                sizer2.add(image, {align: "center"});
-                sizer.add(UIFactory.createTextBoxPhaser(this.scene, item.description, "p5").setWordWrapWidth(250, false), {expand: false, align: "center"});
+            //     sizer.add(sizer2, {align: "center"});
+            //     let image = this.scene.add.image(0, 0, item.imageKey).setDisplaySize(64, 64);
+            //     image.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+            //     sizer2.add(image, {align: "center"});
+            //     sizer.add(UIFactory.createTextBoxPhaser(this.scene, item.description, "p5").setWordWrapWidth(250, false), {expand: false, align: "center"});
 
-                sizer.setData("onClick", item.onClick);
-                return sizer;
-            }),
+            //     sizer.setData("onClick", item.onClick);
+            //     return sizer;
+            // }),
+            content: this.createDialogueContent(data),
             space: {
                 top: 0,
                 left: 0,
@@ -178,20 +180,21 @@ export default class WAPopup extends RexUIBase {
                 title: 15,
             },
         })
-            .on("button.over", (button: Sizer) => {
-                (button.getByName("waItemBackground", true) as RoundRectangle).setStrokeStyle(1, ColorStyle.neutrals.hex.white);
-            })
-            .on("button.out", (button: Sizer) => {
-                (button.getByName("waItemBackground", true) as RoundRectangle).setStrokeStyle();
-            })
-            .on("button.click", (button: Sizer, groupName: string, index: number) => {
-                // Hide upgrades. And destroy.
-                button.getData("onClick")();
-                dialog.moveToDestroyPromise(1000, dialog.x, this.scene.game.scale.height + dialog.height / 2, "Back")
-                .then(() => {
-                    this.popup = undefined;
-                });
-            })
+            // .on("button.over", (button: Sizer) => {
+            //     (button.getByName("waItemBackground", true) as RoundRectangle).setStrokeStyle(1, ColorStyle.neutrals.hex.white);
+            // })
+            // .on("button.out", (button: Sizer) => {
+            //     (button.getByName("waItemBackground", true) as RoundRectangle).setStrokeStyle();
+            // })
+            // .on("button.click", (button: Sizer, groupName: string, index: number) => {
+            //     // Hide upgrades. And destroy.
+            //     button.getData("onClick")();
+            //     dialog.moveToDestroyPromise(1000, dialog.x, this.scene.game.scale.height + dialog.height / 2, "Back")
+            //     .then(() => {
+            //         this.popup = undefined;
+            //     });
+            // })
+
 
         let titleButton = dialog.getByName("waTitleButton", true) as FixWidthSizer;
         titleButton.on(Phaser.Input.Events.POINTER_OVER, () => {
@@ -208,5 +211,114 @@ export default class WAPopup extends RexUIBase {
         return dialog;
     }
 
+    private createDialogueContent(data: WAPopupData) {
+        let content = this.rexUI.add.scrollablePanel({
+            panel: {
+                child: this.createDialogContentItems(data),
+                mask: {
+                    padding: 1,
+                }
+            },
+            scrollMode: "horizontal",
+            slider: {
+                track: this.rexUI.add.roundRectangle(0, 0, 20, 10, 0, ColorStyle.primary.hex[500]),
+                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 10, ColorStyle.neutrals.hex[800]),
+                adaptThumbSize: true,
+                hideUnscrollableSlider: true,
+            },
+            mouseWheelScroller: {
+                focus: false,
+                speed: 1
+            },
+            space: {
+                panel: 5,
+            },
+        })
+        return content;
+    }
+
+    private createDialogContentItems(data: WAPopupData) {
+        let itemButtons = this.rexUI.add.buttons({
+            orientation: "horizontal",
+            space: {
+                item: 10,
+                left: 10,
+                right: 10,
+            },
+            click: {
+                mode: "pointerup",
+                clickInterval: 100,
+            },
+            buttons: data.items.map((item) => {
+                // Create upgrade items.
+                let sizer = this.rexUI.add.sizer({
+                    orientation: "vertical",
+                    width: 314,
+                    height: 500,
+                    space: {
+                        item: 40,
+                        top: 33,
+                        bottom: 40,
+                    },
+                });
+
+                // Background of the upgrade items.
+                let backgroundSizer = this.rexUI.add.overlapSizer();
+                backgroundSizer.add(this.scene.add.image(0, 0, "upgrade_bg").setDisplaySize(314, 500));
+                backgroundSizer.add(this.rexUI.add.roundRectangle(0, 0, 314, 500, 0, ColorStyle.primary.hex[500], 0).setName("waItemBackground"));
+                sizer.addBackground(backgroundSizer);
+
+                // sizer2 includes the upgrade type, upgrade name, and upgrade icon.
+                let sizer2 = this.rexUI.add.sizer({
+                    orientation: "vertical",
+                    space: {
+                        item: 8,
+                    }
+                })
+                if(item.typeName) {
+                    if(item.typeName.toLowerCase().includes("weapon")) {
+                        sizer2.add(UIFactory.createTextBoxPhaser(this.scene, item.typeName, "p6").setColor("#FF9E2D"), {expand: false, align: "center"});
+                    } else if(item.typeName.toLowerCase().includes("artifact")) {
+                        sizer2.add(UIFactory.createTextBoxPhaser(this.scene, item.typeName, "p6").setColor("#2D8EFF"), {expand: false, align: "center"});
+                    } else {
+                        sizer2.add(UIFactory.createTextBoxPhaser(this.scene, item.typeName, "p6").setColor("#2D8EFF"), {expand: false, align: "center"});
+                    }
+                }
+                sizer2.add(UIFactory.createTextBoxPhaser(this.scene, item.name?.substring(0, 15), "h5"), {expand: false, align: "center"});
+                let image = this.scene.add.image(0, 0, item.imageKey).setDisplaySize(64, 64);
+                image.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+                sizer2.add(image, {align: "center"});
+
+
+                sizer.add(sizer2, {align: "center"});
+                sizer.add(UIFactory.createTextBoxPhaser(this.scene, item.description, "p5").setWordWrapWidth(250, false), {expand: false, align: "center"});
+                sizer.setData("onClick", item.onClick);
+                
+                return sizer;
+            })
+        });
+        
+        itemButtons.layout();
+        
+        itemButtons 
+            .on("button.over", (button: Sizer) => {
+                (button.getByName("waItemBackground", true) as RoundRectangle).setStrokeStyle(1, ColorStyle.neutrals.hex.white);
+            })
+            .on("button.out", (button: Sizer) => {
+                (button.getByName("waItemBackground", true) as RoundRectangle).setStrokeStyle();
+            })
+            .on("button.click", (button: Sizer, groupName: string, index: number) => {
+                // Hide upgrades. And destroy.
+                button.getData("onClick")();
+                if(this.popup) {
+                    this.popup.moveToDestroyPromise(1000, this.popup.x, this.scene.game.scale.height + this.popup.height / 2, "Back")
+                    .then(() => {
+                        this.popup = undefined;
+                    });
+                }
+            })
+
+        return itemButtons;
+    }
 
 }
