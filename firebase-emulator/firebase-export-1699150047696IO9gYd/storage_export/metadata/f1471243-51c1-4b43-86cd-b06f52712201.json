@@ -1,0 +1,17 @@
+{
+  "name": "images/demo_hero",
+  "bucket": "phasergame-4f0d6.appspot.com",
+  "metageneration": 2,
+  "generation": 1699149330959,
+  "contentType": "image/png",
+  "storageClass": "STANDARD",
+  "downloadTokens": [
+    "ef066503-259d-493c-990c-0f854b99fc83"
+  ],
+  "etag": "iyTOHLHd9UwHTpYSE+rsbdZzaTM",
+  "timeCreated": "2023-11-05T01:55:30.959Z",
+  "updated": "2023-11-05T01:56:16.678Z",
+  "size": 1184,
+  "md5Hash": "CbE3lYwh+02KFg1syV36kw==",
+  "crc32c": "2429028642"
+}

@@ -95,10 +95,12 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         }
 
         // Health regen
-        this.timeSoFar += deltaT
-        if(this.timeSoFar >= this.healthRegenTime){
-            this.timeSoFar = 0
-            this.player.stat.add(new Stat({hp: this.player.stat.healthRegen}))
+        if(currentState?.getStateName() !== "Dead"){
+            this.timeSoFar += deltaT
+            if(this.timeSoFar >= this.healthRegenTime){
+                this.timeSoFar = 0
+                this.player.stat.add(new Stat({hp: this.player.stat.healthRegen}))
+            }
         }
     }
 
@@ -180,5 +182,23 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         if(this.stateName !== "Dead" && this.stateName !== "Special" && this.stateName !== "Roll"){
             this.changeState("Roll")
         }
+    }
+
+    /**
+     * 
+     * @param speedBoostPercent Number to add to roll state's speedBoostScale
+     * @param maxDistancePercent Number to add to roll state's maxDistanceScale
+     */
+    public upgradeRoll(speedBoostPercent: number, maxDistancePercent: number){
+        this.rollState.addToMaxDistanceScale(maxDistancePercent)
+        this.rollState.addToSpeedBoostScale(speedBoostPercent)
+    }
+
+    public getChargeState(){
+        return this.chargeState
+    }
+
+    public getRollState(){
+        return this.rollState
     }
 }

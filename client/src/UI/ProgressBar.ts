@@ -1,4 +1,4 @@
-import { RoundRectangle, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
+import { OverlapSizer, RoundRectangle, Sizer } from "phaser3-rex-plugins/templates/ui/ui-components";
 import UIPlugins from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import { ColorStyle } from "../config";
 import UIFactory from "./UIFactory";
@@ -22,16 +22,17 @@ interface SceneWithRexUI extends Phaser.Scene {
 export default class ProgressBar extends Sizer {
 
     rexUI: UIPlugins;
-    private text?: TextBox;
-    private textPhaser?: TextBoxPhaser;
-    private progressBar: Phaser.GameObjects.Rectangle;
+    protected text?: TextBox;
+    protected textPhaser?: TextBoxPhaser;
+    protected progressBar: Phaser.GameObjects.Rectangle;
 
-    private progressBarColor: number;
-    private progressBarWidth: number;
-    private progressBarHeight: number;
-    private progressBarValue: number;
-    private progressBarMaxValue: number;
-    private progressBarTextVisible: boolean;
+    protected progressBarColor: number;
+    protected progressBarWidth: number;
+    protected progressBarHeight: number;
+    protected progressBarValue: number;
+    protected progressBarMaxValue: number;
+    protected progressBarTextVisible: boolean;
+    protected overlapSizer: OverlapSizer;
 
 
     constructor(scene: SceneWithRexUI, config?: ProgressBarConfig) {
@@ -61,6 +62,7 @@ export default class ProgressBar extends Sizer {
             }
         }
        
+        this.overlapSizer = overlapSizer
         this.add(overlapSizer);
 
         this.updateProgressBar();

@@ -46,6 +46,9 @@ export default class Stat extends Schema {
     @type('number') shieldHp!: number;
     @type('number') shieldMaxHp!: number;
 
+    /** Affects the final damage player should take. */
+    @type('number') extraDamageTakenPercent!: number;
+
     @type('number') level!: number;
 
     private listeners: Map<string, {listener: Function, statsToListen: Set<keyStat>}> = new Map()
@@ -99,7 +102,7 @@ export default class Stat extends Schema {
         attackRange: 1, attackRangePercent: 0,
         attackSpeed: 1, attackSpeedPercent: 0, 
         speed: 50, lifeSteal: 0, lifeStealPercent: 0, level: 1,
-        chargeAttackSpeed: 0, chargeAttackSpeedPercent: 0, healthRegen: 0, shieldHp: 0, shieldMaxHp: 0,
+        chargeAttackSpeed: 0, chargeAttackSpeedPercent: 0, healthRegen: 0, shieldHp: 0, shieldMaxHp: 0, extraDamageTakenPercent: 0
     }
 
     /** Creates a new stat object based on the stat config passed in. Stat properties not initialized in the config
@@ -144,7 +147,8 @@ export default class Stat extends Schema {
             chargeAttackSpeedPercent: false,
             healthRegen: false,
             shieldHp: false, 
-            shieldMaxHp: false
+            shieldMaxHp: false,
+            extraDamageTakenPercent: false,
         }
         return changes
     }

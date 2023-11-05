@@ -759,6 +759,8 @@ export default class GameManager {
                     maxHpValue: playerState.stat.maxHp,
                     mpValue: playerState.stat.mana,
                     maxMpValue: playerState.stat.maxMana,
+                    shieldValue: playerState.stat.shieldHp,
+                    maxShieldValue: playerState.stat.shieldMaxHp
                 })
             }
             // Updates the Peer Info Display. This display popup when holding SHIFT.

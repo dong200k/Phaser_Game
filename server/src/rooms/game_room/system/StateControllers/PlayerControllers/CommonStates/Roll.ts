@@ -1,3 +1,4 @@
+import Matter from "matter-js";
 import MathUtil from "../../../../../../util/MathUtil";
 import EffectFactory from "../../../../schemas/effects/EffectFactory";
 import CollisionImmuneEffect from "../../../../schemas/effects/temp/CollisionImmuneEffect";
@@ -20,17 +21,31 @@ export default class Roll extends StateNode {
     /** Duration of the speed boost */
     private speedBoostDuration: number = 0.5
     private speedBoostMult: number = 1.5
+    private originalSpeedBoostMult: number = 1.5
 
     /** Distance from rolling origin that player can travel to */
+    private originalMaxDistance: number = 10000
     private maxDistance: number = 10000
     private originPosition = {x: 0, y: 0}
     private speedMultiEffect?: SpeedMultiEffect
     private collisionImmuneEffect?: CollisionImmuneEffect
 
+    /** Duration of roll animation, affected by duration */
+    private animationDuration: number = 1
+
+    private speedBoostScale = 3
+    private maxDistanceScale = 1
+
+    private enterChargeStateOnRollFinish = false
+
     public onEnter(): void {
+        this.maxDistance = this.originalMaxDistance * this.maxDistanceScale
+        this.speedBoostMult = this.originalSpeedBoostMult * this.speedBoostScale
+
         this.playerController = this.getStateMachine<PlayerController>();
         this.player = this.playerController.getPlayer();
-        this.player.animation.playAnimation("roll", {duration: this.duration * 50/getFinalSpeed(this.player.stat)});
+        this.animationDuration = (this.duration * 50/getFinalSpeed(this.player.stat)) * 0.8
+        this.player.animation.playAnimation("roll", {duration: this.animationDuration});
         this.originPosition = {...this.player.getBody().position}
         this.player.sound.playSoundEffect("roll")
         this.speedMultiEffect = EffectFactory.createSpeedMultiplierEffectTimed(this.speedBoostMult, this.speedBoostDuration)
@@ -55,8 +70,10 @@ export default class Roll extends StateNode {
 
     public changeToExitState(){
         let prevStateName = this.playerController.getPrevState()?.getStateName()
-        if(prevStateName === "ChargeState"){
+        if(prevStateName === "ChargeState" || this.enterChargeStateOnRollFinish){
             this.playerController.changeState("ChargeState")
+            this.playerController.getChargeState().setChargeTimeSoFarWithRatio(1)
+            this.enterChargeStateOnRollFinish = false
         }else{
             this.playerController.changeState("Idle")
         }
@@ -64,15 +81,29 @@ export default class Roll extends StateNode {
 
     public update(deltaT: number): void {
         this.timePassed += deltaT
-        if(this.timePassed >= this.duration){
-            this.changeToExitState()
-        }
 
         let currentPosition = this.player.getBody().position
         let distance = MathUtil.distanceSquared(this.originPosition.x, this.originPosition.y, currentPosition.x, currentPosition.y)
         if(distance > this.maxDistance){
+            // console.log("distance exceeded", distance)
+            this.player.canMove = false
+        }
+
+        if(this.timePassed >= this.duration || ((distance >= this.maxDistance) && this.timePassed >= this.animationDuration)){
             this.changeToExitState()
+            this.player.canMove = true
         }
     }
     
+    addToMaxDistanceScale(num: number){
+        this.maxDistanceScale += num
+    }
+
+    addToSpeedBoostScale(num: number){
+        this.speedBoostScale += num
+    }
+
+    setEnterChargeStateOnRollFinish(toggle: boolean){
+        this.enterChargeStateOnRollFinish = toggle
+    }
 }

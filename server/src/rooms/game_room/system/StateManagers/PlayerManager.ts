@@ -294,11 +294,20 @@ export default class PlayerManager {
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedFrostGlaive)
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
-        let healthRegenArtifact = ArtifactFactory.createMaxedArtifact("upgrade-fd94a403-d217-4d92-9b5d-221a7553773f")
+        let healthRegenArtifact = ArtifactFactory.createMaxedArtifact("upgrade-9efe1a19-2b8d-4080-8337-e2846192169f")
         this.gameManager.getArtifactManager().equipArtifact(player, healthRegenArtifact)
 
-        let shieldArtifact = ArtifactFactory.createMaxedArtifact("upgrade-cbcacef1-d615-4d28-ab54-2aded061c7e2")
+        let shieldArtifact = ArtifactFactory.createMaxedArtifact("upgrade-5d3c8fc4-cfbb-4f52-82b0-8e3f2c9bfa81")
         this.gameManager.getArtifactManager().equipArtifact(player, shieldArtifact)
+
+        let rollArtifact = ArtifactFactory.createMaxedArtifact("upgrade-a9b22e84-976f-4031-973e-6e704f6a330d")
+        this.gameManager.getArtifactManager().equipArtifact(player, rollArtifact)
+        
+        let glassCannonArtifact = ArtifactFactory.createMaxedArtifact("upgrade-019ad207-0882-4d23-a90b-a6d28705b246")
+        this.gameManager.getArtifactManager().equipArtifact(player, glassCannonArtifact)
+
+        let rollChargeArtifact = ArtifactFactory.createMaxedArtifact("upgrade-474b1146-1414-4747-a306-b181bff9c3ec")
+        this.gameManager.getArtifactManager().equipArtifact(player, rollChargeArtifact)
     }
 
     /**

@@ -25,11 +25,10 @@ export class AncientGuard extends EffectLogic{
     triggerType: ITriggerType = "none"
 
     private shieldPercent: number = 10 // Percent of player's max health that shield provides as shield health.
-    private shieldDuration: number = 15
+    private shieldDuration: number = 10
     private shieldEffect?: ShieldEffect
 
     constructor(config?: IAncientGuardConfig){
-        console.log("Creating ancient guard artifact", config)
         super(config)
 
         this.effectLogicId = config?.effectLogicId ?? this.effectLogicId
@@ -37,15 +36,12 @@ export class AncientGuard extends EffectLogic{
     }
 
     public useEffect(playerState: Player, gameManager: GameManager, tree?: WeaponUpgradeTree){
-        console.log("using ancient-guard effect")
         let shieldHp = this.shieldPercent/100 * playerState.stat.maxHp
-        console.log(`shieldhp to grant: ${shieldHp}`)
         this.shieldEffect = EffectFactory.createShieldEffect(shieldHp, true, this.shieldDuration)
         EffectManager.addEffectsTo(playerState, this.shieldEffect)
     }
 
     public removeEffect(entity: Player, gameManager: GameManager, ...args: any){
-        console.log("removing shield from player")
         this.removeShield(entity)
     }
 

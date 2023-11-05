@@ -63,8 +63,6 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
                 let {config, ctor} = temp
                 this.effectLogic = new ctor(config) 
             }
-            if(this.effectLogic?.effectLogicId.startsWith("Ancient"))
-                console.log(this.effectLogic.effectLogicId, this)
         }
     }
 

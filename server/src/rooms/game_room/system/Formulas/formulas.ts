@@ -22,7 +22,7 @@ export const getFinalSpeed = function({speed}: Stat){
  * @param attackMultiplier non negative multiplier for the ad damage before armor is taken into account
  * @returns 
  */
-export const getTrueAttackDamage = function({attack, attackPercent, damagePercent, critDamage, critRate, armorPen}: Stat, {armor}: Stat, attackMultiplier: number){
+export const getTrueAttackDamage = function({attack, attackPercent, damagePercent, critDamage, critRate, armorPen}: Stat, {extraDamageTakenPercent, armor}: Stat, attackMultiplier: number){
     const isCrit = Math.random() < critRate? 1 : 0;
     let damage = (attack * (1 + attackPercent + damagePercent)) * attackMultiplier
     if(isCrit) damage *= (critDamage + 1)
@@ -36,7 +36,11 @@ export const getTrueAttackDamage = function({attack, attackPercent, damagePercen
     // armor pen makes part of attack ignore armor, while the remaining armor will affect the rest of the attack
     const ignoreArmorDamage = (damage * actualArmorPen)
     const reducedDamage = (damage * nonArmorPenPercent - armorLeft)
-    const trueDamage = ignoreArmorDamage + (reducedDamage > 0? reducedDamage : 0)
+    let trueDamage = ignoreArmorDamage + (reducedDamage > 0? reducedDamage : 0)
+
+    if(armor < 0) trueDamage = damage - armor
+
+    trueDamage *= 1 + (extraDamageTakenPercent)
 
     // console.log(`ignore armor damage: ${ignoreArmorDamage}, reduced damage: ${reducedDamage}, true damage: ${trueDamage}`)
 
@@ -52,7 +56,7 @@ export const getTrueAttackDamage = function({attack, attackPercent, damagePercen
  * @param magicMultiplier non negative multiplier for the ap damage before magic resist is taken into account
  * @returns 
  */
-export const getTrueMagicDamage = function({magicAttack, magicAttackPercent, damagePercent, magicPen}: Stat, {magicResist}: Stat, magicMultiplier: number){
+export const getTrueMagicDamage = function({magicAttack, magicAttackPercent, damagePercent, magicPen}: Stat, {extraDamageTakenPercent, magicResist}: Stat, magicMultiplier: number){
     const damage = magicMultiplier * (magicAttack * (1 + magicAttackPercent + damagePercent))
 
     let actualMagicPen = Math.min(magicPen, MAGIC_PEN_CAP)
@@ -62,7 +66,12 @@ export const getTrueMagicDamage = function({magicAttack, magicAttackPercent, dam
     // armor pen makes part of attack ignore armor, while the remaining armor will affect the rest of the attack
     const ignoreResDamage = (damage * actualMagicPen)
     const reducedDamage = (damage * nonMagicPenPercent - magicResLeft)
-    const trueDamage = ignoreResDamage + (reducedDamage > 0? reducedDamage : 0)
+    let trueDamage = ignoreResDamage + (reducedDamage > 0? reducedDamage : 0)
+
+    if(magicResist < 0) trueDamage = damage - magicResist
+
+    trueDamage *= 1 + (extraDamageTakenPercent)
+    console.log(extraDamageTakenPercent)
 
     return trueDamage < 0? 1 : Math.floor(trueDamage)
 }

@@ -73,7 +73,8 @@ export function getDefaultNode(){
         chargeAttackSpeedPercent: 0,
         healthRegen: 0,
         shieldHp: 0,
-        shieldMaxHp: 0
+        shieldMaxHp: 0,
+        extraDamageTakenPercent: 0,
       },
       status: "none",
       selectionTime: 0

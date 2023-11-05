@@ -31,6 +31,8 @@ import WarriorShieldUpgradeAbilityLogic from "./EffectLogics/weapon/WarriorShiel
 import WarriorKnockbackLogic from "./EffectLogics/weapon/WarriorShield/WarriorKnockbackLogic";
 import WarriorProtectLogic from "./EffectLogics/weapon/WarriorShield/WarriorProtectLogic";
 import { AncientGuard } from "./EffectLogics/artifact/AncientGuard";
+import { TurboSkate } from "./EffectLogics/artifact/TurboSkate";
+import { AncientBattery } from "./EffectLogics/artifact/AncientBattery";
 
 export default class EffectLogicManager{
 
@@ -90,6 +92,13 @@ export default class EffectLogicManager{
         this.addEffectLogic(AncientGuard)
         this.addEffectLogic(AncientGuard, {effectLogicId: "Ancient-Guard-5", shieldPercent: 15})
         this.addEffectLogic(AncientGuard, {effectLogicId: "Ancient-Guard-10", shieldPercent: 20})
+
+        this.addEffectLogic(TurboSkate)
+        this.addEffectLogic(TurboSkate, {effectLogicId: "Turbo-Skate-2", speedBoostPercent: 0.2, maxDistancePercent: 0})
+        this.addEffectLogic(TurboSkate, {effectLogicId: "Turbo-Skate-3", speedBoostPercent: 0, maxDistancePercent: 0.3})
+        this.addEffectLogic(TurboSkate, {effectLogicId: "Turbo-Skate-5", speedBoostPercent: 0, maxDistancePercent: 0.6})
+
+        this.addEffectLogic(AncientBattery)
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){
