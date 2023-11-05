@@ -152,10 +152,11 @@ export default class AssetController {
         let bucket = getStorage().bucket();
         let decodedData = FileUtil.decodeDataURL(data);
         let buffer = Buffer.from(decodedData.data, "base64");
+        let contentType = mime ?? decodedData.mime;
         return bucket.file(loc).save(buffer, {
             metadata: {
-                contentType: mime ?? decodedData.mime,
-            }
+                contentType: contentType,
+            },
         })
     }
 

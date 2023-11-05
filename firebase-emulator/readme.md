@@ -8,6 +8,8 @@ Get Firebase CLI if you haven't already
 ```
 npm install -g firebase-tools
 ```
+If you already have firebase CLI, you can update it with the above command. Use 
+the latest version to avoid issues.
 
 ## Setup emulator
 ```
