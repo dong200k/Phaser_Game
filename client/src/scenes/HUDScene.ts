@@ -97,14 +97,14 @@ export default class HUDScene extends Phaser.Scene {
         // ----- Artifacts Display -------
         this.artifactDisplay = new ArtifactDisplay(this, {
             items: [
-                {
-                    imageKey: "demo_hero",
-                    level: 2,
-                },
-                {
-                    imageKey: "button_small_active",
-                    level: 3,
-                }
+                // {
+                //     imageKey: "demo_hero",
+                //     level: 2,
+                // },
+                // {
+                //     imageKey: "button_small_active",
+                //     level: 3,
+                // }
             ]
         });
 

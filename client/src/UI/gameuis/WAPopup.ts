@@ -62,7 +62,7 @@ export default class WAPopup extends RexUIBase {
             });
         
         // Set popup initial position.
-        this.popup.setPosition(this.scene.game.scale.width - this.popup.width / 2, this.scene.game.scale.height + this.popup.height / 2);
+        this.popup.setPosition(this.scene.game.scale.width/2, this.scene.game.scale.height + this.popup.height/2);
         this.sideUpPopup();
     }
 
@@ -124,52 +124,6 @@ export default class WAPopup extends RexUIBase {
             .setName("waTitleButton")
             .addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[500]).setName("waTitleBackground"))
             .add(UIFactory.createTextBoxDOM(this.scene, data.title ?? "UPGRADES", "h4"), {padding: {top: 6}}),
-            // actions: data.items?.map((item) => {
-            //     // Create upgrade items.
-            //     let sizer = this.rexUI.add.sizer({
-            //         orientation: "vertical",
-            //         width: 314,
-            //         height: 500,
-            //         space: {
-            //             item: 40,
-            //             top: 33,
-            //             bottom: 40,
-            //         },
-            //     });
-            //     let sizer2 = this.rexUI.add.sizer({
-            //         orientation: "vertical",
-            //         space: {
-            //             item: 8,
-            //         }
-            //     })
-
-            //     if(item.typeName) {
-            //         if(item.typeName.toLowerCase().includes("weapon")) {
-            //             sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.typeName, "p6").setColor("#FF9E2D"), {expand: false});
-            //         } else if(item.typeName.toLowerCase().includes("artifact")) {
-            //             sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.typeName, "p6").setColor("#2D8EFF"), {expand: false});
-            //         } else {
-            //             sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.typeName, "p6").setColor("#2D8EFF"), {expand: false});
-            //         }
-            //     }
-
-            //     sizer2.add(UIFactory.createTextBoxDOM(this.scene, item.name?.substring(0, 15), "h5"), {expand: false});
-
-            //     // Background of the upgrade items.
-            //     let backgroundSizer = this.rexUI.add.overlapSizer();
-            //     backgroundSizer.add(this.scene.add.image(0, 0, "upgrade_bg").setDisplaySize(314, 500));
-            //     backgroundSizer.add(this.rexUI.add.roundRectangle(0, 0, 314, 500, 0, ColorStyle.primary.hex[500], 0).setName("waItemBackground"));
-            //     sizer.addBackground(backgroundSizer);
-
-            //     sizer.add(sizer2, {align: "center"});
-            //     let image = this.scene.add.image(0, 0, item.imageKey).setDisplaySize(64, 64);
-            //     image.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
-            //     sizer2.add(image, {align: "center"});
-            //     sizer.add(UIFactory.createTextBoxPhaser(this.scene, item.description, "p5").setWordWrapWidth(250, false), {expand: false, align: "center"});
-
-            //     sizer.setData("onClick", item.onClick);
-            //     return sizer;
-            // }),
             content: this.createDialogueContent(data),
             space: {
                 top: 0,
@@ -180,21 +134,6 @@ export default class WAPopup extends RexUIBase {
                 title: 15,
             },
         })
-            // .on("button.over", (button: Sizer) => {
-            //     (button.getByName("waItemBackground", true) as RoundRectangle).setStrokeStyle(1, ColorStyle.neutrals.hex.white);
-            // })
-            // .on("button.out", (button: Sizer) => {
-            //     (button.getByName("waItemBackground", true) as RoundRectangle).setStrokeStyle();
-            // })
-            // .on("button.click", (button: Sizer, groupName: string, index: number) => {
-            //     // Hide upgrades. And destroy.
-            //     button.getData("onClick")();
-            //     dialog.moveToDestroyPromise(1000, dialog.x, this.scene.game.scale.height + dialog.height / 2, "Back")
-            //     .then(() => {
-            //         this.popup = undefined;
-            //     });
-            // })
-
 
         let titleButton = dialog.getByName("waTitleButton", true) as FixWidthSizer;
         titleButton.on(Phaser.Input.Events.POINTER_OVER, () => {
@@ -257,7 +196,7 @@ export default class WAPopup extends RexUIBase {
                     height: 500,
                     space: {
                         item: 40,
-                        top: 33,
+                        top: 26,
                         bottom: 40,
                     },
                 });
@@ -284,7 +223,9 @@ export default class WAPopup extends RexUIBase {
                         sizer2.add(UIFactory.createTextBoxPhaser(this.scene, item.typeName, "p6").setColor("#2D8EFF"), {expand: false, align: "center"});
                     }
                 }
-                sizer2.add(UIFactory.createTextBoxPhaser(this.scene, item.name?.substring(0, 15), "h5"), {expand: false, align: "center"});
+
+                //The item's name will have a max of 2 lines. Around 30 characters.
+                sizer2.add(UIFactory.createTextBoxPhaser(this.scene, item.name + "\n\n", "h5").setWordWrapWidth(300).setAlign("center").setMaxLines(2), {expand: false, align: "center"});
                 let image = this.scene.add.image(0, 0, item.imageKey).setDisplaySize(64, 64);
                 image.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
                 sizer2.add(image, {align: "center"});
