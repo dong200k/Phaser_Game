@@ -225,7 +225,7 @@ export default class WAPopup extends RexUIBase {
                 }
 
                 //The item's name will have a max of 2 lines. Around 30 characters.
-                sizer2.add(UIFactory.createTextBoxPhaser(this.scene, item.name + "\n\n", "h5").setWordWrapWidth(300).setAlign("center").setMaxLines(2), {expand: false, align: "center"});
+                sizer2.add(UIFactory.createTextBoxPhaser(this.scene, item.name + "\n\n", "h5").setWordWrapWidth(280).setAlign("center").setMaxLines(2), {expand: false, align: "center"});
                 let image = this.scene.add.image(0, 0, item.imageKey).setDisplaySize(64, 64);
                 image.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
                 sizer2.add(image, {align: "center"});
