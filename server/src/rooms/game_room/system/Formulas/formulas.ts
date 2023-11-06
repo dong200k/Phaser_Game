@@ -71,7 +71,7 @@ export const getTrueMagicDamage = function({magicAttack, magicAttackPercent, dam
     if(magicResist < 0) trueDamage = damage - magicResist
 
     trueDamage *= 1 + (extraDamageTakenPercent)
-    console.log(extraDamageTakenPercent)
+    // console.log(extraDamageTakenPercent)
 
     return trueDamage < 0? 1 : Math.floor(trueDamage)
 }

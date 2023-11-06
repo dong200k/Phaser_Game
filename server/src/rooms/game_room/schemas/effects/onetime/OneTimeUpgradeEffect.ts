@@ -1,4 +1,5 @@
 import EffectLogic from "../../../system/EffectLogic/EffectLogic";
+import GameManager from "../../../system/GameManager";
 import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
 import Entity from "../../gameobjs/Entity";
 import Effect from "../Effect";

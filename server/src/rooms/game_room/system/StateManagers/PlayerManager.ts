@@ -308,6 +308,15 @@ export default class PlayerManager {
 
         let rollChargeArtifact = ArtifactFactory.createMaxedArtifact("upgrade-474b1146-1414-4747-a306-b181bff9c3ec")
         this.gameManager.getArtifactManager().equipArtifact(player, rollChargeArtifact)
+
+        let amplifierArtifact = ArtifactFactory.createMaxedArtifact("upgrade-072fe1da-fc6f-4aa4-8b8c-72b5da52eb32")
+        this.gameManager.getArtifactManager().equipArtifact(player, amplifierArtifact)
+
+        let perseveranceArtifact = ArtifactFactory.createMaxedArtifact("upgrade-5295e034-c5f6-4a07-a69e-8e36fa5b2d39")
+        this.gameManager.getArtifactManager().equipArtifact(player, perseveranceArtifact)
+
+        let friendshipArtifact = ArtifactFactory.createMaxedArtifact("upgrade-b49ebec5-d566-4fb8-9170-d6cd9778bb8b")
+        this.gameManager.getArtifactManager().equipArtifact(player, friendshipArtifact)
     }
 
     /**

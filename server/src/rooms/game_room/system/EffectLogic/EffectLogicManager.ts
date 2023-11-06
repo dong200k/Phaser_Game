@@ -33,6 +33,12 @@ import WarriorProtectLogic from "./EffectLogics/weapon/WarriorShield/WarriorProt
 import { AncientGuard } from "./EffectLogics/artifact/AncientGuard";
 import { TurboSkate } from "./EffectLogics/artifact/TurboSkate";
 import { AncientBattery } from "./EffectLogics/artifact/AncientBattery";
+import { Amplifier } from "./EffectLogics/artifact/Amplifier/Amplifier";
+import { AmplifierBoost } from "./EffectLogics/artifact/Amplifier/AmplifierBoost";
+import { PerseveranceStone } from "./EffectLogics/artifact/PerseveranceStone/PerseveranceStone";
+import { PerseveranceBoost } from "./EffectLogics/artifact/PerseveranceStone/PerseveranceBoost";
+import { PowerOfFriendship } from "./EffectLogics/artifact/PowerOfFriendship/PowerOfFriendship";
+import { PowerOfFriendshipBoost } from "./EffectLogics/artifact/PowerOfFriendship/PowerOfFriendshipBoost";
 
 export default class EffectLogicManager{
 
@@ -99,6 +105,22 @@ export default class EffectLogicManager{
         this.addEffectLogic(TurboSkate, {effectLogicId: "Turbo-Skate-5", speedBoostPercent: 0, maxDistancePercent: 0.6})
 
         this.addEffectLogic(AncientBattery)
+
+        this.addEffectLogic(Amplifier)
+        this.addEffectLogic(AmplifierBoost, {effectLogicId: "Amplifier-Boost-2", bonusIncrease: 0.02})
+        this.addEffectLogic(AmplifierBoost, {effectLogicId: "Amplifier-Boost-3", bonusIncrease: 0.03})
+        this.addEffectLogic(AmplifierBoost, {effectLogicId: "Amplifier-Boost-4", bonusIncrease: 0.04})
+        this.addEffectLogic(AmplifierBoost, {effectLogicId: "Amplifier-Boost-6", bonusIncrease: 0.06})
+
+        this.addEffectLogic(PerseveranceStone)
+        this.addEffectLogic(PerseveranceBoost, {effectLogicId: "Perseverance-Boost-1", bonusIncrease: 10})
+        this.addEffectLogic(PerseveranceBoost, {effectLogicId: "Perseverance-Boost-2", bonusIncrease: 15})
+        this.addEffectLogic(PerseveranceBoost, {effectLogicId: "Perseverance-Boost-3", bonusIncrease: 20})
+        this.addEffectLogic(PerseveranceBoost, {effectLogicId: "Perseverance-Boost-4", bonusIncrease: 30})
+
+        this.addEffectLogic(PowerOfFriendship)
+        this.addEffectLogic(PowerOfFriendshipBoost, {effectLogicId: "POF-1", bonusIncrease: 0.01, perPlayerBonusIncrease: 0.01})
+        this.addEffectLogic(PowerOfFriendshipBoost, {effectLogicId: "POF-2", bonusIncrease: 0.02, perPlayerBonusIncrease: 0.02})
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){

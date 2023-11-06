@@ -50,6 +50,7 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
     }
 
     public setTree(tree: WeaponUpgradeTree){
+        if(this.effectLogicId === "POF") console.log(`tree game manager ${tree.getGameManager()}`)
         this.tree = tree
         this.createEffectLogic()
     }
@@ -58,6 +59,7 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
         let gameManager = this.tree?.getGameManager()
         let effectLogicManager = gameManager?.getEffectLogicManager()
         if(effectLogicManager){
+            this.gameManager = gameManager as GameManager
             let temp = effectLogicManager.getEffectLogicCtorAndConfig(this.effectLogicId)
             if(temp){
                 let {config, ctor} = temp
