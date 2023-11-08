@@ -1,7 +1,10 @@
 import Player from "../../../../schemas/gameobjs/Player";
+import Stat from "../../../../schemas/gameobjs/Stat";
+import Projectile from "../../../../schemas/projectiles/Projectile";
 import StateMachine from "../../../StateMachine/StateMachine";
 import StateNode from "../../../StateMachine/StateNode";
 import EffectManager from "../../../StateManagers/EffectManager";
+import { GameEvents, IProjectileConfig } from "../../../interfaces";
 import PlayerController from "../PlayerController";
 
 interface AttackConfig {
@@ -86,7 +89,7 @@ export default class Attack extends StateNode {
         if(!this.triggered && this.timePassed >= this.triggerPercent * this.attackDuration) {
             this.triggered = true;
             // Trigger the attack.
-            EffectManager.useTriggerEffectsOn(this.player, "player attack", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY})
+            EffectManager.useTriggerEffectsOn(this.player, "player attack", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY})            
         }
 
         // End attack once we pass the attackDuration.
@@ -94,5 +97,4 @@ export default class Attack extends StateNode {
             this.playerController.changeState("Idle");
         }
     }
-    
 }

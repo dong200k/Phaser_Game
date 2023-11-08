@@ -23,7 +23,7 @@ export class PowerOfFriendship extends EffectLogic{
     private statEffectId?: string
 
     public useEffect(playerState: Player, gameManager: GameManager, tree?: WeaponUpgradeTree){
-        console.log(`pof artifact game manager undefined is ${gameManager === undefined}`)
+        // console.log(`pof artifact game manager undefined is ${gameManager === undefined}`)
         let playerCount = -1
         gameManager.gameObjects.forEach(gameObj=>{
             if(gameObj instanceof Player && gameObj.playerController.stateName !== "Dead"){
@@ -59,7 +59,7 @@ export class PowerOfFriendship extends EffectLogic{
         let statEffect = EffectFactory.createStatEffect(obj)
         this.statEffectId = EffectManager.addStatEffectsTo(playerState, statEffect)
 
-        console.log(`Power of Friendship Artifact: Granting bonus ${bonus} ${attribute}`)
+        // console.log(`Power of Friendship Artifact: Granting bonus ${bonus} ${attribute}`)
     }
 
     public increaseBaseBonus(num: number){

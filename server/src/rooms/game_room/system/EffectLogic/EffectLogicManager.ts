@@ -39,6 +39,9 @@ import { PerseveranceStone } from "./EffectLogics/artifact/PerseveranceStone/Per
 import { PerseveranceBoost } from "./EffectLogics/artifact/PerseveranceStone/PerseveranceBoost";
 import { PowerOfFriendship } from "./EffectLogics/artifact/PowerOfFriendship/PowerOfFriendship";
 import { PowerOfFriendshipBoost } from "./EffectLogics/artifact/PowerOfFriendship/PowerOfFriendshipBoost";
+import { Fireball } from "./EffectLogics/artifact/Fireball/Fireball";
+import { LightningRod } from "./EffectLogics/artifact/LightningRod/LightningRod";
+import { QiArmor } from "./EffectLogics/artifact/QiArmor/QiArmor";
 
 export default class EffectLogicManager{
 
@@ -121,6 +124,22 @@ export default class EffectLogicManager{
         this.addEffectLogic(PowerOfFriendship)
         this.addEffectLogic(PowerOfFriendshipBoost, {effectLogicId: "POF-1", bonusIncrease: 0.01, perPlayerBonusIncrease: 0.01})
         this.addEffectLogic(PowerOfFriendshipBoost, {effectLogicId: "POF-2", bonusIncrease: 0.02, perPlayerBonusIncrease: 0.02})
+    
+        this.addEffectLogic(Fireball)
+        this.addEffectLogic(Fireball, {effectLogicId: "Fireball-damage-25", fireballExplosionMult: 1.25, fireballMult: 1.25})
+        this.addEffectLogic(Fireball, {effectLogicId: "Fireball-damage-50", fireballExplosionMult: 1.5, fireballMult: 1.5})
+        this.addEffectLogic(Fireball, {effectLogicId: "Fireball-max", fireballExplosionMult: 1.5, fireballMult: 1.5, explosionRadiusMult: 2})
+    
+        this.addEffectLogic(LightningRod)
+        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-2", damageMult: 1.25})
+        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-3", damageMult: 1.5})
+        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-4", damageMult: 2})
+        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-5", damageMult: 2, lightningCount: 2})
+
+        this.addEffectLogic(QiArmor)
+        this.addEffectLogic(QiArmor, {effectLogicId: "QiArmor-2", knockbackMult: 1.5})
+        this.addEffectLogic(QiArmor, {effectLogicId: "QiArmor-3", knockbackMult: 2})
+        this.addEffectLogic(QiArmor, {effectLogicId: "QiArmor-4", knockbackMult: 2, radiusMult: 1.5})
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){
