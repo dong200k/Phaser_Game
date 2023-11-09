@@ -47,4 +47,8 @@ export default class Ability extends Schema{
     setOwner(owner: Player){
         this.owner = owner
     }
+
+    getEffectLogic(){
+        return this.effectLogic
+    }
 }

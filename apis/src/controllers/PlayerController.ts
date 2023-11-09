@@ -24,5 +24,18 @@ export default class PlayerController {
         })
     }
 
+    public static async getAllPlayers(req: any, res: any) {
+        const db = getFirestore();
+        let playerColRef = db.collection("players");
+        let q = await playerColRef.get();
+        let playerData: any[] = [];
+        q.forEach((doc) => {
+            let data = doc.data();
+            data.id = doc.id;
+            playerData.push(data);
+        })
+        return playerData;
+    }
+
 }
 

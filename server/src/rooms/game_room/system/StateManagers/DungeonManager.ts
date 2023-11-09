@@ -17,6 +17,7 @@ import MonsterPool from "../../schemas/gameobjs/monsters/MonsterPool"
 import TinyZombie from "../../schemas/gameobjs/monsters/zombie/TinyZombie"
 import InvisObstacle from "../../schemas/gameobjs/InvisObstacle"
 import DatabaseManager from "../Database/DatabaseManager"
+import Entity from "../../schemas/gameobjs/Entity"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -59,7 +60,8 @@ export default class DungeonManager {
         // update special and attack cooldowns for each player
         this.gameManager.state.gameObjects.forEach((gameObject, key)=>{
             if(gameObject instanceof Monster){
-                // console.log(`Active:${gameObject.active}, x:${gameObject.x}, y:${gameObject.y}, `);
+                // console.log(`Active:${gameObject.active}, x:${gameObject.x}, y:${gameObject.y}, `);\
+                if(gameObject.name === "Berserker Boss")console.log(gameObject.name, gameObject.active)
                 if(gameObject.active) {
                     gameObject.update(deltaT);
                 } else if(!gameObject.isInPoolMap()) {
@@ -94,8 +96,27 @@ export default class DungeonManager {
                 this.gameManager.endGame();
             }
         }
+
+        // Check for out of bounds monsters every 30 tick
+        if(this.gameManager.state.serverTickCount % 30 === 0) {
+            this.handleOutOfBoundsMonsters();
+        }
     }
     
+    /** Kill all outof bounds monsters. */
+    private handleOutOfBoundsMonsters() {
+        let playerBounds = this.dungeon?.getPlayerBounds();
+        if(playerBounds) {
+            let width = playerBounds.maxX - playerBounds.minX;
+            let height = playerBounds.maxY - playerBounds.minY;
+            let bounds = Matter.Bodies.rectangle(playerBounds.minX + width / 2, playerBounds.minY + height / 2, width, height, {isStatic: true, isSensor: true});
+            this.gameManager.gameObjects.forEach((obj) => {
+                if(obj instanceof Monster && Matter.Collision.collides(bounds, obj.getBody(), Matter.Pairs.create({})) === null) {
+                    obj.stat.hp = 0;
+                }
+            })
+        }
+    }
 
     private cleanUpMonsters() {
 
@@ -496,5 +517,29 @@ export default class DungeonManager {
      */
     public getDungeon() {
         return this.dungeon;
+    }
+
+    /**
+     * Gets all the monsters that are active.
+     * @returns A monster array.
+     */
+    public getAllActiveMonsters() {
+        let monsters: Monster[] = [];
+        this.gameManager.gameObjects.forEach((obj) => {
+            if(obj instanceof Monster && obj.active) monsters.push(obj);
+        })
+        return monsters;
+    }
+
+    /**
+     * Aggro all the active monsters to the provided aggroTarget.
+     * @param aggroTarget - The target that the monsters will attack.
+     */
+    public aggroAllMonstersOnto(aggroTarget: Entity) {
+        this.gameManager.gameObjects.forEach((obj) => {
+            if(obj instanceof Monster && obj.active) {
+                obj.setAggroTarget(aggroTarget);
+            } 
+        })
     }
 }

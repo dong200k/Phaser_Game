@@ -22,28 +22,33 @@ import NotificationContextProvider from './contexts/NotificationContextProvider.
 import Asset from './components/asset/Asset.js';
 import CreateOrEditAsset from './components/asset/CreateOrEditAsset.js';
 import CreateOrEditMonster from './components/monster/CreateOrEditMonster.js';
+import { JsonDB } from './components/JsonDB.js';
+import BackupHome from './components/backup/BackupHome.js';
+import BackupView from './components/backup/BackupView.js';
+import RestoreView from './components/backup/RestoreView.js';
 
 function App() {
   return (
     <NotificationContextProvider> {/* Provides notification callbacks */}
       <UserContextProvider> {/* Provides user authentication data */}
         <DataContextProvider> {/* Provides monster/dungeon data */}
-          <BrowserRouter>
+          <BrowserRouter basename={process.env.REACT_APP_BASENAME}>
             <NavigationBar/>
               <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/role/:id" element={<Role/>}/>
-                <Route path="/role" element={<Roles />} />
-                <Route path="/abilities/:id" element={<Ability/>}/>
-                <Route path="/abilities" element={<Abilities />} />
-                <Route path="/upgrade/:id" element={<Upgrade type="upgrade"/>}/>
-                <Route path="/upgrade" element={<Upgrades type="upgrade"/>} />
-                <Route path="/skill/:id" element={<Upgrade type="skill"/>}/>
-                <Route path="/skill" element={<Upgrades type="skill"/>} />
-                <Route path="/node/:id" element={<EditNodePage/>}/>
-                <Route path="/node" element={<Nodes/>} />
-                <Route path="/weapon/:id" element={<Weapon/>}/>
-                <Route path="/weapon" element={<Weapons />} />
+                <Route path="/json" element={<Authorized roles={["admin", "gamemaster"]}><JsonDB/></Authorized>}/>
+                <Route path="/role/:id" element={<Authorized roles={["admin", "gamemaster"]}><Role/></Authorized>}/>
+                <Route path="/role" element={<Authorized roles={["admin", "gamemaster"]}><Roles /></Authorized>} />
+                <Route path="/abilities/:id" element={<Authorized roles={["admin", "gamemaster"]}><Ability/></Authorized>}/>
+                <Route path="/abilities" element={<Authorized roles={["admin", "gamemaster"]}><Abilities /></Authorized>} />
+                <Route path="/upgrade/:id" element={<Authorized roles={["admin", "gamemaster"]}><Upgrade type="upgrade"/></Authorized>}/>
+                <Route path="/upgrade" element={<Authorized roles={["admin", "gamemaster"]}><Upgrades type="upgrade"/></Authorized>} />
+                <Route path="/skill/:id" element={<Authorized roles={["admin", "gamemaster"]}><Upgrade type="skill"/></Authorized>}/>
+                <Route path="/skill" element={<Authorized roles={["admin", "gamemaster"]}><Upgrades type="skill"/></Authorized>} />
+                <Route path="/node/:id" element={<Authorized roles={["admin", "gamemaster"]}><EditNodePage/></Authorized>}/>
+                <Route path="/node" element={<Authorized roles={["admin", "gamemaster"]}><Nodes/></Authorized>} />
+                <Route path="/weapon/:id" element={<Authorized roles={["admin", "gamemaster"]}><Weapon/></Authorized>}/>
+                <Route path="/weapon" element={<Authorized roles={["admin", "gamemaster"]}><Weapons /></Authorized>} />
                 <Route path="/admin" element={<Authorized roles={["admin"]}><Admin /></Authorized>} />
                 <Route path="/monster/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditMonster isEdit={false}/> </Authorized>} />
                 <Route path="/monster/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditMonster isEdit={true}/></Authorized>} />
@@ -54,6 +59,9 @@ function App() {
                 <Route path="/asset" element={<Authorized roles={["admin", "gamemaster"]}><Asset /></Authorized>} />
                 <Route path="/asset/create" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditAsset /></Authorized>} />
                 <Route path="/asset/edit/:id" element={<Authorized roles={["admin", "gamemaster"]}><CreateOrEditAsset isEdit={true} /></Authorized>} />
+                <Route path="/backup" element={<Authorized roles={["admin", "gamemaster"]}><BackupHome /></Authorized>} />
+                <Route path="/backup/backup" element={<Authorized roles={["admin", "gamemaster"]}><BackupView /></Authorized>} />
+                <Route path="/backup/restore" element={<Authorized roles={["admin", "gamemaster"]}><RestoreView /></Authorized>} />
                 <Route path="*" element={<div>404 NOT FOUND</div>} />
               </Routes>
           </BrowserRouter>

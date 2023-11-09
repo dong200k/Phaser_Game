@@ -26,6 +26,7 @@ export const startPhaserGame = ()=>{
     } else {
         // New user logged in! Resume game and switch to the splash scene.
         game.resume();
+        SceneManager.getSceneManager().enableGameKeys();
         SceneManager.getSceneManager().switchToScene("SplashScene");
     }
 
@@ -35,6 +36,7 @@ export const startPhaserGame = ()=>{
 
 /** Pauses the phaser game. Hides the game canvas from view. */
 export const stopPhaserGame = ()=> {    
+    SceneManager.getSceneManager().disableGameKeys();
     game?.pause();
     document.getElementById("game")?.classList.add("display-none");
     // show website forms

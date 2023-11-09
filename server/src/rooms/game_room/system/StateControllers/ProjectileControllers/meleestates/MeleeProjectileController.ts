@@ -13,7 +13,7 @@ export default class MeleeProjectileController extends StateMachine<MeleeProject
     
     private projectile!: Projectile;
     private attackDuration: number = 1;
-    private triggerPercent: number = 0.8;
+    private triggerPercent: number = 0.9;
     private unTriggerPercent: number = 0.6;
 
     protected create(data: MeleeProjectileControllerData): void {

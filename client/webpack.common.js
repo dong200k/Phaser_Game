@@ -1,8 +1,7 @@
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-    // mode: 'development', // development build or production build
-    // devtool: 'inline-source-map', // source maps provide useful information durning development
     entry: './src/app.js', // Webpack will initilally look here
     output: {
         path: path.resolve(__dirname, 'dist'), // The output file path
@@ -25,4 +24,7 @@ module.exports = {
         ]
     },
     // watch: true // Reload when changes have been made to the source code.
+    plugins: [
+        new Dotenv() // Adds support for .env files
+    ]
 }

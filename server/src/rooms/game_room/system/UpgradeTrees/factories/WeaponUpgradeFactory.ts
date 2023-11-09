@@ -83,4 +83,38 @@ export default class WeaponUpgradeFactory{
     static createSwordUpgrade(){
         return WeaponUpgradeFactory.createUpgrade('2')
     }
+
+    /**
+     * Creates an upgrade and selects all the nodes. Note that the order is based on dfs so depending on the weapon it may not be as you expect.
+     * @param id id of upgrade to create
+     * @returns 
+     */
+    static createMaxUpgrade(id: string){
+        let upgrade = DatabaseManager.getManager().getUpgrade(id)
+        if(!upgrade) return
+
+        let root = WeaponUpgradeFactory.createNode(upgrade.root)
+        
+        // Takes in a Node class and a db.json nodeToCopy.
+        // creates class Nodes from all the children of nodeToCopy(deep copy including children's children etc.) and add to the Node Class
+        function dfs(node: Node<WeaponData>, nodeToCopy: Node<WeaponData>){
+            nodeToCopy.children.forEach((childToCopy, i)=>{
+                // Create Node class from children of nodeToCopy
+                let child = WeaponUpgradeFactory.createNode(childToCopy)
+                node.children.push(child)
+                child.data.setStatus("selected")
+
+
+                // Copy the childToCopy's children/descendants also
+                dfs(child, childToCopy)
+            })
+        }
+
+        dfs(root, upgrade.root)
+
+        root.data.status = "selected"
+        root.data.selectionTime = 0
+
+        return root
+    }
 }

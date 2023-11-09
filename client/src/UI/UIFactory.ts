@@ -1,5 +1,6 @@
 import Button from "./Button";
 import ButtonRex, { ButtonRexConfig } from "./ButtonRex";
+import ButtonSprite, { ButtonSpriteConfig } from "./ButtonSprite";
 import CircleImage from "./CircleImage";
 import TextBox from "./TextBox";
 import TextBoxPhaser, { FontTypeString } from "./TextBoxPhaser";
@@ -77,9 +78,31 @@ export default class UIFactory {
         return buttonRex;
     }
 
+    /**
+     * Create a circular image.
+     * @param scene The Phaser Scene.
+     * @param x The x position of the image.
+     * @param y The y position of the image.
+     * @param texture The texture for this image.
+     * @param radius The radius of the image.
+     * @returns An circle image.
+     */
     public static createCircleImage(scene: Phaser.Scene, x: number, y: number, texture: string, radius: number) {
         let circleImage = new CircleImage(scene, x, y, texture, radius);
         scene.add.existing(circleImage);
         return circleImage;
+    }
+
+    /**
+     * Creates a button that will be represented by an sprite.
+     * The sprite should be an aseprite animation with animations of, 'enabled', 'disabled', 'hover', 'pressed'.
+     * @param scene The Phaser Scene.
+     * @param config The ButtonSpriteConfig.
+     * @returns A ButtonSprite.
+     */
+    public static createButtonSprite(scene: Phaser.Scene, config: ButtonSpriteConfig) {
+        let buttonSprite = new ButtonSprite(scene, config);
+        scene.add.existing(buttonSprite);
+        return buttonSprite;
     }
 }

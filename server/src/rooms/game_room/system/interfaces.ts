@@ -11,6 +11,7 @@ import MonsterController from "./AI/MonsterAI/simplemonster/MonsterController";
 import { IClasses } from "../schemas/projectiles/projectileClasses";
 import OneTimeUpgradeEffect from "../schemas/effects/onetime/OneTimeUpgradeEffect";
 import StateMachine from "./StateMachine/StateMachine";
+import Projectile from "../schemas/projectiles/Projectile";
 
 // ------------ Math -------------
 
@@ -168,7 +169,28 @@ export type IProjectileConfig = {
     originEntityId?: string,
     spawnSound?: string,
     projectileSpeed?: number,
+    /** How many targets a PLAYER_PROJECTILE, MONSTER_PROJECTILE etc. can hit before going inactive. Set to -1 to hit infinite targets */
     piercing?: number,
+    visible?: boolean,
+    /** Set this value to to true if projectile should not despawn on colliding with an obstacle. By default it is set to false. */
+    dontDespawnOnObstacleCollision?: boolean,
+    /** Knockback information for this projectile. */
+    knockback?: {
+        /** The distance of the knockback. */
+        distance: number,
+        /** The direction of the knockback (optional). */
+        direction?: {
+            x: number,
+            y: number,
+        }
+    }
+    /** Called when the projectile is set to inactive by the projectile.setInactive function */
+    setInactiveCallback?: (projectile: Projectile)=>void,
+    onCollideCallback?: (projectile: Projectile)=>void,
+    /** Key for animation if undefined is passed the default is "play" */
+    animationKey?: string,
+    /** Whether to repeat animation if undefined then default is true */
+    repeatAnimation?: boolean,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }
@@ -190,8 +212,24 @@ interface Bounds {
     height: number;
 }
 
+// ------------ interfaces for Aura -------------- //
+export interface IAuraConfig {
+    radius?: number;
+    timed?: boolean;
+    timeoutTime?: number;
+    color?: number;
+    x?: number;
+    y?: number;
+    name: string;
+    controller?: string;
+}
+
 // ------------ interfaces for Collision Manager -------------- //
 export type ICollisionRule = {
+    typeA: CategoryType, typeB: CategoryType, resolve: (gameObjectA: any, gameObjectB: any, bodyA: Matter.Body, bodyB: Matter.Body)=> void
+}
+
+export type ICollisionEndRule = {
     typeA: CategoryType, typeB: CategoryType, resolve: (gameObjectA: any, gameObjectB: any, bodyA: Matter.Body, bodyB: Matter.Body)=> void
 }
 

@@ -202,5 +202,5 @@ export const ColorStyle = {
     }
 }
 
-export const API_SERVER_URL = "http://localhost:3002";
-export const GAME_SERVER_URL = 'ws://localhost:3000';
+export const API_SERVER_URL = process.env.API_SERVER_URL || "http://localhost:3002";
+export const GAME_SERVER_URL = process.env.GAME_SERVER_URL || "ws://localhost:3000";

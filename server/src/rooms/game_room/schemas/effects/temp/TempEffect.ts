@@ -8,8 +8,8 @@ export default abstract class TempEffect extends Effect {
     
     /** Timed effect are ended by a timer. Non timed effect are ended manually. */
     @type("boolean") private isTimed;
-    /** The time that is remaining before this effect ends. */
-    @type("number") private timeRemaining;
+    /** The time that is remaining before this effect ends(in seconds). */
+    @type("number") protected timeRemaining;
     /** The state the effect is in. Either the effect hasn't been applied, it is currently being applied, or it has finished applied and is reverted. */
     @type("string") private effectState: EffectStateType = "Haven't Applied";
 
@@ -19,7 +19,7 @@ export default abstract class TempEffect extends Effect {
     /**
      * Creates a temp effect.
      * @param isTimed Is this effect timed or not. Non timed effects needs to be reverted manually, by calling setAsCompleted().
-     * @param totalTime The time before this effect automatically reverts. Must be an positive integer (decimals will be rounded).   
+     * @param totalTime The time before this effect automatically reverts in seconds. Must be an positive integer (decimals will be rounded).   
      */
     constructor(isTimed:boolean=true, totalTime:number=5) {
         super();

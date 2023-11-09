@@ -9,6 +9,7 @@ import MaskManager from "../../../system/Collisions/MaskManager";
 import Stat from "../Stat";
 import GameManager from "../../../system/GameManager";
 import AIFactory from "../../../system/AI/AIFactory";
+import BerserkerBossController from "../../../system/StateControllers/BossControllers/BerserkerBossController/BerserkerBossController";
 
 
 export default class Monster extends Entity {

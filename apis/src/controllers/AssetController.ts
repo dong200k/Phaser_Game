@@ -148,15 +148,31 @@ export default class AssetController {
      * @param data The dataURL encoded data with base64.
      * @returns A Promise resolved with void.
      */
-    private static uploadToCloud(loc: string, data: any) {
+    private static uploadToCloud(loc: string, data: any, mime: string = "") {
         let bucket = getStorage().bucket();
         let decodedData = FileUtil.decodeDataURL(data);
         let buffer = Buffer.from(decodedData.data, "base64");
+        let contentType = mime ?? decodedData.mime;
         return bucket.file(loc).save(buffer, {
             metadata: {
-                contentType: decodedData.mime,
-            }
+                contentType: contentType,
+            },
         })
+    }
+
+    /**
+     * Uploads an asset to cloud storage to a specific location.
+     * Will replace any existing files at that location.
+     */
+    public static restoreAsset(req: any, res: any) {
+        let {loc, data, mime} = req.body;
+        AssetController.uploadToCloud(loc, data, mime).then(() => {
+            console.log(`Restoring asset to: ${loc}.`)
+            res.status(200).send({message: `Uploaded asset to: ${loc}`});
+        }).catch((e) => {
+            console.log(`Error uploading asset to: ${loc}. ${e.message}`);
+            res.status(400).send({message: e.message});
+        });
     }
 
 }

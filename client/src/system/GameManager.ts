@@ -22,6 +22,10 @@ import { PhaserAudio } from "../interfaces";
 import SettingsManager from "./SettingsManager";
 import SoundManager from "./SoundManager";
 import FloatingText from "../gameobjs/FloatingText";
+import ClientManager from "./ClientManager";
+import Aura from "../gameobjs/Aura";
+import StatusIconManager from "./StatusIconManager";
+import CircleImage from "../UI/CircleImage";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -43,6 +47,18 @@ export default class GameManager {
 
     private mouseDown: boolean = false;
 
+    // ------- Queued GameObjects ------
+    private assetsLoaded: boolean = false;
+    private queuedOnAddGameObjects: {obj: any, key: string}[] = [];
+
+    // ------- Double tap timer -------
+    private wasdPressTime = {
+        "w": 0,
+        "a": 0,
+        "s": 0,
+        "d": 0
+    }
+
     // ------- fixed tick --------
     private timePerTick = 33.33; // 30 ticks per second.
     private timeTillNextTick: number;
@@ -53,15 +69,25 @@ export default class GameManager {
     private soundManager: SoundManager;
 
     private floatingTexts: FloatingText[] = [];
+    private statusIconManager: StatusIconManager;
 
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
         this.timeTillNextTick = this.timePerTick;
         this.soundManager = SoundManager.getManager();
+        this.statusIconManager = new StatusIconManager(scene);
         this.initializeClientSidePrediction();
         this.initializeInputs();
         this.initializeListeners();
+    }
+
+    /**
+     * 
+     * @returns the stored time value in milliseconds since midnight, January 1, 1970 UTC
+     */
+    getTime(){
+        return new Date().getTime()
     }
 
     /**
@@ -79,6 +105,52 @@ export default class GameManager {
         this.syncGameObjectVisibility();
         this.syncGameObjectActive();
         this.updateFloatingTexts();
+        this.renderFollowPlayerObjects();
+        this.updateAuraPosition();
+        this.statusIconManager.update(deltaT / 1000);
+    }
+
+    public updateAuraPosition() {
+        this.gameObjects.forEach(gameObject => {
+            if(gameObject instanceof Aura) {
+                gameObject.updateGraphicsPosition();
+            }
+        })
+    }
+
+    onWASDPress(key: "w"|"a"|"s"|"d"){
+        // console.log(key)
+        return ()=>{
+            // console.log("key pressed: ", key)
+            // First press
+            if(this.wasdPressTime[key] === 0){
+                this.wasdPressTime[key] = this.getTime()
+                return
+            }
+
+            // Second press 
+            let secondPressTime = this.getTime()
+            if(secondPressTime - this.wasdPressTime[key] < 400){
+                this.sendDoubleTap(key)
+                // console.log('send double tap', key)
+            }
+            this.wasdPressTime[key] = this.getTime()
+        }   
+    }
+
+    sendDoubleTap(key: "w"|"a"|"s"|"d"){
+        this.gameRoom?.send("doubleTap", key)
+    }
+
+    public renderFollowPlayerObjects(){
+        this.gameObjects.forEach(gameObject=>{
+            if(gameObject.gameObjectState.type === "Projectile"){
+                if(gameObject.active && gameObject.gameObjectState.name === "FollowingMeleeProjectile" && this.player1 && gameObject.gameObjectState.ownerId === this.gameRoom.sessionId){
+                    gameObject.setX(this.player1.x)
+                    gameObject.setY(this.player1.y)
+                }
+            }
+        })
     }
 
     /** Changes the value of spectating. */
@@ -88,6 +160,7 @@ export default class GameManager {
 
     /** Changes the player that is being watched. */
     private rotateSpectateTarget() {
+        console.log("Rotating spectating target.")
         // If there are no more player's do nothing.
         if(this.players.length === 0) return;
 
@@ -178,23 +251,71 @@ export default class GameManager {
         })
 
         this.scene.input.on("pointerdown", (pointer: Phaser.Input.Pointer) => {
-            if(pointer.leftButtonDown()) this.mouseDown = true;
+            if(pointer.leftButtonDown()) {
+                this.mouseDown = true;
+            }
             // this.player1?.play("atk")
         })
 
         this.scene.input.on("pointerup", (pointer: Phaser.Input.Pointer) => {
             if(pointer.leftButtonReleased()) {
                 this.mouseDown = false;
+                this.sendMouseUpMessage()
                 if(this.spectating) {
+                    console.log("Pointer up called", this.spectating);
                     // If spectating change perspective.
                     this.rotateSpectateTarget();
                 }
             }
         })
+
+        /** wasd keys */
+        this.upKey?.on('down', this.onWASDPress("w"))
+        this.downKey?.on('down', this.onWASDPress("s"))
+        this.leftKey?.on('down', this.onWASDPress("a"))
+        this.rightKey?.on('down', this.onWASDPress("d"))
+
+        /** shift key */
+        let shiftKey = this.scene.input.keyboard?.addKey("SHIFT")
+        shiftKey?.on("down", ()=>this.sendDoubleTap("w"))
     }
 
+    /** Destroys the game manager and cleans up listeners.
+     * This should be called when a game is finished.
+     */
+    public destroy() {
+        this.cleanUpListeners();
+        this.soundManager.stopAll();
+    }
+
+    private cleanUpListeners() {
+        this.debugKey?.off("down");
+        this.scene.input.off("pointerdown");
+        this.scene.input.off("pointerup");
+    }
+
+    /** Called by the GameScene when all the assets have finished loading.
+     * This will start adding the gameobjects that were previously added
+     * to a queue.
+     */
+    public setAssetFinishedLoading() {
+        this.assetsLoaded = true;
+    }
+
+    // Queue up the changes and load them only when the game starts.
     private initializeListeners() {
-        this.gameRoom.state.gameObjects.onAdd = this.onAdd;
+        this.gameRoom.state.gameObjects.onAdd = (gameObj: any, key: string) => {
+            if(this.assetsLoaded) {
+                this.onAdd(gameObj, key);
+                while(this.queuedOnAddGameObjects.length > 0) {
+                    let queuedObj = this.queuedOnAddGameObjects.shift();
+                    if(queuedObj) 
+                        this.onAdd(queuedObj.obj, queuedObj.key);
+                }
+            }
+            else 
+                this.queuedOnAddGameObjects.push({obj: gameObj, key: key});
+        };
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
     }
 
@@ -207,17 +328,28 @@ export default class GameManager {
         this.gameRoom?.send("move", movementData);
 
         //[0] mouse click, [1] mousex, [2] mousey.
-        let mouseData = [0, 0, 0]
+        let mouseData = [0, 0, 0, 0]
         mouseData[0] = this.mouseDown? 1 : 0;
         mouseData[1] = this.scene.input.mousePointer.worldX;
         mouseData[2] = this.scene.input.mousePointer.worldY;
+        
         this.gameRoom?.send("attack", mouseData);
 
         let special = this.spaceKey?.isDown? true : false;
-        this.gameRoom?.send("special", {special, mouseData});
+        if(special) this.gameRoom?.send("special", {special, mouseData});
 
         // Client-side prediction.
         // this.updatePlayer1(movementData, special, mouseData);
+    }
+
+    private sendMouseUpMessage(){
+        let mouseData = [0, 0, 0, 0]
+        mouseData[0] = this.mouseDown? 1 : 0;
+        mouseData[1] = this.scene.input.mousePointer.worldX;
+        mouseData[2] = this.scene.input.mousePointer.worldY;
+        mouseData[3] = 1 // Pointer Up
+
+        this.gameRoom?.send("attack", mouseData)
     }
 
     private getPlayerMovementData() {
@@ -250,6 +382,9 @@ export default class GameManager {
                 break;
             case 'InvisObstacle':
                 newGameObject = new InvisObstacle(this.scene, gameObj);
+                break;
+            case 'Aura':
+                newGameObject = this.addAura(gameObj, key);
                 break;
         }
         if(newGameObject) {
@@ -346,9 +481,15 @@ export default class GameManager {
         if(projectile.projectileType === "Melee") {
             proj.play("play");
         } else {
-            proj.play({key: "play", repeat: -1});
+            if(projectile.repeatAnimation){
+                proj.play({key: projectile.animationKey, repeat: -1});
+            }else{
+                proj.play({key: projectile.animationKey});
+            }
+            
         }  
         this.scene.add.existing(proj)
+        proj.depth = -1
         return proj;
     }
     
@@ -386,6 +527,13 @@ export default class GameManager {
         return newMonster;
     }
 
+    private addAura(aura: any, key: string): Aura {
+        let newAura = new Aura(this.scene, aura);
+        this.scene.add.existing(newAura);
+        this.addListenersToGameObject(newAura, aura);
+        return newAura;
+    }
+
     /** Adds a listener to an entity to respond to server updates on that entity. */
     private addListenersToGameObject(gameObject: GameObject, gameObjectState: GameObjectState) {
         /** ----- GameObject Listeners ----- */
@@ -393,6 +541,7 @@ export default class GameManager {
         gameObjectState.velocity.onChange = (changes: any) => this.gameObjectVelocityOnChange(gameObject, gameObjectState, changes);
         gameObjectState.animation.onChange = (changes: any) => this.gameObjectAnimationOnChange(gameObject, gameObjectState, changes);
         gameObjectState.sound.onChange = (changes: any) => this.gameObjectSoundOnChange(gameObject, gameObjectState, changes);
+        gameObjectState.statusIcon.onChange = (changes: any) => this.gameObjectStatusIconOnChange(gameObject, gameObjectState, changes);
 
         if(gameObject instanceof Entity) {
             /** ----- Entity Listeners ----- */
@@ -486,7 +635,8 @@ export default class GameManager {
             let projectileState = gameObjectState as ProjectileState;
             let velocityX = projectileState.velocity.x;
             let velocityY = projectileState.velocity.y;
-            gameObject.setRotation(MathUtil.getRotationRadians(velocityX, velocityY))
+            if(!(velocityX === 0 && velocityY === 0))
+                gameObject.setRotation(MathUtil.getRotationRadians(velocityX, velocityY))
         }
         if(gameObject instanceof Monster) {
             // Updates the monster's movement animations based on its velocity.
@@ -549,9 +699,27 @@ export default class GameManager {
     }
 
     private gameObjectSoundOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
-        SoundManager.getManager().play(gameObjectState.sound.key, {
-            detune: Math.floor(Math.random() * 500 - 250)
-        });
+        if(gameObject.gameObjectState.sound.type === "sfx"){
+            SoundManager.getManager().play(gameObjectState.sound.key, {
+                detune: Math.floor(Math.random() * 500 - 250)
+            });
+        }else if(gameObject.gameObjectState.sound.type === "bg"){
+            SoundManager.getManager().play(gameObjectState.sound.key, {
+                loop: true
+            });
+        }
+
+        if(gameObjectState.sound.status === "Stopped"){
+            SoundManager.getManager().stop(gameObject.gameObjectState.sound.keyToStop)
+        }
+    }
+
+    private gameObjectStatusIconOnChange(gameObject: GameObject, gameObjectState: GameObjectState, changes: any) {
+        let {type, key, timeout, iconId} = gameObjectState.statusIcon;
+        if(type === "add")
+            this.statusIconManager.addStatusIcon(key, timeout, gameObject, iconId);
+        if(type === "rm") 
+            this.statusIconManager.removeStatusIcon(iconId);
     }
 
     /** Called when the entity's stat is updated on the server. */

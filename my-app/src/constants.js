@@ -1,0 +1,1 @@
+export const BASEURL_API_SERVER = process.env.REACT_APP_API_SERVER_URL || "http://localhost:3002"

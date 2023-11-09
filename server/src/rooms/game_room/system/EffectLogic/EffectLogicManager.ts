@@ -16,6 +16,20 @@ import Piercing2Logic from "./EffectLogics/weapon/RangerBow/Piercing/Piercing2Lo
 import PentabowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/PentabowLogic";
 import SexagintibowLogic from "./EffectLogics/weapon/RangerBow/MultiShot/SexagintibowLogic";
 import Piercing10Logic from "./EffectLogics/common/Piercing10Logic";
+import ChargeAttackLogic1 from "./EffectLogics/weapon/RangerBow/ChargeShot/ChargeAttackLogic1";
+import AddComboLogic from "./EffectLogics/weapon/BerserkerBlade/ComboUpgrades/AddComboLogic";
+import BerserkerChargeAttackLogic from "./EffectLogics/weapon/BerserkerBlade/ChargeAttack/BerserkerChargeAttackLogic";
+import BerserkerAbilityLogic from "./EffectLogics/abilities/BerserkerAbility/BerserkerAbility";
+import AddChargeAttackLogic from "./EffectLogics/weapon/BerserkerBlade/ChargeAttack/AddChargeAttackLogic";
+import DoubleFlameAuraLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUpgrades/DoubleFlameAuraLogic";
+import FlameAuraChargeBoostLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUpgrades/FlameAuraChargeBoost";
+import FlameAuraStatBoostLogic from "./EffectLogics/weapon/BerserkerBlade/SpecialUpgrades/FlameAuraStatBoostLogic";
+import DoubleGetsugaLogic from "./EffectLogics/weapon/BerserkerBlade/ChargeAttack/DoubleGetsugaLogic";
+import WarriorAbilityLogic from "./EffectLogics/abilities/WarriorAbility/WarriorAbility";
+import WarriorShieldAttackLogic from "./EffectLogics/weapon/WarriorShield/WarriorShieldAttackLogic";
+import WarriorShieldUpgradeAbilityLogic from "./EffectLogics/weapon/WarriorShield/WarriorShieldUpgradeAbilityLogic";
+import WarriorKnockbackLogic from "./EffectLogics/weapon/WarriorShield/WarriorKnockbackLogic";
+import WarriorProtectLogic from "./EffectLogics/weapon/WarriorShield/WarriorProtectLogic";
 
 export default class EffectLogicManager{
 
@@ -54,6 +68,23 @@ export default class EffectLogicManager{
         this.addEffectLogic(Piercing1Logic)
         this.addEffectLogic(Piercing2Logic)
         this.addEffectLogic(Piercing10Logic)
+
+        this.addEffectLogic(ChargeAttackLogic1)
+
+        this.addEffectLogic(AddComboLogic)
+        this.addEffectLogic(BerserkerChargeAttackLogic)
+        this.addEffectLogic(BerserkerAbilityLogic)
+        this.addEffectLogic(AddChargeAttackLogic)
+        this.addEffectLogic(DoubleFlameAuraLogic)
+        this.addEffectLogic(FlameAuraChargeBoostLogic)
+        this.addEffectLogic(FlameAuraStatBoostLogic)
+        this.addEffectLogic(DoubleGetsugaLogic)
+
+        this.addEffectLogic(WarriorAbilityLogic);
+        this.addEffectLogic(WarriorShieldAttackLogic);
+        this.addEffectLogic(WarriorShieldUpgradeAbilityLogic);
+        this.addEffectLogic(WarriorKnockbackLogic);
+        this.addEffectLogic(WarriorProtectLogic);
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass){

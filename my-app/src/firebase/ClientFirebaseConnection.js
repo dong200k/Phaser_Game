@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { doc, getDoc, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
-import { User, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth"
+import { connectFirestoreEmulator, doc, getDoc, getFirestore, onSnapshot, setDoc } from "firebase/firestore";
+import { User, connectAuthEmulator, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth"
+import { connectStorageEmulator, getStorage } from "firebase/storage";
 // import SceneManager from "../system/SceneManager";
 // import { SceneKey, StartScene } from "../config";
 
@@ -15,19 +16,63 @@ export default class ClientFirebaseConnection{
 //   /** Listeners are called when player data updates */
 //   private playerDataListeners: Array<{key: string, f: (playerData: any)=>void}> = []
 
+
+initFirebaseApp(env){
+  switch(env){
+    case "dev":
+      initializeApp({
+        apiKey: "AIzaSyARha5xMck2m4eOv4-gK8iTifHOZz_ZQJs",
+        authDomain: "phasergame-4f0d6.firebaseapp.com",
+        projectId: "phasergame-4f0d6",
+        storageBucket: "phasergame-4f0d6.appspot.com",
+        messagingSenderId: "410346722096",
+        appId: "1:410346722096:web:baedc46c90bc962b4faef5",
+        measurementId: "G-0S480400G3",
+      })
+
+      // Local emulator
+      const db = getFirestore()
+      connectFirestoreEmulator(db, '127.0.0.1', 8080)
+
+      const auth = getAuth()
+      connectAuthEmulator(auth, "http://127.0.0.1:9099")
+
+      const storage = getStorage();
+      connectStorageEmulator(storage, "127.0.0.1", 9199);
+      
+      break;
+    case "beta":
+      // Original firebase project
+      initializeApp({
+        apiKey: "AIzaSyARha5xMck2m4eOv4-gK8iTifHOZz_ZQJs",
+        authDomain: "phasergame-4f0d6.firebaseapp.com",
+        projectId: "phasergame-4f0d6",
+        storageBucket: "phasergame-4f0d6.appspot.com",
+        messagingSenderId: "410346722096",
+        appId: "1:410346722096:web:baedc46c90bc962b4faef5",
+        measurementId: "G-0S480400G3",
+      })
+      break;
+    case "prod":
+      // Additional/2nd firebase project
+      initializeApp({
+        apiKey: "AIzaSyBgu0CiSN1qNFEoj-XCGdy-uv6HE0kAwL4",
+        authDomain: "phasergame-prod.firebaseapp.com",
+        projectId: "phasergame-prod",
+        storageBucket: "phasergame-prod.appspot.com",
+        messagingSenderId: "135671222671",
+        appId: "1:135671222671:web:b9e01f69bbd8ab0aa0fbfa",
+        measurementId: "G-Y2RFKDFYNS"
+      })
+      break;
+    default:
+      break;
+  }
+}
+
   /** Initializes FirebaseApp */
   startConnection(){
-    const firebaseConfig = {
-      apiKey: "AIzaSyARha5xMck2m4eOv4-gK8iTifHOZz_ZQJs",
-      authDomain: "phasergame-4f0d6.firebaseapp.com",
-      projectId: "phasergame-4f0d6",
-      storageBucket: "phasergame-4f0d6.appspot.com",
-      messagingSenderId: "410346722096",
-      appId: "1:410346722096:web:baedc46c90bc962b4faef5",
-      measurementId: "G-0S480400G3",
-    };
-    
-    initializeApp(firebaseConfig);
+    this.initFirebaseApp(process.env.REACT_APP_FIREBASE_ENV)
 
     const auth = getAuth()
     const db = getFirestore()

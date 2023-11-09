@@ -1,8 +1,8 @@
 import Stat from "../../schemas/gameobjs/Stat";
 
 export const BASE_SPEED = 1
-export const ARMOR_PEN_CAP = 0.3
-export const MAGIC_PEN_CAP = 0.3
+export const ARMOR_PEN_CAP = 1
+export const MAGIC_PEN_CAP = 1
 export const ATTACK_SPEED_CAP = 5
 
 /**
@@ -27,12 +27,19 @@ export const getTrueAttackDamage = function({attack, attackPercent, damagePercen
     let damage = (attack * (1 + attackPercent + damagePercent)) * attackMultiplier
     if(isCrit) damage *= (critDamage + 1)
 
-    let reductionMultiplier = (1 - Math.min(armorPen, ARMOR_PEN_CAP))
-    if(reductionMultiplier < 0) reductionMultiplier = 0
-    if(armor < 0) reductionMultiplier = 1 // Don't apply armor pen when armor is negative
-    let effectiveArmor = armor * reductionMultiplier
+    let actualArmorPen = Math.min(armorPen, ARMOR_PEN_CAP)
+    if(actualArmorPen < 0) actualArmorPen = 0
 
-    const trueDamage = damage - effectiveArmor;
+    let nonArmorPenPercent = (1 - actualArmorPen)
+    let armorLeft = nonArmorPenPercent * armor
+
+    // armor pen makes part of attack ignore armor, while the remaining armor will affect the rest of the attack
+    const ignoreArmorDamage = (damage * actualArmorPen)
+    const reducedDamage = (damage * nonArmorPenPercent - armorLeft)
+    const trueDamage = ignoreArmorDamage + (reducedDamage > 0? reducedDamage : 0)
+
+    // console.log(`ignore armor damage: ${ignoreArmorDamage}, reduced damage: ${reducedDamage}, true damage: ${trueDamage}`)
+
     // console.log(`damage: ${damage}, armor: ${armor}, attack: ${attack}, attackMult ${attackMultiplier}`)
     return trueDamage < 1 ? 1 : Math.floor(trueDamage);
 }
@@ -48,13 +55,16 @@ export const getTrueAttackDamage = function({attack, attackPercent, damagePercen
 export const getTrueMagicDamage = function({magicAttack, magicAttackPercent, damagePercent, magicPen}: Stat, {magicResist}: Stat, magicMultiplier: number){
     const damage = magicMultiplier * (magicAttack * (1 + magicAttackPercent + damagePercent))
 
-    let reductionMultiplier = (1 - Math.min(magicPen, MAGIC_PEN_CAP))
-    if(reductionMultiplier < 0) reductionMultiplier = 0
-    if(magicResist < 0) reductionMultiplier = 1 // negative magic res, dont apply magic pen
-    const effectiveMagicResist = magicResist * reductionMultiplier
-    
-    const trueDamage = damage - effectiveMagicResist;
-    return trueDamage < 0? 0 : Math.floor(trueDamage)
+    let actualMagicPen = Math.min(magicPen, MAGIC_PEN_CAP)
+    let nonMagicPenPercent = (1 - actualMagicPen)
+    let magicResLeft = nonMagicPenPercent * magicResist
+
+    // armor pen makes part of attack ignore armor, while the remaining armor will affect the rest of the attack
+    const ignoreResDamage = (damage * actualMagicPen)
+    const reducedDamage = (damage * nonMagicPenPercent - magicResLeft)
+    const trueDamage = ignoreResDamage + (reducedDamage > 0? reducedDamage : 0)
+
+    return trueDamage < 0? 1 : Math.floor(trueDamage)
 }
 
 /**
@@ -104,4 +114,25 @@ export const getFinalAttackCooldown = function({attackSpeed, attackSpeedPercent}
  */
 export const getFinalAttackRange = function({attackRangePercent, attackRange}: Stat, baseRange: number){
     return (1 + attackRangePercent) * attackRange * baseRange;
+}
+
+
+/**
+ * 
+ * @param stat
+ * @returns attack speed after accounting stat
+ */
+export const getFinalAttackSpeed = function({attackSpeed, attackSpeedPercent}: Stat){
+    let finalAttackSpeed = attackSpeed * (1 + attackSpeedPercent)
+    return Math.abs(finalAttackSpeed)
+}
+
+/**
+ * 
+ * @param stat 
+ * @returns charge attack speed after accounting stat
+ */
+export const getFinalChargeAttackSpeed = function({chargeAttackSpeed, chargeAttackSpeedPercent}: Stat){
+    let finalChargeAttackSpeed = chargeAttackSpeed * (1 + chargeAttackSpeedPercent)
+    return Math.abs(finalChargeAttackSpeed)
 }

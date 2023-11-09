@@ -41,6 +41,17 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("monster_death", "audio/monster_death.mp3");
         this.load.audio("level_up", "audio/level_up.mp3");
         this.load.audio("shoot_arrow", "audio/shoot_arrow.mp3");
+        this.load.audio("ultra_instinct", "audio/ultrainstinct.mp3")
+        this.load.audio("magic_slash", "audio/magic_slash.mp3")
+        this.load.audio("sword_schwing", "audio/sword_schwing.mp3")
+        this.load.audio("flame_slash", "audio/flame_slash.mp3")
+        this.load.audio("sword_swish", "audio/sword_swish.mp3")
+        this.load.audio("clean_fast_slash", "audio/clean_fast_slash.mp3")
+        this.load.audio("small_explosion", "audio/small_explosion.mp3")
+        this.load.audio("roll", "audio/roll.mp3")
+        this.load.audio("ultra_instinct_boss", "audio/ultra_instinct_boss.mp3")
+        this.load.audio("boss_getting_dark", "audio/boss_getting_dark.mp3")
+        this.load.audio("warrior_slam_sfx", "audio/warrior_slam_sfx.mp3");
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");
@@ -49,12 +60,22 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("doubow_icon", "images/icons/doubow_icon.png");
         this.load.image("tribow_icon", "images/icons/tribow_icon.png");
         this.load.image("dungeon_core_background", "images/background/DungeonCoreBg.png");
+        this.load.image("invisible", "images/projectiles/Invisible.png")
+        this.load.image("slow_icon", "images/icons/slow_icon.png");
+        this.load.image("upgrade_bg", "images/background/upgrade_bg.png");
 
         // ------- Loading Animations ------- //
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
         this.load.aseprite("Ranger", "images/roles/ranger.png", "images/roles/ranger.json");
         this.load.aseprite("RangerArrow", "images/projectiles/arrow_1.png", "images/projectiles/arrow_1.json");
         this.load.aseprite("TinyZombieAttack", "images/projectiles/bite_1.png", "images/projectiles/bite_1.json");
+        this.load.aseprite("Berserker", "images/roles/Berserker.png", "images/roles/Berserker.json");
+        this.load.aseprite("Warrior", "images/roles/warrior.png", "images/roles/warrior.json");
+        this.load.aseprite("FlameAura", "images/projectiles/FlameAura.png", "images/projectiles/FlameAura.json");
+        this.load.aseprite("GetsugaTenshou", "images/projectiles/GetsugaTenshou.png", "images/projectiles/GetsugaTenshou.json");
+        this.load.aseprite("upgrade_aicon", "images/icons/upgrade_icon/upgrade_aicon.png", "images/icons/upgrade_icon/upgrade_aicon.json");
+        this.load.aseprite("x_aicon", "images/icons/x_icon/x_aicon.png", "images/icons/x_icon/x_aicon.json");
+
     }
 
     /** Load the assets from firebase. */
@@ -67,6 +88,11 @@ export default class SystemPreloadScene extends Phaser.Scene {
     }
 
     create() {
+        // All added textures will use nearest neighbor to scale (for pixel art).
+        this.textures.on(Phaser.Textures.Events.ADD, (key: string) => {
+            this.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+        })
+
         // Adds local assets to the phaser loader.
         this.addLocalData();
         
@@ -94,6 +120,18 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("monster_death", "sfx");
         soundManager.add("level_up", "sfx");
         soundManager.add("shoot_arrow", "sfx");
+        soundManager.add("magic_slash", "sfx")
+        soundManager.add("sword_schwing", "sfx")
+        soundManager.add("flame_slash", "sfx")
+        soundManager.add("sword_swish", "sfx")
+        soundManager.add("clean_fast_slash", "sfx")
+        soundManager.add("small_explosion", "sfx")
+        soundManager.add("roll", "sfx")
+        soundManager.add("warrior_slam_sfx", "sfx");
+
+        soundManager.add("ultra_instinct", "bg")
+        soundManager.add("ultra_instinct_boss", "bg")
+        soundManager.add("boss_getting_dark", "bg")
 
         /** Initialize the SceneManager and sets this scene as the current scene. */
         let sceneManager = SceneManager.getSceneManager();
@@ -107,6 +145,8 @@ export default class SystemPreloadScene extends Phaser.Scene {
         } else{
             sceneManager.switchToScene(SceneKey.LoginScene)
         }
+
+        
     }
 
 }

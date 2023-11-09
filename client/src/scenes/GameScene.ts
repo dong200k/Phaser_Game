@@ -71,20 +71,6 @@ export default class GameScene extends Phaser.Scene {
     /** Clean up the resources used by this GameScene. 
      * This will allow the GameScene to be reused the next time it is open. */
     public leaveGame(force?: boolean) {
-        // if(this.scene.isActive(SceneKey.GameScene)) {
-        //     this.gameRoom?.leave();
-        //     this.children.getAll().forEach((obj) => {
-        //         obj.destroy();
-        //     })
-        //     this.tweens.killAll();
-        //     this.gameManager = undefined;
-        //     this.gameRoom = undefined;
-        //     let switchToSceneKey = SceneKey.MenuScene;
-        //     if(ClientManager.getClient().isConnectedToWaitingRoom())
-        //         switchToSceneKey = SceneKey.RoomScene;
-        //     SceneManager.getSceneManager().switchToScene(switchToSceneKey);
-        // }
-
         if(this.gameRoom) {
             this.gameRoom.leave();
             this.children.getAll().forEach(obj => obj.destroy());
@@ -99,6 +85,9 @@ export default class GameScene extends Phaser.Scene {
             }
         }
 
+        if(this.gameManager) {
+            this.gameManager.destroy();
+        }
         this.gameManager = undefined;
         this.gameRoom = undefined;
     }
@@ -139,7 +128,7 @@ export default class GameScene extends Phaser.Scene {
             this.initializeGameRoomListeners(this.gameRoom);
 
             this.gameManager = new GameManager(this, this.gameRoom);
-            
+
         }).catch((e) => {
             console.log("Join Game Error: ", e);
             this.leaveGame(true);
@@ -160,10 +149,14 @@ export default class GameScene extends Phaser.Scene {
         this.loadSystem.startLoad().then(() => {
             // Done Loading! We can start the game.
             if(this.gameRoom) {
+                this.gameManager?.setAssetFinishedLoading();
                 this.gameRoom.send("loadAssetComplete");
                 this.cameras.main.setZoom(2);
                 this.showHUD();
                 this.loadFinished = true;
+            } else {
+                console.log("Error: Game Room is not defined.");
+                this.leaveGame();
             }
         }).catch((e) => {
             console.log(e.message);

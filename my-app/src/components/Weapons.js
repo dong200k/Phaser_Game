@@ -1,34 +1,19 @@
-import { useEffect, useState } from "react"
-import WeaponService from "../services/WeaponService.js"
+import { useContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import { DataContext } from "../contexts/DataContextProvider.js"
 
 export default function Weapons(){
-    let [weapons, setWeapons] = useState([])
+    const {weapons, createDocument, deleteDocument} = useContext(DataContext)
 
-    useEffect(()=>{
-        WeaponService.getAllWeapons()
-            .then(weapons=>setWeapons(weapons))
-    }, [])
-
-    const createNewWeapon = async ()=>{
-        let result = await WeaponService.createWeapon()
-
-        if(result.status === 201){
-            let weapon = await result.json()
-            setWeapons(prev=>[weapon, ...prev])
-        }
+    const createNewWeapon = ()=>{
+        createDocument("weapons")
     }
 
-    const deleteWeapon = async (id)=>{
+    const deleteWeapon = (id)=>{
         let name = weapons.filter(weapon=>weapon.id==id)[0].name
 
         if(window.confirm(`are you sure you want to delete "${name}"`)){
-            let result = await WeaponService.deleteWeapon(id)
-
-            if(result.status === 200) {
-                alert(`deleted ${name} successfully`)
-                setWeapons(prev=>prev.filter((weapon)=>weapon.id !== id))
-            }
+            deleteDocument(id, "weapons")
         }
     }
 

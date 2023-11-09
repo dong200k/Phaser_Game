@@ -1,27 +1,12 @@
-import { useEffect, useState } from "react";
-import UpgradeContainer from "./UpgradeContainer.js";
-import UpgradeService from "../services/UpgradeService.js";
-import SkillService from "../services/SkillService.js";
-import SkillContainer from "./SkillContainer.js";
-import NodeService from "../services/NodeService.js";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { DataContext } from "../contexts/DataContextProvider.js";
 
 export default function Nodes(props){
-    let [nodes, setNodes] = useState([])
-    
-    useEffect(()=>{
-        NodeService.getAllNodes()
-        .then(nodes=>setNodes(nodes))
-    }, [props])
+    const {nodes, createDocument, deleteDocument} = useContext(DataContext)
 
     async function createNode(type){
-        let result = await NodeService.createNode()
-        
-        if(result.status === 201){
-            let node = await result.json()
-            console.log(node)
-            setNodes(prevNodes=>[...prevNodes, node])
-        }
+        createDocument("nodes")
     }
 
     function deleteNode(id){
@@ -29,12 +14,7 @@ export default function Nodes(props){
             let name = nodes.filter(node=>node.id==id)[0].data.name
 
             if(window.confirm(`are you sure you want to delete "${name}"`)){
-                let result = await NodeService.deleteNode(id)
-                console.log(result.status)
-                if(result.status === 200) {
-                    alert(`deleted ${name} successfully`)
-                    setNodes(prevNodes=>prevNodes.filter((node)=>node.id !== id))
-                }
+                deleteDocument(id, "nodes")
             } 
         }
     }

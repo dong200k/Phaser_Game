@@ -1,6 +1,9 @@
 import FileUtil from "../util/fileutil"
-import { IAbility, IRole, skillTree, weapon } from "../../../server/src/rooms/game_room/system/interfaces"
+import { IAbility, IRole, skillTree, upgrade, weapon } from "../../../server/src/rooms/game_room/system/interfaces"
 
+export type IColNames = "skills" | "abilities" | "roles" | "weapons" | "upgrades" | "nodes"
+
+/** */
 export default class JsonDatabaseManager{
 
     static singleton = new JsonDatabaseManager()
@@ -9,6 +12,8 @@ export default class JsonDatabaseManager{
     private abilities: Map<string, IAbility> = new Map()
     private roles: Map<string, IRole> = new Map()
     private weapons: Map<string, weapon> = new Map()
+    private ugprades: Map<string, upgrade> = new Map()
+    private nodes: Map<string, any> = new Map()
 
     /**
      * Loads weapon upgrades, artifact upgrades, and weapons from server/assets/db.json
@@ -36,6 +41,17 @@ export default class JsonDatabaseManager{
             for (let role of db.roles) {
                 this.roles.set(role.id, role)
             }
+
+            // Load reusable nodes
+            for (let node of db.nodes) {
+                this.nodes.set(node.id, node)
+            }
+
+            // Load artifact/weapon ugprades
+            for (let upgrade of db.upgrades) {
+                this.ugprades.set(upgrade.id, upgrade)
+            }
+
         } catch (error: any) {
             console.log(error.message)
         }
@@ -79,6 +95,23 @@ export default class JsonDatabaseManager{
 
     getAllRoles(){
         return this.roles
+    }
+
+    getAll(colName: IColNames){
+        switch(colName){
+            case "abilities":
+                return this.abilities.values()
+            case "nodes":
+                return this.nodes.values()
+            case "roles":
+                return this.roles.values()
+            case "skills":
+                return this.skillTrees.values()
+            case "upgrades":
+                return this.ugprades.values()
+            case "weapons":
+                return this.weapons.values()
+        }
     }
 
     static getManager() {

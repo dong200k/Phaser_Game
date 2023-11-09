@@ -20,7 +20,7 @@ export default function NodeDetails({nodeDatum: node, type}){
         <h5>Stats:</h5>
         {
           Object.keys(data.stat).filter((key)=>data.stat[key]!==0).slice(0, 5).map(function(key) {
-            return <div><span className="text-danger">{key}:</span> {data.stat[key]}</div>
+            return <div key={key}><span className="text-danger">{key}:</span> {data.stat[key]}</div>
           })
         }  
         {
@@ -64,7 +64,7 @@ export default function NodeDetails({nodeDatum: node, type}){
         {
           Object.keys(data)
             .filter((key)=>!dataKeys.includes(key) && data[key]!= 0)
-            .map(key=> <div><span className="text-danger">{key}:</span> {data[key]}</div>)
+            .map(key=> <div key={key}><span className="text-danger">{key}:</span> {data[key]}</div>)
         }
       </div>
     )

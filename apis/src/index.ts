@@ -16,9 +16,10 @@ const bodyParser = require("body-parser")
 app.use(bodyParser())
 
 app.get('/', (req, res) => {
-  res.send('Express + TypeScript Server');
+  res.send({message: "Welcome to APIs"});
 });
 
+// NOTE: ADD NEW ROUTES TO APIROUTER.
 app.use("/", APIRouter);
 
 app.get("*", (req, res)=>{

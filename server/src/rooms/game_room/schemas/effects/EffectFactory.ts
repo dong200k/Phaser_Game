@@ -89,7 +89,7 @@ export default class EffectFactory {
     /**
      * Creates a speed multiplier effect that will change the player's speed by a multiplier.
      * @param speedMultiplier The multiplier.
-     * @param activeTime The time the effect will last for.
+     * @param activeTime The time the effect will last for in seconds.
      * @returns A SpeedMultiEffect
      */
     public static createSpeedMultiplierEffectTimed(speedMultiplier: number, activeTime: number) {
@@ -154,8 +154,13 @@ export default class EffectFactory {
         // Creates appropriate effect based on type. To add types change logic here and also add a type to my-app/src/effectTypes.js
         switch(upgradeEffect.type){
             case "player attack":
+                // Cooldown of player attack is 1000 ms. It is affected by attackSpeed etc. inside TriggerUpgradeEffect's update method
+                return new TriggerUpgradeEffect(effectLogicId, 1000, type, doesStack, collisionGroup)
+            case "player charge attack":
+                // Charge attack cooldowns are managed by their own effect logics.
+                return new TriggerUpgradeEffect(effectLogicId, 0, type, doesStack, collisionGroup)
             case "player skill":
-                // Creates a UpgradeTriggerEffect which uses the effect when the EffectManager.useOnTriggerEffectsOn is called with the corresponding type, "player attack" in this case
+                // Creates a UpgradeTriggerEffect which uses the effect when the EffectManager.useOnTriggerEffectsOn is called with the corresponding type, "player skill" in this case
                 return new TriggerUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
             case "one time":
                 // Creates a onetime upgrade effect that is used once

@@ -74,4 +74,14 @@ export default class MathUtil {
     public static distance(x1:number, y1:number, x2:number, y2:number) {
         return Math.sqrt(this.distanceSquared(x1,y1,x2,y2));
     }
+
+    /**
+     * Normalize a vector2. If the vector is a zero vector, a zero vector is returned.
+     * @param vector2 The vector2.
+     */
+    public static normalize(vector2: {x: number, y: number}) {
+        let distance = this.distance(0, 0, vector2.x, vector2.y);
+        if(distance === 0) return {x: 0, y: 0};
+        return {x: vector2.x / distance, y: vector2.y / distance};
+    }
 }

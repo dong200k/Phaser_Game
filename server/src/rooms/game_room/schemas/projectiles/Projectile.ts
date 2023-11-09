@@ -74,7 +74,30 @@ export default class Projectile extends GameObject implements Cloneable {
     /** Times the projectile has collided */
     hitCount = 0
 
-    /**
+    dontDespawnOnObstacleCollision?: boolean
+
+    /** The knockback of this projectile. */
+    knockback?: {
+        distance: number,
+        direction?: {x: number, y: number}
+    };
+
+    // /** The knockback of this projectile. */
+    // knockback?: {
+    //     distance: number,
+    //     direction?: {x: number, y: number}
+    // };
+
+    private setInactiveCallback?: Function
+    private onCollideCallback?: Function
+
+    
+    /** Animation to play default is "play" */
+    @type("string") animationKey: string = "play"
+    /** Whether to repeat animation or not default is repeat true */
+    @type("boolean") repeatAnimation: boolean = true
+
+    /**s
      * Creates a new projectile GameObject and a corresponding Matter.Body with the projectileConfig
      * @param projectileConfig 
      * @param gameManager
@@ -106,10 +129,19 @@ export default class Projectile extends GameObject implements Cloneable {
         this.projectileController = new RangedProjectileController({projectile: this});
 
         this.piercing = projectileConfig.piercing? projectileConfig.piercing : 1
+        this.knockback = projectileConfig.knockback;
         this.createBody()
 
         let velocity = {x: this.initialVelocity.x, y:this.initialVelocity.y}
         Matter.Body.setVelocity(this.getBody(), velocity);
+
+        if(projectileConfig.visible === false) this.setVisible(false)
+        this.dontDespawnOnObstacleCollision = projectileConfig.dontDespawnOnObstacleCollision
+    
+        this.setInactiveCallback = projectileConfig.setInactiveCallback
+        this.repeatAnimation = projectileConfig.repeatAnimation ?? this.repeatAnimation
+        this.animationKey = projectileConfig.animationKey ?? this.animationKey
+        this.onCollideCallback = projectileConfig.onCollideCallback ?? this.onCollideCallback
     }
     
     /**
@@ -229,7 +261,35 @@ export default class Projectile extends GameObject implements Cloneable {
     */
     public setInactive(){
         this.active = false
+        this.onInactive()
         this.reset()
+    }
+
+    public getOriginEntity(): Entity | undefined{
+        let originEntity = undefined
+        this.gameManager.gameObjects.forEach(gameObject=>{
+            if(gameObject.id === this.originEntityId) {
+                originEntity = gameObject
+            }
+        })
+        return originEntity
+    }
+
+    /**
+     * This method is called when the projectile is set to inactive.
+     */
+    public onInactive(){
+        if(this.setInactiveCallback) this.setInactiveCallback(this)
+    }
+
+    /**
+     * Called by the collision manager when projectile collides with something it can collide with.
+     */
+    public onCollide(){
+        if(this.onCollideCallback){
+            this.onCollideCallback(this)
+            console.log("projectile on collide")
+        } 
     }
 
     /**
@@ -256,6 +316,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.spawnSound = projectileConfig.spawnSound ?? "";
         this.type = "Projectile"
         this.originEntityId = projectileConfig.originEntityId;
+        this.knockback = projectileConfig.knockback ?? this.knockback;
 
         // Make body collideable again
         let body = this.getBody()
@@ -275,5 +336,10 @@ export default class Projectile extends GameObject implements Cloneable {
 
         this.piercing = projectileConfig.piercing? projectileConfig.piercing : 1
         this.hitCount = 0
+
+        if(projectileConfig.visible === false) this.setVisible(false)
+        this.repeatAnimation = projectileConfig.repeatAnimation ?? this.repeatAnimation
+        this.animationKey = projectileConfig.animationKey ?? this.animationKey
+        this.onCollideCallback = projectileConfig.onCollideCallback ?? this.onCollideCallback
     }
 }

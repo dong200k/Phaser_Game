@@ -3541,7 +3541,7 @@
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "ff9b27d6-54f2-430a-b9d7-07276cdaa306",
+                          "id": "a7f86a23-32ab-4c04-ab5b-3d7f5573ea6e",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -3588,7 +3588,7 @@
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "de94bdc0-5481-422f-95aa-5fad670cf851",
+                      "id": "d9c03153-7c32-463d-8f92-cc9df931d84f",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -3635,7 +3635,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "e55e4c6b-e68a-4ff8-ba47-fa66f5ba104b",
+                  "id": "8706459b-4675-437e-8565-450097f5140b",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -3682,7 +3682,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "7424b4c1-52ba-431f-8f26-fbffdf009125",
+              "id": "dc4c3d68-95da-49ea-8b42-24f7f81def42",
               "depth": 1,
               "collapsed": false
             }
@@ -3739,7 +3739,7 @@
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "bcfc15ec-d2fd-4d92-aa3d-8ef82b7e7c28",
+                          "id": "9a0a4bbe-aec2-4c44-a390-9f729dab58ae",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -3785,7 +3785,7 @@
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "76a4e7ef-cb9e-4c9a-8dc3-6c81a6b279c2",
+                      "id": "2a60432c-fcc8-4be6-b874-55d56e56a8e2",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -3831,7 +3831,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "1867bbe6-f94b-4bdc-9415-573d9a4d8339",
+                  "id": "2c0c5ba8-8ab2-4e4e-872e-fa2ceb2b9ce7",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -3878,7 +3878,7 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "2e9d4bbb-6e5f-4f4a-953c-caf31764afbe",
+              "id": "a30dd5a5-343f-4a00-9a21-4bf9da7fd7f3",
               "depth": 1,
               "collapsed": false
             }
@@ -3935,7 +3935,7 @@
                           "doesStack": false
                         },
                         "__rd3t": {
-                          "id": "51c86183-e6e7-49fe-a505-b3a8cba5ee1b",
+                          "id": "bd564511-d3f5-41c8-b7a6-168b93e42d25",
                           "depth": 4,
                           "collapsed": false
                         }
@@ -3981,7 +3981,7 @@
                       "doesStack": false
                     },
                     "__rd3t": {
-                      "id": "981ae992-b98e-4ffb-8106-cf98032ff200",
+                      "id": "a6b2edd0-284b-496b-bd57-7732f53c3683",
                       "depth": 3,
                       "collapsed": false
                     }
@@ -4027,7 +4027,7 @@
                   "doesStack": false
                 },
                 "__rd3t": {
-                  "id": "0c62ebcc-a475-4ff7-9edc-743bce17116f",
+                  "id": "8347f828-8499-400a-83fa-3611b6179836",
                   "depth": 2,
                   "collapsed": false
                 }
@@ -4073,7 +4073,57 @@
               "doesStack": false
             },
             "__rd3t": {
-              "id": "bb060630-195a-4c90-a14c-cd6ccdec995b",
+              "id": "0ce220ee-799d-490e-b687-e13b310541e8",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-1fec98f9-8ef0-41e4-8235-aee5c88bdec2",
+            "children": [],
+            "data": {
+              "name": "Charge Attack",
+              "description": "Holding attack button will charge a stronger attack that pierces enemies and explodes on hit.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "ChargeAttackLogic1",
+                "doesStack": 1,
+                "cooldown": 0,
+                "collisionGroup": -1,
+                "type": "player charge attack"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "98ef1b33-14c5-486f-8cce-3799594541d6",
               "depth": 1,
               "collapsed": false
             }
@@ -4105,7 +4155,9 @@
             "speed": 0,
             "lifeSteal": 0,
             "lifeStealPercent": 0,
-            "level": 0
+            "level": 0,
+            "chargeAttackSpeed": 1,
+            "chargeAttackSpeedPercent": 0
           },
           "status": "selected",
           "selectionTime": 0,
@@ -4120,7 +4172,1031 @@
           "doesStack": false
         },
         "__rd3t": {
-          "id": "7c98052f-9ca3-4694-a008-40de32b1f6d3",
+          "id": "aafaf726-635a-4981-a027-f2f166580a4a",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
+    },
+    {
+      "id": "upgrade-e4d77350-7976-4d49-a8f6-30f160c99f1f",
+      "name": "Berserker's Blade",
+      "type": "weapon",
+      "root": {
+        "id": "node-88685b18-cc5c-4d64-a295-ce49f2598104",
+        "children": [
+          {
+            "id": "node-c1c90ba2-8e61-4cad-bf28-c182a6ee023c",
+            "children": [
+              {
+                "id": "node-e447a54d-e686-4f79-9fa2-b25d44b0352b",
+                "children": [],
+                "data": {
+                  "name": "Combo 3",
+                  "description": "Unlock 3 hit combo.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "AddComboLogic",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "e4dcb00f-3b33-4d14-8dab-1201f5a709d7",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Combo 2",
+              "description": "Unlock 2 hit combo.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "AddComboLogic",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "970fc8ac-fcb3-4e41-8c47-f151c4eae588",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-282d029e-ec96-4bcf-8ec2-b178310ef2a7",
+            "children": [
+              {
+                "id": "node-5eef3c29-3464-4374-a732-78713b750ee1",
+                "children": [
+                  {
+                    "id": "node-170bc7ab-fbee-4bf3-9da0-a952cb23d1a0",
+                    "children": [
+                      {
+                        "id": "node-4971c405-1e0d-437f-ae5a-e04223fef54f",
+                        "children": [],
+                        "data": {
+                          "name": "Double Getsuga",
+                          "description": "Final charge attack slashes out 2 Getsugas",
+                          "stat": {
+                            "maxHp": 0,
+                            "maxMana": 0,
+                            "hp": 0,
+                            "mana": 0,
+                            "armor": 0,
+                            "magicResist": 0,
+                            "damagePercent": 0,
+                            "attack": 0,
+                            "attackPercent": 0,
+                            "armorPen": 0,
+                            "magicAttack": 0,
+                            "magicAttackPercent": 0,
+                            "magicPen": 0,
+                            "critRate": 0,
+                            "critDamage": 0,
+                            "attackRange": 0,
+                            "attackRangePercent": 0,
+                            "attackSpeed": 0,
+                            "attackSpeedPercent": 0,
+                            "speed": 0,
+                            "lifeSteal": 0,
+                            "lifeStealPercent": 0,
+                            "level": 0,
+                            "chargeAttackSpeed": 0,
+                            "chargeAttackSpeedPercent": 0
+                          },
+                          "status": "none",
+                          "selectionTime": 0,
+                          "upgradeEffect": {
+                            "effectLogicId": "DoubleGetsugaLogic",
+                            "doesStack": 1,
+                            "cooldown": 1000,
+                            "collisionGroup": -1,
+                            "type": "one time"
+                          },
+                          "doesStack": false
+                        },
+                        "__rd3t": {
+                          "id": "43fb7aa5-7f04-4946-be1c-70c55d54e98b",
+                          "depth": 4,
+                          "collapsed": false
+                        }
+                      }
+                    ],
+                    "data": {
+                      "name": "Unlock level 3 charge attack",
+                      "description": "Unlock level 3 charge attack that slashes out a flame Getsuga Tenshou.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0,
+                        "chargeAttackSpeed": 0,
+                        "chargeAttackSpeedPercent": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "AddChargeAttackLogic",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "one time"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "fc3fe384-70de-4025-9dc9-cbac9e8d0fcf",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Unlock level 2 charge attack",
+                  "description": "Unlock level 2 charge attack",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "AddChargeAttackLogic",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "cc18917c-340e-4c92-92ee-99c8a42d0874",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Charge Attack",
+              "description": "Holding mouse down for a duration then letting go releases a forwards knock back slash.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "selected",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "BerserkerChargeAttackLogic",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "player charge attack"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "f3ccfc78-0d94-46eb-8acc-e0a0907a97c1",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-fc9487f8-ac99-4ba5-8585-4f56069e36d9",
+            "children": [
+              {
+                "id": "node-9ec6455a-b18d-47e0-92b2-83a6b6cccff7",
+                "children": [
+                  {
+                    "id": "node-632acf06-c9be-4c52-894e-891d78780bb0",
+                    "children": [],
+                    "data": {
+                      "name": "Berserk",
+                      "description": "Gain 4x charge attack speed in special form.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0,
+                        "chargeAttackSpeed": 0,
+                        "chargeAttackSpeedPercent": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "FlameAuraChargeBoost",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "one time"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "2062bc16-88a5-44fa-b36d-cc303dc1047b",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Unyielding",
+                  "description": "While special is active receive more stat bonus as heath lowers.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "FlameAuraStatBoost",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "54d24fef-d848-471e-b54a-6c406262822b",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Fiery Flames",
+              "description": "Flame aura deals double damage.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "DoubleFlameAura",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "c4393741-f54a-448e-a161-8da5b3c1321c",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "name": "Berserker's Blade",
+          "description": "This great flame sword holds great power.",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0,
+            "chargeAttackSpeed": 0,
+            "chargeAttackSpeedPercent": 0
+          },
+          "status": "selected",
+          "selectionTime": 0,
+          "upgradeEffect": {
+            "effectLogicId": "",
+            "doesStack": 1,
+            "cooldown": 1000,
+            "collisionGroup": -1,
+            "type": "player attack"
+          },
+          "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
+          "doesStack": false
+        },
+        "__rd3t": {
+          "id": "19b69964-c4f8-48c1-a283-089c9337ce98",
+          "depth": 0,
+          "collapsed": false
+        }
+      }
+    },
+    {
+      "id": "upgrade-6f07d324-c727-462d-b51e-44c24ca27234",
+      "name": "auto-generated",
+      "type": "weapon",
+      "root": {
+        "id": "node-7c521764-87f8-4a5f-b33e-8bf58de0e166",
+        "children": [],
+        "data": {
+          "name": "auto-generated",
+          "description": "auto-generated",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0,
+            "chargeAttackSpeed": 0,
+            "chargeAttackSpeedPercent": 0
+          },
+          "status": "none",
+          "selectionTime": 0,
+          "upgradeEffect": {
+            "effectLogicId": "",
+            "doesStack": 1,
+            "cooldown": 1000,
+            "collisionGroup": -1,
+            "type": "none"
+          }
+        }
+      }
+    },
+    {
+      "id": "upgrade-36b4d9b6-9070-4e0e-bb34-caabc766439a",
+      "name": "Warrior's Shield",
+      "type": "weapon",
+      "root": {
+        "id": "node-88685b18-cc5c-4d64-a295-ce49f2598104",
+        "children": [
+          {
+            "id": "node-c1c90ba2-8e61-4cad-bf28-c182a6ee023c",
+            "children": [
+              {
+                "id": "node-e447a54d-e686-4f79-9fa2-b25d44b0352b",
+                "children": [
+                  {
+                    "id": "node-0b4dbd41-da58-4897-ad70-a04275bb21f8",
+                    "children": [],
+                    "data": {
+                      "name": "Protect++",
+                      "description": "You and players near you will gain 30 armor.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0,
+                        "chargeAttackSpeed": 0,
+                        "chargeAttackSpeedPercent": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "WarriorProtectLogic",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "one time"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "94fd96dc-bbfa-4b2b-a8d5-0b829f39e969",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Protect+",
+                  "description": "You and players near you will gain 20 armor.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "WarriorProtectLogic",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "28b67910-3cd4-4d19-8c19-989033d11bce",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Protect",
+              "description": "You and players near you will gain 10 armor.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "WarriorProtectLogic",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "fe8e70fa-1bbc-4ba9-b30f-201cac1638a3",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-282d029e-ec96-4bcf-8ec2-b178310ef2a7",
+            "children": [
+              {
+                "id": "node-5eef3c29-3464-4374-a732-78713b750ee1",
+                "children": [
+                  {
+                    "id": "node-18d0f82c-f800-4ce8-a94a-6e64a32c6313",
+                    "children": [],
+                    "data": {
+                      "name": "Knockback++",
+                      "description": "Massive increase in knockback from ability.",
+                      "stat": {
+                        "maxHp": 0,
+                        "maxMana": 0,
+                        "hp": 0,
+                        "mana": 0,
+                        "armor": 0,
+                        "magicResist": 0,
+                        "damagePercent": 0,
+                        "attack": 0,
+                        "attackPercent": 0,
+                        "armorPen": 0,
+                        "magicAttack": 0,
+                        "magicAttackPercent": 0,
+                        "magicPen": 0,
+                        "critRate": 0,
+                        "critDamage": 0,
+                        "attackRange": 0,
+                        "attackRangePercent": 0,
+                        "attackSpeed": 0,
+                        "attackSpeedPercent": 0,
+                        "speed": 0,
+                        "lifeSteal": 0,
+                        "lifeStealPercent": 0,
+                        "level": 0,
+                        "chargeAttackSpeed": 0,
+                        "chargeAttackSpeedPercent": 0
+                      },
+                      "status": "none",
+                      "selectionTime": 0,
+                      "upgradeEffect": {
+                        "effectLogicId": "WarriorKnockbackLogic",
+                        "doesStack": 1,
+                        "cooldown": 1000,
+                        "collisionGroup": -1,
+                        "type": "one time"
+                      },
+                      "doesStack": false
+                    },
+                    "__rd3t": {
+                      "id": "5053170d-fdcb-4d9f-a791-a096cd45de72",
+                      "depth": 3,
+                      "collapsed": false
+                    }
+                  }
+                ],
+                "data": {
+                  "name": "Knockback+",
+                  "description": "Your ability now knockback enemies.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "WarriorKnockbackLogic",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "abd2f13f-0a15-4864-8938-b217eec45a72",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Knockback",
+              "description": "Your attacks now knockback enemies.",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "WarriorKnockbackLogic",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "1466d777-cfc5-4304-9272-5962d34a32e3",
+              "depth": 1,
+              "collapsed": false
+            }
+          },
+          {
+            "id": "node-fc9487f8-ac99-4ba5-8585-4f56069e36d9",
+            "children": [
+              {
+                "id": "node-9ec6455a-b18d-47e0-92b2-83a6b6cccff7",
+                "children": [],
+                "data": {
+                  "name": "Taunt++",
+                  "description": "Increase slow when using taunt to 9 seconds.",
+                  "stat": {
+                    "maxHp": 0,
+                    "maxMana": 0,
+                    "hp": 0,
+                    "mana": 0,
+                    "armor": 0,
+                    "magicResist": 0,
+                    "damagePercent": 0,
+                    "attack": 0,
+                    "attackPercent": 0,
+                    "armorPen": 0,
+                    "magicAttack": 0,
+                    "magicAttackPercent": 0,
+                    "magicPen": 0,
+                    "critRate": 0,
+                    "critDamage": 0,
+                    "attackRange": 0,
+                    "attackRangePercent": 0,
+                    "attackSpeed": 0,
+                    "attackSpeedPercent": 0,
+                    "speed": 0,
+                    "lifeSteal": 0,
+                    "lifeStealPercent": 0,
+                    "level": 0,
+                    "chargeAttackSpeed": 0,
+                    "chargeAttackSpeedPercent": 0
+                  },
+                  "status": "none",
+                  "selectionTime": 0,
+                  "upgradeEffect": {
+                    "effectLogicId": "WarriorShieldUpgradeAbilityLogic",
+                    "doesStack": 1,
+                    "cooldown": 1000,
+                    "collisionGroup": -1,
+                    "type": "one time"
+                  },
+                  "doesStack": false
+                },
+                "__rd3t": {
+                  "id": "0d389138-41ea-4f30-9ade-d289a3e45cbf",
+                  "depth": 2,
+                  "collapsed": false
+                }
+              }
+            ],
+            "data": {
+              "name": "Taunt+",
+              "description": "Increase slow duration when using taunt to 6 seconds. ",
+              "stat": {
+                "maxHp": 0,
+                "maxMana": 0,
+                "hp": 0,
+                "mana": 0,
+                "armor": 0,
+                "magicResist": 0,
+                "damagePercent": 0,
+                "attack": 0,
+                "attackPercent": 0,
+                "armorPen": 0,
+                "magicAttack": 0,
+                "magicAttackPercent": 0,
+                "magicPen": 0,
+                "critRate": 0,
+                "critDamage": 0,
+                "attackRange": 0,
+                "attackRangePercent": 0,
+                "attackSpeed": 0,
+                "attackSpeedPercent": 0,
+                "speed": 0,
+                "lifeSteal": 0,
+                "lifeStealPercent": 0,
+                "level": 0,
+                "chargeAttackSpeed": 0,
+                "chargeAttackSpeedPercent": 0
+              },
+              "status": "none",
+              "selectionTime": 0,
+              "upgradeEffect": {
+                "effectLogicId": "WarriorShieldUpgradeAbilityLogic",
+                "doesStack": 1,
+                "cooldown": 1000,
+                "collisionGroup": -1,
+                "type": "one time"
+              },
+              "doesStack": false
+            },
+            "__rd3t": {
+              "id": "fb7ff38a-b020-4d1b-acc6-06c38e6fc27c",
+              "depth": 1,
+              "collapsed": false
+            }
+          }
+        ],
+        "data": {
+          "name": "Warrior's Shield",
+          "description": "This shield contains multiple magic gemstones with unique abilities.",
+          "stat": {
+            "maxHp": 0,
+            "maxMana": 0,
+            "hp": 0,
+            "mana": 0,
+            "armor": 0,
+            "magicResist": 0,
+            "damagePercent": 0,
+            "attack": 0,
+            "attackPercent": 0,
+            "armorPen": 0,
+            "magicAttack": 0,
+            "magicAttackPercent": 0,
+            "magicPen": 0,
+            "critRate": 0,
+            "critDamage": 0,
+            "attackRange": 0,
+            "attackRangePercent": 0,
+            "attackSpeed": 0,
+            "attackSpeedPercent": 0,
+            "speed": 0,
+            "lifeSteal": 0,
+            "lifeStealPercent": 0,
+            "level": 0,
+            "chargeAttackSpeed": 0,
+            "chargeAttackSpeedPercent": 0
+          },
+          "status": "selected",
+          "selectionTime": 0,
+          "upgradeEffect": {
+            "effectLogicId": "WarriorShieldAttackLogic",
+            "doesStack": 1,
+            "cooldown": 1000,
+            "collisionGroup": -1,
+            "type": "player attack"
+          },
+          "weaponId": "weapon-6eddff90-5083-401a-99f9-869e1f058d72",
+          "doesStack": false
+        },
+        "__rd3t": {
+          "id": "581c02a6-8842-4b4a-adec-039b18402c38",
           "depth": 0,
           "collapsed": false
         }
@@ -8969,15 +10045,15 @@
       "description": "The Warrior is a tank. They possess a unique skill TAUNT which increase defenses and aggro enemies.",
       "displaySprite": "sprite",
       "spriteKey": "demo_hero",
-      "abilityId": "ability-deb2f8fa-7d65-482b-9801-462229bbf922",
-      "weaponUpgradeId": "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d",
+      "abilityId": "ability-e655e1cc-e95e-4020-b279-060057ff816b",
+      "weaponUpgradeId": "upgrade-36b4d9b6-9070-4e0e-bb34-caabc766439a",
       "stat": {
-        "maxHp": 0,
+        "maxHp": "1000",
         "maxMana": 0,
-        "hp": 0,
+        "hp": "1000",
         "mana": 0,
-        "armor": 0,
-        "magicResist": 0,
+        "armor": "30",
+        "magicResist": "30",
         "damagePercent": 0,
         "attack": "1000",
         "attackPercent": 0,
@@ -9106,34 +10182,34 @@
     {
       "id": "role-327154d5-3930-449a-83b9-bce096b0b12b",
       "name": "Berserker",
-      "description": "The Berserker is mad. They possess a unique skill ENDURE which increases defenses, movement speed and attack speed.",
+      "description": "The Berserker is mad. They possess a unique skill BERSERK which increases defenses, movement speed and attack speed.",
       "displaySprite": "sprite",
       "spriteKey": "demo_hero",
-      "abilityId": "ability-deb2f8fa-7d65-482b-9801-462229bbf922",
-      "weaponUpgradeId": "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d",
+      "abilityId": "ability-3065d180-9f0d-481e-98c7-b8cbfe408a2a",
+      "weaponUpgradeId": "upgrade-e4d77350-7976-4d49-a8f6-30f160c99f1f",
       "stat": {
-        "maxHp": "20",
+        "maxHp": "1000",
         "maxMana": 0,
         "hp": "0",
         "mana": 0,
-        "armor": 0,
+        "armor": "100",
         "magicResist": 0,
         "damagePercent": 0,
-        "attack": "0",
+        "attack": "100",
         "attackPercent": 0,
         "armorPen": 0,
         "magicAttack": 0,
         "magicAttackPercent": 0,
         "magicPen": 0,
-        "critRate": "0.5",
-        "critDamage": "1",
+        "critRate": "0",
+        "critDamage": "",
         "attackRange": 0,
         "attackRangePercent": 0,
-        "attackSpeed": 0,
+        "attackSpeed": "0",
         "attackSpeedPercent": 0,
-        "speed": "5",
+        "speed": "",
         "lifeSteal": 0,
-        "lifeStealPercent": "0.01",
+        "lifeStealPercent": "0.0",
         "level": 0
       },
       "coinCost": "1000"
@@ -9217,6 +10293,22 @@
       "effectLogicId": "ranger-ability",
       "displaySprite": "sprite",
       "cooldown": "5000"
+    },
+    {
+      "id": "ability-3065d180-9f0d-481e-98c7-b8cbfe408a2a",
+      "name": "Berserker's Ability",
+      "description": "Berserker's Ability",
+      "effectLogicId": "berserker-ability",
+      "displaySprite": "sprite",
+      "cooldown": "15000"
+    },
+    {
+      "id": "ability-e655e1cc-e95e-4020-b279-060057ff816b",
+      "name": "Warrior's Ability",
+      "description": "The warrior unleashes a shockwave that taunts and slows enemies",
+      "effectLogicId": "warrior-ability",
+      "displaySprite": "sprite",
+      "cooldown": "10000"
     }
   ]
 }

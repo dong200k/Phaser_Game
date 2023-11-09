@@ -1,19 +1,48 @@
 import 'dotenv/config'
+import { auth } from 'firebase-admin';
 import { applicationDefault, initializeApp } from 'firebase-admin/app';
-import {getFirestore} from "firebase-admin/firestore"
+import {getFirestore } from "firebase-admin/firestore"
 
 export default class ServerFirebaseConnection{
   static singleton = new ServerFirebaseConnection()
 
+  public initFirebaseApp(env: "dev" | "beta" | "prod"){
+    switch(env){
+      case "dev":
+        // Local emulator
+        process.env['FIRESTORE_EMULATOR_HOST'] = "127.0.0.1:8080"
+        process.env['FIREBASE_AUTH_EMULATOR_HOST'] = "127.0.0.1:9099"
+        process.env['FIREBASE_STORAGE_EMULATOR_HOST'] = "127.0.0.1:9199"
+        initializeApp({
+          projectId: "phasergame-4f0d6",
+          storageBucket: "phasergame-4f0d6.appspot.com"
+        })
+        break;
+      case "beta":
+        // Original firebase project
+        process.env.GOOGLE_APPLICATION_CREDENTIALS = "./privatekey.json"
+        initializeApp({
+          credential: applicationDefault(),
+          databaseURL: "https://phasergame-4f0d6.firebaseio.com",
+          storageBucket: "phasergame-4f0d6.appspot.com"
+        });
+        break;
+      case "prod":
+        // Additional/2nd firebase project
+        process.env.GOOGLE_APPLICATION_CREDENTIALS = "./privatekey_prod.json"
+        initializeApp({
+          credential: applicationDefault(),
+          databaseURL: "https://phasergame-prod.firebaseio.com",
+          storageBucket: "phasergame-prod.appspot.com"
+        });
+        break;
+    }
+  }
+
   /** Initializes FirebaseApp with service account */
   public startConnection(){
-
-    initializeApp({
-      credential: applicationDefault(),
-      databaseURL: "https://phasergame-4f0d6.firebaseio.com",
-      storageBucket: "phasergame-4f0d6.appspot.com"
-    });
-
+    this.initFirebaseApp(process.env.FIREBASE_ENV as "dev" | "beta" | "prod")
+    
     // return this.login(process.env.ADMIN_EMAIL, process.env.ADMIN_PASSWORD)
   }
 

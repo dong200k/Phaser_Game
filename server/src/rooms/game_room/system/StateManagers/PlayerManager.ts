@@ -54,6 +54,8 @@ export default class PlayerManager {
                     allPlayersDead = false;
                     gameObject.currentAbility?.update(deltaT * 1000);
                     gameObject.playerController.update(deltaT);
+                    // if(this.gameManager.state.serverTickCount % 20 === 0)
+                    //     console.log("Player Armor: ", gameObject.stat.armor);
                 }
             }
         })
@@ -75,24 +77,14 @@ export default class PlayerManager {
         // Do nothing if the player is diabled.
         if(this.disabledPlayers.has(playerId)) return;
 
-        let [mouseClick, mouseX, mouseY] = data
+        let [mouseDown, mouseX, mouseY, mouseClick] = data
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
         if(!playerBody || !playerState) return console.log("player does not exist, Attack")
         
         // Do nothing if the player is dead.
         if(playerState.playerController.stateName === "Dead") return;
 
-        // trigger all player attack effect logics if there is a mouseclick
-        if(mouseClick) {
-            playerState.effects.forEach((effect) => {
-                if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack") {
-                    if (effect.cooldown.isFinished) 
-                        playerState.playerController.startAttack(mouseX, mouseY);
-                }
-            })
-            
-            // EffectManager.useTriggerEffectsOn(playerState, "player attack", playerBody, {mouseX, mouseY})
-        }
+        playerState.playerController.processMouseInput(mouseClick, mouseDown, mouseX, mouseY)
     }
 
     queuePlayerMovement(playerId: string, data: number[]) {
@@ -154,6 +146,18 @@ export default class PlayerManager {
             }
             loopCount--;
         }
+    }
+
+    processPlayerDoubleTap(playerId: string, key: "w"|"a"|"s"|"d"){
+        let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
+        if(!playerBody || !playerState) return console.log("player does not exist, double tap")
+
+        // If the player is disabled, cant move, or is dead stop the player 
+        if(this.disabledPlayers.has(playerId) || playerState.playerController.stateName === "Dead") {
+            return; 
+        }
+        playerState.playerController.startRoll(key)
+
     }
 
     processPlayerMovement(playerId: string, data: number[], deltaT: number){
@@ -260,7 +264,7 @@ export default class PlayerManager {
             role = DatabaseManager.getManager().getRole("role-16bdfc2a-c379-42bb-983a-04592330831c") as IRole
         }
         console.log(`using the role: ${role.name}`)
-
+        player.setRole(role.name)
         this.initRoleData(player, role)
         this.equipStarterArtifacts(player)
     }
@@ -274,7 +278,7 @@ export default class PlayerManager {
             role = DatabaseManager.getManager().getRole("role-16bdfc2a-c379-42bb-983a-04592330831c") as IRole
         }
         console.log(`using the role: ${role.name}`)
-
+        player.setRole(role.name)
         this.initRoleData(player, role)
         this.equipStarterArtifacts(player)
     }
@@ -299,6 +303,9 @@ export default class PlayerManager {
      * @param role one of the roles from the database. Invalid role will result in default weapon/ability being used.
      */
     private initRoleData(player: Player, role: IRole){
+        // Set controller based on role
+        player.setController(role.name)
+
         // Equip starter weapon based on role
         let weaponUpgradeId = role.weaponUpgradeId
         let weapon = DatabaseManager.getManager().getUpgrade(weaponUpgradeId)
@@ -307,6 +314,7 @@ export default class PlayerManager {
             weaponUpgradeId = "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d"
         }
         let root = WeaponUpgradeFactory.createUpgrade(weaponUpgradeId) as Node<WeaponData>
+        // let root = WeaponUpgradeFactory.createMaxUpgrade(weaponUpgradeId) as Node<WeaponData>
         WeaponManager.equipWeaponUpgrade(player, root);
         console.log(`equiping ${role.name} weapon:`, root.data.name)
 
@@ -331,8 +339,8 @@ export default class PlayerManager {
 
         // let playerData = {username: "No Name"}
         console.log(`game mode online ${onlineMode}`)
-        //if(onlineMode) playerData = await PlayerService.getPlayerData(IdToken)
-        let newPlayer = new Player(this.gameManager, playerData.username, undefined);
+        // if(onlineMode) playerData = await PlayerService.getPlayerData(IdToken)
+        let newPlayer = new Player(this.gameManager, playerData.username, "Ranger");
 
         newPlayer.x = Math.random() * 200 + 100;
         newPlayer.y = Math.random() * 200 + 100;

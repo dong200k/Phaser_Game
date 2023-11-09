@@ -62,6 +62,7 @@ export default function NavigationBar(props){
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
+                    <Link to="/json"><button className="btn btn-light">Json</button></Link>
                     <Link to="/role"><button className="btn btn-light">Roles</button></Link>
                     <Link to="/abilities"><button className="btn btn-light">Abilities</button></Link>
                     <Link to="/upgrade"><button className="btn btn-light">Upgrades</button></Link>
@@ -71,6 +72,7 @@ export default function NavigationBar(props){
                     <Link to="/monster"><button className="btn btn-light">Monster</button></Link>
                     <Link to="/dungeon"><button className="btn btn-light">Dungeon</button></Link>
                     <Link to="/asset"><button className="btn btn-light">Asset</button></Link>
+                    <Link to="/backup"><button className="btn btn-light">Backup</button></Link>
                     <Link to="/admin"><button className="btn btn-light">Admin</button></Link>
                 </Nav>
                 </Navbar.Collapse>

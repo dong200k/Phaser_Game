@@ -205,4 +205,12 @@ export default class SceneManager {
     public getCurrentScene(){
         return this.currentSceneKey
     }
+
+    public disableGameKeys() {
+        this.scene?.input.keyboard?.disableGlobalCapture();
+    }
+
+    public enableGameKeys() {
+        this.scene?.input.keyboard?.enableGlobalCapture();
+    }
 }
