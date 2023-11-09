@@ -1,0 +1,77 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 1, "y": 1, "w": 40, "h": 46 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 6, "y": 3, "w": 38, "h": 44 },
+    "sourceSize": { "w": 50, "h": 50 },
+    "duration": 100
+   },
+   "1": {
+    "frame": { "x": 42, "y": 1, "w": 40, "h": 46 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 6, "y": 3, "w": 38, "h": 44 },
+    "sourceSize": { "w": 50, "h": 50 },
+    "duration": 100
+   },
+   "2": {
+    "frame": { "x": 83, "y": 1, "w": 40, "h": 46 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 6, "y": 3, "w": 38, "h": 44 },
+    "sourceSize": { "w": 50, "h": 50 },
+    "duration": 100
+   },
+   "3": {
+    "frame": { "x": 1, "y": 48, "w": 40, "h": 46 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 6, "y": 3, "w": 38, "h": 44 },
+    "sourceSize": { "w": 50, "h": 50 },
+    "duration": 100
+   },
+   "4": {
+    "frame": { "x": 42, "y": 48, "w": 40, "h": 46 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 6, "y": 3, "w": 38, "h": 44 },
+    "sourceSize": { "w": 50, "h": 50 },
+    "duration": 100
+   },
+   "5": {
+    "frame": { "x": 83, "y": 48, "w": 40, "h": 46 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 6, "y": 3, "w": 38, "h": 44 },
+    "sourceSize": { "w": 50, "h": 50 },
+    "duration": 100
+   },
+   "6": {
+    "frame": { "x": 1, "y": 95, "w": 40, "h": 46 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 6, "y": 3, "w": 38, "h": 44 },
+    "sourceSize": { "w": 50, "h": 50 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.40-x64",
+  "image": "upgrade_aicon.png",
+  "format": "RGBA8888",
+  "size": { "w": 123, "h": 141 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "disabled", "from": 0, "to": 0, "direction": "forward" },
+   { "name": "enabled", "from": 1, "to": 6, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "glow", "opacity": 255, "blendMode": "normal" },
+   { "name": "arrow", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
