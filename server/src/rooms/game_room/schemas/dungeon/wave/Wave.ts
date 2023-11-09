@@ -71,12 +71,12 @@ export default class Wave {
     public setAgressionLevel(aggressionLevel: number) {
         this.aggressionLevel = aggressionLevel;
         switch(this.aggressionLevel) {
-            case 1: this.defaultTimeUntilNextSpawn = 2; break;
-            case 2: this.defaultTimeUntilNextSpawn = 1.5; break;
-            case 3: this.defaultTimeUntilNextSpawn = 1; break;
-            case 4: this.defaultTimeUntilNextSpawn = 0.5; break;
-            case 5: this.defaultTimeUntilNextSpawn = 0.25; break;
-            default: this.defaultTimeUntilNextSpawn = 1; break;
+            case 1: this.defaultTimeUntilNextSpawn = 2/25; break;
+            case 2: this.defaultTimeUntilNextSpawn = 1.5/25; break;
+            case 3: this.defaultTimeUntilNextSpawn = 1.50/25; break;
+            case 4: this.defaultTimeUntilNextSpawn = 0.5/25; break;
+            case 5: this.defaultTimeUntilNextSpawn = 0.25/25; break;
+            default: this.defaultTimeUntilNextSpawn = 1/25; break;
         }
     }
 
