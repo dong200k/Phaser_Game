@@ -55,6 +55,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("fireball_whoosh", "audio/fireball-whoosh.mp3")
         this.load.audio("explosion_1", "audio/explosion_1.mp3")
         this.load.audio("lightningrod", "audio/lightningrod.mp3")
+        this.load.audio("qi_rotation", "audio/qi_rotation.mp3")
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");
@@ -135,6 +136,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("fireball_whoosh", "sfx")
         soundManager.add("explosion_1", "sfx")
         soundManager.add("lightningrod", "sfx")
+        soundManager.add("qi_rotation", "sfx")
 
         soundManager.add("ultra_instinct", "bg")
         soundManager.add("ultra_instinct_boss", "bg")

@@ -78,7 +78,7 @@ export class QiArmor extends EffectLogic{
             dontDespawnOnObstacleCollision: true,
             activeTime: 300,
             repeatAnimation: true,
-            // spawnSound: "lightningrod",
+            spawnSound: "qi_rotation",
             classType: "FollowingMeleeProjectile",
             data:{
                 owner: playerState
