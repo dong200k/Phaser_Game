@@ -32,7 +32,7 @@ function App() {
     <NotificationContextProvider> {/* Provides notification callbacks */}
       <UserContextProvider> {/* Provides user authentication data */}
         <DataContextProvider> {/* Provides monster/dungeon data */}
-          <BrowserRouter>
+          <BrowserRouter basename={process.env.REACT_APP_BASENAME}>
             <NavigationBar/>
               <Routes>
                 <Route path="/" element={<Home/>}/>

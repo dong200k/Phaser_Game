@@ -1,14 +1,12 @@
 
 export default class DungeonService {
-    static baseUrl = "http://localhost:3002";
-
     /**
      * Gets the dungeon data by name or id.
      * @param dungeonNameOrId The name or id of the dungeon.
      * @returns A promise from the fetch function.
      */
     static getDungeonData(dungeonNameOrId: string) {
-        const url = DungeonService.baseUrl + "/dungeons/" + dungeonNameOrId;
+        const url = process.env.API_SERVER + "/dungeons/" + dungeonNameOrId;
         return fetch(url, {
             method: "GET",
             headers: {
@@ -20,7 +18,7 @@ export default class DungeonService {
 
 
     static getAllDungeons() {
-        const url = DungeonService.baseUrl + "/dungeons/";
+        const url = process.env.API_SERVER + "/dungeons/";
         return fetch(url, {
             method: "GET",
             headers: {

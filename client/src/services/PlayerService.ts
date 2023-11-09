@@ -1,8 +1,9 @@
+import { API_SERVER_URL } from "../config";
+
 export default class PlayerService{
-    static baseUrl = "http://localhost:3002"
 
     static async createPlayer(username: string | null, IdToken?: string){
-        const url = PlayerService.baseUrl + "/players"
+        const url = API_SERVER_URL + "/players"
         let res = await fetch(url, {
             method: "POST",
             body: JSON.stringify({
@@ -19,7 +20,7 @@ export default class PlayerService{
     }
 
     static async updatePlayerSkillTree(upgrades: string[], IdToken: string){
-        const url = PlayerService.baseUrl + "/players/skillTree"
+        const url = API_SERVER_URL + "/players/skillTree"
         let res = await fetch(url, {
             method: "POST",
             body: JSON.stringify({
@@ -36,7 +37,7 @@ export default class PlayerService{
     }
 
     static async unUpgradePlayerSkillTree(upgrades: string[], IdToken: string){
-        const url = PlayerService.baseUrl + "/players/skillTree/remove"
+        const url = API_SERVER_URL + "/players/skillTree/remove"
         let res = await fetch(url, {
             method: "POST",
             body: JSON.stringify({

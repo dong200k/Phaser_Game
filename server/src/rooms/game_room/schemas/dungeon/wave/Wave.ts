@@ -76,6 +76,9 @@ export default class Wave {
             case 3: this.defaultTimeUntilNextSpawn = 1; break;
             case 4: this.defaultTimeUntilNextSpawn = 0.5; break;
             case 5: this.defaultTimeUntilNextSpawn = 0.25; break;
+            case 6: this.defaultTimeUntilNextSpawn = 0.12; break;
+            case 7: this.defaultTimeUntilNextSpawn = 0.06; break;
+            case 8: this.defaultTimeUntilNextSpawn = 0.03; break;
             default: this.defaultTimeUntilNextSpawn = 1; break;
         }
     }

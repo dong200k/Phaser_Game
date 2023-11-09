@@ -2,3 +2,4 @@
 privatekey.json
 node_modules/
 privatekey_prod.json
+build/
