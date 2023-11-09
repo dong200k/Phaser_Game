@@ -152,10 +152,11 @@ export default class AssetController {
         let bucket = getStorage().bucket();
         let decodedData = FileUtil.decodeDataURL(data);
         let buffer = Buffer.from(decodedData.data, "base64");
+        let contentType = mime ?? decodedData.mime;
         return bucket.file(loc).save(buffer, {
             metadata: {
-                contentType: mime ?? decodedData.mime,
-            }
+                contentType: contentType,
+            },
         })
     }
 
@@ -165,10 +166,11 @@ export default class AssetController {
      */
     public static restoreAsset(req: any, res: any) {
         let {loc, data, mime} = req.body;
-        console.log(`Restoring asset to: ${loc} with mime: ${mime}`);
         AssetController.uploadToCloud(loc, data, mime).then(() => {
+            console.log(`Restoring asset to: ${loc}.`)
             res.status(200).send({message: `Uploaded asset to: ${loc}`});
         }).catch((e) => {
+            console.log(`Error uploading asset to: ${loc}. ${e.message}`);
             res.status(400).send({message: e.message});
         });
     }

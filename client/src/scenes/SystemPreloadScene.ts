@@ -65,6 +65,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("dungeon_core_background", "images/background/DungeonCoreBg.png");
         this.load.image("invisible", "images/projectiles/Invisible.png")
         this.load.image("slow_icon", "images/icons/slow_icon.png");
+        this.load.image("upgrade_bg", "images/background/upgrade_bg.png");
 
         // ------- Loading Animations ------- //
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
@@ -78,7 +79,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("Fireball", "images/projectiles/fireball.png", "images/projectiles/fireball.json")
         this.load.aseprite("Lightning", "images/projectiles/Lightning.png", "images/projectiles/Lightning.json")
         this.load.aseprite("QiRotation", "images/projectiles/qi_rotation.png", "images/projectiles/qi_rotation.json")
-
+        this.load.aseprite("upgrade_aicon", "images/icons/upgrade_icon/upgrade_aicon.png", "images/icons/upgrade_icon/upgrade_aicon.json");
     }
 
     /** Load the assets from firebase. */
@@ -91,6 +92,11 @@ export default class SystemPreloadScene extends Phaser.Scene {
     }
 
     create() {
+        // All added textures will use nearest neighbor to scale (for pixel art).
+        this.textures.on(Phaser.Textures.Events.ADD, (key: string) => {
+            this.textures.get(key).setFilter(Phaser.Textures.FilterMode.NEAREST);
+        })
+
         // Adds local assets to the phaser loader.
         this.addLocalData();
         
@@ -146,6 +152,8 @@ export default class SystemPreloadScene extends Phaser.Scene {
         } else{
             sceneManager.switchToScene(SceneKey.LoginScene)
         }
+
+        
     }
 
 }
