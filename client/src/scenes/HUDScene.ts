@@ -12,6 +12,7 @@ import WAPopup, { WAPopupData } from "../UI/gameuis/WAPopup";
 import GameOverModal from "../UI/modals/GameOverModal";
 import TopRightInfo from "../UI/gameuis/TopRightInfo";
 import CircleImage from "../UI/CircleImage";
+import WAPopupButton from "../UI/gameuis/WAPopupButton";
 
 export default class HUDScene extends Phaser.Scene {
 
@@ -21,6 +22,7 @@ export default class HUDScene extends Phaser.Scene {
     private artifactDisplay!: ArtifactDisplay;
     private peerInfoPopup!: PeerInfoPopup;
     private waPopup!: WAPopup;
+    private waPopupButton!: WAPopupButton;
     private menuModal?: MenuModal;
     private gameOverModal?: GameOverModal;
     private topRightInfo!: TopRightInfo;
@@ -95,14 +97,14 @@ export default class HUDScene extends Phaser.Scene {
         // ----- Artifacts Display -------
         this.artifactDisplay = new ArtifactDisplay(this, {
             items: [
-                {
-                    imageKey: "demo_hero",
-                    level: 2,
-                },
-                {
-                    imageKey: "button_small_active",
-                    level: 3,
-                }
+                // {
+                //     imageKey: "demo_hero",
+                //     level: 2,
+                // },
+                // {
+                //     imageKey: "button_small_active",
+                //     level: 3,
+                // }
             ]
         });
 
@@ -115,6 +117,10 @@ export default class HUDScene extends Phaser.Scene {
         // ----- Weapon/Artifact Upgrades popup -----
 
         this.waPopup = new WAPopup(this);
+        this.waPopupButton = new WAPopupButton(this);
+        this.waPopupButton.setOnclick(() => {
+            this.waPopup.sideUpPopup();
+        })
 
         // let upgradeButton = UIFactory.createButton(this, "Upgrade", this.game.scale.width - 60, this.game.scale.height - 30, "small", () => {
         //     console.log("Upgrade onclick");
@@ -166,6 +172,9 @@ export default class HUDScene extends Phaser.Scene {
             this.updateCircleImageMasks();
             this.ticks = 1;
         }
+
+        // Update the wapopup button's state.
+        this.waPopupButton.setEnable(this.waPopup.isPopupActive());
     }
 
     /** Called every 100 phaser ticks. This will update the mask of the circle image to match
