@@ -119,11 +119,19 @@ export default class WAPopup extends RexUIBase {
             title: this.rexUI.add.fixWidthSizer({
                 width: 600,
                 height: 33,
-                align: "center",
+                align: "justify",
+                space: {
+                    left: 10,
+                    right: 10,
+                    item: 390,
+                }
             })
             .setName("waTitleButton")
-            .addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[500]).setName("waTitleBackground"))
-            .add(UIFactory.createTextBoxDOM(this.scene, data.title ?? "UPGRADES", "h4"), {padding: {top: 6}}),
+            .addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 0, ColorStyle.primary.hex[500]).setName("waTitleBackground"))
+            .add(UIFactory.createTextBoxDOM(this.scene, data.title ?? "UPGRADES", "h4"), {padding: {top: 6}})
+            .add(UIFactory.createButtonSprite(this.scene, 
+                {spriteKey: "x_aicon", onClick: () => {this.sideDownPopup()}})
+                .setDisplaySize(32, 32), {padding: {bottom: 4}}),
             content: this.createDialogueContent(data),
             space: {
                 top: 0,
@@ -135,17 +143,17 @@ export default class WAPopup extends RexUIBase {
             },
         })
 
-        let titleButton = dialog.getByName("waTitleButton", true) as FixWidthSizer;
-        titleButton.on(Phaser.Input.Events.POINTER_OVER, () => {
-            (titleButton.getByName("waTitleBackground") as RoundRectangle).setStrokeStyle(1, ColorStyle.neutrals.hex.white);
-        })
-        titleButton.on(Phaser.Input.Events.POINTER_OUT, () => {
-            (titleButton.getByName("waTitleBackground") as RoundRectangle).setStrokeStyle();
-        })
-        titleButton.onClick(() => {
-            (titleButton.getByName("waTitleBackground") as RoundRectangle).setStrokeStyle();
-            this.popupTabOnclick();
-        })
+        // let titleButton = dialog.getByName("waTitleButton", true) as FixWidthSizer;
+        // titleButton.on(Phaser.Input.Events.POINTER_OVER, () => {
+        //     (titleButton.getByName("waTitleBackground") as RoundRectangle).setStrokeStyle(1, ColorStyle.neutrals.hex.white);
+        // })
+        // titleButton.on(Phaser.Input.Events.POINTER_OUT, () => {
+        //     (titleButton.getByName("waTitleBackground") as RoundRectangle).setStrokeStyle();
+        // })
+        // titleButton.onClick(() => {
+        //     (titleButton.getByName("waTitleBackground") as RoundRectangle).setStrokeStyle();
+        //     this.popupTabOnclick();
+        // })
 
         return dialog;
     }
