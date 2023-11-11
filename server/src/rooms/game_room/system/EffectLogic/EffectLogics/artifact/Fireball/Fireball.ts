@@ -80,7 +80,8 @@ export class Fireball extends EffectLogic{
                 activeTime: 3000,
                 spawnSound: "fireball_whoosh",
                 onCollideCallback: this.getFireballOnCollide(gameManager, playerState),
-                classType: "Projectile"
+                classType: "Projectile",
+                originEntityId: playerState.getId(),
             }
     
             gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, {
@@ -119,7 +120,8 @@ export class Fireball extends EffectLogic{
                 // repeatAnimation: true,
                 spawnSound: "explosion_1",
                 dontDespawnOnObstacleCollision: true,
-                classType: "Projectile"
+                classType: "Projectile",
+                originEntityId: playerState.getId(),
             }
             
             spawnProjectile(projectileConfig)

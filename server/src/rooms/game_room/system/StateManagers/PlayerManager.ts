@@ -301,8 +301,8 @@ export default class PlayerManager {
         // let healthRegenArtifact = ArtifactFactory.createMaxedArtifact("upgrade-9efe1a19-2b8d-4080-8337-e2846192169f")
         // this.gameManager.getArtifactManager().equipArtifact(player, healthRegenArtifact)
 
-        let shieldArtifact = ArtifactFactory.createMaxedArtifact("upgrade-5d3c8fc4-cfbb-4f52-82b0-8e3f2c9bfa81")
-        this.gameManager.getArtifactManager().equipArtifact(player, shieldArtifact)
+        // let shieldArtifact = ArtifactFactory.createMaxedArtifact("upgrade-5d3c8fc4-cfbb-4f52-82b0-8e3f2c9bfa81")
+        // this.gameManager.getArtifactManager().equipArtifact(player, shieldArtifact)
 
         let rollArtifact = ArtifactFactory.createMaxedArtifact("upgrade-a9b22e84-976f-4031-973e-6e704f6a330d")
         this.gameManager.getArtifactManager().equipArtifact(player, rollArtifact)
@@ -310,8 +310,8 @@ export default class PlayerManager {
         // let glassCannonArtifact = ArtifactFactory.createMaxedArtifact("upgrade-019ad207-0882-4d23-a90b-a6d28705b246")
         // this.gameManager.getArtifactManager().equipArtifact(player, glassCannonArtifact)
 
-        let rollChargeArtifact = ArtifactFactory.createMaxedArtifact("upgrade-474b1146-1414-4747-a306-b181bff9c3ec")
-        this.gameManager.getArtifactManager().equipArtifact(player, rollChargeArtifact)
+        // let rollChargeArtifact = ArtifactFactory.createMaxedArtifact("upgrade-474b1146-1414-4747-a306-b181bff9c3ec")
+        // this.gameManager.getArtifactManager().equipArtifact(player, rollChargeArtifact)
 
         let amplifierArtifact = ArtifactFactory.createMaxedArtifact("upgrade-072fe1da-fc6f-4aa4-8b8c-72b5da52eb32")
         this.gameManager.getArtifactManager().equipArtifact(player, amplifierArtifact)
@@ -322,17 +322,17 @@ export default class PlayerManager {
         let friendshipArtifact = ArtifactFactory.createMaxedArtifact("upgrade-b49ebec5-d566-4fb8-9170-d6cd9778bb8b")
         this.gameManager.getArtifactManager().equipArtifact(player, friendshipArtifact)
 
-        let fireballArtifact = ArtifactFactory.createMaxedArtifact("upgrade-53123fa2-93a1-4a31-b021-cc8c9a236919")
-        this.gameManager.getArtifactManager().equipArtifact(player, fireballArtifact)
+        // let fireballArtifact = ArtifactFactory.createMaxedArtifact("upgrade-53123fa2-93a1-4a31-b021-cc8c9a236919")
+        // this.gameManager.getArtifactManager().equipArtifact(player, fireballArtifact)
 
-        let lightningRod = ArtifactFactory.createMaxedArtifact("upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50")
-        this.equipArtifact(player, lightningRod)
+        // let lightningRod = ArtifactFactory.createMaxedArtifact("upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50")
+        // this.equipArtifact(player, lightningRod)
         
-        let qiArmor = ArtifactFactory.createMaxedArtifact("upgrade-4c5aef1c-ed88-4795-90f6-49f7c1ef2b42")
-        this.equipArtifact(player, qiArmor)
+        // let qiArmor = ArtifactFactory.createMaxedArtifact("upgrade-4c5aef1c-ed88-4795-90f6-49f7c1ef2b42")
+        // this.equipArtifact(player, qiArmor)
 
-        // let mushroom = ArtifactFactory.createMaxedArtifact("upgrade-f6af6929-e3f6-43d4-b441-8216fda94eac")
-        // this.equipArtifact(player, mushroom)
+        let mushroom = ArtifactFactory.createMaxedArtifact("upgrade-f6af6929-e3f6-43d4-b441-8216fda94eac")
+        this.equipArtifact(player, mushroom)
 
         let carrot = ArtifactFactory.createMaxedArtifact("upgrade-16005a69-9f01-4f5a-b2a5-53029a9e08e3")
         this.equipArtifact(player, carrot)

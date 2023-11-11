@@ -78,7 +78,8 @@ export class LightningRod extends EffectLogic{
             // activeTime: 1000,
             repeatAnimation: false,
             spawnSound: "lightningrod",
-            classType: "MeleeProjectile"
+            classType: "MeleeProjectile",
+            originEntityId: playerState.getId(),
         }
 
         gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, {
