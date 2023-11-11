@@ -175,6 +175,14 @@ export default class EffectManager {
             return collides
         }
 
+        const printEffects = (entity: Entity, tag: string) => {
+            console.log(tag)
+            entity.effects.forEach(e=>{
+                console.log(e.toString())
+            })
+            console.log('\n\n')
+        }
+
         /** Adds one upgrade effect to the entity and replaces any upgrade effect that collides with this effect*/
         function addOneUpgradeEffect(effect: IUpgradeEffect){
             // printEffects(entity, "before: ")

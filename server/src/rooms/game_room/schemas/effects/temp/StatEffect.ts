@@ -30,6 +30,9 @@ export interface StatConfig {
     //level?:number;
     chargeAttackSpeed?: number;
     chargeAttackSpeedPercent?: number;
+    healthRegen?: number;
+    shieldHp?: number;
+    shieldMaxHp?: number;
 }
 
 export default class StatEffect extends TempEffect {

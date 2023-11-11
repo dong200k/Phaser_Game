@@ -32,6 +32,8 @@ export default abstract class ContinuousEffectUntimed extends Effect {
      */
     public update(deltaT: number): number {
         this.timeUntilNextTick -= deltaT;
+        // console.log(this.toString(), this.timeUntilNextTick)
+        // console.log("shieldHp:", this.getEntity()?.stat.shieldHp)
         let entity = this.getEntity();
         // Queue up the effect.
         while(this.timeUntilNextTick <= 0 && !this.isCompleted()) {

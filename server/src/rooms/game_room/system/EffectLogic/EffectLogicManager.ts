@@ -30,11 +30,26 @@ import WarriorShieldAttackLogic from "./EffectLogics/weapon/WarriorShield/Warrio
 import WarriorShieldUpgradeAbilityLogic from "./EffectLogics/weapon/WarriorShield/WarriorShieldUpgradeAbilityLogic";
 import WarriorKnockbackLogic from "./EffectLogics/weapon/WarriorShield/WarriorKnockbackLogic";
 import WarriorProtectLogic from "./EffectLogics/weapon/WarriorShield/WarriorProtectLogic";
+import { AncientGuard } from "./EffectLogics/artifact/AncientGuard";
+import { TurboSkate } from "./EffectLogics/artifact/TurboSkate";
+import { AncientBattery } from "./EffectLogics/artifact/AncientBattery";
+import { Amplifier } from "./EffectLogics/artifact/Amplifier/Amplifier";
+import { AmplifierBoost } from "./EffectLogics/artifact/Amplifier/AmplifierBoost";
+import { PerseveranceStone } from "./EffectLogics/artifact/PerseveranceStone/PerseveranceStone";
+import { PerseveranceBoost } from "./EffectLogics/artifact/PerseveranceStone/PerseveranceBoost";
+import { PowerOfFriendship } from "./EffectLogics/artifact/PowerOfFriendship/PowerOfFriendship";
+import { PowerOfFriendshipBoost } from "./EffectLogics/artifact/PowerOfFriendship/PowerOfFriendshipBoost";
+import { Fireball } from "./EffectLogics/artifact/Fireball/Fireball";
+import { LightningRod } from "./EffectLogics/artifact/LightningRod/LightningRod";
+import { QiArmor } from "./EffectLogics/artifact/QiArmor/QiArmor";
+import { FireballUpgrade } from "./EffectLogics/artifact/Fireball/FireballUpgrade";
+import { Amount } from "./EffectLogics/artifact/Amount";
+import { beets } from "./EffectLogics/artifact/Beets";
 
 export default class EffectLogicManager{
 
     /** effectLogic replaces the old weaponLogic. It holds a logic that could be used as a weapon or artifacts or any entity's effect/attack.*/
-    private effectLogics: Map<string, IEffectLogicClass> = new Map()
+    private effectLogics: Map<string, {ctor: IEffectLogicClass, config: any}> = new Map()
     private gameManager: GameManager
 
     constructor(gameManager: GameManager){
@@ -85,11 +100,59 @@ export default class EffectLogicManager{
         this.addEffectLogic(WarriorShieldUpgradeAbilityLogic);
         this.addEffectLogic(WarriorKnockbackLogic);
         this.addEffectLogic(WarriorProtectLogic);
+
+        this.addEffectLogic(AncientGuard)
+        this.addEffectLogic(AncientGuard, {effectLogicId: "Ancient-Guard-5", shieldPercent: 15})
+        this.addEffectLogic(AncientGuard, {effectLogicId: "Ancient-Guard-10", shieldPercent: 20})
+
+        this.addEffectLogic(TurboSkate)
+        this.addEffectLogic(TurboSkate, {effectLogicId: "Turbo-Skate-2", speedBoostPercent: 0.2, maxDistancePercent: 0})
+        this.addEffectLogic(TurboSkate, {effectLogicId: "Turbo-Skate-3", speedBoostPercent: 0, maxDistancePercent: 0.3})
+        this.addEffectLogic(TurboSkate, {effectLogicId: "Turbo-Skate-5", speedBoostPercent: 0, maxDistancePercent: 0.6})
+
+        this.addEffectLogic(AncientBattery)
+
+        this.addEffectLogic(Amplifier)
+        this.addEffectLogic(AmplifierBoost, {effectLogicId: "Amplifier-Boost-2", bonusIncrease: 0.02})
+        this.addEffectLogic(AmplifierBoost, {effectLogicId: "Amplifier-Boost-3", bonusIncrease: 0.03})
+        this.addEffectLogic(AmplifierBoost, {effectLogicId: "Amplifier-Boost-4", bonusIncrease: 0.04})
+        this.addEffectLogic(AmplifierBoost, {effectLogicId: "Amplifier-Boost-6", bonusIncrease: 0.06})
+
+        this.addEffectLogic(PerseveranceStone)
+        this.addEffectLogic(PerseveranceBoost, {effectLogicId: "Perseverance-Boost-1", bonusIncrease: 10})
+        this.addEffectLogic(PerseveranceBoost, {effectLogicId: "Perseverance-Boost-2", bonusIncrease: 15})
+        this.addEffectLogic(PerseveranceBoost, {effectLogicId: "Perseverance-Boost-3", bonusIncrease: 20})
+        this.addEffectLogic(PerseveranceBoost, {effectLogicId: "Perseverance-Boost-4", bonusIncrease: 30})
+
+        this.addEffectLogic(PowerOfFriendship)
+        this.addEffectLogic(PowerOfFriendshipBoost, {effectLogicId: "POF-1", bonusIncrease: 0.01, perPlayerBonusIncrease: 0.01})
+        this.addEffectLogic(PowerOfFriendshipBoost, {effectLogicId: "POF-2", bonusIncrease: 0.02, perPlayerBonusIncrease: 0.02})
+    
+        this.addEffectLogic(Fireball)
+        this.addEffectLogic(FireballUpgrade, {effectLogicId: "Fireball-upgrade-damage-10", damage: 0.1})
+        this.addEffectLogic(FireballUpgrade, {effectLogicId: "Fireball-upgrade-damage-15", damage: 0.15})
+        this.addEffectLogic(FireballUpgrade, {effectLogicId: "Fireball-upgrade-damage-25", damage: 0.25})
+        this.addEffectLogic(FireballUpgrade, {effectLogicId: "Fireball-upgrade-explosion-50", area: 0.5})
+        this.addEffectLogic(FireballUpgrade, {effectLogicId: "Fireball-upgrade-amount-1", amount: 1})
+
+        this.addEffectLogic(LightningRod)
+        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-2", damageMult: 1.25})
+        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-3", damageMult: 1.25, lightningCount: 2})
+        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-4", damageMult: 1.75, lightningCount: 2})
+        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-5", damageMult: 1.75, lightningCount: 3})
+
+        this.addEffectLogic(QiArmor)
+        this.addEffectLogic(QiArmor, {effectLogicId: "QiArmor-2", knockbackMult: 1.5})
+        this.addEffectLogic(QiArmor, {effectLogicId: "QiArmor-3", knockbackMult: 2})
+        this.addEffectLogic(QiArmor, {effectLogicId: "QiArmor-4", knockbackMult: 2, radiusMult: 1.5})
+
+        this.addEffectLogic(Amount)
+        this.addEffectLogic(beets)
     }
 
-    private addEffectLogic(effectLogic: IEffectLogicClass){
-        let effectLogicId = new effectLogic().effectLogicId
-        this.effectLogics.set(effectLogicId, effectLogic)
+    private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){
+        let effectLogicId = new effectLogic(config).effectLogicId
+        this.effectLogics.set(effectLogicId, {ctor: effectLogic, config})
     }
 
     /**
@@ -97,7 +160,7 @@ export default class EffectLogicManager{
      * @param effectLogicId 
      * @returns 
      */
-    public getEffectLogicConstructor(effectLogicId: string): IEffectLogicClass | undefined{
+    public getEffectLogicCtorAndConfig(effectLogicId: string): {ctor: IEffectLogicClass, config: any} | undefined{
         return this.effectLogics.get(effectLogicId)
     }
 }

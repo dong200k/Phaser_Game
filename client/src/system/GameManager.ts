@@ -123,18 +123,18 @@ export default class GameManager {
         return ()=>{
             // console.log("key pressed: ", key)
             // First press
-            if(this.wasdPressTime[key] === 0){
-                this.wasdPressTime[key] = this.getTime()
-                return
-            }
+            // if(this.wasdPressTime[key] === 0){
+            //     this.wasdPressTime[key] = this.getTime()
+            //     return
+            // }
 
-            // Second press 
-            let secondPressTime = this.getTime()
-            if(secondPressTime - this.wasdPressTime[key] < 400){
-                this.sendDoubleTap(key)
-                // console.log('send double tap', key)
-            }
-            this.wasdPressTime[key] = this.getTime()
+            // // Second press 
+            // let secondPressTime = this.getTime()
+            // if(secondPressTime - this.wasdPressTime[key] < 400){
+            //     this.sendDoubleTap(key)
+            //     // console.log('send double tap', key)
+            // }
+            // this.wasdPressTime[key] = this.getTime()
         }   
     }
 
@@ -759,6 +759,8 @@ export default class GameManager {
                     maxHpValue: playerState.stat.maxHp,
                     mpValue: playerState.stat.mana,
                     maxMpValue: playerState.stat.maxMana,
+                    shieldValue: playerState.stat.shieldHp,
+                    maxShieldValue: playerState.stat.shieldMaxHp
                 })
             }
             // Updates the Peer Info Display. This display popup when holding SHIFT.

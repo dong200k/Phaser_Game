@@ -284,8 +284,9 @@ export default class BerserkerBossController extends MonsterController{
         this.currentCycle = 0
 
         // Activate ability
-        let ctor = this.gameManager.getEffectLogicManager().getEffectLogicConstructor("berserker-ability")
-        if(ctor) {
+        let temp = this.gameManager.getEffectLogicManager().getEffectLogicCtorAndConfig("berserker-ability")
+        if(temp) {
+            let {ctor} = temp
             this.ability = new ctor() as BerserkerAbilityLogic
             this.ability.setConfig({
                 categoryType: this.categoryType,

@@ -52,6 +52,10 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("ultra_instinct_boss", "audio/ultra_instinct_boss.mp3")
         this.load.audio("boss_getting_dark", "audio/boss_getting_dark.mp3")
         this.load.audio("warrior_slam_sfx", "audio/warrior_slam_sfx.mp3");
+        this.load.audio("fireball_whoosh", "audio/fireball-whoosh.mp3")
+        this.load.audio("explosion_1", "audio/explosion_1.mp3")
+        this.load.audio("lightningrod", "audio/lightningrod.mp3")
+        this.load.audio("qi_rotation", "audio/qi_rotation.mp3")
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");
@@ -73,6 +77,9 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("Warrior", "images/roles/warrior.png", "images/roles/warrior.json");
         this.load.aseprite("FlameAura", "images/projectiles/FlameAura.png", "images/projectiles/FlameAura.json");
         this.load.aseprite("GetsugaTenshou", "images/projectiles/GetsugaTenshou.png", "images/projectiles/GetsugaTenshou.json");
+        this.load.aseprite("Fireball", "images/projectiles/fireball.png", "images/projectiles/fireball.json")
+        this.load.aseprite("Lightning", "images/projectiles/Lightning.png", "images/projectiles/Lightning.json")
+        this.load.aseprite("QiRotation", "images/projectiles/qi_rotation.png", "images/projectiles/qi_rotation.json")
         this.load.aseprite("upgrade_aicon", "images/icons/upgrade_icon/upgrade_aicon.png", "images/icons/upgrade_icon/upgrade_aicon.json");
         this.load.aseprite("x_aicon", "images/icons/x_icon/x_aicon.png", "images/icons/x_icon/x_aicon.json");
 
@@ -128,6 +135,10 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("small_explosion", "sfx")
         soundManager.add("roll", "sfx")
         soundManager.add("warrior_slam_sfx", "sfx");
+        soundManager.add("fireball_whoosh", "sfx")
+        soundManager.add("explosion_1", "sfx")
+        soundManager.add("lightningrod", "sfx")
+        soundManager.add("qi_rotation", "sfx")
 
         soundManager.add("ultra_instinct", "bg")
         soundManager.add("ultra_instinct_boss", "bg")

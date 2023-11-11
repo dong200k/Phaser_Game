@@ -2,11 +2,16 @@ import Entity from "../../schemas/gameobjs/Entity";
 import GameManager from "../GameManager";
 import { ITriggerType } from "../interfaces";
 
+// Config can be passed to initialize the effectLogic
 export interface IEffectLogicClass {
-    new (): EffectLogic;
+    new (config?: any): EffectLogic;
 } 
 /** Holds game logic for things such as a weapon attack or an artifact upgrade etc. Make sure to iniialize all new EffectLogics inside the EffectLogicManager or else they will be undefined.*/
 export default abstract class EffectLogic{
+    constructor(config?: any){
+
+    }
+
     /** Unqiue id used to identify effect logics. These are set manually whenever a new EffectLogic is created. Make sure its unique by running the jest test
      *  after adding a new EffectLogic to the EffectLogicManager's initEffectLogics.*/
     effectLogicId = "EffectLogic-bow"

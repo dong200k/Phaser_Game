@@ -11,7 +11,7 @@ import TreeManager from './TreeManager';
 export default class ArtifactManager{
 
     /** Maxmimum number of artifacts a player can have equipped at one time */
-    static MAX_ARTIFACT_COUNT = 10
+    static MAX_ARTIFACT_COUNT = 100
     /** Empty Artifact trees that get initialized when game starts*/
     static INITIAL_ARTIFACT_TREE_COUNT = 20
     /** Pool of artifacts that don't have a root */
@@ -41,7 +41,10 @@ export default class ArtifactManager{
         let artifacts = playerState.artifacts
 
         // Check that player does not already have the maximum amount of artifacts
-        if(artifacts.length >= ArtifactManager.MAX_ARTIFACT_COUNT) return false
+        if(artifacts.length >= ArtifactManager.MAX_ARTIFACT_COUNT) {
+            console.log(`Artifact ${root.data.name} will not be equipped. Player ${playerState.name} already has the maximum number of artifacts equipped.`)
+            return false
+        }
 
         // Get new Artifact tree instance and initialize the root with the artifact we are equipping
         let artifactTree = this.artifactTreePool.getInstance()
@@ -61,6 +64,8 @@ export default class ArtifactManager{
         // Add this artifact to the player
         artifacts.push(artifactTree)
         artifactTree.setOwner(playerState)
+
+        console.log(`Equiping artifact: ${artifactTree.root.data.name}`)
 
         // playerState.effects.forEach(e=>console.log(e.toString() + '\n'))
         return artifactTree

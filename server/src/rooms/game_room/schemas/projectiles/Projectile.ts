@@ -288,7 +288,7 @@ export default class Projectile extends GameObject implements Cloneable {
     public onCollide(){
         if(this.onCollideCallback){
             this.onCollideCallback(this)
-            console.log("projectile on collide")
+            // console.log("projectile on collide")
         } 
     }
 

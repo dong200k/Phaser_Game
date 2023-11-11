@@ -35,6 +35,8 @@ namespace EventManager {
                 maxMpValue: number;
                 xpValue: number;
                 maxXpValue: number;
+                shieldValue: number;
+                maxShieldValue: number;
                 level: number;
                 specialCooldownCounter: number;
                 specialCooldownPercent: number;

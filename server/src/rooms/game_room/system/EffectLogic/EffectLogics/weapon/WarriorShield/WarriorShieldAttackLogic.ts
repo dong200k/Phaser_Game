@@ -23,7 +23,7 @@ export default class WarriorShieldAttackLogic extends EffectLogic {
 
         if(entity instanceof Player && entity.playerController instanceof WarriorController) {
             knockback = entity.playerController.getKnockbackAttack();
-            console.log(knockback);
+            // console.log(knockback);
         }
 
         // If the mouseX position is less than the player's position change offsetX to -offsetX.
