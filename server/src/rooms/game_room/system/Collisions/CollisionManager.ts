@@ -167,23 +167,23 @@ export default class CollisionManager{
         
         // Reduce attack damage based on shield
         let {shieldHp: shieldHpAfterAttack, damage: attackDamageLeft} = getRemainingShieldAndDamageFromCollision(entity.stat.shieldHp, trueAttackDamage)
-        let damageEffect = EffectFactory.createDamageEffect(attackDamageLeft, projectile.originEntityId)
+        let damageEffect = EffectFactory.createDamageEffect(Math.floor(attackDamageLeft), projectile.originEntityId)
         EffectManager.addEffectsTo(entity, damageEffect)
 
         // Reduce magic attack damage based on remaining shield
         let {shieldHp: shieldHpAfterMagicAttack, damage: magicDamageLeft} = getRemainingShieldAndDamageFromCollision(shieldHpAfterAttack, trueMagicDamage)
-        damageEffect = EffectFactory.createDamageEffect(magicDamageLeft, projectile.originEntityId)
+        damageEffect = EffectFactory.createDamageEffect(Math.floor(magicDamageLeft), projectile.originEntityId)
         EffectManager.addEffectsTo(entity, damageEffect)
 
         // console.log(`Player shield before attack: ${entity.stat.shieldHp}`)
-        entity.stat.shieldHp = shieldHpAfterMagicAttack < 0? 0 : shieldHpAfterMagicAttack
+        entity.stat.shieldHp = Math.floor(shieldHpAfterMagicAttack < 0? 0 : shieldHpAfterMagicAttack)
         // console.log(`Player shield after attack: ${entity.stat.shieldHp}`)
 
         // Entity shooting projectile heals based on their lifesteal
         let attackingEntity = projectile.entity
         if(attackingEntity){
             let lifeSteal = getFinalLifeSteal(trueAttackDamage, attackingEntity.stat.lifeSteal, attackingEntity.stat.lifeStealPercent)
-            let healEffect = EffectFactory.createHealEffect(lifeSteal)
+            let healEffect = EffectFactory.createHealEffect(Math.floor(lifeSteal))
             //console.log("lifesteal:", lifeSteal)
             EffectManager.addEffectsTo(attackingEntity, healEffect)
         }

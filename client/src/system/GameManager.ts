@@ -123,18 +123,18 @@ export default class GameManager {
         return ()=>{
             // console.log("key pressed: ", key)
             // First press
-            if(this.wasdPressTime[key] === 0){
-                this.wasdPressTime[key] = this.getTime()
-                return
-            }
+            // if(this.wasdPressTime[key] === 0){
+            //     this.wasdPressTime[key] = this.getTime()
+            //     return
+            // }
 
-            // Second press 
-            let secondPressTime = this.getTime()
-            if(secondPressTime - this.wasdPressTime[key] < 400){
-                this.sendDoubleTap(key)
-                // console.log('send double tap', key)
-            }
-            this.wasdPressTime[key] = this.getTime()
+            // // Second press 
+            // let secondPressTime = this.getTime()
+            // if(secondPressTime - this.wasdPressTime[key] < 400){
+            //     this.sendDoubleTap(key)
+            //     // console.log('send double tap', key)
+            // }
+            // this.wasdPressTime[key] = this.getTime()
         }   
     }
 

@@ -68,7 +68,10 @@ export function getDefaultStat(){
     healthRegen: 0,
     shieldHp: 0,
     shieldMaxHp: 0,
-    extraDamageTakenPercent: 0,
+    extraDamageTakenPercent: 0, 
+    area: 0,
+    cooldownReduction: 0,
+    amount: 0,
   }
 }
 

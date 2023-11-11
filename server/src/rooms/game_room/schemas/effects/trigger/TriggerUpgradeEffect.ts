@@ -6,7 +6,7 @@ import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
 import GameManager from "../../../system/GameManager";
 import EffectLogic from "../../../system/EffectLogic/EffectLogic";
 import Stat, { keyStat } from "../../gameobjs/Stat";
-import { getFinalAttackCooldown, getFinalAttackSpeed, getFinalChargeAttackSpeed } from "../../../system/Formulas/formulas";
+import { getFinalAttackCooldown, getFinalAttackSpeed, getFinalChargeAttackSpeed, getTimeAfterAttackSpeed, getTimeAfterCooldownReduction } from "../../../system/Formulas/formulas";
 import MathUtil from "../../../../../util/MathUtil";
 
 /** TriggerEffect, but with cooldown. Used for Weapon Upgrade and Artifact Upgrade trees logics that are triggered by player input. */
@@ -70,16 +70,24 @@ export default class TriggerUpgradeEffect extends TriggerEffect {
      */
     public update(deltaT: number): number {
         deltaT *= 1000 // get milLiseconds
-        let newDeltaT = deltaT
-        // Grab deltaT in miliseconds depending on attackSpeed/chargeAttackSpeed
-        if(this.type === "player attack"){
-            let atkSpeed = 1
-            if(this.tree?.owner) atkSpeed = getFinalAttackSpeed(this.tree?.owner.stat)
-            newDeltaT = deltaT * atkSpeed
+        let owner = this.tree?.owner
+
+        if(!owner){
+            this.cooldown.tick(deltaT)
+            this.effectLogic?.update(deltaT)
+            return 0
         }
-        
-        this.cooldown.tick(newDeltaT)
-        this.effectLogic?.update(deltaT)
+
+        if(this.type === "player attack"){
+            let newDeltaT = getTimeAfterAttackSpeed(owner.stat, deltaT)
+            this.cooldown.tick(newDeltaT)
+            this.effectLogic?.update(deltaT)
+        }else{
+            let newDeltaT = getTimeAfterCooldownReduction(owner.stat, deltaT)
+            this.cooldown.tick(newDeltaT)
+            this.effectLogic?.update(newDeltaT)
+        }
+
         return 0
     }
 

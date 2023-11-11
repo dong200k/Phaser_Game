@@ -1,5 +1,6 @@
 import EffectLogic from "../../../system/EffectLogic/EffectLogic";
 import EffectLogicManager from "../../../system/EffectLogic/EffectLogicManager";
+import { getTimeAfterCooldownReduction } from "../../../system/Formulas/formulas";
 import GameManager from "../../../system/GameManager";
 import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
 import Entity from "../../gameobjs/Entity";
@@ -45,12 +46,15 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
     }
 
     public update(deltaT: number){
-        this.effectLogic?.update(deltaT)
-        return super.update(deltaT)
+        let owner = this.tree?.owner
+        let newDeltaT = deltaT
+        if(owner) newDeltaT = getTimeAfterCooldownReduction(owner.stat, newDeltaT)
+        
+        this.effectLogic?.update(newDeltaT)
+        return super.update(newDeltaT)
     }
 
     public setTree(tree: WeaponUpgradeTree){
-        if(this.effectLogicId === "POF") console.log(`tree game manager ${tree.getGameManager()}`)
         this.tree = tree
         this.createEffectLogic()
     }

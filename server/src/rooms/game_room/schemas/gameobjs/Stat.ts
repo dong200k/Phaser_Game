@@ -49,6 +49,22 @@ export default class Stat extends Schema {
     /** Affects the final damage player should take. */
     @type('number') extraDamageTakenPercent!: number;
 
+    /** Affects cooldown of most effects except player attack.
+     * 
+     * Note: cooldownReduction of 1 reduces attacks infinitely
+     * cooldownReduction of 0.9 makes the cooldown 10 times faster
+    */
+    @type('number') cooldownReduction!: number;
+
+    /** Area of effect, affects some effects area. 
+     * 
+     * Note: area of 1 doubles the area, area of 2 triples
+    */
+    @type('number') area!: number;
+
+    /** Affects the amount of projectiles/things in some effects */
+    @type('number') amount!: number;
+
     @type('number') level!: number;
 
     private listeners: Map<string, {listener: Function, statsToListen: Set<keyStat>}> = new Map()
@@ -93,16 +109,11 @@ export default class Stat extends Schema {
     }
 
     static defaultStatObject = {
-        maxHp: 100, maxMana: 100,
-        hp: 100, mana: 100, 
-        armor: 10, magicResist: 10,
-        damagePercent: 0, attack: 10, armorPen: 0, attackPercent: 0.5, 
-        magicAttack: 0, magicAttackPercent: 0, magicPen: 0,
-        critRate: 0.5, critDamage: 1, 
-        attackRange: 1, attackRangePercent: 0,
-        attackSpeed: 1, attackSpeedPercent: 0, 
-        speed: 50, lifeSteal: 0, lifeStealPercent: 0, level: 1,
-        chargeAttackSpeed: 0, chargeAttackSpeedPercent: 0, healthRegen: 0, shieldHp: 0, shieldMaxHp: 0, extraDamageTakenPercent: 0
+        maxHp: 0, maxMana: 0, hp: 0, mana: 0, armor: 0, magicResist: 0, damagePercent: 0, attack: 0, armorPen: 0, attackPercent: 0, 
+        magicAttack: 0, magicAttackPercent: 0, magicPen: 0, critRate: 0, critDamage: 0, attackRange: 0, attackRangePercent: 0,
+        attackSpeed: 0, attackSpeedPercent: 0, speed: 0, lifeSteal: 0, lifeStealPercent: 0, level: 0, chargeAttackSpeed: 0, 
+        chargeAttackSpeedPercent: 0, healthRegen: 0, shieldHp: 0, shieldMaxHp: 0, extraDamageTakenPercent: 0, 
+        area: 0, amount: 0, cooldownReduction: 0
     }
 
     /** Creates a new stat object based on the stat config passed in. Stat properties not initialized in the config
@@ -110,9 +121,15 @@ export default class Stat extends Schema {
      */
     constructor(stat: Partial<statType> = Stat.defaultStatObject) {
         super(0, 0);
-        let zeroStat = Stat.getZeroStatObject()
-        let zeroPaddedStat = {...zeroStat, ...stat}
-        Object.entries(zeroPaddedStat).forEach(([key, val])=>{
+        // let zeroStat = Stat.getZeroStatObject()
+        // let zeroPaddedStat = {...zeroStat, ...stat}
+        // Object.entries(zeroPaddedStat).forEach(([key, val])=>{
+        //     if(val && !isNaN(val)) this[key as keyStat] = Number(val)
+        //     else this[key as keyStat] = 0
+        // })
+
+        Object.entries(Stat.defaultStatObject).forEach(([key, ])=>{
+            let val = stat[key as keyStat]
             if(val && !isNaN(val)) this[key as keyStat] = Number(val)
             else this[key as keyStat] = 0
         })
@@ -146,9 +163,12 @@ export default class Stat extends Schema {
             chargeAttackSpeed: false,
             chargeAttackSpeedPercent: false,
             healthRegen: false,
-            shieldHp: false, 
+            shieldHp: false,
             shieldMaxHp: false,
             extraDamageTakenPercent: false,
+            area: false,
+            amount: false,
+            cooldownReduction: false
         }
         return changes
     }
@@ -167,7 +187,14 @@ export default class Stat extends Schema {
      * @param stat The stat.
      */
     public setStats(stat: Partial<statType>) {
-        Object.assign(this, stat);
+        // Object.assign(this, stat);
+
+        Object.entries(Stat.defaultStatObject).forEach(([key, ])=>{
+            let val = stat[key as keyStat]
+            if(val && !isNaN(val)) this[key as keyStat] = Number(val)
+            else this[key as keyStat] = 0
+        })
+
         this.setAllAttributeChanged()
         this.onChangeStat()
     }

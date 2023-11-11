@@ -298,8 +298,8 @@ export default class PlayerManager {
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedFrostGlaive)
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
-        let healthRegenArtifact = ArtifactFactory.createMaxedArtifact("upgrade-9efe1a19-2b8d-4080-8337-e2846192169f")
-        this.gameManager.getArtifactManager().equipArtifact(player, healthRegenArtifact)
+        // let healthRegenArtifact = ArtifactFactory.createMaxedArtifact("upgrade-9efe1a19-2b8d-4080-8337-e2846192169f")
+        // this.gameManager.getArtifactManager().equipArtifact(player, healthRegenArtifact)
 
         let shieldArtifact = ArtifactFactory.createMaxedArtifact("upgrade-5d3c8fc4-cfbb-4f52-82b0-8e3f2c9bfa81")
         this.gameManager.getArtifactManager().equipArtifact(player, shieldArtifact)
@@ -307,8 +307,8 @@ export default class PlayerManager {
         let rollArtifact = ArtifactFactory.createMaxedArtifact("upgrade-a9b22e84-976f-4031-973e-6e704f6a330d")
         this.gameManager.getArtifactManager().equipArtifact(player, rollArtifact)
         
-        let glassCannonArtifact = ArtifactFactory.createMaxedArtifact("upgrade-019ad207-0882-4d23-a90b-a6d28705b246")
-        this.gameManager.getArtifactManager().equipArtifact(player, glassCannonArtifact)
+        // let glassCannonArtifact = ArtifactFactory.createMaxedArtifact("upgrade-019ad207-0882-4d23-a90b-a6d28705b246")
+        // this.gameManager.getArtifactManager().equipArtifact(player, glassCannonArtifact)
 
         let rollChargeArtifact = ArtifactFactory.createMaxedArtifact("upgrade-474b1146-1414-4747-a306-b181bff9c3ec")
         this.gameManager.getArtifactManager().equipArtifact(player, rollChargeArtifact)
@@ -330,6 +330,36 @@ export default class PlayerManager {
         
         let qiArmor = ArtifactFactory.createMaxedArtifact("upgrade-4c5aef1c-ed88-4795-90f6-49f7c1ef2b42")
         this.equipArtifact(player, qiArmor)
+
+        // let mushroom = ArtifactFactory.createMaxedArtifact("upgrade-f6af6929-e3f6-43d4-b441-8216fda94eac")
+        // this.equipArtifact(player, mushroom)
+
+        let carrot = ArtifactFactory.createMaxedArtifact("upgrade-16005a69-9f01-4f5a-b2a5-53029a9e08e3")
+        this.equipArtifact(player, carrot)
+
+        let broccoli = ArtifactFactory.createMaxedArtifact("upgrade-1718a411-4b87-4f14-bf7b-20aa5bfbce91")
+        this.equipArtifact(player, broccoli)
+
+        let snowPeas = ArtifactFactory.createMaxedArtifact("upgrade-3575faf7-9b58-42a1-bab2-c5e92b1870e7")
+        this.equipArtifact(player, snowPeas)
+
+        let pea = ArtifactFactory.createMaxedArtifact("upgrade-6f24598c-785a-4f9c-ad69-dd3fbb852168")
+        this.equipArtifact(player, pea)
+
+        let avocado = ArtifactFactory.createMaxedArtifact("upgrade-7492fcd1-836f-48a5-94e8-c0d7a1eb514d")
+        this.equipArtifact(player, avocado)
+
+        let beans = ArtifactFactory.createMaxedArtifact("upgrade-864ffacb-1a5d-4a33-8d8c-ca3fda4c3aba")
+        this.equipArtifact(player, beans)
+
+        let beets = ArtifactFactory.createMaxedArtifact("upgrade-d99f9c75-0cfd-46ec-b4ab-13727c5944f4")
+        this.equipArtifact(player, beets)
+
+        let tomato = ArtifactFactory.createMaxedArtifact("upgrade-e5c6e893-a1fc-4f12-aa39-d43aceb3d1b6")
+        this.equipArtifact(player, tomato)
+
+        let bananas = ArtifactFactory.createMaxedArtifact("upgrade-fcaa71cb-8308-411f-adf7-4ea741522a29")
+        this.equipArtifact(player, bananas)
     }
 
     /**

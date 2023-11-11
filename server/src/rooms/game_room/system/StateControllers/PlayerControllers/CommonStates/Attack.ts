@@ -1,6 +1,7 @@
 import Player from "../../../../schemas/gameobjs/Player";
 import Stat from "../../../../schemas/gameobjs/Stat";
 import Projectile from "../../../../schemas/projectiles/Projectile";
+import { getFinalAttackSpeed } from "../../../Formulas/formulas";
 import StateMachine from "../../../StateMachine/StateMachine";
 import StateNode from "../../../StateMachine/StateNode";
 import EffectManager from "../../../StateManagers/EffectManager";
@@ -70,6 +71,8 @@ export default class Attack extends StateNode {
 
         // Checks if the player's sprite should flip or not.
         let flip = (this.player.x - this.mouseX) > 0;
+
+        this.attackDuration = this.attackDuration / getFinalAttackSpeed(this.player.stat) // duration lowered based on player attack speed
 
         this.player.animation.playAnimation("1_atk", {
             duration: this.attackDuration,

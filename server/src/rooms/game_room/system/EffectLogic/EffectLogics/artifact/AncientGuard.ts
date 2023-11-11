@@ -25,7 +25,7 @@ export class AncientGuard extends EffectLogic{
     triggerType: ITriggerType = "none"
 
     private shieldPercent: number = 10 // Percent of player's max health that shield provides as shield health.
-    private shieldDuration: number = 10
+    private shieldDuration: number = 5
     private shieldEffect?: ShieldEffect
 
     constructor(config?: IAncientGuardConfig){
@@ -37,7 +37,7 @@ export class AncientGuard extends EffectLogic{
 
     public useEffect(playerState: Player, gameManager: GameManager, tree?: WeaponUpgradeTree){
         let shieldHp = this.shieldPercent/100 * playerState.stat.maxHp
-        this.shieldEffect = EffectFactory.createShieldEffect(shieldHp, true, this.shieldDuration)
+        this.shieldEffect = EffectFactory.createShieldEffect(Math.floor(shieldHp), true, this.shieldDuration)
         EffectManager.addEffectsTo(playerState, this.shieldEffect)
     }
 

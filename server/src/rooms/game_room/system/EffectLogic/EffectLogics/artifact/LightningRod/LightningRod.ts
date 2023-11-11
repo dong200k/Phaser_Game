@@ -2,6 +2,7 @@ import MathUtil from "../../../../../../../util/MathUtil"
 import WeaponUpgradeTree from "../../../../../schemas/Trees/WeaponUpgradeTree"
 import Player from "../../../../../schemas/gameobjs/Player"
 import Projectile from "../../../../../schemas/projectiles/Projectile"
+import { getFinalArea } from "../../../../Formulas/formulas"
 import GameManager from "../../../../GameManager"
 import { GameEvents, IProjectileConfig, ITriggerType } from "../../../../interfaces"
 import EffectLogic from "../../../EffectLogic"
@@ -26,8 +27,9 @@ export class LightningRod extends EffectLogic{
     private width = 50
     private height = 100
     private baseDamageMult = 5
-    private timeBetweenLightning = 300
+    private timeBetweenLightning = 150
     private lightningCount = 1
+    private spawnArea = 25
 
     /** Multiplies the base lightning damage */
     private damageMult = 1
@@ -42,25 +44,28 @@ export class LightningRod extends EffectLogic{
     }
 
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree){
-        // console.log("spawning lightning")
-        for(let i=0;i<this.lightningCount;i++){
-            if(i==0) this.spawnLightning(playerState, gameManager)
-            else{
-                setTimeout(()=>{
-                    this.spawnLightning(playerState, gameManager)
-                }, this.timeBetweenLightning);
-            }
+        let count = this.lightningCount + playerState.stat.amount
+
+        for(let i=0;i<count;i++){
+            setTimeout(()=>{
+                this.spawnLightning(playerState, gameManager)
+            }, this.timeBetweenLightning * i);
         }
     }
 
     private spawnLightning(playerState: Player, gameManager: GameManager){
         let {x: playerX, y: playerY} = playerState.getBody().position
+        let area = getFinalArea(playerState.stat, this.spawnArea)
+        let areaX = area
+        let areaY = area
+        if(Math.random()<0.5) areaX *= -1
+        if(Math.random()<0.5) areaY *= -1
 
         let projectileConfig: IProjectileConfig = {
             sprite: "Lightning",
             stat: playerState.stat,
-            spawnX: playerX,
-            spawnY: playerY,
+            spawnX: playerX + Math.random()*areaX,
+            spawnY: playerY + Math.random()*areaY,
             width: this.width,
             height: this.height,
             initialVelocity: {x: 0, y:0},

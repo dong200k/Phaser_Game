@@ -42,6 +42,9 @@ import { PowerOfFriendshipBoost } from "./EffectLogics/artifact/PowerOfFriendshi
 import { Fireball } from "./EffectLogics/artifact/Fireball/Fireball";
 import { LightningRod } from "./EffectLogics/artifact/LightningRod/LightningRod";
 import { QiArmor } from "./EffectLogics/artifact/QiArmor/QiArmor";
+import { FireballUpgrade } from "./EffectLogics/artifact/Fireball/FireballUpgrade";
+import { Amount } from "./EffectLogics/artifact/Amount";
+import { beets } from "./EffectLogics/artifact/Beets";
 
 export default class EffectLogicManager{
 
@@ -126,20 +129,25 @@ export default class EffectLogicManager{
         this.addEffectLogic(PowerOfFriendshipBoost, {effectLogicId: "POF-2", bonusIncrease: 0.02, perPlayerBonusIncrease: 0.02})
     
         this.addEffectLogic(Fireball)
-        this.addEffectLogic(Fireball, {effectLogicId: "Fireball-damage-25", fireballExplosionMult: 1.25, fireballMult: 1.25})
-        this.addEffectLogic(Fireball, {effectLogicId: "Fireball-damage-50", fireballExplosionMult: 1.5, fireballMult: 1.5})
-        this.addEffectLogic(Fireball, {effectLogicId: "Fireball-max", fireballExplosionMult: 1.5, fireballMult: 1.5, explosionRadiusMult: 2})
-    
+        this.addEffectLogic(FireballUpgrade, {effectLogicId: "Fireball-upgrade-damage-10", damage: 0.1})
+        this.addEffectLogic(FireballUpgrade, {effectLogicId: "Fireball-upgrade-damage-15", damage: 0.15})
+        this.addEffectLogic(FireballUpgrade, {effectLogicId: "Fireball-upgrade-damage-25", damage: 0.25})
+        this.addEffectLogic(FireballUpgrade, {effectLogicId: "Fireball-upgrade-explosion-50", area: 0.5})
+        this.addEffectLogic(FireballUpgrade, {effectLogicId: "Fireball-upgrade-amount-1", amount: 1})
+
         this.addEffectLogic(LightningRod)
         this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-2", damageMult: 1.25})
-        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-3", damageMult: 1.5})
-        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-4", damageMult: 2})
-        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-5", damageMult: 2, lightningCount: 2})
+        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-3", damageMult: 1.25, lightningCount: 2})
+        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-4", damageMult: 1.75, lightningCount: 2})
+        this.addEffectLogic(LightningRod, {effectLogicId: "LightningRod-5", damageMult: 1.75, lightningCount: 3})
 
         this.addEffectLogic(QiArmor)
         this.addEffectLogic(QiArmor, {effectLogicId: "QiArmor-2", knockbackMult: 1.5})
         this.addEffectLogic(QiArmor, {effectLogicId: "QiArmor-3", knockbackMult: 2})
         this.addEffectLogic(QiArmor, {effectLogicId: "QiArmor-4", knockbackMult: 2, radiusMult: 1.5})
+
+        this.addEffectLogic(Amount)
+        this.addEffectLogic(beets)
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){

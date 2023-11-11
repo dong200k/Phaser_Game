@@ -84,14 +84,19 @@ export default class Roll extends StateNode {
 
         let currentPosition = this.player.getBody().position
         let distance = MathUtil.distanceSquared(this.originPosition.x, this.originPosition.y, currentPosition.x, currentPosition.y)
-        if(distance > this.maxDistance){
-            // console.log("distance exceeded", distance)
-            this.player.canMove = false
-        }
 
-        if(this.timePassed >= this.duration || ((distance >= this.maxDistance) && this.timePassed >= this.animationDuration)){
+        // ******** TODO ************ 
+        // Sync roll duration with the player's speed and maxDistance so that the animation plays fully just before max distance is reached
+
+        // if(distance > this.maxDistance){
+        //     // console.log("distance exceeded", distance)
+        //     this.player.canMove = false
+        // }
+
+        // if(this.timePassed >= this.duration || ((distance >= this.maxDistance) && this.timePassed >= this.animationDuration)){
+        if(this.timePassed >= this.duration || (distance >= this.maxDistance)){
             this.changeToExitState()
-            this.player.canMove = true
+            // this.player.canMove = true
         }
     }
     
