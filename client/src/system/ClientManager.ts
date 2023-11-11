@@ -2,6 +2,7 @@ import * as Colyseus from 'colyseus.js';
 import type WaitingRoomState from "../../../server/src/rooms/waiting_room/schemas/State";
 import type GameRoomState from "../../../server/src/rooms/game_room/schemas/State";
 import ClientFirebaseConnection from '../firebase/ClientFirebaseConnection';
+import { GAME_SERVER_URL } from '../config';
 
 /**
  * ClientManager is a singleton that manages the connection to the Colyseus Server.
@@ -19,7 +20,7 @@ export default class ClientManager {
     private gameRoomId: string = "";
 
     private constructor() {
-        this.client = new Colyseus.Client('ws://localhost:3000');
+        this.client = new Colyseus.Client(GAME_SERVER_URL);
     }
 
     public static getClient(): ClientManager {

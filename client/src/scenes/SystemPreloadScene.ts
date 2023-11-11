@@ -81,6 +81,8 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("Lightning", "images/projectiles/Lightning.png", "images/projectiles/Lightning.json")
         this.load.aseprite("QiRotation", "images/projectiles/qi_rotation.png", "images/projectiles/qi_rotation.json")
         this.load.aseprite("upgrade_aicon", "images/icons/upgrade_icon/upgrade_aicon.png", "images/icons/upgrade_icon/upgrade_aicon.json");
+        this.load.aseprite("x_aicon", "images/icons/x_icon/x_aicon.png", "images/icons/x_icon/x_aicon.json");
+
     }
 
     /** Load the assets from firebase. */

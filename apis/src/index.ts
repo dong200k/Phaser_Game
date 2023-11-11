@@ -1,16 +1,8 @@
 import dotenv from 'dotenv';
 import express from "express"
-import PlayerRouter from './routers/PlayerRouter';
-import MonsterRouter from './routers/MonsterRouter';
 import ApiFirebaseConnection from './firebase/ApiFirebaseConnection';
 import JsonDatabaseManager from './skilltree/JsonDatabaseManager';
-import RoleRouter from './routers/RoleRouter';
-import DungeonRouter from './routers/DungeonRouter';
-import AdminRouter from './routers/AdminRouter';
-import AssetRouter from './routers/AssetRouter';
-import CollectionRouter from './routers/CollectionRouter';
-import JsonDBRouter from './routers/JsonDBRouter';
-import { auth } from 'firebase-admin';
+import APIRouter from './routers/APIRouter';
 
 dotenv.config();
 
@@ -24,17 +16,11 @@ const bodyParser = require("body-parser")
 app.use(bodyParser())
 
 app.get('/', (req, res) => {
-  res.send('Express + TypeScript Server');
+  res.send({message: "Welcome to APIs"});
 });
 
-app.use("/admin", AdminRouter);
-app.use(PlayerRouter)
-app.use(RoleRouter)
-app.use("/monsters", MonsterRouter);
-app.use("/dungeons", DungeonRouter);
-app.use("/assets", AssetRouter);
-app.use("/col", CollectionRouter);
-app.use("/json", JsonDBRouter);
+// NOTE: ADD NEW ROUTES TO APIROUTER.
+app.use("/", APIRouter);
 
 app.get("*", (req, res)=>{
   console.log("404 not found");
