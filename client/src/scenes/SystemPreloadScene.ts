@@ -75,6 +75,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("GetsugaTenshou", "images/projectiles/GetsugaTenshou.png", "images/projectiles/GetsugaTenshou.json");
         this.load.aseprite("upgrade_aicon", "images/icons/upgrade_icon/upgrade_aicon.png", "images/icons/upgrade_icon/upgrade_aicon.json");
         this.load.aseprite("x_aicon", "images/icons/x_icon/x_aicon.png", "images/icons/x_icon/x_aicon.json");
+        this.load.aseprite("wood_chest", "animations/wood_chest/wood_chest.png", "animations/wood_chest/wood_chest.json");
 
     }
 
