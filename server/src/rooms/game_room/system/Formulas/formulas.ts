@@ -168,6 +168,18 @@ export const getTimeAfterCooldownReduction = ({cooldownReduction}: Stat, deltaT:
     return deltaT/(1 - cappedReduction)
 }
 
+/**
+ * Takes in a stat and deltaT and reverts deltaT back to the original value before cooldown reduction was applied.
+ * @param stat 
+ * @param deltaT 
+ * @returns 
+ */
+export const undoCooldownReduction = ({cooldownReduction}: Stat, deltaT: number)=>{
+    let cappedReduction = Math.max(0, Math.min(0.9, cooldownReduction))
+    
+    return deltaT*(1 - cappedReduction) 
+}
+
 
 /**
  * Calculates the time that should pass for player attack based on attack speed

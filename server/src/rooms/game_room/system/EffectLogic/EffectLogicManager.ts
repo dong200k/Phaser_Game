@@ -45,6 +45,8 @@ import { QiArmor } from "./EffectLogics/artifact/QiArmor/QiArmor";
 import { FireballUpgrade } from "./EffectLogics/artifact/Fireball/FireballUpgrade";
 import { Amount } from "./EffectLogics/artifact/Amount";
 import { beets } from "./EffectLogics/artifact/Beets";
+import { FrostWalker } from "./EffectLogics/artifact/FrostWalker/FrostWalker";
+import { FrostWalkerUpgrade } from "./EffectLogics/artifact/FrostWalker/FrostWalkerUpgrade";
 
 export default class EffectLogicManager{
 
@@ -148,6 +150,16 @@ export default class EffectLogicManager{
 
         this.addEffectLogic(Amount)
         this.addEffectLogic(beets)
+
+        this.addEffectLogic(FrostWalker)
+        this.addEffectLogic(FrostWalkerUpgrade, {effectLogicId: "FrostWalker-Upgrade-Damage-10", damage: 0.10})
+        this.addEffectLogic(FrostWalkerUpgrade, {effectLogicId: "FrostWalker-Upgrade-Damage-15", damage: 0.15})
+        this.addEffectLogic(FrostWalkerUpgrade, {effectLogicId: "FrostWalker-Upgrade-Damage-25", damage: 0.25})
+        this.addEffectLogic(FrostWalkerUpgrade, {effectLogicId: "FrostWalker-Upgrade-area-25", area: 0.25})
+        this.addEffectLogic(FrostWalkerUpgrade, {effectLogicId: "FrostWalker-Upgrade-amount-1", amount: 1})
+        this.addEffectLogic(FrostWalkerUpgrade, {effectLogicId: "FrostWalker-Upgrade-duration-25", duration: 0.25})
+        this.addEffectLogic(FrostWalkerUpgrade, {effectLogicId: "FrostWalker-Upgrade-duration-50", duration: 0.5})
+
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){

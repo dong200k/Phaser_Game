@@ -125,7 +125,7 @@ export const difficultyMap = {
             /** Sets of slashes performed. */
             slashCountRange: {min: 2, max: 4}, 
             /** Slashes fired each set */
-            getsugaCountRange: {min: 4, max: 8},
+            getsugaCountRange: {min: 6, max: 8},
             /** Time between the sets of slashes. Also determines duration */
             timeBetweenSlashes: 1,
         },
@@ -137,7 +137,7 @@ export const difficultyMap = {
             /** Sets of slashes performed. */
             slashCountRange: {min: 2, max: 4},
             /** Slashes fired each set */
-            getsugaCountRange: {min: 3, max: 3},
+            getsugaCountRange: {min: 4, max: 4},
             /** Time between the sets of slashes */
             timeBetweenSlashes: 1,
             /** Duration of tornado spin (spin and chase) */
@@ -148,7 +148,7 @@ export const difficultyMap = {
             /** range of the attack's duration */
             attackDurationRange: {min: 4, max: 4},
             /** Slashes fired */
-            getsugaCountRange: {min: 50, max: 75},
+            getsugaCountRange: {min: 100, max: 125},
         },
         /** Homing getsugas that chases the player */
         "FollowingGetsuga": {
@@ -165,11 +165,11 @@ export const difficultyMap = {
         /** Getsugas that follows and spins around the boss */
         "SpinningGetsuga": {
             /** Sets of slashes performed. */
-            slashCountRange: {min: 3, max: 5},
+            slashCountRange: {min: 6, max: 8},
             /** Time between the sets of slashes */
-            timeBetweenSlashes: 1,
+            timeBetweenSlashes: 0.5,
             /** Projectile speed range */
-            projectileSpeedRange: {min: 4, max: 5},
+            projectileSpeedRange: {min: 6, max: 8},
             projectileActiveTime: 9000,
             radius: 200
         },

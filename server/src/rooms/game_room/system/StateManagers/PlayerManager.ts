@@ -301,8 +301,8 @@ export default class PlayerManager {
         // let healthRegenArtifact = ArtifactFactory.createMaxedArtifact("upgrade-9efe1a19-2b8d-4080-8337-e2846192169f")
         // this.gameManager.getArtifactManager().equipArtifact(player, healthRegenArtifact)
 
-        // let shieldArtifact = ArtifactFactory.createMaxedArtifact("upgrade-5d3c8fc4-cfbb-4f52-82b0-8e3f2c9bfa81")
-        // this.gameManager.getArtifactManager().equipArtifact(player, shieldArtifact)
+        let shieldArtifact = ArtifactFactory.createMaxedArtifact("upgrade-5d3c8fc4-cfbb-4f52-82b0-8e3f2c9bfa81")
+        this.gameManager.getArtifactManager().equipArtifact(player, shieldArtifact)
 
         let rollArtifact = ArtifactFactory.createMaxedArtifact("upgrade-a9b22e84-976f-4031-973e-6e704f6a330d")
         this.gameManager.getArtifactManager().equipArtifact(player, rollArtifact)
@@ -322,8 +322,8 @@ export default class PlayerManager {
         let friendshipArtifact = ArtifactFactory.createMaxedArtifact("upgrade-b49ebec5-d566-4fb8-9170-d6cd9778bb8b")
         this.gameManager.getArtifactManager().equipArtifact(player, friendshipArtifact)
 
-        // let fireballArtifact = ArtifactFactory.createMaxedArtifact("upgrade-53123fa2-93a1-4a31-b021-cc8c9a236919")
-        // this.gameManager.getArtifactManager().equipArtifact(player, fireballArtifact)
+        let fireballArtifact = ArtifactFactory.createMaxedArtifact("upgrade-53123fa2-93a1-4a31-b021-cc8c9a236919")
+        this.gameManager.getArtifactManager().equipArtifact(player, fireballArtifact)
 
         // let lightningRod = ArtifactFactory.createMaxedArtifact("upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50")
         // this.equipArtifact(player, lightningRod)
@@ -360,6 +360,9 @@ export default class PlayerManager {
 
         let bananas = ArtifactFactory.createMaxedArtifact("upgrade-fcaa71cb-8308-411f-adf7-4ea741522a29")
         this.equipArtifact(player, bananas)
+
+        let frostWalker = ArtifactFactory.createMaxedArtifact("upgrade-3cd595a8-f245-44ea-8847-c73bf791b494")
+        this.equipArtifact(player, frostWalker)
     }
 
     /**

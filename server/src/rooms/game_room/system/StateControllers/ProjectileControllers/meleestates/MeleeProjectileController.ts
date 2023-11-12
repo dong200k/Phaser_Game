@@ -6,6 +6,9 @@ import Idle from "./Idle";
 
 export interface MeleeProjectileControllerData {
     projectile: Projectile;
+    attackDuration?: number;
+    triggerPercent?: number;
+    unTriggerPercet?: number;
 }
 
 /** The monster controller contains ai that allows a monster to follow a player, and attack a player. */
@@ -18,6 +21,9 @@ export default class MeleeProjectileController extends StateMachine<MeleeProject
 
     protected create(data: MeleeProjectileControllerData): void {
         this.projectile = data.projectile;
+        this.triggerPercent = data.triggerPercent ?? this.triggerPercent
+        this.attackDuration = data.attackDuration ?? this.attackDuration
+        this.unTriggerPercent = data.unTriggerPercet ?? this.unTriggerPercent
 
         // Idle state
         let idle = new Idle("Idle", this);
