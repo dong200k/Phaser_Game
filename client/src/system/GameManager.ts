@@ -26,6 +26,7 @@ import ClientManager from "./ClientManager";
 import Aura from "../gameobjs/Aura";
 import StatusIconManager from "./StatusIconManager";
 import CircleImage from "../UI/CircleImage";
+import Chest from "../gameobjs/Chest";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -386,6 +387,9 @@ export default class GameManager {
             case 'Aura':
                 newGameObject = this.addAura(gameObj, key);
                 break;
+            case 'Chest': 
+                newGameObject = this.addChest(gameObj, key);
+                break;
         }
         if(newGameObject) {
             // newGameObject.setServerState(gameObj);
@@ -532,6 +536,17 @@ export default class GameManager {
         this.scene.add.existing(newAura);
         this.addListenersToGameObject(newAura, aura);
         return newAura;
+    }
+
+    private addChest(chestState: any, key: string): Chest {
+        let newChest = new Chest(this.scene, chestState);
+        this.scene.add.existing(newChest);
+        this.addListenersToGameObject(newChest, chestState);
+        newChest.play("closed");
+
+        console.log("A new chest has been added!");
+
+        return newChest;
     }
 
     /** Adds a listener to an entity to respond to server updates on that entity. */
