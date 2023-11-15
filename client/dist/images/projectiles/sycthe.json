@@ -1,0 +1,51 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 1, "y": 1, "w": 30, "h": 44 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 10, "y": 4, "w": 28, "h": 42 },
+    "sourceSize": { "w": 48, "h": 48 },
+    "duration": 100
+   },
+   "1": {
+    "frame": { "x": 32, "y": 1, "w": 44, "h": 30 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 2, "y": 10, "w": 42, "h": 28 },
+    "sourceSize": { "w": 48, "h": 48 },
+    "duration": 100
+   },
+   "2": {
+    "frame": { "x": 77, "y": 1, "w": 30, "h": 44 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 10, "y": 2, "w": 28, "h": 42 },
+    "sourceSize": { "w": 48, "h": 48 },
+    "duration": 100
+   },
+   "3": {
+    "frame": { "x": 108, "y": 1, "w": 44, "h": 30 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 4, "y": 10, "w": 42, "h": 28 },
+    "sourceSize": { "w": 48, "h": 48 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.40-x64",
+  "image": "scythe.png",
+  "format": "RGBA8888",
+  "size": { "w": 152, "h": 45 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "play", "from": 0, "to": 3, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

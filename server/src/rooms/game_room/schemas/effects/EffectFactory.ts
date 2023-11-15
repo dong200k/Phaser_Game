@@ -14,6 +14,7 @@ import Entity from "../gameobjs/Entity";
 import PiercingEffect from "./temp/PiercingEffect";
 import OneTimeUpgradeEffect from "./onetime/OneTimeUpgradeEffect";
 import WeaponUpgradeTree from "../Trees/WeaponUpgradeTree";
+import ShieldEffect from "./temp/ShieldEffect";
 
 
 export default class EffectFactory {
@@ -181,5 +182,9 @@ export default class EffectFactory {
      */
     public static createPiercingEffect(piercing: number, tree: WeaponUpgradeTree, isTimed?: boolean, activeTime: number = 0){
         return new PiercingEffect(tree, isTimed, activeTime, piercing)
+    }
+
+    public static createShieldEffect(shieldHealth: number, isTimed: boolean, totalTime: number){
+        return new ShieldEffect(shieldHealth, isTimed, totalTime)
     }
 }

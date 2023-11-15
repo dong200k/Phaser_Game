@@ -26,6 +26,7 @@ import ClientManager from "./ClientManager";
 import Aura from "../gameobjs/Aura";
 import StatusIconManager from "./StatusIconManager";
 import CircleImage from "../UI/CircleImage";
+import FollowingMeleeProjectile from "../../../server/src/rooms/game_room/schemas/projectiles/specialprojectiles/FollowingMeleeProjectile";
 import Chest from "../gameobjs/Chest";
 
 export default class GameManager {
@@ -124,18 +125,18 @@ export default class GameManager {
         return ()=>{
             // console.log("key pressed: ", key)
             // First press
-            if(this.wasdPressTime[key] === 0){
-                this.wasdPressTime[key] = this.getTime()
-                return
-            }
+            // if(this.wasdPressTime[key] === 0){
+            //     this.wasdPressTime[key] = this.getTime()
+            //     return
+            // }
 
-            // Second press 
-            let secondPressTime = this.getTime()
-            if(secondPressTime - this.wasdPressTime[key] < 400){
-                this.sendDoubleTap(key)
-                // console.log('send double tap', key)
-            }
-            this.wasdPressTime[key] = this.getTime()
+            // // Second press 
+            // let secondPressTime = this.getTime()
+            // if(secondPressTime - this.wasdPressTime[key] < 400){
+            //     this.sendDoubleTap(key)
+            //     // console.log('send double tap', key)
+            // }
+            // this.wasdPressTime[key] = this.getTime()
         }   
     }
 
@@ -147,8 +148,9 @@ export default class GameManager {
         this.gameObjects.forEach(gameObject=>{
             if(gameObject.gameObjectState.type === "Projectile"){
                 if(gameObject.active && gameObject.gameObjectState.name === "FollowingMeleeProjectile" && this.player1 && gameObject.gameObjectState.ownerId === this.gameRoom.sessionId){
-                    gameObject.setX(this.player1.x)
-                    gameObject.setY(this.player1.y)
+                    let gameObjState: any = gameObject.gameObjectState
+                    gameObject.setX(gameObjState.owner.x + gameObjState.offsetX)
+                    gameObject.setY(gameObjState.owner.y + gameObjState.offsetY)
                 }
             }
         })
@@ -774,6 +776,8 @@ export default class GameManager {
                     maxHpValue: playerState.stat.maxHp,
                     mpValue: playerState.stat.mana,
                     maxMpValue: playerState.stat.maxMana,
+                    shieldValue: playerState.stat.shieldHp,
+                    maxShieldValue: playerState.stat.shieldMaxHp
                 })
             }
             // Updates the Peer Info Display. This display popup when holding SHIFT.

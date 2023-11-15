@@ -5,6 +5,7 @@ import CircleImageProgress from "../CircleImageProgress";
 import UIFactory from "../UIFactory";
 import TextBox from "../TextBox";
 import RexUIBase, { SceneWithRexUI } from "../RexUIBase";
+import ProgressBarWithRightBar from "../ProgressBarWithRightBar";
 
 export interface PlayerInfoData {
     slot1ItemKey: string;
@@ -16,6 +17,8 @@ export interface PlayerInfoData {
     maxMpValue: number;
     xpValue: number;
     maxXpValue: number;
+    shieldValue: number;
+    maxShieldValue: number;
     level: number;
     specialCooldownCounter: number;
     specialCooldownPercent: number;
@@ -24,7 +27,7 @@ export interface PlayerInfoData {
 
 /** 
  * The PlayerInfo is used to display the player's information ingame. These info includes the 
- * player's hotslots, hp, mp, xp, level, and cooldowns.
+ * player's hotslots, shield, hp, mp, xp, level, and cooldowns.
 */
 export default class PlayerInfo extends RexUIBase {
     private playerInfoSizer: Sizer;
@@ -33,9 +36,10 @@ export default class PlayerInfo extends RexUIBase {
     //UI Items
     private levelTextBox!: TextBox;
     private hotSlotSizer!: Sizer; 
-    private hpBar!: ProgressBar;
+    private hpBar!: ProgressBarWithRightBar;
     private mpBar!: ProgressBar;
     private xpBar!: ProgressBar;
+    private shieldBar!: ProgressBar;
     private specialDisplay!: CircleImageProgress;
 
     constructor(scene: SceneWithRexUI, config: Partial<PlayerInfoData>) {
@@ -50,6 +54,8 @@ export default class PlayerInfo extends RexUIBase {
             maxMpValue: 100,
             xpValue: 100,
             maxXpValue: 100,
+            shieldValue: 0,
+            maxShieldValue: 100,
             level: 1,
             specialCooldownCounter: 0,
             specialCooldownPercent: 0,
@@ -69,7 +75,7 @@ export default class PlayerInfo extends RexUIBase {
                 top: 7,
                 bottom: 7,
             },
-        }).addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 3, ColorStyle.primary.hex[500]));
+        }).addBackground(this.rexUI.add.roundRectangle(0, 0, 1000, 100, 3, ColorStyle.primary.hex[500]));
         
         let statusBars = this.createStatusBars();
 
@@ -80,7 +86,8 @@ export default class PlayerInfo extends RexUIBase {
             }
         })
             .add(this.createHotSlotsWithLevel(), {expand: true})
-            .add(statusBars);
+            .add(statusBars)
+            // .add(statusBars)
 
         this.playerInfoSizer.add(statusBarsLevelHotslotSizer);
 
@@ -116,6 +123,7 @@ export default class PlayerInfo extends RexUIBase {
         else {image3.setVisible(true); image3.setTexture(this.playerInfoData.slot3ItemKey)}
 
         // Update Status bars
+        this.hpBar.setRightBarValue(this.playerInfoData.shieldValue)
         this.hpBar.setProgressBarMaxValue(this.playerInfoData.maxHpValue);
         this.hpBar.setProgressBarValue(this.playerInfoData.hpValue);
         this.mpBar.setProgressBarMaxValue(this.playerInfoData.maxMpValue);
@@ -136,13 +144,31 @@ export default class PlayerInfo extends RexUIBase {
     }
 
     private createStatusBars() {
-        this.hpBar = new ProgressBar(this.scene, {
+        // this.hpBar = new ProgressBar(this.scene, {
+        //     progressBarWidth: 100,
+        //     progressBarHeight: 15,
+        //     progressBarMaxValue: 100,
+        //     progressBarValue: 100,
+        //     progressBarColor: 0x832F2F,
+        // });
+
+        // this.shieldBar = new ProgressBar(this.scene, {
+        //     progressBarWidth: 200,
+        //     progressBarHeight: 15,
+        //     progressBarMaxValue: 0,
+        //     progressBarValue: 0,
+        //     progressBarColor : 0x832F2F,
+        // })
+
+        this.hpBar = new ProgressBarWithRightBar(this.scene, {
             progressBarWidth: 200,
             progressBarHeight: 15,
             progressBarMaxValue: 100,
             progressBarValue: 100,
             progressBarColor: 0x832F2F,
-        });
+            rightBarColor: 0xDC8223,
+            rightBarValue: 0,
+        })
         
         this.mpBar = new ProgressBar(this.scene, {
             progressBarWidth: 200,
@@ -159,6 +185,7 @@ export default class PlayerInfo extends RexUIBase {
             progressBarValue: 100,
             progressBarColor: 0x7C832F,
         });
+        // this.scene.add.existing(this.shieldBar)
         this.scene.add.existing(this.hpBar);
         this.scene.add.existing(this.mpBar);
         this.scene.add.existing(this.xpBar);
@@ -171,6 +198,7 @@ export default class PlayerInfo extends RexUIBase {
         })
 
         // sizer.add(this.createHotSlots(), {align: "left", expand: true});
+        // sizer.add(this.shieldBar)
         sizer.add(this.hpBar);
         sizer.add(this.mpBar);
         sizer.add(this.xpBar);

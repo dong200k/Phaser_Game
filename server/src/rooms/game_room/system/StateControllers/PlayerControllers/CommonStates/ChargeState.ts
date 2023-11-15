@@ -115,4 +115,12 @@ export default class ChargeState extends StateNode {
         })
         return thresholdMet
     }
+
+    /**
+     * Sets charge time so far to a ratio of the max charge time.
+     * @param ratio 
+     */
+    setChargeTimeSoFarWithRatio(ratio: number){
+        this.chargeTimeSoFar = ratio * this.totalChargeTime
+    }
 }

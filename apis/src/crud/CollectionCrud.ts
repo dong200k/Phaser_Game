@@ -7,7 +7,9 @@ export default class CollectionCrud {
         const db = getFirestore();
         let docRef = db.collection(colName).doc(id);
         let doc = await docRef.get()
-        return doc.data()
+        let docData = doc.data();
+        if(docData) docData.id = doc.id;
+        return docData;
     }
 
     public static async saveDocument(id: string, document: any, colName: string) {

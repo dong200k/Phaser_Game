@@ -66,7 +66,7 @@ export default class BerserkerBossController extends MonsterController{
     private aggroTimeSoFar = 0
     private isAggroed = false
 
-    private difficultyMode: DifficultyMode = "Hard"
+    private difficultyMode: DifficultyMode = "Medium"
 
     protected create(data: BossControllerData): void {
         this.boss = data.monster
@@ -246,6 +246,14 @@ export default class BerserkerBossController extends MonsterController{
         let difficultyData
         switch(this.difficultyMode){
             case "Easy":
+                difficultyData = difficultyMap.Easy
+                break;
+            case "Medium":
+                difficultyData = difficultyMap.Medium
+                break;
+            case "Hard":
+                difficultyData = difficultyMap.Hard
+                break;
             default:
                 difficultyData = difficultyMap.Easy
         }
@@ -284,8 +292,9 @@ export default class BerserkerBossController extends MonsterController{
         this.currentCycle = 0
 
         // Activate ability
-        let ctor = this.gameManager.getEffectLogicManager().getEffectLogicConstructor("berserker-ability")
-        if(ctor) {
+        let temp = this.gameManager.getEffectLogicManager().getEffectLogicCtorAndConfig("berserker-ability")
+        if(temp) {
+            let {ctor} = temp
             this.ability = new ctor() as BerserkerAbilityLogic
             this.ability.setConfig({
                 categoryType: this.categoryType,

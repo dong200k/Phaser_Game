@@ -1,0 +1,59 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 1, "y": 37, "w": 24, "h": 18 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 20, "y": 24, "w": 22, "h": 16 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   },
+   "1": {
+    "frame": { "x": 41, "y": 36, "w": 32, "h": 29 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 17, "y": 20, "w": 30, "h": 27 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   },
+   "2": {
+    "frame": { "x": 41, "y": 1, "w": 35, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 14, "y": 17, "w": 33, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   },
+   "3": {
+    "frame": { "x": 41, "y": 1, "w": 35, "h": 34 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 14, "y": 17, "w": 33, "h": 32 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   },
+   "4": {
+    "frame": { "x": 1, "y": 1, "w": 39, "h": 35 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 14, "y": 16, "w": 37, "h": 33 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.40-x64",
+  "image": "frost.png",
+  "format": "RGBA8888",
+  "size": { "w": 76, "h": 65 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "play", "from": 0, "to": 4, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import Dropdown from 'react-bootstrap/Dropdown';
 import { DataContext } from "../contexts/DataContextProvider.js";
 import { sortObject } from "../helpers.js";
+import { getDefaultStat } from "../helpers.js";
 
 export default function Role(){
     let [weaponUpgrades, setWeaponUpgrades] = useState([])
@@ -15,7 +16,10 @@ export default function Role(){
 
     useEffect(()=>{
         getDocument(id, "roles")
-            .then((document)=>setRole(document))
+            .then((document)=>{
+                document.stat = {...getDefaultStat(), ...document.stat}
+                setRole(document)
+            })
             
         setWeaponUpgrades(upgrades.filter(upgrade=>upgrade.type==="weapon"))
         

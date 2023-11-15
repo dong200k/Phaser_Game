@@ -189,57 +189,64 @@ export default class GameManager {
         // code to run when starting the game.
 
         // Spawning a boss temporarily here
-        console.log("spawning boss")
-        let monster = new Monster(this, {
-            id: "",
-            name: "Berserker Boss",
-            imageKey: "Berserker",
-            stats: {
-                maxHp: 200000,
-                maxMana: 0,
-                hp: 200000,
-                mana: 0,
-                armor: 0,
-                magicResist: 0,
-                damagePercent: 0,
-                attack: 10,
-                armorPen: 0.5,
-                attackPercent: 0,
-                magicAttack: 0,
-                magicAttackPercent: 0,
-                magicPen: 0,
-                critRate: 0,
-                critDamage: 0,
-                attackRange: 0,
-                attackRangePercent: 0,
-                attackSpeed: 1,
-                attackSpeedPercent: 0,
-                speed: 50,
-                lifeSteal: 0,
-                lifeStealPercent: 0,
-                level: 100,
-                chargeAttackSpeed: 0,
-                chargeAttackSpeedPercent: 0
-            },
-            poolType: "Berserker Boss",
-            controllerKey: "BerserkerBoss",
-            bounds: {
-                type: "",
-                width: 46,
-                height: 42
-            }
-        })
+        // console.log("spawning boss")
+        // let monster = new Monster(this, {
+        //     id: "",
+        //     name: "Berserker Boss",
+        //     imageKey: "Berserker",
+        //     stats: {
+        //         maxHp: 4000,
+        //         maxMana: 0,
+        //         hp: 4000,
+        //         mana: 0,
+        //         armor: 0,
+        //         magicResist: 0,
+        //         damagePercent: 0,
+        //         attack: 10,
+        //         armorPen: 0.5,
+        //         attackPercent: 0,
+        //         magicAttack: 0,
+        //         magicAttackPercent: 0,
+        //         magicPen: 0,
+        //         critRate: 0,
+        //         critDamage: 0,
+        //         attackRange: 0,
+        //         attackRangePercent: 0,
+        //         attackSpeed: 1,
+        //         attackSpeedPercent: 0,
+        //         speed: 50,
+        //         lifeSteal: 0,
+        //         lifeStealPercent: 0,
+        //         level: 100,
+        //         chargeAttackSpeed: 0,
+        //         chargeAttackSpeedPercent: 0,
+        //         healthRegen: 0,
+        //         shieldHp: 0,
+        //         shieldMaxHp: 0,
+        //         extraDamageTakenPercent: 0,
+        //         area: 0,
+        //         amount: 0,
+        //         cooldownReduction: 0
+        //     },
+        //     poolType: "Berserker Boss",
+        //     controllerKey: "BerserkerBoss",
+        //     bounds: {
+        //         type: "",
+        //         width: 46,
+        //         height: 42
+        //     }
+        // })
 
-        let playerSpawnPoint = this.getDungeonManager().getPlayerSpawnPoint();
-        let spawnX = 100;
-        let spawnY = 100;
-        if(playerSpawnPoint){
-            spawnX = playerSpawnPoint.x
-            spawnY = playerSpawnPoint.y
-        }
+        // let playerSpawnPoint = this.getDungeonManager().getPlayerSpawnPoint();
+        // let spawnX = 100;
+        // let spawnY = 100;
+        // if(playerSpawnPoint){
+        //     spawnX = playerSpawnPoint.x
+        //     spawnY = playerSpawnPoint.y
+        // }
 
-        this.addGameObject(monster.getId(), monster, monster.getBody());
-        Matter.Body.setPosition(monster.getBody(), {x: spawnX, y: spawnY});
+        // this.addGameObject(monster.getId(), monster, monster.getBody());
+        // Matter.Body.setPosition(monster.getBody(), {x: spawnX, y: spawnY});
         
     }
 

@@ -11,7 +11,7 @@ export default class MeleeProjectile extends Projectile {
 
     constructor(projectileConfig: IProjectileConfig, gameManager: GameManager) {
         super(projectileConfig, gameManager);
-        this.projectileController = new MeleeProjectileController({projectile: this});
+        this.projectileController = new MeleeProjectileController({projectile: this, ...projectileConfig.data});
         this.projectileType = "Melee";
     }
 

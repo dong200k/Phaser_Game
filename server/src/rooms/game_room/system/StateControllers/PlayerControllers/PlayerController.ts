@@ -11,6 +11,7 @@ import { getFinalAttackSpeed, getFinalChargeAttackSpeed } from "../../Formulas/f
 import ChargeAttackLogic from "../../EffectLogic/EffectLogics/common/ChargeAttackLogic";
 import ChargeState from "./CommonStates/ChargeState";
 import Roll from "./CommonStates/Roll";
+import Stat from "../../../schemas/gameobjs/Stat";
 
 
 export interface PlayerControllerData {
@@ -34,6 +35,8 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     public callStartAttackAnyways: boolean = false
 
     private currentlyCharging: boolean = false
+    private timeSoFar: number = 0
+    private healthRegenTime: number = 1
 
     protected create(data: PlayerControllerData): void {
         this.player = data.player;
@@ -89,6 +92,15 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         if(this.player.active && this.player.stat.hp <= 0 && 
             currentState !== null && currentState.getStateName() !== "Dead") {
             this.changeState("Dead");
+        }
+
+        // Health regen
+        if(currentState?.getStateName() !== "Dead"){
+            this.timeSoFar += deltaT
+            if(this.timeSoFar >= this.healthRegenTime){
+                this.timeSoFar = 0
+                this.player.stat.add(new Stat({hp: this.player.stat.healthRegen}))
+            }
         }
     }
 
@@ -170,5 +182,23 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         if(this.stateName !== "Dead" && this.stateName !== "Special" && this.stateName !== "Roll"){
             this.changeState("Roll")
         }
+    }
+
+    /**
+     * 
+     * @param speedBoostPercent Number to add to roll state's speedBoostScale
+     * @param maxDistancePercent Number to add to roll state's maxDistanceScale
+     */
+    public upgradeRoll(speedBoostPercent: number, maxDistancePercent: number){
+        this.rollState.addToMaxDistanceScale(maxDistancePercent)
+        this.rollState.addToSpeedBoostScale(speedBoostPercent)
+    }
+
+    public getChargeState(){
+        return this.chargeState
+    }
+
+    public getRollState(){
+        return this.rollState
     }
 }

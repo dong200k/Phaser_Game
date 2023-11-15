@@ -84,4 +84,12 @@ export default class MathUtil {
         if(distance === 0) return {x: 0, y: 0};
         return {x: vector2.x / distance, y: vector2.y / distance};
     }
+
+    /**
+     * Takes in a velocity and returns the absolute speed of the velocity
+     * @param velocity 
+     */
+    public static getSpeedFromVelocity({x, y}: {x: number, y: number}){
+        return Math.sqrt(x*x + y*y)
+    }
 }
