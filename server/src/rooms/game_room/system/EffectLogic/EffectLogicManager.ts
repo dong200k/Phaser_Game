@@ -47,6 +47,8 @@ import { Amount } from "./EffectLogics/artifact/Amount";
 import { beets } from "./EffectLogics/artifact/Beets";
 import { FrostWalker } from "./EffectLogics/artifact/FrostWalker/FrostWalker";
 import { FrostWalkerUpgrade } from "./EffectLogics/artifact/FrostWalker/FrostWalkerUpgrade";
+import { RuneGuard } from "./EffectLogics/artifact/RuneGuard/RuneGuard";
+import { RuneGuardUpgrade } from "./EffectLogics/artifact/RuneGuard/RuneGuardUpgrade";
 
 export default class EffectLogicManager{
 
@@ -160,6 +162,12 @@ export default class EffectLogicManager{
         this.addEffectLogic(FrostWalkerUpgrade, {effectLogicId: "FrostWalker-Upgrade-duration-25", duration: 0.25})
         this.addEffectLogic(FrostWalkerUpgrade, {effectLogicId: "FrostWalker-Upgrade-duration-50", duration: 0.5})
 
+        this.addEffectLogic(RuneGuard)
+        this.addEffectLogic(RuneGuardUpgrade, {effectLogicId: "RuneGuard-Upgrade-damage-10", damage: 0.1})
+        this.addEffectLogic(RuneGuardUpgrade, {effectLogicId: "RuneGuard-Upgrade-damage-15", damage: 0.15})
+        this.addEffectLogic(RuneGuardUpgrade, {effectLogicId: "RuneGuard-Upgrade-damage-25", damage: 0.25})
+        this.addEffectLogic(RuneGuardUpgrade, {effectLogicId: "RuneGuard-Upgrade-amount-1", amount: 1})
+        this.addEffectLogic(RuneGuardUpgrade, {effectLogicId: "RuneGuard-Upgrade-cooldown-5", cooldownReduction: 0.5})
     }
 
     private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){

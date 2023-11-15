@@ -1,0 +1,67 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 1, "y": 1, "w": 110, "h": 8 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 5, "y": 13, "w": 108, "h": 6 },
+    "sourceSize": { "w": 204, "h": 32 },
+    "duration": 100
+   },
+   "1": {
+    "frame": { "x": 112, "y": 1, "w": 180, "h": 14 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 4, "y": 9, "w": 178, "h": 12 },
+    "sourceSize": { "w": 204, "h": 32 },
+    "duration": 100
+   },
+   "2": {
+    "frame": { "x": 293, "y": 1, "w": 205, "h": 24 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 2, "w": 203, "h": 22 },
+    "sourceSize": { "w": 204, "h": 32 },
+    "duration": 100
+   },
+   "3": {
+    "frame": { "x": 499, "y": 1, "w": 202, "h": 12 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 11, "w": 200, "h": 10 },
+    "sourceSize": { "w": 204, "h": 32 },
+    "duration": 100
+   },
+   "4": {
+    "frame": { "x": 702, "y": 1, "w": 204, "h": 10 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 11, "w": 202, "h": 8 },
+    "sourceSize": { "w": 204, "h": 32 },
+    "duration": 100
+   },
+   "5": {
+    "frame": { "x": 907, "y": 1, "w": 154, "h": 4 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 47, "y": 15, "w": 152, "h": 2 },
+    "sourceSize": { "w": 204, "h": 32 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.2.40-x64",
+  "image": "laser.png",
+  "format": "RGBA8888",
+  "size": { "w": 1061, "h": 25 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "play", "from": 0, "to": 5, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

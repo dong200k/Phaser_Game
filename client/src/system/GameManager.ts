@@ -26,6 +26,7 @@ import ClientManager from "./ClientManager";
 import Aura from "../gameobjs/Aura";
 import StatusIconManager from "./StatusIconManager";
 import CircleImage from "../UI/CircleImage";
+import FollowingMeleeProjectile from "../../../server/src/rooms/game_room/schemas/projectiles/specialprojectiles/FollowingMeleeProjectile";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -146,8 +147,9 @@ export default class GameManager {
         this.gameObjects.forEach(gameObject=>{
             if(gameObject.gameObjectState.type === "Projectile"){
                 if(gameObject.active && gameObject.gameObjectState.name === "FollowingMeleeProjectile" && this.player1 && gameObject.gameObjectState.ownerId === this.gameRoom.sessionId){
-                    gameObject.setX(this.player1.x)
-                    gameObject.setY(this.player1.y)
+                    let gameObjState: any = gameObject.gameObjectState
+                    gameObject.setX(gameObjState.owner.x + gameObjState.offsetX)
+                    gameObject.setY(gameObjState.owner.y + gameObjState.offsetY)
                 }
             }
         })

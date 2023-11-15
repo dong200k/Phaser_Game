@@ -57,6 +57,8 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("lightningrod", "audio/lightningrod.mp3")
         this.load.audio("qi_rotation", "audio/qi_rotation.mp3")
         this.load.audio("frost_walk", "audio/frost_walk.mp3")
+        this.load.audio("laser_pew", "audio/laser.mp3")
+
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");
@@ -84,6 +86,9 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("upgrade_aicon", "images/icons/upgrade_icon/upgrade_aicon.png", "images/icons/upgrade_icon/upgrade_aicon.json");
         this.load.aseprite("x_aicon", "images/icons/x_icon/x_aicon.png", "images/icons/x_icon/x_aicon.json");
         this.load.aseprite("frost_ground", "images/projectiles/frost.png", "images/projectiles/frost.json");
+        this.load.aseprite("crystal", "images/projectiles/crystal.png", "images/projectiles/crystal.json");
+        this.load.aseprite("laser", "images/projectiles/laser.png", "images/projectiles/laser.json");
+
     }
 
     /** Load the assets from firebase. */
@@ -141,6 +146,8 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("lightningrod", "sfx")
         soundManager.add("qi_rotation", "sfx")
         soundManager.add("frost_walk", "sfx")
+        soundManager.add("laser_pew", "sfx")
+
 
         soundManager.add("ultra_instinct", "bg")
         soundManager.add("ultra_instinct_boss", "bg")
