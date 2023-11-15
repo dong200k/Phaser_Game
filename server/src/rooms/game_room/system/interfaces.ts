@@ -191,6 +191,10 @@ export type IProjectileConfig = {
     animationKey?: string,
     /** Whether to repeat animation if undefined then default is true */
     repeatAnimation?: boolean,
+    /** ctor of Controller of the projectile if undefined default controller used will be the RangedProjectileController */
+    projectileControllerCtor?:  {
+        new (config?: any): StateMachine<any>;
+    } ,
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }

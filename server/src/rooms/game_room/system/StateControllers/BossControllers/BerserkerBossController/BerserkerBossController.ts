@@ -66,7 +66,7 @@ export default class BerserkerBossController extends MonsterController{
     private aggroTimeSoFar = 0
     private isAggroed = false
 
-    private difficultyMode: DifficultyMode = "Hard"
+    private difficultyMode: DifficultyMode = "Medium"
 
     protected create(data: BossControllerData): void {
         this.boss = data.monster
@@ -246,6 +246,14 @@ export default class BerserkerBossController extends MonsterController{
         let difficultyData
         switch(this.difficultyMode){
             case "Easy":
+                difficultyData = difficultyMap.Easy
+                break;
+            case "Medium":
+                difficultyData = difficultyMap.Medium
+                break;
+            case "Hard":
+                difficultyData = difficultyMap.Hard
+                break;
             default:
                 difficultyData = difficultyMap.Easy
         }

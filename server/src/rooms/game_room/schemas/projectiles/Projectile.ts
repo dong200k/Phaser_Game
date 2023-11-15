@@ -126,7 +126,13 @@ export default class Projectile extends GameObject implements Cloneable {
         
         this.width = projectileConfig.width ?? Math.abs(this.body.bounds.max.x - this.body.bounds.min.x);
         this.height = projectileConfig.height ?? Math.abs(this.body.bounds.max.y - this.body.bounds.min.y);
-        this.projectileController = new RangedProjectileController({projectile: this});
+
+        if(projectileConfig.projectileControllerCtor){
+            this.projectileController = new projectileConfig.projectileControllerCtor({...projectileConfig.data.config, projectile: this})
+        }
+        else{
+            this.projectileController = new RangedProjectileController({projectile: this});
+        }
 
         this.piercing = projectileConfig.piercing? projectileConfig.piercing : 1
         this.knockback = projectileConfig.knockback;
@@ -134,6 +140,7 @@ export default class Projectile extends GameObject implements Cloneable {
 
         let velocity = {x: this.initialVelocity.x, y:this.initialVelocity.y}
         Matter.Body.setVelocity(this.getBody(), velocity);
+        Matter.Body.setAngle(this.getBody(), 40)
 
         if(projectileConfig.visible === false) this.setVisible(false)
         this.dontDespawnOnObstacleCollision = projectileConfig.dontDespawnOnObstacleCollision

@@ -26,8 +26,8 @@ export class LightningRod extends EffectLogic{
 
     private width = 50
     private height = 100
-    private baseDamageMult = 5
-    private timeBetweenLightning = 150
+    private baseDamageMult = 5  
+    private timeBetweenLightning = 175
     private lightningCount = 1
     private spawnArea = 25
 
