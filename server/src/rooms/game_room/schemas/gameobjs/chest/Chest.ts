@@ -56,7 +56,7 @@ export default class Chest extends GameObject {
         console.log(`Chest has been opened!! by ${player.name}`);
         this.chestOpened = true;
         // play chest opened animation
-        this.animation.playAnimation("opened", {loop: false});
+        this.animation.playAnimation("opening", {loop: false});
         this.disableCollisions();
     }
 

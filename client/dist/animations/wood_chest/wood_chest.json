@@ -153,7 +153,7 @@
   "scale": "1",
   "frameTags": [
    { "name": "closed", "from": 0, "to": 0, "direction": "forward" },
-   { "name": "open", "from": 1, "to": 16, "direction": "forward" },
+   { "name": "opening", "from": 1, "to": 16, "direction": "forward" },
    { "name": "opened", "from": 17, "to": 17, "direction": "forward" }
   ],
   "layers": [
