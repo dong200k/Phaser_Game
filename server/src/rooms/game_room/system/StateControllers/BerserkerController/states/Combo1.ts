@@ -115,7 +115,7 @@ export default class Combo1 extends StateNode {
             initialVelocity: {x: 0, y: 0},
             collisionCategory: "PLAYER_PROJECTILE",
             poolType: "Berserker Combo 1",
-            activeTime: 500,
+            activeTime: Math.max(this.animationDuraction * 1000, 300),
             attackMultiplier: this.attackMultiplier,
             magicMultiplier: 0,
             originEntityId: this.player.getId(),

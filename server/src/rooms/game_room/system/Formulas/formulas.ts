@@ -3,7 +3,8 @@ import Stat from "../../schemas/gameobjs/Stat";
 export const BASE_SPEED = 1
 export const ARMOR_PEN_CAP = 1
 export const MAGIC_PEN_CAP = 1
-export const ATTACK_SPEED_CAP = 5
+// export const ATTACK_SPEED_CAP = 5
+export const MINIMUM_MONSTER_ATTACK_COOLDOWN = 0.1
 
 /**
  * 
@@ -72,32 +73,25 @@ export const getFinalLifeSteal = function(trueDamage: number, lifeSteal: number,
 }
 
 /**
- * Note: 
- * Assuming attackSpeed = 1.
- * attackSpeedPercent = 0 same cooldown.
- * attackSpeedPercent = 1 halves cooldown.
- * attackSpeedPercent = 2 makes cooldown 1/3.
- * attackSpeedPercent = -1 doubles cooldown.
- * attackSpeedPercent = -2 triples cooldown.
- * ATTACK_SPEED_CAP affects maximum final attack speed. At the moment it is = 5 which means maximum speedup is 5x reduced cooldown.
+ * Returns the cooldown of a single attack taking into account the attack speed stats.
+ * 
+ * Note:
+ * Currently used by monsters only.
+ * Every 1 attack speed is equivalent to 1 attack per second. Lowest cooldown is 0.1s, which is 10 attacks per second.
+ * If attack speed is zero then a cooldown of 1s is used by default.
  * @param stat
  * @param BASE_ATTACK_COOLDOWN cooldown
- * @returns actual cooldown after accounting attack speed
+ * @returns actual cooldown in seconds after accounting attack speed.
  */
-export const getFinalAttackCooldown = function({attackSpeed, attackSpeedPercent}: Stat, BASE_ATTACK_COOLDOWN: number){
-    let totalAttackSpeed: number
-    if(attackSpeedPercent < 0) {
-        totalAttackSpeed = attackSpeed / Math.abs(-1 + attackSpeedPercent)
-    }else{
-        totalAttackSpeed = attackSpeed * (1 + attackSpeedPercent)
-    }
+export const getFinalAttackCooldown = function({attackSpeed, attackSpeedPercent}: Stat){
+    let totalAttackSpeed = attackSpeed * (1 + attackSpeedPercent)
+    let cooldown: number
 
-    if(totalAttackSpeed === 0 || attackSpeed < 0) return BASE_ATTACK_COOLDOWN
+    if(totalAttackSpeed > 0) cooldown = 1/totalAttackSpeed
+    else cooldown = 1
 
-    const speedFactor = 1 / Math.min(totalAttackSpeed, ATTACK_SPEED_CAP)
-    return BASE_ATTACK_COOLDOWN * speedFactor;
+    return Math.max(cooldown, MINIMUM_MONSTER_ATTACK_COOLDOWN)
 }
-
 
 /**
  * 
@@ -191,4 +185,19 @@ export const getTimeAfterAttackSpeed = (stat: Stat, deltaT: number)=>{
     let attackSpeed = getFinalAttackSpeed(stat)
 
     return attackSpeed
+}
+
+/**
+ * This will return an estimated dps for 1 attack type.
+ * 
+ * Takes in a stat for the attacker, cooldown in seconds of the attack, and a multiplier for the attack
+ * @param stat 
+ * @param cooldown 
+ * @param multiplier 
+ * @returns The estimated damage/second
+ * 
+ */
+export const getEstimatedDps = ({attack, attackPercent, damagePercent, critRate, critDamage}: Stat, cooldown: number = 1, multiplier: number = 1) => {
+    let damage = attack * (1 + attackPercent) * damagePercent * (1 + critRate * critDamage) * multiplier
+    return damage / cooldown
 }
