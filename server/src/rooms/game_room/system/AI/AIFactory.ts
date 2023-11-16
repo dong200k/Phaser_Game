@@ -1,6 +1,7 @@
 import Monster from "../../schemas/gameobjs/monsters/Monster";
 import BerserkerBossController from "../StateControllers/BossControllers/BerserkerBossController/BerserkerBossController";
 import PlayerManager from "../StateManagers/PlayerManager";
+import RangedMonsterController from "./MonsterAI/rangemonster/RangedMonsterController";
 import MonsterController from "./MonsterAI/simplemonster/MonsterController";
 
 export default class AIFactory {
@@ -25,10 +26,13 @@ export default class AIFactory {
      * @returns A MonsterController.
      */
     public static createAIFromKey(monster: Monster, key: string): MonsterController {
+        console.log(`ai key: ${key}`)
+
         let mc: MonsterController;
         switch(key) {
             case "Default": mc = new MonsterController({monster}); break;
             case "BerserkerBoss": mc = new BerserkerBossController({monster}); break;
+            case "ArcaneArcher": mc = new RangedMonsterController({monster}); break;
             default: mc = new MonsterController({monster});
         }
         return mc;

@@ -23,7 +23,7 @@ export class FrostWalker extends EffectLogic{
 
     private AMOUNT_CAP = 3
     private sideLength = 50
-    private baseDamageMult = 1
+    private baseDamageMult = 0.5
     private amount = 1
     private spawnArea = 0
     private timeBetweenSpawns = 200
