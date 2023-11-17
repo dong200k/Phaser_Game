@@ -15,6 +15,8 @@ const ITEM_COUNT_MAP = {
     "gold": 3,
 }
 
+const CHEST_DESPAWN_TIME_MS = 3000;
+
 const REGISTERED_ARTIFACTS = [
     "upgrade-019ad207-0882-4d23-a90b-a6d28705b246", // Glass Cannon
     "upgrade-072fe1da-fc6f-4aa4-8b8c-72b5da52eb32", // Amplifier
@@ -60,6 +62,8 @@ export default class ChestManager {
             chest = this.chestPool.getInstance(poolType);
             chest.setConfig(config);
             chest.reset();
+            chest.active = true;
+            chest.visible = true;
         }else{
             // no instance so create new instance.
             chest = new Chest(this.gameManager, config);
@@ -120,6 +124,9 @@ export default class ChestManager {
 
             // TODO: Do something if itemCount > 0.
         }
+        setTimeout(() => {
+            chest.setActive(false);
+        }, CHEST_DESPAWN_TIME_MS);
     }
 
 
