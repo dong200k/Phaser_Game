@@ -117,7 +117,7 @@ export class Fireball extends EffectLogic{
                 activeTime: 1000,
                 animationKey: "explode",
                 piercing: 20,
-                // repeatAnimation: true,
+                repeatAnimation: false,
                 spawnSound: "explosion_1",
                 dontDespawnOnObstacleCollision: true,
                 classType: "Projectile",

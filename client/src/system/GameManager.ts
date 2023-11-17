@@ -481,7 +481,7 @@ export default class GameManager {
         SoundManager.getManager().play(projectile.spawnSound, {detune: Math.floor(Math.random() * 300 ) - 150});
         // Play projectile animation.
         if(projectile.projectileType === "Melee") {
-            proj.play("play");
+            proj.play({key: projectile.animationKey});
         } else {
             if(projectile.repeatAnimation){
                 proj.play({key: projectile.animationKey, repeat: -1});
@@ -622,6 +622,7 @@ export default class GameManager {
         if(gameObject instanceof Projectile) {
             if(!gameObject.serverActive && gameObjectState.active) {
                 let projectileState = gameObjectState as ProjectileState;
+                gameObject.play(projectileState.animationKey);
                 SoundManager.getManager().play(projectileState.spawnSound, {detune: Math.floor(Math.random() * 300 ) - 150});
             }
         }
