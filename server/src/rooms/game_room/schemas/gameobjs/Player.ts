@@ -8,6 +8,7 @@ import GameManager from '../../system/GameManager';
 import PlayerController from '../../system/StateControllers/PlayerControllers/PlayerController';
 import Ability from './Ability';
 import ctors, { IRoleControllerClasses } from '../../system/StateControllers/RoleControllerClasses';
+import Artifact from '../Trees/Artifact';
 
 interface IUpgradeItemConfig {
     name: string;
@@ -75,7 +76,7 @@ export default class Player extends Entity {
     @type(Cooldown) specialCooldown;
     @type(WeaponUpgradeTree) weaponUpgradeTree;
     @type(StatTree) skillTree;
-    @type([WeaponUpgradeTree]) artifacts = new ArraySchema<WeaponUpgradeTree>();
+    @type([Artifact]) artifacts = new ArraySchema<Artifact>();
     @type([Ability]) abilities = new ArraySchema<Ability>()
     @type(Ability) currentAbility?: Ability
 

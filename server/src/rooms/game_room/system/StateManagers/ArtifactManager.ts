@@ -1,9 +1,9 @@
 import { ObjectPool } from '../../../../util/PoolUtil';
+import Artifact from '../../schemas/Trees/Artifact';
 import SkillData from '../../schemas/Trees/Node/Data/SkillData';
 import WeaponData from '../../schemas/Trees/Node/Data/WeaponData';
 import Node from '../../schemas/Trees/Node/Node';
 import StatTree from '../../schemas/Trees/StatTree';
-import WeaponUpgradeTree from '../../schemas/Trees/WeaponUpgradeTree';
 import Player from '../../schemas/gameobjs/Player';
 import GameManager from '../GameManager';
 import TreeManager from './TreeManager';
@@ -15,20 +15,20 @@ export default class ArtifactManager{
     /** Empty Artifact trees that get initialized when game starts*/
     static INITIAL_ARTIFACT_TREE_COUNT = 20
     /** Pool of artifacts that don't have a root */
-    private artifactTreePool: ObjectPool<WeaponUpgradeTree>
+    private artifactTreePool: ObjectPool<Artifact>
 
     private gameManager: GameManager
 
     constructor(gameManager: GameManager){
         this.gameManager = gameManager
-        this.artifactTreePool = new ObjectPool(new WeaponUpgradeTree())
+        this.artifactTreePool = new ObjectPool(new Artifact())
         for(let i=1; i<=ArtifactManager.INITIAL_ARTIFACT_TREE_COUNT; i++){
             this.addArtifactToPool()
         }
     }
 
     private addArtifactToPool(){
-        let tree = new WeaponUpgradeTree()
+        let tree = new Artifact()
         tree.setGameManager(this.gameManager)
         this.artifactTreePool.returnInstance(tree)
     }
@@ -57,6 +57,15 @@ export default class ArtifactManager{
         let artifactTree = this.artifactTreePool.getInstance()
         artifactTree.root = root
 
+        // Set the artifacts level
+        let curr = root;
+        while(curr) {
+            if(curr.data.status === "selected") {
+                artifactTree.artifactLevel++;
+            }
+            curr = curr.children[0];
+        }
+
         // Apply artifacts effects to player
         let totalStat = TreeManager.addTreeStatsToPlayer(playerState, artifactTree)
         TreeManager.addTreeUpgradeEffectsToPlayer(playerState, artifactTree)
@@ -79,23 +88,23 @@ export default class ArtifactManager{
     }
 
     /**
-     * Takes in a player and artifactTree and removes the artifactTree from the player, resets it, and returns it to the artifactPool
+     * Takes in a player and artifact and removes the artifact from the player, resets it, and returns it to the artifactPool
      * @param playerState player who wants to unequip an artifact
-     * @param artifactTree artifact tree to unequip
+     * @param artifact artifact to unequip
      */
-    public unEquipArtifact(playerState: Player, artifactTree: WeaponUpgradeTree){
-        console.log(`Unequiping artifact: ${artifactTree.root?.data.name}`)
+    public unEquipArtifact(playerState: Player, artifact: Artifact){
+        console.log(`Unequiping artifact: ${artifact.root?.data.name}`)
         // Remove stat effects from player
-        TreeManager.removeTreeStats(playerState, artifactTree)
+        TreeManager.removeTreeStats(playerState, artifact)
         
         // Remove all upgrade effects that are active from player
-        TreeManager.removeTreeUpgradeEffects(playerState, artifactTree)
+        TreeManager.removeTreeUpgradeEffects(playerState, artifact)
         
-        // Remove artifactTree from player
-        playerState.artifacts = playerState.artifacts.filter(tree=> tree !== artifactTree)
+        // Remove artifact from player
+        playerState.artifacts = playerState.artifacts.filter(tree=> tree !== artifact)
 
         // Reset the artifact tree and send it to the object pool for reuse
-        this.artifactTreePool.returnInstance(artifactTree.reset())
+        this.artifactTreePool.returnInstance(artifact.reset())
     }
     
     /**
@@ -112,11 +121,62 @@ export default class ArtifactManager{
     }
 
     /**
+     * Upgrades the given artifact.
+     * @param artifact The artifact to upgrade.
+     * @returns True if the upgrade was successful. False otherwise.
+     */
+    static upgradeArtifact(artifact: Artifact) {
+        if(!this.hasNextUpgrade(artifact))
+            return false;
+        // If the artifact is equiped already.
+        if(artifact.owner) {
+            let availableUpgrades = ArtifactManager.getAvailableUpgrades(artifact);
+            ArtifactManager.selectUpgrade(artifact.owner, artifact, availableUpgrades, 0);
+            artifact.artifactLevel++;
+        } else {
+            ArtifactManager.selectNextUpgrade(artifact);
+        }
+        return true;
+    }
+
+    /**
+     * Helper method for upgradeArtifact. Upgrades the artifact without 
+     * applying its effects to its owner (player).
+     * @param artifact The artifact.
+     */
+    private static selectNextUpgrade(artifact: Artifact) {
+        let node = artifact.root;
+        while(node) {
+            if(node.data.status === "none") {
+                node.data.status = "selected";
+                artifact.artifactLevel++;
+            }
+            node = node.children[0];
+        }
+    }
+
+    /**
+     * Checks if an artifact tree has anymore upgrades (if there are any nodes with status 'none'). 
+     * @param artifact The artifact tree.
+     * @returns True if there are more upgrades. False otherwise.
+     */
+    static hasNextUpgrade(artifact: Artifact) {
+        let node = artifact.root;
+        let hasNextUpgrade = false;
+        while(node) {
+            if(node.data.status === "none")
+                hasNextUpgrade = true;
+            node = node.children[0];
+        }
+        return hasNextUpgrade;
+    } 
+
+    /**
      * Takes in a WeaponUpgradeTree (artifact) and returns the list of available upgrades in the tree.
      * @param tree to get upgrades from
      * @returns a list of available upgrades
      */
-    static getAvailableUpgrades <T extends WeaponUpgradeTree, U extends Exclude<T["root"], undefined>>
+    static getAvailableUpgrades <T extends Artifact, U extends Exclude<T["root"], undefined>>
     (artifact: T): U[]{
         return TreeManager.getAvailableUpgrades(artifact)
     }
@@ -129,7 +189,7 @@ export default class ArtifactManager{
      * @param upgrades list of available upgrades to choose from.
      * @param choice choice of upgrade, zero indexed non negative integer
      */
-    static selectUpgrade<T extends WeaponUpgradeTree|StatTree<SkillData>, U extends Exclude<T["root"], undefined>>
+    static selectUpgrade<T extends Artifact|StatTree<SkillData>, U extends Exclude<T["root"], undefined>>
     (playerState: Player, artifact: T, upgrades: U[], choice: number){
         return TreeManager.selectUpgrade(playerState, artifact, upgrades, choice)
     }

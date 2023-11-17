@@ -58,6 +58,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("qi_rotation", "audio/qi_rotation.mp3")
         this.load.audio("frost_walk", "audio/frost_walk.mp3")
         this.load.audio("laser_pew", "audio/laser.mp3")
+        this.load.audio("wood_chest_open_sfx", "audio/wood_chest_open_sfx.mp3");
 
 
         // ------- Loading Images ------- //
@@ -148,6 +149,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("qi_rotation", "sfx")
         soundManager.add("frost_walk", "sfx")
         soundManager.add("laser_pew", "sfx")
+        soundManager.add("wood_chest_open_sfx", "sfx");
 
 
         soundManager.add("ultra_instinct", "bg")

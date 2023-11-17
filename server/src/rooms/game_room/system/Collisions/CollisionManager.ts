@@ -63,7 +63,7 @@ export default class CollisionManager{
     ];
 
     constructor(gameManager: GameManager){
-        this.gameManager = gameManager
+        this.gameManager = gameManager;
     }
 
     public resolveCollisions(bodyA: Matter.Body, bodyB: Matter.Body){
@@ -244,6 +244,6 @@ export default class CollisionManager{
     }
 
     public resolveChestCollision(player: Player, chest: Chest, bodyA: Matter.Body, bodyB: Matter.Body) {
-        chest.openChest(player);
+        player.gameManager.getChestManager().handleOpenChest(player, chest);
     }
 }

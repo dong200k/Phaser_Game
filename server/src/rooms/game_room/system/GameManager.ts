@@ -295,6 +295,10 @@ export default class GameManager {
         return this.auraManager;
     }
 
+    public getChestManager() {
+        return this.chestManager;
+    }
+
     /** Gets the EventEmitter for this GameManager. Used to send events throughout this game. */
     public getEventEmitter() {
         return this.eventEmitter;

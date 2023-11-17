@@ -12,7 +12,7 @@ export default class WeaponUpgradeTree extends StatTree<WeaponData>{
     /** List of effects that are selected (not all of these are active, for active effects look on the entity who is equiping this tree) */
     @type([Effect]) effects = new ArraySchema<Effect>();
 
-    owner!: Player
+    owner?: Player
 
     /** Amount of enemies the weapon's projectiles can hit before being inactive */
     public piercing: number = 1
@@ -37,6 +37,7 @@ export default class WeaponUpgradeTree extends StatTree<WeaponData>{
     reset(){
         super.reset()
         this.weaponId = undefined
+        this.owner = undefined;
         while(this.effects.length > 0) this.effects.pop()
         return this
     }

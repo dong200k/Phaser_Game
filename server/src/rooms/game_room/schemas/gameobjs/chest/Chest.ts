@@ -11,7 +11,7 @@ export default class Chest extends GameObject {
 
     items: string[] = [];
     chestOpened: boolean = false;
-    @type("string") rarity: string;
+    @type("string") rarity: "wood" | "iron" | "gold";
 
     constructor(gameManager: GameManager, chestConfig: IChestConfig) {
         super(gameManager, chestConfig.x ?? 0, chestConfig.y ?? 0);
@@ -46,18 +46,18 @@ export default class Chest extends GameObject {
     }
 
     /**
-     * Opens the chest, passing in the player that opened the chest.
-     * @param player The player that opened the chest.
+     * Opens the chest, playing an animation and sound effect.
+     * @returns True if the chest was opened. False otherwise (chest could already be opened).
      */
-    public openChest(player: Player) {
+    public openChest(): boolean {
         if(this.chestOpened) 
-            return;
-        
-        console.log(`Chest has been opened!! by ${player.name}`);
+            return false;
         this.chestOpened = true;
         // play chest opened animation
         this.animation.playAnimation("opening", {loop: false});
+        this.sound.playSoundEffect("wood_chest_open_sfx");
         this.disableCollisions();
+        return true;
     }
 
     public reset() {
