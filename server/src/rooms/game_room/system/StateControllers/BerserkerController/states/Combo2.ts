@@ -22,6 +22,7 @@ export default class Combo2 extends Combo1 {
         let offsetY = -5
         if(this.mouseX - this.player.getBody().position.x < 0) offsetX *= -1
 
+        console.log(`berserker combo 2 player, ${this.player}`)
         let projectileConfig: IProjectileConfig = {
             sprite: "invisible",
             stat: this.player.stat,
@@ -30,7 +31,7 @@ export default class Combo2 extends Combo1 {
             initialVelocity: {x: 0, y: 0},
             collisionCategory: "PLAYER_PROJECTILE",
             poolType: "Berserker Combo 2",
-            activeTime: 1000,
+            activeTime: Math.max(this.animationDuraction * 1000, 300),
             attackMultiplier: this.attackMultiplier,
             magicMultiplier: 0,
             originEntityId: this.player.getId(),
@@ -39,6 +40,7 @@ export default class Combo2 extends Combo1 {
             height: 55,
             visible: false,
             classType: "FollowingMeleeProjectile",
+            piercing: -1,
             data: {
                 owner: this.player,
                 offsetX,

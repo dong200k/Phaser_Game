@@ -7,7 +7,7 @@ import Move from "./CommonStates/Move";
 import Special from "./CommonStates/Special";
 import ChargeAttack from "./CommonStates/ChargeAttack";
 import TriggerUpgradeEffect from "../../../schemas/effects/trigger/TriggerUpgradeEffect";
-import { getFinalAttackSpeed, getFinalChargeAttackSpeed } from "../../Formulas/formulas";
+import { getEstimatedDps, getFinalAttackSpeed, getFinalChargeAttackSpeed } from "../../Formulas/formulas";
 import ChargeAttackLogic from "../../EffectLogic/EffectLogics/common/ChargeAttackLogic";
 import ChargeState from "./CommonStates/ChargeState";
 import Roll from "./CommonStates/Roll";
@@ -87,6 +87,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     }
 
     public postUpdate(deltaT: number): void {
+        // console.log(`Player attack power ${getEstimatedDps(this.player.stat)}`)
         let currentState = this.getState();
         // If the player has 0 hp, change to the death state.
         if(this.player.active && this.player.stat.hp <= 0 && 

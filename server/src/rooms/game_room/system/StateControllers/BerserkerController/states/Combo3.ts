@@ -25,7 +25,7 @@ export default class Combo3 extends Combo1 {
             initialVelocity: {x: 0, y: 0},
             collisionCategory: "PLAYER_PROJECTILE",
             poolType: "Berserker Combo",
-            activeTime: 1000,
+            activeTime: Math.max(this.animationDuraction * 800, 300),
             attackMultiplier: 10,
             magicMultiplier: 0,
             originEntityId: this.player.getId(),

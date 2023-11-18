@@ -90,6 +90,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("crystal", "images/projectiles/crystal.png", "images/projectiles/crystal.json");
         this.load.aseprite("laser", "images/projectiles/laser.png", "images/projectiles/laser.json");
         this.load.aseprite("wood_chest", "animations/wood_chest/wood_chest.png", "animations/wood_chest/wood_chest.json");
+        this.load.aseprite("purple_arrow", "images/projectiles/purple_arrow.png", "images/projectiles/purple_arrow.json");
 
     }
 

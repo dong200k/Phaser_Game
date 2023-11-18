@@ -13,13 +13,13 @@ export interface MonsterControllerData {
 /** The monster controller contains ai that allows a monster to follow a player, and attack a player. */
 export default class MonsterController extends StateMachine<MonsterControllerData> {
 
-    private playerManager!: PlayerManager;
-    private monster!: Monster;
+    protected playerManager!: PlayerManager;
+    protected monster!: Monster;
 
     protected create(data: MonsterControllerData): void {
         this.playerManager = data.monster.gameManager.getPlayerManager();
         this.monster = data.monster;
-
+        
         //Idle state
         let idle = new Idle("Idle", this);
         this.addState(idle);
