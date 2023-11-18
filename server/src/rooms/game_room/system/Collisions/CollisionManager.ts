@@ -244,6 +244,7 @@ export default class CollisionManager{
     }
 
     public resolveChestCollision(player: Player, chest: Chest, bodyA: Matter.Body, bodyB: Matter.Body) {
+        chest.disableCollisions();
         player.gameManager.getChestManager().handleOpenChest(player, chest);
     }
 }

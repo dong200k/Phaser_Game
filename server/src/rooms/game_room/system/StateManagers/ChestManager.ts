@@ -21,7 +21,7 @@ const CHEST_DESPAWN_TIME_MS = 3000;
 const REGISTERED_ARTIFACTS = [
     "upgrade-019ad207-0882-4d23-a90b-a6d28705b246", // Glass Cannon
     "upgrade-072fe1da-fc6f-4aa4-8b8c-72b5da52eb32", // Amplifier
-    "upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50", // Lightning Rod
+    // "upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50", // Lightning Rod
 ]
 
 export default class ChestManager {
@@ -33,12 +33,12 @@ export default class ChestManager {
         this.gameManager = gameManager;
         this.chestPool = new ChestPool();
         
-        // setTimeout(() => {
+        // setInterval(() => {
         //     this.spawnChest({
         //         x: 500, y: 500,
         //         rarity: "wood",
         //     })
-        // }, 3000);
+        // }, 2000);
     }
 
     /**
@@ -133,7 +133,5 @@ export default class ChestManager {
             chest.setActive(false);
         }, CHEST_DESPAWN_TIME_MS);
     }
-
-
 
 }
