@@ -1,5 +1,6 @@
-const BASEURL = "http://localhost:3002";
+import { BASEURL_API_SERVER } from "../constants";
 
+const BASEURL = BASEURL_API_SERVER;
 
 export async function adminAssignRole(user, data) {
     let IdToken = await user.getIdToken();

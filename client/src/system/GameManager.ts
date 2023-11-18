@@ -27,6 +27,8 @@ import Aura from "../gameobjs/Aura";
 import StatusIconManager from "./StatusIconManager";
 import CircleImage from "../UI/CircleImage";
 import FollowingMeleeProjectile from "../../../server/src/rooms/game_room/schemas/projectiles/specialprojectiles/FollowingMeleeProjectile";
+import Chest from "../gameobjs/Chest";
+import Artifact from "../../../server/src/rooms/game_room/schemas/Trees/Artifact";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -388,6 +390,9 @@ export default class GameManager {
             case 'Aura':
                 newGameObject = this.addAura(gameObj, key);
                 break;
+            case 'Chest': 
+                newGameObject = this.addChest(gameObj, key);
+                break;
         }
         if(newGameObject) {
             // newGameObject.setServerState(gameObj);
@@ -536,6 +541,17 @@ export default class GameManager {
         return newAura;
     }
 
+    private addChest(chestState: any, key: string): Chest {
+        let newChest = new Chest(this.scene, chestState);
+        this.scene.add.existing(newChest);
+        this.addListenersToGameObject(newChest, chestState);
+        newChest.play("closed");
+
+        // console.log("A new chest has been added!");
+
+        return newChest;
+    }
+
     /** Adds a listener to an entity to respond to server updates on that entity. */
     private addListenersToGameObject(gameObject: GameObject, gameObjectState: GameObjectState) {
         /** ----- GameObject Listeners ----- */
@@ -568,6 +584,8 @@ export default class GameManager {
                 // playerState.specialCooldown.onChange = (changes: any) => this.playerSpecialCooldownOnChange(gameObject, playerState, changes);
                 playerState.playerController.onChange = (changes: any) => this.playerControllerOnChange(gameObject, playerState, changes);
                 playerState.upgradeInfo.onChange = (changes: any) => this.playerUpgradeInfoOnChange(gameObject, playerState, changes);
+                playerState.artifacts.onAdd = (artifact: Artifact) => this.playerArtifactsOnAdd(artifact, gameObject, playerState);
+                playerState.artifacts.onRemove = (artifact: Artifact) => this.playerArtifactsOnRemove(artifact, gameObject, playerState);
             }
 
             if(gameObject instanceof Monster) {
@@ -861,5 +879,33 @@ export default class GameManager {
                 })
             }
         }
+    }
+
+    private playerArtifactsOnAdd(artifact: Artifact, player: Player, playerState: PlayerState) { 
+        if(this.player1 === player) {
+            this.updateArtifactDisplay(playerState);
+        }
+        artifact.onChange = () => this.updateArtifactDisplay(playerState);
+    }
+
+    private playerArtifactsOnRemove(artifact: Artifact, player: Player, playerState: PlayerState) { 
+        if(this.player1 === player) {
+            this.updateArtifactDisplay(playerState);
+        }
+    }
+
+    private updateArtifactDisplay(playerState: PlayerState) {
+        let items: any[] = [];
+        playerState.artifacts.forEach((artifact) => {
+            items.push({
+                level: artifact.artifactLevel,
+                imageKey: "",
+                name: artifact.name,
+                description: artifact.description,
+            });
+        });
+        EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_ARTIFACT_DISPLAY, {
+            items,
+        })
     }
 }

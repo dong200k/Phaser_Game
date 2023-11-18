@@ -1,5 +1,6 @@
+import { BASEURL_API_SERVER } from "../constants";
 
-const BASEURL = "http://localhost:3002";
+const BASEURL = BASEURL_API_SERVER;
 
 export async function createMonster(user, data) {
     let IdToken = await user.getIdToken();

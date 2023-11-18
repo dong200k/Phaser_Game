@@ -133,7 +133,7 @@ export default class DungeonManager {
         // Load the tiled json file ... 
         FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
             // ----- Fill in the dungeons information based on the json file ------
-            let newDungeon = new Dungeon(dungeonName);
+            let newDungeon = new Dungeon(this.gameManager, dungeonName);
 
             // Tilemap 
             let newTilemap = this.createTilemap(tiled, dungeonData);

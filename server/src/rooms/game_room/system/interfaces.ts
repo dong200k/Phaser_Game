@@ -228,6 +228,13 @@ export interface IAuraConfig {
     controller?: string;
 }
 
+// ------------ interface for Chest -------------- //
+export interface IChestConfig {
+    rarity: "wood" | "iron" | "gold";
+    x?: number;
+    y?: number;
+}
+
 // ------------ interfaces for Collision Manager -------------- //
 export type ICollisionRule = {
     typeA: CategoryType, typeB: CategoryType, resolve: (gameObjectA: any, gameObjectB: any, bodyA: Matter.Body, bodyB: Matter.Body)=> void

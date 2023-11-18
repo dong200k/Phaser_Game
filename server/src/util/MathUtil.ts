@@ -92,4 +92,15 @@ export default class MathUtil {
     public static getSpeedFromVelocity({x, y}: {x: number, y: number}){
         return Math.sqrt(x*x + y*y)
     }
+
+    /**
+     * Gets a random integer between the min and max (inclusive).
+     * @param min A min integer.
+     * @param max A max integer.
+     * @returns A integer between min and max.
+     */
+    public static getRandomIntegerBetween(min: number, max: number) {
+        let range = (max - min) + 1;
+        return Math.floor((Math.random() * range) + min);
+    }
 }
