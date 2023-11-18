@@ -18,10 +18,14 @@ const ITEM_COUNT_MAP = {
 
 const CHEST_DESPAWN_TIME_MS = 3000;
 
-const REGISTERED_ARTIFACTS = [
+const REGISTERED_ARTIFACTS: string[] = [
     "upgrade-019ad207-0882-4d23-a90b-a6d28705b246", // Glass Cannon
     "upgrade-072fe1da-fc6f-4aa4-8b8c-72b5da52eb32", // Amplifier
-    // "upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50", // Lightning Rod
+    "upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50", // Lightning Rod
+    "upgrade-16005a69-9f01-4f5a-b2a5-53029a9e08e3", // Carrot
+    "upgrade-072fe1da-fc6f-4aa4-8b8c-72b5da52eb32", // Amplifier
+    "upgrade-1718a411-4b87-4f14-bf7b-20aa5bfbce91", // Broccoli
+    "upgrade-4c5aef1c-ed88-4795-90f6-49f7c1ef2b42", // Qi Armor
 ]
 
 export default class ChestManager {
@@ -87,7 +91,7 @@ export default class ChestManager {
             let artifactList = [...REGISTERED_ARTIFACTS];
             
             while(itemCount > 0 && artifactList.length > 0) {
-                console.log(`itemCount: ${itemCount} artifactListSize: ${artifactList.length}`);
+                // console.log(`itemCount: ${itemCount} artifactListSize: ${artifactList.length}`);
 
                 // Choose an random artifact from artifactList. 
                 let randomIdx = Math.floor(Math.random() * artifactList.length);
@@ -100,7 +104,7 @@ export default class ChestManager {
                 if(artifactInPlayer.length > 0) {
                     // Check if the player's artifact is maxed or not.
                     if(!ArtifactManager.hasNextUpgrade(artifactInPlayer[0])) {
-                        console.log(`hasNextUpgrade is false.`);
+                        // console.log(`hasNextUpgrade is false.`);
                         // If the artifact is maxed, remove bad artifact from artifactList, retry.
                         artifactList.splice(randomIdx, 1);
                         continue;
@@ -122,12 +126,15 @@ export default class ChestManager {
                     }
                     else {
                         itemCount--;
-                        console.log("Player has equiped new artifact: ", artifact.root?.data.name);
+                        // console.log("Player has equiped new artifact: ", artifact.root?.data.name);
                     }
                 }
             }
 
             // TODO: Do something if itemCount > 0.
+            if(itemCount > 0) {
+                console.log("WARNING: No more items to give to the player.");
+            }
         }
         setTimeout(() => {
             chest.setActive(false);

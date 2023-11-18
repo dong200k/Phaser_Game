@@ -51,6 +51,7 @@ export default class ArtifactManager{
         artifact.root = upgradeTree;
         artifact.setId(upgradeId);
         artifact.name = upgradeTree.data.name;
+        artifact.description = upgradeTree.data.description;
 
         // Set the artifacts level
         let curr = upgradeTree;
@@ -94,6 +95,7 @@ export default class ArtifactManager{
         let artifact = this.artifactPool.getInstance()
         artifact.root = root
         artifact.name = root.data.name;
+        artifact.description = root.data.description;
 
         // Set the artifacts level
         let curr = root;

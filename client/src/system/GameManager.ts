@@ -547,7 +547,7 @@ export default class GameManager {
         this.addListenersToGameObject(newChest, chestState);
         newChest.play("closed");
 
-        console.log("A new chest has been added!");
+        // console.log("A new chest has been added!");
 
         return newChest;
     }
@@ -898,7 +898,9 @@ export default class GameManager {
         playerState.artifacts.forEach((artifact) => {
             items.push({
                 level: artifact.artifactLevel,
-                imageKey: ""
+                imageKey: "",
+                name: artifact.name,
+                description: artifact.description,
             });
         });
         EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_ARTIFACT_DISPLAY, {
