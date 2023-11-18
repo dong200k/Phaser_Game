@@ -5,7 +5,9 @@ import Tile from '../../gameobjs/Tile';
 export default class Tilemap extends Schema {
     @type({map: Layer}) layers = new MapSchema<Layer>();
     @type(Layer) currentLayer: Layer | null = null;
+    /** Number of tiles in the horizontal direction. */
     @type("number") width: number;
+    /** Number of tiles in the vertical direction. */
     @type("number") height: number;
     @type("number") tileWidth: number;
     @type("number") tileHeight: number;

@@ -6,6 +6,7 @@ import Node from '../../schemas/Trees/Node/Node';
 import StatTree from '../../schemas/Trees/StatTree';
 import Player from '../../schemas/gameobjs/Player';
 import GameManager from '../GameManager';
+import WeaponUpgradeFactory from '../UpgradeTrees/factories/WeaponUpgradeFactory';
 import TreeManager from './TreeManager';
 
 export default class ArtifactManager{
@@ -15,13 +16,13 @@ export default class ArtifactManager{
     /** Empty Artifact trees that get initialized when game starts*/
     static INITIAL_ARTIFACT_TREE_COUNT = 20
     /** Pool of artifacts that don't have a root */
-    private artifactTreePool: ObjectPool<Artifact>
+    private artifactPool: ObjectPool<Artifact>
 
     private gameManager: GameManager
 
     constructor(gameManager: GameManager){
         this.gameManager = gameManager
-        this.artifactTreePool = new ObjectPool(new Artifact())
+        this.artifactPool = new ObjectPool(new Artifact())
         for(let i=1; i<=ArtifactManager.INITIAL_ARTIFACT_TREE_COUNT; i++){
             this.addArtifactToPool()
         }
@@ -30,7 +31,39 @@ export default class ArtifactManager{
     private addArtifactToPool(){
         let tree = new Artifact()
         tree.setGameManager(this.gameManager)
-        this.artifactTreePool.returnInstance(tree)
+        this.artifactPool.returnInstance(tree)
+    }
+
+    /**
+     * Creates a new artifact. The artifact will have the id
+     * of the provided upgradeId.
+     * @param upgradeId The Id of the upgrade tree
+     * that this artifact will use.
+     */
+    public createArtifact(upgradeId: string) {
+        let upgradeTree = WeaponUpgradeFactory.createUpgrade(upgradeId);
+        if(!upgradeTree) {
+            throw new Error(`Error: Upgrade Tree with Id ${upgradeId} does not exist`);
+        }
+        // Get new Artifact tree instance and initialize the root with the artifact we are equipping
+        if(this.artifactPool.length() === 0) this.addArtifactToPool()
+        let artifact = this.artifactPool.getInstance()
+        artifact.root = upgradeTree;
+        artifact.setId(upgradeId);
+        artifact.name = upgradeTree.data.name;
+
+        // Set the artifacts level
+        let curr = upgradeTree;
+        let level = 0;
+        while(curr) {
+            if(curr.data.status === "selected") {
+                level++;
+            }
+            curr = curr.children[0];
+        }
+        artifact.artifactLevel = level;
+
+        return artifact;
     }
 
     /**
@@ -39,10 +72,14 @@ export default class ArtifactManager{
      * effects and stat bonuses will also be applied to the player by this function.
      * Note: if the tree already has selected nodes, UpgradeEffects will be selected how they were selected by the player. 
      * @param playerState player who wants to equip the artifact
-     * @param root root of artifact upgrade tree to equip
+     * @param root root of artifact upgrade tree to equip. Or the actual artifact.
      * @returns the artifact tree if it is equiped else false
      */
-    public equipArtifact(playerState: Player, root: Node<WeaponData>){
+    public equipArtifact(playerState: Player, root: Node<WeaponData> | Artifact){
+        if(root instanceof Artifact) {
+            return this.equipArtifactHelper(playerState, root);
+        }
+
         if(!root) throw new Error(`Error equiping artifact: ${root}`)
         let artifacts = playerState.artifacts
 
@@ -53,38 +90,73 @@ export default class ArtifactManager{
         }
 
         // Get new Artifact tree instance and initialize the root with the artifact we are equipping
-        if(this.artifactTreePool.length() === 0) this.addArtifactToPool()
-        let artifactTree = this.artifactTreePool.getInstance()
-        artifactTree.root = root
+        if(this.artifactPool.length() === 0) this.addArtifactToPool()
+        let artifact = this.artifactPool.getInstance()
+        artifact.root = root
+        artifact.name = root.data.name;
 
         // Set the artifacts level
         let curr = root;
+        let level = 0;
         while(curr) {
             if(curr.data.status === "selected") {
-                artifactTree.artifactLevel++;
+                level++;
             }
             curr = curr.children[0];
         }
+        artifact.artifactLevel = level;
 
         // Apply artifacts effects to player
-        let totalStat = TreeManager.addTreeStatsToPlayer(playerState, artifactTree)
-        TreeManager.addTreeUpgradeEffectsToPlayer(playerState, artifactTree)
+        let totalStat = TreeManager.addTreeStatsToPlayer(playerState, artifact)
+        TreeManager.addTreeUpgradeEffectsToPlayer(playerState, artifact)
         
-        let weaponId = TreeManager.getWeaponId(artifactTree)
-        TreeManager.setTreeWeapon(artifactTree, weaponId)
-        artifactTree.setGameManager(this.gameManager)
+        let weaponId = TreeManager.getWeaponId(artifact)
+        TreeManager.setTreeWeapon(artifact, weaponId)
+        artifact.setGameManager(this.gameManager)
         
         // Set total stat as computed total stat
-        artifactTree.totalStat = totalStat
+        artifact.totalStat = totalStat
 
         // Add this artifact to the player
-        artifacts.push(artifactTree)
-        artifactTree.setOwner(playerState)
+        artifacts.push(artifact)
+        artifact.setOwner(playerState)
 
-        console.log(`Equiping artifact: ${artifactTree.root.data.name}`)
+        console.log(`Equiping artifact: ${artifact.root.data.name}`)
 
         // playerState.effects.forEach(e=>console.log(e.toString() + '\n'))
-        return artifactTree
+        return artifact;
+    }
+
+    private equipArtifactHelper(playerState: Player, artifact: Artifact) {
+        let root = artifact.root;
+        if(!root) {
+            throw new Error(`Error equiping artifact. Artifact has no root`);
+        }
+
+        let artifacts = playerState.artifacts
+        // Check that player does not already have the maximum amount of artifacts
+        if(artifacts.length >= ArtifactManager.MAX_ARTIFACT_COUNT) {
+            console.log(`Artifact ${root.data.name} will not be equipped. Player ${playerState.name} already has the maximum number of artifacts equipped.`)
+            return false
+        }
+
+        // Apply artifacts effects to player
+        let totalStat = TreeManager.addTreeStatsToPlayer(playerState, artifact)
+        TreeManager.addTreeUpgradeEffectsToPlayer(playerState, artifact)
+        
+        let weaponId = TreeManager.getWeaponId(artifact)
+        TreeManager.setTreeWeapon(artifact, weaponId)
+        artifact.setGameManager(this.gameManager)
+        
+        // Set total stat as computed total stat
+        artifact.totalStat = totalStat
+
+        // Add this artifact to the player
+        artifacts.push(artifact)
+        artifact.setOwner(playerState)
+
+        console.log(`Equiping artifact: ${root.data.name}`)
+        return artifact;
     }
 
     /**
@@ -104,7 +176,7 @@ export default class ArtifactManager{
         playerState.artifacts = playerState.artifacts.filter(tree=> tree !== artifact)
 
         // Reset the artifact tree and send it to the object pool for reuse
-        this.artifactTreePool.returnInstance(artifact.reset())
+        this.artifactPool.returnInstance(artifact.reset())
     }
     
     /**

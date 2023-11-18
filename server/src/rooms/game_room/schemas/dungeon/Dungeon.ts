@@ -1,6 +1,8 @@
 import { Schema, type, ArraySchema } from "@colyseus/schema";
 import Wave from "./wave/Wave";
 import Tilemap from "./tilemap/Tilemap";
+import MathUtil from "../../../../util/MathUtil";
+import GameManager from "../../system/GameManager";
 
 export class SpawnPoint extends Schema {
     @type("number") x: number;
@@ -46,9 +48,10 @@ export default class Dungeon extends Schema {
     private waves: Wave[];
     /** False if a wave is running. True otherwise.*/
     waveEnded: boolean;
+    private gameManager: GameManager;
     
 
-    constructor(dungeonName: string) {
+    constructor(gameManager: GameManager, dungeonName: string) {
         super();
         this.currentWave = -1;
         this.maxWave = -1;
@@ -56,6 +59,7 @@ export default class Dungeon extends Schema {
         this.waveEnded = true;
         this.conquered = false;
         this.waves = [];
+        this.gameManager = gameManager;
     }
 
     /**
@@ -75,6 +79,23 @@ export default class Dungeon extends Schema {
         if(!this.waveEnded && this.currentWave < this.waves.length) {
             if(this.waves[this.currentWave].update(deltaT)) {
                 this.waveEnded = true;
+                // Spawn a chest on the map in a random location.
+
+                let minX = 50;
+                let maxX = 200;
+                let minY = 50;
+                let maxY = 200;
+                // Change the spawn area based on the size of the tilemap.
+                if(this.tilemap) {
+                    maxX = this.tilemap.width * this.tilemap.tileWidth - 20;
+                    maxY = this.tilemap.height * this.tilemap.tileHeight - 20;
+                }
+                
+                this.gameManager.getChestManager().spawnChest({
+                    rarity: "wood",
+                    x: MathUtil.getRandomIntegerBetween(minX, maxX),
+                    y: MathUtil.getRandomIntegerBetween(minY, maxY)
+                });
             }
         }
     }
