@@ -79,6 +79,8 @@ export default class ArtifactManager{
     public equipArtifact(playerState: Player, root: Node<WeaponData> | Artifact){
         if(root instanceof Artifact) {
             return this.equipArtifactHelper(playerState, root);
+        } else {
+            console.log("WARNING: equiping an artifact with Node<WeaponData> is deprecated. Please create an artifact using createArtifact then call equipArtifact.");
         }
 
         if(!root) throw new Error(`Error equiping artifact: ${root}`)
@@ -96,6 +98,7 @@ export default class ArtifactManager{
         artifact.root = root
         artifact.name = root.data.name;
         artifact.description = root.data.description;
+        // artifact.setId(root.id);
 
         // Set the artifacts level
         let curr = root;
