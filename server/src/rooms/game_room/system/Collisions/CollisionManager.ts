@@ -12,6 +12,7 @@ import MeleeProjectile from "../../schemas/projectiles/specialprojectiles/MeleeP
 import Aura from "../../schemas/gameobjs/aura/Aura";
 import Matter from "matter-js";
 import MathUtil from "../../../../util/MathUtil";
+import Chest from "../../schemas/gameobjs/chest/Chest";
 
 export default class CollisionManager{
     private gameManager: GameManager
@@ -48,6 +49,9 @@ export default class CollisionManager{
         {typeA: "PLAYER", typeB: "AURA", resolve: this.resolveAuraCollision},
         {typeA: "MONSTER", typeB: "AURA", resolve: this.resolveAuraCollision},
 
+        // Chest Collisions
+        {typeA: "PLAYER", typeB: "CHEST", resolve: this.resolveChestCollision},
+
         // **TODO** Add more 
     ]
 
@@ -59,7 +63,7 @@ export default class CollisionManager{
     ];
 
     constructor(gameManager: GameManager){
-        this.gameManager = gameManager
+        this.gameManager = gameManager;
     }
 
     public resolveCollisions(bodyA: Matter.Body, bodyB: Matter.Body){
@@ -237,5 +241,10 @@ export default class CollisionManager{
 
     public resolveAuraCollisionEnd(entity: Entity, aura: Aura, bodyA: Matter.Body, bodyB: Matter.Body) {
         aura.auraController.onExitAura(entity);
+    }
+
+    public resolveChestCollision(player: Player, chest: Chest, bodyA: Matter.Body, bodyB: Matter.Body) {
+        chest.disableCollisions();
+        player.gameManager.getChestManager().handleOpenChest(player, chest);
     }
 }

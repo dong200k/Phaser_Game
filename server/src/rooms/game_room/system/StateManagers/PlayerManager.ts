@@ -365,8 +365,8 @@ export default class PlayerManager {
         let frostWalker = ArtifactFactory.createMaxedArtifact("upgrade-3cd595a8-f245-44ea-8847-c73bf791b494")
         this.equipArtifact(player, frostWalker)
 
-        let runeGuard = ArtifactFactory.createMaxedArtifact("upgrade-29a3bf4e-3a16-44a5-b293-0d17acdcb7d4")
-        this.equipArtifact(player, runeGuard)
+        // let runeGuard = ArtifactFactory.createMaxedArtifact("upgrade-29a3bf4e-3a16-44a5-b293-0d17acdcb7d4")
+        // this.equipArtifact(player, runeGuard)
     }
 
 

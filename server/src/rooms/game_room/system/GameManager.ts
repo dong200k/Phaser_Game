@@ -20,6 +20,7 @@ import MaskManager from './Collisions/MaskManager';
 import Entity from '../schemas/gameobjs/Entity';
 import Monster from '../schemas/gameobjs/monsters/Monster';
 import AuraManager from './StateManagers/AuraManager';
+import ChestManager from './StateManagers/ChestManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -35,6 +36,7 @@ export default class GameManager {
     private collisionManager!: CollisionManager;
     private abilityManager!: AbilityManager;
     private auraManager!: AuraManager;
+    private chestManager!: ChestManager;
 
     // Data
     public matterBodies: Map<string, Matter.Body> = new Map();
@@ -80,6 +82,7 @@ export default class GameManager {
         this.collisionManager = new CollisionManager(this)
         this.abilityManager = new AbilityManager(this)
         this.auraManager = new AuraManager(this);
+        this.chestManager = new ChestManager(this);
 
         this.initUpdateEvents();
         this.initCollisionEvent();
@@ -237,6 +240,10 @@ export default class GameManager {
 
     public getAuraManager() {
         return this.auraManager;
+    }
+
+    public getChestManager() {
+        return this.chestManager;
     }
 
     /** Gets the EventEmitter for this GameManager. Used to send events throughout this game. */

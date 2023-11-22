@@ -3,10 +3,14 @@ import CircleImage from "../CircleImage";
 import UIFactory from "../UIFactory";
 import { ColorStyle } from "../../config";
 import RexUIBase, { SceneWithRexUI } from "../RexUIBase";
+import EventManager from "../../system/EventManager";
+import TextBoxPhaser from "../TextBoxPhaser";
 
 export interface ArtifactDisplayItem {
     imageKey: string;
     level: number;
+    name?: string;
+    description?: string;
 }
 
 export interface ArtifactDisplayData {
@@ -73,12 +77,21 @@ export default class ArtifactDisplay extends RexUIBase {
     private updateArtifactItem(overlapSizer: OverlapSizer, data: ArtifactDisplayItem) {
         let circleImage = overlapSizer.getByName("circleImage") as CircleImage;
         circleImage.setTexture(data.imageKey);
-        let text = overlapSizer.getByName("levelText", true) as TextBox;
+        let text = overlapSizer.getByName("levelText", true) as TextBoxPhaser;
         text.setText(`${data.level}`);
+        overlapSizer.setData("data", {
+            name: data.name ?? "Unknown",
+            description: data.description ?? "",
+        })
+        overlapSizer.layout();
     }
 
     private createArtifactItem(data: ArtifactDisplayItem) {
         let overlapSizer = this.rexUI.add.overlapSizer();
+        overlapSizer.setData("data", {
+            name: data.name ?? "Unknown",
+            description: data.description ?? "",
+        })
         overlapSizer.add(UIFactory.createCircleImage(this.scene, 0, 0, data.imageKey, 18).setDisplaySize(36, 36).setName("circleImage"));
         overlapSizer.add(
             this.rexUI.add.overlapSizer({
@@ -88,9 +101,24 @@ export default class ArtifactDisplay extends RexUIBase {
                 }
             })
             .addBackground(this.rexUI.add.roundRectangle(0, 0, 30, 10, 5, ColorStyle.primary.hex[900]))
-            .add(UIFactory.createTextBoxDOM(this.scene, `${data.level}`, "l6").setName("levelText"))
+            .add(UIFactory.createTextBoxPhaser(this.scene, `${data.level}`, "l6").setName("levelText"))
             , {expand: false, align: "right-bottom"}
         )
+        overlapSizer.layout();
+        overlapSizer.setInteractive();
+        overlapSizer.on(Phaser.Input.Events.POINTER_OVER, () => {
+            let text = overlapSizer.getData("data").name 
+                + "\n"
+                + overlapSizer.getData("data").description;
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_TOOLTIP, {
+                text: text,
+                x: overlapSizer.x + overlapSizer.displayWidth / 2, 
+                y: overlapSizer.y + overlapSizer.displayHeight / 2,
+            });
+        })
+        overlapSizer.on(Phaser.Input.Events.POINTER_OUT, () => {
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.HIDE_TOOLTIP);
+        })
         return overlapSizer;
     }
 }

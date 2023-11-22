@@ -13,6 +13,7 @@ import GameOverModal from "../UI/modals/GameOverModal";
 import TopRightInfo from "../UI/gameuis/TopRightInfo";
 import CircleImage from "../UI/CircleImage";
 import WAPopupButton from "../UI/gameuis/WAPopupButton";
+import ToolTip from "../UI/ToolTip";
 
 export default class HUDScene extends Phaser.Scene {
 
@@ -27,6 +28,7 @@ export default class HUDScene extends Phaser.Scene {
     private gameOverModal?: GameOverModal;
     private topRightInfo!: TopRightInfo;
     private ticks: number = 0;
+    private toolTip!: ToolTip; 
 
     constructor() {
         super(SceneKey.HUDScene);
@@ -67,6 +69,9 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.on(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, this.showWAPopup, this);
         EventManager.eventEmitter.on(EventManager.HUDEvents.PLAYER_DIED, this.playerDied, this);
         EventManager.eventEmitter.on(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, this.topRightInfo.updateInfoSizer, this.topRightInfo);
+        EventManager.eventEmitter.on(EventManager.HUDEvents.SHOW_TOOLTIP, this.toolTip.showToolTip, this.toolTip);
+        EventManager.eventEmitter.on(EventManager.HUDEvents.HIDE_TOOLTIP, this.toolTip.hideToolTip, this.toolTip);
+
         this.events.once("shutdown", () => this.removeListeners());
         this.events.on("sleep", () => this.peerInfoPopup.setVisible(false));
     }
@@ -79,6 +84,9 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.off(EventManager.HUDEvents.RESET_HUD, this.resetHUD, this);
         EventManager.eventEmitter.off(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, this.showWAPopup, this);
         EventManager.eventEmitter.off(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, this.topRightInfo.updateInfoSizer, this.topRightInfo);
+        EventManager.eventEmitter.off(EventManager.HUDEvents.SHOW_TOOLTIP, this.toolTip.showToolTip, this.toolTip);
+        EventManager.eventEmitter.off(EventManager.HUDEvents.HIDE_TOOLTIP, this.toolTip.hideToolTip, this.toolTip);
+
     }
 
     private initializeUI() {
@@ -131,11 +139,27 @@ export default class HUDScene extends Phaser.Scene {
         // ----- Party Info popup -----
         this.peerInfoPopup = new PeerInfoPopup(this);
         this.peerInfoPopup.setVisible(false);
-        this.input.keyboard?.on("keydown-SHIFT", () => this.peerInfoPopup.setVisible(true));
-        this.input.keyboard?.on("keyup-SHIFT", () => this.peerInfoPopup.setVisible(false));
+        // this.input.keyboard?.on("keydown-SHIFT", () => this.peerInfoPopup.setVisible(true));
+        // this.input.keyboard?.on("keyup-SHIFT", () => this.peerInfoPopup.setVisible(false));
 
         // ----- Top Right Info Display -----
         this.topRightInfo = new TopRightInfo(this);
+
+
+        // ------ ToolTip --------
+        this.toolTip = new ToolTip(this);
+        
+        // setTimeout(() => {
+        //     EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_TOOLTIP, {
+        //         text: "First tool tip",
+        //         x: 100, 
+        //         y: 100,
+        //     });
+
+        //     setTimeout(() => {
+        //         EventManager.eventEmitter.emit(EventManager.HUDEvents.HIDE_TOOLTIP);
+        //     }, 3000);
+        // }, 3000);
     }
 
     public playerDied(data: any) {

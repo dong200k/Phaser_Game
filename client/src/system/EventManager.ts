@@ -151,6 +151,27 @@ namespace EventManager {
          * 
          */
         export const UPDATE_TOP_RIGHT_INFO = "HUDSceneUpdateTopRightInfo";
+
+        /**
+         * Emitting this event will display a tooltip.
+         * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_TOOLTIP, data)```
+         * 
+         * @param data
+         * ```
+         * {
+         *      x?: number = 0;
+                y?: number = 0;
+                text?: string = "";
+         * }
+         * ```
+         */
+        export const SHOW_TOOLTIP = "HUDSceneShowToolTip";
+
+        /**
+         * Emitting this event will display a tooltip.
+         * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.HIDE_TOOLTIP)```
+         */
+        export const HIDE_TOOLTIP = "HUDSceneHideToolTip";
     }
 
     export namespace GameEvents {
