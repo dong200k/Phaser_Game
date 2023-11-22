@@ -1,6 +1,7 @@
 import MathUtil from "../../../../../../../util/MathUtil"
 import WeaponUpgradeTree from "../../../../../schemas/Trees/WeaponUpgradeTree"
 import Player from "../../../../../schemas/gameobjs/Player"
+import Stat from "../../../../../schemas/gameobjs/Stat"
 import Projectile from "../../../../../schemas/projectiles/Projectile"
 import { getFinalArea } from "../../../../Formulas/formulas"
 import GameManager from "../../../../GameManager"
@@ -139,6 +140,22 @@ export class Fireball extends EffectLogic{
 
     public increaseFireballAmount(number: number){
         this.amount += number
+    }
+
+    /**
+     * 
+     * @returns The total damage multiplier for the fireball explosion + fireball itself
+     */
+    public getMult(){
+        return this.fireballExplosionMult * this.baseFireballExplosionMult + this.fireballMult + this.baseFireballMult
+    }
+
+    /**
+     * 
+     * @returns The amount of fireballs fired each time taking into account player stat
+     */
+    public getAmount({amount}: Stat){
+        return this.amount + amount
     }
 }
 

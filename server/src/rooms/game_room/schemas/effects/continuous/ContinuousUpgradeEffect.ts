@@ -1,9 +1,9 @@
 import EffectLogic from "../../../system/EffectLogic/EffectLogic";
-import EffectLogicManager from "../../../system/EffectLogic/EffectLogicManager";
-import { getTimeAfterCooldownReduction } from "../../../system/Formulas/formulas";
+import { getRealTimeAfterCooldownReduction, getTimeAfterCooldownReduction } from "../../../system/Formulas/formulas";
 import GameManager from "../../../system/GameManager";
 import WeaponUpgradeTree from "../../Trees/WeaponUpgradeTree";
 import Entity from "../../gameobjs/Entity";
+import Stat from "../../gameobjs/Stat";
 import ContinuousEffectUntimed from "./ContinuousEffectUntimed";
 
 /** Extends ContinuousEffectUntimed, it is connected to an effectLogic through effectLogicId with the purpose of
@@ -23,9 +23,11 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
     tree?: WeaponUpgradeTree
     gameManager!: GameManager
     effectLogic?: EffectLogic
+    private cooldown: number
 
     constructor(effectLogicId: string, cooldown: number, type: string, doesStack: boolean, collisionGroup: number){
         super(cooldown/1000)
+        this.cooldown = cooldown
         this.setName("Continuous Upgrade Effect")
         this.setDescription("Type of ContinuousEffecftUntime that repeatedly calls the effectLogic referenced by effectLogicId")
         this.effectLogicId = effectLogicId
@@ -87,5 +89,13 @@ export default class ContinuousUpgradeEffect extends ContinuousEffectUntimed{
     public toString(): string {
         return `${this.effectLogicId}, ds: ${this.doesStack}, cg : ${this.collisionGroup}`
         // return super.toString() + `(effectLogicId: ${this.effectLogicId}, does stack?: ${this.doesStack}, collisionGroup: ${this.collisionGroup})`;
+    }
+
+    /**
+     * 
+     * @returns the max cooldown of this effect in seconds after accounting player stat
+     */
+    public getCooldown(stat: Stat){
+        return getRealTimeAfterCooldownReduction(stat, this.cooldown/1000)
     }
 }

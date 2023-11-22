@@ -1,6 +1,7 @@
 import MathUtil from "../../../../../../../util/MathUtil"
 import WeaponUpgradeTree from "../../../../../schemas/Trees/WeaponUpgradeTree"
 import Player from "../../../../../schemas/gameobjs/Player"
+import Stat from "../../../../../schemas/gameobjs/Stat"
 import Projectile from "../../../../../schemas/projectiles/Projectile"
 import { getFinalArea } from "../../../../Formulas/formulas"
 import GameManager from "../../../../GameManager"
@@ -44,7 +45,7 @@ export class LightningRod extends EffectLogic{
     }
 
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree){
-        let count = this.lightningCount + playerState.stat.amount
+        let count = this.getAmount(playerState.stat)
 
         for(let i=0;i<count;i++){
             setTimeout(()=>{
@@ -71,7 +72,7 @@ export class LightningRod extends EffectLogic{
             initialVelocity: {x: 0, y:0},
             collisionCategory: "PLAYER_PROJECTILE",
             poolType: "LightningRod",
-            attackMultiplier: this.baseDamageMult * this.damageMult,
+            attackMultiplier: this.getMult(),
             magicMultiplier: 0,
             dontDespawnOnObstacleCollision: true,
             piercing: -1,
@@ -85,6 +86,23 @@ export class LightningRod extends EffectLogic{
         gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, {
             ...projectileConfig,
         });
+    }
+
+    
+    /**
+     * 
+     * @returns The total damage multiplier
+     */
+    public getMult(){
+        return this.baseDamageMult * this.damageMult
+    }
+
+    /**
+     * 
+     * @returns The amount of projectiles fired each time taking into account player stat
+     */
+    public getAmount({amount}: Stat){
+        return this.lightningCount + amount
     }
 }
 

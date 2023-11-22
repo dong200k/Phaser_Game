@@ -150,7 +150,7 @@ export const getFinalArea = ({area}: Stat, baseArea: number)=>{
 }
 
 /**
- * Calculates the time that should pass based on cooldown reduction
+ * Calculates the time that should pass based on cooldown reduction. Note faster the time cooldown higher the time that passes by.
  * @param stat  
  * @param deltaT time that passed
  * @returns 
@@ -158,8 +158,21 @@ export const getFinalArea = ({area}: Stat, baseArea: number)=>{
 export const getTimeAfterCooldownReduction = ({cooldownReduction}: Stat, deltaT: number)=>{
     // allowed cooldownReduction range 0 - 0.9
     let cappedReduction = Math.max(0, Math.min(0.9, cooldownReduction))
-    
     return deltaT/(1 - cappedReduction)
+}
+
+/**
+ * Calculates the real time that should pass by based on the cooldown reduction stat and a given cooldown.
+ * 
+ * The higher the cooldown the lower the returned time
+ * @param stat 
+ * @param cooldown 
+ * @returns 
+ */
+export const getRealTimeAfterCooldownReduction = ({cooldownReduction}: Stat, cooldown: number)=>{
+    // allowed cooldownReduction range 0 - 0.9
+    let cappedReduction = Math.max(0, Math.min(0.9, cooldownReduction))
+    return cooldown * (1 - cappedReduction)
 }
 
 /**
@@ -192,7 +205,7 @@ export const getTimeAfterAttackSpeed = (stat: Stat, deltaT: number)=>{
  * 
  * Takes in a stat for the attacker, cooldown in seconds of the attack, and a multiplier for the attack
  * @param stat 
- * @param cooldown 
+ * @param cooldown in seconds
  * @param multiplier 
  * @returns The estimated damage/second
  * 
@@ -200,4 +213,15 @@ export const getTimeAfterAttackSpeed = (stat: Stat, deltaT: number)=>{
 export const getEstimatedDps = ({attack, attackPercent, damagePercent, critRate, critDamage}: Stat, cooldown: number = 1, multiplier: number = 1) => {
     let damage = attack * (1 + attackPercent) * damagePercent * (1 + critRate * critDamage) * multiplier
     return damage / cooldown
+}
+
+/**
+ * 
+ * @param stat 
+ * @param multiplier 
+ * @returns The raw damage of this attack without accounting armor
+ */
+export const getDamage = ({attack, attackPercent, damagePercent, critRate, critDamage}: Stat, multiplier: number = 1) => {
+    let damage = attack * (1 + attackPercent) * damagePercent * (1 + critRate * critDamage) * multiplier
+    return damage
 }

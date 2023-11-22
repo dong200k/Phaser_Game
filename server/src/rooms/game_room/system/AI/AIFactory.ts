@@ -26,8 +26,6 @@ export default class AIFactory {
      * @returns A MonsterController.
      */
     public static createAIFromKey(monster: Monster, key: string): MonsterController {
-        console.log(`ai key: ${key}`)
-
         let mc: MonsterController;
         switch(key) {
             case "Default": mc = new MonsterController({monster}); break;

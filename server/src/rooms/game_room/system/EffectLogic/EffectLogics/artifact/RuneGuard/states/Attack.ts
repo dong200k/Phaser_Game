@@ -27,7 +27,6 @@ export default class Attack extends StateNode {
         this.projectile = this.controller.getProjectile()
 
         this.timeSoFar = 0
-        console.log(this.projectile.getOriginEntity()?.stat.cooldownReduction)
     }
 
     public onExit(): void {

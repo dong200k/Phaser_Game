@@ -12,7 +12,7 @@ import SkillTreeManager from './SkillTreeManager';
 import ReconciliationInfo from '../../schemas/ReconciliationInfo';
 import WeaponManager from './WeaponManager';
 import PlayerService from '../../../../services/PlayerService';
-import { getFinalSpeed } from '../Formulas/formulas';
+import { getDamage, getEstimatedDps, getFinalAttackSpeed, getFinalSpeed } from '../Formulas/formulas';
 import WeaponUpgradeTree from '../../schemas/Trees/WeaponUpgradeTree';
 import DatabaseManager from '../Database/DatabaseManager';
 import Node from '../../schemas/Trees/Node/Node';
@@ -21,6 +21,7 @@ import { IAbility, IRole } from '../interfaces';
 import Stat from '../../schemas/gameobjs/Stat';
 import Ability from '../../schemas/gameobjs/Ability';
 import TriggerUpgradeEffect from '../../schemas/effects/trigger/TriggerUpgradeEffect';
+import ContinuousUpgradeEffect from '../../schemas/effects/continuous/ContinuousUpgradeEffect';
 
 interface InputPlayload {
     payload: number[];
@@ -366,6 +367,55 @@ export default class PlayerManager {
 
         let runeGuard = ArtifactFactory.createMaxedArtifact("upgrade-29a3bf4e-3a16-44a5-b293-0d17acdcb7d4")
         this.equipArtifact(player, runeGuard)
+    }
+
+
+    /**
+     * Prints the dps of the different effects depending on the player's stats. These effects must have the following methods:
+     * 
+     * ** getMult() returns an attack multiplier
+     * ** getAmount(stat) returns the amount of projectiles fired each time.
+     * 
+     * Note:
+     * Currently does not support magic multiplier, which is not being used yet.
+     */
+    public printDPS(player: Player){
+        let playerAttackCooldown = 1/getFinalAttackSpeed(player.stat)
+        const printSingleEffectDps = (effectLogicId: string, amount: number, singleShotDPS: number, singleHitDamage: number)=> {
+            console.log(`\nEffectLogicId: ${effectLogicId}`)
+            console.log(`AVG Single projectile DPS: ${singleShotDPS}`)
+            console.log(`AVG Max ${amount} projectile DPS: ${singleShotDPS * amount}`)
+            console.log(`AVG 1 Hit Damage: ${singleHitDamage}\n`)
+        }
+
+        player.effects.forEach(effect=>{
+            if((effect instanceof TriggerUpgradeEffect || effect instanceof ContinuousUpgradeEffect)
+            && effect.effectLogic 
+            && "getMult" in effect.effectLogic
+            && "getAmount" in effect.effectLogic){
+                try {
+                    let effectLogic = effect.effectLogic as any
+                    let mult = effectLogic.getMult()
+                    let amount = effectLogic.getAmount(player.stat)
+                    let singleHitDamage = getDamage(player.stat, mult)
+
+                    // Compute dps
+                    let dps = 0
+                    if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack"){
+                        dps = getEstimatedDps(player.stat, playerAttackCooldown, mult)
+                    }else if(effect instanceof ContinuousUpgradeEffect){
+                        let seconds = effect.getCooldown(player.stat)
+                        console.log(`seconds: ${seconds}`)
+                        dps = getEstimatedDps(player.stat, seconds, mult)
+                    }
+
+                    printSingleEffectDps(effect.effectLogicId, amount, dps, singleHitDamage)
+                } catch (error) {
+                    console.log(`Error calculating dps for effectLogic: ${effect.effectLogicId}`)
+                    console.log(error)
+                }
+            }
+        })
     }
 
     /**
