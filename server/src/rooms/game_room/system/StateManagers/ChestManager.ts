@@ -37,12 +37,12 @@ export default class ChestManager {
         this.gameManager = gameManager;
         this.chestPool = new ChestPool();
         
-        setInterval(() => {
-            this.spawnChest({
-                x: 250, y: 250,
-                rarity: "gold",
-            })
-        }, 2000);
+        // setInterval(() => {
+        //     this.spawnChest({
+        //         x: 250, y: 250,
+        //         rarity: "gold",
+        //     })
+        // }, 2000);
     }
 
     /**
