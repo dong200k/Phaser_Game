@@ -74,6 +74,10 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("pea_icon", "images/icons/artifacts/pea_icon.png");
         this.load.image("snow_pea_icon", "images/icons/artifacts/snow_pea_icon.png");
         this.load.image("banana_icon", "images/icons/artifacts/banana_icon.png");
+        this.load.image("avocado_icon", "images/icons/artifacts/avocado_icon.png");
+        this.load.image("broccoli_icon", "images/icons/artifacts/broccoli_icon.png");
+        this.load.image("beets_icon", "images/icons/artifacts/beets_icon.png");
+        this.load.image("mushroom_icon", "images/icons/artifacts/mushroom_icon.png");
 
         // ------- Loading Animations ------- //
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");

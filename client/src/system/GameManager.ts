@@ -899,7 +899,7 @@ export default class GameManager {
         playerState.artifacts.forEach((artifact) => {
             items.push({
                 level: artifact.artifactLevel,
-                imageKey: "pea_icon",
+                imageKey: "mushroom_icon",
                 name: artifact.name,
                 description: artifact.description,
             });
