@@ -71,6 +71,9 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("invisible", "images/projectiles/Invisible.png")
         this.load.image("slow_icon", "images/icons/slow_icon.png");
         this.load.image("upgrade_bg", "images/background/upgrade_bg.png");
+        this.load.image("pea_icon", "images/icons/artifacts/pea_icon.png");
+        this.load.image("snow_pea_icon", "images/icons/artifacts/snow_pea_icon.png");
+        this.load.image("banana_icon", "images/icons/artifacts/banana_icon.png");
 
         // ------- Loading Animations ------- //
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
