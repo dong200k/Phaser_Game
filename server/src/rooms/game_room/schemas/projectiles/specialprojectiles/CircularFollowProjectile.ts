@@ -18,7 +18,7 @@ export default class CircularFollowProjectle extends Projectile{
     }
 
     private generateWayPoints(){
-        let count = 15
+        let count = 30 + Math.floor(this.radius/10)
         let radians = 0
         let increment = 2 * Math.PI/count
         let wayPoints = []

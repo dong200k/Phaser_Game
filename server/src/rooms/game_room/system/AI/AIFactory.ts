@@ -1,8 +1,10 @@
 import Monster from "../../schemas/gameobjs/monsters/Monster";
 import BerserkerBossController from "../StateControllers/BossControllers/BerserkerBossController/BerserkerBossController";
 import PlayerManager from "../StateManagers/PlayerManager";
+import ChargingMonsterController from "./MonsterAI/chargingmonster/ChargingMonsterController";
 import RangedMonsterController from "./MonsterAI/rangemonster/RangedMonsterController";
-import MonsterController from "./MonsterAI/simplemonster/MonsterController";
+import MonsterController, { MonsterControllerData } from "./MonsterAI/simplemonster/MonsterController";
+import SummonerController from "./MonsterAI/summoner/SummonerController";
 
 export default class AIFactory {
 
@@ -27,11 +29,14 @@ export default class AIFactory {
      */
     public static createAIFromKey(monster: Monster, key: string): MonsterController {
         let mc: MonsterController;
+
         switch(key) {
             case "Default": mc = new MonsterController({monster}); break;
             case "BerserkerBoss": mc = new BerserkerBossController({monster}); break;
             case "ArcaneArcher": mc = new RangedMonsterController({monster}); break;
-            default: mc = new MonsterController({monster});
+            case "WolfSummoner": mc = new SummonerController({monster, summonedMonsterName: "Zombie Wolf"} as MonsterControllerData); break;
+            case "ChargingMonster": mc = new ChargingMonsterController({monster} as MonsterControllerData); break;
+            default: mc = new MonsterController({monster});   
         }
         return mc;
     }
