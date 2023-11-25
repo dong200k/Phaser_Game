@@ -12,6 +12,9 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
     positionOffsetX: number;
     positionOffsetY: number;
 
+    /** Transparency of the gameobject */
+    alphaValue: number;
+
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, gameObjectState: GameObjectState) {
         super(scene, x, y, texture);
         this.serverX = x;
@@ -21,6 +24,7 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
         this.serverVisible = gameObjectState.visible;
         this.serverActive = gameObjectState.active;
         this.gameObjectState = gameObjectState;
+        this.alphaValue = gameObjectState.alpha
 
         this.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
     }

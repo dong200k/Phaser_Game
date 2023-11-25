@@ -28,8 +28,12 @@ export default class Charge extends StateNode {
     private chargeDirection?: {x: number, y: number}
 
     public onEnter(): void {
-        // Setting the default attack cooldown for this monster.
         let stateMachine = this.getStateMachine<ChargingMonsterController>();
+        this.defaultAttackCooldown = stateMachine.getChargeDuration()
+        this.chargeSpeedBoost = stateMachine.getChargeSpeedBoost()
+        this.attackTriggerPercent = stateMachine.getChargeTriggerPercent()
+
+        // Setting the default attack cooldown for this monster.
         let monster = stateMachine.getMonster();
         this.attackCooldown = this.defaultAttackCooldown;
         this.attackTriggered = false;

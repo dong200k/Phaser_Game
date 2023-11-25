@@ -7,14 +7,30 @@ import Follow from "./states/Follow";
 
 export interface ChargingMonsterControllerData {
     monster: Monster;
+     /** The time in seconds it takes for a charge attack to complete. */ 
+    chargeDuration: number;
+     /** The percent of the attack cooldown before the charging starts. */
+    chargeTriggerPercent: number;
+    /** Speed multiplier while monster is charging. Ex: 2 means double the normal movement speed while charging. */
+    chargeSpeedBoost: number;
+    /** Cooldown in seconds before monster can charge again. */
+    chargeCooldown: number;
 }
 
 export default class ChargingMonsterController extends MonsterController {
 
-    private chargeCooldown: Cooldown = new Cooldown(5)
+    private chargeCooldown!: Cooldown
+    private chargeDuration: number = 2
+    private chargeTriggerPercent = 0.7
+    private chargeSpeedBoost = 2
 
     protected create(data: ChargingMonsterControllerData): void {
         super.create(data)
+
+        this.chargeCooldown = new Cooldown(data.chargeCooldown ?? 5)
+        this.chargeTriggerPercent = data.chargeTriggerPercent
+        this.chargeSpeedBoost = data.chargeSpeedBoost
+        this.chargeDuration = data.chargeDuration
 
         this.removeState("Attack")
         this.addState(new Attack("Attack", this))
@@ -41,4 +57,17 @@ export default class ChargingMonsterController extends MonsterController {
     public turnOnCooldown(){
         this.chargeCooldown.reset()
     }
+
+    public getChargeDuration(){
+        return this.chargeDuration
+    }
+
+    public getChargeTriggerPercent(){
+        return this.chargeTriggerPercent
+    }
+
+    public getChargeSpeedBoost(){
+        return this.chargeSpeedBoost
+    }
+
 }

@@ -15,6 +15,7 @@ import PiercingEffect from "./temp/PiercingEffect";
 import OneTimeUpgradeEffect from "./onetime/OneTimeUpgradeEffect";
 import WeaponUpgradeTree from "../Trees/WeaponUpgradeTree";
 import ShieldEffect from "./temp/ShieldEffect";
+import PhantomEffect from "./temp/PhantomEffect";
 
 
 export default class EffectFactory {
@@ -186,5 +187,14 @@ export default class EffectFactory {
 
     public static createShieldEffect(shieldHealth: number, isTimed: boolean, totalTime: number){
         return new ShieldEffect(shieldHealth, isTimed, totalTime)
+    }
+
+    /**
+     * Creates a effect to make entity immune to all collisions for a certain duration and make them transparent.
+     * @param activeTime The time the effect will last for.
+     * @returns A PhantomEffect
+     */
+    public static createPhantomEffectTimed(activeTime: number) {
+        return new PhantomEffect(true, activeTime);
     }
 }
