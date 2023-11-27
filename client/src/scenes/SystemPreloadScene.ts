@@ -71,6 +71,27 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("invisible", "images/projectiles/Invisible.png")
         this.load.image("slow_icon", "images/icons/slow_icon.png");
         this.load.image("upgrade_bg", "images/background/upgrade_bg.png");
+        this.load.image("pea_icon", "images/icons/artifacts/pea_icon.png");
+        this.load.image("snow_pea_icon", "images/icons/artifacts/snow_pea_icon.png");
+        this.load.image("banana_icon", "images/icons/artifacts/banana_icon.png");
+        this.load.image("avocado_icon", "images/icons/artifacts/avocado_icon.png");
+        this.load.image("broccoli_icon", "images/icons/artifacts/broccoli_icon.png");
+        this.load.image("beets_icon", "images/icons/artifacts/beets_icon.png");
+        this.load.image("mushroom_icon", "images/icons/artifacts/mushroom_icon.png");
+        this.load.image("tomatoes_icon", "images/icons/artifacts/tomatoes_icon.png");
+        this.load.image("carrot_icon", "images/icons/artifacts/carrot_icon.png");
+        this.load.image("beans_icon", "images/icons/artifacts/beans_icon.png");
+        this.load.image("ancient_guard_icon", "images/icons/artifacts/ancient_guard_icon.png");
+        this.load.image("perseverance_stone_icon", "images/icons/artifacts/perseverance_stone_icon.png");
+        this.load.image("glass_cannon_icon", "images/icons/artifacts/glass_cannon_icon.png");
+        this.load.image("amplifier_icon", "images/icons/artifacts/amplifier_icon.png");
+        this.load.image("power_of_friendship_icon", "images/icons/artifacts/power_of_friendship_icon.png");
+        this.load.image("qi_armor_icon", "images/icons/artifacts/qi_armor_icon.png");
+        this.load.image("turbo_skates_icon", "images/icons/artifacts/turbo_skates_icon.png");
+        this.load.image("ancient_battery_icon", "images/icons/artifacts/ancient_battery_icon.png");
+        this.load.image("fireball_icon", "images/icons/artifacts/fireball_icon.png");
+        this.load.image("lightning_rod_icon", "images/icons/artifacts/lightning_rod_icon.png");
+
 
         // ------- Loading Animations ------- //
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
@@ -91,6 +112,9 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("laser", "images/projectiles/laser.png", "images/projectiles/laser.json");
         this.load.aseprite("wood_chest", "animations/wood_chest/wood_chest.png", "animations/wood_chest/wood_chest.json");
         this.load.aseprite("purple_arrow", "images/projectiles/purple_arrow.png", "images/projectiles/purple_arrow.json");
+        this.load.aseprite("iron_chest", "animations/iron_chest/iron_chest.png", "animations/iron_chest/iron_chest.json");
+        this.load.aseprite("gold_chest", "animations/gold_chest/gold_chest.png", "animations/gold_chest/gold_chest.json");
+
 
     }
 

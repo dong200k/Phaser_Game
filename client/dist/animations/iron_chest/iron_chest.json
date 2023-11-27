@@ -115,7 +115,7 @@
  "meta": {
   "app": "https://www.aseprite.org/",
   "version": "1.2.40-x64",
-  "image": "wood_chest.png",
+  "image": "iron_chest.png",
   "format": "RGBA8888",
   "size": { "w": 132, "h": 79 },
   "scale": "1",

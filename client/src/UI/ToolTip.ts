@@ -38,9 +38,9 @@ export default class ToolTip extends RexUIBase {
             .setStrokeStyle(3, ColorStyle.neutrals.hex[900])
             );
         this.content.add(this.text = UIFactory.createTextBoxPhaser(scene, "This is a tooltip.", "p4"));
-        this.text.setWordWrapWidth(500);
+        this.text.setWordWrapWidth(390);
         this.content.layout();
-        this.content.hide();
+        this.content.fadeOut(0);
         this.content.setDepth(100);
     }
 
@@ -59,7 +59,6 @@ export default class ToolTip extends RexUIBase {
         y = y + this.content.displayHeight / 2;
         this.content.setPosition(x, y);
 
-        this.content.show();
         this.content.fadeIn(50);
         this.hidden = false;
     }
