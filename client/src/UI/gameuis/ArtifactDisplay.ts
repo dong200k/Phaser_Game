@@ -39,8 +39,8 @@ export default class ArtifactDisplay extends RexUIBase {
                 top: 'top+10',
             },
             space: {
-                item: 5,
-                line: 5,
+                // item: 5,
+                // line: 5,
             },
         })
         this.updateArtifactDisplay({});
@@ -89,14 +89,8 @@ export default class ArtifactDisplay extends RexUIBase {
 
     private createArtifactItem(data: ArtifactDisplayItem) {
         let overlapSizer = this.rexUI.add.overlapSizer({
-            width: 45,
-            height: 45,
-            space: {
-                left: 3,
-                right: 3,
-                top: 3, 
-                bottom: 3,
-            }
+            width: 54,
+            height: 54,
         });
         overlapSizer.setData("data", {
             name: data.name ?? "Unknown",
@@ -110,7 +104,7 @@ export default class ArtifactDisplay extends RexUIBase {
             imageHeight: 32,
             x: 0,
             y: 0,
-        }).setName("circleImage"));
+        }).setName("circleImage"), {expand: false});
         overlapSizer.add(
             this.rexUI.add.overlapSizer({
                 space: {
