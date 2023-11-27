@@ -128,7 +128,7 @@ export default class WAPopup extends RexUIBase {
             })
             .setName("waTitleButton")
             .addBackground(this.rexUI.add.roundRectangle(0, 0, 100, 100, 0, ColorStyle.primary.hex[500]).setName("waTitleBackground"))
-            .add(UIFactory.createTextBoxDOM(this.scene, data.title ?? "UPGRADES", "h4"), {padding: {top: 6}})
+            .add(UIFactory.createTextBoxPhaser(this.scene, data.title ?? "UPGRADES", "h4"), {padding: {top: 10}})
             .add(UIFactory.createButtonSprite(this.scene, 
                 {spriteKey: "x_aicon", onClick: () => {this.sideDownPopup()}})
                 .setDisplaySize(32, 32), {padding: {bottom: 4}}),

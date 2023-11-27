@@ -5,6 +5,7 @@ import { ColorStyle } from "../../config";
 import RexUIBase, { SceneWithRexUI } from "../RexUIBase";
 import EventManager from "../../system/EventManager";
 import TextBoxPhaser from "../TextBoxPhaser";
+import CircleImageRex from "../CircleImageRex";
 
 export interface ArtifactDisplayItem {
     imageKey: string;
@@ -38,8 +39,8 @@ export default class ArtifactDisplay extends RexUIBase {
                 top: 'top+10',
             },
             space: {
-                item: 5,
-                line: 5,
+                // item: 5,
+                // line: 5,
             },
         })
         this.updateArtifactDisplay({});
@@ -75,7 +76,7 @@ export default class ArtifactDisplay extends RexUIBase {
     }
 
     private updateArtifactItem(overlapSizer: OverlapSizer, data: ArtifactDisplayItem) {
-        let circleImage = overlapSizer.getByName("circleImage") as CircleImage;
+        let circleImage = overlapSizer.getByName("circleImage") as CircleImageRex;
         circleImage.setTexture(data.imageKey);
         let text = overlapSizer.getByName("levelText", true) as TextBoxPhaser;
         text.setText(`${data.level}`);
@@ -87,12 +88,23 @@ export default class ArtifactDisplay extends RexUIBase {
     }
 
     private createArtifactItem(data: ArtifactDisplayItem) {
-        let overlapSizer = this.rexUI.add.overlapSizer();
+        let overlapSizer = this.rexUI.add.overlapSizer({
+            width: 54,
+            height: 54,
+        });
         overlapSizer.setData("data", {
             name: data.name ?? "Unknown",
             description: data.description ?? "",
         })
-        overlapSizer.add(UIFactory.createCircleImage(this.scene, 0, 0, data.imageKey, 18).setDisplaySize(36, 36).setName("circleImage"));
+        overlapSizer.add(UIFactory.createCircleImageRex(this.scene, {
+            circleRadius: 21,
+            texture: data.imageKey,
+            backgroundColor: ColorStyle.primary.hex[500],
+            imageWidth: 32,
+            imageHeight: 32,
+            x: 0,
+            y: 0,
+        }).setName("circleImage"), {expand: false});
         overlapSizer.add(
             this.rexUI.add.overlapSizer({
                 space: {
@@ -115,9 +127,13 @@ export default class ArtifactDisplay extends RexUIBase {
                 x: overlapSizer.x + overlapSizer.displayWidth / 2, 
                 y: overlapSizer.y + overlapSizer.displayHeight / 2,
             });
+            let circleImage = overlapSizer.getByName("circleImage") as CircleImageRex;
+            circleImage.getBackground().setStrokeStyle(1, ColorStyle.neutrals.hex.white);
         })
         overlapSizer.on(Phaser.Input.Events.POINTER_OUT, () => {
             EventManager.eventEmitter.emit(EventManager.HUDEvents.HIDE_TOOLTIP);
+            let circleImage = overlapSizer.getByName("circleImage") as CircleImageRex;
+            circleImage.getBackground().setStrokeStyle();
         })
         return overlapSizer;
     }

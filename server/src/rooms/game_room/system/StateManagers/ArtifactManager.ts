@@ -68,6 +68,16 @@ export default class ArtifactManager{
     }
 
     /**
+     * Max the level of an artifact.
+     * @param artifact The artifact.
+     */
+    public maxArtifact(artifact: Artifact) {
+        while(ArtifactManager.upgradeArtifact(artifact)) {
+            // Loop until upgrade ends.
+        }
+    }
+
+    /**
      * Takes in a player and a artifact upgrade tree's root. Equips the root onto one of the player's empty artifact trees if 
      * they do not already have the maximum amount of artifacts. Once the artifact is equipped, all of the artifact's selected 
      * effects and stat bonuses will also be applied to the player by this function.
@@ -79,6 +89,8 @@ export default class ArtifactManager{
     public equipArtifact(playerState: Player, root: Node<WeaponData> | Artifact){
         if(root instanceof Artifact) {
             return this.equipArtifactHelper(playerState, root);
+        } else {
+            console.log("WARNING: equiping an artifact with Node<WeaponData> is deprecated. Please create an artifact using createArtifact then call equipArtifact.");
         }
 
         if(!root) throw new Error(`Error equiping artifact: ${root}`)
@@ -96,6 +108,7 @@ export default class ArtifactManager{
         artifact.root = root
         artifact.name = root.data.name;
         artifact.description = root.data.description;
+        // artifact.setId(root.id);
 
         // Set the artifacts level
         let curr = root;

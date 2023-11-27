@@ -2,6 +2,8 @@ import Button from "./Button";
 import ButtonRex, { ButtonRexConfig } from "./ButtonRex";
 import ButtonSprite, { ButtonSpriteConfig } from "./ButtonSprite";
 import CircleImage from "./CircleImage";
+import CircleImageRex, { CircleImageRexConfig } from "./CircleImageRex";
+import { SceneWithRexUI } from "./RexUIBase";
 import TextBox from "./TextBox";
 import TextBoxPhaser, { FontTypeString } from "./TextBoxPhaser";
 import TextBoxRex from "./TextBoxRex";
@@ -91,6 +93,17 @@ export default class UIFactory {
         let circleImage = new CircleImage(scene, x, y, texture, radius);
         scene.add.existing(circleImage);
         return circleImage;
+    }
+
+    /**
+     * Creates an image with a border radius. You can change the radius of the border, the color of the 
+     * background, and the width and height of the image.
+     * @param scene SceneWithRexUI.
+     * @param config The CircleImageRexConfig.
+     * @returns CircleImageRex.
+     */
+    public static createCircleImageRex(scene: SceneWithRexUI, config: CircleImageRexConfig) {
+        return new CircleImageRex(scene, config);
     }
 
     /**

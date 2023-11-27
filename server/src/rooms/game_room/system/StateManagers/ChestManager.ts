@@ -39,8 +39,8 @@ export default class ChestManager {
         
         // setInterval(() => {
         //     this.spawnChest({
-        //         x: 500, y: 500,
-        //         rarity: "wood",
+        //         x: 250, y: 250,
+        //         rarity: "gold",
         //     })
         // }, 2000);
     }
