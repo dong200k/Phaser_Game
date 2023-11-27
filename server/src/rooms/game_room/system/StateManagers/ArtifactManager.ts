@@ -68,6 +68,16 @@ export default class ArtifactManager{
     }
 
     /**
+     * Max the level of an artifact.
+     * @param artifact The artifact.
+     */
+    public maxArtifact(artifact: Artifact) {
+        while(ArtifactManager.upgradeArtifact(artifact)) {
+            // Loop until upgrade ends.
+        }
+    }
+
+    /**
      * Takes in a player and a artifact upgrade tree's root. Equips the root onto one of the player's empty artifact trees if 
      * they do not already have the maximum amount of artifacts. Once the artifact is equipped, all of the artifact's selected 
      * effects and stat bonuses will also be applied to the player by this function.

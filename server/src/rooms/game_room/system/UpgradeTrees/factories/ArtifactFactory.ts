@@ -33,7 +33,7 @@ export default class ArtifactFactory{
 
     static createMaxedArtifact(id: string){
         let artifact = WeaponUpgradeFactory.createUpgrade(id) as Node<WeaponData>
-        ArtifactManager.selectAllUpgrades(artifact)
+        ArtifactManager.selectAllUpgrades(artifact);
         return artifact
     }
 }
