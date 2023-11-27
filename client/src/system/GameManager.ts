@@ -907,7 +907,7 @@ export default class GameManager {
         playerState.artifacts.forEach((artifact) => {
             items.push({
                 level: artifact.artifactLevel,
-                imageKey: "lightning_rod_icon",
+                imageKey: artifact.imageKey,
                 name: artifact.name,
                 description: artifact.description,
             });

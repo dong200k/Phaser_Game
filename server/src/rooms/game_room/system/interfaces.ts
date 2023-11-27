@@ -71,9 +71,12 @@ export interface TiledJSON {
 // ------------ interfaces for the Database Manager -------------- //
 export type upgrade = {
     id: string,
-    upgradeName: string,
+    name: string,
     root: Node<WeaponData>,
-    type: "artifact" | "weapon"
+    type: "artifact" | "weapon",
+    imageKey: string,
+    usage: string,
+    description: string
 }
 
 export type skillTree = {

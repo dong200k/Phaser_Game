@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import Tree from "react-d3-tree";
-import { getDefaultNode, getDefaultSkillNode, getDefaultUpgradeNode, useCenteredTree } from "../helpers.js";
+import { getDefaultSkillNode, getDefaultUpgradeNode, useCenteredTree, getDefaultUpgrade, getDefaultArtifact } from "../helpers.js";
 import { useParams } from "react-router";
 import EditNode from "./EditNode.js";
 import NodeDetails from "./NodeDetails.js";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { DataContext } from "../contexts/DataContextProvider.js";
+import { usageTypes } from "../effectTypes.js";
 
 
 const containerStyles = {
@@ -54,7 +55,12 @@ export default function Upgrade(props) {
 
   useEffect(()=>{
     getDocument(id, props.type + "s")
-      .then(doc=>setUpgrade(doc))
+      .then(doc=>{
+        if(doc.type === "weapon")
+          setUpgrade({...getDefaultUpgrade(), ...doc})
+        else
+          setUpgrade({...getDefaultArtifact(), ...doc})
+      })
   }, [getDocument, id, props])
 
   const setEdit = (node)=>{
@@ -93,8 +99,14 @@ export default function Upgrade(props) {
     return true
   }
 
-  function onChange(e){
-    setUpgrade(prevUpgrade=>({...prevUpgrade, name: e.target.value}))
+  function onChange(attribute){
+    return (e) => {
+      setUpgrade(prevUpgrade=>{
+        let newUpgrade = {...prevUpgrade}
+        newUpgrade[attribute] = e.target.value
+        return newUpgrade
+      })
+    }
   }
 
   async function saveUpgrade(){
@@ -184,6 +196,23 @@ export default function Upgrade(props) {
         </Dropdown.Menu>
     </Dropdown>
 
+  
+  const setUsage = (usage)=>{
+    setUpgrade(prevUpgrade=>({...prevUpgrade, usage: usage !== "none"? usage : ""}))
+  }
+  let usageDropdown =
+  <Dropdown className="mb-5">
+        <Dropdown.Toggle variant="info" id="dropdown-basic">
+            {upgrade?.usage? upgrade.usage : "Select usage"}
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+            {usageTypes.map(usage=>{
+                return <Dropdown.Item key={usage} onClick={()=>setUsage(usage)}>{usage}</Dropdown.Item>
+            })}
+        </Dropdown.Menu>
+    </Dropdown>
+
   return (
     <div>
       {!upgrade? 
@@ -191,9 +220,22 @@ export default function Upgrade(props) {
         :
         <div>
           <div className="text-center" style={{backgroundColor: props.type==="upgrade"? upgrade.type==="weapon"? "lightgreen":"lightpink" : "lightblue"}}>
-            <h1 className="text-center" style={{display:"inline-block"}}>{props.type==="upgrade"? upgrade.type==="weapon"? "Weapon":"Artifact" : "Skill"} Name:</h1>
-            <h1 style={{display:"inline-block"}}><input type="text" value={upgrade.name} onChange={onChange}/></h1>
             <h1 className="text-center">id: {upgrade.id}</h1>
+            <div>
+              <h1 className="text-center" style={{display:"inline-block"}}>{props.type==="upgrade"? upgrade.type==="weapon"? "Weapon":"Artifact" : "Skill"} Name:</h1>
+              <h1 style={{display:"inline-block"}}><input type="text" value={upgrade.name} onChange={onChange("name")}/></h1>
+            </div>
+            <div>
+              <h1 className="text-center" style={{display:"inline-block"}}>description:</h1>
+              <textarea value={upgrade.description} style={{width: "25%"}}  onChange={onChange("description")}/>
+
+            </div>
+            <div>
+              <h1 className="text-center" style={{display:"inline-block"}}>imageKey:</h1>
+              <h1 style={{display:"inline-block"}}><input type="text" value={upgrade.imageKey} onChange={onChange("imageKey")}/></h1>
+            </div>
+            {usageDropdown}            
+
             {
               props.type === "skill" && 
               <div>
