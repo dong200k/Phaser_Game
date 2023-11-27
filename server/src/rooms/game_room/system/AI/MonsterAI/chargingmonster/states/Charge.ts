@@ -41,8 +41,8 @@ export default class Charge extends StateNode {
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
         
         // Play charge windup animation here
-        monster.animation.playAnimation("death", {
-            duration: this.attackCooldown - this.attackTriggerPercent * this.attackCooldown
+        monster.animation.playAnimation(stateMachine.getChargeWindupKey(), {
+            loop: true
         })
     }
 
@@ -105,7 +105,9 @@ export default class Charge extends StateNode {
                 // monster.animation.playAnimation("death", false);
                 stateMachine.turnOnCooldown()   
                 this.attackTriggered = true;
-                monster.animation.playAnimation("walk", {loop: true});
+                if(stateMachine.getChargeKey() !== stateMachine.getChargeWindupKey()) {
+                    monster.animation.playAnimation(stateMachine.getChargeKey(), {loop: true});
+                }
                 if(aggroTarget){
                     let speed = getFinalSpeed(monster.stat) * this.chargeSpeedBoost * deltaT;
                     this.chargeDirection = {x: aggroTarget.x - monster.x, y: aggroTarget.y - monster.y}

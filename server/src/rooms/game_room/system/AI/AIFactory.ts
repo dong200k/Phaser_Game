@@ -38,6 +38,13 @@ export default class AIFactory {
             case "ArcaneArcher": mc = new RangedMonsterController({monster}); break;
             case "WolfSummoner": mc = new SummonerController({monster, summonedMonsterName: "Zombie Wolf"} as MonsterControllerData); break;
             case "ChargingMonster": mc = new ChargingMonsterController({monster} as MonsterControllerData); break;
+            case "Minotaur": mc = new ChargingMonsterController({monster, chargeKey: "spin"}); break;
+            case "Cthulu": mc = new ChargingMonsterController({
+                    monster, chargeKey: "fly", chargeWindupKey: "fly", attackKey: "atk_1", chargeSpeedBoost: 2.5, 
+                    monsterProjectileHitbox: {
+                        width: 100, height: 60, offsetX: 50, offsetY: 0
+                    }
+            }); break;
             case "RangedHealMonster": mc = new HealerMonsterController({monster} as MonsterControllerData); break;
             case "RangedPhantomMonster": mc = new RangedPhantomMonster({monster} as MonsterControllerData); break;
             default: mc = new MonsterController({monster});   

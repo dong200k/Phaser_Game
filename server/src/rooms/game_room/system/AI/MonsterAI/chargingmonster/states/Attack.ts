@@ -32,6 +32,9 @@ export default class Attack extends StateNode {
         this.attackTriggered = false;
         // Stop movement
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
+        monster.animation.playAnimation(stateMachine.getAttackKey(), {
+            duration: this.defaultAttackCooldown
+        })
     }
 
     public onExit(): void {
@@ -42,20 +45,25 @@ export default class Attack extends StateNode {
         let stateMachine = this.getStateMachine<ChargingMonsterController>();
         let monster = stateMachine.getMonster();
         let target = monster.getAggroTarget();
+        let {width, height, offsetX, offsetY} = stateMachine.getMonsterProjectileHitbox()
+
 
         if(target) {
+            if(target.x < monster.x) offsetX *= -1
+            if(target.y < monster.y) offsetY *= -1
+
             let projectileConfig: IProjectileConfig;
             projectileConfig = {
-                sprite: "TinyZombieAttack",
+                sprite: "invisible",
                 stat: monster.stat,
-                spawnX: monster.x,
-                spawnY: monster.y,
-                width: 16,
-                height: 16,
+                spawnX: monster.x + offsetX,
+                spawnY: monster.y + offsetY,
+                width: width,
+                height: height,
                 initialVelocity: MathUtil.getNormalizedSpeed(target.x - monster.x, target.y - monster.y, .1),
                 collisionCategory: "MONSTER_PROJECTILE",
                 range: 100,
-                activeTime: 500,
+                activeTime: 1000,
                 poolType: "monster_projectile",
                 attackMultiplier: 1,
                 magicMultiplier: 0,

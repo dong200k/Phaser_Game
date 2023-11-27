@@ -10,7 +10,6 @@ import ChargingMonsterController from "../ChargingMonsterController";
  */
 export default class Follow extends StateNode {
 
-    private MELEE_RANGE = 20
     public onEnter(): void {
         let stateMachine = (this.getStateMachine() as MonsterController);
         let monster = stateMachine.getMonster();
@@ -30,14 +29,14 @@ export default class Follow extends StateNode {
             let distance = MathUtil.distance(monster.x, monster.y, aggroTarget.x, aggroTarget.y)
 
             // Melee attack
-            if(distance <= this.MELEE_RANGE){
+            let attackRange = getFinalAttackRange(monster.stat, 1);
+            if(distance <= attackRange){
                 stateMachine.changeState("Attack")
                 return
             }
 
             // Charge attack
-            let attackRange = getFinalAttackRange(monster.stat, 1);
-            if(stateMachine.isChargeReady() && distance <= attackRange) {
+            if(stateMachine.isChargeReady() && distance <= stateMachine.getChargeRange()) {
                 this.getStateMachine().changeState("Charge");
             }else{
                 // Follow
