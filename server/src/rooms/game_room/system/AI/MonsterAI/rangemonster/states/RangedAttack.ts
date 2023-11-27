@@ -35,7 +35,7 @@ export default class RangedAttack extends Attack{
         if(target) {
             let projectileConfig: IProjectileConfig;
             projectileConfig = {
-                sprite: "purple_arrow",
+                sprite: stateMachine.getProjectileSprite(),
                 stat: monster.stat,
                 spawnX: monster.x,
                 spawnY: monster.y,

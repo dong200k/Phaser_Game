@@ -61,7 +61,7 @@ export default class WeaponUpgradeFactory{
             root.data.selectionTime = 0
         }
 
-        return root
+        return {...upgrade, root}
     }
 
     /**
@@ -73,7 +73,7 @@ export default class WeaponUpgradeFactory{
     }
 
     static createTribowUpgrade(){
-        return WeaponUpgradeFactory.createUpgrade('upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d') as Node<WeaponData>
+        return WeaponUpgradeFactory.createUpgrade('upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d')?.root as Node<WeaponData>
     }
 
     /**

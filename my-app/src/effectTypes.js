@@ -10,3 +10,15 @@ const effectTypes = [
 ]
 
 export default effectTypes
+
+/**
+ * usage of artifacts currently an aritfact can be classified as one of: conditional, passive, attack, special, or roll.
+ */
+export const usageTypes = [
+    "conditional passive",
+    "passive",
+    "attack",
+    "special",
+    "roll",
+    "none"
+]

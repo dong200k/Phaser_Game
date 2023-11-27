@@ -17,6 +17,9 @@ export function getDefaultUpgrade(){
     id: "upgrade-" + window.crypto.randomUUID(),
     name: "auto-generated",
     type: "weapon",
+    description: "description",
+    imageKey: "",
+    usage: "",
     root: getDefaultUpgradeNode()
   }
 }
@@ -26,6 +29,9 @@ export function getDefaultArtifact(){
     id: "upgrade-" + window.crypto.randomUUID(),
     name: "auto-generated",
     type: "artifact",
+    description: "description",
+    imageKey: "",
+    usage: "",
     root: getDefaultUpgradeNode()
   }
 }
@@ -92,6 +98,7 @@ export function getDefaultNode(){
 export function getDefaultUpgradeNode(){
   let node = {
     ...getDefaultNode(),
+    
   }
   // If there needs to be Additional key add them below
   node.data.upgradeEffect = {

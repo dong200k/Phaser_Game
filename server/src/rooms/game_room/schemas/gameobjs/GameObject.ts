@@ -49,6 +49,8 @@ export default class GameObject extends Schema implements Cloneable {
     @type(Sound) sound: Sound;
     // -- status effect --
     @type(StatusIcon) statusIcon: StatusIcon;
+    // -- transparency: between 0 and 1 --
+    @type('number') alpha: number
 
     // -- Extra identifier --
     @type("string") name: string
@@ -76,6 +78,7 @@ export default class GameObject extends Schema implements Cloneable {
         this.sound = new Sound();
         this.statusIcon = new StatusIcon();
         this.name = ""
+        this.alpha = 1
     }
 
     /** 

@@ -1,8 +1,12 @@
 import Monster from "../../schemas/gameobjs/monsters/Monster";
 import BerserkerBossController from "../StateControllers/BossControllers/BerserkerBossController/BerserkerBossController";
 import PlayerManager from "../StateManagers/PlayerManager";
+import ChargingMonsterController from "./MonsterAI/chargingmonster/ChargingMonsterController";
+import HealerMonsterController from "./MonsterAI/healer/HealerMonsterController";
+import RangedPhantomMonster from "./MonsterAI/rangedphantommonster/RangedPhantomMonster";
 import RangedMonsterController from "./MonsterAI/rangemonster/RangedMonsterController";
-import MonsterController from "./MonsterAI/simplemonster/MonsterController";
+import MonsterController, { MonsterControllerData } from "./MonsterAI/simplemonster/MonsterController";
+import SummonerController from "./MonsterAI/summoner/SummonerController";
 
 export default class AIFactory {
 
@@ -26,14 +30,24 @@ export default class AIFactory {
      * @returns A MonsterController.
      */
     public static createAIFromKey(monster: Monster, key: string): MonsterController {
-        console.log(`ai key: ${key}`)
-
         let mc: MonsterController;
+
         switch(key) {
             case "Default": mc = new MonsterController({monster}); break;
             case "BerserkerBoss": mc = new BerserkerBossController({monster}); break;
             case "ArcaneArcher": mc = new RangedMonsterController({monster}); break;
-            default: mc = new MonsterController({monster});
+            case "WolfSummoner": mc = new SummonerController({monster, summonedMonsterName: "Zombie Wolf"} as MonsterControllerData); break;
+            case "ChargingMonster": mc = new ChargingMonsterController({monster} as MonsterControllerData); break;
+            case "Minotaur": mc = new ChargingMonsterController({monster, chargeKey: "spin"}); break;
+            case "Cthulu": mc = new ChargingMonsterController({
+                    monster, chargeKey: "fly", chargeWindupKey: "fly", attackKey: "atk_1", chargeSpeedBoost: 2.5, 
+                    monsterProjectileHitbox: {
+                        width: 100, height: 60, offsetX: 50, offsetY: 0
+                    }
+            }); break;
+            case "RangedHealMonster": mc = new HealerMonsterController({monster} as MonsterControllerData); break;
+            case "RangedPhantomMonster": mc = new RangedPhantomMonster({monster} as MonsterControllerData); break;
+            default: mc = new MonsterController({monster});   
         }
         return mc;
     }

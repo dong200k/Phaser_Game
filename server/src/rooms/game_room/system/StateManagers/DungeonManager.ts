@@ -204,7 +204,7 @@ export default class DungeonManager {
         })
     }
 
-    public spawnMonster(monsterName: string): Monster | null {
+    public spawnMonster(monsterName: string, spawnPoint?: SpawnPoint | null): Monster | null {
         
         let monster: Monster;// = MonsterFactory.createMonster(monsterName);
         let poolType = monsterName;
@@ -238,12 +238,14 @@ export default class DungeonManager {
             // monster.width = width;
             // monster.height = height;
 
-            let randomSpawnPoint = null;
-            if(this.dungeon !== undefined)
+            let randomSpawnPoint = spawnPoint;
+            if(this.dungeon !== undefined && !randomSpawnPoint){
                 randomSpawnPoint = this.dungeon.getRandomMonsterSpawnPoint();
+
+            }
             let spawnX = 200;
             let spawnY = 200;
-            if(randomSpawnPoint !== null) {
+            if(randomSpawnPoint !== null && randomSpawnPoint !== undefined) {
                 spawnX = randomSpawnPoint.x + Math.floor((Math.random() * 10) - 5);
                 spawnY = randomSpawnPoint.y + Math.floor((Math.random() * 10) - 5);
             }

@@ -1,6 +1,7 @@
 import MathUtil from "../../../../../../../util/MathUtil"
 import WeaponUpgradeTree from "../../../../../schemas/Trees/WeaponUpgradeTree"
 import Player from "../../../../../schemas/gameobjs/Player"
+import Stat from "../../../../../schemas/gameobjs/Stat"
 import Projectile from "../../../../../schemas/projectiles/Projectile"
 import { getFinalArea } from "../../../../Formulas/formulas"
 import GameManager from "../../../../GameManager"
@@ -138,6 +139,22 @@ export class RuneGuard extends EffectLogic{
 
     public applyCooldownReduction(cooldownReduction: number){
         this.cooldownReduction *= (1 - cooldownReduction)
+    }
+
+    /**
+     * 
+     * @returns The total damage multiplier
+     */
+    public getMult(){
+        return this.damageMult * this.laserDamage
+    }
+
+    /**
+     * 
+     * @returns The amount of projectiles fired each time taking into account player stat
+     */
+    public getAmount({amount}: Stat){
+        return this.runeCount
     }
 }
 

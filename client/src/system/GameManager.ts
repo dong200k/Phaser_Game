@@ -107,6 +107,7 @@ export default class GameManager {
         this.interpolateGameObjects();
         this.syncGameObjectVisibility();
         this.syncGameObjectActive();
+        this.syncGameObjectAlpha();
         this.updateFloatingTexts();
         this.renderFollowPlayerObjects();
         this.updateAuraPosition();
@@ -223,6 +224,12 @@ export default class GameManager {
             }
             obj.setActive(obj.serverActive);
             obj.setVisible(obj.serverActive);
+        })
+    }
+
+    private syncGameObjectAlpha() {
+        this.gameObjects?.forEach((obj) => {
+            if(obj.alphaValue) obj.setAlpha(obj.alphaValue);
         })
     }
 
@@ -647,6 +654,7 @@ export default class GameManager {
 
         gameObject.serverVisible = gameObjectState.visible;
         gameObject.serverActive = gameObjectState.active;
+        gameObject.alphaValue = gameObjectState.alpha;
     }
 
     /** Called when the velocity of the gameObject is updated on the server. */
@@ -899,7 +907,7 @@ export default class GameManager {
         playerState.artifacts.forEach((artifact) => {
             items.push({
                 level: artifact.artifactLevel,
-                imageKey: "lightning_rod_icon",
+                imageKey: artifact.imageKey,
                 name: artifact.name,
                 description: artifact.description,
             });

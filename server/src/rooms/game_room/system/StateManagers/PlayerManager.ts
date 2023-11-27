@@ -12,7 +12,7 @@ import SkillTreeManager from './SkillTreeManager';
 import ReconciliationInfo from '../../schemas/ReconciliationInfo';
 import WeaponManager from './WeaponManager';
 import PlayerService from '../../../../services/PlayerService';
-import { getFinalSpeed } from '../Formulas/formulas';
+import { getDamage, getEstimatedDps, getFinalAttackSpeed, getFinalSpeed } from '../Formulas/formulas';
 import WeaponUpgradeTree from '../../schemas/Trees/WeaponUpgradeTree';
 import DatabaseManager from '../Database/DatabaseManager';
 import Node from '../../schemas/Trees/Node/Node';
@@ -21,6 +21,7 @@ import { IAbility, IRole } from '../interfaces';
 import Stat from '../../schemas/gameobjs/Stat';
 import Ability from '../../schemas/gameobjs/Ability';
 import TriggerUpgradeEffect from '../../schemas/effects/trigger/TriggerUpgradeEffect';
+import ContinuousUpgradeEffect from '../../schemas/effects/continuous/ContinuousUpgradeEffect';
 import Artifact from '../../schemas/Trees/Artifact';
 
 interface InputPlayload {
@@ -299,8 +300,8 @@ export default class PlayerManager {
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedFrostGlaive)
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
-        // let healthRegenArtifact = ArtifactFactory.createMaxedArtifact("upgrade-9efe1a19-2b8d-4080-8337-e2846192169f")
-        // this.gameManager.getArtifactManager().equipArtifact(player, healthRegenArtifact)
+        let healthRegenArtifact = ArtifactFactory.createMaxedArtifact("upgrade-9efe1a19-2b8d-4080-8337-e2846192169f")
+        this.gameManager.getArtifactManager().equipArtifact(player, healthRegenArtifact)
 
         let artifactManager = this.gameManager.getArtifactManager();
 
@@ -393,6 +394,55 @@ export default class PlayerManager {
         // this.equipArtifact(player, runeGuard)
     }
 
+
+    /**
+     * Prints the dps of the different effects depending on the player's stats. These effects must have the following methods:
+     * 
+     * ** getMult() returns an attack multiplier
+     * ** getAmount(stat) returns the amount of projectiles fired each time.
+     * 
+     * Note:
+     * Currently does not support magic multiplier, which is not being used yet.
+     */
+    public printDPS(player: Player){
+        let playerAttackCooldown = 1/getFinalAttackSpeed(player.stat)
+        const printSingleEffectDps = (effectLogicId: string, amount: number, singleShotDPS: number, singleHitDamage: number)=> {
+            console.log(`\nEffectLogicId: ${effectLogicId}`)
+            console.log(`AVG Single projectile DPS: ${singleShotDPS}`)
+            console.log(`AVG Max ${amount} projectile DPS: ${singleShotDPS * amount}`)
+            console.log(`AVG 1 Hit Damage: ${singleHitDamage}\n`)
+        }
+
+        player.effects.forEach(effect=>{
+            if((effect instanceof TriggerUpgradeEffect || effect instanceof ContinuousUpgradeEffect)
+            && effect.effectLogic 
+            && "getMult" in effect.effectLogic
+            && "getAmount" in effect.effectLogic){
+                try {
+                    let effectLogic = effect.effectLogic as any
+                    let mult = effectLogic.getMult()
+                    let amount = effectLogic.getAmount(player.stat)
+                    let singleHitDamage = getDamage(player.stat, mult)
+
+                    // Compute dps
+                    let dps = 0
+                    if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack"){
+                        dps = getEstimatedDps(player.stat, playerAttackCooldown, mult)
+                    }else if(effect instanceof ContinuousUpgradeEffect){
+                        let seconds = effect.getCooldown(player.stat)
+                        console.log(`seconds: ${seconds}`)
+                        dps = getEstimatedDps(player.stat, seconds, mult)
+                    }
+
+                    printSingleEffectDps(effect.effectLogicId, amount, dps, singleHitDamage)
+                } catch (error) {
+                    console.log(`Error calculating dps for effectLogic: ${effect.effectLogicId}`)
+                    console.log(error)
+                }
+            }
+        })
+    }
+
     /**
      * Equips starter weapon and ability unto the input player based on input role. If weapon/ability are not found then default ones are used.
      * @param player 
@@ -409,7 +459,7 @@ export default class PlayerManager {
             console.log(`Starter weapon for ${role.name} role not found, using default weapon.`)
             weaponUpgradeId = "upgrade-c53e70c0-2a18-41f3-8dec-bd7ca194493d"
         }
-        let root = WeaponUpgradeFactory.createUpgrade(weaponUpgradeId) as Node<WeaponData>
+        let root = WeaponUpgradeFactory.createUpgrade(weaponUpgradeId)?.root as Node<WeaponData>
         // let root = WeaponUpgradeFactory.createMaxUpgrade(weaponUpgradeId) as Node<WeaponData>
         WeaponManager.equipWeaponUpgrade(player, root);
         console.log(`equiping ${role.name} weapon:`, root.data.name)

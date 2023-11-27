@@ -11,6 +11,11 @@ export default class WeaponUpgradeTree extends StatTree<WeaponData>{
     @type('string') weaponId
     /** List of effects that are selected (not all of these are active, for active effects look on the entity who is equiping this tree) */
     @type([Effect]) effects = new ArraySchema<Effect>();
+    @type('string') imageKey = ""
+    /** Describes what kind of weapon/artifact it is. 
+     * 
+     * Look at the my-app effectTypes file usageTypes variable to see possible usages. Or just edit a weapon/artifact on my-app and use the ui dropdown. */
+    @type('string') usage = ""
 
     owner?: Player
 

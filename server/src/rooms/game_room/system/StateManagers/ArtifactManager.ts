@@ -7,6 +7,7 @@ import StatTree from '../../schemas/Trees/StatTree';
 import Player from '../../schemas/gameobjs/Player';
 import GameManager from '../GameManager';
 import WeaponUpgradeFactory from '../UpgradeTrees/factories/WeaponUpgradeFactory';
+import { upgrade } from '../interfaces';
 import TreeManager from './TreeManager';
 
 export default class ArtifactManager{
@@ -41,7 +42,8 @@ export default class ArtifactManager{
      * that this artifact will use.
      */
     public createArtifact(upgradeId: string) {
-        let upgradeTree = WeaponUpgradeFactory.createUpgrade(upgradeId);
+        let upgrade = WeaponUpgradeFactory.createUpgrade(upgradeId) as upgrade;
+        let upgradeTree = upgrade?.root
         if(!upgradeTree) {
             throw new Error(`Error: Upgrade Tree with Id ${upgradeId} does not exist`);
         }
@@ -50,8 +52,10 @@ export default class ArtifactManager{
         let artifact = this.artifactPool.getInstance()
         artifact.root = upgradeTree;
         artifact.setId(upgradeId);
-        artifact.name = upgradeTree.data.name;
-        artifact.description = upgradeTree.data.description;
+        artifact.name = upgrade.name;
+        artifact.description = upgrade.description;
+        artifact.imageKey = upgrade.imageKey;
+        artifact.usage = upgrade.usage;
 
         // Set the artifacts level
         let curr = upgradeTree;
