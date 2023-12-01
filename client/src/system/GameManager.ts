@@ -869,6 +869,7 @@ export default class GameManager {
 
                 let upgradesList: any[] = [];
                 playerState.upgradeInfo.currentUpgrades.forEach((item, idx) => {
+                    if(playerState.upgradeInfo.currentUpgrades.length === 2) console.log(item)
                     upgradesList.push({
                         typeName: item.type,
                         name: item.name,

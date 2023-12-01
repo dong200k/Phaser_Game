@@ -5,6 +5,7 @@ import SummonerController from "../SummonerController";
 import { getFinalAttackCooldown, getFinalAttackRange } from "../../../../Formulas/formulas";
 import MathUtil from "../../../../../../../util/MathUtil";
 import { SpawnPoint } from "../../../../../schemas/dungeon/Dungeon";
+import { GameEvents, IProjectileConfig } from "../../../../interfaces";
 
 /**
  * The Summon state is entered periodically. In this state the monster will summon other monsters
@@ -51,8 +52,50 @@ export default class Summon extends StateNode {
         let summonedMonsterName = stateMachine.getSummonedMonsterName()
 
         for(let i=0;i<this.summonedMonsterCount;i++){
-            stateMachine.getPlayerManager().getGameManager().getDungeonManager().spawnMonster(summonedMonsterName, monster.getBody().position as SpawnPoint)
+            let pos = this.getSummonPosition()
+            this.spawnSummoningCircle(pos)
+            stateMachine.getPlayerManager().getGameManager().getDungeonManager().spawnMonster(summonedMonsterName, pos)
         }
+    }
+
+    private spawnSummoningCircle(pos: SpawnPoint){
+        let stateMachine = this.getStateMachine<SummonerController>();
+        let monster = stateMachine.getMonster();
+
+        let projectileConfig: IProjectileConfig;
+        projectileConfig = {
+            sprite: "summon_circle",
+            stat: monster.stat,
+            spawnX: pos.x,
+            spawnY: pos.y,
+            width: 64,
+            height: 64,
+            initialVelocity: {x: 0, y: 0},
+            collisionCategory: "NONE",
+            activeTime: 1000,
+            poolType: "summon_circle",
+            attackMultiplier: 1,
+            magicMultiplier: 0,
+            classType: "Projectile",
+            repeatAnimation: true,
+            dontDespawnOnObstacleCollision: true,
+        }
+
+        stateMachine.getPlayerManager().getGameManager().getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, projectileConfig);
+    }
+
+    private getSummonPosition(){
+        let stateMachine = this.getStateMachine<SummonerController>();
+        let monster = stateMachine.getMonster();
+        let pos = monster.getBody().position as SpawnPoint
+        let offsetX = Math.random() * 5 + 20
+        let offsetY = Math.random() * 5 + 20
+        if(Math.random()<0.5) offsetX *= -1
+        if(Math.random()<0.5) offsetY *= -1
+
+        pos.x += offsetX
+        pos.y += offsetY
+        return pos
     }
 
     public update(deltaT: number): void {

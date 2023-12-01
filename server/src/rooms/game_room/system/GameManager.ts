@@ -21,6 +21,7 @@ import Entity from '../schemas/gameobjs/Entity';
 import Monster from '../schemas/gameobjs/monsters/Monster';
 import AuraManager from './StateManagers/AuraManager';
 import ChestManager from './StateManagers/ChestManager';
+import ForgeManager from './BetweenWaves/ForgeManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -37,6 +38,7 @@ export default class GameManager {
     private abilityManager!: AbilityManager;
     private auraManager!: AuraManager;
     private chestManager!: ChestManager;
+    private forgeManager!: ForgeManager;
 
     // Data
     public matterBodies: Map<string, Matter.Body> = new Map();
@@ -83,6 +85,7 @@ export default class GameManager {
         this.abilityManager = new AbilityManager(this)
         this.auraManager = new AuraManager(this);
         this.chestManager = new ChestManager(this);
+        this.forgeManager = new ForgeManager(this)
 
         this.initUpdateEvents();
         this.initCollisionEvent();
@@ -244,6 +247,10 @@ export default class GameManager {
 
     public getChestManager() {
         return this.chestManager;
+    }
+
+    public getForgeManager() {
+        return this.forgeManager
     }
 
     /** Gets the EventEmitter for this GameManager. Used to send events throughout this game. */

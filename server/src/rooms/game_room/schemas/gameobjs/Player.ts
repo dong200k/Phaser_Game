@@ -9,12 +9,16 @@ import PlayerController from '../../system/StateControllers/PlayerControllers/Pl
 import Ability from './Ability';
 import ctors, { IRoleControllerClasses } from '../../system/StateControllers/RoleControllerClasses';
 import Artifact from '../Trees/Artifact';
+import WeaponData from '../Trees/Node/Data/WeaponData';
+import Node from '../Trees/Node/Node';
 
 interface IUpgradeItemConfig {
     name: string;
     type: "weapon" | "artifact";
     description: string;
     imageKey: string;
+    tree: WeaponUpgradeTree;
+    upgradeNode: Node<WeaponData>
 }
 
 export class UpgradeItem extends Schema {
@@ -22,6 +26,8 @@ export class UpgradeItem extends Schema {
     @type('string') type: "weapon" | "artifact";
     @type('string') description: string;
     @type('string') imageKey: string;
+    private tree: WeaponUpgradeTree
+    private upgradeNode: Node<WeaponData>
 
     constructor(config: IUpgradeItemConfig) {
         super();
@@ -29,6 +35,25 @@ export class UpgradeItem extends Schema {
         this.type = config.type;
         this.description = config.description;
         this.imageKey = config.imageKey;
+        this.tree = config.tree
+        this.upgradeNode = config.upgradeNode
+    }
+
+    isEqual(upgradeItem: UpgradeItem){
+        return upgradeItem.name === this.name 
+            && upgradeItem.description === this.description 
+            && upgradeItem.type === this.type
+            && upgradeItem.imageKey === this.imageKey
+            && upgradeItem.tree === this.tree
+            && upgradeItem.upgradeNode === this.upgradeNode
+    }
+
+    getTree(){
+        return this.tree
+    }
+
+    getUpgradeNode(){
+        return this.upgradeNode
     }
 }
 
@@ -57,6 +82,14 @@ class UpgradeInfo extends Schema {
         if(nextUpgrade.length === 0) console.log("Warn: No player upgrades were given");
         else {
             this.currentUpgrades = nextUpgrade;
+            if(nextUpgrade.length == 2){
+                setTimeout(()=>{
+                    console.log("current upgrades: ")
+                    this.currentUpgrades.forEach(upgrade=>{
+                        console.log(`${upgrade.name},`)
+                    })
+                }, 5000)
+            }
             this.playerIsSelectingUpgrades = true;
             this.upgradePing++;
         }
@@ -64,9 +97,21 @@ class UpgradeInfo extends Schema {
 
     /** Called when the player has selected an upgrade. */
     public playerSelectedUpgrade() {
-        this.currentUpgrades = [];
+        this.currentUpgrades = []
         this.playerIsSelectingUpgrades = false;
         this.upgradeCount++;
+    }
+
+    /** Removes an upgrade from the UpgradeItem list.
+     * 
+     * Called after an upgrade is selected.
+     */
+    public removeUpgrade(item: UpgradeItem) {
+        this.currentUpgrades = this.currentUpgrades.filter(upgrade=>item !== upgrade)
+    }
+
+    public incrementUpgradeCount(){
+        this.upgradeCount++
     }
 }
 

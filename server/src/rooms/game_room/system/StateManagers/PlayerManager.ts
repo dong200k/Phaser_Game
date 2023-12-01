@@ -333,57 +333,57 @@ export default class PlayerManager {
         // artifactManager.maxArtifact(friendshipArtifact);
         // this.equipArtifact(player, friendshipArtifact)
 
-        let fireballArtifact = artifactManager.createArtifact("upgrade-53123fa2-93a1-4a31-b021-cc8c9a236919")
-        artifactManager.maxArtifact(fireballArtifact);
-        this.equipArtifact(player, fireballArtifact)
+        // let fireballArtifact = artifactManager.createArtifact("upgrade-53123fa2-93a1-4a31-b021-cc8c9a236919")
+        // artifactManager.maxArtifact(fireballArtifact);
+        // this.equipArtifact(player, fireballArtifact)
 
-        let lightningRod = artifactManager.createArtifact("upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50")
-        artifactManager.maxArtifact(lightningRod);
-        this.equipArtifact(player, lightningRod)
+        // let lightningRod = artifactManager.createArtifact("upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50")
+        // artifactManager.maxArtifact(lightningRod);
+        // this.equipArtifact(player, lightningRod)
         
-        let qiArmor = artifactManager.createArtifact("upgrade-4c5aef1c-ed88-4795-90f6-49f7c1ef2b42")
-        artifactManager.maxArtifact(qiArmor);
-        this.equipArtifact(player, qiArmor)
+        // let qiArmor = artifactManager.createArtifact("upgrade-4c5aef1c-ed88-4795-90f6-49f7c1ef2b42")
+        // artifactManager.maxArtifact(qiArmor);
+        // this.equipArtifact(player, qiArmor)
 
-        let mushroom = artifactManager.createArtifact("upgrade-f6af6929-e3f6-43d4-b441-8216fda94eac")
-        artifactManager.maxArtifact(mushroom);
-        this.equipArtifact(player, mushroom)
+        // let mushroom = artifactManager.createArtifact("upgrade-f6af6929-e3f6-43d4-b441-8216fda94eac")
+        // artifactManager.maxArtifact(mushroom);
+        // this.equipArtifact(player, mushroom)
 
-        let carrot = artifactManager.createArtifact("upgrade-16005a69-9f01-4f5a-b2a5-53029a9e08e3")
-        artifactManager.maxArtifact(carrot);
-        this.equipArtifact(player, carrot)
+        // let carrot = artifactManager.createArtifact("upgrade-16005a69-9f01-4f5a-b2a5-53029a9e08e3")
+        // artifactManager.maxArtifact(carrot);
+        // this.equipArtifact(player, carrot)
 
-        let broccoli = artifactManager.createArtifact("upgrade-1718a411-4b87-4f14-bf7b-20aa5bfbce91")
-        artifactManager.maxArtifact(broccoli);
-        this.equipArtifact(player, broccoli)
+        // let broccoli = artifactManager.createArtifact("upgrade-1718a411-4b87-4f14-bf7b-20aa5bfbce91")
+        // artifactManager.maxArtifact(broccoli);
+        // this.equipArtifact(player, broccoli)
 
-        let snowPeas = artifactManager.createArtifact("upgrade-3575faf7-9b58-42a1-bab2-c5e92b1870e7")
-        artifactManager.maxArtifact(snowPeas);
-        this.equipArtifact(player, snowPeas)
+        // let snowPeas = artifactManager.createArtifact("upgrade-3575faf7-9b58-42a1-bab2-c5e92b1870e7")
+        // artifactManager.maxArtifact(snowPeas);
+        // this.equipArtifact(player, snowPeas)
 
-        let pea = artifactManager.createArtifact("upgrade-6f24598c-785a-4f9c-ad69-dd3fbb852168")
-        artifactManager.maxArtifact(pea);
-        this.equipArtifact(player, pea)
+        // let pea = artifactManager.createArtifact("upgrade-6f24598c-785a-4f9c-ad69-dd3fbb852168")
+        // artifactManager.maxArtifact(pea);
+        // this.equipArtifact(player, pea)
 
-        let avocado = artifactManager.createArtifact("upgrade-7492fcd1-836f-48a5-94e8-c0d7a1eb514d")
-        artifactManager.maxArtifact(avocado);
-        this.equipArtifact(player, avocado)
+        // let avocado = artifactManager.createArtifact("upgrade-7492fcd1-836f-48a5-94e8-c0d7a1eb514d")
+        // artifactManager.maxArtifact(avocado);
+        // this.equipArtifact(player, avocado)
 
-        let beans = artifactManager.createArtifact("upgrade-864ffacb-1a5d-4a33-8d8c-ca3fda4c3aba")
-        artifactManager.maxArtifact(beans);
-        this.equipArtifact(player, beans)
+        // let beans = artifactManager.createArtifact("upgrade-864ffacb-1a5d-4a33-8d8c-ca3fda4c3aba")
+        // artifactManager.maxArtifact(beans);
+        // this.equipArtifact(player, beans)
 
-        let beets = artifactManager.createArtifact("upgrade-d99f9c75-0cfd-46ec-b4ab-13727c5944f4")
-        artifactManager.maxArtifact(beets);
-        this.equipArtifact(player, beets)
+        // let beets = artifactManager.createArtifact("upgrade-d99f9c75-0cfd-46ec-b4ab-13727c5944f4")
+        // artifactManager.maxArtifact(beets);
+        // this.equipArtifact(player, beets)
 
-        let tomato = artifactManager.createArtifact("upgrade-e5c6e893-a1fc-4f12-aa39-d43aceb3d1b6")
-        artifactManager.maxArtifact(tomato);
-        this.equipArtifact(player, tomato)
+        // let tomato = artifactManager.createArtifact("upgrade-e5c6e893-a1fc-4f12-aa39-d43aceb3d1b6")
+        // artifactManager.maxArtifact(tomato);
+        // this.equipArtifact(player, tomato)
 
-        let bananas = artifactManager.createArtifact("upgrade-fcaa71cb-8308-411f-adf7-4ea741522a29")
-        artifactManager.maxArtifact(bananas);
-        this.equipArtifact(player, bananas)
+        // let bananas = artifactManager.createArtifact("upgrade-fcaa71cb-8308-411f-adf7-4ea741522a29")
+        // artifactManager.maxArtifact(bananas);
+        // this.equipArtifact(player, bananas)
 
         // let frostWalker = artifactManager.createArtifact("upgrade-3cd595a8-f245-44ea-8847-c73bf791b494")
         // artifactManager.maxArtifact(frostWalker);
@@ -692,17 +692,23 @@ export default class PlayerManager {
      */
     public processPlayerSelectUpgrade(playerId: string, choice: number) {
         let player = this.getPlayerWithId(playerId);
-        if(player) {
-            let upgrades = WeaponManager.getAvailableUpgrades(player);
-            if(upgrades.length > choice) {
-                WeaponManager.selectUpgrade(player, upgrades, choice);
-                console.log('selected upgrade: ', upgrades[choice].data.name)
+        let forgeManager = this.gameManager.getForgeManager()
 
-                // Update the fields in upgradeInfo.
-                player.upgradeInfo.playerSelectedUpgrade();
-                // Give the player another upgrade if their level - 1 is greater than the number of times they upgraded.
-                if(player.level - 1 > player.upgradeInfo.upgradeCount) {
-                    this.givePlayerUpgradeSelection(player);
+        if(player && forgeManager.getChangesRemaning(playerId) > 0) {
+            let upgrades = player.upgradeInfo.currentUpgrades
+            let selectedUpgrade = upgrades[choice]
+            let success = forgeManager.selectUpgrade(playerId, selectedUpgrade)
+
+            if(success){
+                console.log('selected upgrade: ', selectedUpgrade.getUpgradeNode().data.name)
+                if(forgeManager.getChangesRemaning(playerId) <= 0){
+                    // Clear upgrades.
+                    player.upgradeInfo.playerSelectedUpgrade();
+                    // this.gameManager.getForgeManager().resetForgeUpgrades(playerId)
+                }else{
+                    // Remove only selected upgrade
+                    player.upgradeInfo.removeUpgrade(selectedUpgrade)
+                    player.upgradeInfo.incrementUpgradeCount()
                 }
             }
         }
@@ -713,21 +719,24 @@ export default class PlayerManager {
      * @param player The player.
      */
     public givePlayerUpgradeSelection(player: Player) {
-        let upgradesForLevel = player.upgradeInfo.upgradeCount + 2;
+        let upgrades = this.gameManager.getForgeManager().getItemUpgrades(player.getId())
 
-        let weaponUpgrades = WeaponManager.getAvailableUpgrades(player);
+        player.upgradeInfo.giveNextUpgrade(this.copyUpgrades(upgrades));
+        // player.upgradeInfo.giveNextUpgrade([...upgrades]);
+    }
 
-        let upgradeItems: UpgradeItem[] = [];
-        weaponUpgrades.forEach((weaponUpgrade) => {
-            upgradeItems.push(new UpgradeItem({
-                
-                name: weaponUpgrade.data.name,
-                type: "weapon",
-                description: weaponUpgrade.data.description,
-                imageKey: weaponUpgrade.data.name.toLocaleLowerCase() + "_icon",
-            }));
-        })
+    public copyUpgrades(upgrades: UpgradeItem[]){
+        let newUpgrades: UpgradeItem[] = []
 
-        player.upgradeInfo.giveNextUpgrade(upgradeItems);
+        upgrades.forEach(upgrade=>newUpgrades.push(new UpgradeItem({
+            upgradeNode: upgrade.getUpgradeNode(),
+            name: upgrade.name,
+            description: upgrade.description,
+            tree: upgrade.getTree(),
+            imageKey: upgrade.imageKey,
+            type: upgrade.type
+        })))
+
+        return newUpgrades
     }
 }
