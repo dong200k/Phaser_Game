@@ -621,8 +621,8 @@ export default class PlayerManager {
             player.xp -= player.maxXp;
             player.level++;
             // If the player is not currently selecting an upgrade give them one.
-            if(!player.upgradeInfo.playerIsSelectingUpgrades)
-                this.givePlayerUpgradeSelection(player);
+            // if(!player.upgradeInfo.playerIsSelectingUpgrades)
+            //     this.givePlayerUpgradeSelection(player);
         }
     }
 
@@ -715,14 +715,12 @@ export default class PlayerManager {
     }
 
     /** 
-     * Chooses the next upgrades for a player.
+     * Gives the next upgrades options to a player.
      * @param player The player.
+     * @param upgrades List of UpgradeItems
      */
-    public givePlayerUpgradeSelection(player: Player) {
-        let upgrades = this.gameManager.getForgeManager().getItemUpgrades(player.getId())
-
+    public givePlayerUpgradeSelection(player: Player, upgrades: UpgradeItem[]) {
         player.upgradeInfo.giveNextUpgrade(this.copyUpgrades(upgrades));
-        // player.upgradeInfo.giveNextUpgrade([...upgrades]);
     }
 
     public copyUpgrades(upgrades: UpgradeItem[]){

@@ -21,5 +21,4 @@ export default class Chest extends GameObject
         // Generate animations for this chest.
         scene.anims.createFromAseprite(animationKey, undefined, this);
     }
-
 }

@@ -13,6 +13,7 @@ import Aura from "../../schemas/gameobjs/aura/Aura";
 import Matter from "matter-js";
 import MathUtil from "../../../../util/MathUtil";
 import Chest from "../../schemas/gameobjs/chest/Chest";
+import Forge from "../../schemas/gameobjs/Forge";
 
 export default class CollisionManager{
     private gameManager: GameManager
@@ -52,6 +53,9 @@ export default class CollisionManager{
         // Chest Collisions
         {typeA: "PLAYER", typeB: "CHEST", resolve: this.resolveChestCollision},
 
+        // Forge Collisions
+        {typeA: "PLAYER", typeB: "FORGE", resolve: this.resolveForgeCollision},
+
         // **TODO** Add more 
     ]
 
@@ -70,6 +74,7 @@ export default class CollisionManager{
         // Get Category number
         let categoryNumberA = bodyA.collisionFilter.category
         let categoryNumberB = bodyB.collisionFilter.category
+        // console.log(categoryNumberA, categoryNumberB)
 
         if(categoryNumberA === undefined || categoryNumberB === undefined) return
 
@@ -99,7 +104,8 @@ export default class CollisionManager{
             // Order is based on what appears first/category number of the matter bodies's collision filter.
             // Check Category.ts to see order
             if((typeA === categoryA && typeB === categoryB)){
-                //console.log(`${typeA}, ${typeB}`)
+                // console.log(`${typeA}, ${typeB}`)
+                
                 resolve(gameObjectA, gameObjectB, bodyA, bodyB)
                 return
             }
@@ -246,5 +252,10 @@ export default class CollisionManager{
     public resolveChestCollision(player: Player, chest: Chest, bodyA: Matter.Body, bodyB: Matter.Body) {
         chest.disableCollisions();
         player.gameManager.getChestManager().handleOpenChest(player, chest);
+    }
+
+    public resolveForgeCollision(player: Player, forge: Forge, bodyA: Matter.Body, bodyB: Matter.Body) {
+        console.log("Resolve forge collisions")
+        player.gameManager.getForgeManager().handleOpenForge(player, forge);
     }
 }

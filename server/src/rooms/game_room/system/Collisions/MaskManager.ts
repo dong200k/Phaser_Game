@@ -27,6 +27,7 @@ export default class MaskManager {
         this.setCollideable("PLAYER", "NPC")
         this.setCollideable("PLAYER", "PLAYER_BARRIER")
         this.setCollideable("PLAYER", "AURA")
+        this.setCollideable("PLAYER", "FORGE")
     }
 
     private initMonsterMasks(){

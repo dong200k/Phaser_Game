@@ -9,7 +9,7 @@ import Wave from "../../schemas/dungeon/wave/Wave"
 import DungeonEvent from "../../schemas/dungeon/DungeonEvent"
 import AIFactory from "../AI/AIFactory"
 import FileUtil from "../../../../util/FileUtil"
-import { IDungeon, TiledJSON } from "../interfaces"
+import { IDungeon, IDungeonWave, TiledJSON } from "../interfaces"
 import Tilemap from "../../schemas/dungeon/tilemap/Tilemap"
 import Layer from "../../schemas/dungeon/tilemap/Layer"
 import MathUtil from "../../../../util/MathUtil"
@@ -18,6 +18,7 @@ import TinyZombie from "../../schemas/gameobjs/monsters/zombie/TinyZombie"
 import InvisObstacle from "../../schemas/gameobjs/InvisObstacle"
 import DatabaseManager from "../Database/DatabaseManager"
 import Entity from "../../schemas/gameobjs/Entity"
+import SafeWave from "../../schemas/dungeon/wave/SafeWave"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -193,15 +194,35 @@ export default class DungeonManager {
     public createWavesFromData(dungeon: Dungeon, dungeonData: IDungeon) {
         dungeonData.waves.forEach((waveData) => {
             let waveType = waveData.type; // TODO: Create wave types.
-            let wave = new Wave((name: string) => {
-                this.spawnMonster(name);
-            })
-            wave.setAgressionLevel(waveData.difficulty);
-            waveData.monsters.forEach((monsterData) => {
-                wave.addMonster(monsterData.name, monsterData.count);
-            })
+            let wave: Wave
+
+            switch(waveType){
+                case "safe":
+                    wave = this.createSafeWave(waveData)
+                    break;
+                default:
+                    wave = this.createPackWave(waveData)
+                    break;
+            }
+            
             dungeon.addWave(wave);
         })
+    }
+
+    public createPackWave(waveData: IDungeonWave){
+        let wave = new Wave((name: string) => {
+            this.spawnMonster(name);
+        })
+        wave.setAgressionLevel(waveData.difficulty);
+        waveData.monsters.forEach((monsterData) => {
+            wave.addMonster(monsterData.name, monsterData.count);
+        })
+        return wave
+    }
+
+    public createSafeWave(waveData: IDungeonWave){
+        let wave = new SafeWave(this.gameManager, 10, {x: 113, y: 111})
+        return wave
     }
 
     public spawnMonster(monsterName: string, spawnPoint?: SpawnPoint | null): Monster | null {

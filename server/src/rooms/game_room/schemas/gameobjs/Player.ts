@@ -66,6 +66,8 @@ class UpgradeInfo extends Schema {
     @type('number') upgradeCount: number = 0;
     /** A list of the current upgrades the player is choosing from. */
     @type([UpgradeItem]) currentUpgrades: UpgradeItem[] = [];
+    /** Upgrade chances left in forge */
+    @type('number') forgeUpgradeChances = 0
 
     /** Used to filter the upgrade info to the correct player. */
     playerId: string;
@@ -82,14 +84,6 @@ class UpgradeInfo extends Schema {
         if(nextUpgrade.length === 0) console.log("Warn: No player upgrades were given");
         else {
             this.currentUpgrades = nextUpgrade;
-            if(nextUpgrade.length == 2){
-                setTimeout(()=>{
-                    console.log("current upgrades: ")
-                    this.currentUpgrades.forEach(upgrade=>{
-                        console.log(`${upgrade.name},`)
-                    })
-                }, 5000)
-            }
             this.playerIsSelectingUpgrades = true;
             this.upgradePing++;
         }
@@ -112,6 +106,10 @@ class UpgradeInfo extends Schema {
 
     public incrementUpgradeCount(){
         this.upgradeCount++
+    }
+
+    public setForgeUpgradeChances(chances: number){
+        this.forgeUpgradeChances = chances
     }
 }
 

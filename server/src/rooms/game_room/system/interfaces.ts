@@ -103,7 +103,7 @@ interface IWaveMonster {
     monsterId: string;
 }
 
-interface IDungeonWave {
+export interface IDungeonWave {
     type: string;
     difficulty: number;
     monsters: IWaveMonster[];

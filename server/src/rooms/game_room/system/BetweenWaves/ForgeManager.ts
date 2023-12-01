@@ -1,4 +1,7 @@
+import Matter from "matter-js"
 import Artifact from "../../schemas/Trees/Artifact"
+import Forge from "../../schemas/gameobjs/Forge"
+import GameObject from "../../schemas/gameobjs/GameObject"
 import Player, { UpgradeItem } from "../../schemas/gameobjs/Player"
 import GameManager from "../GameManager"
 import ArtifactManager from "../StateManagers/ArtifactManager"
@@ -17,6 +20,10 @@ export interface IForgeUpgrade {
  */
 export default class ForgeManager{
     private gameManager: GameManager
+    private forge!: Forge
+    private createdForge = false
+    /** Chances each players get at each forge to pick upgrades */
+    private chancesEachForge = 2
 
     /** Upgrades available for choosing, generated each time forge shows up. Reset when wave ends. */
     private forgeUpgrades: Map<string, IForgeUpgrade> = new Map()    
@@ -28,29 +35,60 @@ export default class ForgeManager{
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
+        
+        
     }   
 
     /**
-     * TODO: send info to client to show forge screen
+     * Called when player opens the forge. This method will give players the lastest upgrade information.
+     * @param player 
+     * @param forge 
      */
-    handleOpenForge(){
+    handleOpenForge(player: Player, forge: GameObject){
+        let upgrades = this.getItemUpgrades(player.getId())
+        this.gameManager.getPlayerManager().givePlayerUpgradeSelection(player, upgrades)
     }
 
     /**
-     * TODO: spawna a forge that players can interact with
-     */
-    spawnForge(){
-        
-    }
-
-    hideForge(){
-        
-    }
-
-    /**
-     * Returns random upgrades for weapon/artifacts based on the given playerId.
      * 
-     * Note: To get new upgrades 
+     * @param pos spawn position of forge default is the origin
+     */
+    spawnForge(pos = {x: 0, y: 0}){
+        console.log("Spawning forge")
+        if(!this.createdForge){
+            this.forge = new Forge(this.gameManager, pos)
+            let body = this.forge.getBody() as Matter.Body;
+            this.gameManager.addGameObject(this.forge.id, this.forge, body);
+        }
+        this.forge.show(pos)
+    }
+
+    despawnForge(){
+        console.log("Despawning forge")
+        this.forge.hide()
+        this.clearForgeUpgrades()
+        this.gameManager.gameObjects.forEach(obj=>{
+            if(obj instanceof Player){
+                obj.upgradeInfo.playerSelectedUpgrade()
+            }
+        })
+    }
+
+    /**
+     * This method will clear all the upgrades in every player's forge. This also causes the side effect of
+     * players getting more upgrade chances the next time the forge comes around.
+     */
+    private clearForgeUpgrades(){
+        this.forgeUpgrades.forEach((val, key)=>{
+            this.forgeUpgrades.delete(key)
+        })
+    }
+
+    /**
+     * Returns random upgrades for weapon + artifacts based on the given playerId.
+     * If the player has looked at upgrades already then the cached upgrades are returned.
+     * If the player has no upgrades chances remaining then an empty list is returned.
+     * 
      * @param playerId 
      * @returns 
      */
@@ -58,15 +96,19 @@ export default class ForgeManager{
         // Contents already determined
         let playerForgeUpgrades = this.forgeUpgrades.get(playerId)
         if(playerForgeUpgrades) {
-            console.log("forge item length: ", playerForgeUpgrades.upgradeItems.length)
+            // No chances to get upgrades
+            if(playerForgeUpgrades.chancesRemaining === 0) return []
+            
             return playerForgeUpgrades.upgradeItems
         }
         
         // Genreate new upgrades from player upgrades
         this.forgeUpgrades.set(playerId, {
             upgradeItems: this.generateUpgradeItems(playerId),
-            chancesRemaining: 1
+            chancesRemaining: this.chancesEachForge
         })
+        this.updatePlayerUpgradeInfoChances(playerId)
+
         return this.forgeUpgrades.get(playerId)!.upgradeItems
     }
 
@@ -121,6 +163,7 @@ export default class ForgeManager{
     */
     public resetForgeUpgrades(playerId: string){
         this.forgeUpgrades.delete(playerId)
+        this.updatePlayerUpgradeInfoChances(playerId)
     }
 
     /**
@@ -150,6 +193,7 @@ export default class ForgeManager{
                 // Reduce remaining chances
                 forgeUpgrade.chancesRemaining -= 1
 
+                this.updatePlayerUpgradeInfoChances(playerId)
                 return true
             }else{
                 if(forgeUpgrade) console.log("No chances left to use forge. ")
@@ -160,8 +204,22 @@ export default class ForgeManager{
         return false
     }
 
+    /**
+     * Returns the remaining upgrade chances in the forge
+     * @param playerId 
+     * @returns 
+     */
     public getChangesRemaning(playerId: string){
         let chancesRemaining = this.forgeUpgrades.get(playerId)?.chancesRemaining
         return chancesRemaining? chancesRemaining : 0
     }
+
+    /**
+     * This method will update the player's UpgradeInfo with information about the remaining chances to select and upgrade in the forge.
+     * @param playerId 
+     */
+    public updatePlayerUpgradeInfoChances(playerId: string){
+        let player = this.gameManager.getPlayerManager().getPlayerWithId(playerId)
+        player?.upgradeInfo.setForgeUpgradeChances(this.getChangesRemaning(playerId))
+    }   
 }

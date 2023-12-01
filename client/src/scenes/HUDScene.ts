@@ -49,7 +49,8 @@ export default class HUDScene extends Phaser.Scene {
     }
 
     public showWAPopup(data: WAPopupData) {
-        this.waPopup.displayPopup(data);
+        if(data.items.length > 0) this.waPopup.displayPopup(data);
+        else this.waPopup.destroyPopup()
     }
 
     public resetHUD() {
@@ -86,7 +87,6 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.off(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, this.topRightInfo.updateInfoSizer, this.topRightInfo);
         EventManager.eventEmitter.off(EventManager.HUDEvents.SHOW_TOOLTIP, this.toolTip.showToolTip, this.toolTip);
         EventManager.eventEmitter.off(EventManager.HUDEvents.HIDE_TOOLTIP, this.toolTip.hideToolTip, this.toolTip);
-
     }
 
     private initializeUI() {

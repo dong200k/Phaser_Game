@@ -29,6 +29,7 @@ import CircleImage from "../UI/CircleImage";
 import FollowingMeleeProjectile from "../../../server/src/rooms/game_room/schemas/projectiles/specialprojectiles/FollowingMeleeProjectile";
 import Chest from "../gameobjs/Chest";
 import Artifact from "../../../server/src/rooms/game_room/schemas/Trees/Artifact";
+import Forge from "../gameobjs/Forge";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -400,6 +401,9 @@ export default class GameManager {
             case 'Chest': 
                 newGameObject = this.addChest(gameObj, key);
                 break;
+            case 'Forge':
+                newGameObject = this.addForge(gameObj, key);
+                break;
         }
         if(newGameObject) {
             // newGameObject.setServerState(gameObj);
@@ -557,6 +561,13 @@ export default class GameManager {
         // console.log("A new chest has been added!");
 
         return newChest;
+    }
+
+    private addForge(forgeState: any, key: string): Forge {
+        let newForge = new Forge(this.scene, forgeState)
+        this.scene.add.existing(newForge)
+        this.addListenersToGameObject(newForge, forgeState)
+        return newForge
     }
 
     /** Adds a listener to an entity to respond to server updates on that entity. */
@@ -866,7 +877,6 @@ export default class GameManager {
     private playerUpgradeInfoOnChange(player: Player, playerState: PlayerState, changes: any) {
         if(player === this.player1) {
             if(playerState.upgradeInfo.currentUpgrades.length > 0) {
-
                 let upgradesList: any[] = [];
                 playerState.upgradeInfo.currentUpgrades.forEach((item, idx) => {
                     if(playerState.upgradeInfo.currentUpgrades.length === 2) console.log(item)
@@ -883,8 +893,12 @@ export default class GameManager {
                 })
     
                 EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
-                    title: `Level ${playerState.upgradeInfo.upgradeCount + 2} Upgrades`,
+                    title: `Upgrades Remaining: ${playerState.upgradeInfo.forgeUpgradeChances}`,
                     items: upgradesList,
+                })
+            }else{
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+                    items: []
                 })
             }
         }

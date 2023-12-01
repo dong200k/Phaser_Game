@@ -3,6 +3,8 @@ import Wave from "./wave/Wave";
 import Tilemap from "./tilemap/Tilemap";
 import MathUtil from "../../../../util/MathUtil";
 import GameManager from "../../system/GameManager";
+import SafeWave from "./wave/SafeWave";
+import Monster from "../gameobjs/monsters/Monster";
 
 export class SpawnPoint extends Schema {
     @type("number") x: number;
@@ -108,6 +110,12 @@ export default class Dungeon extends Schema {
     }
 
     public startNextWave() {
+        // Dont start safe wave untill all monsters are cleared
+        let nextWave = this.waves[this.currentWave + 1]
+        if(nextWave instanceof SafeWave && this.hasMonsterAlive()){
+            return
+        }
+
         if(this.waveEnded === true) {
             this.currentWave++;
         }
@@ -196,4 +204,20 @@ export default class Dungeon extends Schema {
         return this.playerBounds;
     }
     
+    /**
+     * 
+     * @returns true if there are monsters still active else false
+     */
+    public hasMonsterAlive(){
+        let hasMonsterAlive = false
+        this.gameManager.gameObjects.forEach((obj) => {
+            if(obj instanceof Monster) {
+                if(obj.isActive()) {
+                    hasMonsterAlive = true;
+                }
+            }
+        })
+
+        return hasMonsterAlive
+    }
 }

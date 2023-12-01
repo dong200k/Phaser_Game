@@ -26,6 +26,9 @@ export let Categories = Object.freeze({
 
     // Aura
     'AURA': 0x1000,
+
+    // Forge
+    'FORGE': 0x2000,
 })
 
 const categoryTypes: {[index: number]: CategoryType} = {}
