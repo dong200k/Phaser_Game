@@ -11,6 +11,7 @@ interface InfoData {
     maxWave?: number;
     /** The coins the player earned. */
     coins?: number;
+    time?: number;
 }
 
 export default class TopRightInfo extends RexUIBase {
@@ -42,6 +43,7 @@ export default class TopRightInfo extends RexUIBase {
 
         sizer.add(UIFactory.createTextBoxRex(this.scene, "Wave Count: 10").setName("InfoWaveCount"), {expand: false});
         sizer.add(UIFactory.createTextBoxRex(this.scene, "Coins: 10").setName("InfoCoinCount"), {expand: false});
+        sizer.add(UIFactory.createTextBoxRex(this.scene, "").setName("InfoTimer"), {expand: false});
 
         return sizer;
     }
@@ -56,13 +58,25 @@ export default class TopRightInfo extends RexUIBase {
 
         let textBoxWave = this.infoSizer.getByName("InfoWaveCount", true) as TextBoxRex;
         let textBoxCoin = this.infoSizer.getByName("InfoCoinCount", true) as TextBoxRex;
+        let textBoxTimer = this.infoSizer.getByName("InfoTimer", true) as TextBoxRex;
+
         
         if(this.infoData.maxWave === -1) {
             textBoxWave.setText(`Wave: ${this.infoData.wave}`);
-        } else {
+        } else if(this.infoData.wave && this.infoData.maxWave) {
             textBoxWave.setText(`Wave: ${this.infoData.wave} / ${this.infoData.maxWave}`);
         }
-        textBoxCoin.setText(`Coins: ${this.infoData.coins}`);
+
+        if(this.infoData.coins) textBoxCoin.setText(`Coins: ${this.infoData.coins}`);
+
+        if(this.infoData.time === 0 || this.infoData.time === undefined) {
+            textBoxTimer.hide()
+            textBoxTimer.setText("")
+        }
+        else {
+            textBoxTimer.show()
+            textBoxTimer.setText(`Time Remaining: ${this.infoData.time}`)
+        }   
 
         this.infoSizer.layout();
     }

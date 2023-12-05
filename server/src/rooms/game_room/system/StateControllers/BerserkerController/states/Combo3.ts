@@ -2,7 +2,7 @@ import { GameEvents, IProjectileConfig } from "../../../interfaces";
 import Combo1 from "./Combo1";
 
 export default class Combo3 extends Combo1 {
-    protected attackMultiplier: number = 10
+    protected attackMultiplier: number = 3
 
     public onEnter(): void {
         this.onEnterHelper()

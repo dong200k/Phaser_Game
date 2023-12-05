@@ -236,6 +236,18 @@ export function sortObject(obj){
   return newObj
 }
 
+export function getDefaultWave(){
+  return {
+    type: "pack", difficulty: 2, monsters: [], id: Math.random(), duration: 0
+  }
+}
+
+/** This method will take a in a list of waves and return the list with all the waves padded with extra data from getDefaultWave
+ *  that the wave does not already have. */
+export function padWavesWithNewAttributes(waves){
+  return waves.map(wave=>({...getDefaultWave(), ...wave}))
+}
+
 // export default function isValidStat(stat){
 //   let message = ""
 //   Object.entries(stat).forEach(([key, val])=>{

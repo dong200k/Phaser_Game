@@ -96,6 +96,10 @@ export default class GameRoom extends Room<State> {
         this.onMessage("doubleTap", (client, msg)=>{
             this.gameManager.getPlayerManager().processPlayerDoubleTap(client.id, msg)
         })
+
+        this.onMessage("selectMerchantItem", (client, msg) => {
+            this.gameManager.getMerchantManager().purchaseItem(client.sessionId, msg);
+        })
     }
 
     startGame() {

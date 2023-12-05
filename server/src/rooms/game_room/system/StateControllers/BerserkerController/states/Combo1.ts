@@ -52,7 +52,7 @@ export default class Combo1 extends StateNode {
 
     protected animationDuraction: number = 1
     protected flip: boolean = false
-    protected attackMultiplier: number = 5
+    protected attackMultiplier: number = 1
 
     /**
      * Initialize this attack with some values.

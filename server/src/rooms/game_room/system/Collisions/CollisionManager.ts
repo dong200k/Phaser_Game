@@ -14,6 +14,8 @@ import Matter from "matter-js";
 import MathUtil from "../../../../util/MathUtil";
 import Chest from "../../schemas/gameobjs/chest/Chest";
 import Forge from "../../schemas/gameobjs/Forge";
+import Merchant from "../../schemas/gameobjs/Merchant";
+import Fountain from "../../schemas/gameobjs/Fountain";
 
 export default class CollisionManager{
     private gameManager: GameManager
@@ -55,6 +57,13 @@ export default class CollisionManager{
 
         // Forge Collisions
         {typeA: "PLAYER", typeB: "FORGE", resolve: this.resolveForgeCollision},
+
+        // Merchant Collisions
+        {typeA: "PLAYER", typeB: "MERCHANT", resolve: this.resolveMerchantCollision},
+
+        // Fountain Collisions
+        {typeA: "PLAYER", typeB: "FOUNTAIN", resolve: this.resolveFountainCollision},
+
 
         // **TODO** Add more 
     ]
@@ -140,6 +149,9 @@ export default class CollisionManager{
         let gameObjectA = this.gameManager.gameObjects.get(bodyA.id)
         let gameObjectB = this.gameManager.gameObjects.get(bodyB.id)
 
+        // console.log(`${categoryA}, ${categoryB}`)
+
+
         // Find collision match and resolve the collision
         this.collisionEndRules.forEach(({typeA, typeB, resolve})=>{
             // Order is based on what appears first/category number of the matter bodies's collision filter.
@@ -190,11 +202,11 @@ export default class CollisionManager{
         // console.log(`Player shield after attack: ${entity.stat.shieldHp}`)
 
         // Entity shooting projectile heals based on their lifesteal
-        let attackingEntity = projectile.entity
+        let attackingEntity = projectile.getOriginEntity()
         if(attackingEntity){
             let lifeSteal = getFinalLifeSteal(trueAttackDamage, attackingEntity.stat.lifeSteal, attackingEntity.stat.lifeStealPercent)
-            let healEffect = EffectFactory.createHealEffect(Math.floor(lifeSteal))
-            //console.log("lifesteal:", lifeSteal)
+            let healEffect = EffectFactory.createHealEffect(lifeSteal)
+            // console.log("lifesteal:", lifeSteal)
             EffectManager.addEffectsTo(attackingEntity, healEffect)
         }
 
@@ -255,7 +267,14 @@ export default class CollisionManager{
     }
 
     public resolveForgeCollision(player: Player, forge: Forge, bodyA: Matter.Body, bodyB: Matter.Body) {
-        console.log("Resolve forge collisions")
         player.gameManager.getForgeManager().handleOpenForge(player, forge);
+    }
+
+    public resolveMerchantCollision(player: Player, merchant: Merchant, bodyA: Matter.Body, bodyB: Matter.Body) {
+        player.gameManager.getMerchantManager().handleInteractMerchant(player, merchant);
+    }
+
+    public resolveFountainCollision(player: Player, fountain: Fountain, bodyA: Matter.Body, bodyB: Matter.Body) {
+        player.gameManager.getFountainManager().getFountain()?.handleInteractFountain(player, fountain);
     }
 }

@@ -8,6 +8,8 @@ import Entity from "../../gameobjs/Entity";
 export interface StatConfig {
     name?: string;
     description?: string;
+    hp?: number;
+    mana?: number;
     maxHp?: number;
     maxMana?: number;
     armor?: number;

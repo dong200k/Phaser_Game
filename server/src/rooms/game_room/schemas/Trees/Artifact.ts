@@ -40,7 +40,7 @@ export default class Artifact extends WeaponUpgradeTree {
     /** return the next upgrade. If there are none it returns the last upgrade */
     public getNextUpgrade() {
         let curr = this.root
-
+        
         while(curr?.children.length !== 0 && curr?.data.status !== "none"){
             curr = curr?.children[0]
         }

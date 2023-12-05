@@ -300,54 +300,53 @@ export default class PlayerManager {
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedHermesBoots)
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedFrostGlaive)
         // this.gameManager.getArtifactManager().equipArtifact(player, upgradedDemoArtifact)
-        let healthRegenArtifact = ArtifactFactory.createMaxedArtifact("upgrade-9efe1a19-2b8d-4080-8337-e2846192169f")
-        this.gameManager.getArtifactManager().equipArtifact(player, healthRegenArtifact)
+        // let healthRegenArtifact = ArtifactFactory.createMaxedArtifact("upgrade-9efe1a19-2b8d-4080-8337-e2846192169f")
+        // this.gameManager.getArtifactManager().equipArtifact(player, healthRegenArtifact)
 
         let artifactManager = this.gameManager.getArtifactManager();
 
-        let shieldArtifact = artifactManager.createArtifact("upgrade-5d3c8fc4-cfbb-4f52-82b0-8e3f2c9bfa81")
-        artifactManager.maxArtifact(shieldArtifact);
-        this.equipArtifact(player, shieldArtifact)
+        // let shieldArtifact = artifactManager.createArtifact("upgrade-5d3c8fc4-cfbb-4f52-82b0-8e3f2c9bfa81")
+        // artifactManager.maxArtifact(shieldArtifact);
+        // this.equipArtifact(player, shieldArtifact)
 
-        let rollArtifact = artifactManager.createArtifact("upgrade-a9b22e84-976f-4031-973e-6e704f6a330d")
-        artifactManager.maxArtifact(rollArtifact);
-        this.equipArtifact(player, rollArtifact)
+        // let rollArtifact = artifactManager.createArtifact("upgrade-a9b22e84-976f-4031-973e-6e704f6a330d")
+        // artifactManager.maxArtifact(rollArtifact);
+        // this.equipArtifact(player, rollArtifact)
         
         // let glassCannonArtifact = artifactManager.createArtifact("upgrade-019ad207-0882-4d23-a90b-a6d28705b246")
         // artifactManager.maxArtifact(glassCannonArtifact);
         // this.equipArtifact(player, glassCannonArtifact)
 
-        let rollChargeArtifact = artifactManager.createArtifact("upgrade-474b1146-1414-4747-a306-b181bff9c3ec")
-        artifactManager.maxArtifact(rollChargeArtifact);
-        this.equipArtifact(player, rollChargeArtifact)
+        // let rollChargeArtifact = artifactManager.createArtifact("upgrade-474b1146-1414-4747-a306-b181bff9c3ec")
+        // artifactManager.maxArtifact(rollChargeArtifact);
+        // this.equipArtifact(player, rollChargeArtifact)
 
-        let amplifierArtifact = artifactManager.createArtifact("upgrade-072fe1da-fc6f-4aa4-8b8c-72b5da52eb32")
-        artifactManager.maxArtifact(amplifierArtifact);
-        this.equipArtifact(player, amplifierArtifact)
+        // let amplifierArtifact = artifactManager.createArtifact("upgrade-072fe1da-fc6f-4aa4-8b8c-72b5da52eb32")
+        // artifactManager.maxArtifact(amplifierArtifact);
+        // this.equipArtifact(player, amplifierArtifact)
 
-        let perseveranceArtifact = artifactManager.createArtifact("upgrade-5295e034-c5f6-4a07-a69e-8e36fa5b2d39")
-        artifactManager.maxArtifact(perseveranceArtifact);
-        this.equipArtifact(player, perseveranceArtifact)
+        // let perseveranceArtifact = artifactManager.createArtifact("upgrade-5295e034-c5f6-4a07-a69e-8e36fa5b2d39")
+        // artifactManager.maxArtifact(perseveranceArtifact);
+        // this.equipArtifact(player, perseveranceArtifact)
 
         // let friendshipArtifact = artifactManager.createArtifact("upgrade-b49ebec5-d566-4fb8-9170-d6cd9778bb8b")
         // artifactManager.maxArtifact(friendshipArtifact);
         // this.equipArtifact(player, friendshipArtifact)
 
         // let fireballArtifact = artifactManager.createArtifact("upgrade-53123fa2-93a1-4a31-b021-cc8c9a236919")
-        // artifactManager.maxArtifact(fireballArtifact);
         // this.equipArtifact(player, fireballArtifact)
 
-        // let lightningRod = artifactManager.createArtifact("upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50")
+        let lightningRod = artifactManager.createArtifact("upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50")
         // artifactManager.maxArtifact(lightningRod);
-        // this.equipArtifact(player, lightningRod)
+        this.equipArtifact(player, lightningRod)
         
         // let qiArmor = artifactManager.createArtifact("upgrade-4c5aef1c-ed88-4795-90f6-49f7c1ef2b42")
         // artifactManager.maxArtifact(qiArmor);
         // this.equipArtifact(player, qiArmor)
 
-        // let mushroom = artifactManager.createArtifact("upgrade-f6af6929-e3f6-43d4-b441-8216fda94eac")
+        let mushroom = artifactManager.createArtifact("upgrade-f6af6929-e3f6-43d4-b441-8216fda94eac")
         // artifactManager.maxArtifact(mushroom);
-        // this.equipArtifact(player, mushroom)
+        this.equipArtifact(player, mushroom)
 
         // let carrot = artifactManager.createArtifact("upgrade-16005a69-9f01-4f5a-b2a5-53029a9e08e3")
         // artifactManager.maxArtifact(carrot);
@@ -386,11 +385,10 @@ export default class PlayerManager {
         // this.equipArtifact(player, bananas)
 
         // let frostWalker = artifactManager.createArtifact("upgrade-3cd595a8-f245-44ea-8847-c73bf791b494")
-        // artifactManager.maxArtifact(frostWalker);
         // this.equipArtifact(player, frostWalker)
 
         // let runeGuard = artifactManager.createArtifact("upgrade-29a3bf4e-3a16-44a5-b293-0d17acdcb7d4")
-        // artifactManager.maxArtifact(runeGuard);
+        // // artifactManager.maxArtifact(runeGuard);
         // this.equipArtifact(player, runeGuard)
     }
 

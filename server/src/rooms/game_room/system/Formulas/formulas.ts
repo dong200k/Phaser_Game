@@ -69,7 +69,11 @@ export const getTrueMagicDamage = function({magicAttack, magicAttackPercent, dam
  * @returns total life steal
  */
 export const getFinalLifeSteal = function(trueDamage: number, lifeSteal: number, lifeStealPercent: number){
-    return Math.floor(lifeStealPercent * trueDamage + lifeSteal);
+    // return Math.round(lifeStealPercent * trueDamage + lifeSteal);
+
+    // Round to nearest decimal
+    let num = lifeStealPercent * trueDamage + lifeSteal
+    return Math.round((num + Number.EPSILON) * 10) / 10
 }
 
 /**

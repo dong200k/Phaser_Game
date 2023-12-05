@@ -221,7 +221,10 @@ export default class DungeonManager {
     }
 
     public createSafeWave(waveData: IDungeonWave){
-        let wave = new SafeWave(this.gameManager, 10, {x: 113, y: 111})
+        let wave = new SafeWave(this.gameManager, {
+            forgeSpawnPosition: {x: 113, y: 111},
+            waveDuration: waveData.duration
+        })
         return wave
     }
 

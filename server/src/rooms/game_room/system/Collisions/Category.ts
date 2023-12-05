@@ -29,6 +29,12 @@ export let Categories = Object.freeze({
 
     // Forge
     'FORGE': 0x2000,
+
+    // Merchant
+    'MERCHANT': 0x4000,
+
+    // Fountain
+    'FOUNTAIN': 0x8000
 })
 
 const categoryTypes: {[index: number]: CategoryType} = {}

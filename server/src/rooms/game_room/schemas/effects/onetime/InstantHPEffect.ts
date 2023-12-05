@@ -23,7 +23,7 @@ export default class InstantHPEffect extends OneTimeEffect {
 
     public applyEffect(entity: Entity): boolean {
         // Basic hp inc. Should add checks for max hp.
-        entity.stat.hp += this.hp;
+        entity.stat.hp += Math.round((this.hp + Number.EPSILON) *10)/10;
 
         if(this.originEntityId !== undefined && this.hp < 0) {
             entity.setLastToDamage(this.originEntityId);

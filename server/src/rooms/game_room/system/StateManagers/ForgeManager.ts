@@ -4,9 +4,9 @@ import Forge from "../../schemas/gameobjs/Forge"
 import GameObject from "../../schemas/gameobjs/GameObject"
 import Player, { UpgradeItem } from "../../schemas/gameobjs/Player"
 import GameManager from "../GameManager"
-import ArtifactManager from "../StateManagers/ArtifactManager"
-import TreeManager from "../StateManagers/TreeManager"
-import WeaponManager from "../StateManagers/WeaponManager"
+import ArtifactManager from "./ArtifactManager"
+import TreeManager from "./TreeManager"
+import WeaponManager from "./WeaponManager"
 
 /** Upgrades available for choosing and basic for a single player */
 export interface IForgeUpgrade {
@@ -63,7 +63,7 @@ export default class ForgeManager{
         this.forge.show(pos)
     }
 
-    despawnForge(){
+    hideForge(){
         console.log("Despawning forge")
         this.forge.hide()
         this.clearForgeUpgrades()

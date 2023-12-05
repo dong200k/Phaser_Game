@@ -46,6 +46,8 @@ export default class Dungeon extends Schema {
     @type([SpawnPoint]) private playerSpawnPoints = new ArraySchema<SpawnPoint>();
     @type([SpawnPoint]) private monsterSpawnPoints = new ArraySchema<SpawnPoint>(); 
     @type(PlayerBounds) playerBounds: PlayerBounds | null = null;
+    /** Time in seconds until safe wave is over */
+    @type('number') safeWaveTime = 0
     
     private waves: Wave[];
     /** False if a wave is running. True otherwise.*/
