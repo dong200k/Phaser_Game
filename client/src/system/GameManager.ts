@@ -29,6 +29,10 @@ import CircleImage from "../UI/CircleImage";
 import FollowingMeleeProjectile from "../../../server/src/rooms/game_room/schemas/projectiles/specialprojectiles/FollowingMeleeProjectile";
 import Chest from "../gameobjs/Chest";
 import Artifact from "../../../server/src/rooms/game_room/schemas/Trees/Artifact";
+import Forge from "../gameobjs/Forge";
+import Merchant from "../gameobjs/Merchant";
+import MerchantState from "../../../server/src/rooms/game_room/schemas/gameobjs/Merchant";
+import Fountain from "../gameobjs/Fountain";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -400,6 +404,15 @@ export default class GameManager {
             case 'Chest': 
                 newGameObject = this.addChest(gameObj, key);
                 break;
+            case 'Forge':
+                newGameObject = this.addForge(gameObj, key);
+                break;
+            case 'Merchant':
+                newGameObject = this.addMerchant(gameObj, key);
+                break;
+            case 'Fountain':
+                newGameObject = this.addFountain(gameObj, key);
+                break;
         }
         if(newGameObject) {
             // newGameObject.setServerState(gameObj);
@@ -410,6 +423,7 @@ export default class GameManager {
 
     /** Called when the dungeon is first created on the server */
     private onChangeDungeon = (currentValue: DungeonState) => {
+        this.dungeonSafeWaveTimerOnChange(currentValue)
         currentValue.listen("tilemap", this.onChangeTilemap);
         currentValue.listen("playerBounds", this.onChangePlayerBounds);
         // Workaround to send the wave count when the hud is first created.
@@ -559,6 +573,60 @@ export default class GameManager {
         return newChest;
     }
 
+    private addForge(forgeState: any, key: string): Forge {
+        let newForge = new Forge(this.scene, forgeState)
+        this.scene.add.existing(newForge)
+        this.addListenersToGameObject(newForge, forgeState)
+        return newForge
+    }
+
+    private addMerchant(merchantState: any, key: string): Merchant {
+        let obj = new Merchant(this.scene, merchantState)
+        this.scene.add.existing(obj)
+        this.addListenersToGameObject(obj, merchantState)
+        return obj
+    }
+
+    private addFountain(fountainState: any, key: string): Fountain {
+        let obj = new Fountain(this.scene, fountainState)
+        this.scene.add.existing(obj)
+        this.addListenersToGameObject(obj, fountainState)
+        return obj
+    }
+
+    private dungeonSafeWaveTimerOnChange(dungeon: DungeonState){
+        let safeWaveStarted = false
+        dungeon.onChange = (changes: any) => {
+            // Update top right UI to show time
+            let time = Math.round(dungeon.safeWaveTime)
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
+                time
+            })
+
+            // TODO: update safeWaveOnEnd and onStart to update the game's timer UI
+            if(time <= 0 && safeWaveStarted){
+                this.safeWaveOnEnd()
+                safeWaveStarted = false
+            }else if(time > 0){
+                if(!safeWaveStarted) {
+                    safeWaveStarted = true
+                    this.safeWaveOnStart(time)
+                }
+
+            }
+        }
+    }
+
+    private safeWaveOnStart(startTime: number){
+        console.log("Safe wave on start")
+        this.soundManager.play("wave_start")
+    }
+
+    private safeWaveOnEnd(){
+        console.log("Safe wave on end")
+        this.soundManager.play("wave_end_violin")
+    }
+
     /** Adds a listener to an entity to respond to server updates on that entity. */
     private addListenersToGameObject(gameObject: GameObject, gameObjectState: GameObjectState) {
         /** ----- GameObject Listeners ----- */
@@ -606,6 +674,11 @@ export default class GameManager {
             /** ----- Projectile Listeners ----- */
             let projectileState = gameObjectState as ProjectileState;
             projectileState.projectileController.onChange = (changes: any) => this.projectileControllerOnChange(gameObject, projectileState, changes);
+        }
+
+        if(gameObject instanceof Merchant) {
+            let merchantState = gameObjectState as MerchantState
+            merchantState.onChange = (changes: any) => this.merchantOnChange(gameObject, merchantState, changes)
         }
     }
 
@@ -863,12 +936,35 @@ export default class GameManager {
         }
     }
 
+    /** TODO: Make this method connect with a Merchant UI instead of the weapon artifact one. 
+     * Also show the coin cost and other attributes. */
+    private merchantOnChange(merchant: Merchant, merchantState: MerchantState, changes: any){
+        let itemList: any = []
+        merchantState.items.forEach((item, idx)=>{
+            itemList.push({
+                typeName: "artifact",
+                name: item.name,
+                description: item.description,
+                imageKey: item.imageKey,
+                onClick: () => {
+                    this.gameRoom.send("selectMerchantItem", idx);
+                    SoundManager.getManager().play("button_click1", {detune: 700});
+                },
+            })
+        })
+        
+        EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+            title: `Merchant`,
+            items: itemList,
+        })
+    }
+
     private playerUpgradeInfoOnChange(player: Player, playerState: PlayerState, changes: any) {
         if(player === this.player1) {
             if(playerState.upgradeInfo.currentUpgrades.length > 0) {
-
                 let upgradesList: any[] = [];
                 playerState.upgradeInfo.currentUpgrades.forEach((item, idx) => {
+                    if(playerState.upgradeInfo.currentUpgrades.length === 2) console.log(item)
                     upgradesList.push({
                         typeName: item.type,
                         name: item.name,
@@ -882,8 +978,12 @@ export default class GameManager {
                 })
     
                 EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
-                    title: `Level ${playerState.upgradeInfo.upgradeCount + 2} Upgrades`,
+                    title: `Upgrades Remaining: ${playerState.upgradeInfo.forgeUpgradeChances}`,
                     items: upgradesList,
+                })
+            }else{
+                EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+                    items: []
                 })
             }
         }

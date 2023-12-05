@@ -12,6 +12,11 @@ import EffectManager from "./EffectManager";
 
 export default class TreeManager{
 
+    static selectGivenUpgrade<T extends WeaponUpgradeTree|StatTree<SkillData>, U extends Exclude<T["root"], undefined>>
+    (playerState: Player, tree: T, upgrade: U){
+        this.selectUpgrade(playerState, tree, [upgrade], 0)
+    }
+
     /**
      * Selects and activates the upgrade of a player's tree (skill or weapon/artifact) based on player's choice.  This will automatically add the tree's selected node's effects to the player.
      * Note: WeaponUpgradeTree covers artifact and weapon tree while StatTree<SkillData> covers the skill tree. The type of a upgrade is deterimined by whether we use WeaponUpgradeTree or StatTree<SkillData>.

@@ -16,6 +16,12 @@ export default class Monster extends Entity
 
         // Monster.count++;
         // console.log(`Monster Constructed: ${Monster.count}`);
+
+        this.setScale(monsterState.width/this.width, monsterState.height/this.height)
+
+        // let obj = monsterState as any
+        // console.log("client obj info: ", obj.type, obj.name, obj.monsterName, obj.sprite, this.width, this.height)
+        // console.log("gameObjectState width height:", monsterState.width, monsterState.height)
     }
 
     // /**Add listeners to connect to the server's player*/

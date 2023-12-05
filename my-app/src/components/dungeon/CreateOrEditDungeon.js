@@ -13,6 +13,7 @@ import SubmitButton from "../forms/SubmitButton";
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { getAllMonsterName, getAllMonsterNames } from "../../services/MonsterService.js";
+import { getDefaultWave, padWavesWithNewAttributes } from "../../helpers.js";
 
 
 export default function CreateOrEditDungeon(props) {
@@ -43,7 +44,8 @@ export default function CreateOrEditDungeon(props) {
                         if(m.id === undefined) m.id = Math.random();
                     })
                 })
-                setWaves(dungeon.waves);
+                let wavesPaddedWithNewAttributes = padWavesWithNewAttributes(dungeon.waves)
+                setWaves(wavesPaddedWithNewAttributes);
                 setName(dungeon.name);
                 setTilesetName(dungeon.tilesetName);
                 setClientTilesetLocation(dungeon.clientTilesetLocation);
@@ -72,6 +74,11 @@ export default function CreateOrEditDungeon(props) {
         newWaves[idx].difficulty = parseInt(e.target.value);
         setWaves(newWaves);
     }
+    const onChangeWaveDuration = (e, idx) => {
+        let newWaves = [...waves];
+        newWaves[idx].duration = parseInt(e.target.value);
+        setWaves(newWaves);
+    }
     const onChangeMonsterName = (name, idx, midx) => {
         let newWaves = [...waves];
         newWaves.forEach((newWave, idx2) => {
@@ -91,7 +98,7 @@ export default function CreateOrEditDungeon(props) {
 
     const onClickNewWave = () => {
         let newWaves = [...waves];
-        newWaves.push({ type: "pack", difficulty: 2, monsters: [], id: Math.random()});
+        newWaves.push(getDefaultWave());
         setWaves(newWaves);
     }
     const onClickDeleteWave = (idx) => { setWaves(waves.filter((wave, idx2) => idx2 !== idx)); }
@@ -177,6 +184,8 @@ export default function CreateOrEditDungeon(props) {
                                     <input name={`waveType${idx}`} type="text" defaultValue={wave.type} onChange={(e) => onChangeWaveType(e, idx)}/>
                                     <label htmlFor={`waveDifficulty${idx}`}>Difficulty: </label>
                                     <input name={`waveDifficulty${idx}`} type="number" defaultValue={wave.difficulty} onChange={(e) => onChangeWaveDifficulty(e, idx)}/>
+                                    <label htmlFor={`duration${idx}`}>Duration(seconds)</label>
+                                    <input name={`duration${idx}`} type="number" defaultValue={wave.duration} onChange={(e) => onChangeWaveDuration(e, idx)}/>
                                     <br/>
                                     <div style={{backgroundColor: "lightblue", margin: "30px", padding: "18px", borderRadius: "5px"}}>
                                         <h5>Monsters: </h5>

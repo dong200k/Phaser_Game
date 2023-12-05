@@ -218,6 +218,10 @@ export default class DatabaseManager{
         return monster;
     }
 
+    public getAllDatabaseArtifacts(){
+        return this.artifactUpgrades
+    }
+
     static getManager() {
         return DatabaseManager.singleton
     }

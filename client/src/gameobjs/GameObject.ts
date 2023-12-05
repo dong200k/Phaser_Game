@@ -27,10 +27,15 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
         this.alphaValue = gameObjectState.alpha
 
         this.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
+        // this.scale = gameObjectState.width/this.width
         // this.setScale(gameObjectState.width/this.width, gameObjectState.height/this.height)
-        // this.setScale(1, 1)
+        // this.setScale(1, 1)  
+        // this.setDisplaySize(gameObjectState.width, gameObjectState.height)
+        
         // let obj = gameObjectState as any
-        // console.log(obj.type, obj.name, obj.monsterName, obj.sprite, this.width, this.height)
+        // console.log("client obj info: ", obj.type, obj.name, obj.monsterName, obj.sprite, this.width, this.height)
+        // console.log("gameObjectState width height:", gameObjectState.width, gameObjectState.height)
+
     
     }
 

@@ -59,6 +59,10 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("frost_walk", "audio/frost_walk.mp3")
         this.load.audio("laser_pew", "audio/laser.mp3")
         this.load.audio("wood_chest_open_sfx", "audio/wood_chest_open_sfx.mp3");
+        this.load.audio("wave_start", "audio/wave_start.mp3")
+        this.load.audio("wave_end", "audio/wave_end.mp3")
+        this.load.audio("wave_end_violin", "audio/wave_end_violin.mp3")
+        this.load.audio("fountain_heal", "audio/fountain_heal.mp3")
 
 
         // ------- Loading Images ------- //
@@ -114,7 +118,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("purple_arrow", "images/projectiles/purple_arrow.png", "images/projectiles/purple_arrow.json");
         this.load.aseprite("iron_chest", "animations/iron_chest/iron_chest.png", "animations/iron_chest/iron_chest.json");
         this.load.aseprite("gold_chest", "animations/gold_chest/gold_chest.png", "animations/gold_chest/gold_chest.json");
-
+        this.load.aseprite("summon_circle", "images/projectiles/summon_circle.png", "images/projectiles/summon_circle.json")
 
     }
 
@@ -175,7 +179,10 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("frost_walk", "sfx")
         soundManager.add("laser_pew", "sfx")
         soundManager.add("wood_chest_open_sfx", "sfx");
-
+        soundManager.add("wave_start", "sfx");
+        soundManager.add("wave_end", "sfx");
+        soundManager.add("wave_end_violin", "sfx");
+        soundManager.add("fountain_heal", "sfx");
 
         soundManager.add("ultra_instinct", "bg")
         soundManager.add("ultra_instinct_boss", "bg")

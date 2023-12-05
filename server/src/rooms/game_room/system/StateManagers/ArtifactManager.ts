@@ -52,10 +52,10 @@ export default class ArtifactManager{
         let artifact = this.artifactPool.getInstance()
         artifact.root = upgradeTree;
         artifact.setId(upgradeId);
-        artifact.name = upgrade.name;
-        artifact.description = upgrade.description;
-        artifact.imageKey = upgrade.imageKey;
-        artifact.usage = upgrade.usage;
+        artifact.name = upgrade.name ?? "";
+        artifact.description = upgrade.description ?? "";
+        artifact.imageKey = upgrade.imageKey ?? "";
+        artifact.usage = upgrade.usage ?? "";
 
         // Set the artifacts level
         let curr = upgradeTree;
@@ -251,13 +251,14 @@ export default class ArtifactManager{
      * @param artifact The artifact tree.
      * @returns True if there are more upgrades. False otherwise.
      */
-    static hasNextUpgrade(artifact: Artifact) {
+    static  hasNextUpgrade(artifact: Artifact) {
         let node = artifact.root;
         let hasNextUpgrade = false;
         while(node) {
             if(node.data.status === "none")
                 hasNextUpgrade = true;
-            node = node.children[0];
+            if(node.children.length > 0) node = node.children[0];
+            else break;
         }
         return hasNextUpgrade;
     } 

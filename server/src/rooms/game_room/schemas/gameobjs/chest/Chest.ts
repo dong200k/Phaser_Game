@@ -82,5 +82,4 @@ export default class Chest extends GameObject {
             mask: MaskManager.getManager().getMask('CHEST'),
         }
     }
-    
 }
