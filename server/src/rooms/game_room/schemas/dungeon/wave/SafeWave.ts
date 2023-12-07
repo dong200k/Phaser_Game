@@ -11,7 +11,7 @@ export interface ISafeWaveConfig {
 
 export default class SafeWave extends Wave{
     private timeSoFar = 0
-    private waveDurationSeconds = 30
+    private waveDurationSeconds = 15
     private waveStarted = false
     private gameManager: GameManager
 
@@ -23,6 +23,7 @@ export default class SafeWave extends Wave{
         super(()=>{})
         this.gameManager = gameManager
         this.waveDurationSeconds = config?.waveDuration ?? this.waveDurationSeconds
+        if(this.waveDurationSeconds <= 0) this.waveDurationSeconds = 15
         this.forgeSpawnPosition = config?.forgeSpawnPosition ?? {x: 0, y: 0}
         this.merchantSpawnPosition = config?.merchantSpawnPosition ?? {x: this.forgeSpawnPosition.x + 100, y: this.forgeSpawnPosition.y}
         this.fountainSpawnPosition = config?.fountainSpawnPosition ?? {x: this.forgeSpawnPosition.x + 200, y: this.forgeSpawnPosition.y}

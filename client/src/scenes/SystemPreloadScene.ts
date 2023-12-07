@@ -63,6 +63,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("wave_end", "audio/wave_end.mp3")
         this.load.audio("wave_end_violin", "audio/wave_end_violin.mp3")
         this.load.audio("fountain_heal", "audio/fountain_heal.mp3")
+        this.load.audio("monster_death2", "audio/monster_death2.mp3")
 
 
         // ------- Loading Images ------- //
@@ -183,6 +184,8 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("wave_end", "sfx");
         soundManager.add("wave_end_violin", "sfx");
         soundManager.add("fountain_heal", "sfx");
+        soundManager.add("monster_death2", "sfx");
+
 
         soundManager.add("ultra_instinct", "bg")
         soundManager.add("ultra_instinct_boss", "bg")
