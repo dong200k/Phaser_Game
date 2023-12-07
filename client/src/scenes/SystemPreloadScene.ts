@@ -95,6 +95,8 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("ancient_battery_icon", "images/icons/artifacts/ancient_battery_icon.png");
         this.load.image("fireball_icon", "images/icons/artifacts/fireball_icon.png");
         this.load.image("lightning_rod_icon", "images/icons/artifacts/lightning_rod_icon.png");
+        this.load.image("frost_walker_icon", "images/icons/artifacts/frost_walker_icon.png");
+        this.load.image("rune_guard_icon", "images/icons/artifacts/rune_guard_icon.png");
 
 
         // ------- Loading Animations ------- //
