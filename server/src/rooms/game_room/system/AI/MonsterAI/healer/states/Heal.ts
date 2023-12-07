@@ -30,8 +30,8 @@ export default class Heal extends StateNode {
         // Setting the default attack cooldown for this monster.
         let stateMachine = this.getStateMachine<HealerMonsterController>();
         let monster = stateMachine.getMonster();
-        this.defaultAttackCooldown = getFinalAttackCooldown(monster.stat);
-        this.attackCooldown = this.defaultAttackCooldown;
+        // this.defaultAttackCooldown = getFinalAttackCooldown(monster.stat);
+        // this.attackCooldown = this.defaultAttackCooldown;
         this.attackTriggered = false;
         // Stop movement
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
@@ -74,14 +74,16 @@ export default class Heal extends StateNode {
         }
         
         if(this.attackCooldown <= 0) {
-            let aggroTarget = monster.getAggroTarget();
+            let aggroTarget = monster.getAggroTarget() as Monster;
 
-            // If the aggroTarget is null change to the Idle state.
-            if(aggroTarget == null) {
-                stateMachine.changeState("Idle");
-            } else {
-                stateMachine.changeState("Follow");
-            }
+            // if(aggroTarget == null || aggroTarget.controller.stateName === "Death" || !aggroTarget.isActive()) {
+            //     stateMachine.changeState("Idle");
+            // } else {
+                // stateMachine.changeState("Follow");
+            // }
+            monster.setAggroTarget(null)
+            stateMachine.changeState("Idle");
+
         }
     }
 

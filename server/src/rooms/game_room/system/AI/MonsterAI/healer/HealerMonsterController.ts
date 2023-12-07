@@ -1,7 +1,10 @@
 import Cooldown from "../../../../schemas/gameobjs/Cooldown";
 import Monster from "../../../../schemas/gameobjs/monsters/Monster";
+import { getFinalAttackCooldown, getFinalAttackRange } from "../../../Formulas/formulas";
 import RangedMonsterController from "../rangemonster/RangedMonsterController";
+import MonsterController from "../simplemonster/MonsterController";
 import Heal from "./states/Heal";
+import HealerIdle from "./states/HealerIdle";
 
 export interface HealerMonsterControllerData {
     monster: Monster;
@@ -15,7 +18,7 @@ export interface HealerMonsterControllerData {
 /**
  * This controller controls the healer monster. This monster will occasionally enter the heal state to heal nearby monsters. 
  */
-export default class HealerMonsterController extends RangedMonsterController {
+export default class HealerMonsterController extends MonsterController {
 
     private healAmount = 50
     /** Cooldown of the heal in seconds */
@@ -27,9 +30,15 @@ export default class HealerMonsterController extends RangedMonsterController {
     protected create(data: HealerMonsterControllerData): void {
         super.create(data)
 
-        this.healCooldown = new Cooldown(data.healCooldown ?? 5)
+        this.healRange = data.healRange ?? getFinalAttackRange(this.monster.stat, 1)
+        console.log('heal cooldown',getFinalAttackCooldown(this.monster.stat))
+        this.healCooldown = new Cooldown(data.healCooldown ?? getFinalAttackCooldown(this.monster.stat))
 
-        this.addState(new Heal("Heal", this))
+        this.removeState("Attack")
+        this.addState(new Heal("Attack", this))
+
+        this.removeState("Idle")
+        this.addState(new HealerIdle("Idle", this))
 
         //Set initial state
         this.changeState("Idle");

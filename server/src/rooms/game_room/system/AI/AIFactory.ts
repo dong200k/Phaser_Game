@@ -45,11 +45,11 @@ export default class AIFactory {
                         width: 100, height: 60, offsetX: 50, offsetY: 0
                     }
             }); break;
-            case "RangedHealMonster": mc = new HealerMonsterController({monster} as MonsterControllerData); break;
+            case "Healer": mc = new HealerMonsterController({monster} as MonsterControllerData); break;
             case "RangedPhantomMonster": mc = new RangedPhantomMonster({monster} as MonsterControllerData); break;
             default: mc = new MonsterController({monster});   
         }
         return mc;
     }
-
+    
 }

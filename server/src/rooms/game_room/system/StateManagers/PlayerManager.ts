@@ -334,19 +334,20 @@ export default class PlayerManager {
         // this.equipArtifact(player, friendshipArtifact)
 
         // let fireballArtifact = artifactManager.createArtifact("upgrade-53123fa2-93a1-4a31-b021-cc8c9a236919")
+        // artifactManager.maxArtifact(fireballArtifact);
         // this.equipArtifact(player, fireballArtifact)
 
-        let lightningRod = artifactManager.createArtifact("upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50")
+        // let lightningRod = artifactManager.createArtifact("upgrade-92d98c71-c9a2-47e4-8ba1-1f03c578dd50")
         // artifactManager.maxArtifact(lightningRod);
-        this.equipArtifact(player, lightningRod)
+        // this.equipArtifact(player, lightningRod)
         
         // let qiArmor = artifactManager.createArtifact("upgrade-4c5aef1c-ed88-4795-90f6-49f7c1ef2b42")
         // artifactManager.maxArtifact(qiArmor);
         // this.equipArtifact(player, qiArmor)
 
-        let mushroom = artifactManager.createArtifact("upgrade-f6af6929-e3f6-43d4-b441-8216fda94eac")
+        // let mushroom = artifactManager.createArtifact("upgrade-f6af6929-e3f6-43d4-b441-8216fda94eac")
         // artifactManager.maxArtifact(mushroom);
-        this.equipArtifact(player, mushroom)
+        // this.equipArtifact(player, mushroom)
 
         // let carrot = artifactManager.createArtifact("upgrade-16005a69-9f01-4f5a-b2a5-53029a9e08e3")
         // artifactManager.maxArtifact(carrot);
@@ -388,7 +389,7 @@ export default class PlayerManager {
         // this.equipArtifact(player, frostWalker)
 
         // let runeGuard = artifactManager.createArtifact("upgrade-29a3bf4e-3a16-44a5-b293-0d17acdcb7d4")
-        // // artifactManager.maxArtifact(runeGuard);
+        // artifactManager.maxArtifact(runeGuard);
         // this.equipArtifact(player, runeGuard)
     }
 
@@ -421,6 +422,8 @@ export default class PlayerManager {
                     let mult = effectLogic.getMult()
                     let amount = effectLogic.getAmount(player.stat)
                     let singleHitDamage = getDamage(player.stat, mult)
+
+                    // console.log(`mult: ${mult}, amount: ${amount}, singlehit: ${singleHitDamage}`)
 
                     // Compute dps
                     let dps = 0
