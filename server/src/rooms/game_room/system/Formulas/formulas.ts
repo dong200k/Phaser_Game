@@ -214,8 +214,8 @@ export const getTimeAfterAttackSpeed = (stat: Stat, deltaT: number)=>{
  * @returns The estimated damage/second
  * 
  */
-export const getEstimatedDps = ({attack, attackPercent, damagePercent, critRate, critDamage}: Stat, cooldown: number = 1, multiplier: number = 1) => {
-    let damage = attack * (1 + attackPercent) * damagePercent * (1 + critRate * critDamage) * multiplier
+export const getEstimatedDps = (stat: Stat, cooldown: number = 1, multiplier: number = 1) => {
+    let damage = getDamage(stat, multiplier)
     return damage / cooldown
 }
 
@@ -226,6 +226,8 @@ export const getEstimatedDps = ({attack, attackPercent, damagePercent, critRate,
  * @returns The raw damage of this attack without accounting armor
  */
 export const getDamage = ({attack, attackPercent, damagePercent, critRate, critDamage}: Stat, multiplier: number = 1) => {
-    let damage = attack * (1 + attackPercent) * damagePercent * (1 + critRate * critDamage) * multiplier
+    let damage = attack * (1 + attackPercent) * multiplier
+    damage = damage + (critRate * critDamage) * multiplier * damage // after factoring in crit stats
+    damage *= 1 + damagePercent // after factoring in damage percent stat
     return damage
 }

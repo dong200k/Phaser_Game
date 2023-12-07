@@ -1,6 +1,7 @@
 import Matter from "matter-js";
 import StateNode from "../../../StateMachine/StateNode";
 import MonsterController from "./MonsterController";
+import Entity from "../../../../schemas/gameobjs/Entity";
 
 /** In this state the monster will not move.
  * It will ocasionally look for a new aggroTarget to follow.
@@ -21,6 +22,12 @@ export default class Idle extends StateNode {
     public onExit(): void {
         
     }
+    protected getAggroTarget(): Entity | undefined{
+        let stateMachine = (this.getStateMachine() as MonsterController);
+        let monster = stateMachine.getMonster();
+        let aggroTarget = stateMachine.getPlayerManager().getNearestAlivePlayer(monster.x, monster.y);
+        return aggroTarget
+    }
     public update(deltaT: number): void {
         this.searchForNewTargetCooldown -= deltaT;
         let stateMachine = (this.getStateMachine() as MonsterController);
@@ -29,7 +36,7 @@ export default class Idle extends StateNode {
         // Search for a new aggro target every 
         if(this.searchForNewTargetCooldown <= 0) {
             this.searchForNewTargetCooldown = this.searchForNewTargetDefaultCooldown;
-            let aggroTarget = stateMachine.getPlayerManager().getNearestAlivePlayer(monster.x, monster.y);
+            let aggroTarget = this.getAggroTarget()
             if(aggroTarget !== undefined) monster.setAggroTarget(aggroTarget);
         }
 
