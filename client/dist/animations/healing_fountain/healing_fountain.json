@@ -1,0 +1,101 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 1, "y": 1, "w": 58, "h": 39 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 2, "y": 2, "w": 56, "h": 37 },
+    "sourceSize": { "w": 60, "h": 41 },
+    "duration": 100
+   },
+   "1": {
+    "frame": { "x": 60, "y": 1, "w": 58, "h": 39 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 2, "y": 2, "w": 56, "h": 37 },
+    "sourceSize": { "w": 60, "h": 41 },
+    "duration": 100
+   },
+   "2": {
+    "frame": { "x": 119, "y": 1, "w": 58, "h": 39 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 2, "y": 2, "w": 56, "h": 37 },
+    "sourceSize": { "w": 60, "h": 41 },
+    "duration": 100
+   },
+   "3": {
+    "frame": { "x": 178, "y": 1, "w": 58, "h": 39 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 2, "y": 2, "w": 56, "h": 37 },
+    "sourceSize": { "w": 60, "h": 41 },
+    "duration": 100
+   },
+   "4": {
+    "frame": { "x": 1, "y": 41, "w": 58, "h": 39 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 2, "y": 2, "w": 56, "h": 37 },
+    "sourceSize": { "w": 60, "h": 41 },
+    "duration": 100
+   },
+   "5": {
+    "frame": { "x": 60, "y": 41, "w": 58, "h": 39 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 2, "y": 2, "w": 56, "h": 37 },
+    "sourceSize": { "w": 60, "h": 41 },
+    "duration": 100
+   },
+   "6": {
+    "frame": { "x": 119, "y": 41, "w": 58, "h": 39 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 2, "y": 2, "w": 56, "h": 37 },
+    "sourceSize": { "w": 60, "h": 41 },
+    "duration": 100
+   },
+   "7": {
+    "frame": { "x": 178, "y": 41, "w": 58, "h": 39 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 2, "y": 2, "w": 56, "h": 37 },
+    "sourceSize": { "w": 60, "h": 41 },
+    "duration": 100
+   },
+   "8": {
+    "frame": { "x": 1, "y": 81, "w": 58, "h": 39 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 2, "y": 2, "w": 56, "h": 37 },
+    "sourceSize": { "w": 60, "h": 41 },
+    "duration": 100
+   },
+   "9": {
+    "frame": { "x": 60, "y": 81, "w": 58, "h": 39 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 2, "y": 2, "w": 56, "h": 37 },
+    "sourceSize": { "w": 60, "h": 41 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.2-x64",
+  "image": "healing_fountain.png",
+  "format": "RGBA8888",
+  "size": { "w": 237, "h": 121 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "play", "from": 0, "to": 9, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "base", "opacity": 255, "blendMode": "normal" },
+   { "name": "spring", "opacity": 255, "blendMode": "normal" },
+   { "name": "splash", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

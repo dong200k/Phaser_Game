@@ -13,6 +13,7 @@ export default class Fountain extends GameObject
         super(scene, fountainState.x, fountainState.y, "wood", fountainState);
         this.fountainState = fountainState
         
-        scene.anims.createFromAseprite("wood_chest", undefined, this);
+        scene.anims.createFromAseprite("healing_fountain", undefined, this);
+        this.play({key:"play", repeat: -1});
     }
 }

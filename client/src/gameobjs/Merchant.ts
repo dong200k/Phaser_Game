@@ -15,6 +15,7 @@ export default class Merchant extends GameObject
     constructor(scene:Phaser.Scene, merchantState: MerchantState) {
         super(scene, merchantState.x, merchantState.y, "wood", merchantState);
         this.merchantState = merchantState;
-        scene.anims.createFromAseprite("wood_chest", undefined, this);
+        scene.anims.createFromAseprite("merchant", undefined, this);
+        this.play({key: "play", repeat: -1});
     }
 }

@@ -121,6 +121,11 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("iron_chest", "animations/iron_chest/iron_chest.png", "animations/iron_chest/iron_chest.json");
         this.load.aseprite("gold_chest", "animations/gold_chest/gold_chest.png", "animations/gold_chest/gold_chest.json");
         this.load.aseprite("summon_circle", "images/projectiles/summon_circle.png", "images/projectiles/summon_circle.json")
+        this.load.aseprite("upgrade_forge", "animations/upgrade_forge/upgrade_forge.png", "animations/upgrade_forge/upgrade_forge.json");
+        this.load.aseprite("healing_fountain", "animations/healing_fountain/healing_fountain.png", "animations/healing_fountain/healing_fountain.json");
+        this.load.aseprite("merchant", "animations/merchant/merchant.png", "animations/merchant/merchant.json");
+
+
 
     }
 

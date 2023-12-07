@@ -1,0 +1,60 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 58, "y": 55, "w": 56, "h": 52 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 5, "y": 9, "w": 54, "h": 50 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 125
+   },
+   "1": {
+    "frame": { "x": 58, "y": 1, "w": 56, "h": 53 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 5, "y": 8, "w": 54, "h": 51 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 125
+   },
+   "2": {
+    "frame": { "x": 1, "y": 1, "w": 56, "h": 54 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 5, "y": 7, "w": 54, "h": 52 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 125
+   },
+   "3": {
+    "frame": { "x": 1, "y": 108, "w": 56, "h": 50 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 5, "y": 11, "w": 54, "h": 48 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 125
+   },
+   "4": {
+    "frame": { "x": 1, "y": 56, "w": 56, "h": 51 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 5, "y": 10, "w": 54, "h": 49 },
+    "sourceSize": { "w": 64, "h": 64 },
+    "duration": 125
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.2-x64",
+  "image": "upgrade_forge.png",
+  "format": "RGBA8888",
+  "size": { "w": 115, "h": 159 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "play", "from": 0, "to": 4, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "forge", "opacity": 255, "blendMode": "normal" },
+   { "name": "smoke", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

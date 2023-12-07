@@ -12,6 +12,7 @@ export default class Forge extends GameObject
     constructor(scene:Phaser.Scene, forgeState: ForgeState) {
         super(scene, forgeState.x, forgeState.y, "wood", forgeState);
         this.forgeState = forgeState;
-        scene.anims.createFromAseprite("wood_chest", undefined, this);
+        scene.anims.createFromAseprite("upgrade_forge", undefined, this);
+        this.play({key: "play", repeat: -1});
     }
 }
