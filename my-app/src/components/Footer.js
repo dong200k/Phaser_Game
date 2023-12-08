@@ -1,8 +1,8 @@
 
 export default function Footer() {
     return (
-        <div style={{height: "48px", backgroundColor:"darkgray", marginTop: "24px"}}>
-
+        <div style={{height: "48px", marginTop: "24px"}}>
+           
         </div>
     )
 }

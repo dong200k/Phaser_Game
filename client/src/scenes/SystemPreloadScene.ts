@@ -98,7 +98,16 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("lightning_rod_icon", "images/icons/artifacts/lightning_rod_icon.png");
         this.load.image("frost_walker_icon", "images/icons/artifacts/frost_walker_icon.png");
         this.load.image("rune_guard_icon", "images/icons/artifacts/rune_guard_icon.png");
-
+        this.load.image("health_icon", "images/icons/stats/health_icon.png");
+        this.load.image("mana_icon", "images/icons/stats/mana_icon.png");
+        this.load.image("armor_icon", "images/icons/stats/armor_icon.png");
+        this.load.image("magic_resist_icon", "images/icons/stats/magic_resist_icon.png");
+        this.load.image("attack_icon", "images/icons/stats/attack_icon.png");
+        this.load.image("armor_pen_icon", "images/icons/stats/armor_pen_icon.png");
+        this.load.image("magic_attack_icon", "images/icons/stats/magic_attack_icon.png");
+        this.load.image("magic_pen_icon", "images/icons/stats/magic_pen_icon.png");
+        this.load.image("crit_rate_icon", "images/icons/stats/crit_rate_icon.png");
+        this.load.image("crit_damage_icon", "images/icons/stats/crit_damage_icon.png");
 
         // ------- Loading Animations ------- //
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
