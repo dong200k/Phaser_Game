@@ -48,7 +48,7 @@ export default class SplashScene extends Phaser.Scene {
 
         // Testing for loaded images.
         // this.add.rectangle(500, 500, 200, 200, 0xaaaaaa);
-        // this.add.image(500, 500, "crit_damage_icon");
+        // this.add.image(500, 500, "health_regen_icon");
     }
 
 }

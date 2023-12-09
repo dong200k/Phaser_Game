@@ -108,6 +108,15 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("magic_pen_icon", "images/icons/stats/magic_pen_icon.png");
         this.load.image("crit_rate_icon", "images/icons/stats/crit_rate_icon.png");
         this.load.image("crit_damage_icon", "images/icons/stats/crit_damage_icon.png");
+        this.load.image("attack_range_icon", "images/icons/stats/attack_range_icon.png");
+        this.load.image("attack_speed_icon", "images/icons/stats/attack_speed_icon.png");
+        this.load.image("cooldown_reduction_icon", "images/icons/stats/cooldown_reduction_icon.png");
+        this.load.image("charge_speed_icon", "images/icons/stats/charge_speed_icon.png");
+        this.load.image("movement_speed_icon", "images/icons/stats/movement_speed_icon.png");
+        this.load.image("life_steal_icon", "images/icons/stats/life_steal_icon.png");
+        this.load.image("shield_hp_icon", "images/icons/stats/shield_hp_icon.png");
+        this.load.image("health_regen_icon", "images/icons/stats/health_regen_icon.png");
+
 
         // ------- Loading Animations ------- //
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
