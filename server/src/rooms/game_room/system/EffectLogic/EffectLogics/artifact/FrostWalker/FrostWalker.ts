@@ -28,7 +28,7 @@ export class FrostWalker extends EffectLogic{
     private spawnArea = 0
     private timeBetweenSpawns = 200
     private duration = 2
-
+    
     /** Multiplies the base damage */
     private damageMult = 1
     private durationMult = 1

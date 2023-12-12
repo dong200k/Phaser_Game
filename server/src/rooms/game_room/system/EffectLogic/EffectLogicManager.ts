@@ -49,6 +49,15 @@ import { FrostWalker } from "./EffectLogics/artifact/FrostWalker/FrostWalker";
 import { FrostWalkerUpgrade } from "./EffectLogics/artifact/FrostWalker/FrostWalkerUpgrade";
 import { RuneGuard } from "./EffectLogics/artifact/RuneGuard/RuneGuard";
 import { RuneGuardUpgrade } from "./EffectLogics/artifact/RuneGuard/RuneGuardUpgrade";
+import { DashUpgrade, IDashUpgradeConfig } from "./EffectLogics/dash/DashUpgrade";
+import LightningDash from "./EffectLogics/dash/special dashes/LightningDash";
+import FlameDash from "./EffectLogics/dash/special dashes/FlameDash";
+import FrostDash from "./EffectLogics/dash/special dashes/FrostDash";
+import ShadowDash from "./EffectLogics/dash/special dashes/ShadowDash";
+import PoisonDash from "./EffectLogics/dash/special dashes/PoisonDash";
+import WaveDash from "./EffectLogics/dash/special dashes/WaveDash";
+import SwordDash from "./EffectLogics/dash/special dashes/SwordDash";
+import SomersaultDash from "./EffectLogics/dash/special dashes/SomersaultDash";
 
 export default class EffectLogicManager{
 
@@ -168,8 +177,52 @@ export default class EffectLogicManager{
         this.addEffectLogic(RuneGuardUpgrade, {effectLogicId: "RuneGuard-Upgrade-damage-25", damage: 0.25})
         this.addEffectLogic(RuneGuardUpgrade, {effectLogicId: "RuneGuard-Upgrade-amount-1", amount: 1})
         this.addEffectLogic(RuneGuardUpgrade, {effectLogicId: "RuneGuard-Upgrade-cooldown-5", cooldownReduction: 0.5})
-    }
 
+        this.addEffectLogic(LightningDash)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "LightningDash-upgrade-damage-25", damage: 0.25, id: "LightningDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "LightningDash-upgrade-damage-50", damage: 0.5, id: "LightningDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "LightningDash-upgrade-amount-1", amount: 1, id: "LightningDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "LightningDash-upgrade-area-25", area: 0.25, id: "LightningDash"} as IDashUpgradeConfig)
+        
+        this.addEffectLogic(FlameDash)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "FlameDash-upgrade-damage-50", damage: 0.5, id: "FlameDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "FlameDash-upgrade-damage-100", damage: 1, id: "FlameDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "FlameDash-upgrade-area-25", area: 0.25, id: "FlameDash"} as IDashUpgradeConfig)
+        
+        this.addEffectLogic(FrostDash)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "FrostDash-upgrade-damage-25", damage: 0.25, id: "FrostDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "FrostDash-upgrade-duration-5", duration: 0.5, id: "FrostDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "FrostDash-upgrade-area-50", area: 0.5, id: "FrostDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "FrostDash-upgrade-amount-1", amount: 1, id: "FrostDash"} as IDashUpgradeConfig)
+        
+        this.addEffectLogic(ShadowDash)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "ShadowDash-upgrade-speed-50", damage: 0.5, id: "ShadowDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "ShadowDash-upgrade-speed-50", damage: 0.5, id: "ShadowDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "ShadowDash-upgrade-duration-25", duration: 0.25, id: "ShadowDash"} as IDashUpgradeConfig)
+    
+        this.addEffectLogic(PoisonDash)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "PoisonDash-upgrade-damage-50", damage: 0.5, id: "PoisonDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "PoisonDash-upgrade-duration-5", duration: 0.5, id: "PoisonDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "PoisonDash-upgrade-area-25", area: 0.25, id: "PoisonDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "PoisonDash-upgrade-amount-1", amount: 1, id: "PoisonDash"} as IDashUpgradeConfig)
+        
+        this.addEffectLogic(WaveDash)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "WaveDash-upgrade-damage-50", damage: 0.5, id: "WaveDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "WaveDash-upgrade-damage-100", damage: 1, id: "WaveDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "WaveDash-upgrade-area-25", area: 0.25, id: "WaveDash"} as IDashUpgradeConfig)
+
+        this.addEffectLogic(SwordDash)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "SwordDash-upgrade-damage-25", damage: 0.25, id: "SwordDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "SwordDash-upgrade-damage-50", damage: 0.5, id: "SwordDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "SwordDash-upgrade-amount-1", amount: 1, id: "SwordDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "SwordDash-upgrade-area-25", area: 0.25, id: "SwordDash"} as IDashUpgradeConfig)
+
+        this.addEffectLogic(SomersaultDash)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "SomersaultDash-upgrade-damage-50", damage: 0.5, id: "SomersaultDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "SomersaultDash-upgrade-damage-100", damage: 1, id: "SomersaultDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "SomersaultDash-upgrade-area-25", area: 0.25, id: "SomersaultDash"} as IDashUpgradeConfig)
+    }
+    
     private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){
         let effectLogicId = new effectLogic(config).effectLogicId
         this.effectLogics.set(effectLogicId, {ctor: effectLogic, config})

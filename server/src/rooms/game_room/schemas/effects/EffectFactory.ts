@@ -164,6 +164,8 @@ export default class EffectFactory {
             case "player skill":
                 // Creates a UpgradeTriggerEffect which uses the effect when the EffectManager.useOnTriggerEffectsOn is called with the corresponding type, "player skill" in this case
                 return new TriggerUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
+            case "player dash":
+                return new TriggerUpgradeEffect(effectLogicId, cooldown, type, doesStack, collisionGroup)
             case "one time":
                 // Creates a onetime upgrade effect that is used once
                 return new OneTimeUpgradeEffect(effectLogicId, doesStack, collisionGroup)

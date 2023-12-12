@@ -391,6 +391,38 @@ export default class PlayerManager {
         // let runeGuard = artifactManager.createArtifact("upgrade-29a3bf4e-3a16-44a5-b293-0d17acdcb7d4")
         // artifactManager.maxArtifact(runeGuard);
         // this.equipArtifact(player, runeGuard)
+
+        // let lightningDash = artifactManager.createArtifact("upgrade-ee0aff70-b554-463b-b79d-5f009c355035")
+        // artifactManager.maxArtifact(lightningDash)
+        // this.equipArtifact(player, lightningDash)
+
+        // let flameDash = artifactManager.createArtifact("upgrade-a9fa7722-0cbc-43f4-a12d-cd768d07e07f")
+        // artifactManager.maxArtifact(flameDash)
+        // this.equipArtifact(player, flameDash)
+
+        // let waveDash = artifactManager.createArtifact("upgrade-cff80f49-e3ed-429c-92ec-ee7fcfde4672")
+        // artifactManager.maxArtifact(waveDash)
+        // this.equipArtifact(player, waveDash)
+
+        // let somersaultDash = artifactManager.createArtifact("upgrade-2fdc0f5d-7118-4d95-a2cc-f58b76bf4f02")
+        // artifactManager.maxArtifact(somersaultDash)
+        // this.equipArtifact(player, somersaultDash)
+
+        let shadowDash = artifactManager.createArtifact("upgrade-d4a4976d-9ea5-4975-b9cd-be4394d6f4a4")
+        artifactManager.maxArtifact(shadowDash)
+        this.equipArtifact(player, shadowDash)
+
+        // let swordDash = artifactManager.createArtifact("upgrade-f59eed00-9740-4090-b661-b343c29cf5c1")
+        // artifactManager.maxArtifact(swordDash)
+        // this.equipArtifact(player, swordDash)
+
+        // let poisonDash = artifactManager.createArtifact("upgrade-20db0c86-fed6-48c5-9cb8-11de173faa9b")
+        // artifactManager.maxArtifact(poisonDash)
+        // this.equipArtifact(player, poisonDash)
+
+        // let frostDash = artifactManager.createArtifact("upgrade-db782ede-9826-449c-bc60-2cb22a7b08c4")
+        // artifactManager.maxArtifact(frostDash)
+        // this.equipArtifact(player, frostDash)
     }
 
 

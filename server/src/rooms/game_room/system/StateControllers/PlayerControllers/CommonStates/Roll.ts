@@ -53,6 +53,7 @@ export default class Roll extends StateNode {
 
         this.collisionImmuneEffect = EffectFactory.createCollisionImmuneEffectTimed(this.duration)
         EffectManager.addEffectsTo(this.player, this.collisionImmuneEffect)
+        this.useRollEffects()
     }
 
     public onExit(): void {
@@ -110,5 +111,10 @@ export default class Roll extends StateNode {
 
     setEnterChargeStateOnRollFinish(toggle: boolean){
         this.enterChargeStateOnRollFinish = toggle
+    }
+
+    /** Uses the roll effect logics on the player */
+    useRollEffects(){
+        EffectManager.useTriggerEffectsOn(this.player, "player dash", this.player.getBody())
     }
 }
