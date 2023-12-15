@@ -20,6 +20,7 @@ export default class ShadowDash extends DashEffectLogic{
         
         // Enter phantom like state every 3rd dash
         if(this.dashCount === 3){
+            this.dashCount = 0
             let phantomEffect = EffectFactory.createPhantomEffectTimed(duration)
             EffectManager.addEffectsTo(playerState, phantomEffect)
         }
@@ -29,8 +30,8 @@ export default class ShadowDash extends DashEffectLogic{
         }
         // Gain large speed boost
         let speedMult = this.getSpeedMult()
-        let speedMultiEffect = EffectFactory.createSpeedMultiplierEffectTimed(speedMult, duration)
-        EffectManager.addEffectsTo(playerState, speedMultiEffect)
+        this.speedMultiEffect = EffectFactory.createSpeedMultiplierEffectTimed(speedMult, duration)
+        EffectManager.addEffectsTo(playerState, this.speedMultiEffect)
     }
 
     private getSpeedMult(){

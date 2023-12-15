@@ -11,7 +11,7 @@ import Tile from "../gameobjs/Tile";
 import EventManager from "./EventManager";
 import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
 import type MonsterState from "../../../server/src/rooms/game_room/schemas/gameobjs/monsters/Monster";
-import type ProjectileState from "../../../server/src/rooms/game_room/schemas/projectiles/Projectile";
+import ProjectileState from "../../../server/src/rooms/game_room/schemas/projectiles/Projectile";
 import type GameObjectState from "../../../server/src/rooms/game_room/schemas/gameobjs/GameObject";
 import type EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
 import type DungeonState from "../../../server/src/rooms/game_room/schemas/dungeon/Dungeon";
@@ -737,8 +737,13 @@ export default class GameManager {
             let projectileState = gameObjectState as ProjectileState;
             let velocityX = projectileState.velocity.x;
             let velocityY = projectileState.velocity.y;
-            if(!(velocityX === 0 && velocityY === 0))
+            if(!(velocityX === 0 && velocityY === 0) && !gameObjectState.dontRotate){
                 gameObject.setRotation(MathUtil.getRotationRadians(velocityX, velocityY))
+            }
+
+            if(gameObjectState.dontRotate){
+                gameObject.setFlip(gameObjectState.flipX, gameObjectState.flipY)
+            }
         }
         if(gameObject instanceof Monster) {
             // Updates the monster's movement animations based on its velocity.

@@ -1,13 +1,12 @@
 import WeaponUpgradeTree from "../../../../schemas/Trees/WeaponUpgradeTree"
+import Cooldown from "../../../../schemas/gameobjs/Cooldown"
 import Player from "../../../../schemas/gameobjs/Player"
 import Stat from "../../../../schemas/gameobjs/Stat"
 import GameManager from "../../../GameManager"
-import { ITriggerType } from "../../../interfaces"
 import EffectLogic from "../../EffectLogic"
 
-export class DashEffectLogic extends EffectLogic{
-    effectLogicId = "Dash" 
-    // triggerType: ITriggerType = "player dash"
+export class SpecialEffectLogic extends EffectLogic{
+    effectLogicId = "Special" 
 
     protected attackMultiplier = 1
     /** Multiplied by the attackMultiplier to get the final multiplier. */
@@ -25,11 +24,30 @@ export class DashEffectLogic extends EffectLogic{
     protected width = 50
     protected height = 50
 
-    /** Used by some dash effects such as poison and frost dash */
+    /** Used by some effects */
     protected duration = 0
+    protected bonusDurationMultiplier = 1
 
+    /** Used to track cooldown of the special or you can set the cooldown in my-app and overwrite the useEffect method. Note if cooldown is shorter than 
+     * the role's ability cooldown the special will still need to wait for the role's ability cooldown
+     */
+    protected cooldown?: Cooldown
+
+    public update(deltaT: number): void {
+        this.cooldown?.tick(deltaT/1000)
+    }
 
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Matter.Body){
+        if(!this.cooldown) this.cooldown = new Cooldown(this.getDuration() + 1, true)
+        if(this.cooldown.isFinished){
+            this.cooldown.reset()
+            this.useSpecial(playerState, gameManager)
+        }
+    }
+
+    /** Called when the cooldown of the special is up and when useEffect is called */
+    protected useSpecial(playerState: Player, gameManager: GameManager){
+
     }
 
     public increaseBonusAttackMultiplier(num: number){
@@ -44,8 +62,12 @@ export class DashEffectLogic extends EffectLogic{
         this.amount += num
     }
 
-    public increaseDuration(num: number){
-        this.duration += num
+    public increaseBonusDurationMult(num: number){
+        this.bonusDurationMultiplier += num
+    }
+
+    protected getDuration(){
+        return this.duration * this.bonusDurationMultiplier
     }
 
     /** Returns the final width after taking into account area */

@@ -12,6 +12,7 @@ import ChargeAttackLogic from "../../EffectLogic/EffectLogics/common/ChargeAttac
 import ChargeState from "./CommonStates/ChargeState";
 import Roll from "./CommonStates/Roll";
 import Stat from "../../../schemas/gameobjs/Stat";
+import Cooldown from "../../../schemas/gameobjs/Cooldown";
 
 
 export interface PlayerControllerData {
@@ -37,6 +38,8 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     private currentlyCharging: boolean = false
     private timeSoFar: number = 0
     private healthRegenTime: number = 1
+    public allowChangeDirection = true
+    private rollCooldown = new Cooldown(0.5)
 
     protected create(data: PlayerControllerData): void {
         this.player = data.player;
@@ -67,7 +70,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         this.specialState = specialState
         specialState.setConfig({
             canMove: false,
-            triggerPercent: 0.9,
+            triggerPercent: 0,
         })
         this.addState(specialState)
 
@@ -103,10 +106,28 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
                 this.player.stat.add(new Stat({hp: this.player.stat.healthRegen}))
             }
         }
+
+        // Rool cooldown
+        if(this.stateName !== "Roll"){
+            this.rollCooldown.tick(deltaT)
+        }
+    }
+
+    public putRollOnCooldown(){
+        this.rollCooldown.reset()
     }
 
     public getPlayer() {
         return this.player;
+    }
+
+    /**
+     * Takes in a value true or false which determines whether the player can move or not.
+     * @param val 
+     */
+    public setAllowChangeDirection(val: boolean){
+        // console.log(`allow change direction: ${val}`)
+        this.allowChangeDirection = val
     }
 
     public processMouseInput(mouseClick: number, mouseDown: number, mouseX:number, mouseY:number){
@@ -174,13 +195,15 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
      */
     public startSpceial(mouseX:number, mouseY:number) {
         if(this.stateName !== "Dead" && this.stateName !== "Special") {
+            console.log("start special")
             this.specialState?.setConfig({mouseX, mouseY});
             this.changeState("Special");
         }
     }
 
     public startRoll(key: "w"|"a"|"s"|"d"){
-        if(this.stateName !== "Dead" && this.stateName !== "Special" && this.stateName !== "Roll"){
+        if(this.rollCooldown.isFinished && this.stateName !== "Dead" && this.stateName !== "Special" && this.stateName !== "Roll"){
+            this.putRollOnCooldown()
             this.changeState("Roll")
         }
     }

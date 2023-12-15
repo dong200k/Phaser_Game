@@ -210,7 +210,7 @@ export default class CollisionManager{
             EffectManager.addEffectsTo(attackingEntity, healEffect)
         }
 
-        projectile.onCollide()
+        projectile.onCollide(entity)
 
         // Melee projectile will be set inactive by its controller.
         projectile.hitCount++

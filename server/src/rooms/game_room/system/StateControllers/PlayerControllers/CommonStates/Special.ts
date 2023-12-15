@@ -31,7 +31,7 @@ export default class Special extends StateNode {
     /** A percentage of attackDuration that passes before the attack triggers. E.g. if attackDuration=1 and 
      * triggerPercent=0.7, the attack will trigger at 0.7 seconds.
      */
-    protected triggerPercent: number = 0.3;
+    protected triggerPercent: number = 0;
 
     /** Has the attack been triggered or not. */
     protected triggered: boolean = false;
@@ -100,6 +100,7 @@ export default class Special extends StateNode {
         if(!this.triggered && this.timePassed >= this.triggerPercent * this.attackDuration) {
             this.triggered = true;
             // Trigger skills.
+            console.log("trigger skill")
             EffectManager.useTriggerEffectsOn(this.player, "player skill", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY})
         }
 

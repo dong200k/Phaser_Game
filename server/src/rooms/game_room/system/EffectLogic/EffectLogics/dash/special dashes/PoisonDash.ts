@@ -7,6 +7,7 @@ import { GameEvents, IProjectileConfig } from "../../../../interfaces"
 
 export default class PoisonDash extends DashEffectLogic{
     effectLogicId = "PoisonDash"
+    protected duration: number = 3
 
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Body): void {
         let amount = this.getAmount(playerState.stat)
@@ -24,7 +25,7 @@ export default class PoisonDash extends DashEffectLogic{
         let {x, y} = playerState.getBody().position
         
         let projectileConfig: IProjectileConfig = {
-            sprite: "poison_ground",
+            sprite: "poison_dash",
             stat: playerState.stat,
             spawnX: x,
             spawnY: y,
@@ -39,7 +40,7 @@ export default class PoisonDash extends DashEffectLogic{
             piercing: -1,
             // activeTime: 1000,
             repeatAnimation: false,
-            // spawnSound: "frost_walk",
+            spawnSound: "poison_dash",
             classType: "MeleeProjectile",
             originEntityId: playerState.getId(),
             data: {

@@ -173,6 +173,10 @@ export default class PlayerManager {
             return; 
         }
 
+        // if(!playerState.playerController.allowChangeDirection && (playerBody.velocity.x !== 0 && playerBody.velocity.y !== 0)){
+        //     return console.log("can't change direction")
+        // } 
+
         //calculate new player velocity
         let speed = getFinalSpeed(playerState.stat) * deltaT;
         let x = 0;
@@ -408,9 +412,9 @@ export default class PlayerManager {
         // artifactManager.maxArtifact(somersaultDash)
         // this.equipArtifact(player, somersaultDash)
 
-        let shadowDash = artifactManager.createArtifact("upgrade-d4a4976d-9ea5-4975-b9cd-be4394d6f4a4")
-        artifactManager.maxArtifact(shadowDash)
-        this.equipArtifact(player, shadowDash)
+        // let shadowDash = artifactManager.createArtifact("upgrade-d4a4976d-9ea5-4975-b9cd-be4394d6f4a4")
+        // artifactManager.maxArtifact(shadowDash)
+        // this.equipArtifact(player, shadowDash)
 
         // let swordDash = artifactManager.createArtifact("upgrade-f59eed00-9740-4090-b661-b343c29cf5c1")
         // artifactManager.maxArtifact(swordDash)
@@ -423,6 +427,34 @@ export default class PlayerManager {
         // let frostDash = artifactManager.createArtifact("upgrade-db782ede-9826-449c-bc60-2cb22a7b08c4")
         // artifactManager.maxArtifact(frostDash)
         // this.equipArtifact(player, frostDash)
+
+        let lightningGod = artifactManager.createArtifact("upgrade-283ece36-f104-429b-9e58-ccc89fd407bd")
+        artifactManager.maxArtifact(lightningGod)
+        this.equipArtifact(player, lightningGod)
+
+        // let kamehameha = artifactManager.createArtifact("upgrade-e13cc47b-80ff-4ec9-a013-fc25d882e663")
+        // artifactManager.maxArtifact(kamehameha)
+        // this.equipArtifact(player, kamehameha)
+
+        // let lightningOrb = artifactManager.createArtifact("upgrade-2b742402-a887-4896-a4d0-df9c6b6b739e")
+        // artifactManager.maxArtifact(lightningOrb)
+        // this.equipArtifact(player, lightningOrb)
+
+        // let lightningBird = artifactManager.createArtifact("upgrade-f861a679-405d-4001-b8f2-eeb06e594b17")
+        // artifactManager.maxArtifact(lightningBird)
+        // this.equipArtifact(player, lightningBird)
+
+        // let meteor = artifactManager.createArtifact("upgrade-b5490d77-52d8-45ae-b996-6926a5b1ff00")
+        // artifactManager.maxArtifact(meteor)
+        // this.equipArtifact(player, meteor)
+
+        // let ultimateFlameThrower = artifactManager.createArtifact("upgrade-fd225150-62c2-4407-a815-08f5eb0fe777")
+        // artifactManager.maxArtifact(ultimateFlameThrower)
+        // this.equipArtifact(player, ultimateFlameThrower)
+
+        // let bladeTornado = artifactManager.createArtifact("upgrade-243789d2-1987-4129-a65f-fbcffa0c7b69")
+        // artifactManager.maxArtifact(bladeTornado)
+        // this.equipArtifact(player, bladeTornado)
     }
 
 

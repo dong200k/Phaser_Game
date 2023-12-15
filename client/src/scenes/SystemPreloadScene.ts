@@ -64,7 +64,12 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("wave_end_violin", "audio/wave_end_violin.mp3")
         this.load.audio("fountain_heal", "audio/fountain_heal.mp3")
         this.load.audio("monster_death2", "audio/monster_death2.mp3")
-
+        this.load.audio("poison_dash", "audio/poison_dash.mp3")
+        this.load.audio("somersault_dash", "audio/somersault_dash.mp3")
+        this.load.audio("sword_dash", "audio/sword_dash.mp3")
+        this.load.audio("wave_dash", "audio/wave_dash.mp3")
+        this.load.audio("frost_dash", "audio/frost_dash.mp3")
+        this.load.audio("flame_dash", "audio/flame_dash.mp3")
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");
@@ -120,7 +125,18 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("iron_chest", "animations/iron_chest/iron_chest.png", "animations/iron_chest/iron_chest.json");
         this.load.aseprite("gold_chest", "animations/gold_chest/gold_chest.png", "animations/gold_chest/gold_chest.json");
         this.load.aseprite("summon_circle", "images/projectiles/summon_circle.png", "images/projectiles/summon_circle.json")
-
+        this.load.aseprite("wave_dash", "images/projectiles/wave.png", "images/projectiles/wave.json")
+        this.load.aseprite("sword_dash", "images/projectiles/sword_slash.png", "images/projectiles/sword_slash.json")
+        this.load.aseprite("somersault_dash", "images/projectiles/Sommersault.png", "images/projectiles/Sommersault.json")
+        this.load.aseprite("flame_dash", "images/projectiles/flame.png", "images/projectiles/flame.json")
+        this.load.aseprite("poison_dash", "images/projectiles/poison.png", "images/projectiles/poison.json")
+        this.load.aseprite("lightning_god", "images/projectiles/lighting_god.png", "images/projectiles/lighting_god.json")
+        this.load.aseprite("lightning_bird", "images/projectiles/lightning_bird.png", "images/projectiles/lightning_bird.json")
+        this.load.aseprite("lightning_orb", "images/projectiles/lightning_orb.png", "images/projectiles/lightning_orb.json")
+        this.load.aseprite("meteor", "images/projectiles/meteor.png", "images/projectiles/meteor.json")
+        this.load.aseprite("kamehameha", "images/projectiles/kamehameha.png", "images/projectiles/kamehameha.json")
+        this.load.aseprite("flame_thrower", "images/projectiles/flame_thrower.png", "images/projectiles/flame_thrower.json")
+        this.load.aseprite("blade_tornado", "images/projectiles/blade_tornado.png", "images/projectiles/blade_tornado.json")
     }
 
     /** Load the assets from firebase. */
@@ -185,7 +201,12 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("wave_end_violin", "sfx");
         soundManager.add("fountain_heal", "sfx");
         soundManager.add("monster_death2", "sfx");
-
+        soundManager.add("frost_dash", "sfx")
+        soundManager.add("somersault_dash", "sfx")
+        soundManager.add("poison_dash", "sfx")
+        soundManager.add("wave_dash", "sfx")
+        soundManager.add("flame_dash", "sfx")
+        soundManager.add("sword_dash", "sfx")
 
         soundManager.add("ultra_instinct", "bg")
         soundManager.add("ultra_instinct_boss", "bg")

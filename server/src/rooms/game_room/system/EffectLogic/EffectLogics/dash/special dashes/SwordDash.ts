@@ -4,6 +4,7 @@ import Player from "../../../../../schemas/gameobjs/Player"
 import GameManager from "../../../../GameManager"
 import { DashEffectLogic } from "../DashEffectLogic"
 import { GameEvents, IProjectileConfig } from "../../../../interfaces"
+import MathUtil from "../../../../../../../util/MathUtil"
 
 export default class SwordDash extends DashEffectLogic{
     effectLogicId = "SwordDash"
@@ -23,15 +24,17 @@ export default class SwordDash extends DashEffectLogic{
         let width = this.getFinalWidth()
         let height = this.getFinalHeight()
         let {x, y} = playerState.getBody().position
-        
+        let velocity = playerState.getBody().velocity
+        let initialVelocity = MathUtil.getNormalizedSpeed(velocity.x, velocity.y, 0.1)
+
         let projectileConfig: IProjectileConfig = {
-            sprite: "SwordDash",
+            sprite: "sword_dash",
             stat: playerState.stat,
             spawnX: x,
             spawnY: y,
             width,
             height,
-            initialVelocity: {x: 0, y: 0},
+            initialVelocity,
             collisionCategory: "PLAYER_PROJECTILE",
             poolType: "SwordDash",
             attackMultiplier: this.getMult(),
@@ -40,7 +43,7 @@ export default class SwordDash extends DashEffectLogic{
             piercing: -1,
             // activeTime: 1000,
             repeatAnimation: false,
-            // spawnSound: "lightningrod",
+            spawnSound: "sword_dash",
             classType: "MeleeProjectile",
             originEntityId: playerState.getId(),
         }

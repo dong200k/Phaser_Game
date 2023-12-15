@@ -190,7 +190,7 @@ export type IProjectileConfig = {
     }
     /** Called when the projectile is set to inactive by the projectile.setInactive function */
     setInactiveCallback?: (projectile: Projectile)=>void,
-    onCollideCallback?: (projectile: Projectile)=>void,
+    onCollideCallback?: (projectile: Projectile, entity: Entity)=>void,
     /** Key for animation if undefined is passed the default is "play" */
     animationKey?: string,
     /** Whether to repeat animation if undefined then default is true */
@@ -199,6 +199,12 @@ export type IProjectileConfig = {
     projectileControllerCtor?:  {
         new (config?: any): StateMachine<any>;
     } ,
+    /** Used by client to deterine whether to rotate the projectile. Rotation is enabled by default (false) */
+    dontRotate?: boolean,
+    /** Whether to flip game object on the client or not. Only used when dontRotate is set to true */
+    flipX?: boolean
+    /** Whether to flip game object on the client or not. Only used when dontRotate is set to true */
+    flipY?: boolean
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
 }

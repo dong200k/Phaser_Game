@@ -20,12 +20,12 @@ export default class Roll extends StateNode {
     private timePassed: number = 0
     /** Duration of the speed boost */
     private speedBoostDuration: number = 0.5
-    private speedBoostMult: number = 1.5
-    private originalSpeedBoostMult: number = 1.5
+    private speedBoostMult: number = 2
+    private originalSpeedBoostMult: number = 2
 
     /** Distance from rolling origin that player can travel to */
-    private originalMaxDistance: number = 10000
-    private maxDistance: number = 10000
+    private originalMaxDistance: number = 5000
+    private maxDistance: number = 5000
     private originPosition = {x: 0, y: 0}
     private speedMultiEffect?: SpeedMultiEffect
     private collisionImmuneEffect?: CollisionImmuneEffect
@@ -43,6 +43,8 @@ export default class Roll extends StateNode {
         this.speedBoostMult = this.originalSpeedBoostMult * this.speedBoostScale
 
         this.playerController = this.getStateMachine<PlayerController>();
+        this.playerController.setAllowChangeDirection(false)
+
         this.player = this.playerController.getPlayer();
         this.animationDuration = (this.duration * 50/getFinalSpeed(this.player.stat)) * 0.8
         this.player.animation.playAnimation("roll", {duration: this.animationDuration});
@@ -57,6 +59,8 @@ export default class Roll extends StateNode {
     }
 
     public onExit(): void {
+        this.playerController.setAllowChangeDirection(true)
+
         this.timePassed = 0
         if(this.speedMultiEffect) {
             EffectManager.removeEffectFrom(this.player, this.speedMultiEffect)
@@ -66,7 +70,6 @@ export default class Roll extends StateNode {
         if(this.collisionImmuneEffect){
             EffectManager.removeEffectFrom(this.player, this.collisionImmuneEffect)
         }
-
     }
 
     public changeToExitState(){

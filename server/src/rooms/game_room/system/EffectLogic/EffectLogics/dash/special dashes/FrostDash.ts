@@ -39,7 +39,7 @@ export default class FrostDash extends DashEffectLogic{
             piercing: -1,
             // activeTime: 1000,
             repeatAnimation: false,
-            spawnSound: "frost_walk",
+            spawnSound: "frost_dash",
             classType: "MeleeProjectile",
             originEntityId: playerState.getId(),
             data: {

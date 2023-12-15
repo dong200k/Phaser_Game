@@ -18,7 +18,7 @@ export default class SomersaultDash extends DashEffectLogic{
         let {x, y} = playerState.getBody().position
         
         let projectileConfig: IProjectileConfig = {
-            sprite: "SomersaultDash",
+            sprite: "somersault_dash",
             stat: playerState.stat,
             spawnX: x,
             spawnY: y,
@@ -31,11 +31,14 @@ export default class SomersaultDash extends DashEffectLogic{
             magicMultiplier: 0,
             dontDespawnOnObstacleCollision: true,
             piercing: -1,
-            // activeTime: 1000,
+            activeTime: 1000,
             repeatAnimation: false,
-            // spawnSound: "lightningrod",
-            classType: "MeleeProjectile",
+            spawnSound: "somersault_dash",
+            classType: "FollowingMeleeProjectile",
             originEntityId: playerState.getId(),
+            data: {
+                owner: playerState
+            }
         }
         
         gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, {

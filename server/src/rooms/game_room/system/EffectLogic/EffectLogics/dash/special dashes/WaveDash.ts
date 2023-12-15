@@ -4,10 +4,11 @@ import Player from "../../../../../schemas/gameobjs/Player"
 import GameManager from "../../../../GameManager"
 import { DashEffectLogic } from "../DashEffectLogic"
 import { GameEvents, IProjectileConfig } from "../../../../interfaces"
+import MathUtil from "../../../../../../../util/MathUtil"
 
 export default class WaveDash extends DashEffectLogic{
     effectLogicId = "WaveDash"
-
+    // area = 10
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Body): void {
         this.spawnWave(playerState, gameManager)        
     }
@@ -16,15 +17,17 @@ export default class WaveDash extends DashEffectLogic{
         let width = this.getFinalWidth()
         let height = this.getFinalHeight()
         let {x, y} = playerState.getBody().position
+        let playerVelocity = playerState.getBody().velocity
+        let velocity = MathUtil.getNormalizedSpeed(playerVelocity.x, playerVelocity.y, 8)
         
         let projectileConfig: IProjectileConfig = {
-            sprite: "WaveCrash",
+            sprite: "wave_dash",
             stat: playerState.stat,
             spawnX: x,
             spawnY: y,
-            width,
+            width,  
             height,
-            initialVelocity: {x: 0, y: 0},
+            initialVelocity: velocity,
             collisionCategory: "PLAYER_PROJECTILE",
             poolType: "WaveDash",
             attackMultiplier: this.getMult(),
@@ -33,9 +36,11 @@ export default class WaveDash extends DashEffectLogic{
             piercing: -1,
             // activeTime: 1000,
             repeatAnimation: false,
-            // spawnSound: "lightningrod",
+            spawnSound: "wave_dash",
             classType: "MeleeProjectile",
             originEntityId: playerState.getId(),
+            dontRotate: true,
+            flipX: velocity.x < 0
         }
         
         gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, {
