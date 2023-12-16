@@ -428,9 +428,9 @@ export default class PlayerManager {
         // artifactManager.maxArtifact(frostDash)
         // this.equipArtifact(player, frostDash)
 
-        let lightningGod = artifactManager.createArtifact("upgrade-283ece36-f104-429b-9e58-ccc89fd407bd")
-        artifactManager.maxArtifact(lightningGod)
-        this.equipArtifact(player, lightningGod)
+        // let lightningGod = artifactManager.createArtifact("upgrade-283ece36-f104-429b-9e58-ccc89fd407bd")
+        // artifactManager.maxArtifact(lightningGod)
+        // this.equipArtifact(player, lightningGod)
 
         // let kamehameha = artifactManager.createArtifact("upgrade-e13cc47b-80ff-4ec9-a013-fc25d882e663")
         // artifactManager.maxArtifact(kamehameha)
@@ -444,9 +444,9 @@ export default class PlayerManager {
         // artifactManager.maxArtifact(lightningBird)
         // this.equipArtifact(player, lightningBird)
 
-        // let meteor = artifactManager.createArtifact("upgrade-b5490d77-52d8-45ae-b996-6926a5b1ff00")
-        // artifactManager.maxArtifact(meteor)
-        // this.equipArtifact(player, meteor)
+        let meteor = artifactManager.createArtifact("upgrade-b5490d77-52d8-45ae-b996-6926a5b1ff00")
+        artifactManager.maxArtifact(meteor)
+        this.equipArtifact(player, meteor)
 
         // let ultimateFlameThrower = artifactManager.createArtifact("upgrade-fd225150-62c2-4407-a815-08f5eb0fe777")
         // artifactManager.maxArtifact(ultimateFlameThrower)

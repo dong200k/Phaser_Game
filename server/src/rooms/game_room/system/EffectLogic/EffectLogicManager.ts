@@ -60,6 +60,10 @@ import SwordDash from "./EffectLogics/dash/special dashes/SwordDash";
 import SomersaultDash from "./EffectLogics/dash/special dashes/SomersaultDash";
 import { SpecialUpgrade } from "./EffectLogics/special/SpecialUpgrade";
 import LightningGod from "./EffectLogics/special/specials/LightningGod";
+import Kamehameha from "./EffectLogics/special/specials/Kamehameha";
+import LightningBird from "./EffectLogics/special/specials/lightningbird/LightningBird";
+import BladeTornado from "./EffectLogics/special/specials/BladeTorndao";
+import Meteor from "./EffectLogics/special/specials/lightningbird copy/Meteor";
 
 export default class EffectLogicManager{
 
@@ -224,27 +228,31 @@ export default class EffectLogicManager{
         this.addEffectLogic(DashUpgrade, {effectLogicId: "SomersaultDash-upgrade-damage-100", damage: 1, id: "SomersaultDash"} as IDashUpgradeConfig)
         this.addEffectLogic(DashUpgrade, {effectLogicId: "SomersaultDash-upgrade-area-25", area: 0.25, id: "SomersaultDash"} as IDashUpgradeConfig)
     
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "BladeTornado-upgrade-damage-25", damage: 0.25})
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "BladeTornado-upgrade-duration-50", duration: 0.5})
+        this.addEffectLogic(BladeTornado)
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "BladeTornado-upgrade-damage-25", damage: 0.25, id: "BladeTornado"})
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "BladeTornado-upgrade-duration-50", duration: 0.5, id: "BladeTornado"})
 
         this.addEffectLogic(LightningGod)
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningGod-upgrade-damage-25", damage: 0.25})
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningGod-upgrade-duration-50", duration: 0.5})
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningGod-upgrade-damage-25", damage: 0.25, id: "LightningGod"})
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningGod-upgrade-duration-50", duration: 0.5, id: "LightningGod"})
 
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "UltimateFlameThrower-upgrade-damage-25", damage: 0.25})
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "UltimateFlameThrower-upgrade-duration-50", duration: 0.5})
 
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningBird-upgrade-damage-25", damage: 0.25})
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningBird-upgrade-duration-50", duration: 0.5})    
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningBird-upgrade-amount-1", amount: 1})
+        this.addEffectLogic(LightningBird)
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningBird-upgrade-damage-25", damage: 0.25, id: "LightningBird"})
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningBird-upgrade-duration-50", duration: 0.5, id: "LightningBird"})    
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningBird-upgrade-amount-1", amount: 1, id: "LightningBird"})
         
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "Meteor-upgrade-damage-25", damage: 0.25})
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "Meteor-upgrade-amount-1", amount: 1})
+        this.addEffectLogic(Meteor)
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "Meteor-upgrade-damage-25", damage: 0.25, id: "Meteor"})
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "Meteor-upgrade-amount-1", amount: 1, id: "Meteor"})
 
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-damage-25", damage: 0.25})
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-duration-50", duration: 0.5})    
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-amount-1", amount: 1})
 
+        this.addEffectLogic(Kamehameha)
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "Kamehameha-upgrade-damage-25", damage: 0.25})
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-area-25", area: 0.25})    
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-area-100", area: 1})

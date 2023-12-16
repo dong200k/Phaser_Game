@@ -43,6 +43,7 @@ export class SpecialUpgrade extends EffectLogic{
     }
 
     public useEffect(playerState: Player, gameManager: GameManager, tree?: WeaponUpgradeTree){
+        console.log(`special upgrade, id: ${this.id}, amount: ${this.amount}`)
         playerState.effects.forEach(effect=>{
             if(effect instanceof TriggerUpgradeEffect && effect.effectLogic && effect.effectLogic instanceof SpecialEffectLogic && effect.effectLogic.effectLogicId === this.id){
                 effect.effectLogic.increaseBonusArea(this.area)

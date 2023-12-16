@@ -1,20 +1,24 @@
 import { Body } from "matter-js"
-import WeaponUpgradeTree from "../../../../../schemas/Trees/WeaponUpgradeTree"
-import Player from "../../../../../schemas/gameobjs/Player"
-import GameManager from "../../../../GameManager"
-import { GameEvents, IProjectileConfig } from "../../../../interfaces"
-import { SpecialEffectLogic } from "../SpecialEffectLogic"
+import WeaponUpgradeTree from "../../../../../../schemas/Trees/WeaponUpgradeTree"
+import Player from "../../../../../../schemas/gameobjs/Player"
+import GameManager from "../../../../../GameManager"
+import { GameEvents, IProjectileConfig } from "../../../../../interfaces"
+import { SpecialEffectLogic } from "../../SpecialEffectLogic"
+import LightningBirdController from "./LightningBirdController"
 
-export default class LightningGod extends SpecialEffectLogic{
-    effectLogicId = "LightningGod"
+export default class LightningBird extends SpecialEffectLogic{
+    effectLogicId = "LightningBird"
     // protected area: number = 3
-    protected duration: number = 2
+    protected duration: number = 20
 
     protected useSpecial(playerState: Player, gameManager: GameManager): void {
-        this.spawnLightningGod(playerState, gameManager)
+        let amount = this.getAmount(playerState.stat)
+        for(let i=0;i<amount;i++){
+            this.spawnProjectile(playerState, gameManager)
+        }
     }
 
-    private spawnLightningGod(playerState: Player, gameManager: GameManager){
+    private spawnProjectile(playerState: Player, gameManager: GameManager){
         let width = this.getFinalWidth()
         let height = this.getFinalHeight()
         let {x, y} = playerState.getBody().position
@@ -25,7 +29,7 @@ export default class LightningGod extends SpecialEffectLogic{
         // let velocityX = playerVelocityX > 0 ? 1 : -1
         
         let projectileConfig: IProjectileConfig = {
-            sprite: "lightning_god",
+            sprite: "lightning_bird",
             stat: playerState.stat,
             spawnX: x,
             spawnY: y,
@@ -33,7 +37,7 @@ export default class LightningGod extends SpecialEffectLogic{
             height,
             initialVelocity: {x: 0, y: 0},
             collisionCategory: "PLAYER_PROJECTILE",
-            poolType: "LightningGod",
+            poolType: "lightning_bird",
             attackMultiplier: this.getMult(),
             magicMultiplier: 0,
             dontDespawnOnObstacleCollision: true,
@@ -41,14 +45,18 @@ export default class LightningGod extends SpecialEffectLogic{
             activeTime: this.getDuration() * 1000,
             // repeatAnimation: true,
             // spawnSound: "flame_dash",
-            classType: "FollowingMeleeProjectile",
+            classType: "Projectile",
             originEntityId: playerState.getId(),
             data: {
                 owner: playerState,
             },
-            onCollideCallback: (projectile, entity)=>{
-                this.spawnLightning(projectile.getOriginEntity() as Player, gameManager, entity.getBody().position.x, entity.getBody().position.y)
-            }
+            // onCollideCallback: (projectile, entity)=>{
+            //     this.spawnLightning(projectile.getOriginEntity() as Player, gameManager, entity.getBody().position.x, entity.getBody().position.y)
+            // },   
+            projectileSpeed: 75,
+            projectileControllerCtor: LightningBirdController,
+            dontRotate: true,
+            repeatAnimation: true
         }
         
         gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, {
@@ -74,9 +82,10 @@ export default class LightningGod extends SpecialEffectLogic{
             piercing: -1,
             // activeTime: 1000,
             repeatAnimation: false,
-            spawnSound: "lightningrod",
+            spawnSound: "lightninggodlightning",
             classType: "MeleeProjectile",
             originEntityId: playerState.getId(),
+            dontRotate: true,
         }
 
         gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, {

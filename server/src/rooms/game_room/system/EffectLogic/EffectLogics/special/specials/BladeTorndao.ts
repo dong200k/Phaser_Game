@@ -5,16 +5,17 @@ import GameManager from "../../../../GameManager"
 import { GameEvents, IProjectileConfig } from "../../../../interfaces"
 import { SpecialEffectLogic } from "../SpecialEffectLogic"
 
-export default class LightningGod extends SpecialEffectLogic{
-    effectLogicId = "LightningGod"
+export default class BladeTornado extends SpecialEffectLogic{
+    effectLogicId = "BladeTornado"
     // protected area: number = 3
+    width = 500
     protected duration: number = 2
 
     protected useSpecial(playerState: Player, gameManager: GameManager): void {
-        this.spawnLightningGod(playerState, gameManager)
+        this.attack(playerState, gameManager)
     }
 
-    private spawnLightningGod(playerState: Player, gameManager: GameManager){
+    private attack(playerState: Player, gameManager: GameManager){
         let width = this.getFinalWidth()
         let height = this.getFinalHeight()
         let {x, y} = playerState.getBody().position
@@ -25,7 +26,7 @@ export default class LightningGod extends SpecialEffectLogic{
         // let velocityX = playerVelocityX > 0 ? 1 : -1
         
         let projectileConfig: IProjectileConfig = {
-            sprite: "lightning_god",
+            sprite: "blade_tornado",
             stat: playerState.stat,
             spawnX: x,
             spawnY: y,
@@ -33,7 +34,7 @@ export default class LightningGod extends SpecialEffectLogic{
             height,
             initialVelocity: {x: 0, y: 0},
             collisionCategory: "PLAYER_PROJECTILE",
-            poolType: "LightningGod",
+            poolType: "blade_tornado",
             attackMultiplier: this.getMult(),
             magicMultiplier: 0,
             dontDespawnOnObstacleCollision: true,
@@ -45,10 +46,8 @@ export default class LightningGod extends SpecialEffectLogic{
             originEntityId: playerState.getId(),
             data: {
                 owner: playerState,
+                // offsetX: width/2
             },
-            onCollideCallback: (projectile, entity)=>{
-                this.spawnLightning(projectile.getOriginEntity() as Player, gameManager, entity.getBody().position.x, entity.getBody().position.y)
-            }
         }
         
         gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, {
@@ -74,7 +73,7 @@ export default class LightningGod extends SpecialEffectLogic{
             piercing: -1,
             // activeTime: 1000,
             repeatAnimation: false,
-            spawnSound: "lightningrod",
+            spawnSound: "lightninggodlightning",
             classType: "MeleeProjectile",
             originEntityId: playerState.getId(),
         }

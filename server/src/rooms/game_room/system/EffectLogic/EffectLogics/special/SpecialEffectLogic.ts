@@ -59,7 +59,9 @@ export class SpecialEffectLogic extends EffectLogic{
     }
 
     public increaseAmount(num: number){
+        // console.log(`Amount increase by ${num}`)
         this.amount += num
+        // console.log(`new amount: ${this.amount}`)
     }
 
     public increaseBonusDurationMult(num: number){
@@ -98,6 +100,7 @@ export class SpecialEffectLogic extends EffectLogic{
      */
     public getAmount({amount}: Stat){
         let finalAmount = amount + this.amount
+        // console.log(`get amount final amount: ${finalAmount}, amount: ${this.amount}, playerAmount: ${amount}, returned amount: ${Math.min(finalAmount, this.amountCap)}`)
         return Math.min(finalAmount, this.amountCap)
     }
 }

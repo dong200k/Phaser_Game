@@ -720,7 +720,13 @@ export default class GameManager {
         if(gameObject instanceof Projectile) {
             if(!gameObject.serverActive && gameObjectState.active) {
                 let projectileState = gameObjectState as ProjectileState;
-                gameObject.play(projectileState.animationKey);
+                // gameObject.play(projectileState.animationKey);
+
+                if(projectileState.repeatAnimation){
+                    gameObject.play({key: projectileState.animationKey, repeat: -1});
+                }else{
+                    gameObject.play({key: projectileState.animationKey});
+                }
                 SoundManager.getManager().play(projectileState.spawnSound, {detune: Math.floor(Math.random() * 300 ) - 150});
             }
         }
