@@ -33,6 +33,7 @@ import Forge from "../gameobjs/Forge";
 import Merchant from "../gameobjs/Merchant";
 import MerchantState from "../../../server/src/rooms/game_room/schemas/gameobjs/Merchant";
 import Fountain from "../gameobjs/Fountain";
+import ForgeState from "../../../server/src/rooms/game_room/schemas/gameobjs/Forge";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -77,6 +78,7 @@ export default class GameManager {
 
     private floatingTexts: FloatingText[] = [];
     private statusIconManager: StatusIconManager;
+    private paused = false
 
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
@@ -103,6 +105,7 @@ export default class GameManager {
      * @param deltaT The time that passed in ms.
      */
     public update(time: number, deltaT: number) {
+        if(this.paused) return
         this.timeTillNextTick -= deltaT;
         while(this.timeTillNextTick <= 0) {
             this.timeTillNextTick += this.timePerTick;
@@ -332,6 +335,14 @@ export default class GameManager {
                 this.queuedOnAddGameObjects.push({obj: gameObj, key: key});
         };
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
+
+        this.gameRoom.onMessage("pause", () => {
+            this.paused = true
+        })
+
+        this.gameRoom.onMessage("unpause", () => {
+            this.paused = false
+        })
     }
 
     private initializeClientSidePrediction() {
@@ -573,7 +584,7 @@ export default class GameManager {
         return newChest;
     }
 
-    private addForge(forgeState: any, key: string): Forge {
+    private addForge(forgeState: ForgeState, key: string): Forge {
         let newForge = new Forge(this.scene, forgeState)
         this.scene.add.existing(newForge)
         this.addListenersToGameObject(newForge, forgeState)
@@ -679,6 +690,11 @@ export default class GameManager {
         if(gameObject instanceof Merchant) {
             let merchantState = gameObjectState as MerchantState
             merchantState.onChange = (changes: any) => this.merchantOnChange(gameObject, merchantState, changes)
+        }
+
+        if(gameObject instanceof Forge) {
+            let forgeState = gameObjectState as ForgeState
+            forgeState.onChange = (changes: any) => this.forgeOnChange(gameObject, forgeState, changes)
         }
     }
 
@@ -961,11 +977,36 @@ export default class GameManager {
                     this.gameRoom.send("selectMerchantItem", idx);
                     SoundManager.getManager().play("button_click1", {detune: 700});
                 },
+                // coinCost, levelCost
             })
         })
         
         EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
             title: `Merchant`,
+            items: itemList,
+        })
+    }
+
+    /** TODO: Make this method connect with a Forge UI instead of the weapon artifact one. 
+     * Also show the coin cost and other attributes. */
+    private forgeOnChange(forge: Forge, forgeState: ForgeState, changes: any){
+        let itemList: any = []
+        let forgeUpgrade = forgeState.forgeUpgrades.get(this.gameRoom.sessionId)
+        forgeUpgrade?.upgradeItems.forEach((item, idx)=>{
+            itemList.push({
+                typeName: "artifact",
+                name: item.name,
+                description: item.description,
+                imageKey: item.imageKey,
+                onClick: () => {
+                    this.gameRoom.send("selectForgeUpgrade", idx);
+                    SoundManager.getManager().play("button_click1", {detune: 700});
+                },
+            })
+        })
+        
+        EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+            title: `Forge chances left: ${forgeUpgrade?.chancesRemaining}`,
             items: itemList,
         })
     }

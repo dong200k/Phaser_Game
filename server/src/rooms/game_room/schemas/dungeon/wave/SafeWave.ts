@@ -6,7 +6,10 @@ export interface ISafeWaveConfig {
     merchantSpawnPosition?: {x: number, y: number},
     fountainSpawnPosition?: {x: number, y: number},
     /** Duration in seconds of the safewave */
-    waveDuration?: number
+    waveDuration?: number,
+    hasMerchant?: boolean,
+    hasForge?: boolean,
+    hasFountain?: boolean,
 }
 
 export default class SafeWave extends Wave{
@@ -19,6 +22,14 @@ export default class SafeWave extends Wave{
     private merchantSpawnPosition: {x: number, y: number}
     private fountainSpawnPosition: {x: number, y: number}
     
+    private forgeSpawned = false
+    private merchantSpawned = false
+    private fountainSpawned = false
+
+    private hasForge = false
+    private hasMerchant = false
+    private hasFountain = false
+
     constructor(gameManager: GameManager, config?: ISafeWaveConfig){
         super(()=>{})
         this.gameManager = gameManager
@@ -27,6 +38,9 @@ export default class SafeWave extends Wave{
         this.forgeSpawnPosition = config?.forgeSpawnPosition ?? {x: 0, y: 0}
         this.merchantSpawnPosition = config?.merchantSpawnPosition ?? {x: this.forgeSpawnPosition.x + 100, y: this.forgeSpawnPosition.y}
         this.fountainSpawnPosition = config?.fountainSpawnPosition ?? {x: this.forgeSpawnPosition.x + 200, y: this.forgeSpawnPosition.y}
+        this.hasForge = config?.hasForge ?? true
+        this.hasMerchant = config?.hasMerchant ?? Math.random() < 0.3
+        this.hasFountain = config?.hasFountain ?? true
     }
 
     public update(deltaT: number): boolean {
@@ -53,10 +67,18 @@ export default class SafeWave extends Wave{
     public onWaveStart(){
         let dungeon = this.gameManager.getDungeonManager().getDungeon()
         if(dungeon) dungeon.safeWaveTime = this.waveDurationSeconds
-
-        this.gameManager.getForgeManager().spawnForge(this.forgeSpawnPosition)
-        this.gameManager.getMerchantManager().spawnMerchant(this.merchantSpawnPosition)
-        this.gameManager.getFountainManager().spawnFountain(this.fountainSpawnPosition)
+        if(this.hasForge){
+            this.forgeSpawned = true
+            this.gameManager.getForgeManager().spawnForge(this.forgeSpawnPosition)
+        }
+        if(this.hasMerchant) {
+            this.merchantSpawned = true
+            this.gameManager.getMerchantManager().spawnMerchant(this.merchantSpawnPosition)
+        }
+        if(this.hasFountain) {
+            this.fountainSpawned = true
+            this.gameManager.getFountainManager().spawnFountain(this.fountainSpawnPosition)
+        }
     }
 
     /**
@@ -66,8 +88,8 @@ export default class SafeWave extends Wave{
         let dungeon = this.gameManager.getDungeonManager().getDungeon()
         if(dungeon) dungeon.safeWaveTime = 0
 
-        this.gameManager.getForgeManager().hideForge()
-        this.gameManager.getMerchantManager().hideMerchant()
-        this.gameManager.getFountainManager().hideFountain()
+        if(this.forgeSpawned) this.gameManager.getForgeManager().hideForge()
+        if(this.merchantSpawned) this.gameManager.getMerchantManager().hideMerchant()
+        if(this.fountainSpawned) this.gameManager.getFountainManager().hideFountain()
     }
 }

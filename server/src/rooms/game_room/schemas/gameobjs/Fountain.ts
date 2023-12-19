@@ -37,7 +37,7 @@ export default class Fountain extends GameObject {
         this.width = 50;
         this.height = 50;
         this.healAmount = config.healAmount ?? 0
-        this.healPercent = config.healPercent ?? 0.25
+        this.healPercent = config.healPercent ?? 0.5
         this.healChances = config.healChances ?? 1
 
         // Create Matter Body

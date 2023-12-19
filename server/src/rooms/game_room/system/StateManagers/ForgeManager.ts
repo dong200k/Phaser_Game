@@ -7,6 +7,11 @@ import GameManager from "../GameManager"
 import ArtifactManager from "./ArtifactManager"
 import TreeManager from "./TreeManager"
 import WeaponManager from "./WeaponManager"
+import MerchantManager from "./MerchantManager"
+import WeaponUpgradeTree from "../../schemas/Trees/WeaponUpgradeTree"
+import WeaponData from "../../schemas/Trees/Node/Data/WeaponData"
+import Node from "../../schemas/Trees/Node/Node"
+import ForgeUpgrade from "../../schemas/ForgeUpgradeItem"
 
 /** Upgrades available for choosing and basic for a single player */
 export interface IForgeUpgrade {
@@ -22,11 +27,6 @@ export default class ForgeManager{
     private gameManager: GameManager
     private forge!: Forge
     private createdForge = false
-    /** Chances each players get at each forge to pick upgrades */
-    private chancesEachForge = 2
-
-    /** Upgrades available for choosing, generated each time forge shows up. Reset when wave ends. */
-    private forgeUpgrades: Map<string, IForgeUpgrade> = new Map()    
 
     /** Config to determine how forge contents are generated */
     // private forgeConfig = {
@@ -35,8 +35,6 @@ export default class ForgeManager{
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
-        
-        
     }   
 
     /**
@@ -44,9 +42,10 @@ export default class ForgeManager{
      * @param player 
      * @param forge 
      */
-    handleOpenForge(player: Player, forge: GameObject){
+    handleOpenForge(player: Player, forge: Forge){
         let upgrades = this.getItemUpgrades(player.getId())
-        this.gameManager.getPlayerManager().givePlayerUpgradeSelection(player, upgrades)
+        forge.ping += 1
+        // this.gameManager.getPlayerManager().givePlayerUpgradeSelection(player, upgrades)
     }
 
     /**
@@ -65,7 +64,7 @@ export default class ForgeManager{
 
     hideForge(){
         console.log("Despawning forge")
-        this.forge.hide()
+        this.forge?.hide()
         this.clearForgeUpgrades()
         this.gameManager.gameObjects.forEach(obj=>{
             if(obj instanceof Player){
@@ -79,8 +78,8 @@ export default class ForgeManager{
      * players getting more upgrade chances the next time the forge comes around.
      */
     private clearForgeUpgrades(){
-        this.forgeUpgrades.forEach((val, key)=>{
-            this.forgeUpgrades.delete(key)
+        this.forge.forgeUpgrades.forEach((val, key)=>{
+            this.forge.forgeUpgrades.delete(key)
         })
     }
 
@@ -94,7 +93,7 @@ export default class ForgeManager{
      */
     public getItemUpgrades(playerId: string){
         // Contents already determined
-        let playerForgeUpgrades = this.forgeUpgrades.get(playerId)
+        let playerForgeUpgrades = this.forge.forgeUpgrades.get(playerId)
         if(playerForgeUpgrades) {
             // No chances to get upgrades
             if(playerForgeUpgrades.chancesRemaining === 0) return []
@@ -103,13 +102,13 @@ export default class ForgeManager{
         }
         
         // Genreate new upgrades from player upgrades
-        this.forgeUpgrades.set(playerId, {
-            upgradeItems: this.generateUpgradeItems(playerId),
-            chancesRemaining: this.chancesEachForge
-        })
-        this.updatePlayerUpgradeInfoChances(playerId)
+        this.forge.forgeUpgrades.set(playerId, new ForgeUpgrade(
+            this.generateUpgradeItems(playerId),
+            this.forge.chancesEachForge
+        ))
+        // this.updatePlayerUpgradeInfoChances(playerId)
 
-        return this.forgeUpgrades.get(playerId)!.upgradeItems
+        return this.forge.forgeUpgrades.get(playerId)!.upgradeItems
     }
 
     /**
@@ -117,11 +116,39 @@ export default class ForgeManager{
      * @param playerId 
      * @returns 
      */
-    private generateUpgradeItems(playerId: string){
+    public generateUpgradeItems(playerId: string){
         let upgrades: Array<UpgradeItem> = []
         let player = this.gameManager.getPlayerManager().getPlayerWithId(playerId)
         if(!player) return upgrades
+        
+        let possibleArtifactUpgrades = this.getPossibleArtifactUpgrades(player)
+        let possibleWeaponUpgrades = this.getPossibleWeaponUpgrades(player)
 
+        // Randomly choose upgrades
+        upgrades = upgrades.concat(possibleArtifactUpgrades)
+        upgrades = upgrades.concat(possibleWeaponUpgrades)
+
+        return MerchantManager.chooseRandomFromList(4, upgrades)
+    }
+
+    public getPossibleWeaponUpgrades(player: Player){
+        // Get possible weapon upgrades
+        let weaponUpgrades = WeaponManager.getAvailableUpgrades(player)
+        let possibleWeaponUpgrades: Array<UpgradeItem> = []
+        for(let upgrade of weaponUpgrades){
+            possibleWeaponUpgrades.push(new UpgradeItem({
+                type: "weapon",
+                name: upgrade.data.name,
+                description: upgrade.data.description,
+                imageKey: upgrade.data.name.toLocaleLowerCase() + "_icon",
+                tree: player.weaponUpgradeTree,
+                upgradeNode: upgrade
+            }))
+        }
+        return possibleWeaponUpgrades
+    }
+
+    public getPossibleArtifactUpgrades(player: Player){
         // Get possible artifact upgrades
         let possibleArtifactUpgrades: Array<UpgradeItem> = []
         for(let artifact of player.artifacts){
@@ -136,34 +163,15 @@ export default class ForgeManager{
                 }))
             }
         }
-
-        // Get possible weapon upgrades
-        let weaponUpgrades = WeaponManager.getAvailableUpgrades(player)
-        let possibleWeaponUpgrades: Array<UpgradeItem> = []
-        for(let upgrade of weaponUpgrades){
-            possibleWeaponUpgrades.push(new UpgradeItem({
-                type: "weapon",
-                name: upgrade.data.name,
-                description: upgrade.data.description,
-                imageKey: upgrade.data.name.toLocaleLowerCase() + "_icon",
-                tree: player.weaponUpgradeTree,
-                upgradeNode: upgrade
-            }))
-        }
-
-        // Randomly choose upgrades
-        upgrades = upgrades.concat(possibleArtifactUpgrades)
-        upgrades = upgrades.concat(possibleWeaponUpgrades)
-
-        return upgrades
+        return possibleArtifactUpgrades
     }
 
     /** resets forge upgrades for a player so that the next time upgrades are given to the player fresh upgrades are choosen
      * and chances remaining to pick an upgrade is reset.
     */
     public resetForgeUpgrades(playerId: string){
-        this.forgeUpgrades.delete(playerId)
-        this.updatePlayerUpgradeInfoChances(playerId)
+        this.forge.forgeUpgrades.delete(playerId)
+        // this.updatePlayerUpgradeInfoChances(playerId)
     }
 
     /**
@@ -172,15 +180,15 @@ export default class ForgeManager{
      * @param item 
      * @returns true if upgrade was successfull
      */
-    public selectUpgrade(playerId: string, item: UpgradeItem){
+    private selectUpgrade(playerId: string, item: UpgradeItem){
         let player = this.gameManager.getPlayerManager().getPlayerWithId(playerId)
 
         if(player) {
-            let forgeUpgrade = this.forgeUpgrades.get(playerId)
+            let forgeUpgrade = this.forge.forgeUpgrades.get(playerId)
 
             if(forgeUpgrade && forgeUpgrade.chancesRemaining > 0){
                 if(item.type === "weapon"){
-                    TreeManager.selectGivenUpgrade(player, item.getTree(), item.getUpgradeNode())
+                    TreeManager.selectGivenUpgrade(player, item.getTree() as WeaponUpgradeTree, item.getUpgradeNode() as Node<WeaponData>)
                 }else{
                     let artifact = item.getTree() as Artifact
                     ArtifactManager.upgradeArtifact(artifact)
@@ -210,7 +218,7 @@ export default class ForgeManager{
      * @returns 
      */
     public getChangesRemaning(playerId: string){
-        let chancesRemaining = this.forgeUpgrades.get(playerId)?.chancesRemaining
+        let chancesRemaining = this.forge.forgeUpgrades.get(playerId)?.chancesRemaining
         return chancesRemaining? chancesRemaining : 0
     }
 
@@ -220,6 +228,32 @@ export default class ForgeManager{
      */
     public updatePlayerUpgradeInfoChances(playerId: string){
         let player = this.gameManager.getPlayerManager().getPlayerWithId(playerId)
-        player?.upgradeInfo.setForgeUpgradeChances(this.getChangesRemaning(playerId))
+        // player?.upgradeInfo.setForgeUpgradeChances(this.getChangesRemaning(playerId))
+        this.forge.forgeUpgrades.get(playerId)?.setChancesRemaining(this.getChangesRemaning(playerId))
     }   
+    
+    public processPlayerSelectUpgrade(playerId: string, choice: number) {
+        let player = this.gameManager.getPlayerManager().getPlayerWithId(playerId);
+        if(!player) return
+
+        if(player && this.getChangesRemaning(playerId) > 0) {
+            let upgrades = this.forge.forgeUpgrades.get(playerId)?.upgradeItems
+            if(!upgrades) return console.log("No forge upgrades available")
+            let selectedUpgrade = upgrades[choice]
+            let success = this.selectUpgrade(playerId, selectedUpgrade)
+            
+            if(success){
+                console.log('selected upgrade: ', selectedUpgrade.getUpgradeNode()?.data.name)
+                if(this.getChangesRemaning(playerId) <= 0){
+                    // Clear upgrades.
+                    player.upgradeInfo.playerSelectedUpgrade();
+                    // this.gameManager.getForgeManager().resetForgeUpgrades(playerId)
+                }else{
+                    // Remove only selected upgrade
+                    player.upgradeInfo.removeUpgrade(selectedUpgrade)
+                    player.upgradeInfo.incrementUpgradeCount()
+                }
+            }
+        }
+    }
 }

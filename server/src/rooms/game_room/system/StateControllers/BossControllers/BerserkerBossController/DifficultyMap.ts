@@ -43,8 +43,8 @@ export const difficultyMap = {
             /** Time between the sets of slashes */
             timeBetweenSlashes: 2,
             /** Projectile speed range */
-            projectileSpeedRange: {min: 1, max: 5},
-            projectileActiveTime: 5000
+            projectileSpeedRange: {min: 1, max: 3},
+            projectileActiveTime: 4000
         },
         /** Getsugas that follows and spins around the boss */
         "SpinningGetsuga": {
@@ -101,8 +101,8 @@ export const difficultyMap = {
             /** Time between the sets of slashes */
             timeBetweenSlashes: 1.5,
             /** Projectile speed range */
-            projectileSpeedRange: {min: 3, max: 5},
-            projectileActiveTime: 7000
+            projectileSpeedRange: {min: 3, max: 3},
+            projectileActiveTime: 4000
         },
         /** Getsugas that follows and spins around the boss */
         "SpinningGetsuga": {
@@ -153,14 +153,14 @@ export const difficultyMap = {
         /** Homing getsugas that chases the player */
         "FollowingGetsuga": {
             /** Sets of slashes performed. */
-            slashCountRange: {min: 3, max: 6},
+            slashCountRange: {min: 3, max: 3},
             /** Slashes fired each set */
             getsugaCountRange: {min: 1, max: 2},
             /** Time between the sets of slashes */
             timeBetweenSlashes: 1,
             /** Projectile speed range */
             projectileSpeedRange: {min: 5, max: 7},
-            projectileActiveTime: 9000
+            projectileActiveTime: 4000
         },
         /** Getsugas that follows and spins around the boss */
         "SpinningGetsuga": {

@@ -86,4 +86,16 @@ export default abstract class TempEffect extends Effect {
         }
     }
     protected onReset(): void {}
+
+    /**
+     * This method will extend the time remaining of the temp effect if it is currently applying
+     * @param time in seconds
+     */
+    public extendTimeRemaining(time: number){
+        if(this.effectState === "Currently Applying") this.timeRemaining += time
+    }
+
+    public getDefaultTimeRemaining(){
+        return this.defaultTimeRemaining
+    }
 }

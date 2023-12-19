@@ -64,6 +64,8 @@ import Kamehameha from "./EffectLogics/special/specials/Kamehameha";
 import LightningBird from "./EffectLogics/special/specials/lightningbird/LightningBird";
 import BladeTornado from "./EffectLogics/special/specials/BladeTorndao";
 import Meteor from "./EffectLogics/special/specials/lightningbird copy/Meteor";
+import LightningOrb from "./EffectLogics/special/specials/LightningOrb";
+import UltimateFlameThrower from "./EffectLogics/special/specials/UltimateFlameThrower";
 
 export default class EffectLogicManager{
 
@@ -202,8 +204,8 @@ export default class EffectLogicManager{
         this.addEffectLogic(DashUpgrade, {effectLogicId: "FrostDash-upgrade-amount-1", amount: 1, id: "FrostDash"} as IDashUpgradeConfig)
         
         this.addEffectLogic(ShadowDash)
-        this.addEffectLogic(DashUpgrade, {effectLogicId: "ShadowDash-upgrade-speed-50", damage: 0.5, id: "ShadowDash"} as IDashUpgradeConfig)
-        this.addEffectLogic(DashUpgrade, {effectLogicId: "ShadowDash-upgrade-speed-50", damage: 0.5, id: "ShadowDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "ShadowDash-upgrade-speed-30", damage: 0.3, id: "ShadowDash"} as IDashUpgradeConfig)
+        this.addEffectLogic(DashUpgrade, {effectLogicId: "ShadowDash-upgrade-speed-10", damage: 0.1, id: "ShadowDash"} as IDashUpgradeConfig)
         this.addEffectLogic(DashUpgrade, {effectLogicId: "ShadowDash-upgrade-duration-25", duration: 0.25, id: "ShadowDash"} as IDashUpgradeConfig)
     
         this.addEffectLogic(PoisonDash)
@@ -236,8 +238,9 @@ export default class EffectLogicManager{
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningGod-upgrade-damage-25", damage: 0.25, id: "LightningGod"})
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningGod-upgrade-duration-50", duration: 0.5, id: "LightningGod"})
 
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "UltimateFlameThrower-upgrade-damage-25", damage: 0.25})
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "UltimateFlameThrower-upgrade-duration-50", duration: 0.5})
+        this.addEffectLogic(UltimateFlameThrower)
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "UltimateFlameThrower-upgrade-damage-25", damage: 0.25, id: "UltimateFlameThrower"})
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "UltimateFlameThrower-upgrade-duration-50", duration: 0.5, id: "UltimateFlameThrower"})
 
         this.addEffectLogic(LightningBird)
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningBird-upgrade-damage-25", damage: 0.25, id: "LightningBird"})
@@ -246,11 +249,13 @@ export default class EffectLogicManager{
         
         this.addEffectLogic(Meteor)
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "Meteor-upgrade-damage-25", damage: 0.25, id: "Meteor"})
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "Meteor-upgrade-amount-1", amount: 1, id: "Meteor"})
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "Meteor-upgrade-amount-3", amount: 3, id: "Meteor"})
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "Meteor-upgrade-amount-5", amount: 5, id: "Meteor"})
 
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-damage-25", damage: 0.25})
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-duration-50", duration: 0.5})    
-        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-amount-1", amount: 1})
+        this.addEffectLogic(LightningOrb)
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-damage-25", damage: 0.25, id: "LightningOrb"})
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-duration-50", duration: 0.5, id: "LightningOrb"})    
+        this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-amount-1", amount: 1, id: "LightningOrb"})
 
         this.addEffectLogic(Kamehameha)
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "Kamehameha-upgrade-damage-25", damage: 0.25})

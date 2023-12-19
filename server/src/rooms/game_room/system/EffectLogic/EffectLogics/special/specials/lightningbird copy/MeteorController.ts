@@ -12,7 +12,6 @@ export default class MeteorController extends RangedProjectileController{
     protected create(data: RangedProjectileControllerData): void {
         super.create(data)
         
-        console.log("ON crete meteor controlelr")
         this.owner = this.getProjectile().getOriginEntity()
 
         this.addState(new Fall("Fall", this))

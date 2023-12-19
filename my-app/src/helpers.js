@@ -238,7 +238,7 @@ export function sortObject(obj){
 
 export function getDefaultWave(){
   return {
-    type: "pack", difficulty: 2, monsters: [], id: Math.random(), duration: 0
+    type: "pack", difficulty: 2, monsters: [], id: Math.random(), duration: 0, merchant: false, fountain: true, forge: true
   }
 }
 

@@ -223,7 +223,10 @@ export default class DungeonManager {
     public createSafeWave(waveData: IDungeonWave){
         let wave = new SafeWave(this.gameManager, {
             forgeSpawnPosition: {x: 113, y: 111},
-            waveDuration: waveData.duration
+            waveDuration: waveData.duration,
+            hasForge: waveData.forge,
+            hasFountain: waveData.fountain,
+            hasMerchant: waveData.merchant
         })
         return wave
     }
@@ -567,5 +570,25 @@ export default class DungeonManager {
                 obj.setAggroTarget(aggroTarget);
             } 
         })
+    }
+
+    /**
+     * Returns the closest active monster to the pos argument.
+     * @param pos 
+     * @returns 
+     */
+    public getClosestActiveMonster(pos: {x: number, y: number}){
+        let minDistance = Infinity
+        let closestMonster: Monster | undefined
+        this.gameManager.gameObjects.forEach((obj)=>{
+            if(obj instanceof Monster && obj.isActive()){
+                let distance = MathUtil.distance(obj.x, obj.y, pos.x, pos.y)
+                if(distance < minDistance){
+                    minDistance = distance
+                    closestMonster = obj
+                }
+            }
+        })
+        return closestMonster
     }
 }

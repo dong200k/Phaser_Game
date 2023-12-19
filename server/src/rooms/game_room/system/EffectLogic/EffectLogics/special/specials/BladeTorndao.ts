@@ -8,8 +8,10 @@ import { SpecialEffectLogic } from "../SpecialEffectLogic"
 export default class BladeTornado extends SpecialEffectLogic{
     effectLogicId = "BladeTornado"
     // protected area: number = 3
-    width = 500
     protected duration: number = 2
+    protected width: number = 80
+    protected height: number = 80
+    // protected attackMultiplier: number = 2
 
     protected useSpecial(playerState: Player, gameManager: GameManager): void {
         this.attack(playerState, gameManager)

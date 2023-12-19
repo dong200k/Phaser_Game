@@ -108,6 +108,9 @@ export interface IDungeonWave {
     type: string;
     difficulty: number;
     monsters: IWaveMonster[];
+    forge: boolean;
+    merchant: boolean;
+    fountain: boolean;
 }
 
 export type IAbility = {

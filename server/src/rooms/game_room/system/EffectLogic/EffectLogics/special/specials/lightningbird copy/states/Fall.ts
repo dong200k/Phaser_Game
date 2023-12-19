@@ -45,12 +45,31 @@ export default class Fall extends StateNode{
             target = projectile.getOriginEntity()
         }
 
-        let pos: {x: number, y: number} = target? target.getBody().position : {x: 10, y: 10}
+        let pos: {x: number, y: number}
+        if(Math.random()<0.2) pos = target? target.getBody().position : this.getRandomPositionAroundPlayer()
+        else pos = this.getRandomPositionAroundPlayer()
         this.impactPosition = {...pos}
-        console.log("Impact pos:", this.impactPosition)
-        console.log(`has target: ${target !== undefined}`)
+        // console.log("Impact pos:", this.impactPosition)
+        // console.log(`has target: ${target !== undefined}`)
 
         return this.impactPosition
+    }
+
+    private getRandomPositionAroundPlayer(radius = 200){
+        let stateMachine = (this.getStateMachine() as MeteorController);
+        let projectile = stateMachine.getProjectile()
+
+        let owner = projectile.getOriginEntity()
+
+        if(!owner) return {x: 0, y: 0}
+
+        let offsetX = Math.random() * radius
+        let offsetY = Math.random() * radius
+
+        if(Math.random()<0.5) offsetX *= -1
+        if(Math.random()<0.5) offsetY *= -1
+
+        return {x: owner.x + offsetX, y: owner.y + offsetY}
     }
 
     protected follow(deltaT: number){

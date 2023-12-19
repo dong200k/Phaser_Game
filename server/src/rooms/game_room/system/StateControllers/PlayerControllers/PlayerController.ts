@@ -7,12 +7,13 @@ import Move from "./CommonStates/Move";
 import Special from "./CommonStates/Special";
 import ChargeAttack from "./CommonStates/ChargeAttack";
 import TriggerUpgradeEffect from "../../../schemas/effects/trigger/TriggerUpgradeEffect";
-import { getEstimatedDps, getFinalAttackSpeed, getFinalChargeAttackSpeed } from "../../Formulas/formulas";
+import { getEstimatedDps, getFinalAttackCooldown, getFinalAttackSpeed, getFinalChargeAttackSpeed } from "../../Formulas/formulas";
 import ChargeAttackLogic from "../../EffectLogic/EffectLogics/common/ChargeAttackLogic";
 import ChargeState from "./CommonStates/ChargeState";
 import Roll from "./CommonStates/Roll";
 import Stat from "../../../schemas/gameobjs/Stat";
 import Cooldown from "../../../schemas/gameobjs/Cooldown";
+import MathUtil from "../../../../../util/MathUtil";
 
 
 export interface PlayerControllerData {
@@ -41,10 +42,14 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     public allowChangeDirection = true
     private rollCooldown = new Cooldown(0.5)
 
+    private attackCooldown!: Cooldown
+
     protected create(data: PlayerControllerData): void {
         this.player = data.player;
         // let chargeAttackSpeed = getFinalChargeAttackSpeed(this.player.stat)
         // if(chargeAttackSpeed > 0) this.totalChargeTime *= 1 / chargeAttackSpeed
+
+        this.attackCooldown = new Cooldown(getFinalAttackCooldown(this.player.stat))
 
         //Add States
         let idleState = new Idle("Idle", this);
@@ -111,6 +116,21 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         if(this.stateName !== "Roll"){
             this.rollCooldown.tick(deltaT)
         }
+
+        // Testing auto attack 
+        this.attackCooldown.tick(deltaT)
+        if(this.attackCooldown.isFinished){
+            this.attackCooldown.reset()
+            this.attackCooldown.setTime(getFinalAttackCooldown(this.player.stat))
+            let mousePos = {x: 0, y: 0}
+            let closestMonster = this.player.gameManager.getDungeonManager().getClosestActiveMonster(this.player.getBody().position)
+            
+            if(closestMonster) {
+                mousePos = closestMonster.getBody().position
+                this.startAttack(mousePos.x, mousePos.y)
+            }
+        }
+        
     }
 
     public putRollOnCooldown(){

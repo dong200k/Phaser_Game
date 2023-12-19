@@ -21,7 +21,7 @@ export default class Death extends StateNode {
         // --- Give xp to player ---
         let playerManager = stateMachine.getPlayerManager();
         let playerThatDamagedMe = playerManager.getPlayerWithId(monster.getLastToDamage() ?? "");
-        if(playerThatDamagedMe) playerManager.addXpToPlayer(20, playerThatDamagedMe);
+        if(playerThatDamagedMe) playerManager.splitXpToPlayers(20, playerManager.getAllPlayersWithinRange(playerThatDamagedMe.x, playerThatDamagedMe.y, 1000));
 
         // --- Give coins to player ---
         playerManager.giveAllPlayersCoin(10);

@@ -10,6 +10,9 @@ import Player from "../../../../../../../schemas/gameobjs/Player";
 /** In this state the projectile will follow either its owner or a target */
 export default class Follow extends StateNode{
     private currentTarget?: Monster
+    private offsetX = 10
+    private offsetY = 10
+    private firstTimeFollowingPlayer = true
 
     public onEnter(): void {
         let stateMachine = (this.getStateMachine() as LightningBirdController);
@@ -19,6 +22,7 @@ export default class Follow extends StateNode{
         })
     }
     public onExit(): void {
+        this.firstTimeFollowingPlayer = true
     }
 
     protected clearTarget(){
@@ -27,7 +31,7 @@ export default class Follow extends StateNode{
 
     /** Finds a target monster to follow and returns it if any. */
     protected getTarget(): Entity | undefined{
-        if(this.currentTarget && this.currentTarget.active && this.currentTarget.controller.stateName !== "Death") return this.currentTarget
+        if(this.currentTarget && this.currentTarget.isActive() && this.currentTarget.controller.stateName !== "Death" && !this.currentTarget.inPoolMap) return this.currentTarget
 
         let stateMachine = (this.getStateMachine() as LightningBirdController);
         let projectile = stateMachine.getProjectile()
@@ -37,7 +41,7 @@ export default class Follow extends StateNode{
 
         // Prioritizes monsters by closest distance to owner or projectile then if nothing the target will be undefined
         projectile.gameManager.gameObjects.forEach((obj)=>{
-            if(obj instanceof Monster){
+            if(obj instanceof Monster && obj.isActive()){
                 let distance: number = Infinity
                 if(owner){
                     distance = MathUtil.distance(obj.x, obj.y, owner.x, owner.y)
@@ -56,6 +60,7 @@ export default class Follow extends StateNode{
     }
 
     protected follow(deltaT: number){
+        // console.log("lightning bird target: ", this.currentTarget?.getMonsterName())
         let stateMachine = (this.getStateMachine() as LightningBirdController);
         let projectile = stateMachine.getProjectile()
         let target = this.getTarget() ?? projectile.getOriginEntity()
@@ -71,11 +76,16 @@ export default class Follow extends StateNode{
         let speed = projectile.projectileSpeed * deltaT;
         let velocity: {x: number, y: number} 
         if(target instanceof Player) {
-            let offsetX = Math.random()*10 + 50
-            let offsetY = Math.random()*10 + 50
-            if(Math.random()<0.5) offsetX *= -1
-            if(Math.random()<0.5) offsetY *= -1
-            velocity = MathUtil.getNormalizedSpeed(offsetX + target.x - projectile.getBody().position.x, offsetY + target.y - projectile.getBody().position.y, speed);
+            if(this.firstTimeFollowingPlayer){
+                this.offsetX = (Math.random()*100 + 50)
+                this.offsetY = (Math.random()*100 + 50)
+                if(Math.random()<0.5) this.offsetX*=-1
+                if(Math.random()<0.5)this.offsetY*=-1
+                this.firstTimeFollowingPlayer = false
+                // console.log(`lightning bird offsets: ${this.offsetX}, ${this.offsetY}`)
+            }
+            
+            velocity = MathUtil.getNormalizedSpeed(this.offsetX + target.x - projectile.getBody().position.x, this.offsetY + target.y - projectile.getBody().position.y, speed);
         }else{
             velocity = MathUtil.getNormalizedSpeed(target.x - projectile.getBody().position.x, target.y - projectile.getBody().position.y, speed);
         }

@@ -31,8 +31,8 @@ export default class LightningBird extends SpecialEffectLogic{
         let projectileConfig: IProjectileConfig = {
             sprite: "lightning_bird",
             stat: playerState.stat,
-            spawnX: x,
-            spawnY: y,
+            spawnX: x + Math.random()*25 * Math.random()<0.5? 1 : -1,
+            spawnY: y + Math.random()*25 * Math.random()<0.5? 1 : -1,
             width,
             height,
             initialVelocity: {x: 0, y: 0},

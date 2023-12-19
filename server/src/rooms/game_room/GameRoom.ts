@@ -49,7 +49,7 @@ export default class GameRoom extends Room<State> {
 
         //Setting up state and game manager.
         let state = new State();
-        this.gameManager = new GameManager(state, options);
+        this.gameManager = new GameManager(state, this, options);
         this.setState(state);
         
         this.gameManager.preload()
@@ -99,6 +99,10 @@ export default class GameRoom extends Room<State> {
 
         this.onMessage("selectMerchantItem", (client, msg) => {
             this.gameManager.getMerchantManager().purchaseItem(client.sessionId, msg);
+        })
+
+        this.onMessage("selectForgeUpgrade", (client, msg) => {
+            this.gameManager.getForgeManager().processPlayerSelectUpgrade(client.sessionId, msg);
         })
     }
 

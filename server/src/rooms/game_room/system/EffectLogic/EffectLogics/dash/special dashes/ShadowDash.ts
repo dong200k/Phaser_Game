@@ -11,7 +11,7 @@ import SpeedMultiEffect from "../../../../../schemas/effects/temp/SpeedMultiEffe
 export default class ShadowDash extends DashEffectLogic{
     effectLogicId = "ShadowDash"
     private dashCount = 0
-    protected attackMultiplier: number = 0.5
+    protected attackMultiplier: number = 0.1
     private speedMultiEffect?: SpeedMultiEffect
 
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Body): void {

@@ -31,7 +31,7 @@ export default class MerchantManager{
 
     public hideMerchant(){
         console.log("Hiding merchant")
-        this.merchant.hide()
+        this.merchant?.hide()
         this.clearShop()
     }
 
@@ -79,7 +79,7 @@ export default class MerchantManager{
         // Stat items
         let healthItem = factory.createMaxHealthItem(25)
         let lifeStealItem = factory.createLifeStealItem(0.1)
-        items.push(lifeStealItem, healthItem)
+        // items.push(lifeStealItem, healthItem)
 
         // Artifact items
         let usageMap = this.getArtifactUsageMap()
@@ -94,7 +94,7 @@ export default class MerchantManager{
             
         })
 
-        return items
+        return [healthItem, ...this.chooseRandomFromList(2, [...items, lifeStealItem])]
     }
 
     /**
@@ -122,7 +122,7 @@ export default class MerchantManager{
      * @param amountToChoose 
      * @param list 
      */
-    private chooseRandomFromList<T>(amountToChoose: number, list: T[]): T[]{
+    static chooseRandomFromList<T>(amountToChoose: number, list: T[]): T[]{
         let temp = [...list]
         let choices: T[] = []
 
@@ -135,5 +135,9 @@ export default class MerchantManager{
         }
 
         return choices
+    }
+
+    private chooseRandomFromList<T>(amountToChoose: number, list: T[]): T[]{
+        return MerchantManager.chooseRandomFromList(amountToChoose , list)
     }
 }

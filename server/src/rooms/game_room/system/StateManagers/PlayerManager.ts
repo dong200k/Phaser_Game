@@ -23,6 +23,9 @@ import Ability from '../../schemas/gameobjs/Ability';
 import TriggerUpgradeEffect from '../../schemas/effects/trigger/TriggerUpgradeEffect';
 import ContinuousUpgradeEffect from '../../schemas/effects/continuous/ContinuousUpgradeEffect';
 import Artifact from '../../schemas/Trees/Artifact';
+import ArtifactManager from './ArtifactManager';
+import TreeManager from './TreeManager';
+import MerchantManager from './MerchantManager';
 
 interface InputPlayload {
     payload: number[];
@@ -444,9 +447,9 @@ export default class PlayerManager {
         // artifactManager.maxArtifact(lightningBird)
         // this.equipArtifact(player, lightningBird)
 
-        let meteor = artifactManager.createArtifact("upgrade-b5490d77-52d8-45ae-b996-6926a5b1ff00")
-        artifactManager.maxArtifact(meteor)
-        this.equipArtifact(player, meteor)
+        // let meteor = artifactManager.createArtifact("upgrade-b5490d77-52d8-45ae-b996-6926a5b1ff00")
+        // artifactManager.maxArtifact(meteor)
+        // this.equipArtifact(player, meteor)
 
         // let ultimateFlameThrower = artifactManager.createArtifact("upgrade-fd225150-62c2-4407-a815-08f5eb0fe777")
         // artifactManager.maxArtifact(ultimateFlameThrower)
@@ -640,16 +643,16 @@ export default class PlayerManager {
     }
 
     /**
-     * Returns a list of all the players within range of an x and y position.
+     * Returns a list of all the players within range of an x and y position. If range is undefined then everyone gets the xp.
      * @param x The x position.
      * @param y The y position.
      * @param range The range.
      */
-    public getAllPlayersWithinRange(x: number, y: number, range: number) {
+    public getAllPlayersWithinRange(x: number, y: number, range?: number) {
         let playerList: Player[] = new Array();
         this.gameManager.state.gameObjects.forEach((gameObject, key) => {
             if(gameObject instanceof Player) {
-                if(MathUtil.distance(gameObject.x, gameObject.y, x, y) <= range) {
+                if(range === undefined || MathUtil.distance(gameObject.x, gameObject.y, x, y) <= range) {
                     playerList.push(gameObject);
                 }
             }
@@ -685,10 +688,85 @@ export default class PlayerManager {
         if(player.xp >= player.maxXp) {
             player.xp -= player.maxXp;
             player.level++;
+            player.maxXp = this.getNewMaxXp(player.level)
             // If the player is not currently selecting an upgrade give them one.
-            // if(!player.upgradeInfo.playerIsSelectingUpgrades)
-            //     this.givePlayerUpgradeSelection(player);
+            if(!player.upgradeInfo.playerIsSelectingUpgrades){
+                this.givePlayerUpgradeSelection(player, this.generateUpgrades(player));
+                this.gameManager.pauseGame()
+            }
         }
+    }
+
+    /**
+     * Takes in a player and levels them up, sets their xp to 0, however does not give them upgrade selection
+     * @param player 
+     * @param levels amount of levels to level
+     */
+    public levelUpWithNoUpgrades(player: Player, levels: number = 1){
+        player.level += levels
+        player.maxXp = this.getNewMaxXp(player.level)
+        player.xp = 0
+    }
+
+    /**
+     * 
+     * @param level 
+     * @returns The xp required to level up at the level provided in the argument.
+     */
+    public getNewMaxXp(level: number){
+        return 20 * Math.floor(0.0627 * (level ** 2) + 4.8661 * level + 5.0712)
+    }
+
+    public generateUpgrades(player: Player, amountOfUpgrades: number = 3){
+        let upgrades: Array<UpgradeItem> = []
+
+        let availableArtifactUpgrades = player.gameManager.getForgeManager().getPossibleArtifactUpgrades(player)
+        let availableWeaponUpgrades = player.gameManager.getForgeManager().getPossibleWeaponUpgrades(player)
+
+        // Generate artifacts that the player does not have
+        let allArtifacts = DatabaseManager.getManager().getAllDatabaseArtifacts()
+        let newArtifactUpgrades: Array<UpgradeItem> = []
+        for(let [id, dbArtifact] of allArtifacts){
+            if(!ArtifactManager.hasArtifact(player, id)){
+                newArtifactUpgrades.push(new UpgradeItem({
+                    upgradeNode: undefined,
+                    name: dbArtifact.name,
+                    description: dbArtifact.description,
+                    tree: undefined,
+                    imageKey: dbArtifact.imageKey,
+                    type: "new artifact",
+                    artifactId: id
+                }))
+            }
+        }
+
+        const availableUpgradesGreaterEqualAmountNeeded = () => {
+            return (newArtifactUpgrades.length + availableArtifactUpgrades.length + availableWeaponUpgrades.length) > amountOfUpgrades
+        }
+
+        if(availableUpgradesGreaterEqualAmountNeeded()){
+            let i = 0
+            while(i < amountOfUpgrades){
+                let randomNumber = Math.random()
+                let randomlySelectedUpgrade: UpgradeItem
+                if(randomNumber < 0.33){
+                    randomlySelectedUpgrade = MerchantManager.chooseRandomFromList(1, availableArtifactUpgrades)[0]
+                }else if(randomNumber < 0.66){
+                    randomlySelectedUpgrade = MerchantManager.chooseRandomFromList(1, availableWeaponUpgrades)[0]
+                }
+                else{
+                    randomlySelectedUpgrade = MerchantManager.chooseRandomFromList(1, newArtifactUpgrades)[0]
+                }
+                if(randomlySelectedUpgrade !== undefined && !upgrades.find(upgrade=>upgrade.isEqual(randomlySelectedUpgrade))) {
+                    upgrades.push(randomlySelectedUpgrade)
+                    i++
+                }
+            }
+        }else {
+            upgrades = upgrades.concat(availableArtifactUpgrades, availableWeaponUpgrades, newArtifactUpgrades)
+        }
+
+        return upgrades
     }
 
     /**
@@ -709,18 +787,20 @@ export default class PlayerManager {
         }
         if(playerList.length === 0) return;
         // Split the xp among the players.
-        let splitXp = xp / playerList.length;
+        // let splitXp = xp / playerList.length;
+        
+        let splitXp = xp // everyone gets all the xp no split
         playerList.forEach((player) => this.addXpToPlayer(splitXp, player));
     }
 
     /**
-     * Splits the xp among all the players within range of an x and y position.
+     * Splits the xp among all the players within range of an x and y position. If range is undefined then everyone gets the xp
      * @param xp The amount of xp.
      * @param x The x position.
      * @param y The y position.
      * @param range The range.
      */
-    public splitXpToPlayersWithinRange(xp: number, x: number, y: number, range: number) {
+    public splitXpToPlayersWithinRange(xp: number, x: number, y: number, range?: number) {
         this.splitXpToPlayers(xp, this.getAllPlayersWithinRange(x, y, range));
     }
 
@@ -757,26 +837,28 @@ export default class PlayerManager {
      */
     public processPlayerSelectUpgrade(playerId: string, choice: number) {
         let player = this.getPlayerWithId(playerId);
-        let forgeManager = this.gameManager.getForgeManager()
 
-        if(player && forgeManager.getChangesRemaning(playerId) > 0) {
+        if(player){
             let upgrades = player.upgradeInfo.currentUpgrades
             let selectedUpgrade = upgrades[choice]
-            let success = forgeManager.selectUpgrade(playerId, selectedUpgrade)
 
-            if(success){
-                console.log('selected upgrade: ', selectedUpgrade.getUpgradeNode().data.name)
-                if(forgeManager.getChangesRemaning(playerId) <= 0){
-                    // Clear upgrades.
-                    player.upgradeInfo.playerSelectedUpgrade();
-                    // this.gameManager.getForgeManager().resetForgeUpgrades(playerId)
-                }else{
-                    // Remove only selected upgrade
-                    player.upgradeInfo.removeUpgrade(selectedUpgrade)
-                    player.upgradeInfo.incrementUpgradeCount()
-                }
+            if(selectedUpgrade.type === "weapon"){
+                TreeManager.selectGivenUpgrade(player, selectedUpgrade.getTree() as WeaponUpgradeTree, selectedUpgrade.getUpgradeNode() as Node<WeaponData>)
+            }else if(selectedUpgrade.type === "artifact"){
+                let artifact = selectedUpgrade.getTree() as Artifact
+                ArtifactManager.upgradeArtifact(artifact)
+            } else if(selectedUpgrade.type === "new artifact"){
+                let artifactId = selectedUpgrade.getArtifactId() as string
+                let artifactManager = this.gameManager.getArtifactManager()
+                let artifact = artifactManager.createArtifact(artifactId)
+                artifactManager.equipArtifact(player, artifact)
             }
+            player.upgradeInfo.playerSelectedUpgrade()
+            this.gameManager.unPauseGame()
+            return true
         }
+        this.gameManager.unPauseGame()
+
     }
 
     /** 
@@ -792,12 +874,13 @@ export default class PlayerManager {
         let newUpgrades: UpgradeItem[] = []
 
         upgrades.forEach(upgrade=>newUpgrades.push(new UpgradeItem({
-            upgradeNode: upgrade.getUpgradeNode(),
+            upgradeNode: upgrade.getUpgradeNode() ,
             name: upgrade.name,
             description: upgrade.description,
             tree: upgrade.getTree(),
             imageKey: upgrade.imageKey,
-            type: upgrade.type
+            type: upgrade.type,
+            artifactId: upgrade.getArtifactId()
         })))
 
         return newUpgrades

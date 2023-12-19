@@ -1,3 +1,4 @@
+import EffectManager from "../../../system/StateManagers/EffectManager";
 import Entity from "../../gameobjs/Entity";
 import TempEffect from "./TempEffect";
 
@@ -24,9 +25,20 @@ export default class CollisionImmuneEffect extends TempEffect {
 
     protected unapplyEffect(entity:Entity): boolean {
         let body = entity.getBody()
-        if(body){
+        if(body && this.prevMask){
             body.collisionFilter.mask = this.prevMask
         }
         return true;
+    }
+
+    protected onAddToEntity(entity: Entity): void {
+        super.onAddToEntity(entity)
+        // Remove existing collision immune effects and extend this one 
+        entity.effects.forEach(effect=>{
+            if(effect instanceof CollisionImmuneEffect && effect !== this){
+                this.extendTimeRemaining(effect.getDefaultTimeRemaining())
+                EffectManager.removeEffectFrom(entity, effect)
+            }
+        })
     }
 }

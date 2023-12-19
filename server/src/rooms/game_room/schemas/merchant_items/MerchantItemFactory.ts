@@ -13,7 +13,7 @@ export default class MerchantItemFactory{
     
 
     /** Create a item that grants the player who purchases it lifesteal */
-    public createLifeStealItem(lifeSteal = 1, coinCost = 50, levelCost = 1){
+    public createLifeStealItem(lifeSteal = 1, coinCost = 0, levelCost = 1){
         return this.createStatItem({
             statConfig: {lifeSteal}, 
             coinCost, 
@@ -24,7 +24,7 @@ export default class MerchantItemFactory{
     }
 
     /** Creates a max health item that increases the max health of the player who purchases it.*/
-    public createMaxHealthItem(maxHp = 50, coinCost = 50, levelCost = 1){
+    public createMaxHealthItem(maxHp = 50, coinCost = 0, levelCost = 1){
         return this.createStatItem({
             statConfig: {maxHp}, 
             coinCost, 
@@ -50,13 +50,15 @@ export default class MerchantItemFactory{
      * @param levelCost
      * @returns 
      */
-    public createArtifactItem(artifactId: string, coinCost = 50, levelCost = 1){
+    public createArtifactItem(artifactId: string, coinCost = 0, levelCost = 1){
         let artifact = this.gameManager.getArtifactManager().createArtifact(artifactId)
 
         return new ArtifactItem(this.gameManager, {
             artifactId,
             name: artifact.name,
-            description: artifact.description
+            description: artifact.description,
+            coinCost,
+            levelCost
         })
     }
 }

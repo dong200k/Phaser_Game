@@ -62,13 +62,20 @@ export default class GameManager {
 
     gameOver: boolean = false;
 
-    constructor(state: State, options?: GameRoomOptions) {
+    private pauseCount = 0
+    private paused = false
+    private pauseTimeSoFar = 0
+    private maxPauseTime = 30
+    private gameRoom: GameRoom
+
+    constructor(state: State, gameRoom: GameRoom, options?: GameRoomOptions) {
         this.state = state;
         this.engine = Matter.Engine.create();
         this.world = this.engine.world;
         this.engine.gravity.y = 0; //no gravity 
         if(options !== undefined) this.options = options;
         else this.options = {dungeonSelected: "Demo Dungeon"};
+        this.gameRoom = gameRoom
     }
 
     /**
@@ -183,8 +190,42 @@ export default class GameManager {
         })
     }
 
+    public pauseGame(){
+        console.log("Game is paused")
+        this.paused = true
+        this.pauseCount++
+        this.gameRoom.broadcast("pause")
+    }
+
+    /** Unpause the game if the every player that is paused is finished with their action */
+    public unPauseGame(){
+        this.pauseCount--
+        if(this.pauseCount === 0) {
+            this.paused = false
+            this.gameRoom.broadcast("unpause")
+            console.log("Game is unpaused")
+        }
+    }
+
+    public forceUnpause(){
+        this.pauseCount = 0
+        this.paused = false
+        console.log("Game force unpaused")
+        this.gameRoom.broadcast("unpause")
+    }
+
     public update(deltaT:number) {
         let deltaTSeconds = deltaT / 1000;
+
+        if(this.paused){
+            this.pauseTimeSoFar += deltaTSeconds
+            if(this.pauseTimeSoFar >= this.maxPauseTime) {
+                this.forceUnpause()
+                this.pauseTimeSoFar = 0
+            }
+            return
+        }
+
         Matter.Engine.update(this.engine, deltaT);
 
         this.playerManager.update(deltaTSeconds);
