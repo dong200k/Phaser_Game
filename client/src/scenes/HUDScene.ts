@@ -14,6 +14,7 @@ import TopRightInfo from "../UI/gameuis/TopRightInfo";
 import CircleImage from "../UI/CircleImage";
 import WAPopupButton from "../UI/gameuis/WAPopupButton";
 import ToolTip from "../UI/ToolTip";
+import DialogBox from "../UI/gameuis/DialogBox";
 
 export default class HUDScene extends Phaser.Scene {
 
@@ -29,6 +30,7 @@ export default class HUDScene extends Phaser.Scene {
     private topRightInfo!: TopRightInfo;
     private ticks: number = 0;
     private toolTip!: ToolTip; 
+    private dialogBox!: DialogBox;
 
     constructor() {
         super(SceneKey.HUDScene);
@@ -148,7 +150,6 @@ export default class HUDScene extends Phaser.Scene {
 
         // ------ ToolTip --------
         this.toolTip = new ToolTip(this);
-        
         // setTimeout(() => {
         //     EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_TOOLTIP, {
         //         text: "First tool tip",
@@ -160,6 +161,19 @@ export default class HUDScene extends Phaser.Scene {
         //         EventManager.eventEmitter.emit(EventManager.HUDEvents.HIDE_TOOLTIP);
         //     }, 3000);
         // }, 3000);
+
+        // ------ DialogBox -------
+        this.dialogBox = new DialogBox(this);
+        setTimeout(() => {
+            this.dialogBox.showDialogBox({
+                dialogItems: [
+                    {icon: "blank", speaker: "Mysterous Person", text: "Hblbllee, Beehlll, Heeollo there... In this section the player tries to clear dungeons and probably fails or succeeds and tries out different builds and combinations. They will uncover why the gods fall as they play through the dungeons. This will take them back home. From here the player can choose themselves to check out the blessings altar, unlock another character, goto magic school to learn more specials and charge attacks, and also buy equipment to head back for another run."},
+                    {icon: "blank", speaker: "Mysterous Person", text: "How are you? My name is mysterous person."},
+                ]
+            })
+        }, 3000);
+
+        
     }
 
     public playerDied(data: any) {
@@ -199,6 +213,8 @@ export default class HUDScene extends Phaser.Scene {
 
         // Update the wapopup button's state.
         this.waPopupButton.setEnable(this.waPopup.isPopupActive());
+        // Update dialogBox.
+        this.dialogBox.update(delta / 1000);
     }
 
     /** Called every 100 phaser ticks. This will update the mask of the circle image to match

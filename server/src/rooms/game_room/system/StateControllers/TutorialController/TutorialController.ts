@@ -9,7 +9,6 @@ interface ControllerData {
 
 /** 
  * The tutorial controller will manage the state of the tutorial dungeon.
- * There will be three states.
  * The movement tutorial state where the player learns how to move.
  * The special tutorial where the player learns how to use thier special ability.
  * The charge attack tutorial where the player learns charge attacks.
