@@ -8,10 +8,12 @@ interface DialogItem {
     speaker: string;
     icon: string;
     text: string;
+    /** The speed of character appearance in characters per second. */
     textSpeed?: number;
 }
 
 interface DialogData {
+    /** The default speed of which characters will appear. In characters per second. */
     defaultTextSpeed?: number;
     dialogItems: DialogItem[];
 }
@@ -30,6 +32,13 @@ export default class DialogBox extends RexUIBase {
     private currentSubstringIdx: number = 0;
     /** The current dialog item to display. */
     private currentDialogItemIdx: number = 0;
+    /** The speed of character appearance in characters per second. */
+    private textSpeed: number = 0;
+    /** The timeTracker increments every update and when a new character is displayed it will decrement based on the textSpeed. */
+    private timeTracker: number = 0;
+
+
+    private DEFAULT_TEXT_SPEED: number = 38;
 
     /**
      * Displays the dialogBox for the player.
@@ -44,9 +53,8 @@ export default class DialogBox extends RexUIBase {
         this.currentSubstringIdx = 0;
         this.currentDialogItemIdx = 0;
         this.dialogData = dialogData;
-        if(this.dialogData.defaultTextSpeed === undefined) {
-            this.dialogData.defaultTextSpeed = 5;
-        }
+        this.textSpeed = this.dialogData.defaultTextSpeed ?? this.DEFAULT_TEXT_SPEED;
+        this.timeTracker = 0;
         // Create popup.
         this.popup = this.rexUI.add.dialog({
             height: 200,
@@ -70,7 +78,24 @@ export default class DialogBox extends RexUIBase {
             .on("destroy", () => {
                 this.popup = undefined;
                 this.dialogData = undefined;
-            });
+            })
+            .onClick(() => {
+                this.textSpeed = 500;
+                if(this.popup && this.dialogData) {
+                    let dialogItem = this.dialogData.dialogItems[this.currentDialogItemIdx];
+                    if(this.currentSubstringIdx >= dialogItem.text.length) {
+                        // Current text completed, change to the next text.
+                        this.currentDialogItemIdx++;
+                        if(this.currentDialogItemIdx >= this.dialogData.dialogItems.length) {
+                            this.popup.destroy();
+                        } else {
+                            this.timeTracker = 0;
+                            this.currentSubstringIdx = 0;
+                        }
+                    }
+                }
+                
+            })
         
         this.popup.layout();
         
@@ -84,6 +109,7 @@ export default class DialogBox extends RexUIBase {
      * @param deltaT The time that passed in seconds.
      */
     public update(deltaT: number) {
+        this.timeTracker += deltaT;
         if(this.popup && this.dialogData) {
             let textBox = this.popup.getByName("content_text", true) as TextBoxPhaser;
             let contentSpeaker = this.popup.getByName("content_speaker", true) as TextBoxPhaser;
@@ -96,8 +122,22 @@ export default class DialogBox extends RexUIBase {
                 contentSpeaker.setText(dialogItem.speaker);
                 textBox.setText(dialogItem.text.substring(0, this.currentSubstringIdx));
                 if(this.currentSubstringIdx < dialogItem.text.length) {
-                    // increment substring idx.
-                    this.currentSubstringIdx++;
+                    // Todo: increment substring idx based on defaultTextSpeed or textSpeed.
+                    // Todo: play a sound when a character is displayed.
+                    if(this.currentSubstringIdx === 0) {
+                        this.textSpeed = dialogItem.textSpeed ?? this.dialogData.defaultTextSpeed ?? this.DEFAULT_TEXT_SPEED;
+                    }
+                    let secondsPerCharacter = 1 / this.textSpeed;
+                    while(this.timeTracker >= secondsPerCharacter) {
+                        this.timeTracker -= secondsPerCharacter;
+                        this.currentSubstringIdx++;
+                    }
+                } else {
+                    if(this.currentDialogItemIdx === this.dialogData.dialogItems.length - 1) {
+                        textBox.setText(dialogItem.text + "\n\n" + "End. Click to close.");
+                    } else {
+                        textBox.setText(dialogItem.text + "\n\n" + "Click to continue...");
+                    }
                 }
                 this.popup.layout();
             }
