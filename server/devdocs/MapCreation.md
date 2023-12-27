@@ -49,7 +49,7 @@ After Tiled is installed we can now begin creating a map.
         1. A Tile Layer called Background.
         2. A Tile Layer called Ground.
         3. A Tile Layer called Obstacle.
-        4. An Object Layer called SpawnPoints.
+        4. An Object Layer called SpawnPoints.  
         5. An Object Layer called WorldBounds.
     - Reorder the layers so that it appears in the following order:
         1. WorldBounds

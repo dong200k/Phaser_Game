@@ -50,7 +50,6 @@ export default class DungeonManager {
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager;
         this.monsterPool = new MonsterPool();
-        this.createDungeon();
     }   
 
     /**
@@ -124,19 +123,22 @@ export default class DungeonManager {
     }
 
     /** Creates a new Dungeon. The Dungeon will have an update method that should be called every frame. */
-    private createDungeon() {
+    public async createDungeon() {
         // let dungeonName = "Demo Map";
         // let dungeonFileLocation = dungeonURLMap["Demo Map"];
         let dungeonData = DatabaseManager.getManager().getDungeonByName(this.gameManager.getOptions().dungeonSelected);
         let dungeonFileLocation = dungeonData.serverJsonLocation;
         let dungeonName = dungeonData.name;
-
+        
         // Load the tiled json file ... 
-        FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
+        await FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
+            console.log(`create dungeon`)
+            let start = Date.now();
+
             // ----- Fill in the dungeons information based on the json file ------
             let newDungeon = new Dungeon(this.gameManager, dungeonName);
 
-            // Tilemap 
+            // Tilemap createT
             let newTilemap = this.createTilemap(tiled, dungeonData);
             newDungeon.setTilemap(newTilemap);
 
@@ -147,7 +149,7 @@ export default class DungeonManager {
             this.setDungeonWorldBounds(newDungeon, tiled);
 
             // Make the obstables collidable by adding them to matter.
-            this.addObstaclesToMatterAlgo(newTilemap);
+            // this.addObstaclesToMatterAlgo(newTilemap);
             // this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.matterBodies, newTilemap);
             
             // Waves
@@ -165,6 +167,9 @@ export default class DungeonManager {
             // ---- Setting new dungeon to state -----
             this.dungeon = newDungeon;
             this.gameManager.state.dungeon = this.dungeon;
+
+            let timeTaken = Date.now() - start;
+            console.log(`time taken for creating dungeon: ${timeTaken/1000} seconds`)
         }).catch((err) => {
             console.log(err);
         })
@@ -314,17 +319,20 @@ export default class DungeonManager {
      * @param data The Tiled tilemap jsonfile.
      */
     private setDungeonSpawnPoints(dungeon: Dungeon, data: TiledJSON) {
-        data.layers.forEach((value) => {
-            if(value.type === "objectgroup" && value.name === "SpawnPoints") {
-                value.objects.forEach((spawnPoint) => {
-                    if(spawnPoint.type === "player") {
-                        dungeon.addPlayerSpawnPoint(spawnPoint.x, spawnPoint.y);
-                    } else if(spawnPoint.type === "monster") {
-                        dungeon.addMonsterSpawnPoint(spawnPoint.x, spawnPoint.y);
-                    }
-                })
-            }
-        });
+        // data.layers.forEach((value) => {
+        //     if(value.type === "objectgroup" && value.name === "SpawnPoints") {
+        //         value.objects.forEach((spawnPoint) => {
+        //             if(spawnPoint.type === "player") {
+        //                 dungeon.addPlayerSpawnPoint(spawnPoint.x, spawnPoint.y);
+        //             } else if(spawnPoint.type === "monster") {
+        //                 dungeon.addMonsterSpawnPoint(spawnPoint.x, spawnPoint.y);
+        //             }
+        //         })
+        //     }
+        // });
+        let position = {x: 0, y: 0}
+        dungeon.addPlayerSpawnPoint(position.x, position.y)
+        dungeon.addMonsterSpawnPoint(position.x, position.y)
     }
 
     /**
@@ -355,7 +363,10 @@ export default class DungeonManager {
         let layers = data.layers;
         // Create tilemap
         let tilemap = new Tilemap(data.width, data.height, tileWidth, tileHeight,
-             dungeon.tilesetName, dungeon.clientTilesetLocation);
+            dungeon.tilesetName, dungeon.clientTilesetLocation);
+
+        console.log(`populating tiles`)
+        let start = Date.now();
         layers.forEach((layer) => {
             let width = layer.width;
             let height = layer.height;
@@ -364,10 +375,14 @@ export default class DungeonManager {
             //Create tilemap layers
             if(layerType === "tilelayer") {
                 let newLayer = new Layer(layerName, width, height, tileWidth, tileHeight);
-                newLayer.populateTiles(this.gameManager, tileWidth, tileHeight, layer.data);
+                // newLayer.populateTiles(this.gameManager, tileWidth, tileHeight, layer.data);
+                let position = {x: 24294, y: 23629}
+                newLayer.populateTilesAroundPosition(this.gameManager, tileWidth, tileHeight, layer.data, position, 1600);
                 tilemap.addExistingLayer(newLayer);
             }
         })
+        let timeTaken = Date.now() - start;
+        console.log(`time taken: ${timeTaken/1000} seconds`)
 
         return tilemap;
     }

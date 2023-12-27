@@ -65,8 +65,13 @@ export default class GameManager {
     private pauseCount = 0
     private paused = false
     private pauseTimeSoFar = 0
-    private maxPauseTime = 30
+    private maxPauseTime = 60
     private gameRoom: GameRoom
+    private pausedPlayers: Set<string> = new Set()
+
+    private timePassed = 0
+    private sendTimerTime = 1
+    private sendTimerTimePassed = 0
 
     constructor(state: State, gameRoom: GameRoom, options?: GameRoomOptions) {
         this.state = state;
@@ -103,6 +108,8 @@ export default class GameManager {
         this.merchantItemFactory = new MerchantItemFactory(this)
         this.fountainManager = new FountainManager(this)
 
+        await this.dungeonManager.createDungeon()
+
         this.initUpdateEvents();
         this.initCollisionEvent();
         this.syncServerStateBasedOnGameState();
@@ -122,6 +129,7 @@ export default class GameManager {
             })
         });
     }
+
         
     public setOwner(sessionId: string){
         this.state.ownerSessionId = sessionId
@@ -190,32 +198,34 @@ export default class GameManager {
         })
     }
 
-    public pauseGame(){
+    public pauseGame(playerId: string){
         console.log("Game is paused")
+        this.pauseTimeSoFar = 0
         this.paused = true
-        this.pauseCount++
+        this.pausedPlayers.add(playerId)
         this.gameRoom.broadcast("pause")
     }
 
     /** Unpause the game if the every player that is paused is finished with their action */
-    public unPauseGame(){
-        this.pauseCount--
-        if(this.pauseCount === 0) {
+    public unPauseGame(playerId: string){
+        this.pausedPlayers.delete(playerId)
+        if(this.pausedPlayers.size === 0) {
             this.paused = false
             this.gameRoom.broadcast("unpause")
             console.log("Game is unpaused")
         }
     }
 
-    public forceUnpause(){
-        this.pauseCount = 0
+    public forceUnpause(){  
         this.paused = false
+        this.pausedPlayers = new Set()
         console.log("Game force unpaused")
         this.gameRoom.broadcast("unpause")
     }
 
     public update(deltaT:number) {
         let deltaTSeconds = deltaT / 1000;
+        this.timePassed += deltaTSeconds
 
         if(this.paused){
             this.pauseTimeSoFar += deltaTSeconds
@@ -225,6 +235,14 @@ export default class GameManager {
             }
             return
         }
+
+        // In game timer sent to client
+        this.sendTimerTimePassed += deltaTSeconds
+        if(this.sendTimerTimePassed >= this.sendTimerTime){
+            this.sendTimerTimePassed = 0
+            this.gameRoom.broadcast("updateTimer", this.timePassed)
+        }
+        
 
         Matter.Engine.update(this.engine, deltaT);
 
@@ -240,14 +258,14 @@ export default class GameManager {
 
     public startGame() {
         // code to run when starting the game.
-        setTimeout(()=>{
-            this.gameObjects.forEach(obj=>{
-                if(obj instanceof Player){
-                    console.log(`Printing DPS for player: ${obj.name}`)
-                    this.playerManager.printDPS(obj)
-                }
-            })
-        }, 5000)
+        // setTimeout(()=>{
+        //     this.gameObjects.forEach(obj=>{
+        //         if(obj instanceof Player){
+        //             console.log(`Printing DPS for player: ${obj.name}`)
+        //             this.playerManager.printDPS(obj)
+        //         }
+        //     })
+        // }, 5000)
     }
 
     /** 

@@ -37,6 +37,9 @@ export default class Roll extends StateNode {
     private maxDistanceScale = 1
 
     private enterChargeStateOnRollFinish = false
+    protected animationKey = "roll"
+
+    private maxDistanceExceeded = false
 
     public onEnter(): void {
         this.maxDistance = this.originalMaxDistance * this.maxDistanceScale
@@ -45,9 +48,11 @@ export default class Roll extends StateNode {
         this.playerController = this.getStateMachine<PlayerController>();
         this.playerController.setAllowChangeDirection(false)
 
+        this.maxDistanceExceeded = false
+
         this.player = this.playerController.getPlayer();
         this.animationDuration = (this.duration * 50/getFinalSpeed(this.player.stat)) * 0.8
-        this.player.animation.playAnimation("roll", {duration: this.animationDuration});
+        this.player.animation.playAnimation(this.animationKey, {duration: this.animationDuration});
         this.originPosition = {...this.player.getBody().position}
         this.player.sound.playSoundEffect("roll")
         this.speedMultiEffect = EffectFactory.createSpeedMultiplierEffectTimed(this.speedBoostMult, this.speedBoostDuration)
@@ -92,15 +97,20 @@ export default class Roll extends StateNode {
         // ******** TODO ************ 
         // Sync roll duration with the player's speed and maxDistance so that the animation plays fully just before max distance is reached
 
-        // if(distance > this.maxDistance){
-        //     // console.log("distance exceeded", distance)
-        //     this.player.canMove = false
-        // }
+        if(!this.maxDistanceExceeded && distance > this.maxDistance){
+            // console.log("distance exceeded", distance)
+            this.player.canMove = false
+            this.maxDistanceExceeded = true
+            // console.log(`max distance, dash end duration: ${this.duration - this.timePassed}`)
+            // this.player.animation.playAnimation("dash_end", {
+            //     duration: this.duration - this.timePassed
+            // })
+        }
 
         // if(this.timePassed >= this.duration || ((distance >= this.maxDistance) && this.timePassed >= this.animationDuration)){
         if(this.timePassed >= this.duration || (distance >= this.maxDistance)){
             this.changeToExitState()
-            // this.player.canMove = true
+            this.player.canMove = true
         }
     }
     
@@ -119,5 +129,13 @@ export default class Roll extends StateNode {
     /** Uses the roll effect logics on the player */
     useRollEffects(){
         EffectManager.useTriggerEffectsOn(this.player, "player dash", this.player.getBody())
+    }
+
+    setAnimationKey(key: string){
+        this.animationKey = key
+    }
+
+    maxDistanceReached(){
+        return this.maxDistanceExceeded
     }
 }

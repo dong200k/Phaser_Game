@@ -34,7 +34,7 @@ interface TiledObjectJSON {
     y: number;
 }
 
-interface TiledLayerJSON {
+export interface TiledLayerJSON {
     data: number[];
     height: number;
     id: number;
@@ -210,6 +210,7 @@ export type IProjectileConfig = {
     flipY?: boolean
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
+    animationDurationSeconds?: number
 }
 
 // ------------ interfaces for Monsters -------------- //

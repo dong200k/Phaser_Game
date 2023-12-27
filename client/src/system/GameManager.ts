@@ -153,6 +153,10 @@ export default class GameManager {
         this.gameRoom?.send("doubleTap", key)
     }
 
+    sendToggleAutoAttack(){
+        this.gameRoom?.send("toggleAutoAttack")
+    }
+
     public renderFollowPlayerObjects(){
         this.gameObjects.forEach(gameObject=>{
             if(gameObject.gameObjectState.type === "Projectile"){
@@ -296,6 +300,10 @@ export default class GameManager {
         /** shift key */
         let shiftKey = this.scene.input.keyboard?.addKey("SHIFT")
         shiftKey?.on("down", ()=>this.sendDoubleTap("w"))
+
+        /** auto attack key */
+        let qKey = this.scene.input.keyboard?.addKey("q")
+        qKey?.on("down", ()=>this.sendToggleAutoAttack())
     }
 
     /** Destroys the game manager and cleans up listeners.
@@ -342,6 +350,10 @@ export default class GameManager {
 
         this.gameRoom.onMessage("unpause", () => {
             this.paused = false
+        })
+
+        this.gameRoom.onMessage("updateTimer", (time) => {
+            this.updateTimer(time)
         })
     }
 
@@ -435,6 +447,7 @@ export default class GameManager {
     /** Called when the dungeon is first created on the server */
     private onChangeDungeon = (currentValue: DungeonState) => {
         this.dungeonSafeWaveTimerOnChange(currentValue)
+        console.log("on Change dungeon")
         currentValue.listen("tilemap", this.onChangeTilemap);
         currentValue.listen("playerBounds", this.onChangePlayerBounds);
         // Workaround to send the wave count when the hud is first created.
@@ -474,10 +487,14 @@ export default class GameManager {
     private onChangePlayerBounds = (currentValue: any) => {
         this.csp.updatePlayerBounds(currentValue.minX, currentValue.minY, currentValue.maxX, currentValue.maxY);
     }
+    
 
     /** Called when the tilemap is first created on the server */
     private onChangeTilemap = (currentValue:any) => {
-        let map = this.scene.add.tilemap("", currentValue.tileWidth, currentValue.tileHeight, currentValue.width, currentValue.height);
+        // let map = this.scene.add.tilemap("", currentValue.tileWidth, currentValue.tileHeight, currentValue.width, currentValue.height);
+        console.log(`on change tilemap`)
+        let start = Date.now()
+        let map = this.scene.make.tilemap({tileHeight: 16, tileWidth: 16});
         let tileset = map.addTilesetImage("tileset_image", currentValue.tileSetName, 16, 16, 1, 2);
         //Triggers when the server adds a tilemap layer
         currentValue.layers.onAdd = (layer:any, key:string) => {
@@ -492,15 +509,49 @@ export default class GameManager {
                         newLayer.setDepth(10);
                     let width = layer.width;
                     let height = layer.height;
-                    for(let y = 0; y < height; y++) {
-                        for(let x = 0; x < width; x++) {
-                            let tileId = layer.tiles[(y * width + x)].tileId;
-                            if(tileId !== 0) {
-                                //Add a tile to the tilemap
-                                newLayer.putTileAt(tileId - 1, x, y);
-                            }
+                    // for(let y = 0; y < height; y++) {
+                    //     for(let x = 0; x < width; x++) {
+                    //         let tileId = layer.tiles[(y * width + x)]?.tileId;
+                    //         if(tileId) {
+                    //             //Add a tile to the tilemap
+                    //             newLayer.putTileAt(tileId - 1, x, y);
+                    //         }
+                    //     }
+                    // }
+
+                    let tileCount = 0
+                    let tileId = layer.tiles.forEach((tile: any)=>{
+                        let tileId = tile.tileId
+                        if(tileId) {
+                            tileCount++
+                            //Add a tile to the tilemap
+                            let x = Math.floor((tile.x - 24294)/16) + 50
+                            let y = Math.floor((tile.y - 23629)/16) + 50
+                            // console.log(`put tile at ${x}, ${y}`)
+                            newLayer?.putTileAt(tileId - 1, x, y);
+                            // newLayer?.putTileAt(tileId - 1, x * 16, y * 16);
+                            // console.log(`placing tile at ${x}, ${y}`)
                         }
-                    }
+                    }) 
+                    console.log(`added ${tileCount} tiles`)
+                    let count = 0
+                    // setInterval(()=>{
+                    //     count++
+                    //     if(count > 1) return
+                    //     console.log("adding new tiles for layer", layer.name)
+                    //     let tileId = layer.tiles.forEach((tile: any)=>{
+                    //         let tileId = tile.tileId
+                    //         if(tileId) {
+                    //             //Add a tile to the tilemap
+                    //             let x = Math.floor((tile.x - 24294)/16) + 100
+                    //             let y = Math.floor((tile.y - 23629)/16) + 100
+                    //             // console.log(`put tile at ${x}, ${y}`)
+                    //             newLayer?.putTileAt(Math.floor(Math.random() * 100), x, y);
+                    //             // newLayer?.putTileAt(tileId - 1, x * 16, y * 16);
+                    //             // console.log(`placing tile at ${x}, ${y}`)
+                    //         }
+                    //     })
+                    // }, 5000)
                 } else {
                     console.log(`ERROR: failed to create a blank layer of key: ${key}`);
                 }
@@ -508,6 +559,8 @@ export default class GameManager {
                 console.log("ERROR: Failed to load tileset.");
             }
         }
+        let seconds = (Date.now() - start)/1000
+        console.log(`seconds elapsed: ${seconds}`)
     }
 
     /** Adds a new projectile to the scene. */
@@ -626,6 +679,13 @@ export default class GameManager {
 
             }
         }
+    }
+
+    public updateTimer(time: number){
+        console.log("update timer")
+        EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
+            time
+        })
     }
 
     private safeWaveOnStart(startTime: number){

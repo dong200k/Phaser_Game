@@ -37,6 +37,7 @@ export default class AIFactory {
             case "BerserkerBoss": mc = new BerserkerBossController({monster}); break;
             case "ArcaneArcher": mc = new RangedMonsterController({monster}); break;
             case "WolfSummoner": mc = new SummonerController({monster, summonedMonsterName: "Zombie Wolf"} as MonsterControllerData); break;
+            case "GoblinSummoner": mc = new SummonerController({monster, summonedMonsterName: "Goblin"} as MonsterControllerData); break;
             case "ChargingMonster": mc = new ChargingMonsterController({monster} as MonsterControllerData); break;
             case "Minotaur": mc = new ChargingMonsterController({monster, chargeKey: "spin"}); break;
             case "Cthulu": mc = new ChargingMonsterController({

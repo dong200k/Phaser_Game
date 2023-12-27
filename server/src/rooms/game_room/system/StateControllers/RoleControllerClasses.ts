@@ -1,4 +1,5 @@
 import BerserkerComboController from "./BerserkerController/BerserkerComboController"
+import BladeMasterController from "./BladeMasterController/BladeMasterController"
 import PlayerController from "./PlayerControllers/PlayerController"
 import WarriorController from "./WarriorController/WarriorController"
 
@@ -7,6 +8,8 @@ let ctors = {
     "Ranger": PlayerController,
     "Berserker": BerserkerComboController,
     "Warrior": WarriorController,
+    "BladeMaster": BladeMasterController,
+    "Nixi": BladeMasterController
 }
 
 export default ctors

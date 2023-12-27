@@ -101,7 +101,8 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("ancient_battery_icon", "images/icons/artifacts/ancient_battery_icon.png");
         this.load.image("fireball_icon", "images/icons/artifacts/fireball_icon.png");
         this.load.image("lightning_rod_icon", "images/icons/artifacts/lightning_rod_icon.png");
-
+        this.load.image("test_tiles", "tilemaps/demo_map/forest_tiles_extruded.png");
+        this.load.image("test_tiles2", "tilemaps/demo_map/test_tiles_non_commercial_extruded.png");
 
         // ------- Loading Animations ------- //
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
@@ -137,6 +138,9 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("kamehameha", "images/projectiles/kamehameha.png", "images/projectiles/kamehameha.json")
         this.load.aseprite("flame_thrower", "images/projectiles/flame_thrower.png", "images/projectiles/flame_thrower.json")
         this.load.aseprite("blade_tornado", "images/projectiles/blade_tornado.png", "images/projectiles/blade_tornado.json")
+        this.load.aseprite("blade_master_slash", "images/projectiles/swordman_slash.png", "images/projectiles/swordman_slash.json")
+        this.load.aseprite("BladeMaster", "images/roles/swordsman.png", "images/roles/swordsman.json");
+        this.load.aseprite("Nixi", "images/roles/Sprite-0001.png", "images/roles/Sprite-0001.json");
     }
 
     /** Load the assets from firebase. */

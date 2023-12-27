@@ -30,9 +30,9 @@ export default {
     scale: {
         width: 1280,
         height: 800,
-        // mode: Phaser.Scale.FIT,
+        mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
-    },
+    },  
     plugins: {
         scene: [{
             key: 'rexUI',
@@ -51,6 +51,10 @@ export default {
     // antialias: false,
     gameTitle: 'Dungeon and Adventurers',
     gameVersion: 'v0.01',
+    fps: {
+        target: 60,
+        forceSetTimeOut: true
+    }
 };
 
 export enum SceneKey {

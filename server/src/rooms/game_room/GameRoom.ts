@@ -52,8 +52,11 @@ export default class GameRoom extends Room<State> {
         this.gameManager = new GameManager(state, this, options);
         this.setState(state);
         
+        let start = Date.now()
         this.gameManager.preload()
             .then(()=>{
+                let seconds = (Date.now() - start)/1000
+                console.log(`total time for preload function: ${seconds} seconds`)
                 this.startGame();
                 this.initListeners();
             })
@@ -104,9 +107,15 @@ export default class GameRoom extends Room<State> {
         this.onMessage("selectForgeUpgrade", (client, msg) => {
             this.gameManager.getForgeManager().processPlayerSelectUpgrade(client.sessionId, msg);
         })
+
+        this.onMessage("toggleAutoAttack", (client, msg) => {
+            let {playerState} = this.gameManager.getPlayerManager().getPlayerStateAndBody(client.sessionId)
+            playerState.playerController.toggleAutoAttack()
+        })
     }
 
     startGame() {
+        console.log(`start game`)
         this.gameManager.startGame();
         // Game Loop
         this.setSimulationInterval((deltaT) => {

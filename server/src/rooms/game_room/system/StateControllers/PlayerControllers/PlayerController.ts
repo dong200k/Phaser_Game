@@ -43,6 +43,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     private rollCooldown = new Cooldown(0.5)
 
     private attackCooldown!: Cooldown
+    private autoAttack: boolean = false
 
     protected create(data: PlayerControllerData): void {
         this.player = data.player;
@@ -119,18 +120,21 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
         // Testing auto attack 
         this.attackCooldown.tick(deltaT)
-        if(this.attackCooldown.isFinished){
-            this.attackCooldown.reset()
-            this.attackCooldown.setTime(getFinalAttackCooldown(this.player.stat))
-            let mousePos = {x: 0, y: 0}
-            let closestMonster = this.player.gameManager.getDungeonManager().getClosestActiveMonster(this.player.getBody().position)
-            
-            if(closestMonster) {
-                mousePos = closestMonster.getBody().position
-                this.startAttack(mousePos.x, mousePos.y)
+        if(this.autoAttack){
+            if(this.attackCooldown.isFinished){
+                // this.attackCooldown.reset()
+                // this.attackCooldown.setTime(getFinalAttackCooldown(this.player.stat))
+                let mousePos = {x: 0, y: 0}
+                let closestMonster = this.player.gameManager.getDungeonManager().getClosestActiveMonster(this.player.getBody().position)
+                
+                if(closestMonster) {
+                    mousePos = closestMonster.getBody().position
+                    this.attackCooldown.setTime(getFinalAttackCooldown(this.player.stat))
+                    this.attackCooldown.reset()
+                    this.startAttack(mousePos.x, mousePos.y)
+                }
             }
         }
-        
     }
 
     public putRollOnCooldown(){
@@ -186,14 +190,19 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
             }
 
             // If an attack is off cooldown
-            this.player.effects.forEach((effect) => {
-                if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack") {
-                    if (effect.cooldown.isFinished) {
-                        this.startAttack(mouseX, mouseY);
-                        return
-                    }
-                }
-            })
+            if(this.attackCooldown.isFinished){
+                this.startAttack(mouseX, mouseY);
+                this.attackCooldown.setTime(getFinalAttackCooldown(this.player.stat))
+                this.attackCooldown.reset()
+            }
+            // this.player.effects.forEach((effect) => {
+            //     if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack") {
+            //         if (effect.cooldown.isFinished) {
+            //             this.startAttack(mouseX, mouseY);
+            //             return
+            //         }
+            //     }
+            // })
 
             // For combo attacks that dont use EffectLogic with combos directly on the controller.
             if(this.callStartAttackAnyways) this.startAttack(mouseX, mouseY)
@@ -244,5 +253,9 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
     public getRollState(){
         return this.rollState
+    }
+
+    public toggleAutoAttack(){
+        this.autoAttack = !this.autoAttack
     }
 }

@@ -87,9 +87,9 @@ export default class Summon extends StateNode {
     private getSummonPosition(){
         let stateMachine = this.getStateMachine<SummonerController>();
         let monster = stateMachine.getMonster();
-        let pos = monster.getBody().position as SpawnPoint
-        let offsetX = Math.random() * 5 + 20
-        let offsetY = Math.random() * 5 + 20
+        let pos = {...monster.getBody().position} as SpawnPoint
+        let offsetX = Math.random() * 5 + 50
+        let offsetY = Math.random() * 5 + 50
         if(Math.random()<0.5) offsetX *= -1
         if(Math.random()<0.5) offsetY *= -1
 

@@ -29,7 +29,10 @@ export default class RoleService {
             }
         });
         let json = await res.json()
-        if(res.status === 200) return json.roles
+        if(res.status === 200) {
+            console.log(json.roles)
+            return json.roles
+        }
         else throw new Error("Error getting roles")
     }
 }

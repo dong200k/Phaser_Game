@@ -68,6 +68,8 @@ export default class Projectile extends GameObject implements Cloneable {
     /** Enemies this projectile can hit before going inactive */
     @type("number") piercing: number;
 
+    @type("number") animationDurationSeconds: number = 1
+
     /** The entity that created this projectile. */
     originEntityId?: string;
 
@@ -90,7 +92,7 @@ export default class Projectile extends GameObject implements Cloneable {
 
     private setInactiveCallback?: Function
     private onCollideCallback?: Function
-
+    
     
     /** Animation to play default is "play" */
     @type("string") animationKey: string = "play"
@@ -152,6 +154,8 @@ export default class Projectile extends GameObject implements Cloneable {
         this.repeatAnimation = projectileConfig.repeatAnimation ?? this.repeatAnimation
         this.animationKey = projectileConfig.animationKey ?? this.animationKey
         this.onCollideCallback = projectileConfig.onCollideCallback ?? this.onCollideCallback
+
+        this.animationDurationSeconds = projectileConfig.animationDurationSeconds ?? 1
     }
     
     /**
@@ -355,5 +359,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.repeatAnimation = projectileConfig.repeatAnimation ?? this.repeatAnimation
         this.animationKey = projectileConfig.animationKey ?? this.animationKey
         this.onCollideCallback = projectileConfig.onCollideCallback ?? this.onCollideCallback
+
+        this.animationDurationSeconds = projectileConfig.animationDurationSeconds ?? 1
     }
 }

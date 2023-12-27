@@ -58,6 +58,7 @@ export default class PlayerManager {
                 if(gameObject.playerController.stateName !== "Dead") {
                     allPlayersDead = false;
                     gameObject.update(deltaT)
+                    // console.log(`player position: (${Math.round(gameObject.x)}, ${Math.round(gameObject.y)}) \n`)
                     // if(this.gameManager.state.serverTickCount % 20 === 0)
                     //     console.log("Player Armor: ", gameObject.stat.armor);
                 }
@@ -83,7 +84,7 @@ export default class PlayerManager {
 
         let [mouseDown, mouseX, mouseY, mouseClick] = data
         let {playerBody, playerState} = this.getPlayerStateAndBody(playerId)
-        if(!playerBody || !playerState) return console.log("player does not exist, Attack")
+        if(!playerBody || !playerState) return
         
         // Do nothing if the player is dead.
         if(playerState.playerController.stateName === "Dead") return;
@@ -692,7 +693,7 @@ export default class PlayerManager {
             // If the player is not currently selecting an upgrade give them one.
             if(!player.upgradeInfo.playerIsSelectingUpgrades){
                 this.givePlayerUpgradeSelection(player, this.generateUpgrades(player));
-                this.gameManager.pauseGame()
+                this.gameManager.pauseGame(player.getId() as string)
             }
         }
     }
@@ -854,10 +855,10 @@ export default class PlayerManager {
                 artifactManager.equipArtifact(player, artifact)
             }
             player.upgradeInfo.playerSelectedUpgrade()
-            this.gameManager.unPauseGame()
+            this.gameManager.unPauseGame(playerId)
             return true
         }
-        this.gameManager.unPauseGame()
+        this.gameManager.unPauseGame(playerId)
 
     }
 

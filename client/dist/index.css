@@ -62,3 +62,10 @@ canvas {
     opacity: 0;
     transition: visibility 0s 1s, opacity 1s linear;
 }
+
+/* making firebase emulator warning less intrusive */
+.firebase-emulator-warning {
+    background-color: transparent !important;
+    border: none !important;
+    color: rgba(245, 66, 66, 0.3) !important;
+  }
