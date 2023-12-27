@@ -57,31 +57,53 @@ export default class MapManager{
 
         this.gameManager.gameObjects.forEach(obj=>{
             if(obj instanceof Player){
-                
                 let playerChunkId = this.getChunkIdForPosition(obj.getBody().position)
 
-                // Load nearby chunks
+                // Load chunks near player
                 let chunksNearPlayer = this.getChunkIdsWithinLoadRadius(playerChunkId)
                 for(let chunkId of chunksNearPlayer){
                     this.loadChunkById(chunkId)
                 }
-
-                // Unload active chunks that are not nearby
-                for(let [chunkId,] of this.activeChunksMap)
-                if(this.shouldUnload(chunkId)) this.unloadChunkById(chunkId)
             }
-        })
-        
+        })   
+
+        // Unload active chunks that are not near any player
+        for(let [chunkId,] of this.activeChunksMap){
+            if(this.shouldUnload(chunkId)) this.unloadChunkById(chunkId)
+        }
     }
 
+    /**
+     * Initializes the first chunk/chunks near the position argument
+     * @param position 
+     */
+    public initChunks(position: {x: number, y: number}){
+        let id = this.getChunkIdForPosition(position)
+        let chunkIdsNearby = this.getChunkIdsWithinLoadRadius(id)
+        for(let chunkId of chunkIdsNearby){
+            this.loadChunkById(chunkId)
+        }
+    }
+
+    /**
+     * Takes in a chunk id and creates a new chunk and loads it if it is not currently active
+     * 
+     * Note: chunk is loaded even if it is out of bounds, though that should not cause errors
+     * @param id 
+     * @returns 
+     */
     private loadChunkById(id: number){
-        // Todo add chunk recycling logic
+        // Todo add chunk recycling logic, maybe add logic to check that chunk is within bounds of game world(although it doesn't matter and won't cause an error i think)
         if(this.activeChunksMap.has(id)) return
         let chunk = new Chunk(this, this.tiledJSON, id)
         this.activeChunksMap.set(id, chunk)
         chunk.loadChunk()
     }
 
+    /**
+     * Takes in a chunk id and unloads the chunk and removes it from the active chunksmap if it exists
+     * @param id 
+     */
     private unloadChunkById(id: number){
         // TODO add chunk recycling logic
         if(this.activeChunksMap.has(id)){
@@ -90,15 +112,36 @@ export default class MapManager{
         }
     }
 
+    /**
+     * Return the chunk id based on the given position in the game world
+     * @param position 
+     * @returns 
+     */
     public getChunkIdForPosition(position: {x: number, y: number}){
-        return Math.floor(position.x/this.chunkWidth) + Math.ceil(this.tiledJSON.width/this.chunkWidth) * Math.floor(position.y/this.chunkHeight)
+        // Get the tile position
+        let tileX = position.x / this.tileWidth
+        let tileY = position.y / this.tileHeight
+        
+        return Math.floor(tileX/this.chunkWidth) + Math.ceil(this.tiledJSON.width/this.chunkWidth) * Math.floor(tileY/this.chunkHeight)
     }
 
+    /**
+     * Returns a chunk x and y based representing the chunk position relative to other chunks the first chunk is at 0,0. Note this position is not in the game world.
+     * @param id 
+     * @returns 
+     */
     public getChunkXandY(id: number){
         let {startX, startY} = this.getChunkStartAndEnd(id)
         return {x: Math.floor(startX/this.chunkWidth), y: Math.floor(startY/this.chunkHeight)}
     }
 
+    /**
+     * Returns a list of ids within the load of the given chunk id
+     * 
+     * Note: these ids may be for chunks off the map
+     * @param id 
+     * @returns 
+     */
     public getChunkIdsWithinLoadRadius(id: number){
         // Get chunk x and y with 0th chunk starting at 0,0
         let {x, y} = this.getChunkXandY(id)
@@ -106,7 +149,7 @@ export default class MapManager{
 
         // Brute force calculate all chunks ids within load radius assumin 4 side connection (2 chunks are neigbors if they are below, on top, or on the side of each other)
         for(let i=x-this.loadRadius;i<=x+this.loadRadius;i++){
-            let leftOverRadius = Math.abs(i - x)
+            let leftOverRadius = Math.abs(this.loadRadius - Math.abs(i - x))
             for(let j=y-leftOverRadius;j<=y+leftOverRadius;j++){
                 let neighborId = i + j * Math.ceil(this.tiledJSON.width / this.chunkWidth)
                 if(id! == neighborId) ids.push(neighborId)
@@ -116,7 +159,7 @@ export default class MapManager{
         return ids
     }
 
-    /** Returns whether the chunk should unload or not */
+    /** Returns whether the chunk should unload or not which is based on the unload radius and the players positions */
     public shouldUnload(id: number){
         // Get id of chunks with a player
         let chunksIdsWithPlayers = new Set<number>()
