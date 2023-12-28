@@ -10,6 +10,8 @@ import LoadingScreen from '../UI/gameuis/LoadingScreen';
 import AssetService from '../services/AssetService';
 import AssetManager from '../system/AssetManager';
 import LoadSystem from '../system/LoadSystem';
+import { ServerEvent } from '../interfaces';
+import { DialogData } from '../UI/gameuis/DialogBox';
 
 interface MobAsset {
     key: string;
@@ -170,6 +172,14 @@ export default class GameScene extends Phaser.Scene {
             AssetManager.putAssetsInLoad(this, assets).then(() => {
                 this.assetsLoaded = true;
             });
+        })
+
+        gameRoom.onMessage("event", (message: ServerEvent) => {
+            switch(message.name) {
+                case "dialog": {
+                    EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_DIALOG, message.args); 
+                } break;
+            }
         })
 
         gameRoom.onLeave((code) => this.onLeaveHandler(code));

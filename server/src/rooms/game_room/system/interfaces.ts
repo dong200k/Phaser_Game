@@ -257,3 +257,24 @@ export enum GameEvents {
      * */
     SPAWN_PROJECTILE = "SPAWN_PROJECTILE",
 }
+
+/** Used to store event messages that is sent through colyseus' send method. */
+export interface ServerEvent {
+    name: string;
+    args?: any;
+}
+
+//-------- DialogItem And DialogData are used to passes data to the client to display a DialogBox. ----------/
+export interface DialogItem {
+    speaker?: string;
+    icon?: string;
+    text?: string;
+    /** The speed of character appearance in characters per second. */
+    textSpeed?: number;
+}
+
+export interface DialogData {
+    /** The default speed of which characters will appear. In characters per second. */
+    defaultTextSpeed?: number;
+    dialogItems?: DialogItem[];
+}

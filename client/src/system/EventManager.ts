@@ -172,6 +172,25 @@ namespace EventManager {
          * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.HIDE_TOOLTIP)```
          */
         export const HIDE_TOOLTIP = "HUDSceneHideToolTip";
+
+        /**
+         * Emitting this event will display a dialog box that will display a message to the player.
+         * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_DIALOG, data)```
+         * 
+         * @param data
+         * ```
+         * {
+            defaultTextSpeed?: number; //characters per second (default 38).
+            dialogItems: {
+                speaker: string;
+                icon: string;
+                text: string;
+                textSpeed?: number; //characters per second.
+            }[];
+        }
+            ```
+         */
+        export const SHOW_DIALOG = "HUDSceneShowDialog";
     }
 
     export namespace GameEvents {

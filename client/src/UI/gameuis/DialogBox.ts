@@ -4,18 +4,18 @@ import { ColorStyle } from "../../config";
 import UIFactory from "../UIFactory";
 import TextBoxPhaser from "../TextBoxPhaser";
 
-interface DialogItem {
-    speaker: string;
-    icon: string;
-    text: string;
+export interface DialogItem {
+    speaker?: string;
+    icon?: string;
+    text?: string;
     /** The speed of character appearance in characters per second. */
     textSpeed?: number;
 }
 
-interface DialogData {
+export interface DialogData {
     /** The default speed of which characters will appear. In characters per second. */
     defaultTextSpeed?: number;
-    dialogItems: DialogItem[];
+    dialogItems?: DialogItem[];
 }
 
 /**
@@ -44,7 +44,7 @@ export default class DialogBox extends RexUIBase {
      * Displays the dialogBox for the player.
      * @param dialogData The DialogData. (Note: the defaultTextSpeed will be set to 5 if none is given. )
      */
-    public showDialogBox(dialogData: DialogData) {
+    public showDialogBox(dialogData?: DialogData) {
         // Clean up old popup.
         if(this.popup) {
             this.popup.destroy();
@@ -53,13 +53,13 @@ export default class DialogBox extends RexUIBase {
         this.currentSubstringIdx = 0;
         this.currentDialogItemIdx = 0;
         this.dialogData = dialogData;
-        this.textSpeed = this.dialogData.defaultTextSpeed ?? this.DEFAULT_TEXT_SPEED;
+        this.textSpeed = this.dialogData?.defaultTextSpeed ?? this.DEFAULT_TEXT_SPEED;
         this.timeTracker = 0;
         // Create popup.
         this.popup = this.rexUI.add.dialog({
             height: 200,
             background: this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[900]),
-            content: this.createContent(dialogData),
+            content: this.createContent(),
             space: {
                 top: 0,
                 left: 0,
@@ -81,9 +81,10 @@ export default class DialogBox extends RexUIBase {
             })
             .onClick(() => {
                 this.textSpeed = 500;
-                if(this.popup && this.dialogData) {
+                if(this.popup && this.dialogData && this.dialogData.dialogItems) {
                     let dialogItem = this.dialogData.dialogItems[this.currentDialogItemIdx];
-                    if(this.currentSubstringIdx >= dialogItem.text.length) {
+                    let dialogText = dialogItem.text ?? "?????";
+                    if(this.currentSubstringIdx >= dialogText.length) {
                         // Current text completed, change to the next text.
                         this.currentDialogItemIdx++;
                         if(this.currentDialogItemIdx >= this.dialogData.dialogItems.length) {
@@ -110,7 +111,7 @@ export default class DialogBox extends RexUIBase {
      */
     public update(deltaT: number) {
         this.timeTracker += deltaT;
-        if(this.popup && this.dialogData) {
+        if(this.popup && this.dialogData && this.dialogData.dialogItems) {
             let textBox = this.popup.getByName("content_text", true) as TextBoxPhaser;
             let contentSpeaker = this.popup.getByName("content_speaker", true) as TextBoxPhaser;
             let dialogItems = this.dialogData.dialogItems;
@@ -119,9 +120,10 @@ export default class DialogBox extends RexUIBase {
                 this.popup.destroy();
             } else {
                 let dialogItem = this.dialogData.dialogItems[this.currentDialogItemIdx];
-                contentSpeaker.setText(dialogItem.speaker);
-                textBox.setText(dialogItem.text.substring(0, this.currentSubstringIdx));
-                if(this.currentSubstringIdx < dialogItem.text.length) {
+                let dialogText = dialogItem.text ?? "?????";
+                contentSpeaker.setText(dialogItem.speaker ?? "Unknown");
+                textBox.setText(dialogText.substring(0, this.currentSubstringIdx));
+                if(this.currentSubstringIdx < dialogText.length) {
                     // Todo: increment substring idx based on defaultTextSpeed or textSpeed.
                     // Todo: play a sound when a character is displayed.
                     if(this.currentSubstringIdx === 0) {
@@ -144,7 +146,7 @@ export default class DialogBox extends RexUIBase {
         }
     }
 
-    public createContent(data: DialogData) {
+    public createContent() {
         let content = this.rexUI.add.fixWidthSizer({
             width: 800,
             height: 200,

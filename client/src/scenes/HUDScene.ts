@@ -74,6 +74,7 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.on(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, this.topRightInfo.updateInfoSizer, this.topRightInfo);
         EventManager.eventEmitter.on(EventManager.HUDEvents.SHOW_TOOLTIP, this.toolTip.showToolTip, this.toolTip);
         EventManager.eventEmitter.on(EventManager.HUDEvents.HIDE_TOOLTIP, this.toolTip.hideToolTip, this.toolTip);
+        EventManager.eventEmitter.on(EventManager.HUDEvents.SHOW_DIALOG, this.dialogBox.showDialogBox, this.dialogBox);
 
         this.events.once("shutdown", () => this.removeListeners());
         this.events.on("sleep", () => this.peerInfoPopup.setVisible(false));
@@ -89,6 +90,7 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.off(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, this.topRightInfo.updateInfoSizer, this.topRightInfo);
         EventManager.eventEmitter.off(EventManager.HUDEvents.SHOW_TOOLTIP, this.toolTip.showToolTip, this.toolTip);
         EventManager.eventEmitter.off(EventManager.HUDEvents.HIDE_TOOLTIP, this.toolTip.hideToolTip, this.toolTip);
+        EventManager.eventEmitter.off(EventManager.HUDEvents.SHOW_DIALOG, this.dialogBox.showDialogBox, this.dialogBox);
     }
 
     private initializeUI() {
@@ -164,14 +166,14 @@ export default class HUDScene extends Phaser.Scene {
 
         // ------ DialogBox -------
         this.dialogBox = new DialogBox(this);
-        setTimeout(() => {
-            this.dialogBox.showDialogBox({
-                dialogItems: [
-                    {icon: "blank", speaker: "Mysterous Person", text: "Hblbllee, Beehlll, Heeollo there... In this section the player tries to clear dungeons and probably fails or succeeds and tries out different builds and combinations. They will uncover why the gods fall as they play through the dungeons. This will take them back home. From here the player can choose themselves to check out the blessings altar, unlock another character, goto magic school to learn more specials and charge attacks, and also buy equipment to head back for another run."},
-                    {icon: "blank", speaker: "Mysterous Person", text: "How are you? My name is mysterous person."},
-                ]
-            })
-        }, 3000);
+        // setTimeout(() => {
+        //     this.dialogBox.showDialogBox({
+        //         dialogItems: [
+        //             {icon: "blank", speaker: "Mysterous Person", text: "Hblbllee, Beehlll, Heeollo there... In this section the player tries to clear dungeons and probably fails or succeeds and tries out different builds and combinations. They will uncover why the gods fall as they play through the dungeons. This will take them back home. From here the player can choose themselves to check out the blessings altar, unlock another character, goto magic school to learn more specials and charge attacks, and also buy equipment to head back for another run."},
+        //             {icon: "blank", speaker: "Mysterous Person", text: "How are you? My name is mysterous person."},
+        //         ]
+        //     })
+        // }, 3000);
 
         
     }

@@ -17,12 +17,13 @@ import WeaponUpgradeTree from '../../schemas/Trees/WeaponUpgradeTree';
 import DatabaseManager from '../Database/DatabaseManager';
 import Node from '../../schemas/Trees/Node/Node';
 import WeaponData from '../../schemas/Trees/Node/Data/WeaponData';
-import { IAbility, IRole } from '../interfaces';
+import { DialogData, IAbility, IRole, ServerEvent } from '../interfaces';
 import Stat from '../../schemas/gameobjs/Stat';
 import Ability from '../../schemas/gameobjs/Ability';
 import TriggerUpgradeEffect from '../../schemas/effects/trigger/TriggerUpgradeEffect';
 import ContinuousUpgradeEffect from '../../schemas/effects/continuous/ContinuousUpgradeEffect';
 import Artifact from '../../schemas/Trees/Artifact';
+import { Client } from 'colyseus';
 
 interface InputPlayload {
     payload: number[];
@@ -35,9 +36,12 @@ export default class PlayerManager {
     private inputPayloads: InputPlayload[] = [];
     private disabledPlayers: Set<string> = new Set();
 
+    private clients: Client[];
+
 
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager
+        this.clients = [];
     }   
 
     /**
@@ -481,7 +485,8 @@ export default class PlayerManager {
         player.stat.add(roleStat)
     }
 
-    public async createPlayer(sessionId: string, isOwner: boolean, playerData: any, gameManager?: GameManager, roleId?: string, onlineMode: boolean = true) {
+    public async createPlayer(client: Client, isOwner: boolean, playerData: any, gameManager?: GameManager, roleId?: string, onlineMode: boolean = true) {
+        let sessionId = client.sessionId;
         if(isOwner) this.gameManager.setOwner(sessionId)
 
         // let playerData = {username: "No Name"}
@@ -519,11 +524,41 @@ export default class PlayerManager {
 
         newPlayer.setId(sessionId);
         newPlayer.setBody(body)
+        this.clients.push(client);
         this.gameManager.addGameObject(sessionId, newPlayer, body);
     } 
 
     public removePlayer(sessionId: string) {
+        this.clients = this.clients.filter((client) => client.sessionId !== sessionId);
         return this.gameManager.removeGameObject(sessionId) as Player | undefined;
+    }
+
+    /**
+     * Sends a event to the client of the specified player.
+     * @param sessionId The sessionId of the player. Can be accessed through player.id.
+     * @param message The message to send.
+     */
+    public sendClientEvent(sessionId: string, message: ServerEvent) {
+        let client: Client | undefined;
+        this.clients.forEach((e) => {
+            if(e.sessionId === sessionId) {
+                client = e;
+            }
+        });
+        if(client) {
+            client.send("event", message);
+        } else {
+            console.log(`WARNING: no client with sessionId ${sessionId} found in sendClientEvent()`);
+        }
+    }
+
+    /**
+     * Sends a dialog to the client. This will display the DialogBox on the client's screen.
+     * @param sessionId The sessionId of the player.
+     * @param dialogData The DialogData.
+     */
+    public sendClientDialog(sessionId: string, dialogData: DialogData) {
+        this.sendClientEvent(sessionId, {name: "dialog", args: dialogData});
     }
 
     /**
@@ -546,6 +581,20 @@ export default class PlayerManager {
             }
         }
         return nearestPlayer;
+    }
+
+    /**
+     * Gets all the players in the game.
+     * @returns A list of players.
+     */
+    public getAllPlayers(): Player[] {
+        let players: Player[] = [];
+        this.gameManager.state.gameObjects.forEach((value) => {
+                if(value instanceof Player) 
+                    players.push(value);
+            }
+        );
+        return players;
     }
 
     /**
