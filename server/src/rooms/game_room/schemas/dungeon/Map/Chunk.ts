@@ -5,11 +5,15 @@ import { TiledJSON } from "../../../system/interfaces"
 import InvisObstacle from "../../gameobjs/InvisObstacle"
 import { Categories } from "../../../system/Collisions/Category"
 import MaskManager from "../../../system/Collisions/MaskManager"
+import TiledJSONClass from "./TiledJSONClass"
+import { Schema, type, MapSchema } from '@colyseus/schema';
+import ChunkMap from "./ChunkMap"
+
 
 /** Chunk that represents a small part of the map that can be loaded and unloaded (this can be thought of as a chunk of a old tilemap) */
-export class Chunk{
+export class Chunk extends Schema{
     private mapManager: MapManager
-    private tiledJSON: TiledJSON
+    private tiledJSON: TiledJSONClass
     private chunkId: number
     private obstacles: InvisObstacle[]
     private chunkHeight: number
@@ -19,9 +23,10 @@ export class Chunk{
     private startY: number = 0
     private endY: number = 0
 
-    constructor(mapManager: MapManager, tiledJSON: TiledJSON, chunkId: number){
+    constructor(mapManager: MapManager, chunkMap: ChunkMap, chunkId: number){
+        super()
         this.mapManager = mapManager
-        this.tiledJSON = tiledJSON
+        this.tiledJSON = chunkMap.tiledJSON
         this.chunkId = chunkId
         this.obstacles = []
         let chunkData = mapManager.getChunksData()
@@ -68,7 +73,7 @@ export class Chunk{
         // Grab obstacle layer data
         let obstacleLayer = this.tiledJSON.layers.find(layer=>layer.name==="Obstacle")
         if(!obstacleLayer) return
-        let tileIds = obstacleLayer.data
+        let tileIds = obstacleLayer.tileIds
 
         // Calculate chunk info
         let gameManager = this.mapManager.getGameManager()
@@ -82,7 +87,7 @@ export class Chunk{
         
         for(let y = startY; y < endY; y++) {
             for(let x = startX; x < endX; x++) {
-                let tileId = obstacleLayer.data[x % obstacleLayer.width + y * obstacleLayer.height]
+                let tileId = tileIds[x % obstacleLayer.width + y * obstacleLayer.height]
                 if(tileId && tileId !== 0) grid[y-startY][x-startX] = 1;
                 else grid[y-startY][x-startX] = 0;
             }

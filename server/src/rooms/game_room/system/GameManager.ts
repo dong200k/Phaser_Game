@@ -25,6 +25,8 @@ import ForgeManager from './StateManagers/ForgeManager';
 import MerchantManager from './StateManagers/MerchantManager';
 import MerchantItemFactory from '../schemas/merchant_items/MerchantItemFactory';
 import FountainManager from './StateManagers/FountainManager';
+import MapManager from './StateManagers/MapManager';
+import ChunkMap from '../schemas/dungeon/Map/ChunkMap';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -45,6 +47,7 @@ export default class GameManager {
     private merchantManager!: MerchantManager;
     private merchantItemFactory!: MerchantItemFactory
     private fountainManager!: FountainManager
+    private mapManager!: MapManager
 
     // Data
     public matterBodies: Map<string, Matter.Body> = new Map();
@@ -109,6 +112,16 @@ export default class GameManager {
         this.fountainManager = new FountainManager(this)
 
         await this.dungeonManager.createDungeon()
+        let dungeon = this.dungeonManager.getDungeon()
+        if(dungeon){
+            // Initialize map manager and load chunks that are at the 1st player spawn point. This could be changed to load chunks at every player spawn point
+            this.mapManager = new MapManager(this, dungeon.getChunkMap() as ChunkMap)
+            let spawnPoint = dungeon.getPlayerSpawnPoints()[0] as {x: number, y: number}
+            if(!spawnPoint) spawnPoint = {x: 0, y: 0}
+            this.mapManager.initChunks(spawnPoint)
+        }else{
+            console.log("Dungeon not found, MapManager was not initialized")
+        }
 
         this.initUpdateEvents();
         this.initCollisionEvent();
@@ -251,6 +264,7 @@ export default class GameManager {
         this.dungeonManager.update(deltaTSeconds);
         this.projectileManager.update(deltaT);
         this.auraManager.update(deltaTSeconds);
+        this.mapManager.update(deltaTSeconds)
 
         // if(this.state.serverTickCount % 30 === 0)
         //     console.log(`Heap usage: ${process.memoryUsage().heapUsed / 1000000} Mb`);

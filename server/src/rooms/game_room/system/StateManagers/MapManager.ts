@@ -3,7 +3,8 @@ import { TiledJSON } from "../interfaces";
 import { Schema, type, ArraySchema } from '@colyseus/schema';
 import Player from "../../schemas/gameobjs/Player";
 import { Chunk } from "../../schemas/dungeon/Map/Chunk";
-
+import TiledJSONClass from "../../schemas/dungeon/Map/TiledJSONClass";
+import ChunkMap from "../../schemas/dungeon/Map/ChunkMap";
 
 export interface IChunkConfig{
     /** Width of chunk in tiles */
@@ -21,12 +22,12 @@ export interface IChunkConfig{
     unloadRadius?: number
 }
 
-/** This class will manage the loading and unloading of chunks of one map/dungeon.
+/** This class will manage the loading and unloading of chunks of one ChunkMap aka map/dungeon based on players positions.
  * Also since this is the server we will only load the obstacles. The client side is updated and will have its own map that loads every layer.
  */
-export default class MapManager{
+export default class MapManager {
     private gameManager: GameManager
-    private tiledJSON!: TiledJSON
+    private tiledJSON!: TiledJSONClass
     /** Width of chunk in tiles */
     private chunkWidth = 30
     /** Height of chunk in tiles */
@@ -38,21 +39,21 @@ export default class MapManager{
     private loadRadius = 1
     /** distance from the nearest chunk with a player where the chunk will get unloaded */
     private unloadRadius = 3
-    /** Chunks that are currently being used */
-    private activeChunksMap: Map<number, Chunk> = new Map()
     /** Chunks that are free */
     private freeChunks: Chunk[] = []
     private timeSoFar = 0
-    private checkChunkTime = 5000
+    private checkChunkTimeSeconds = 5
+    private chunkMap: ChunkMap
 
-    constructor(gameManager: GameManager, chunkConfig?: IChunkConfig){
+    constructor(gameManager: GameManager, chunkMap: ChunkMap, chunkConfig?: IChunkConfig){
         this.gameManager = gameManager
         if(chunkConfig) this.setConfig(chunkConfig)
+        this.chunkMap = chunkMap
     }
 
     public update(deltaT: number){
         this.timeSoFar += deltaT
-        if(this.timeSoFar <= this.checkChunkTime) return
+        if(this.timeSoFar <= this.checkChunkTimeSeconds) return
         this.timeSoFar = 0
 
         this.gameManager.gameObjects.forEach(obj=>{
@@ -68,8 +69,9 @@ export default class MapManager{
         })   
 
         // Unload active chunks that are not near any player
-        for(let [chunkId,] of this.activeChunksMap){
-            if(this.shouldUnload(chunkId)) this.unloadChunkById(chunkId)
+        for(let [chunkId,] of this.chunkMap.activeChunks){
+            let chunkNumber = parseInt(chunkId)
+            if(this.shouldUnload(chunkNumber)) this.unloadChunkById(chunkNumber)
         }
     }
 
@@ -94,9 +96,10 @@ export default class MapManager{
      */
     private loadChunkById(id: number){
         // Todo add chunk recycling logic, maybe add logic to check that chunk is within bounds of game world(although it doesn't matter and won't cause an error i think)
-        if(this.activeChunksMap.has(id)) return
-        let chunk = new Chunk(this, this.tiledJSON, id)
-        this.activeChunksMap.set(id, chunk)
+        let stringId = id.toString()
+        if(this.chunkMap.activeChunks.has(stringId)) return
+        let chunk = new Chunk(this, this.chunkMap, id)
+        this.chunkMap.activeChunks.set(stringId, chunk)
         chunk.loadChunk()
     }
 
@@ -105,10 +108,12 @@ export default class MapManager{
      * @param id 
      */
     private unloadChunkById(id: number){
+        let stringId = id.toString()
+
         // TODO add chunk recycling logic
-        if(this.activeChunksMap.has(id)){
-            this.activeChunksMap.get(id)?.unloadChunk()
-            this.activeChunksMap.delete(id)
+        if(this.chunkMap.activeChunks.has(stringId)){
+            this.chunkMap.activeChunks.get(stringId)?.unloadChunk()
+            this.chunkMap.activeChunks.delete(stringId)
         }
     }
 
@@ -193,17 +198,9 @@ export default class MapManager{
         return {startX, startY, endX, endY}
     }
 
-    public readJSON(){
-
-    }
-
-    public getActiveChunkIds(){
-
-    }
-
     public getChunksData(){
         return {
-            activeChunkIds: this.getActiveChunkIds(),
+            // activeChunkIds: this.getActiveChunkIds(),
             chunkHeight: this.chunkHeight,
             chunkWidth: this.chunkWidth,
             tileWidth: this.tileWidth,
@@ -211,10 +208,6 @@ export default class MapManager{
             loadRadius: this.loadRadius,
             unloadRadius: this.unloadRadius
         }
-    }
-
-    public notifyClient(){
-
     }
 
     public setConfig(chunkConfig: IChunkConfig){
@@ -228,9 +221,5 @@ export default class MapManager{
 
     public getGameManager(){
         return this.gameManager
-    }
-
-    public setTiledJSON(tiledJSON: TiledJSON){
-        this.tiledJSON = tiledJSON
     }
 }

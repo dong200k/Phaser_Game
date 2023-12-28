@@ -5,6 +5,7 @@ import MathUtil from "../../../../util/MathUtil";
 import GameManager from "../../system/GameManager";
 import SafeWave from "./wave/SafeWave";
 import Monster from "../gameobjs/monsters/Monster";
+import ChunkMap from "./Map/ChunkMap";
 
 export class SpawnPoint extends Schema {
     @type("number") x: number;
@@ -42,7 +43,8 @@ export default class Dungeon extends Schema {
     @type("number") currentWave: number;
     @type("number") maxWave: number;
     @type("boolean") conquered: boolean;
-    @type(Tilemap) tilemap: Tilemap | null = null;
+    // @type(Tilemap) tilemap: Tilemap | null = null;
+    @type(ChunkMap) chunkMap: ChunkMap | null = null
     @type([SpawnPoint]) private playerSpawnPoints = new ArraySchema<SpawnPoint>();
     @type([SpawnPoint]) private monsterSpawnPoints = new ArraySchema<SpawnPoint>(); 
     @type(PlayerBounds) playerBounds: PlayerBounds | null = null;
@@ -90,16 +92,16 @@ export default class Dungeon extends Schema {
                 let minY = 50;
                 let maxY = 200;
                 // Change the spawn area based on the size of the tilemap.
-                if(this.tilemap) {
-                    maxX = this.tilemap.width * this.tilemap.tileWidth - 20;
-                    maxY = this.tilemap.height * this.tilemap.tileHeight - 20;
-                }
+                // if(this.tilemap) {
+                //     maxX = this.tilemap.width * this.tilemap.tileWidth - 20;
+                //     maxY = this.tilemap.height * this.tilemap.tileHeight - 20;
+                // }
                 
-                this.gameManager.getChestManager().spawnChest({
-                    rarity: "wood",
-                    x: MathUtil.getRandomIntegerBetween(minX, maxX),
-                    y: MathUtil.getRandomIntegerBetween(minY, maxY)
-                });
+                // this.gameManager.getChestManager().spawnChest({
+                //     rarity: "wood",
+                //     x: MathUtil.getRandomIntegerBetween(minX, maxX),
+                //     y: MathUtil.getRandomIntegerBetween(minY, maxY)
+                // });
             }
         }
     }
@@ -124,12 +126,20 @@ export default class Dungeon extends Schema {
         this.waveEnded = false;
     }
 
-    public setTilemap(tilemap: Tilemap) {
-        this.tilemap = tilemap;
+    // public setTilemap(tilemap: Tilemap) {
+    //     this.tilemap = tilemap;
+    // }
+
+    // public getTilemap() {
+    //     return this.tilemap;
+    // }
+
+    public setChunkMap(chunkMap: ChunkMap) {
+        this.chunkMap = chunkMap
     }
 
-    public getTilemap() {
-        return this.tilemap;
+    public getChunkMap() {
+        return this.chunkMap
     }
 
     public getDungeonName() {

@@ -19,6 +19,7 @@ import InvisObstacle from "../../schemas/gameobjs/InvisObstacle"
 import DatabaseManager from "../Database/DatabaseManager"
 import Entity from "../../schemas/gameobjs/Entity"
 import SafeWave from "../../schemas/dungeon/wave/SafeWave"
+import ChunkMap from "../../schemas/dungeon/Map/ChunkMap"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -132,15 +133,18 @@ export default class DungeonManager {
         
         // Load the tiled json file ... 
         await FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
-            console.log(`create dungeon`)
             let start = Date.now();
 
             // ----- Fill in the dungeons information based on the json file ------
             let newDungeon = new Dungeon(this.gameManager, dungeonName);
 
             // Tilemap createT
-            let newTilemap = this.createTilemap(tiled, dungeonData);
-            newDungeon.setTilemap(newTilemap);
+            // let newTilemap = this.createTilemap(tiled, dungeonData);
+            // newDungeon.setTilemap(newTilemap);
+
+            // Create a ChunkMap
+            let newChunkMap = this.createChunkMap(tiled, dungeonData)
+            newDungeon.setChunkMap(newChunkMap)
 
             // Set spawnpoints 
             this.setDungeonSpawnPoints(newDungeon, tiled);
@@ -350,6 +354,20 @@ export default class DungeonManager {
                 })
             }
         });
+    }
+
+    /**
+     * Create and return a ChunkMap based on a TiledJSON object.
+     * @param data A TiledJSON object.
+     * @param dungeon Dungeon data
+     * @returns A Tilemap.
+     */
+    private createChunkMap(data: TiledJSON, dungeon: IDungeon){
+        let tileWidth = data.tilewidth;
+        let tileHeight = data.tileheight;
+        let chunkMap = new ChunkMap(data, data.width, data.height, tileWidth, tileHeight,
+            dungeon.tilesetName, dungeon.clientTilesetLocation);
+        return chunkMap
     }
 
     /**
