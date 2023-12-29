@@ -19,7 +19,7 @@ export default class TutorialDungeon extends Dungeon {
         this.controller = new TutorialController({
             gameManager: gameManager,
             tutorialDungeon: this,
-        })
+        });
     }
 
     /**
@@ -28,6 +28,16 @@ export default class TutorialDungeon extends Dungeon {
      */
     public update(deltaT: number) {
         this.controller.update(deltaT);
+    }
+
+    /**
+     * The isConquered return value will be caculated by the TutorialController.
+     * This is different from a normal dungeon where the dungeon ends automatically
+     * when there are no more monsters and waves.
+     * @returns True if the tutorial is completed, false otherwise.
+     */
+    public isConquered(): boolean {
+        return this.conquered;
     }
 
 }

@@ -1,6 +1,8 @@
 import TutorialDungeon from "../../../schemas/dungeon/TutorialDungeon";
 import GameManager from "../../GameManager";
 import StateMachine from "../../StateMachine/StateMachine";
+import EndTutorialState from "./states/EndTutorialState";
+import MoveState from "./states/MoveState";
 
 interface ControllerData {
     tutorialDungeon: TutorialDungeon;
@@ -25,6 +27,15 @@ export default class TutorialController extends StateMachine<ControllerData> {
     protected create(data: ControllerData): void {
         this.gameManager = data.gameManager;
         this.tutorialDungeon = data.tutorialDungeon;
+
+        let moveState = new MoveState("MoveState", this);
+        this.addState(moveState);
+
+        let endTutorialState = new EndTutorialState("EndTutorialState", this);
+        this.addState(endTutorialState);
+
+
+        this.changeState("MoveState");
     }
 
     protected postUpdate(deltaT: number): void {

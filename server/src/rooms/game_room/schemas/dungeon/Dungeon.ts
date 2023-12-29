@@ -136,7 +136,32 @@ export default class Dungeon extends Schema {
         return this.dungeonName;
     }
 
+    /**
+     * Performs a check too see if this dungeon is over or not.
+     * This will then update the conquered variable accordingly.
+     */
+    private checkIfConquered() {
+        if(!this.hasNextWave() && this.waveEnded) {
+            let dungeonOver = true;
+            // Check if the are any more active monsters.
+            this.gameManager.gameObjects.forEach((obj) => {
+                if(obj instanceof Monster) {
+                    if(obj.isActive()) {
+                        dungeonOver = false;
+                    }
+                }
+            })
+            if(dungeonOver) {
+                this.setConquered(true);
+            } else {
+                this.setConquered(false);
+            }
+        }
+    }
+
+    /** Returns if the dungeon has been conquered or not. */
     public isConquered() {
+        this.checkIfConquered();
         return this.conquered;
     }
 

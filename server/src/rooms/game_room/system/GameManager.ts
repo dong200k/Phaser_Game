@@ -61,6 +61,7 @@ export default class GameManager {
     private assetSet: Set<string> = new Set();
 
     gameOver: boolean = false;
+    private endGameCalled: boolean = false;
 
     constructor(state: State, options?: GameRoomOptions) {
         this.state = state;
@@ -215,11 +216,15 @@ export default class GameManager {
      * Closing game room.
      *  */ 
     public endGame() {
+        // If end game is already called, do nothing.
+        if(this.endGameCalled) return;
+        
         // End the game. Note that the server give the player coins 
         // When they disconnect from the server.
         setTimeout(() => {
             this.gameOver = true;
-        }, 6000)
+        }, 6000);
+        this.endGameCalled = true;
     }
 
     public getEngine() {

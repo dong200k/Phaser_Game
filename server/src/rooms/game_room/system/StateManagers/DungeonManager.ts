@@ -19,6 +19,7 @@ import InvisObstacle from "../../schemas/gameobjs/InvisObstacle"
 import DatabaseManager from "../Database/DatabaseManager"
 import Entity from "../../schemas/gameobjs/Entity"
 import SafeWave from "../../schemas/dungeon/wave/SafeWave"
+import TutorialDungeon from "../../schemas/dungeon/TutorialDungeon"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -79,23 +80,10 @@ export default class DungeonManager {
             this.dungeon.startNextWave();
         }
 
-        // Check if the dungeon is over.
-        // A dungeon is over if there are no more waves, current wave is finished, and all monsters are killed.
-        if(this.dungeon && !this.dungeon.hasNextWave() && 
-            !this.dungeon.isConquered() && this.dungeon.waveEnded) {
-            let dungeonOver = true;
-            // Check if the are any more active monsters.
-            this.gameManager.gameObjects.forEach((obj) => {
-                if(obj instanceof Monster) {
-                    if(obj.isActive()) {
-                        dungeonOver = false;
-                    }
-                }
-            })
-            if(dungeonOver) {
-                this.dungeon.setConquered(true);
-                this.gameManager.endGame();
-            }
+        // Check if the dungeon is over. every 30 tick.
+        if(this.gameManager.state.serverTickCount % 30 === 29 &&
+            this.dungeon && this.dungeon.isConquered()) {
+            this.gameManager.endGame();
         }
 
         // Check for out of bounds monsters every 30 tick
@@ -134,8 +122,12 @@ export default class DungeonManager {
         // Load the tiled json file ... 
         FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
             // ----- Fill in the dungeons information based on the json file ------
-            let newDungeon = new Dungeon(this.gameManager, dungeonName);
-
+            let newDungeon: Dungeon;
+            if(dungeonName === "Tutorial Dungeon") {
+                newDungeon = new TutorialDungeon(this.gameManager, dungeonName);
+            } else {
+                newDungeon = new Dungeon(this.gameManager, dungeonName);
+            }
             // Tilemap 
             let newTilemap = this.createTilemap(tiled, dungeonData);
             newDungeon.setTilemap(newTilemap);
