@@ -131,8 +131,9 @@ export default class DungeonManager {
         let dungeonFileLocation = dungeonData.serverJsonLocation;
         let dungeonName = dungeonData.name;
         
-        // Load the tiled json file ... 
-        await FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
+        try {
+            // Load the tiled json file ... 
+            let tiled: TiledJSON = await FileUtil.readJSONAsync(dungeonFileLocation)
             let start = Date.now();
 
             // ----- Fill in the dungeons information based on the json file ------
@@ -174,9 +175,9 @@ export default class DungeonManager {
 
             let timeTaken = Date.now() - start;
             console.log(`time taken for creating dungeon: ${timeTaken/1000} seconds`)
-        }).catch((err) => {
-            console.log(err);
-        })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     public createNewWave() {
@@ -323,19 +324,19 @@ export default class DungeonManager {
      * @param data The Tiled tilemap jsonfile.
      */
     private setDungeonSpawnPoints(dungeon: Dungeon, data: TiledJSON) {
-        // data.layers.forEach((value) => {
-        //     if(value.type === "objectgroup" && value.name === "SpawnPoints") {
-        //         value.objects.forEach((spawnPoint) => {
-        //             if(spawnPoint.type === "player") {
-        //                 dungeon.addPlayerSpawnPoint(spawnPoint.x, spawnPoint.y);
-        //             } else if(spawnPoint.type === "monster") {
-        //                 dungeon.addMonsterSpawnPoint(spawnPoint.x, spawnPoint.y);
-        //             }
-        //         })
-        //     }
-        // });
+        data.layers.forEach((value) => {
+            if(value.type === "objectgroup" && value.name === "SpawnPoints") {
+                value.objects.forEach((spawnPoint) => {
+                    if(spawnPoint.type === "player") {
+                        dungeon.addPlayerSpawnPoint(spawnPoint.x, spawnPoint.y);
+                    } else if(spawnPoint.type === "monster") {
+                        dungeon.addMonsterSpawnPoint(spawnPoint.x, spawnPoint.y);
+                    }
+                })
+            }
+        });
         let position = {x: 0, y: 0}
-        dungeon.addPlayerSpawnPoint(position.x, position.y)
+        // dungeon.addPlayerSpawnPoint(position.x, position.y)
         dungeon.addMonsterSpawnPoint(position.x, position.y)
     }
 

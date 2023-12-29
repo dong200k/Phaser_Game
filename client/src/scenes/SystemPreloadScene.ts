@@ -102,7 +102,7 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("fireball_icon", "images/icons/artifacts/fireball_icon.png");
         this.load.image("lightning_rod_icon", "images/icons/artifacts/lightning_rod_icon.png");
         this.load.image("test_tiles", "tilemaps/demo_map/forest_tiles_extruded.png");
-        this.load.image("test_tiles2", "tilemaps/demo_map/test_tiles_non_commercial_extruded.png");
+        this.load.image("test_tiles2", "tilemaps/demo_map/test_tiles_non_commercial.png");
 
         // ------- Loading Animations ------- //
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");

@@ -27,7 +27,7 @@ export interface IChunkConfig{
  */
 export default class MapManager {
     private gameManager: GameManager
-    private tiledJSON!: TiledJSONClass
+    private tiledJSON: TiledJSON
     /** Width of chunk in tiles */
     private chunkWidth = 30
     /** Height of chunk in tiles */
@@ -36,19 +36,24 @@ export default class MapManager {
     private tileHeight = 16
     /** number of chunks or the radius around chunks with a player that should be loaded. 
      * A zero load radius means the chunk is only loaded when a player enters it */
-    private loadRadius = 1
+    private loadRadius = 2
     /** distance from the nearest chunk with a player where the chunk will get unloaded */
-    private unloadRadius = 3
+    private unloadRadius = 4
     /** Chunks that are free */
     private freeChunks: Chunk[] = []
     private timeSoFar = 0
-    private checkChunkTimeSeconds = 5
+    private checkChunkTimeSeconds = 1
     private chunkMap: ChunkMap
+    /** name of layers with tiles */
+    private layerNameWithTiles = new Set(["Obstacle", "Ground", "Background"])
 
-    constructor(gameManager: GameManager, chunkMap: ChunkMap, chunkConfig?: IChunkConfig){
+    constructor(gameManager: GameManager, chunkMap: ChunkMap, tiledJSON: TiledJSON, chunkConfig?: IChunkConfig){
         this.gameManager = gameManager
         if(chunkConfig) this.setConfig(chunkConfig)
         this.chunkMap = chunkMap
+        this.chunkMap.setChunkHeight(this.chunkHeight)
+        this.chunkMap.setChunkWidth(this.chunkWidth)
+        this.tiledJSON = tiledJSON
     }
 
     public update(deltaT: number){
@@ -59,9 +64,11 @@ export default class MapManager {
         this.gameManager.gameObjects.forEach(obj=>{
             if(obj instanceof Player){
                 let playerChunkId = this.getChunkIdForPosition(obj.getBody().position)
+                console.log(`player: ${obj.name} is in chunk ${playerChunkId}`)
 
                 // Load chunks near player
                 let chunksNearPlayer = this.getChunkIdsWithinLoadRadius(playerChunkId)
+                console.log(`chunks near player ${obj.name}, ${chunksNearPlayer}`)
                 for(let chunkId of chunksNearPlayer){
                     this.loadChunkById(chunkId)
                 }
@@ -95,6 +102,8 @@ export default class MapManager {
      * @returns 
      */
     private loadChunkById(id: number){
+        // console.log(`Server is attempting to load chunk ${id}`)
+        if(!this.isValidChunkId(id)) return
         // Todo add chunk recycling logic, maybe add logic to check that chunk is within bounds of game world(although it doesn't matter and won't cause an error i think)
         let stringId = id.toString()
         if(this.chunkMap.activeChunks.has(stringId)) return
@@ -103,15 +112,22 @@ export default class MapManager {
         chunk.loadChunk()
     }
 
+    private isValidChunkId(id: number){
+        let maxChunkId = Math.ceil(this.tiledJSON.width/this.chunkWidth) * Math.ceil(this.tiledJSON.height/this.chunkHeight) - 1
+        return id >= 0 && id <= maxChunkId
+    }
+
     /**
      * Takes in a chunk id and unloads the chunk and removes it from the active chunksmap if it exists
      * @param id 
      */
     private unloadChunkById(id: number){
+        // console.log(`Server is attempting to unload chunk ${id}`)
         let stringId = id.toString()
 
         // TODO add chunk recycling logic
         if(this.chunkMap.activeChunks.has(stringId)){
+            console.log(`Server unloaded chunk ${id}`)
             this.chunkMap.activeChunks.get(stringId)?.unloadChunk()
             this.chunkMap.activeChunks.delete(stringId)
         }
@@ -148,16 +164,32 @@ export default class MapManager {
      * @returns 
      */
     public getChunkIdsWithinLoadRadius(id: number){
+        return this.getChunkIdsWithinRadius(id, this.loadRadius)
+    }
+
+    /**
+     * Returns the id of all chunks within the radius of the given chunk id
+     * @param id chunk id to check radius
+     * @param radius distance in terms of chunks from the id based on the 4 side traversal. Diagonal chunks require 2 moves to reach side chunks require 1 mnove.
+     */
+    public getChunkIdsWithinRadius(id: number, radius: number){
         // Get chunk x and y with 0th chunk starting at 0,0
         let {x, y} = this.getChunkXandY(id)
         let ids: number[] = []
 
+        // console.log(`get chunkids in load radius x: ${x}, y: ${y}`)
+        let loadStartX = x - radius
+        let loadEndX = x + radius
         // Brute force calculate all chunks ids within load radius assumin 4 side connection (2 chunks are neigbors if they are below, on top, or on the side of each other)
-        for(let i=x-this.loadRadius;i<=x+this.loadRadius;i++){
-            let leftOverRadius = Math.abs(this.loadRadius - Math.abs(i - x))
+        for(let i=loadStartX;i<=loadEndX;i++){
+            let leftOverRadius = radius - Math.abs(i - x)
+            if(leftOverRadius < 0) continue
             for(let j=y-leftOverRadius;j<=y+leftOverRadius;j++){
+                // console.log(`neighbor x: ${x}, y: ${y}`)
+
                 let neighborId = i + j * Math.ceil(this.tiledJSON.width / this.chunkWidth)
-                if(id! == neighborId) ids.push(neighborId)
+                // console.log(`neighor chunk id: ${neighborId}`)
+                ids.push(neighborId)
             }
         }
 
@@ -180,7 +212,7 @@ export default class MapManager {
         let exceedsUnloadRadius = true
         for(let playerChunkId of chunksIdsWithPlayers){
             let {x: playerChunkX, y: playerChunkY} = this.getChunkXandY(playerChunkId)
-            let diff = Math.abs(playerChunkX - x) + Math.abs(playerChunkY - x)
+            let diff = Math.abs(playerChunkX - x) + Math.abs(playerChunkY - y)
             if(diff < this.unloadRadius){
                 exceedsUnloadRadius = false
             }
@@ -189,12 +221,14 @@ export default class MapManager {
         return exceedsUnloadRadius
     }
 
+    /** Returns the chunk startX, startY, endX, and endY. This is in terms of tiles not the actual pixel locations in game */
     public getChunkStartAndEnd(id: number){
-        let startX = Math.floor(id % Math.ceil(this.tiledJSON.width / this.chunkWidth))
+        let startX = Math.floor(id % Math.ceil(this.tiledJSON.width / this.chunkWidth)) * this.chunkWidth
         let endX = startX + this.chunkWidth
 
-        let startY = Math.floor(id / Math.ceil(this.tiledJSON.width / this.chunkWidth))
+        let startY = Math.floor(id / Math.ceil(this.tiledJSON.width / this.chunkWidth)) * this.chunkHeight
         let endY = startY + this.chunkHeight
+        // console.log(`chunk ${id} startX: ${startX}, startY: ${startY}`)
         return {startX, startY, endX, endY}
     }
 
@@ -221,5 +255,22 @@ export default class MapManager {
 
     public getGameManager(){
         return this.gameManager
+    }
+
+    /**
+     * Return set of layer names with tiles
+     */
+    public getLayerNamesWithTiles(){
+        return this.layerNameWithTiles
+    }
+
+    /**
+     * Checks whether the given tile position is within the map
+     * @param tileX 
+     * @param tileY 
+     * @returns 
+     */
+    public inBounds(tileX: number, tileY: number){
+        return tileX >= 0 && tileX < this.tiledJSON.width && tileY >= 0 && tileY < this.tiledJSON.height
     }
 }

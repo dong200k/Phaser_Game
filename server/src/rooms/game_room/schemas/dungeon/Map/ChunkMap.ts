@@ -8,17 +8,20 @@ export default class ChunkMap extends Schema {
     /** Map of active chunks ids and chunks that are loaded in the game */
     @type({map: Chunk}) activeChunks = new MapSchema<Chunk>();
     /** Information about the map, used by client to load the map and by the server to load obstacles to matter */
-    @type(TiledJSONClass) tiledJSON: TiledJSONClass
+    // @type(TiledJSONClass) tiledJSON: TiledJSONClass
     /** Number of tiles in the horizontal direction. */
     @type("number") width: number;
     /** Number of tiles in the vertical direction. */
     @type("number") height: number;
     @type("number") tileWidth: number;
     @type("number") tileHeight: number;
+    @type("number") chunkWidth: number = 30;
+    @type("number") chunkHeight: number = 30;
 
     @type("string") tileSetName: string;
     @type("string") clientTilesetLocation: string;
 
+    private tiledJSON: TiledJSON
     /**
      * Creates a new Tilemap for a Dungeon. The tilemap will be sent 
      * to the client to build the tilemap.
@@ -35,7 +38,7 @@ export default class ChunkMap extends Schema {
     constructor(tiledJSON: TiledJSON, width:number,height:number,tileWidth:number,tileHeight:number, 
         tilesetName: string, clientTilesetLocation:string) {
         super();
-        this.tiledJSON = new TiledJSONClass(tiledJSON)
+        this.tiledJSON = tiledJSON
         this.width = width;
         this.height = height;
         this.tileWidth = tileWidth;
@@ -50,5 +53,25 @@ export default class ChunkMap extends Schema {
         //     string += `\n\n\tLayer\n${layer.toString()}`;
         // })
         return string;
+    }
+
+    /**
+     * 
+     * @param chunkWidth width of the chunk in tiles
+     */
+    public setChunkWidth(chunkWidth: number){
+        this.chunkWidth = chunkWidth
+    }
+
+    /**
+     * 
+     * @param chunkHeight height of the chunk in tiles
+     */
+    public setChunkHeight(chunkHeight: number){
+        this.chunkHeight = chunkHeight
+    }
+
+    public getTiledJSON(){
+        return this.tiledJSON
     }
 }

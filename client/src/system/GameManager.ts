@@ -34,6 +34,9 @@ import Merchant from "../gameobjs/Merchant";
 import MerchantState from "../../../server/src/rooms/game_room/schemas/gameobjs/Merchant";
 import Fountain from "../gameobjs/Fountain";
 import ForgeState from "../../../server/src/rooms/game_room/schemas/gameobjs/Forge";
+import ChunkMap from "../../../server/src/rooms/game_room/schemas/dungeon/Map/ChunkMap";
+import TilemapManager from "./TilemapManager";
+import { Chunk } from "../../../server/src/rooms/game_room/schemas/dungeon/Map/Chunk";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -79,6 +82,9 @@ export default class GameManager {
     private floatingTexts: FloatingText[] = [];
     private statusIconManager: StatusIconManager;
     private paused = false
+
+    // ------ TileMap/chunkmap -------
+    private tileMapManager?: TilemapManager
 
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
@@ -444,11 +450,16 @@ export default class GameManager {
         }
     }
 
+    private createTileMapManager(chunkMap: ChunkMap){
+        console.log("creating tilemap manager")
+        this.tileMapManager = new TilemapManager(this.scene, chunkMap.tileSetName, chunkMap.tileWidth, chunkMap.tileHeight, chunkMap.chunkWidth, chunkMap.chunkHeight)
+    }
+
     /** Called when the dungeon is first created on the server */
     private onChangeDungeon = (currentValue: DungeonState) => {
         this.dungeonSafeWaveTimerOnChange(currentValue)
         console.log("on Change dungeon")
-        currentValue.listen("tilemap", this.onChangeTilemap);
+        currentValue.listen("chunkMap", this.onChangeChunkMap);
         currentValue.listen("playerBounds", this.onChangePlayerBounds);
         // Workaround to send the wave count when the hud is first created.
         EventManager.eventEmitter.off("HUDCreate");
@@ -489,75 +500,23 @@ export default class GameManager {
     }
     
 
-    /** Called when the tilemap is first created on the server */
-    private onChangeTilemap = (currentValue:any) => {
-        // let map = this.scene.add.tilemap("", currentValue.tileWidth, currentValue.tileHeight, currentValue.width, currentValue.height);
+    /** Called when the chunkMap is first created on the server and when it updates */
+    private onChangeChunkMap = (currentValue: ChunkMap | null) => {
+        if(!currentValue) return
+        if(!this.tileMapManager) this.createTileMapManager(currentValue)
         console.log(`on change tilemap`)
         let start = Date.now()
-        let map = this.scene.make.tilemap({tileHeight: 16, tileWidth: 16});
-        let tileset = map.addTilesetImage("tileset_image", currentValue.tileSetName, 16, 16, 1, 2);
-        //Triggers when the server adds a tilemap layer
-        currentValue.layers.onAdd = (layer:any, key:string) => {
-            if(tileset !== null) {
-                let newLayer = map.createBlankLayer(key, tileset);
-                if(newLayer !== null) {
-                    if(key === "Background")
-                        newLayer.setDepth(-10);
-                    if(key === "Ground")
-                        newLayer.setDepth(-5);
-                    if(key === "Obstacle")
-                        newLayer.setDepth(10);
-                    let width = layer.width;
-                    let height = layer.height;
-                    // for(let y = 0; y < height; y++) {
-                    //     for(let x = 0; x < width; x++) {
-                    //         let tileId = layer.tiles[(y * width + x)]?.tileId;
-                    //         if(tileId) {
-                    //             //Add a tile to the tilemap
-                    //             newLayer.putTileAt(tileId - 1, x, y);
-                    //         }
-                    //     }
-                    // }
+        
+        //Triggers when the server adds a new chunk to the active chunks
+        currentValue.activeChunks.onAdd = (chunk: Chunk, key: string) => {
+            console.log(`chunk ${chunk.chunkId} was added in onChangeChunkMap`)
+            this.tileMapManager?.loadNewChunk(chunk.chunkId, chunk)
+        }
 
-                    let tileCount = 0
-                    let tileId = layer.tiles.forEach((tile: any)=>{
-                        let tileId = tile.tileId
-                        if(tileId) {
-                            tileCount++
-                            //Add a tile to the tilemap
-                            let x = Math.floor((tile.x - 24294)/16) + 50
-                            let y = Math.floor((tile.y - 23629)/16) + 50
-                            // console.log(`put tile at ${x}, ${y}`)
-                            newLayer?.putTileAt(tileId - 1, x, y);
-                            // newLayer?.putTileAt(tileId - 1, x * 16, y * 16);
-                            // console.log(`placing tile at ${x}, ${y}`)
-                        }
-                    }) 
-                    console.log(`added ${tileCount} tiles`)
-                    let count = 0
-                    // setInterval(()=>{
-                    //     count++
-                    //     if(count > 1) return
-                    //     console.log("adding new tiles for layer", layer.name)
-                    //     let tileId = layer.tiles.forEach((tile: any)=>{
-                    //         let tileId = tile.tileId
-                    //         if(tileId) {
-                    //             //Add a tile to the tilemap
-                    //             let x = Math.floor((tile.x - 24294)/16) + 100
-                    //             let y = Math.floor((tile.y - 23629)/16) + 100
-                    //             // console.log(`put tile at ${x}, ${y}`)
-                    //             newLayer?.putTileAt(Math.floor(Math.random() * 100), x, y);
-                    //             // newLayer?.putTileAt(tileId - 1, x * 16, y * 16);
-                    //             // console.log(`placing tile at ${x}, ${y}`)
-                    //         }
-                    //     })
-                    // }, 5000)
-                } else {
-                    console.log(`ERROR: failed to create a blank layer of key: ${key}`);
-                }
-            } else {
-                console.log("ERROR: Failed to load tileset.");
-            }
+        //Triggers when the server removes a chunk from active chunks
+        currentValue.activeChunks.onRemove = (chunk: Chunk, key: string) => {
+            console.log(`chunk ${chunk.chunkId} was removed in onChangeChunkMap`)
+            this.tileMapManager?.unloadChunk(chunk.chunkId)
         }
         let seconds = (Date.now() - start)/1000
         console.log(`seconds elapsed: ${seconds}`)
@@ -682,7 +641,7 @@ export default class GameManager {
     }
 
     public updateTimer(time: number){
-        console.log("update timer")
+        // console.log("update timer")
         EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
             time
         })
