@@ -39,6 +39,7 @@ class PlayerBounds extends Schema {
 export default class Dungeon extends Schema {
 
     @type("string") private dungeonName: string;
+    /** The current wave zero indexed. So currentWave = 0 is wave 1 in-game. */
     @type("number") currentWave: number;
     @type("number") maxWave: number;
     @type("boolean") conquered: boolean;
@@ -199,6 +200,11 @@ export default class Dungeon extends Schema {
 
     public getCurrentWave() {
         return this.currentWave;
+    }
+
+    /** Returns the current wave object using the the value of this.currentWave. */
+    public getCurrentWaveObject() {
+        return this.waves[this.currentWave];
     }
 
     /**

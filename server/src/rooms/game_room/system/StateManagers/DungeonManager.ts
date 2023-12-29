@@ -91,6 +91,23 @@ export default class DungeonManager {
             this.handleOutOfBoundsMonsters();
         }
     }
+
+    /**
+     * Checks if there are any more monsters that are alive on the map.
+     * @returns True if there are active monsters. False otherwise.
+     */
+    public checkActiveMonsters() {
+        let activeMonsters = false;
+        // Check if the are any more active monsters.
+        this.gameManager.gameObjects.forEach((obj) => {
+            if(obj instanceof Monster) {
+                if(obj.isActive()) {
+                    activeMonsters = true;
+                }
+            }
+        });
+        return activeMonsters;
+    }
     
     /** Kill all outof bounds monsters. */
     private handleOutOfBoundsMonsters() {

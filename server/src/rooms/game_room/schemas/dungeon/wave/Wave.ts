@@ -33,7 +33,7 @@ export default class Wave {
     }
 
     /**
-     * Updates this wave, this will spawn the next wave when necessary.
+     * Updates this wave, this will spawn the next monster when necessary.
      * @param deltaT The time passed in seconds.
      * @returns True if this wave is completed, false otherwise.
      */
