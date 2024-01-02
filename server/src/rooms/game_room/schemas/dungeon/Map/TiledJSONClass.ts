@@ -2,6 +2,7 @@ import { Schema, type, ArraySchema } from '@colyseus/schema';
 import { TiledJSON } from '../../../system/interfaces';
 import TiledLayerJSONClass from './TiledLayerJSONClass';
 
+/** DEPRECATED */
 export default class TiledJSONClass extends Schema{
     @type('number') height: number
     @type('number') width: number

@@ -27,27 +27,20 @@ export default class Fall extends StateNode{
     protected getTargetPosition(): {x: number, y: number} {
         if(this.impactPosition) return this.impactPosition
 
-        // Find position from random monster
-        let stateMachine = (this.getStateMachine() as MeteorController);
-        let projectile = stateMachine.getProjectile()
-        let monsters: Monster[] = []
-        projectile.gameManager.gameObjects.forEach((obj)=>{
-            if(obj instanceof Monster){
-                monsters.push(obj)
-            }
-        })
+        
         
         let target: Entity | undefined
-        if(monsters.length > 0){
-            let choice = Math.round(Math.random() * monsters.length)
-            target = monsters[choice]
+        let stateMachine = (this.getStateMachine() as MeteorController);
+        let projectile = stateMachine.getProjectile()
+        if(target && projectile.getOriginEntity() instanceof Player){
+            target = this.getMonsterTarget()
         }else{
             target = projectile.getOriginEntity()
         }
 
         let pos: {x: number, y: number}
-        if(Math.random()<0.2) pos = target? target.getBody().position : this.getRandomPositionAroundPlayer()
-        else pos = this.getRandomPositionAroundPlayer()
+        if(Math.random()<0.2) pos = target? target.getBody().position : this.getRandomPositionAroundOwner()
+        else pos = this.getRandomPositionAroundOwner()
         this.impactPosition = {...pos}
         // console.log("Impact pos:", this.impactPosition)
         // console.log(`has target: ${target !== undefined}`)
@@ -55,7 +48,22 @@ export default class Fall extends StateNode{
         return this.impactPosition
     }
 
-    private getRandomPositionAroundPlayer(radius = 200){
+    private getMonsterTarget(){
+        let stateMachine = (this.getStateMachine() as MeteorController);
+        let projectile = stateMachine.getProjectile()
+        // Find position from random monster
+        let monsters: Monster[] = []
+        projectile.gameManager.gameObjects.forEach((obj)=>{
+            if(obj instanceof Monster){
+                monsters.push(obj)
+            }
+        })
+
+        let choice = Math.round(Math.random() * monsters.length)
+        return monsters[choice]
+    }
+
+    private getRandomPositionAroundOwner(radius = 200){
         let stateMachine = (this.getStateMachine() as MeteorController);
         let projectile = stateMachine.getProjectile()
 

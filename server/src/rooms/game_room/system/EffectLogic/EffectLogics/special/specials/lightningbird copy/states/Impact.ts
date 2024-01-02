@@ -18,7 +18,11 @@ export default class Impact extends StateNode{
         let stateMachine = (this.getStateMachine() as MeteorController);
         let projectile = stateMachine.getProjectile()
 
-        projectile.setCollision("PLAYER_PROJECTILE")
+        if(projectile.getOriginEntity() instanceof Monster){
+            projectile.setCollision("MONSTER_PROJECTILE")
+        }else{
+            projectile.setCollision("PLAYER_PROJECTILE")
+        }
         Matter.Body.setVelocity(projectile.getBody(), {x: 0, y: 0})
         projectile.animation.playAnimation("explode", {
             duration: this.duration

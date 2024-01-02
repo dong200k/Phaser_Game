@@ -3,6 +3,7 @@ import Tile from '../../gameobjs/Tile';
 import GameManager from '../../../system/GameManager';
 import MathUtil from '../../../../../util/MathUtil';
 
+/** DEPRECATED  */
 export default class Layer extends Schema {
     @type("number") width: number;
     @type("number") height: number;

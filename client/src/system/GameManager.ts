@@ -504,22 +504,22 @@ export default class GameManager {
     private onChangeChunkMap = (currentValue: ChunkMap | null) => {
         if(!currentValue) return
         if(!this.tileMapManager) this.createTileMapManager(currentValue)
-        console.log(`on change tilemap`)
-        let start = Date.now()
+        // console.log(`on change tilemap`)
+        // let start = Date.now()
         
         //Triggers when the server adds a new chunk to the active chunks
         currentValue.activeChunks.onAdd = (chunk: Chunk, key: string) => {
-            console.log(`chunk ${chunk.chunkId} was added in onChangeChunkMap`)
+            // console.log(`chunk ${chunk.chunkId} was added in onChangeChunkMap`)
             this.tileMapManager?.loadNewChunk(chunk.chunkId, chunk)
         }
 
         //Triggers when the server removes a chunk from active chunks
         currentValue.activeChunks.onRemove = (chunk: Chunk, key: string) => {
-            console.log(`chunk ${chunk.chunkId} was removed in onChangeChunkMap`)
+            // console.log(`chunk ${chunk.chunkId} was removed in onChangeChunkMap`)
             this.tileMapManager?.unloadChunk(chunk.chunkId)
         }
-        let seconds = (Date.now() - start)/1000
-        console.log(`seconds elapsed: ${seconds}`)
+        // let seconds = (Date.now() - start)/1000
+        // console.log(`seconds elapsed: ${seconds}`)
     }
 
     /** Adds a new projectile to the scene. */

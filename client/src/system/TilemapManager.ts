@@ -22,9 +22,9 @@ export default class TilemapManager{
     }
 
     public loadNewChunk(id: number, chunk: Chunk){
-        console.log(`maps:`, this.maps)
+        // console.log(`maps:`, this.maps)
         if(this.maps.has(id)) return
-        console.log(`attempting to load chunk ${id}`)
+        // console.log(`attempting to load chunk ${id}`)
 
         let map = this.scene.add.tilemap("", this.tileWidth, this.tileHeight, this.chunkWidth, this.chunkHeight);
         // console.log(`tilewidth: ${this.tileWidth}, tileHeight: ${this.tileHeight}, chunkWidth: ${this.chunkWidth}, chunkHeight: ${this.chunkHeight}`)
@@ -62,7 +62,7 @@ export default class TilemapManager{
     }
     
     public unloadChunk(id: number){
-        console.log(`unloading chunk ${id}`)
+        // console.log(`unloading chunk ${id}`)
         let map = this.maps.get(id)
         if(map){
             map.destroy()
