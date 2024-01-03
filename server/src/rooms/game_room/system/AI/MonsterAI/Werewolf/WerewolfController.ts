@@ -4,7 +4,9 @@ import StateMachine from "../../../StateMachine/StateMachine";
 import EffectManager from "../../../StateManagers/EffectManager";
 import PlayerManager from "../../../StateManagers/PlayerManager";
 import Death from "../simplemonster/Death";
+import MonsterController from "../simplemonster/MonsterController";
 import Attack from "./states/Attack";
+import Follow from "./states/Follow";
 import Idle from "./states/Idle";
 
 export interface MonsterControllerData {
@@ -12,11 +14,12 @@ export interface MonsterControllerData {
 }
 
 /** The monster controller contains ai that allows a monster to follow a player, and attack a player. */
-export default class WerewolfController extends StateMachine<MonsterControllerData> {
+export default class WerewolfController extends MonsterController {
 
     protected playerManager!: PlayerManager;
     protected monster!: Monster;
     private rageTriggered = false
+    private attackState?: Attack
 
     protected create(data: MonsterControllerData): void {
         this.playerManager = data.monster.gameManager.getPlayerManager();
@@ -26,11 +29,12 @@ export default class WerewolfController extends StateMachine<MonsterControllerDa
         let idle = new Idle("Idle", this);
         this.addState(idle);
         //Attack state
-        let attack = new Attack("Attack", this);
-        this.addState(attack);
+        this.attackState = new Attack("Attack", this);
+        this.addState(this.attackState);
         //Death state
         let death = new Death("Death", this);
         this.addState(death);
+        this.addState(new Follow("Follow", this))
 
         //Set initial state
         this.changeState("Idle");
@@ -48,6 +52,9 @@ export default class WerewolfController extends StateMachine<MonsterControllerDa
             this.rageTriggered = true
             let speedEffect = EffectFactory.createSpeedMultiplierEffectUntimed(2)
             EffectManager.addEffectsTo(this.monster, speedEffect)
+            let attackSpeedEffect = EffectFactory.createStatEffect({attackSpeed: 3})
+            EffectManager.addEffectsTo(this.monster, attackSpeedEffect)
+            this.changeState("Idle")
         }
     }
 

@@ -32,6 +32,10 @@ export default class MeleeAttack extends StateNode {
         this.attackTriggered = false;
         // Stop movement
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
+        monster.animation.playAnimation("attack_2", {
+            loop: true
+        })
+        monster.sound.playSoundEffect("dragon_roar2")
     }
 
     public onExit(): void {
@@ -90,11 +94,11 @@ export default class MeleeAttack extends StateNode {
                 stateMachine.changeState("Idle");
             } else {
                 // Checks if this monster is still in range of the aggro target.
-                if(Math.random() < 0.7 && MathUtil.distance(monster.x, monster.y, aggroTarget.x, aggroTarget.y) <= attackRange) {
+                if(MathUtil.distance(monster.x, monster.y, aggroTarget.x, aggroTarget.y) <= attackRange) {
                     this.resetAttack();
                 } else {
                     // Switch to follow if not in range.
-                    stateMachine.changeState("idle");
+                    stateMachine.changeState("Follow");
                 }
             }
         }

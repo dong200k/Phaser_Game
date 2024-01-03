@@ -38,7 +38,8 @@ export default class CastSpell extends StateNode {
         this.attackTriggered = false;
         // Stop movement
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
-        monster.animation.playAnimation("attack")
+        monster.animation.playAnimation("cast")
+        monster.sound.playSoundEffect("stunned")
     }
 
     public onExit(): void {

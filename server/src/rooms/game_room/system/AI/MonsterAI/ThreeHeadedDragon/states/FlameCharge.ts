@@ -26,7 +26,7 @@ export default class FlameCharge extends StateNode {
     /** Has the attack been triggered. */
     protected attackTriggered: boolean = false;
 
-    private chargeSpeedBoost = 1.3
+    private chargeSpeedBoost = 3
     private chargeDirection?: {x: number, y: number}
     private timeSoFar = 0
     private attackTime = 0.5
@@ -43,9 +43,10 @@ export default class FlameCharge extends StateNode {
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
         
         // Play charge windup animation here
-        monster.animation.playAnimation("idle", {
+        monster.animation.playAnimation("walk", {
             loop: true
         })
+        monster.sound.playSoundEffect("dragon_roar")
     }
 
     public onExit(): void {
@@ -122,7 +123,7 @@ export default class FlameCharge extends StateNode {
 
         let projectileConfig: IProjectileConfig;
         projectileConfig = {
-            sprite: "TinyZombieAttack",
+            sprite: "Fireball",
             stat: monster.stat,
             spawnX: monster.x,
             spawnY: monster.y,
@@ -130,11 +131,11 @@ export default class FlameCharge extends StateNode {
             height: 16,
             initialVelocity: {x: 0, y: 0},
             collisionCategory: "MONSTER_PROJECTILE",
-            range: 2000,
-            activeTime: 2000,
+            activeTime: 4000,
             poolType: "nercromancer_projectile",
             attackMultiplier: 1,
             magicMultiplier: 0,
+            spawnSound: "fireball_whoosh",
             classType: "Projectile",
         }
         this.fireProjectile(monster, monster.gameManager, projectileConfig, 10)

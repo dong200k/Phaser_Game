@@ -1,6 +1,6 @@
 import Matter from "matter-js";
 import StateNode from "../../../../StateMachine/StateNode";
-import WerewolfController from "../WerewolfController";
+import DragonController from "../DragonController";
 import { getFinalAttackRange, getFinalSpeed } from "../../../../Formulas/formulas";
 import MathUtil from "../../../../../../../util/MathUtil";
 
@@ -10,17 +10,17 @@ import MathUtil from "../../../../../../../util/MathUtil";
 export default class Follow extends StateNode {
 
     public onEnter(): void {
-        let stateMachine = (this.getStateMachine() as WerewolfController);
+        let stateMachine = (this.getStateMachine() as DragonController);
         let monster = stateMachine.getMonster();
-        monster.animation.playAnimation(this.getAnimation(), {loop: true});
+        monster.animation.playAnimation("walk", {loop: true});
     }
     public onExit(): void {
-        let body = this.getStateMachine<WerewolfController>().getMonster().getBody();
+        let body = this.getStateMachine<DragonController>().getMonster().getBody();
         Matter.Body.setVelocity(body, {x: 0, y: 0});
     }
     /** Changes the monsters velocity to follow the target it is aggroed to */
     protected follow(deltaT: number){
-        let stateMachine = (this.getStateMachine() as WerewolfController);
+        let stateMachine = (this.getStateMachine() as DragonController);
         let monster = stateMachine.getMonster();
         let aggroTarget = monster.getAggroTarget();
         if(!aggroTarget) return
@@ -31,7 +31,7 @@ export default class Follow extends StateNode {
         if(body) Matter.Body.setVelocity(body, velocity);
     }
     public update(deltaT: number): void {
-        let stateMachine = (this.getStateMachine() as WerewolfController);
+        let stateMachine = (this.getStateMachine() as DragonController);
         let monster = stateMachine.getMonster();
         let aggroTarget = monster.getAggroTarget();
         if(aggroTarget === null) {
@@ -44,9 +44,5 @@ export default class Follow extends StateNode {
             }
         }
     }
-    private getAnimation(){
-        let stateMachine = (this.getStateMachine() as WerewolfController);
-        if(!stateMachine.isEnraged()) return "walk"
-        return "walk_rage"
-    }
+
 }

@@ -39,7 +39,10 @@ export default class Meteor extends StateNode {
         this.attackTriggered = false;
         // Stop movement
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
-        monster.animation.playAnimation("meteor")
+        monster.animation.playAnimation("meteor", {
+            duration: this.attackCooldown
+        })
+        monster.sound.playSoundEffect("dragon_roar")
     }
 
     public onExit(): void {

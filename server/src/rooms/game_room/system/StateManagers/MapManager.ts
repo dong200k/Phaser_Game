@@ -64,11 +64,11 @@ export default class MapManager {
         this.gameManager.gameObjects.forEach(obj=>{
             if(obj instanceof Player){
                 let playerChunkId = this.getChunkIdForPosition(obj.getBody().position)
-                console.log(`player: ${obj.name} is in chunk ${playerChunkId}`)
+                // console.log(`player: ${obj.name} is in chunk ${playerChunkId}`)
 
                 // Load chunks near player
                 let chunksNearPlayer = this.getChunkIdsWithinLoadRadius(playerChunkId)
-                console.log(`chunks near player ${obj.name}, ${chunksNearPlayer}`)
+                // console.log(`chunks near player ${obj.name}, ${chunksNearPlayer}`)
                 for(let chunkId of chunksNearPlayer){
                     this.loadChunkById(chunkId)
                 }
@@ -127,7 +127,7 @@ export default class MapManager {
 
         // TODO add chunk recycling logic
         if(this.chunkMap.activeChunks.has(stringId)){
-            console.log(`Server unloaded chunk ${id}`)
+            // console.log(`Server unloaded chunk ${id}`)
             this.chunkMap.activeChunks.get(stringId)?.unloadChunk()
             this.chunkMap.activeChunks.delete(stringId)
         }

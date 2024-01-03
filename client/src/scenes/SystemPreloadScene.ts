@@ -70,6 +70,13 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("wave_dash", "audio/wave_dash.mp3")
         this.load.audio("frost_dash", "audio/frost_dash.mp3")
         this.load.audio("flame_dash", "audio/flame_dash.mp3")
+        this.load.audio("magic_spell", "audio/magic_spell.mp3")
+        this.load.audio("stunned", "audio/stunned.mp3")
+        this.load.audio("teleport", "audio/teleport.mp3")
+        this.load.audio("strong_hit", "audio/strong_hit.mp3")
+        this.load.audio("dragon_roar", "audio/dragon_roar.mp3")
+        this.load.audio("dragon_roar2", "audio/dragon_roar2.mp3")
+
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");
@@ -211,6 +218,12 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("wave_dash", "sfx")
         soundManager.add("flame_dash", "sfx")
         soundManager.add("sword_dash", "sfx")
+        soundManager.add("magic_spell", "sfx")
+        soundManager.add("stunned", "sfx")
+        soundManager.add("teleport", "sfx")
+        soundManager.add("strong_hit", "sfx")
+        soundManager.add("dragon_roar", "sfx")
+        soundManager.add("dragon_roar2", "sfx")
 
         soundManager.add("ultra_instinct", "bg")
         soundManager.add("ultra_instinct_boss", "bg")

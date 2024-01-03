@@ -8,8 +8,8 @@ import Entity from "../../../../../schemas/gameobjs/Entity";
  */
 export default class Idle extends StateNode {
 
-    private searchForNewTargetDefaultCooldown: number = 2;
-    private searchForNewTargetCooldown: number = 2;
+    private searchForNewTargetDefaultCooldown: number = 1;
+    private searchForNewTargetCooldown: number = 1;
 
     public onEnter(): void {
         this.searchForNewTargetCooldown = this.searchForNewTargetDefaultCooldown;
@@ -20,6 +20,8 @@ export default class Idle extends StateNode {
         })
         let body = monster.getBody();
         if(body) Matter.Body.setVelocity(body, {x: 0, y: 0});
+        console.log("necromancer idle")
+
     }
     public onExit(): void {
         
@@ -34,6 +36,7 @@ export default class Idle extends StateNode {
         this.searchForNewTargetCooldown -= deltaT;
         let stateMachine = (this.getStateMachine() as NecromancerController);
         let monster = stateMachine.getMonster();
+        // if(this.searchForNewTargetCooldown === 0) monster.setAggroTarget(this.getAggroTarget()!)
     }
 
 }

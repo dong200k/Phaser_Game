@@ -4,6 +4,7 @@ import PlayerManager from "../../../StateManagers/PlayerManager";
 import Idle from "../Necromancer/states/Idle";
 import Teleport from "../Necromancer/states/Teleport";
 import Death from "../simplemonster/Death";
+import MonsterController from "../simplemonster/MonsterController";
 import Attack from "./states/Attack";
 import CastSpell from "./states/CastSpell";
 
@@ -12,14 +13,14 @@ export interface MonsterControllerData {
 }
 
 /** The monster controller contains ai that allows a monster to follow a player, and attack a player. */
-export default class DeathBringerController extends StateMachine<MonsterControllerData> {
+export default class DeathBringerController extends MonsterController {
 
     protected playerManager!: PlayerManager;
     protected monster!: Monster;
 
-    private statesToEnter = ["Teleport", "Attack", "Teleport", "Attack", "Idle", "Teleport", "Attack", "Teleport", "Cast", "Cast", "Idle"]
+    private statesToEnter = ["Teleport", "Attack", "Teleport", "Attack", "Teleport", "Attack", "Idle", "Teleport", "Attack", "Teleport", "Cast", "Cast", "Idle"]
     private index = 6
-    private stayIdleTime = 5
+    private stayIdleTime = 2.5
     private idleTimeSoFar = 0
 
     protected create(data: MonsterControllerData): void {
@@ -58,6 +59,7 @@ export default class DeathBringerController extends StateMachine<MonsterControll
         if(this.stateName === "Idle"){
             if(nextStateName !== "Idle") {
                 this.changeState(nextStateName)
+                this.index++
             }
             else {
                 this.idleTimeSoFar += deltaT

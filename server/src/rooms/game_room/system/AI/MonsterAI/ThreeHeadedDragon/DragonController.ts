@@ -1,12 +1,15 @@
 import MathUtil from "../../../../../../util/MathUtil";
+import Cooldown from "../../../../schemas/gameobjs/Cooldown";
 import Monster from "../../../../schemas/gameobjs/monsters/Monster";
 import { getFinalAttackRange } from "../../../Formulas/formulas";
 import StateMachine from "../../../StateMachine/StateMachine";
 import PlayerManager from "../../../StateManagers/PlayerManager";
-import Idle from "../Necromancer/states/Idle";
 import Death from "../simplemonster/Death";
-import FireBreath from "./states/Firebreath";
+import Idle from "../simplemonster/Idle";
+import MonsterController from "../simplemonster/MonsterController";
+import FireBreath from "./states/FireBreath";
 import FlameCharge from "./states/FlameCharge";
+import Follow from "./states/Follow";
 import MeleeAttack from "./states/MeleeAttack";
 import Meteor from "./states/Meteor";
 
@@ -15,12 +18,20 @@ export interface MonsterControllerData {
 }
 
 /** The monster controller contains ai that allows a monster to follow a player, and attack a player. */
-export default class DragonController extends StateMachine<MonsterControllerData> {
+export default class DragonController extends MonsterController {
 
     protected playerManager!: PlayerManager;
     protected monster!: Monster;
 
-    private statesToEnter = ["Idle", "FireBreath", "Idle", "FlameCharge", "FlameCharge", "Meteor"]
+    private statesToEnter = [
+        {stateName: "Idle", cooldown: new Cooldown(5)}, 
+        {stateName: "FlameCharge", cooldown: new Cooldown(5)}, 
+        {stateName: "FlameCharge", cooldown: new Cooldown(5)}, 
+        {stateName: "FireBreath", cooldown: new Cooldown(5)}, 
+        {stateName: "Follow", cooldown: new Cooldown(10)}, 
+        {stateName: "FireBreath", cooldown: new Cooldown(5)}, 
+        {stateName: "Meteor", cooldown: new Cooldown(5)}
+    ]
     private index = 6
     private stayIdleTime = 5
     private idleTimeSoFar = 0
@@ -44,6 +55,7 @@ export default class DragonController extends StateMachine<MonsterControllerData
         this.addState(new Meteor("Meteor", this))
         this.addState(new FireBreath("FireBreath", this))
         this.addState(new FlameCharge("FlameCharge", this))
+        this.addState(new Follow("Follow", this))
 
         //Set initial state
         this.changeState("Idle");
@@ -57,21 +69,15 @@ export default class DragonController extends StateMachine<MonsterControllerData
             this.changeState("Death");
         }
 
+        // Enter next state if prev state is finished
         if(this.index >= this.statesToEnter.length) this.index = 0
-
-        // Enter next state
-        let nextStateName = this.statesToEnter[this.index]
-        if(this.stateName === "Idle"){
-            if(nextStateName !== "Idle") {
-                this.changeState(nextStateName)
-            }
-            else {
-                this.idleTimeSoFar += deltaT
-                if(this.idleTimeSoFar >= this.stayIdleTime) {
-                    this.idleTimeSoFar = 0
-                    this.index++
-                }
-            }
+        let nextStateName = this.statesToEnter[this.index].stateName
+        let prevStateCooldown = this.statesToEnter[this.index - 1>0? this.index-1 : this.statesToEnter.length-1].cooldown
+        prevStateCooldown.tick(deltaT)
+        if(prevStateCooldown.isFinished) {
+            prevStateCooldown.reset()
+            this.changeState(nextStateName)
+            this.index++
         }
 
         let target = this.monster.getAggroTarget()

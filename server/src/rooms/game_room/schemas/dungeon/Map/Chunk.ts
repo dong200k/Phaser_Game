@@ -59,7 +59,7 @@ export class Chunk extends Schema{
                 this.tileLayerMap.set(layer.name, new TileLayer(layer, this))
             }
         })
-        console.log(`Chunk ${this.chunkId} was loaded on server`)
+        // console.log(`Chunk ${this.chunkId} was loaded on server`)
     }
 
     public unloadChunk(){
@@ -67,7 +67,7 @@ export class Chunk extends Schema{
         this.obstacles.forEach(obstacle=>{
         })
         this.tileLayerMap.forEach(tileLayer=>tileLayer.clearTileIds())
-        console.log(`Chunk ${this.chunkId} was unloaded on server`)
+        // console.log(`Chunk ${this.chunkId} was unloaded on server`)
     }
 
     public resetChunk(){

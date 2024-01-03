@@ -25,18 +25,22 @@ export default class Summon extends StateNode {
     protected attackTriggered: boolean = false;
 
     private summonedMonsterCount = 100
-
     public onEnter(): void {
         let stateMachine = this.getStateMachine<NecromancerController>();
-
         // Setting the default attack cooldown for this monster.
         let monster = stateMachine.getMonster();
         // Stop movement
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
+        monster.animation.playAnimation("summon", {
+            duration: this.attackCooldown
+        })
+        console.log("necromancer summon")
+        monster.sound.playSoundEffect("magic_spell")
+        stateMachine.turnOnSummonCooldown()
     }
 
     public onExit(): void {
-        
+        this.attackTriggered = false
     }
 
     protected summon() {
@@ -102,7 +106,7 @@ export default class Summon extends StateNode {
             if(this.attackCooldown <= this.defaultAttackCooldown * (this.attackTriggerPercent)) {
                 // Trigger an attack.
                 // monster.animation.playAnimation("death", false);
-                this.summon()                
+                this.summon()           
                 this.attackTriggered = true;
             }
         }

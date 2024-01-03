@@ -189,6 +189,7 @@ export default class PlayerManager {
         if(data[1]) y += 1;
         if(data[2]) x -= 1;
         if(data[3]) x += 1;
+        if(playerState.playerController.stateName !== "Move" && playerState.playerController.stateName !== "Roll") speed/=2
         let velocity = MathUtil.getNormalizedSpeed(x, y, speed);
         // console.log(`speed: ${playerState.stat.speed}`)
         // If the velocity would send the player off bounds, update it so that the player wont go off bounds.

@@ -1,6 +1,10 @@
 import Monster from "../../schemas/gameobjs/monsters/Monster";
 import BerserkerBossController from "../StateControllers/BossControllers/BerserkerBossController/BerserkerBossController";
 import PlayerManager from "../StateManagers/PlayerManager";
+import DeathBringerController from "./MonsterAI/DeathBringer/DeathBringerController";
+import NecromancerController from "./MonsterAI/Necromancer/NecromancerController";
+import DragonController from "./MonsterAI/ThreeHeadedDragon/DragonController";
+import WerewolfController from "./MonsterAI/Werewolf/WerewolfController";
 import ChargingMonsterController from "./MonsterAI/chargingmonster/ChargingMonsterController";
 import HealerMonsterController from "./MonsterAI/healer/HealerMonsterController";
 import RangedPhantomMonster from "./MonsterAI/rangedphantommonster/RangedPhantomMonster";
@@ -48,6 +52,10 @@ export default class AIFactory {
             }); break;
             case "Healer": mc = new HealerMonsterController({monster} as MonsterControllerData); break;
             case "RangedPhantomMonster": mc = new RangedPhantomMonster({monster} as MonsterControllerData); break;
+            case "Dragon": mc = new DragonController({monster}); break;
+            case "Werewolf": mc = new WerewolfController({monster}); break;
+            case "DeathBringer": mc = new DeathBringerController({monster}); break;
+            case "Necromancer": mc = new NecromancerController({monster}); break;
             default: mc = new MonsterController({monster});   
         }
         return mc;

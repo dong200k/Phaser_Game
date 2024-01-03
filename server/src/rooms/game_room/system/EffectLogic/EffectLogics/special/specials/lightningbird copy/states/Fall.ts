@@ -63,7 +63,7 @@ export default class Fall extends StateNode{
         return monsters[choice]
     }
 
-    private getRandomPositionAroundOwner(radius = 200){
+    private getRandomPositionAroundOwner(radius = 300){
         let stateMachine = (this.getStateMachine() as MeteorController);
         let projectile = stateMachine.getProjectile()
 

@@ -32,6 +32,9 @@ export default class Attack extends StateNode {
         this.attackTriggered = false;
         // Stop movement
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
+        monster.animation.playAnimation(this.getAnimation(), {
+            duration: this.attackCooldown
+        })
     }
 
     public onExit(): void {
@@ -106,7 +109,8 @@ export default class Attack extends StateNode {
     }
     private getAnimation() {
         let stateMachine = (this.getStateMachine() as WerewolfController);
-        if(stateMachine.isEnraged()) return "attack"
-        return "attack_raged"
+        if(!stateMachine.isEnraged()) return "attack"
+        return "attack_rage"
     }
+
 }

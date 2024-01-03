@@ -14,7 +14,7 @@ import DragonController from "../DragonController";
 export default class FireBreath extends StateNode {
 
     /** The time it takes for a attack to complete. */ 
-    protected defaultAttackCooldown: number = 1;
+    protected defaultAttackCooldown: number = 5;
 
     /** The percent of the attack cooldown before the attack triggers. Ex. Monster slashes. */
     protected attackTriggerPercent: number = 0.95;
@@ -26,17 +26,19 @@ export default class FireBreath extends StateNode {
     protected attackTriggered: boolean = false;
 
     protected projectileSpeed =  10
+    protected projectileCount = 100
 
     public onEnter(): void {
         // Setting the default attack cooldown for this monster.
         let stateMachine = this.getStateMachine<DragonController>();
         let monster = stateMachine.getMonster();
-        this.defaultAttackCooldown = getFinalAttackCooldown(monster.stat);
+        // this.defaultAttackCooldown = getFinalAttackCooldown(monster.stat);
         this.attackCooldown = this.defaultAttackCooldown;
         this.attackTriggered = false;
         // Stop movement
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
-        monster.animation.playAnimation("attack")
+        monster.animation.playAnimation("attack_3")
+        monster.sound.playSoundEffect("dragon_roar")
     }
 
     public onExit(): void {
@@ -58,14 +60,17 @@ export default class FireBreath extends StateNode {
             height: 16,
             initialVelocity: {x: 0, y: 0},
             collisionCategory: "MONSTER_PROJECTILE",
-            range: 1000,
-            activeTime: 3000,
+            // range: 1000,
+            activeTime: 2000,
             poolType: "firebreath_projectile",
             attackMultiplier: 1,
             magicMultiplier: 0,
             classType: "Projectile",
+            spawnSound: "fireball_whoosh"
         }
-        this.fireProjectile(monster, monster.getAggroTarget()!, monster.gameManager, projectileConfig, 60)
+        let target = monster.getAggroTarget()
+        if(target)
+            this.fireProjectile(monster, target, monster.gameManager, projectileConfig, this.projectileCount)
     }
 
     protected fireProjectile(entity: Entity, target: Entity, gameManager: GameManager, projectileConfig: IProjectileConfig, projectileCount: number){
@@ -79,14 +84,16 @@ export default class FireBreath extends StateNode {
 
         // Spawns 1 or multiple projectiles
         for(let i=0;i<maximumProjectileCount;i++){
-            // console.log(rotationDeg) 
-            rotationDeg = Math.random() * 45 * Math.random()<0.5? 1 : -1
-            gameManager.getProjectileManager().spawnProjectile({
-                ...projectileConfig,
-                initialVelocity: MathUtil.getRotatedSpeed(velX, velY, this.projectileSpeed * Math.random() + 3, rotationDeg)
-            })
-            
-            // rotationDeg -= rotationIncrement
+            setTimeout(()=>{
+                // console.log(rotationDeg) 
+                rotationDeg = (Math.random() * 90) * (Math.random()<0.5? 1 : -1)
+                gameManager.getProjectileManager().spawnProjectile({
+                    ...projectileConfig,
+                    initialVelocity: MathUtil.getRotatedSpeed(velX, velY, this.projectileSpeed * Math.random() + 3, rotationDeg)
+                })
+
+                // rotationDeg -= rotationIncrement
+            }, 1000 * this.attackCooldown/this.projectileCount * i)
         }
     }
 

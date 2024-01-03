@@ -14,10 +14,10 @@ import GameManager from "../../../../GameManager";
 export default class Attack extends StateNode {
 
     /** The time it takes for a attack to complete. */ 
-    protected defaultAttackCooldown: number = 1;
+    protected defaultAttackCooldown: number = 2;
 
     /** The percent of the attack cooldown before the attack triggers. Ex. Monster slashes. */
-    protected attackTriggerPercent: number = 0.95;
+    protected attackTriggerPercent: number = 0.75;
 
     /** The attack cooldown. Goes from defaultAttackCooldown to 0. */
     protected attackCooldown: number = 1;
@@ -37,6 +37,8 @@ export default class Attack extends StateNode {
         // Stop movement
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
         monster.animation.playAnimation("attack")
+        console.log("necromancer attack")
+        monster.sound.playSoundEffect("stunned")
     }
 
     public onExit(): void {
@@ -58,8 +60,7 @@ export default class Attack extends StateNode {
             height: 16,
             initialVelocity: {x: 0, y: 0},
             collisionCategory: "MONSTER_PROJECTILE",
-            range: 100,
-            activeTime: 2000,
+            activeTime: 5000,
             poolType: "nercromancer_projectile",
             attackMultiplier: 1,
             magicMultiplier: 0,

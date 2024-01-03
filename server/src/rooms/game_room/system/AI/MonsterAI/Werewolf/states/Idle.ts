@@ -50,7 +50,7 @@ export default class Idle extends StateNode {
     }
     private getAnimation() {
         let stateMachine = (this.getStateMachine() as WerewolfController);
-        if(stateMachine.isEnraged()) return "idle"
-        return "idle_raged"
+        if(!stateMachine.isEnraged()) return "idle"
+        return "idle_rage"
     }
 }

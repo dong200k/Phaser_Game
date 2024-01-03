@@ -1,7 +1,9 @@
+import Cooldown from "../../../../schemas/gameobjs/Cooldown";
 import Monster from "../../../../schemas/gameobjs/monsters/Monster";
 import StateMachine from "../../../StateMachine/StateMachine";
 import PlayerManager from "../../../StateManagers/PlayerManager";
 import Death from "../simplemonster/Death";
+import MonsterController from "../simplemonster/MonsterController";
 import Attack from "./states/Attack";
 import Idle from "./states/Idle";
 import Summon from "./states/Summon";
@@ -12,15 +14,16 @@ export interface MonsterControllerData {
 }
 
 /** The monster controller contains ai that allows a monster to follow a player, and attack a player. */
-export default class NecromancerController extends StateMachine<MonsterControllerData> {
+export default class NecromancerController extends MonsterController {
 
     protected playerManager!: PlayerManager;
     protected monster!: Monster;
 
-    private statesToEnter = ["Teleport", "Attack", "Attack", "Attack", "Idle", "Summon"]
+    private statesToEnter = ["Teleport", "Attack", "Attack", "Attack", "Idle", "Summon", "Idle"]
     private index = 6
-    private stayIdleTime = 5
+    private stayIdleTime = 2
     private idleTimeSoFar = 0
+    private summonCooldown = new Cooldown(30)
 
     protected create(data: MonsterControllerData): void {
         this.playerManager = data.monster.gameManager.getPlayerManager();
@@ -41,9 +44,11 @@ export default class NecromancerController extends StateMachine<MonsterControlle
 
         //Set initial state
         this.changeState("Idle");
+        this.monster.sound.playBackgroundMusic("boss_getting_dark")
     }
 
     public postUpdate(deltaT: number): void {
+        this.summonCooldown.tick(deltaT)
         let currentState = this.getState();
         // If the monster is at zero hp and is not in the Death state, change to the death state.
         if(this.monster.active && this.monster.stat.hp <= 0 && 
@@ -57,7 +62,12 @@ export default class NecromancerController extends StateMachine<MonsterControlle
         let nextStateName = this.statesToEnter[this.index]
         if(this.stateName === "Idle"){
             if(nextStateName !== "Idle") {
+                if(nextStateName === "summon" && !this.canSummon()) {
+                    this.index = 0
+                    return
+                }
                 this.changeState(nextStateName)
+                this.index++
             }
             else {
                 this.idleTimeSoFar += deltaT
@@ -78,6 +88,14 @@ export default class NecromancerController extends StateMachine<MonsterControlle
     }
 
     public getSummonedMonsterName() {
-        return ""
+        return "Wolf Grunt"
+    }
+
+    public canSummon() {
+        return this.summonCooldown.isFinished
+    }
+
+    public turnOnSummonCooldown(){
+        this.summonCooldown.reset()
     }
 }
