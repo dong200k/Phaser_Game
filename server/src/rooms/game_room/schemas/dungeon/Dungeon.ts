@@ -6,6 +6,7 @@ import GameManager from "../../system/GameManager";
 import SafeWave from "./wave/SafeWave";
 import Monster from "../gameobjs/monsters/Monster";
 import ChunkMap from "./Map/ChunkMap";
+import Player from "../gameobjs/Player";
 
 export class SpawnPoint extends Schema {
     @type("number") x: number;
@@ -83,6 +84,7 @@ export default class Dungeon extends Schema {
      */
     public update(deltaT: number) {
         if(!this.waveEnded && this.currentWave < this.waves.length) {
+            if(this.waves[this.currentWave] instanceof Wave && this.getActiveMonsterCount() >= 50   ) return
             if(this.waves[this.currentWave].update(deltaT)) {
                 this.waveEnded = true;
                 // Spawn a chest on the map in a random location.
@@ -191,7 +193,24 @@ export default class Dungeon extends Schema {
      * @returns A random spawnpoint for monsters.
      */
     public getRandomMonsterSpawnPoint(): SpawnPoint | null {
-        if(this.monsterSpawnPoints.length === 0) return null;
+        if(this.monsterSpawnPoints.length === 0) {
+            // get a random position around player
+            let spawnPoint: SpawnPoint | null = null
+            for(let obj of this.gameManager.gameObjects){
+                if(obj instanceof Player) {
+                    // let x = (Math.random() * 200 + 500) * (Math.random()<0.5? 1 : -1) + obj.x
+                    // let y = (Math.random() * 200 + 500) * (Math.random()<0.5? 1 : -1) + obj.y
+                    // spawnPoint = new SpawnPoint(x, y)
+                    let radius = 800
+                    let playerVelocity = obj.getBody().velocity
+                    let rotationDegree = Math.random() * 360 - 180
+                    let rotatedOffset = MathUtil.getRotatedSpeed(playerVelocity.x, playerVelocity.y, radius, rotationDegree)
+                    let newPos = {x: obj.x + rotatedOffset.x, y: obj.y + rotatedOffset.y}
+                    return new SpawnPoint(newPos.x, newPos.y)
+                }
+            }
+            return spawnPoint
+        }
         return this.monsterSpawnPoints.at(Math.floor(this.monsterSpawnPoints.length * Math.random()));
     }
     
@@ -231,5 +250,22 @@ export default class Dungeon extends Schema {
         })
 
         return hasMonsterAlive
+    }
+
+    /**
+     * 
+     * @returns true number of active monsers
+     */
+    public getActiveMonsterCount(){
+        let count = 0
+        this.gameManager.gameObjects.forEach((obj) => {
+            if(obj instanceof Monster) {
+                if(obj.isActive()) {
+                    count++
+                }
+            }
+        })
+
+        return count
     }
 }

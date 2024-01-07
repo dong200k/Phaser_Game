@@ -88,7 +88,9 @@ export default class NecromancerController extends MonsterController {
     }
 
     public getSummonedMonsterName() {
-        return "Wolf Grunt"
+        let monsterNames = ["MushroomDiamond", "SkeletonDiamond", "FlyingEyeDiamond", "Goblin2Diamond"]
+        let choice = Math.floor(Math.random()*monsterNames.length)
+        return monsterNames[choice]
     }
 
     public canSummon() {

@@ -270,6 +270,7 @@ export default class GameManager {
 
         // if(this.state.serverTickCount % 30 === 0)
         //     console.log(`Heap usage: ${process.memoryUsage().heapUsed / 1000000} Mb`);
+        // this.gameRoom.incrementTick()
     }
 
     public startGame() {

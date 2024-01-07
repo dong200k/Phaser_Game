@@ -153,6 +153,9 @@ export default class Player extends Entity {
 
     @type("boolean") overwriteClientMoveFlip: boolean = false
 
+    /** How many merchant weapon the player has */
+    public weaponCount = 0
+
     constructor(gameManager: GameManager, name: string, role?: string) {
         super(gameManager);
         this.name = name;

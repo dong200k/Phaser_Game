@@ -28,7 +28,7 @@ export default class GameRoom extends Room<State> {
     private simulationInterval: number = 16.6;
 
     // ------- fixed tick --------
-    private timePerTick = 33.33; // 20 ticks per second.
+    private timePerTick = 16.33; // 20 ticks per second.
     private timeTillNextTick!: number;
 
     // ------- client load queue -------
@@ -114,13 +114,23 @@ export default class GameRoom extends Room<State> {
         })
     }
 
+    private timeSoFar = 0
+    public ticksSoFar = 0
     startGame() {
         console.log(`start game`)
         this.gameManager.startGame();
-        // Game Loop
         this.setSimulationInterval((deltaT) => {
+            // Game Loop
+            if(this.timeSoFar >= 2000) {
+                let fps = 1000 * this.ticksSoFar/this.timeSoFar
+                if(fps < 45) console.log(`fps less than 45`)
+                // if(this.timeSoFar>0) console.log(`fps: ${fps}`)
+                this.timeSoFar = 0
+                this.ticksSoFar = 0
+            }
             this.timeTillNextTick -= deltaT;
             // Runs the server ticks.
+            this.timeSoFar += deltaT
             while(this.timeTillNextTick <= 0) {
                 if(this.timeTillNextTick < -this.timePerTick * 5) {
                     console.warn(`Game Room: ${this.roomId} is more than 5 ticks behind, dropping ticks.`);
@@ -128,10 +138,15 @@ export default class GameRoom extends Room<State> {
                 }
                 this.timeTillNextTick += this.timePerTick;
                 this.fixedTick(this.timePerTick);
+                this.incrementTick()
             }
             // Game Over Check. Close the GameRoom.
             if(this.gameManager.gameOver) this.disconnect();
         }, this.simulationInterval);
+    }
+
+    public incrementTick(){
+        this.ticksSoFar++
     }
 
     fixedTick(deltaT: number) {

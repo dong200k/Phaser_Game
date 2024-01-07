@@ -85,16 +85,25 @@ export default class MerchantManager{
         let usageMap = this.getArtifactUsageMap()
         usageMap.forEach((artifactIds, usage)=>{
             // if(Math.random()<0.5) return
+
             // Pick out at most 2 random artifact for each usage
-            let choosenIds = this.chooseRandomFromList(2, artifactIds)
-            choosenIds.forEach(id=>{
-                let artifactItem = factory.createArtifactItem(id)
-                items.push(artifactItem)
-            })
-            
+            // let choosenIds = this.chooseRandomFromList(2, artifactIds)
+            // choosenIds.forEach(id=>{
+            //     let artifactItem = factory.createArtifactItem(id)
+            //     items.push(artifactItem)
+            // })
+
+            // Testing artifacts, comment below out and remove comments above for gameplay
+            if(usage === "merchant_weapon") {
+                artifactIds.forEach(id=>{
+                    let artifactItem = factory.createArtifactItem(id)
+                    items.push(artifactItem)
+                })
+            }
         })
 
-        return [healthItem, ...this.chooseRandomFromList(2, [...items, lifeStealItem])]
+        // return [healthItem, ...this.chooseRandomFromList(2, [...items, lifeStealItem])]
+        return items
     }
 
     /**

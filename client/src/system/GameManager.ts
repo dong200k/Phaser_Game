@@ -71,7 +71,7 @@ export default class GameManager {
     }
 
     // ------- fixed tick --------
-    private timePerTick = 33.33; // 30 ticks per second.
+    private timePerTick = 16.33; // 30 ticks per second.
     private timeTillNextTick: number;
 
     private csp!: ClientSidePrediction;
@@ -191,7 +191,7 @@ export default class GameManager {
         if(this.spectatingIdx >= this.players.length) {
             this.spectatingIdx = 0;
         }
-        this.scene.cameras.main.startFollow(this.players[this.spectatingIdx]);
+        this.scene.cameras.main.startFollow(this.players[this.spectatingIdx], true, 0.1);
     }
 
     /**
@@ -216,13 +216,15 @@ export default class GameManager {
      */
     private interpolateGameObjects() {
         this.gameObjects?.forEach((obj) => {
-            if(obj.visible) {
+            // If distance is too far dont interpolate
+            let distance = MathUtil.distance(obj.x, obj.y, obj.positionOffsetX + obj.serverX, obj.positionOffsetY + obj.serverY)
+            if(obj.visible && distance < 400) {
                 obj.setX(Phaser.Math.Linear(obj.x, obj.serverX + obj.positionOffsetX, .2));
                 obj.setY(Phaser.Math.Linear(obj.y, obj.serverY + obj.positionOffsetY, .2));
             } else {
                 obj.setX(obj.serverX + obj.positionOffsetX);
                 obj.setY(obj.serverY + obj.positionOffsetY);
-            } 
+            }
         })
     }
 
@@ -977,7 +979,7 @@ export default class GameManager {
         let currentState = monsterState.controller.stateName;
         if(currentState === "Death") {
             // monster.play({key: "death"});
-            this.soundManager.play("monster_death2", {detune: Math.floor(Math.random() * 300 - 150)});
+            this.soundManager.play("monster_death", {detune: Math.floor(Math.random() * 300 - 150)});
             monster.walking = false;
         }
     }

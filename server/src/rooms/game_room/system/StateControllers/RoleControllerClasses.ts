@@ -9,7 +9,8 @@ let ctors = {
     "Berserker": BerserkerComboController,
     "Warrior": WarriorController,
     "BladeMaster": BladeMasterController,
-    "Nixi": BladeMasterController
+    "Nixi": BladeMasterController,
+    "ClaymoreMaster": BladeMasterController
 }
 
 export default ctors

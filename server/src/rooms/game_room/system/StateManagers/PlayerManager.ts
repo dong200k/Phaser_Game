@@ -158,7 +158,7 @@ export default class PlayerManager {
         if(!playerBody || !playerState) return console.log("player does not exist, double tap")
 
         // If the player is disabled, cant move, or is dead stop the player 
-        if(this.disabledPlayers.has(playerId) || playerState.playerController.stateName === "Dead") {
+        if(playerState.playerController.stateName === "Dead") {
             return; 
         }
         playerState.playerController.startRoll(key)

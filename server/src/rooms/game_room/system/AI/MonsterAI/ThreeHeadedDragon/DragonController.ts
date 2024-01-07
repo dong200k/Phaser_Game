@@ -59,6 +59,7 @@ export default class DragonController extends MonsterController {
 
         //Set initial state
         this.changeState("Idle");
+        this.monster.sound.playBackgroundMusic("boss_getting_dark")
     }
 
     public postUpdate(deltaT: number): void {
@@ -66,6 +67,7 @@ export default class DragonController extends MonsterController {
         // If the monster is at zero hp and is not in the Death state, change to the death state.
         if(this.monster.active && this.monster.stat.hp <= 0 && 
             currentState !== null && currentState.getStateName() !== "Death") {
+            this.monster.sound.stopMusic("boss_getting_dark")
             this.changeState("Death");
         }
 

@@ -5,6 +5,7 @@ import Stat from "../../../../schemas/gameobjs/Stat"
 import GameManager from "../../../GameManager"
 import EffectLogic from "../../EffectLogic"
 
+/** TODO make player area stat apply here, maybe other stats too */
 export class SpecialEffectLogic extends EffectLogic{
     effectLogicId = "Special" 
 
@@ -18,7 +19,7 @@ export class SpecialEffectLogic extends EffectLogic{
 
     /** Determines amount of projectiles fired */
     protected amount = 1
-    protected amountCap = 3
+    protected amountCap = 8
 
     /** Width and height of the attack */
     protected width = 50
@@ -27,6 +28,8 @@ export class SpecialEffectLogic extends EffectLogic{
     /** Used by some effects */
     protected duration = 0
     protected bonusDurationMultiplier = 1
+
+    protected piercing = 1
 
     /** Used to track cooldown of the special or you can set the cooldown in my-app and overwrite the useEffect method. Note if cooldown is shorter than 
      * the role's ability cooldown the special will still need to wait for the role's ability cooldown
@@ -68,6 +71,10 @@ export class SpecialEffectLogic extends EffectLogic{
         this.bonusDurationMultiplier += num
     }
 
+    public increasePiercing(num: number){
+        this.piercing += num
+    }
+
     protected getDuration(){
         return this.duration * this.bonusDurationMultiplier
     }
@@ -102,6 +109,10 @@ export class SpecialEffectLogic extends EffectLogic{
         let finalAmount = amount + this.amount
         // console.log(`get amount final amount: ${finalAmount}, amount: ${this.amount}, playerAmount: ${amount}, returned amount: ${Math.min(finalAmount, this.amountCap)}`)
         return Math.min(finalAmount, this.amountCap)
+    }
+
+    public getPiercing(){
+        return this.piercing
     }
 }
 

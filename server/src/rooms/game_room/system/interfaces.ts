@@ -111,6 +111,7 @@ export interface IDungeonWave {
     forge: boolean;
     merchant: boolean;
     fountain: boolean;
+    spawnNearPlayer: boolean
 }
 
 export type IAbility = {

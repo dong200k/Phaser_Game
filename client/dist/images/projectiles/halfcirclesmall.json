@@ -1,0 +1,27 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 1, "y": 1, "w": 62, "h": 38 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 60, "h": 36 },
+    "sourceSize": { "w": 60, "h": 36 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.2-x64",
+  "image": "halfcirclesmall.png",
+  "format": "RGBA8888",
+  "size": { "w": 64, "h": 40 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "play", "from": 0, "to": 0, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

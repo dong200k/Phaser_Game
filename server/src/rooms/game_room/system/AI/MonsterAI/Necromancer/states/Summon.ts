@@ -34,7 +34,7 @@ export default class Summon extends StateNode {
         monster.animation.playAnimation("summon", {
             duration: this.attackCooldown
         })
-        console.log("necromancer summon")
+        // console.log("necromancer summon")
         monster.sound.playSoundEffect("magic_spell")
         stateMachine.turnOnSummonCooldown()
     }
@@ -46,9 +46,11 @@ export default class Summon extends StateNode {
     protected summon() {
         let stateMachine = this.getStateMachine<NecromancerController>();
         let monster = stateMachine.getMonster();
-        let summonedMonsterName = stateMachine.getSummonedMonsterName()
 
         for(let i=0;i<this.summonedMonsterCount;i++){
+            let activeMonsterCount = stateMachine.getPlayerManager().getGameManager().getDungeonManager().getDungeon()?.getActiveMonsterCount() 
+            if(activeMonsterCount === undefined || activeMonsterCount >= 50) return
+            let summonedMonsterName = stateMachine.getSummonedMonsterName()
             let pos = this.getSummonPosition()
             this.spawnSummoningCircle(pos)
             stateMachine.getPlayerManager().getGameManager().getDungeonManager().spawnMonster(summonedMonsterName, pos)

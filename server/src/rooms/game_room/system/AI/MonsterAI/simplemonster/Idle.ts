@@ -15,7 +15,7 @@ export default class Idle extends StateNode {
         this.searchForNewTargetCooldown = this.searchForNewTargetDefaultCooldown;
         let stateMachine = (this.getStateMachine() as MonsterController);
         let monster = stateMachine.getMonster();
-        monster.animation.playAnimation("idle", {
+        monster.animation.playAnimation(this.getAnimation(), {
             loop: true
         })
     }
@@ -49,4 +49,7 @@ export default class Idle extends StateNode {
         }
     }
 
+    protected getAnimation(){
+        return "idle"
+    }
 }

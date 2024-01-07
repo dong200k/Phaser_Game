@@ -22,5 +22,12 @@ export const usageTypes = [
     "attack",
     "special",
     "roll",
-    "none"
+    "none",
+    "merchant_weapon",
+    "devil",
+    "wisdom",
+    "giant",
+    'assassin',
+    "lightning",
+    "vapire"
 ]

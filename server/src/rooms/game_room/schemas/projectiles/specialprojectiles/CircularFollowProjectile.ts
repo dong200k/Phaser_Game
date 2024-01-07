@@ -15,7 +15,7 @@ export default class CircularFollowProjectle extends Projectile{
         this.startAngle = projectileConfig.data.startAngle ?? 0
         this.radius = projectileConfig.data.radius ?? 100
         this.currentAngle = this.startAngle
-        this.activeTime = this.activeTime? this.activeTime : 5000
+        this.activeTime = this.activeTime? this.activeTime : undefined
     }
 
 
@@ -48,6 +48,6 @@ export default class CircularFollowProjectle extends Projectile{
     public setConfig(projectileConfig: IProjectileConfig): void {
         super.setConfig(projectileConfig)
         this.radius = projectileConfig.data.radius
-        this.activeTime = this.activeTime? this.activeTime : 5000
+        this.activeTime = this.activeTime? this.activeTime : undefined
     }
 }

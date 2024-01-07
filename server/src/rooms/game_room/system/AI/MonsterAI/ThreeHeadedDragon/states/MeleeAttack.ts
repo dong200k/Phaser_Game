@@ -48,22 +48,29 @@ export default class MeleeAttack extends StateNode {
         let target = monster.getAggroTarget();
 
         if(target) {
+            let offsetX = 60 * (target.x - monster.x > 0? 1 : -1)
+            let offsetY = 60 * (target.y - monster.y > 0? 1 : -1)
+
             let projectileConfig: IProjectileConfig;
             projectileConfig = {
-                sprite: "TinyZombieAttack",
+                sprite: "largecircle",
                 stat: monster.stat,
-                spawnX: monster.x,
-                spawnY: monster.y,
-                width: 16,
-                height: 16,
+                spawnX: monster.x + offsetX,
+                spawnY: monster.y + offsetY,
+                width: 120,
+                height: 120,
                 initialVelocity: MathUtil.getNormalizedSpeed(target.x - monster.x, target.y - monster.y, .1),
                 collisionCategory: "MONSTER_PROJECTILE",
-                range: 100,
-                activeTime: 500,
-                poolType: "monster_projectile",
+                activeTime: 1000,
+                poolType: "demon_slimemonster_projectile",
                 attackMultiplier: 1,
                 magicMultiplier: 0,
                 classType: "MeleeProjectile",
+                data: {
+                    attackDuration: 1,
+                    triggerPercent: 0.2,
+                    unTriggerPercent: 0
+                }
             }
             // console.log(`spawning monster projectile at: (${projectileConfig.spawnX}, ${projectileConfig.spawnY})`);
             stateMachine.getPlayerManager().getGameManager().getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, projectileConfig);

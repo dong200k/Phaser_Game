@@ -20,6 +20,7 @@ import DatabaseManager from "../Database/DatabaseManager"
 import Entity from "../../schemas/gameobjs/Entity"
 import SafeWave from "../../schemas/dungeon/wave/SafeWave"
 import ChunkMap from "../../schemas/dungeon/Map/ChunkMap"
+import Player from "../../schemas/gameobjs/Player"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -54,6 +55,45 @@ export default class DungeonManager {
     }   
 
     /**
+     * This method is used to teleport monsters that are far from a player to a player
+     * @param monster 
+     */
+    private teleportMonsterNearPlayer(monster: Monster){
+        // console.log(`monster ${monster.getMonsterName()} out of range teleporting it to player`)
+        let players: Player[] = []
+        this.gameManager.gameObjects.forEach(obj=>{
+            if(obj instanceof Player){
+                players.push(obj)
+            }
+        })
+
+        let choice = Math.floor(Math.random() * players.length)
+        let player = players[choice]
+        if(player){
+            let radius = 800
+            let playerVelocity = player.getBody().velocity
+            let rotationDegree = Math.random() * 180 - 90
+            if(playerVelocity.x === 0 && playerVelocity.y === 0) rotationDegree = Math.random() * 360 - 180
+            let rotatedOffset = MathUtil.getRotatedSpeed(playerVelocity.x, playerVelocity.y, radius, rotationDegree)
+            let newPos = {x: player.x + rotatedOffset.x, y: player.y + rotatedOffset.y}
+            Matter.Body.setPosition(monster.getBody(), newPos)
+        }
+    }
+
+    /**
+     * Returns true if the monster is far from the closest live player
+     */
+    private monsterOutOfRange(monster: Monster){
+        let player = this.gameManager.getPlayerManager().getNearestAlivePlayer(monster.x, monster.y)
+        if(player){
+            let maximumDistance = 1200 
+            let distance = MathUtil.distance(player.x, player.y, monster.x, monster.y)
+            if(distance > maximumDistance) return true
+        }
+        
+        return false
+    }
+    /**
      * Updates this DungeonManager.
      * @param deltaT The time that passed in seconds.
      */
@@ -65,6 +105,7 @@ export default class DungeonManager {
                 // if(gameObject.name === "Berserker Boss")console.log(gameObject.name, gameObject.active)
                 if(gameObject.active) {
                     gameObject.update(deltaT);
+                    if(this.monsterOutOfRange(gameObject)) this.teleportMonsterNearPlayer(gameObject)
                 } else if(!gameObject.isInPoolMap()) {
                     gameObject.disableCollisions();
                     this.monsterPool.returnInstance(gameObject.poolType, gameObject);
@@ -236,7 +277,8 @@ export default class DungeonManager {
             waveDuration: waveData.duration,
             hasForge: waveData.forge,
             hasFountain: waveData.fountain,
-            hasMerchant: waveData.merchant
+            hasMerchant: waveData.merchant,
+            spawnNearPlayer: waveData.spawnNearPlayer
         })
         return wave
     }
@@ -335,9 +377,6 @@ export default class DungeonManager {
                 })
             }
         });
-        let position = {x: 0, y: 0}
-        // dungeon.addPlayerSpawnPoint(position.x, position.y)
-        dungeon.addMonsterSpawnPoint(position.x, position.y)
     }
 
     /**

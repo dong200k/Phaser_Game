@@ -215,6 +215,8 @@ export default function CreateOrEditDungeon(props) {
                                         <input name={`forge${idx}`} type="checkbox" checked={wave.forge} onClick={onClickCheckbox("forge", idx)}/>
                                         <label htmlFor={`fountain${idx}`}>fountain</label>
                                         <input name={`fountain${idx}`} type="checkbox" checked={wave.fountain} onClick={onClickCheckbox("fountain", idx)}/>
+                                        <label htmlFor={`spawnNearPlayer${idx}`}>spawn near player</label>
+                                        <input name={`spawnNearPlayer${idx}`} type="checkbox" checked={wave.spawnNearPlayer} onClick={onClickCheckbox("spawnNearPlayer", idx)}/>
                                     </div>
                                     }      
                                     <br/>

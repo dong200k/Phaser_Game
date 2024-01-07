@@ -10,6 +10,8 @@ export interface ISafeWaveConfig {
     hasMerchant?: boolean,
     hasForge?: boolean,
     hasFountain?: boolean,
+    /** If this is true the forge, merchant, and fountain will spawn near player instead of near the player spawn point */
+    spawnNearPlayer?: boolean
 }
 
 export default class SafeWave extends Wave{
@@ -29,6 +31,7 @@ export default class SafeWave extends Wave{
     private hasForge = false
     private hasMerchant = false
     private hasFountain = false
+    private spawnNearPlayer = false
 
     constructor(gameManager: GameManager, config?: ISafeWaveConfig){
         super(()=>{})
@@ -41,6 +44,7 @@ export default class SafeWave extends Wave{
         this.hasForge = config?.hasForge ?? true
         this.hasMerchant = config?.hasMerchant ?? Math.random() < 0.3
         this.hasFountain = config?.hasFountain ?? true
+        this.spawnNearPlayer = config?.spawnNearPlayer ?? false
     }
 
     public update(deltaT: number): boolean {
@@ -61,6 +65,27 @@ export default class SafeWave extends Wave{
         return false
     }
 
+    public getForgePosition(){
+        if(this.spawnNearPlayer) {
+            let player = this.gameManager.getPlayerManager().getNearestAlivePlayer(this.forgeSpawnPosition.x, this.forgeSpawnPosition.y)
+            if(player) {
+                let playerPos = player.getBody().position
+                return {x: playerPos.x, y: playerPos.y + 150}
+            }
+        }
+        return this.forgeSpawnPosition
+    }
+
+    public getFountainPosition(){
+        let forgePosition = this.getForgePosition()
+        return {x: forgePosition.x + 200, y: forgePosition.y}
+    }
+
+    public getMerchantPosition(){
+        let forgePosition = this.getForgePosition()
+        return {x: forgePosition.x + 100, y: forgePosition.y}
+    }
+
     /**
      * This method is called once when the wave is updated for the first time.
      */
@@ -69,15 +94,15 @@ export default class SafeWave extends Wave{
         if(dungeon) dungeon.safeWaveTime = this.waveDurationSeconds
         if(this.hasForge){
             this.forgeSpawned = true
-            this.gameManager.getForgeManager().spawnForge(this.forgeSpawnPosition)
+            this.gameManager.getForgeManager().spawnForge(this.getForgePosition())
         }
         if(this.hasMerchant) {
             this.merchantSpawned = true
-            this.gameManager.getMerchantManager().spawnMerchant(this.merchantSpawnPosition)
+            this.gameManager.getMerchantManager().spawnMerchant(this.getMerchantPosition())
         }
         if(this.hasFountain) {
             this.fountainSpawned = true
-            this.gameManager.getFountainManager().spawnFountain(this.fountainSpawnPosition)
+            this.gameManager.getFountainManager().spawnFountain(this.getFountainPosition())
         }
     }
 

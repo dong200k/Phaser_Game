@@ -116,7 +116,7 @@ export default class Meteor extends StateNode {
             if(this.attackTime <= this.timeSoFar) {
                 this.timeSoFar = 0
                 let timeBetweenMeteor = 100
-                for(let i=0;i<10;i++){
+                for(let i=0;i<50;i++){
                     setTimeout(()=>{
                         this.summonMeteor()
                     }, timeBetweenMeteor * i);

@@ -47,6 +47,8 @@ export default class FollowingMeleeProjectile extends Projectile {
         if(body) {
             // console.log("setting pos to", newPos)
             Matter.Body.setPosition(this.getBody(), newPos)
+        }else{
+            // console.log(`body of FollowingMeleeProjectile's owner is undefined`)
         }
     }
 }

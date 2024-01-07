@@ -2,6 +2,7 @@ import Monster from "../../schemas/gameobjs/monsters/Monster";
 import BerserkerBossController from "../StateControllers/BossControllers/BerserkerBossController/BerserkerBossController";
 import PlayerManager from "../StateManagers/PlayerManager";
 import DeathBringerController from "./MonsterAI/DeathBringer/DeathBringerController";
+import DemonSlimeController from "./MonsterAI/DemonSlime/DemonSlimeController";
 import NecromancerController from "./MonsterAI/Necromancer/NecromancerController";
 import DragonController from "./MonsterAI/ThreeHeadedDragon/DragonController";
 import WerewolfController from "./MonsterAI/Werewolf/WerewolfController";
@@ -56,6 +57,8 @@ export default class AIFactory {
             case "Werewolf": mc = new WerewolfController({monster}); break;
             case "DeathBringer": mc = new DeathBringerController({monster}); break;
             case "Necromancer": mc = new NecromancerController({monster}); break;
+            case "DemonSlime": mc = new DemonSlimeController({monster}); break;
+
             default: mc = new MonsterController({monster});   
         }
         return mc;

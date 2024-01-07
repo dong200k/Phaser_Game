@@ -12,9 +12,10 @@ export interface ISpecialUpgradeConfig{
     area?: number,
     /** id of the dash effect logic to upgrade */
     id: string,
-    amount?: 1
+    amount?: 1,
     /** extra additive duration multiplier */
-    duration?: number
+    duration?: number,
+    piercing?: number
 }
 
 /** 
@@ -31,6 +32,7 @@ export class SpecialUpgrade extends EffectLogic{
     private amount = 0
     /** Duration of projectile, applies only to some dashes */
     private duration = 0
+    private piercing = 0
 
     constructor(config?: ISpecialUpgradeConfig){
         super(config)
@@ -40,16 +42,18 @@ export class SpecialUpgrade extends EffectLogic{
         this.id = config?.id ?? this.id
         this.amount = config?.amount ?? this.amount
         this.duration = config?.duration ?? this.duration
+        this.piercing = config?.piercing ?? this.piercing
     }
 
     public useEffect(playerState: Player, gameManager: GameManager, tree?: WeaponUpgradeTree){
-        console.log(`special upgrade, id: ${this.id}, amount: ${this.amount}`)
+        // console.log(`special upgrade, id: ${this.id}, amount: ${this.amount}`)
         playerState.effects.forEach(effect=>{
             if(effect instanceof TriggerUpgradeEffect && effect.effectLogic && effect.effectLogic instanceof SpecialEffectLogic && effect.effectLogic.effectLogicId === this.id){
                 effect.effectLogic.increaseBonusArea(this.area)
                 effect.effectLogic.increaseBonusAttackMultiplier(this.damage)
                 effect.effectLogic.increaseAmount(this.amount)
                 effect.effectLogic.increaseBonusDurationMult(this.duration)
+                effect.effectLogic.increasePiercing(this.piercing)
             }
         })
     }

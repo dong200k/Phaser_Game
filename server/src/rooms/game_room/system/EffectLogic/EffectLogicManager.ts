@@ -66,6 +66,16 @@ import BladeTornado from "./EffectLogics/special/specials/BladeTorndao";
 import Meteor from "./EffectLogics/special/specials/lightningbird copy/Meteor";
 import LightningOrb from "./EffectLogics/special/specials/LightningOrb";
 import UltimateFlameThrower from "./EffectLogics/special/specials/UltimateFlameThrower";
+import BlackHoleGun from "./EffectLogics/weapons/BlackHoleGun";
+import Dagger from "./EffectLogics/weapons/Dagger";
+import FireballWand from "./EffectLogics/weapons/FireballWand";
+import FlameThrower from "./EffectLogics/weapons/FlameThrower";
+import Grenade from "./EffectLogics/weapons/Grenade";
+import LightningSplitter from "./EffectLogics/weapons/LightningSplitter";
+import MachineGun from "./EffectLogics/weapons/MachineGun";
+import Pistol from "./EffectLogics/weapons/Pistol";
+import Scythe from "./EffectLogics/weapons/Scythe";
+import Sniper from "./EffectLogics/weapons/Sniper";
 
 export default class EffectLogicManager{
 
@@ -261,6 +271,17 @@ export default class EffectLogicManager{
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "Kamehameha-upgrade-damage-25", damage: 0.25})
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-area-25", area: 0.25})    
         this.addEffectLogic(SpecialUpgrade, {effectLogicId: "LightningOrb-upgrade-area-100", area: 1})
+
+        this.addEffectLogic(BlackHoleGun)
+        this.addEffectLogic(Dagger)
+        this.addEffectLogic(FireballWand)
+        this.addEffectLogic(FlameThrower)
+        this.addEffectLogic(Grenade)
+        this.addEffectLogic(LightningSplitter)
+        this.addEffectLogic(MachineGun)
+        this.addEffectLogic(Pistol)
+        this.addEffectLogic(Scythe)
+        this.addEffectLogic(Sniper)
     }
     
     private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){

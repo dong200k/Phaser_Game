@@ -40,7 +40,9 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     private timeSoFar: number = 0
     private healthRegenTime: number = 1
     public allowChangeDirection = true
-    private rollCooldown = new Cooldown(0.5)
+    private rollCooldowns: Cooldown[] = []
+    private rollCharges = 5
+    private rollCooldown = 2
 
     private attackCooldown!: Cooldown
     private autoAttack: boolean = false
@@ -50,7 +52,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         // let chargeAttackSpeed = getFinalChargeAttackSpeed(this.player.stat)
         // if(chargeAttackSpeed > 0) this.totalChargeTime *= 1 / chargeAttackSpeed
 
-        this.attackCooldown = new Cooldown(getFinalAttackCooldown(this.player.stat))
+        this.initRollCooldown()
 
         //Add States
         let idleState = new Idle("Idle", this);
@@ -95,6 +97,13 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         this.changeState("Idle");
     }
 
+    protected initRollCooldown(){
+        for(let i=0;i<this.rollCharges;i++){
+            this.rollCooldowns.push(new Cooldown(this.rollCooldown))
+        }
+        this.attackCooldown = new Cooldown(getFinalAttackCooldown(this.player.stat))
+    }
+
     public postUpdate(deltaT: number): void {
         // console.log(`Player attack power ${getEstimatedDps(this.player.stat)}`)
         let currentState = this.getState();
@@ -115,7 +124,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
         // Rool cooldown
         if(this.stateName !== "Roll"){
-            this.rollCooldown.tick(deltaT)
+            this.rollCooldowns.forEach(cooldown=>cooldown.tick(deltaT))
         }
 
         // Testing auto attack 
@@ -137,8 +146,16 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         }
     }
 
-    public putRollOnCooldown(){
-        this.rollCooldown.reset()
+    public addRollCharge(){
+        this.rollCharges += 1
+        this.rollCooldowns.push(new Cooldown(this.rollCooldown))
+    }
+
+    public updateRollCooldown(cooldown: number){
+        this.rollCooldown = cooldown
+        this.rollCooldowns.forEach(rollCooldown=>{
+            rollCooldown.setTime(this.rollCooldown)
+        })
     }
 
     public getPlayer() {
@@ -158,7 +175,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         if(!this.player) return
 
         // If the state is not idle/move/charge then it must be a combo/attack state in which case return
-        if(this.stateName !== "Idle" && this.stateName !== "Move" && this.stateName !== "ChargeState") return
+        if(this.stateName !== "Idle" && this.stateName !== "Move" && this.stateName !== "ChargeState" && (this.stateName === "Roll" && this.rollState.canAnimationCancel())) return
 
         // Check if player has any charge attacks
         let hasChargeAttack = false
@@ -224,16 +241,33 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
      */
     public startSpceial(mouseX:number, mouseY:number) {
         if(this.stateName !== "Dead" && this.stateName !== "Special") {
-            console.log("start special")
+            // console.log("start special")
             this.specialState?.setConfig({mouseX, mouseY});
             this.changeState("Special");
         }
     }
 
+    public getRollOffCooldown(){
+        for(let cooldown of this.rollCooldowns){
+            if(cooldown.isFinished) return cooldown
+        }
+    }
+
     public startRoll(key: "w"|"a"|"s"|"d"){
-        if(this.rollCooldown.isFinished && this.stateName !== "Dead" && this.stateName !== "Special" && this.stateName !== "Roll"){
-            this.putRollOnCooldown()
-            this.changeState("Roll")
+        // console.log("attempt roll")
+        let rollCooldown = this.getRollOffCooldown()
+        if(rollCooldown && this.stateName !== "Dead" && this.stateName !== "Special"){
+            // console.log(`attempt roll stage 2`)
+            if(this.stateName === "Roll" && !this.rollState.canDoubleRoll()) return
+            // console.log(`performing roll in 50 ms`)
+            // this.changeState("Idle")
+            if(this.player.velocity.x !== 0 || this.player.velocity.y !== 0){
+                rollCooldown.reset()
+                setTimeout(()=>{
+                    this.changeState("Roll")
+                }, 50)
+            }
+            
         }
     }
 

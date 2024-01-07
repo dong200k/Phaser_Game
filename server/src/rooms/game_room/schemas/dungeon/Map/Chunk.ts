@@ -120,7 +120,7 @@ export class Chunk extends Schema{
         
         for(let y = startY; y < endY; y++) {
             for(let x = startX; x < endX; x++) {
-                let tileId = tileIds[x % obstacleLayer.width + y * obstacleLayer.height]
+                let tileId = tileIds[x % obstacleLayer.width + y * obstacleLayer.width]
                 if(tileId && tileId !== 0 && this.mapManager.inBounds(x, y)) grid[y-startY][x-startX] = 1;
                 else grid[y-startY][x-startX] = 0;
             }

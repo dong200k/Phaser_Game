@@ -82,6 +82,8 @@ export default abstract class StateMachine<Data> extends Schema{
     changeState(stateName: string) {
         this.states.forEach((state) => {
             if(state.getStateName() === stateName) {
+                // if(stateName === "Roll") console.log(`change state rolstate`)
+
                 // if("attackState" in this)
                 //     console.log(`state is now: ${stateName}`)
                 this.stateName = stateName;
@@ -98,6 +100,7 @@ export default abstract class StateMachine<Data> extends Schema{
     }
 
     private changeStateHelper(newState: StateNode) {
+        // if(newState.getStateName() === "Roll") console.log(`change state helper rolstate`)
         //calls exit on old state. During first call currentState is null.
         if(this.currentState)
             this.currentState.onExit();

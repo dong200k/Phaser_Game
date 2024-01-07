@@ -110,6 +110,8 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("lightning_rod_icon", "images/icons/artifacts/lightning_rod_icon.png");
         this.load.image("test_tiles", "tilemaps/demo_map/forest_tiles_extruded.png");
         this.load.image("test_tiles2", "tilemaps/demo_map/test_tiles_extruded.png");
+        this.load.image("forest", "tilemaps/demo_map/forest_extruded.png");
+
 
         // ------- Loading Animations ------- //    
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
@@ -148,6 +150,13 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("blade_master_slash", "images/projectiles/swordman_slash.png", "images/projectiles/swordman_slash.json")
         this.load.aseprite("BladeMaster", "images/roles/swordsman.png", "images/roles/swordsman.json");
         this.load.aseprite("Nixi", "images/roles/Sprite-0001.png", "images/roles/Sprite-0001.json");
+        this.load.aseprite("ClaymoreMaster", "images/roles/claymoremaster.png", "images/roles/claymoremaster.json");
+        this.load.aseprite("smallcircle", "images/projectiles/smallcircle.png", "images/projectiles/smallcircle.json");
+        this.load.aseprite("largecircle", "images/projectiles/largecircle.png", "images/projectiles/largecircle.json");
+        this.load.aseprite("halfcirclesmall", "images/projectiles/halfcirclesmall.png", "images/projectiles/halfcirclesmall.json");
+        this.load.aseprite("explosion", "images/projectiles/explosion.png", "images/projectiles/explosion.json");
+        this.load.aseprite("claymore", "images/projectiles/claymore.png", "images/projectiles/claymore.json");
+
     }
 
     /** Load the assets from firebase. */

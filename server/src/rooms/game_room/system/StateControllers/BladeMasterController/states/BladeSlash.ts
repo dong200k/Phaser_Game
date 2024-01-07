@@ -34,7 +34,7 @@ export default class BladeSlash extends Attack{
         let velocity = MathUtil.getNormalizedSpeed(this.mouseX - playerX, this.mouseY - playerY, this.projectileSpeed)
 
         let projectileConfig: IProjectileConfig = {
-            sprite: "blade_master_slash",
+            sprite: "claymore",
             stat: this.player.stat,
             spawnX: playerX,
             spawnY: playerY,

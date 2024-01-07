@@ -7,14 +7,17 @@ import Entity from "../../../../../../../schemas/gameobjs/Entity";
 import Monster from "../../../../../../../schemas/gameobjs/monsters/Monster";
 import Player from "../../../../../../../schemas/gameobjs/Player";
 import MeteorController from "../MeteorController";
+import { GameEvents, IProjectileConfig } from "../../../../../../interfaces";
 
 /** In this state the projectile will fall from the top of the screen to the target while being immune to collisions. */
 export default class Fall extends StateNode{
     /** Position where meteor will explode */
     private impactPosition?: {x: number, y: number}
+    private meteorTriggered = false
 
     public onEnter(): void {
         this.impactPosition = undefined
+        this.meteorTriggered = false
         let stateMachine = (this.getStateMachine() as MeteorController);
         let projectile = stateMachine.getProjectile()
         projectile.animation.playAnimation("play", {
@@ -27,8 +30,6 @@ export default class Fall extends StateNode{
     protected getTargetPosition(): {x: number, y: number} {
         if(this.impactPosition) return this.impactPosition
 
-        
-        
         let target: Entity | undefined
         let stateMachine = (this.getStateMachine() as MeteorController);
         let projectile = stateMachine.getProjectile()
@@ -84,7 +85,28 @@ export default class Fall extends StateNode{
         let stateMachine = (this.getStateMachine() as MeteorController);
         let projectile = stateMachine.getProjectile()
         let impactPosition = this.getTargetPosition()
+        let owner = projectile.getOriginEntity()
         // let impactPosition = {x: 0, y: 0}
+        if(!this.meteorTriggered && owner){
+            this.meteorTriggered = true
+            let projectileConfig: IProjectileConfig = {
+                sprite: "largecircle",
+                stat: owner.stat,
+                spawnX: impactPosition.x,
+                spawnY: impactPosition.y,
+                width: 120,
+                height: 120,
+                initialVelocity: {x: 0, y:0},
+                collisionCategory: "NONE",
+                activeTime: 1000,
+                poolType: "circle_indicator_monster_projectile",
+                attackMultiplier: 1,
+                magicMultiplier: 0,
+                classType: "Projectile",
+            }
+            // console.log(`spawning monster projectile at: (${projectileConfig.spawnX}, ${projectileConfig.spawnY})`);
+            projectile.gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, projectileConfig);
+        }
 
         let speed = projectile.projectileSpeed * deltaT;
 
