@@ -6,8 +6,8 @@ import WeaponEffect from "./WeaponEffect";
 
 export default class FireballWand extends WeaponEffect{
     effectLogicId: string = "FireballWand"
-    protected weaponSprite: string = "fireball_wand"
-    protected activeRange?: number = 500
+    protected weaponSprite: string = "fire_wand"
+    protected activeRange?: number = 2000
     protected activeTime?: number | undefined = 1000
     protected angleBetweenAttacks = 30
     protected projectileSpeed = 10

@@ -10,7 +10,7 @@ export default class Sniper extends WeaponEffect{
     protected activeRange?: number = 2000
     protected attackSound: string = ""
     protected angleBetweenAttacks = 15
-    protected projectileSpeed = 100
+    protected projectileSpeed = 50
     protected projectileSprite: string = "sniper_projectile"
     protected attackRequired: number = 5
     protected piercing: number = 10

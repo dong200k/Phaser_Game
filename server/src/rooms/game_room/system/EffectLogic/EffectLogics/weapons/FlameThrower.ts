@@ -8,7 +8,7 @@ import WeaponEffect from "./WeaponEffect";
 
 export default class FlameThrower extends WeaponEffect{
     effectLogicId: string = "FlameThrowerGun"
-    protected weaponSprite: string = "flamethrower_gun"
+    protected weaponSprite: string = "machine_gun"
     protected attackRequired: number = 10
     protected piercing: number = 1
     protected attackMultiplier: number = 1.5

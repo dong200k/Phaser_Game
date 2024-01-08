@@ -211,7 +211,9 @@ export type IProjectileConfig = {
     flipY?: boolean
     /** data is used to pass extra parameters to subclasses of projectile */
     data?: any
-    animationDurationSeconds?: number
+    animationDurationSeconds?: number,
+    // Extra damage projectile will do
+    extraDamage?: number
 }
 
 // ------------ interfaces for Monsters -------------- //

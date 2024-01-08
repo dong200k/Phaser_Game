@@ -1,0 +1,27 @@
+{ "frames": {
+   "0": {
+    "frame": { "x": 1, "y": 1, "w": 15, "h": 12 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 3, "w": 13, "h": 10 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.2-x64",
+  "image": "black_hole_gun.png",
+  "format": "RGBA8888",
+  "size": { "w": 17, "h": 14 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "play", "from": 0, "to": 0, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

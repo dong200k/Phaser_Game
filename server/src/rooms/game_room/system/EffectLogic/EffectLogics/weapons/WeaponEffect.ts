@@ -1,4 +1,4 @@
-import { Body } from "matter-js"
+import Matter, { Body } from "matter-js"
 import Player from "../../../../schemas/gameobjs/Player"
 import GameManager from "../../../GameManager"
 import { SpecialEffectLogic } from "../special/SpecialEffectLogic"
@@ -62,8 +62,10 @@ export default class WeaponEffect extends SpecialEffectLogic{
         }
     }
     protected useSpecial(playerState: Player, gameManager: GameManager): void {
-        this.playWeaponAttackAnimation()        
-        this.attack(playerState, gameManager)
+        let target: Entity | undefined = this.getTarget(playerState, gameManager)
+        if(!target) return
+        this.playWeaponAttackAnimation(target)        
+        this.attack(playerState, gameManager, target)
     }
 
     protected applyStatChange(playerState: Player, gameManager: GameManager){
@@ -96,7 +98,7 @@ export default class WeaponEffect extends SpecialEffectLogic{
             classType: "FollowingMeleeProjectile",
             originEntityId: playerState.getId(),
             // projectileSpeed: 50,
-            dontRotate: true,
+            // dontRotate: true,
             repeatAnimation: true,
             data: {
                 owner: playerState,
@@ -108,12 +110,16 @@ export default class WeaponEffect extends SpecialEffectLogic{
         this.weapon = gameManager.getProjectileManager().spawnProjectile(projectileConfig, projectileConfig.classType).projectile
     }
 
-    protected playWeaponAttackAnimation(){
+    protected playWeaponAttackAnimation(target: Entity){
+        let body = this.weapon?.getBody()
+        if(!body) return
 
+        let velocity = MathUtil.getNormalizedSpeed(target.x-body.position.x, target.y-body.position.y, 0.1)
+        Matter.Body.setVelocity(body, velocity)
     }
 
     /** Overwrite this with the weapons attack logic */
-    protected attack(playerState: Player, gameManager: GameManager){
+    protected attack(playerState: Player, gameManager: GameManager, target: Entity){
         // console.log(`attempting attack: ${this.effectLogicId}`)
         let weaponBody = this.weapon?.getBody()
         if(!weaponBody) return console.log(`attack ${this.effectLogicId}, no weapon body`)
@@ -124,7 +130,7 @@ export default class WeaponEffect extends SpecialEffectLogic{
             let unitDir = MathUtil.getNormalizedSpeed(velocity.x, velocity.y, 1)
             let offsetX = this.spawnOffset * unitDir.x
             let offsetY = this.spawnOffset * unitDir.y
-            console.log(`spawn projectile spawn offset: ${offsetX}, ${offsetY}`)
+            // console.log(`spawn projectile spawn offset: ${offsetX}, ${offsetY}`)
             let projectileConfig: IProjectileConfig = {
                 sprite: this.projectileSprite,
                 stat: playerState.stat,
@@ -145,7 +151,7 @@ export default class WeaponEffect extends SpecialEffectLogic{
                 piercing: this.getPiercing(),
                 classType: "Projectile",
                 originEntityId: playerState.getId(),
-                dontRotate: true,
+                // dontRotate: true,
             }
 
             gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, {
@@ -154,7 +160,6 @@ export default class WeaponEffect extends SpecialEffectLogic{
         }
         
         let amount = this.getAmount(playerState.stat)
-        let target: Entity | undefined = this.getTarget(playerState, gameManager)
         if(target){
             // console.log(`attempting attack stage 3: ${this.effectLogicId}`)
             let velocity = {x: target.x - weaponBody.position.x, y: target.y - weaponBody.position.y}

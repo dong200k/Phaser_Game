@@ -9,7 +9,7 @@ import WeaponEffect from "./WeaponEffect";
 
 export default class LightningSplitter extends WeaponEffect{
     effectLogicId: string = "LightningSplitter"
-    protected weaponSprite: string = "LightningSplitter"
+    protected weaponSprite: string = "lightning_splitter"
     protected activeTime = 1000
     protected projectileSpeed = 0
     protected projectileSprite: string = "Lightning"
@@ -68,7 +68,7 @@ export default class LightningSplitter extends WeaponEffect{
                         piercing: this.getPiercing(),
                         classType: "Projectile",
                         originEntityId: playerState.getId(),
-                        dontRotate: true,
+                        dontRotate: false,
                     }
 
                     gameManager.getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, {

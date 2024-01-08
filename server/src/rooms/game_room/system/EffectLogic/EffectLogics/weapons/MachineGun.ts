@@ -6,13 +6,13 @@ import WeaponEffect from "./WeaponEffect";
 
 export default class MachineGun extends WeaponEffect{
     effectLogicId: string = "MachineGun"
-    protected weaponSprite: string = "machinegun"
+    protected weaponSprite: string = "machine_gun"
     protected activeRange?: number = 700
     protected activeTime?: number | undefined = 1000
     protected attackSound: string = ""
     protected angleBetweenAttacks = 10
     protected projectileSpeed = 30
-    protected projectileSprite: string = "machinegun_projectile"
+    protected projectileSprite: string = "machine_gun_projectile"
     protected attackRequired: number = 0.3
     protected piercing: number = 1
     protected attackMultiplier: number = 0.3

@@ -92,7 +92,7 @@ export default class Projectile extends GameObject implements Cloneable {
 
     private setInactiveCallback?: Function
     private onCollideCallback?: Function
-    
+    public extraDamage: number = 0
     
     /** Animation to play default is "play" */
     @type("string") animationKey: string = "play"
@@ -156,6 +156,7 @@ export default class Projectile extends GameObject implements Cloneable {
         this.onCollideCallback = projectileConfig.onCollideCallback ?? this.onCollideCallback
 
         this.animationDurationSeconds = projectileConfig.animationDurationSeconds ?? 1
+        this.extraDamage = projectileConfig.extraDamage ?? 0
     }
     
     /**
@@ -361,5 +362,6 @@ export default class Projectile extends GameObject implements Cloneable {
         this.onCollideCallback = projectileConfig.onCollideCallback ?? this.onCollideCallback
 
         this.animationDurationSeconds = projectileConfig.animationDurationSeconds ?? 1
+        this.extraDamage = projectileConfig.extraDamage ?? 0
     }
 }

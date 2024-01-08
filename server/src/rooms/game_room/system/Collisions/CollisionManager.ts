@@ -175,7 +175,7 @@ export default class CollisionManager{
         // If entity fired projectile they wont get hit
         if(entity.getId() === projectile.originEntityId) return
 
-        let trueAttackDamage = getTrueAttackDamage(projectile.stat, entity.stat, projectile.attackMultiplier)
+        let trueAttackDamage = getTrueAttackDamage(projectile.stat, entity.stat, projectile.attackMultiplier) + projectile.extraDamage
         let trueMagicDamage = getTrueMagicDamage(projectile.stat, entity.stat, projectile.magicMultiplier)
 
         // if(entity instanceof Player) {

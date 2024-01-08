@@ -8,7 +8,7 @@ export default class Dagger extends WeaponEffect{
     effectLogicId: string = "dagger"
     protected weaponSprite: string = "dagger"
     protected angleBetweenAttacks = 20
-    protected activeTime = 1000
+    protected activeTime = 2000
     protected projectileSpeed = 1
     protected projectileSprite: string = "dagger_projectile"
     protected attackRequired: number = 1

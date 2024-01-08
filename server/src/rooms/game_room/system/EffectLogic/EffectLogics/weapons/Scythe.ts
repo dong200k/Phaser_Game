@@ -9,7 +9,7 @@ import WeaponEffect from "./WeaponEffect";
 
 export default class Scythe extends WeaponEffect{
     effectLogicId: string = "Scythe"
-    protected weaponSprite: string = "Scythe"
+    protected weaponSprite: string = "dagger"
     protected attackMultiplier: number = 1
     protected amount: number = 1
     protected radius: number = 100
