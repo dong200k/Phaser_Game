@@ -4,6 +4,8 @@ import Player from "../../../../schemas/gameobjs/Player";
 import GameManager from "../../../GameManager";
 import { SpecialEffectLogic } from "../special/SpecialEffectLogic";
 import Cooldown from "../../../../schemas/gameobjs/Cooldown";
+import Monster from "../../../../schemas/gameobjs/monsters/Monster";
+import MathUtil from "../../../../../../util/MathUtil";
 
 /** Effect Logic that can be upgraded easily by calling the upgrade method */
 export default class GodUpgrade extends SpecialEffectLogic{
@@ -57,5 +59,20 @@ export default class GodUpgrade extends SpecialEffectLogic{
         let target = gameManager.getDungeonManager().getClosestActiveMonster({x: player.x, y: player.y})
         if(!target) return player
         return target
+    }
+
+    protected getRandomTarget(player: Player, gameManager: GameManager): Player | Monster {
+        let monsters: Monster[] = []
+        let range = 750
+        gameManager.gameObjects.forEach(obj=>{
+            if(obj instanceof Monster && obj.isActive()){
+                let distance = MathUtil.distance(obj.x, obj.y, player.x, player.y)
+                if(distance > range) return
+                monsters.push(obj)
+            }
+        })
+
+        let choice = Math.floor(Math.random() * monsters.length)
+        return monsters[choice]
     }
 }

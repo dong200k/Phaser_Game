@@ -76,6 +76,18 @@ import MachineGun from "./EffectLogics/weapons/MachineGun";
 import Pistol from "./EffectLogics/weapons/Pistol";
 import Scythe from "./EffectLogics/weapons/Scythe";
 import Sniper from "./EffectLogics/weapons/Sniper";
+import GreatShuriken from "./EffectLogics/god/assassin/GreatShuriken";
+import Shuriken from "./EffectLogics/god/assassin/Shuriken";
+import ShurikenArrow from "./EffectLogics/god/assassin/ShurikenArrow";
+import LightningBoltAttack from "./EffectLogics/god/lightning/LightningBoltAttack";
+import LightningMovement from "./EffectLogics/god/lightning/LightningMovement";
+import GiantFist from "./EffectLogics/god/giant/GiantFist";
+import GiantHeartBeat from "./EffectLogics/god/giant/GiantHeartBeat";
+import RockSmash from "./EffectLogics/god/giant/RockSmash";
+import BloodBullet from "./EffectLogics/god/vampire/BloodBullet";
+import BloodNova from "./EffectLogics/god/vampire/BloodNova";
+import LifeDrain from "./EffectLogics/god/vampire/LifeDrain";
+import UpgradeLogic from "./EffectLogics/god/UpgradeLogic";
 
 export default class EffectLogicManager{
 
@@ -282,6 +294,30 @@ export default class EffectLogicManager{
         this.addEffectLogic(Pistol)
         this.addEffectLogic(Scythe)
         this.addEffectLogic(Sniper)
+
+        // God upgrades
+        this.addEffectLogic(GreatShuriken)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "GreatShurikenUpgrade", effectToUpgradeId: "GreatShuriken"})
+        this.addEffectLogic(Shuriken)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "ShurikenUpgrade", effectToUpgradeId: "Shuriken"})
+        this.addEffectLogic(ShurikenArrow)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "ShurikenArrowUpgrade", effectToUpgradeId: "ShurikenArrow"})
+        this.addEffectLogic(LightningBoltAttack)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "LightningBoltAttackUpgrade", effectToUpgradeId: "LightningBoltAttack"})
+        this.addEffectLogic(LightningMovement)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "LightningMovementUpgrade", effectToUpgradeId: "LightningMovement"})
+        this.addEffectLogic(GiantFist)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "GiantFistUpgrade", effectToUpgradeId: "GiantFist"})
+        this.addEffectLogic(GiantHeartBeat)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "GiantHeartBeatUpgrade", effectToUpgradeId: "GiantHeartBeat"})
+        this.addEffectLogic(RockSmash)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "RockSmashUpgrade", effectToUpgradeId: "RockSmash"})
+        this.addEffectLogic(BloodBullet)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "BloodBulletUpgrade", effectToUpgradeId: "BloodBullet"})
+        this.addEffectLogic(BloodNova)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "BloodNovaUpgrade", effectToUpgradeId: "BloodNova"})
+        this.addEffectLogic(LifeDrain)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "LifeDrainUpgrade", effectToUpgradeId: "LifeDrain"})
     }
     
     private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){

@@ -23,23 +23,38 @@ export const getFinalSpeed = function({speed}: Stat){
  * @param attackMultiplier non negative multiplier for the ad damage before armor is taken into account
  * @returns 
  */
-export const getTrueAttackDamage = function({attack, attackPercent, damagePercent, critDamage, critRate, armorPen}: Stat, {extraDamageTakenPercent, armor}: Stat, attackMultiplier: number){
-    const isCrit = Math.random() < critRate? 1 : 0;
-    let damage = (attack * (1 + attackPercent + damagePercent)) * attackMultiplier
-    if(isCrit) damage *= (critDamage + 1)
-
-    let effectiveArmor = armor * (1 - Math.min(armorPen, ARMOR_PEN_CAP))
-    let damageReduction = 100/(100 + effectiveArmor)
-    if(effectiveArmor<0) damageReduction = 1
-    let trueDamage = damage * damageReduction
-    trueDamage *= 1 + (extraDamageTakenPercent)
-
-    // console.log(`damage: ${damage}, trueDamage: ${trueDamage}, effective armor ${effectiveArmor}, reduction: ${damageReduction}, armorPen: ${armorPen}\n\n`)
-
-    // console.log(`ignore armor damage: ${ignoreArmorDamage}, reduced damage: ${reducedDamage}, true damage: ${trueDamage}`)
-
-    // console.log(`damage: ${damage}, armor: ${armor}, attack: ${attack}, attackMult ${attackMultiplier}`)
-    return trueDamage < 1 ? 1 : Math.floor(trueDamage);
+export const getTrueAttackDamage = function({attack, attackPercent, damagePercent, critDamage, critRate, armorPen, firstHitCritDamageBonus, firstHitCritRateBonus, firstHitDamage}: Stat, {extraDamageTakenPercent, armor, hp, maxHp}: Stat, attackMultiplier: number){
+    if(hp === maxHp){
+        const isCrit = Math.random() < critRate + firstHitCritRateBonus? 1 : 0;
+        let damage = (attack * (1 + attackPercent + damagePercent)) * attackMultiplier
+        if(isCrit) damage *= (critDamage + 1 + firstHitCritDamageBonus)
+    
+        let effectiveArmor = armor * (1 - Math.min(armorPen, ARMOR_PEN_CAP))
+        let damageReduction = 100/(100 + effectiveArmor)
+        if(effectiveArmor<0) damageReduction = 1
+        let trueDamage = damage * damageReduction
+        trueDamage *= 1 + (extraDamageTakenPercent)
+        trueDamage *= 1 + firstHitDamage
+    
+        return trueDamage < 1 ? 1 : Math.floor(trueDamage);
+    }else {
+        const isCrit = Math.random() < critRate? 1 : 0;
+        let damage = (attack * (1 + attackPercent + damagePercent)) * attackMultiplier
+        if(isCrit) damage *= (critDamage + 1)
+    
+        let effectiveArmor = armor * (1 - Math.min(armorPen, ARMOR_PEN_CAP))
+        let damageReduction = 100/(100 + effectiveArmor)
+        if(effectiveArmor<0) damageReduction = 1
+        let trueDamage = damage * damageReduction
+        trueDamage *= 1 + (extraDamageTakenPercent)
+    
+        // console.log(`damage: ${damage}, trueDamage: ${trueDamage}, effective armor ${effectiveArmor}, reduction: ${damageReduction}, armorPen: ${armorPen}\n\n`)
+    
+        // console.log(`ignore armor damage: ${ignoreArmorDamage}, reduced damage: ${reducedDamage}, true damage: ${trueDamage}`)
+    
+        // console.log(`damage: ${damage}, armor: ${armor}, attack: ${attack}, attackMult ${attackMultiplier}`)
+        return trueDamage < 1 ? 1 : Math.floor(trueDamage);
+    }
 }
 
 /**
@@ -50,13 +65,14 @@ export const getTrueAttackDamage = function({attack, attackPercent, damagePercen
  * @param magicMultiplier non negative multiplier for the ap damage before magic resist is taken into account
  * @returns 
  */
-export const getTrueMagicDamage = function({magicAttack, magicAttackPercent, damagePercent, magicPen}: Stat, {extraDamageTakenPercent, magicResist}: Stat, magicMultiplier: number){
+export const getTrueMagicDamage = function({magicAttack, magicAttackPercent, damagePercent, magicPen, firstHitDamage}: Stat, {extraDamageTakenPercent, magicResist, hp, maxHp}: Stat, magicMultiplier: number){
     const damage = magicMultiplier * (magicAttack * (1 + magicAttackPercent + damagePercent))
     let effectiveMagicResist = magicResist * (1 - Math.min(magicPen, MAGIC_PEN_CAP))
     let damageReduction = 100/(100 + effectiveMagicResist)
     if(effectiveMagicResist<0) damageReduction = 1
     let trueDamage = damage * damageReduction
     trueDamage *= 1 + (extraDamageTakenPercent)
+    if(hp === maxHp) trueDamage *= 1 + firstHitDamage
 
     return trueDamage < 0? 1 : Math.floor(trueDamage)
 }

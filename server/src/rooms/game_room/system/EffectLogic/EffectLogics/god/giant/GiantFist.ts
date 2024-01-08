@@ -32,7 +32,7 @@ export default class GiantFist extends CooldownGodUpgrade{
         let playerBody = playerState.getBody()
 
         const spawnProjectile = (velocity: {x: number, y: number}) => {
-            let target = this.getTarget(playerState, gameManager)
+            let target = this.getRandomTarget(playerState, gameManager)
             if(!target) return
             // console.log(`spawn projectile spawn offset: ${offsetX}, ${offsetY}`)
             let projectileConfig: IProjectileConfig = {

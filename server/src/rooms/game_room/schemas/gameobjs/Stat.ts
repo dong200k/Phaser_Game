@@ -21,7 +21,6 @@ export default class Stat extends Schema {
     @type('number') attackPercent!: number;
     @type('number') armorPen!: number;
 
-
     @type('number') magicAttack!: number;
     @type('number') magicAttackPercent!: number;
     @type('number') magicPen!: number;
@@ -64,6 +63,18 @@ export default class Stat extends Schema {
 
     /** Affects the amount of projectiles/things in some effects */
     @type('number') amount!: number;
+
+    /** Affects the experience the player. 1 means 100% extra experience */
+    @type('number') expRate!: number;
+
+    /** chance to dodge an attack capped at 0.6 or 60% chance to dodge */
+    @type('number') dodge!: number;
+    /** Increases damage dealt to enemies when they are at full health. 1 means 100% extra damage  */
+    @type('number') firstHitDamage!: number;
+    /** Extra crit rate applied to attacks that hit targets with full health */
+    @type('number') firstHitCritRateBonus!: number
+    /** Extra crit damage applied to critical hits that hit targets with full health */
+    @type('number') firstHitCritDamageBonus!: number
 
     @type('number') level!: number;
 
@@ -113,7 +124,7 @@ export default class Stat extends Schema {
         magicAttack: 0, magicAttackPercent: 0, magicPen: 0, critRate: 0, critDamage: 0, attackRange: 0, attackRangePercent: 0,
         attackSpeed: 0, attackSpeedPercent: 0, speed: 0, lifeSteal: 0, lifeStealPercent: 0, level: 0, chargeAttackSpeed: 0, 
         chargeAttackSpeedPercent: 0, healthRegen: 0, shieldHp: 0, shieldMaxHp: 0, extraDamageTakenPercent: 0, 
-        area: 0, amount: 0, cooldownReduction: 0
+        area: 0, amount: 0, cooldownReduction: 0, expRate: 0, dodge: 0, firstHitDamage: 0, firstHitCritRateBonus: 0, firstHitCritDamageBonus: 0
     }
 
     /** Creates a new stat object based on the stat config passed in. Stat properties not initialized in the config
@@ -168,7 +179,12 @@ export default class Stat extends Schema {
             extraDamageTakenPercent: false,
             area: false,
             amount: false,
-            cooldownReduction: false
+            cooldownReduction: false,
+            expRate: false,
+            dodge: false,
+            firstHitDamage: false,
+            firstHitCritRateBonus: false,
+            firstHitCritDamageBonus: false
         }
         return changes
     }

@@ -686,6 +686,7 @@ export default class PlayerManager {
      * @param xp The amount of xp to give.
      */
     public addXpToPlayer(xp: number, player: Player) {
+        xp *= (1 + player.stat.expRate)
         player.xp += xp;
         if(player.xp >= player.maxXp) {
             player.xp -= player.maxXp;

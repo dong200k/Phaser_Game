@@ -9,8 +9,6 @@ import CooldownGodUpgrade from "../CooldownGodUpgrade";
 
 export default class GreatShuriken extends AttackTriggeredUpgrade{
     effectLogicId: string = "GreatShuriken"
-    protected cooldownTime = 3
-    protected cooldown?: Cooldown | undefined = new Cooldown(this.cooldownTime)
     protected spawnOffset = 0
     protected attackPoolType = "great_shuriken_projectile"
     protected projectileSprite = "great_shuriken"

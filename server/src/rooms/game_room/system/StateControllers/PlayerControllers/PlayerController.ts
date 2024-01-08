@@ -41,7 +41,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     private healthRegenTime: number = 1
     public allowChangeDirection = true
     private rollCooldowns: Cooldown[] = []
-    private rollCharges = 5
+    private rollCharges = 1
     private rollCooldown = 2
 
     private attackCooldown!: Cooldown
@@ -291,5 +291,12 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
     public toggleAutoAttack(){
         this.autoAttack = !this.autoAttack
+    }
+
+    public devilRollUpgrade(){
+        this.rollCooldowns = []
+        this.rollCharges+=5
+        this.rollCooldown*=5
+        this.initRollCooldown()
     }
 }

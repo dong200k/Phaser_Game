@@ -28,6 +28,6 @@ export default class MovementTriggeredUpgrade extends GodUpgrade{
         }
 
         let speed = MathUtil.getSpeedFromVelocity(this.playerState.getBody().velocity)
-        this.distanceTraveled += speed * deltaT
+        this.distanceTraveled += speed * deltaT/1000
     }
 }

@@ -7,9 +7,9 @@ import { getTimeAfterCooldownReduction } from "../../../Formulas/formulas";
 
 /** Effect is triggered based on a cooldown */
 export default class CooldownGodUpgrade extends GodUpgrade{
-    private firstTime = true
-    private gameManager?: GameManager
-    private playerState?: Player
+    protected firstTime = true
+    protected gameManager?: GameManager
+    protected playerState?: Player
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Body): void {
         if(this.firstTime){
             this.firstTime = false
@@ -27,6 +27,7 @@ export default class CooldownGodUpgrade extends GodUpgrade{
         let time = getTimeAfterCooldownReduction(this.playerState.stat, deltaT)
         this.cooldown.tick(time)
         if(this.cooldown.isFinished) {
+            this.cooldown.reset()
             if(this.playerState && this.gameManager) this.useSpecial(this.playerState, this.gameManager)
         }
     }

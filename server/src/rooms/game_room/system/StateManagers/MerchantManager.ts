@@ -94,7 +94,15 @@ export default class MerchantManager{
             // })
 
             // Testing artifacts, comment below out and remove comments above for gameplay
-            if(usage === "merchant_weapon") {
+            // if(usage === "merchant_weapon") {
+            //     artifactIds.forEach(id=>{
+            //         let artifactItem = factory.createArtifactItem(id)
+            //         items.push(artifactItem)
+            //     })
+            // }
+
+            let godUpgradeNames = new Set(["vampire", "devil", "assassin", "lightning", "giant", "wisdom"])
+            if(godUpgradeNames.has(usage)) {
                 artifactIds.forEach(id=>{
                     let artifactItem = factory.createArtifactItem(id)
                     items.push(artifactItem)

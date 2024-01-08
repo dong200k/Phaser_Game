@@ -34,7 +34,7 @@ export default class LightningMovement extends MovementTriggeredUpgrade{
         let playerBody = playerState.getBody()
 
         const spawnProjectile = (velocity: {x: number, y: number}) => {
-            let target = this.getTarget(playerState, gameManager)
+            let target = this.getRandomTarget(playerState, gameManager)
             if(!target) return
             // console.log(`spawn projectile spawn offset: ${offsetX}, ${offsetY}`)
             let projectileConfig: IProjectileConfig = {
@@ -93,17 +93,5 @@ export default class LightningMovement extends MovementTriggeredUpgrade{
     public getAttackMult(playerState?: Player): number {
         if(!playerState) return this.attackMultiplier * this.bonusAttackMultiplier
         else return this.attackMultiplier * this.bonusAttackMultiplier
-    }
-
-    protected getTarget(player: Player, gameManager: GameManager): Player | Monster {
-        let monsters: Monster[] = []
-        gameManager.gameObjects.forEach(obj=>{
-            if(obj instanceof Monster && obj.isActive()){
-                monsters.push(obj)
-            }
-        })
-
-        let choice = Math.floor(Math.random() * monsters.length)
-        return monsters[choice]
     }
 }
