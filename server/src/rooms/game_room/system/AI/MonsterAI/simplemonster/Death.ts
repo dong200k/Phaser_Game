@@ -8,8 +8,8 @@ import MonsterController from "./MonsterController";
 export default class Death extends StateNode {
 
     /** Time before the monster is returned to the pool. This is the time used to play the death animation */
-    private defaultDeathTimer: number = 1;
-    private deathTimer!: number;
+    protected defaultDeathTimer: number = 1;
+    protected deathTimer!: number;
 
     public onEnter(): void {
         this.deathTimer = this.defaultDeathTimer;

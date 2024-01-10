@@ -8,6 +8,7 @@ import DragonController from "./MonsterAI/ThreeHeadedDragon/DragonController";
 import WerewolfController from "./MonsterAI/Werewolf/WerewolfController";
 import ChargingMonsterController from "./MonsterAI/chargingmonster/ChargingMonsterController";
 import HealerMonsterController from "./MonsterAI/healer/HealerMonsterController";
+import MotherSlimeController, { MotherSlimeControllerData } from "./MonsterAI/motherslime/MotherSlimeController";
 import RangedPhantomMonster from "./MonsterAI/rangedphantommonster/RangedPhantomMonster";
 import RangedMonsterController from "./MonsterAI/rangemonster/RangedMonsterController";
 import MonsterController, { MonsterControllerData } from "./MonsterAI/simplemonster/MonsterController";
@@ -58,6 +59,8 @@ export default class AIFactory {
             case "DeathBringer": mc = new DeathBringerController({monster}); break;
             case "Necromancer": mc = new NecromancerController({monster}); break;
             case "DemonSlime": mc = new DemonSlimeController({monster}); break;
+            case "MotherSlime": mc = new MotherSlimeController({monster, amount: 3, slowSprite: "mother_slime_slow"} as MotherSlimeControllerData); break;
+            case "DetailedSlime": mc = new MotherSlimeController({monster, amount: 1, spawnOffset: 0, slowSprite: "detailed_slime_slow"} as MotherSlimeControllerData); break;
 
             default: mc = new MonsterController({monster});   
         }

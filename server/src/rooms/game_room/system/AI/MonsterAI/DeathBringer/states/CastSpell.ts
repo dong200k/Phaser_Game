@@ -14,7 +14,7 @@ import DeathBringerController from "../DeathBringerController";
 export default class CastSpell extends StateNode {
 
     /** The time it takes for a attack to complete. */ 
-    protected defaultAttackCooldown: number = 1;
+    protected defaultAttackCooldown: number = 3;
 
     /** The percent of the attack cooldown before the attack triggers. Ex. Monster slashes. */
     protected attackTriggerPercent: number = 0.95;
@@ -50,8 +50,8 @@ export default class CastSpell extends StateNode {
         let stateMachine = this.getStateMachine<DeathBringerController>();
         let monster = stateMachine.getMonster();
         let target = monster.getAggroTarget();
-        let horizontalCount = 10
-        let verticalCount = 10
+        let horizontalCount = Math.floor(Math.random() * 5) + 2
+        let verticalCount = Math.floor(Math.random() * 5) + 2
 
         if(target) {
             let endX = Math.floor(horizontalCount/2)
@@ -71,7 +71,7 @@ export default class CastSpell extends StateNode {
     protected fireProjectile(entity: Entity, gameManager: GameManager, spawnX: number, spawnY: number){
         let projectileConfig: IProjectileConfig;
         projectileConfig = {
-            sprite: "TinyZombieAttack",
+            sprite: "bringer_of_death_projectile",
             stat: entity.stat,
             spawnX,
             spawnY,
@@ -79,12 +79,19 @@ export default class CastSpell extends StateNode {
             height: this.projectileHeight,
             initialVelocity: {x: 0, y: 0},
             collisionCategory: "MONSTER_PROJECTILE",
-            activeTime: 1000,
-            poolType: "nercromancer_projectile",
+            activeTime: this.defaultAttackCooldown * 1000,
+            poolType: "death_bringer_projectile",
             attackMultiplier: 1,
             magicMultiplier: 0,
             classType: "MeleeProjectile",
+            data: {
+                triggerPercent: 0.4,
+                attackDuration: this.defaultAttackCooldown,
+                unTriggerPercent: 0.1
+            }
         }
+        let stateMachine = this.getStateMachine<DeathBringerController>();
+        stateMachine.getGameManager().getEventEmitter().emit(GameEvents.SPAWN_PROJECTILE, projectileConfig)
     }
 
     public update(deltaT: number): void {

@@ -206,6 +206,10 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("sniper_projectile", "images/projectiles/sniper_projectile.png", "images/projectiles/sniper_projectile.json");
         this.load.aseprite("void_fist", "images/projectiles/void_fist.png", "images/projectiles/void_fist.json");
         this.load.aseprite("rock_smash", "images/projectiles/rock_smash.png", "images/projectiles/rock_smash.json");
+        this.load.aseprite("mother_slime_slow", "images/projectiles/mother_slime_slow.png", "images/projectiles/mother_slime_slow.json");
+        this.load.aseprite("detailed_slime_slow", "images/projectiles/detailed_slime_slow.png", "images/projectiles/detailed_slime_slow.json");
+        this.load.aseprite("bringer_of_death_projectile", "images/projectiles/bringer_of_death_projectile.png", "images/projectiles/bringer_of_death_projectile.json");
+
     }
 
     /** Load the assets from firebase. */

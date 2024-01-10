@@ -106,7 +106,7 @@ export default class MerchantManager{
                     if(usage === "special") cost = 2000
                     if(usage === "dash") cost = 1000
 
-                    let artifactItem = factory.createArtifactItem(id, 0)
+                    let artifactItem = factory.createArtifactItem(id, cost)
                     items.push(artifactItem)
                 })
             }

@@ -21,6 +21,7 @@ import Entity from "../../schemas/gameobjs/Entity"
 import SafeWave from "../../schemas/dungeon/wave/SafeWave"
 import ChunkMap from "../../schemas/dungeon/Map/ChunkMap"
 import Player from "../../schemas/gameobjs/Player"
+import TimedWave from "../../schemas/dungeon/wave/TimedWave"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -251,6 +252,9 @@ export default class DungeonManager {
                 case "safe":
                     wave = this.createSafeWave(waveData)
                     break;
+                case "timed":
+                    wave = this.createTimedWave(waveData)
+                    break;
                 default:
                     wave = this.createPackWave(waveData)
                     break;
@@ -264,6 +268,15 @@ export default class DungeonManager {
         let wave = new Wave((name: string) => {
             this.spawnMonster(name);
         })
+        wave.setAgressionLevel(waveData.difficulty);
+        waveData.monsters.forEach((monsterData) => {
+            wave.addMonster(monsterData.name, monsterData.count);
+        })
+        return wave
+    }
+
+    public createTimedWave(waveData: IDungeonWave){
+        let wave = new TimedWave((name: string) => this.spawnMonster(name), this.gameManager, {waveDuration: waveData.duration})
         wave.setAgressionLevel(waveData.difficulty);
         waveData.monsters.forEach((monsterData) => {
             wave.addMonster(monsterData.name, monsterData.count);

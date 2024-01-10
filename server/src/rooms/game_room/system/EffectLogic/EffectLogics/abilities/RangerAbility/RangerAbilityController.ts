@@ -38,11 +38,11 @@ export default class RangerAbilityController extends StateMachine<RangerAbilityC
         arrowRain.setConfig({
             projectileSpeed: 5,
             spawnSound: "shoot_arrow",
-            arrowCount: 50,
-            fallWidthOffset: 150,
+            arrowCount: 25,
+            fallWidthOffset: 50,
             timeBetweenWaves: 50,
-            fallHeightOffset: 200,
-            impactRangeY: 150,
+            fallHeightOffset: 150,
+            impactRangeY: 50,
             width: 25,
             height: 25
         })

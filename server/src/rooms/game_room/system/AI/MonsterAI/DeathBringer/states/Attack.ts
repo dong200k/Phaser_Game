@@ -17,7 +17,7 @@ export default class Attack extends StateNode {
     protected defaultAttackCooldown: number = 1;
 
     /** The percent of the attack cooldown before the attack triggers. Ex. Monster slashes. */
-    protected attackTriggerPercent: number = 0.75;
+    protected attackTriggerPercent: number = 0.3;
 
     /** The attack cooldown. Goes from defaultAttackCooldown to 0. */
     protected attackCooldown: number = 1;
@@ -55,12 +55,12 @@ export default class Attack extends StateNode {
             let offSetX = 50 * velocity.x > 0? 1: -1
             let projectileConfig: IProjectileConfig;
             projectileConfig = {
-                sprite: "Invisible",
+                sprite: "invisible",
                 stat: monster.stat,
                 spawnX: monster.x + offSetX,
                 spawnY: monster.y,
-                width: 50,
-                height: 50,
+                width: 100,
+                height: 100,
                 initialVelocity: {x: 0, y: 0},
                 collisionCategory: "MONSTER_PROJECTILE",
                 activeTime: 1000,

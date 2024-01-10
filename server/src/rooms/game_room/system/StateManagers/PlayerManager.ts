@@ -742,7 +742,7 @@ export default class PlayerManager {
     public getNewMaxXp(level: number){
         // return 20 * Math.floor(0.0627 * (level ** 2) + 4.8661 * level + 5.0712)
         // using hall of torment exp formula
-        return (10 * Math.pow(level, 1.04) -5 * Math.pow(0.95, level)) * level -3 + 500
+        return Math.floor((10 * Math.pow(level, 1.04) -5 * Math.pow(0.95, level)) * level -3 + 500 + level * 100)
     }
 
     /** generates upgrades for a specific category/usage */

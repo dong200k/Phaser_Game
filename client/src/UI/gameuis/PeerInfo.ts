@@ -121,14 +121,14 @@ export default class PeerInfo extends RexUIBase {
         image3.setTexture(this.peerInfoData.slot3ItemKey);
 
         // Update Status bars
-        this.hpBar.setProgressBarMaxValue(this.peerInfoData.maxHpValue);
-        this.hpBar.setProgressBarValue(this.peerInfoData.hpValue);
+        this.hpBar.setProgressBarMaxValue(this.getRoundedValue(this.peerInfoData.maxHpValue));
+        this.hpBar.setProgressBarValue(this.getRoundedValue(this.peerInfoData.hpValue));
         this.hpBar.setProgressBarTextVisible(this.peerInfoSizer.visible);
-        this.mpBar.setProgressBarMaxValue(this.peerInfoData.maxMpValue);
-        this.mpBar.setProgressBarValue(this.peerInfoData.mpValue);
+        this.mpBar.setProgressBarMaxValue(this.getRoundedValue(this.peerInfoData.maxMpValue));
+        this.mpBar.setProgressBarValue(this.getRoundedValue(this.peerInfoData.mpValue));
         this.mpBar.setProgressBarTextVisible(this.peerInfoSizer.visible);
-        this.xpBar.setProgressBarMaxValue(this.peerInfoData.maxXpValue);
-        this.xpBar.setProgressBarValue(this.peerInfoData.xpValue);
+        this.xpBar.setProgressBarMaxValue(this.getRoundedValue(this.peerInfoData.maxXpValue));
+        this.xpBar.setProgressBarValue(this.getRoundedValue(this.peerInfoData.xpValue));
 
         // Update Special circle
         this.specialDisplay.setProgressImage(this.peerInfoData.specialImageKey);
@@ -140,6 +140,12 @@ export default class PeerInfo extends RexUIBase {
         this.peerInfoSizer.getAllChildren().forEach((child) => {
             if(child instanceof CircleImage) child.updateMask();
         })
+    }
+
+    public getRoundedValue(value: number){
+        if(value < 1) value = Number(value.toFixed(2))
+        else value = Math.floor(value)
+        return value
     }
 
     public getPeerInfoSizer() {
