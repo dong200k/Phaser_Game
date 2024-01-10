@@ -28,7 +28,7 @@ export default class GameRoom extends Room<State> {
     private simulationInterval: number = 16.6;
 
     // ------- fixed tick --------
-    private timePerTick = 16.33; // 20 ticks per second.
+    private timePerTick = 33.33; // 20 ticks per second.
     private timeTillNextTick!: number;
 
     // ------- client load queue -------

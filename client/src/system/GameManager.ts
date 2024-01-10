@@ -71,7 +71,7 @@ export default class GameManager {
     }
 
     // ------- fixed tick --------
-    private timePerTick = 16.33; // 30 ticks per second.
+    private timePerTick = 33.33; // 30 ticks per second.
     private timeTillNextTick: number;
     private ticksSoFar = 0
 
@@ -131,36 +131,36 @@ export default class GameManager {
         let timeConsumed = 0
         while(this.timeTillNextTick <= 0) {
             this.timeTillNextTick += this.timePerTick;
-            let start = Date.now()
+            // let start = Date.now()
 
             this.fixedTick(time, this.timePerTick);
-            let fixedTickTime = Date.now() - start
-            this.fixedTickUpdateTime += fixedTickTime
-            timeConsumed += fixedTickTime
+            // let fixedTickTime = Date.now() - start
+            // this.fixedTickUpdateTime += fixedTickTime
+            // timeConsumed += fixedTickTime
 
-            this.interpolateGameObjects();
-            let interpolateTime = Date.now() - fixedTickTime
-            this.interpolateTime += interpolateTime
-            timeConsumed += interpolateTime
+            // let interpolateTime = Date.now() - fixedTickTime
+            // this.interpolateTime += interpolateTime
+            // timeConsumed += interpolateTime
 
             // this.updateAuraPosition();
             // this.renderFollowPlayerObjects();
 
             this.updateFloatingTexts();
-            let updateFloatingTextTime = Date.now() - interpolateTime
-            this.floatTextUpdateTime += updateFloatingTextTime
-            timeConsumed += updateFloatingTextTime
+            // let updateFloatingTextTime = Date.now() - interpolateTime
+            // this.floatTextUpdateTime += updateFloatingTextTime
+            // timeConsumed += updateFloatingTextTime
 
             this.syncGameObjectVisibility();
             this.syncGameObjectActive();
             this.syncGameObjectAlpha();
-            let otherTime = Date.now() - start
-            timeConsumed += otherTime
-            otherTime += otherTime
+            // let otherTime = Date.now() - start
+            // timeConsumed += otherTime
+            // otherTime += otherTime
 
-            this.ticksSoFar++
-
+            // this.ticksSoFar++
         }
+        this.interpolateGameObjects();
+
 
         // let start = Date.now()
         // if(this.ticksSoFar >= 5){
@@ -173,17 +173,17 @@ export default class GameManager {
         //     timeConsumed += otherTime
         // }
 
-        this.timeSoFar += deltaT
-        this.totalTime2 += deltaT
-        if(this.timeSoFar > 2000){
-            this.timeSoFar = 0
-            console.log(`interpolate ratio: ${this.interpolateTime/this.totalTime2}`)
-            console.log(`fixedtick ratio: ${this.fixedTickUpdateTime/this.totalTime2}`)
-            console.log(`floating text ratio: ${this.floatTextUpdateTime/this.totalTime2}`)
-            console.log(`other ratio: ${this.otherTime/this.totalTime2}`)
-        }
-        let timeLoss = (deltaT - timeConsumed)/1000
-        if(timeLoss > 0) console.log(`time loss: ${timeLoss} s`)
+        // this.timeSoFar += deltaT
+        // this.totalTime2 += deltaT
+        // if(this.timeSoFar > 2000){
+        //     this.timeSoFar = 0
+        //     console.log(`interpolate ratio: ${this.interpolateTime/this.totalTime2}`)
+        //     console.log(`fixedtick ratio: ${this.fixedTickUpdateTime/this.totalTime2}`)
+        //     console.log(`floating text ratio: ${this.floatTextUpdateTime/this.totalTime2}`)
+        //     console.log(`other ratio: ${this.otherTime/this.totalTime2}`)
+        // }
+        // let timeLoss = (deltaT - timeConsumed)/1000
+        // if(timeLoss > 0) console.log(`time loss: ${timeLoss} s`)
     }
 
     public updateAuraPosition() {
@@ -284,8 +284,8 @@ export default class GameManager {
             let distance = MathUtil.distanceSquared(obj.x, obj.y, obj.positionOffsetX + obj.serverX, obj.positionOffsetY + obj.serverY)
             if(obj.visible && distance < 1600) {
             // if(obj.visible){
-                obj.setX(Phaser.Math.Linear(obj.x, serverX, .2));
-                obj.setY(Phaser.Math.Linear(obj.y, serverY, .2));
+                obj.setX(Phaser.Math.Linear(obj.x, serverX, .5));
+                obj.setY(Phaser.Math.Linear(obj.y, serverY, .5));
             } else {
                 obj.setX(serverX);
                 obj.setY(serverY);
@@ -301,13 +301,25 @@ export default class GameManager {
 
     private syncGameObjectActive() {
         this.gameObjects?.forEach((obj) => {
-            if(obj.active === true && obj.serverActive === false) {
-                this.csp.removeGameObject(obj);
-            } else if(obj.active === false && obj.serverActive === true) {
-                this.csp.addGameObject(obj);
+            if(this.gameObjectTypesInterpolated.has(obj.type)){
+                if(obj.active === true && obj.serverActive === false) {
+                    this.csp.removeGameObject(obj);
+                } else if(obj.active === false && obj.serverActive === true) {
+                    this.csp.addGameObject(obj);
+                }
             }
-            obj.setActive(obj.serverActive);
-            obj.setVisible(obj.serverActive);
+            
+            let serverX = obj.serverX + obj.positionOffsetX
+            let serverY = obj.serverY + obj.positionOffsetY
+
+            // Optimize so objects outside of camera are not active
+            if(this.scene.cameras.main.worldView.contains(serverX, serverY)) {
+                obj.setActive(obj.serverActive);
+                obj.setVisible(obj.serverActive);
+            }else{
+                obj.setActive(false)
+                obj.setVisible(false)
+            }
         })
     }
 

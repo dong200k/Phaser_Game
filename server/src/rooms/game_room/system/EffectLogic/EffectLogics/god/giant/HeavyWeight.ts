@@ -20,8 +20,8 @@ export default class HeavyWeight extends GodUpgrade{
     private damageChange = 0.02
     private originalSpeed = 0
     private originalAttackSpeed = 0
-    private minAttackSpeed = 0.1
-    private minSpeed = 0.1
+    private minAttackSpeed = 0.5
+    private minSpeed = 0.5
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Body): void {
         if(this.firstTime){
             this.firstTime = false

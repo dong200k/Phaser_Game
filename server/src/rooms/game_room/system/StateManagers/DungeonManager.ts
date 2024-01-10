@@ -71,7 +71,7 @@ export default class DungeonManager {
         let choice = Math.floor(Math.random() * players.length)
         let player = players[choice]
         if(player){
-            let radius = 800
+            let radius = 500
             let playerVelocity = player.getBody().velocity
             let rotationDegree = Math.random() * 180 - 90
             if(playerVelocity.x === 0 && playerVelocity.y === 0) rotationDegree = Math.random() * 360 - 180
@@ -87,7 +87,7 @@ export default class DungeonManager {
     private monsterOutOfRange(monster: Monster){
         let player = this.gameManager.getPlayerManager().getNearestAlivePlayer(monster.x, monster.y)
         if(player){
-            let maximumDistance = 1200 
+            let maximumDistance = 600 
             let distance = MathUtil.distance(player.x, player.y, monster.x, monster.y)
             if(distance > maximumDistance) return true
         }

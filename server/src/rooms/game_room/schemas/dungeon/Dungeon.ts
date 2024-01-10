@@ -56,7 +56,7 @@ export default class Dungeon extends Schema {
     /** False if a wave is running. True otherwise.*/
     waveEnded: boolean;
     private gameManager: GameManager;
-    private spawnLimit = 500
+    private spawnLimit = 300
     
 
     constructor(gameManager: GameManager, dungeonName: string) {
