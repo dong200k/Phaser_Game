@@ -1,4 +1,5 @@
 import EffectFactory from "../../../../schemas/effects/EffectFactory";
+import { ChestRarity } from "../../../../schemas/gameobjs/chest/Chest";
 import Monster from "../../../../schemas/gameobjs/monsters/Monster";
 import StateMachine from "../../../StateMachine/StateMachine";
 import EffectManager from "../../../StateManagers/EffectManager";
@@ -72,5 +73,11 @@ export default class WerewolfController extends MonsterController {
 
     public isEnraged(){
         return this.rageTriggered
+    }
+
+    public getDeathChestRarity(): ChestRarity | undefined {
+        let randomNum = Math.random()
+        if(randomNum>0.99) return "iron"
+        else if(randomNum > 0.95) return "wood"
     }
 }

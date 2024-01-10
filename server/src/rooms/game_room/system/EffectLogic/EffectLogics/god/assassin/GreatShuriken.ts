@@ -12,19 +12,21 @@ export default class GreatShuriken extends AttackTriggeredUpgrade{
     protected spawnOffset = 0
     protected attackPoolType = "great_shuriken_projectile"
     protected projectileSprite = "great_shuriken"
-    protected activeRange?: number = 5000
-    protected attackSound = ""
-    protected activeTime?: number = undefined
+    protected activeRange?: number = 1000
+    protected attackSound = "shuriken"
+    protected activeTime?: number = 2000
     protected timeBetweenProjectiles = 0
     protected angleBetweenAttacks = 30
-    protected projectileSpeed = 30
+    protected projectileSpeed = 10
     protected attackMultiplier: number = 2
     protected attackRequired: number = 1
     protected triggerChance: number = 0.1
     protected piercing: number = -1
+    protected width: number = 100
+    protected height: number = 100
 
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade2, this.upgrade3, this.upgrade4, this.upgrade5])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade2.bind(this), this.upgrade3.bind(this), this.upgrade4.bind(this), this.upgrade5.bind(this)]
     }
 
     protected useSpecial(playerState: Player, gameManager: GameManager): void {
@@ -49,7 +51,7 @@ export default class GreatShuriken extends AttackTriggeredUpgrade{
                 dontDespawnOnObstacleCollision: true,
                 range: this.activeRange,
                 activeTime: this.activeTime,
-                repeatAnimation: false,
+                repeatAnimation: true,
                 spawnSound: this.attackSound,
                 piercing: this.getPiercing(),
                 classType: "Projectile",

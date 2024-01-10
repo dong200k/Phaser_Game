@@ -9,7 +9,7 @@ import LightningBirdController from "./LightningBirdController"
 export default class LightningBird extends SpecialEffectLogic{
     effectLogicId = "LightningBird"
     // protected area: number = 3
-    protected duration: number = 20
+    protected duration: number = 5
 
     protected useSpecial(playerState: Player, gameManager: GameManager): void {
         let amount = this.getAmount(playerState.stat)

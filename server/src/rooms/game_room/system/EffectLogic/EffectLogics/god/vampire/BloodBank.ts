@@ -14,7 +14,7 @@ export default class BloodBank extends CooldownGodUpgrade{
     private healAmount = 0.01
     protected cooldown?: Cooldown | undefined = new Cooldown(1)
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this)]
     }
     
     public upgrade1(): void {

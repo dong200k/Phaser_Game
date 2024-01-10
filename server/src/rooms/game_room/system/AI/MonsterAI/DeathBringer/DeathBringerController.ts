@@ -1,3 +1,4 @@
+import { ChestRarity } from "../../../../schemas/gameobjs/chest/Chest";
 import Monster from "../../../../schemas/gameobjs/monsters/Monster";
 import StateMachine from "../../../StateMachine/StateMachine";
 import PlayerManager from "../../../StateManagers/PlayerManager";
@@ -17,6 +18,7 @@ export default class DeathBringerController extends MonsterController {
 
     protected playerManager!: PlayerManager;
     protected monster!: Monster;
+    protected deathChestRarity?: ChestRarity | undefined = "iron"
 
     private statesToEnter = ["Teleport", "Attack", "Teleport", "Attack", "Teleport", "Attack", "Idle", "Teleport", "Attack", "Teleport", "Cast", "Cast", "Idle"]
     private index = 6

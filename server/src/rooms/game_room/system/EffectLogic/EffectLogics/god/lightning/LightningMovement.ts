@@ -27,7 +27,7 @@ export default class LightningMovement extends MovementTriggeredUpgrade{
     protected distanceThreshold: number = 300
 
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade2, this.upgrade3, this.upgrade4, this.upgrade5])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade2.bind(this), this.upgrade3.bind(this), this.upgrade4.bind(this), this.upgrade5.bind(this)]
     }
 
     protected useSpecial(playerState: Player, gameManager: GameManager): void {

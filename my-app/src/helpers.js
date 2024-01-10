@@ -78,7 +78,7 @@ export function getDefaultStat(){
     area: 0,
     cooldownReduction: 0,
     amount: 0,
-    expRate: 1,
+    expRate: 0,
   }
 }
 

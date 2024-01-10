@@ -121,11 +121,11 @@ export default class ForgeManager{
         let player = this.gameManager.getPlayerManager().getPlayerWithId(playerId)
         if(!player) return upgrades
         
-        let possibleArtifactUpgrades = this.getPossibleArtifactUpgrades(player)
+        // let possibleArtifactUpgrades = this.getPossibleArtifactUpgrades(player)
         let possibleWeaponUpgrades = this.getPossibleWeaponUpgrades(player)
 
         // Randomly choose upgrades
-        upgrades = upgrades.concat(possibleArtifactUpgrades)
+        // upgrades = upgrades.concat(possibleArtifactUpgrades)
         upgrades = upgrades.concat(possibleWeaponUpgrades)
 
         return MerchantManager.chooseRandomFromList(4, upgrades)
@@ -142,7 +142,8 @@ export default class ForgeManager{
                 description: upgrade.data.description,
                 imageKey: upgrade.data.name.toLocaleLowerCase() + "_icon",
                 tree: player.weaponUpgradeTree,
-                upgradeNode: upgrade
+                upgradeNode: upgrade,
+                usage: "weapon"
             }))
         }
         return possibleWeaponUpgrades
@@ -159,7 +160,8 @@ export default class ForgeManager{
                     description: artifact.getNextUpgradeDescription(),
                     imageKey: artifact.imageKey,
                     tree: artifact,
-                    upgradeNode: artifact.getNextUpgrade()
+                    upgradeNode: artifact.getNextUpgrade(),
+                    usage: artifact.usage
                 }))
             }
         }

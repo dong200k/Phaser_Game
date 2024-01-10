@@ -1,3 +1,4 @@
+import { ChestRarity } from "../../../../schemas/gameobjs/chest/Chest";
 import Monster from "../../../../schemas/gameobjs/monsters/Monster";
 import StateMachine from "../../../StateMachine/StateMachine";
 import PlayerManager from "../../../StateManagers/PlayerManager";
@@ -17,6 +18,7 @@ export default class DemonSlimeController extends MonsterController {
     protected playerManager!: PlayerManager;
     protected monster!: Monster;
     private transformed = false
+    protected deathChestRarity?: ChestRarity | undefined = "iron"
 
     protected create(data: MonsterControllerData): void {
         super.create(data)

@@ -13,17 +13,17 @@ export default class ShurikenArrow extends CooldownGodUpgrade{
     protected spawnOffset = 0
     protected attackPoolType = "shuriken_arrow_projectile"
     protected projectileSprite = "shuriken_arrow"
-    protected activeRange?: number = 2500
-    protected attackSound = ""
-    protected activeTime?: number = undefined
+    protected activeRange?: number = 1000
+    protected attackSound = "shuriken"
+    protected activeTime?: number = 2000
     protected timeBetweenProjectiles = 0
     protected angleBetweenAttacks = 20
-    protected projectileSpeed = 25
+    protected projectileSpeed = 8
     protected attackMultiplier: number = 1
     protected piercing: number = -1
 
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade2, this.upgrade3, this.upgrade4, this.upgrade5])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade2.bind(this), this.upgrade3.bind(this), this.upgrade4.bind(this), this.upgrade5.bind(this)]
     }
 
     protected useSpecial(playerState: Player, gameManager: GameManager): void {
@@ -48,7 +48,7 @@ export default class ShurikenArrow extends CooldownGodUpgrade{
                 dontDespawnOnObstacleCollision: true,
                 range: this.activeRange,
                 activeTime: this.activeTime,
-                repeatAnimation: false,
+                repeatAnimation: true,
                 spawnSound: this.attackSound,
                 piercing: this.getPiercing(),
                 classType: "Projectile",
@@ -77,7 +77,7 @@ export default class ShurikenArrow extends CooldownGodUpgrade{
     }
 
     private upgrade2(){
-        this.bonusAttackMultiplier += 0.25
+        this.bonusAttackMultiplier += 1
     }
 
     private upgrade3(){

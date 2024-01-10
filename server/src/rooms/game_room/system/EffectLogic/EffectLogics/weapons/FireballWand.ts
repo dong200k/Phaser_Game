@@ -17,6 +17,7 @@ export default class FireballWand extends WeaponEffect{
     protected attackMultiplier: number = 1
     protected amount: number = 1
     protected attackPoolType: string = "Fireball_wand_attack"
+    protected attackSound: string = "fireball_whoosh"
 
     protected applyStatChange(playerState: Player, gameManager: GameManager): void {
         let statEffect = EffectFactory.createStatEffect({armor: -0.25 * playerState.stat.armor})

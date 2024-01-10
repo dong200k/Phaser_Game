@@ -26,7 +26,7 @@ export default class WeaponEffect extends SpecialEffectLogic{
     // ----- A few variables that affects weapon attacks ------
     protected activeRange?: number
     protected activeTime?: number
-    protected attackSound: string = "lightningrod"
+    protected attackSound: string = ""
     protected angleBetweenAttacks = 15
     protected projectileSpeed = 50
     protected projectileSprite = ""

@@ -13,7 +13,7 @@ export default class Scythe extends WeaponEffect{
     protected attackMultiplier: number = 1
     protected amount: number = 1
     protected radius: number = 100
-    protected projectileSpeed = 150
+    protected projectileSpeed = 1000
 
     protected summonWeapon(playerState: Player, gameManager: GameManager){
         let width = this.getFinalWidth()

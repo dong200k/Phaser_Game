@@ -88,6 +88,35 @@ import BloodBullet from "./EffectLogics/god/vampire/BloodBullet";
 import BloodNova from "./EffectLogics/god/vampire/BloodNova";
 import LifeDrain from "./EffectLogics/god/vampire/LifeDrain";
 import UpgradeLogic from "./EffectLogics/god/UpgradeLogic";
+import Assassinate from "./EffectLogics/god/assassin/Assassinate";
+import DeadlyStrike from "./EffectLogics/god/assassin/DeadlyStrike";
+import KillStreak from "./EffectLogics/god/assassin/KillStreak";
+import QuickEscape from "./EffectLogics/god/assassin/QuickEscape";
+import SuddenImpact from "./EffectLogics/god/assassin/SuddenImpact";
+import BigTarget from "./EffectLogics/god/devil/BigTarget";
+import CriticalDeal from "./EffectLogics/god/devil/CriticalDeal";
+import GemFlip from "./EffectLogics/god/devil/GemFlip";
+import HeartSacrifice from "./EffectLogics/god/devil/HeartSacrifice";
+import NoPainNoGain from "./EffectLogics/god/devil/NoPainNoGain";
+import QuickAttack from "./EffectLogics/god/devil/QuickAttack";
+import Sprint from "./EffectLogics/god/devil/Sprint";
+import GiantStrength from "./EffectLogics/god/giant/GiantStrength";
+import GoldenBody from "./EffectLogics/god/giant/GoldenBody";
+import HeavyWeight from "./EffectLogics/god/giant/HeavyWeight";
+import LifeForce from "./EffectLogics/god/giant/LifeForce";
+import Haste from "./EffectLogics/god/lightning/Haste";
+import LightningStrike from "./EffectLogics/god/lightning/LightningStrike";
+import SpeedOfLight from "./EffectLogics/god/lightning/SpeedOfLight";
+import Adrenaline from "./EffectLogics/god/vampire/Adrenaline";
+import BloodBank from "./EffectLogics/god/vampire/BloodBank";
+import BloodCollection from "./EffectLogics/god/vampire/BloodCollection";
+import Regeneration from "./EffectLogics/god/vampire/Regeneration";
+import VampiricStrike from "./EffectLogics/god/vampire/VampiricStrike";
+import Experience from "./EffectLogics/god/wisdom/Experience";
+import Journey from "./EffectLogics/god/wisdom/Journey";
+import Knowledge from "./EffectLogics/god/wisdom/Knowledge";
+import Wisdom from "./EffectLogics/god/wisdom/Wisdom";
+import PlotArmor from "./EffectLogics/god/wisdom/PlotArmor";
 
 export default class EffectLogicManager{
 
@@ -295,7 +324,7 @@ export default class EffectLogicManager{
         this.addEffectLogic(Scythe)
         this.addEffectLogic(Sniper)
 
-        // God upgrades
+        // God and devil upgrades
         this.addEffectLogic(GreatShuriken)
         this.addEffectLogic(UpgradeLogic, {effectLogicId: "GreatShurikenUpgrade", effectToUpgradeId: "GreatShuriken"})
         this.addEffectLogic(Shuriken)
@@ -318,6 +347,45 @@ export default class EffectLogicManager{
         this.addEffectLogic(UpgradeLogic, {effectLogicId: "BloodNovaUpgrade", effectToUpgradeId: "BloodNova"})
         this.addEffectLogic(LifeDrain)
         this.addEffectLogic(UpgradeLogic, {effectLogicId: "LifeDrainUpgrade", effectToUpgradeId: "LifeDrain"})
+        this.addEffectLogic(Assassinate)
+        this.addEffectLogic(DeadlyStrike)
+        this.addEffectLogic(KillStreak)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "KillStreakUpgrade", effectToUpgradeId: "KillStreak"})
+        this.addEffectLogic(QuickEscape)
+        this.addEffectLogic(SuddenImpact)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "SuddenImpactUpgrade", effectToUpgradeId: "SuddenImpact"})
+        this.addEffectLogic(BigTarget)
+        this.addEffectLogic(CriticalDeal)
+        this.addEffectLogic(GemFlip)
+        this.addEffectLogic(HeartSacrifice)
+        this.addEffectLogic(NoPainNoGain)
+        this.addEffectLogic(QuickAttack)
+        this.addEffectLogic(Sprint)
+        this.addEffectLogic(GiantStrength)
+        this.addEffectLogic(GoldenBody)
+        this.addEffectLogic(HeavyWeight)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "HeavyWeightUpgrade", effectToUpgradeId: "HeavyWeight"})
+        this.addEffectLogic(LifeForce)
+        this.addEffectLogic(Haste)
+        this.addEffectLogic(LightningStrike)
+        this.addEffectLogic(SpeedOfLight)
+        this.addEffectLogic(Adrenaline)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "AdrenalineUpgrade", effectToUpgradeId: "Adrenaline"})
+        this.addEffectLogic(BloodBank)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "BloodBankUpgrade", effectToUpgradeId: "BloodBank"})
+        this.addEffectLogic(BloodCollection)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "BloodCollectionUpgrade", effectToUpgradeId: "BloodCollection"})
+        this.addEffectLogic(Regeneration)
+        this.addEffectLogic(VampiricStrike)
+        this.addEffectLogic(Experience)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "ExperienceUpgrade", effectToUpgradeId: "Experience"})
+        this.addEffectLogic(Journey)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "JourneyUpgrade", effectToUpgradeId: "Journey"})
+        this.addEffectLogic(Knowledge)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "KnowledgeUpgrade", effectToUpgradeId: "Knowledge"})
+        this.addEffectLogic(Wisdom)
+        this.addEffectLogic(PlotArmor)
+        this.addEffectLogic(UpgradeLogic, {effectLogicId: "PlotArmorUpgrade", effectToUpgradeId: "PlotArmor"})
     }
     
     private addEffectLogic(effectLogic: IEffectLogicClass, config?: any){

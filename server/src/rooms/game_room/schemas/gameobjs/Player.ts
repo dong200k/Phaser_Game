@@ -20,7 +20,8 @@ interface IUpgradeItemConfig {
     tree?: WeaponUpgradeTree;
     upgradeNode?: Node<WeaponData>;
     /** New artifact must have an upgrade id */
-    artifactId?: string
+    artifactId?: string;
+    usage: string
 }
 
 export class UpgradeItem extends Schema {
@@ -28,6 +29,7 @@ export class UpgradeItem extends Schema {
     @type('string') type: "weapon" | "artifact" | "new artifact";
     @type('string') description: string;
     @type('string') imageKey: string;
+    @type('string') usage: string;
     private tree?: WeaponUpgradeTree
     private upgradeNode?: Node<WeaponData>
     private artifactId?: string
@@ -41,6 +43,7 @@ export class UpgradeItem extends Schema {
         this.tree = config.tree
         this.upgradeNode = config.upgradeNode
         this.artifactId = config.artifactId
+        this.usage = config.usage
     }
 
     isEqual(upgradeItem: UpgradeItem){

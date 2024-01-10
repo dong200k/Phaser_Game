@@ -32,7 +32,7 @@ export default class KillStreak extends GodUpgrade{
     }
 
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this)]
     }
 
     public update(deltaT: number): void {

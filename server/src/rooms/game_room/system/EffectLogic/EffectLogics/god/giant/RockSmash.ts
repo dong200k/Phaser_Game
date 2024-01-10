@@ -12,7 +12,7 @@ export default class RockSmash extends AttackTriggeredUpgrade{
     protected spawnOffset = 0
     protected attackPoolType = "rock_smash"
     protected projectileSprite = "rock_smash"
-    protected attackSound = ""
+    protected attackSound = "rock_smash"
     protected activeTime?: number = 1000
     protected activeRange?: number = undefined
     protected timeBetweenProjectiles = 100
@@ -25,7 +25,7 @@ export default class RockSmash extends AttackTriggeredUpgrade{
     protected maxHealthDamageMult = 0.1
 
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade2, this.upgrade3, this.upgrade4, this.upgrade5])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade2.bind(this), this.upgrade3.bind(this), this.upgrade4.bind(this), this.upgrade5.bind(this)]
     }
 
     protected useSpecial(playerState: Player, gameManager: GameManager): void {

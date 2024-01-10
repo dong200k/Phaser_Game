@@ -16,6 +16,7 @@ export default class Pistol extends WeaponEffect{
     protected piercing: number = 1
     protected attackMultiplier: number = 1
     protected amount: number = 1
+    protected attackSound: string = "pistol"
 
     protected applyStatChange(playerState: Player, gameManager: GameManager): void {
         let statEffect = EffectFactory.createStatEffect({critRate: 0.05})

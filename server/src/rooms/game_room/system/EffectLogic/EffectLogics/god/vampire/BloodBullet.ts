@@ -16,22 +16,23 @@ export default class BloodBullet extends CooldownGodUpgrade{
     protected attackPoolType = "blood_bullet"
     protected projectileSprite = "blood_bullet"
     protected activeRange?: number = 1000
-    protected attackSound = ""
-    protected activeTime?: number = undefined
+    protected attackSound = "water_drop"
+    protected activeTime?: number = 2000
     protected timeBetweenProjectiles = 0
     protected angleBetweenAttacks = 15
-    protected projectileSpeed = 25
+    protected projectileSpeed = 5
     protected attackMultiplier: number = 2
     protected piercing: number = 1
     private healthCost = 1
+    protected amount: number = 3
 
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade2, this.upgrade3, this.upgrade4, this.upgrade5])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade2.bind(this), this.upgrade3.bind(this), this.upgrade4.bind(this), this.upgrade5.bind(this)]
     }
 
     protected useSpecial(playerState: Player, gameManager: GameManager): void {
         let playerBody = playerState.getBody()
-        if(playerState.stat.hp <= playerState.stat.maxHp * 0.2 || playerState.stat.hp <= this.getAmount(playerState.stat) * this.healthCost) return
+        if(playerState.stat.hp <= playerState.stat.maxHp * 0.1 || playerState.stat.hp <= this.getAmount(playerState.stat) * this.healthCost) return
         const spawnProjectile = (velocity: {x: number, y: number}) => {
             let unitDir = MathUtil.getNormalizedSpeed(velocity.x, velocity.y, 1)
             let offsetX = this.spawnOffset * unitDir.x
@@ -79,25 +80,28 @@ export default class BloodBullet extends CooldownGodUpgrade{
     }
 
     private upgrade1(){
-        this.bonusAttackMultiplier += 1
-        this.healthCost += 2
+        console.log("blood bullet upgrade 1")
+        this.piercing+=2
+        this.amount++
     }
 
     private upgrade2(){
-        this.piercing+=2
+        this.bonusAttackMultiplier += 1
+        this.healthCost += 1
     }
 
     private upgrade3(){
-        this.bonusAttackMultiplier += 1
-        this.healthCost += 2
+        this.piercing+=2
+        this.amount++
     }
 
     private upgrade4(){
-        this.piercing+=2
+        this.bonusAttackMultiplier += 1
+        this.healthCost += 1
     }
 
     private upgrade5(){
-        this.amount+=1
+        this.amount+=3
     }
     
     public getAttackMult(playerState?: Player): number {

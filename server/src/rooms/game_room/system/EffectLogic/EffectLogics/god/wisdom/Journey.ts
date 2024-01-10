@@ -13,11 +13,12 @@ export default class Journey extends GodUpgrade{
     effectLogicId: string = "Journey"
     private expGainPercent = 0.01
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this)]
     }
 
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Body): void {
         playerState.xp += this.expGainPercent * playerState.maxXp
+        gameManager.getPlayerManager().checkPlayerCanLevel(playerState)
     }
     
     public upgrade1(): void {

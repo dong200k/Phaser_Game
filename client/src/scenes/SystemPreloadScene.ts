@@ -76,7 +76,18 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("strong_hit", "audio/strong_hit.mp3")
         this.load.audio("dragon_roar", "audio/dragon_roar.mp3")
         this.load.audio("dragon_roar2", "audio/dragon_roar2.mp3")
-
+        this.load.audio("water_drop", "audio/water_drop.mp3")
+        this.load.audio("shuriken", "audio/shuriken_sfx.mp3")
+        this.load.audio("dragon_roar2", "audio/dragon_roar2.mp3")
+        this.load.audio("pistol", "audio/pistol_sfx.mp3")
+        this.load.audio("health_pickup", "audio/health_pickup.mp3")
+        this.load.audio("giant_heart_beat", "audio/giant_heart_beat.mp3")
+        this.load.audio("giant_fist", "audio/giant_fist.mp3")
+        this.load.audio("flame_thrower", "audio/flame_thrower.mp3")
+        this.load.audio("blood_nova", "audio/blood_nova.mp3")
+        this.load.audio("rock_smash", "audio/rock_smash.mp3")
+        this.load.audio("rock_smash", "audio/rock_smash.mp3")
+        this.load.audio("machinegun", "audio/machinegun_sfx.mp3")
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");
@@ -111,7 +122,25 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("test_tiles", "tilemaps/demo_map/forest_tiles_extruded.png");
         this.load.image("test_tiles2", "tilemaps/demo_map/test_tiles_extruded.png");
         this.load.image("forest", "tilemaps/demo_map/forest_extruded.png");
+        this.load.image("assassin_with_hood_2", "images/icons/artifacts/assassin_with_hood_2.png");
+        this.load.image("assassin_with_hood", "images/icons/artifacts/assassin_with_hood.png");
+        this.load.image("assassinate", "images/icons/artifacts/assassinate.png");
+        this.load.image("deadly_strike", "images/icons/artifacts/deadly_strike.png");
+        this.load.image("kill_streak", "images/icons/artifacts/kill_streak.png");
+        this.load.image("ninja_dash2", "images/icons/artifacts/ninja_dash2.png");
+        this.load.image("ninja_dash", "images/icons/artifacts/ninja_dash.png");
+        this.load.image("ninja_dodge", "images/icons/artifacts/ninja_dodge.png");
+        this.load.image("ninja_dodge2", "images/icons/artifacts/ninja_dodge2.png");
+        this.load.image("speed_of_light", "images/icons/artifacts/speed_of_light.png");
+        this.load.image("exp", "images/icons/artifacts/exp.png");
+        this.load.image("giant", "images/icons/artifacts/giant.png");
+        this.load.image("golden_armor", "images/icons/artifacts/golden_armor.png");
+        this.load.image("devil", "images/icons/artifacts/devil.png");
+        this.load.image("sumo", "images/icons/artifacts/sumo.png");
+        this.load.image("heart", "images/icons/artifacts/heart.png");
+        this.load.image("vampire", "images/icons/artifacts/vampire.png");
 
+        
 
         // ------- Loading Animations ------- //    
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
@@ -253,6 +282,16 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("strong_hit", "sfx")
         soundManager.add("dragon_roar", "sfx")
         soundManager.add("dragon_roar2", "sfx")
+        soundManager.add("water_drop", "sfx")
+        soundManager.add("shuriken", "sfx")
+        soundManager.add("pistol", "sfx")
+        soundManager.add("health_pickup", "sfx")
+        soundManager.add("giant_heart_beat", "sfx")
+        soundManager.add("giant_fist", "sfx")
+        soundManager.add("flame_thrower", "sfx")
+        soundManager.add("blood_nova", "sfx")
+        soundManager.add("rock_smash", "sfx")
+        soundManager.add("machinegun", "sfx")
 
         soundManager.add("ultra_instinct", "bg")
         soundManager.add("ultra_instinct_boss", "bg")

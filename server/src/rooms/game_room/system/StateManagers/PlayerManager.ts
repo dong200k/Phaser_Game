@@ -460,6 +460,10 @@ export default class PlayerManager {
         // let bladeTornado = artifactManager.createArtifact("upgrade-243789d2-1987-4129-a65f-fbcffa0c7b69")
         // artifactManager.maxArtifact(bladeTornado)
         // this.equipArtifact(player, bladeTornado)
+
+        // let experience = artifactManager.createArtifact("upgrade-f548b8d1-307a-4d53-896b-b9e1afe7c980")
+        // artifactManager.maxArtifact(experience)
+        // this.equipArtifact(player, experience)
     }
 
 
@@ -688,16 +692,35 @@ export default class PlayerManager {
     public addXpToPlayer(xp: number, player: Player) {
         xp *= (1 + player.stat.expRate)
         player.xp += xp;
+        this.checkPlayerCanLevel(player)
+    }
+
+    /** Checks whether the player has enough xp to level up and levels them up if they have enough xp
+     * @param player
+     * @returns true if the player can level up else false
+     */
+    public checkPlayerCanLevel(player: Player){
         if(player.xp >= player.maxXp) {
             player.xp -= player.maxXp;
             player.level++;
             player.maxXp = this.getNewMaxXp(player.level)
-            // If the player is not currently selecting an upgrade give them one.
             if(!player.upgradeInfo.playerIsSelectingUpgrades){
-                this.givePlayerUpgradeSelection(player, this.generateUpgrades(player));
-                this.gameManager.pauseGame(player.getId() as string)
+                // this.givePlayerUpgradeSelection(player, this.generateUpgrades(player));
+                if(player.level === 15) this.givePlayerUpgrades(player, "devil")
+                else this.givePlayerUpgrades(player, "god")
             }
+            return true
         }
+        return false
+    }
+
+    public givePlayerUpgrades(player: Player, type: "god" | "fruit" | "devil"){
+        let usages: string[]
+        if(type === "god") usages = MerchantManager.chooseRandomFromList(1, ["vampire", "assassin", "lightning", "giant", "wisdom"])
+        // if(type === "god") usages = ["vampire", "assassin", "lightning", "giant", "wisdom"]
+        else if(type === "devil") usages = ["devil"]
+        else usages = ["fruit"]
+        this.givePlayerUpgradeSelection(player, this.generateUsageUpgrades(player, usages, 3));
     }
 
     /**
@@ -717,7 +740,38 @@ export default class PlayerManager {
      * @returns The xp required to level up at the level provided in the argument.
      */
     public getNewMaxXp(level: number){
-        return 20 * Math.floor(0.0627 * (level ** 2) + 4.8661 * level + 5.0712)
+        // return 20 * Math.floor(0.0627 * (level ** 2) + 4.8661 * level + 5.0712)
+        // using hall of torment exp formula
+        return (10 * Math.pow(level, 1.04) -5 * Math.pow(0.95, level)) * level -3 + 500
+    }
+
+    /** generates upgrades for a specific category/usage */
+    public generateUsageUpgrades(player: Player, categories: string[], amountOfUpgrades: number = 3){
+        let upgrades: Array<UpgradeItem> = []
+        let upgradeNames = new Set(categories)
+        let availableArtifactUpgrades = player.gameManager.getForgeManager().getPossibleArtifactUpgrades(player).filter(upgradeItem=>{
+            return upgradeNames.has(upgradeItem.usage)
+        })
+
+        let allArtifacts = DatabaseManager.getManager().getAllDatabaseArtifacts()
+        let newArtifactUpgrades: Array<UpgradeItem> = []
+        for(let [id, dbArtifact] of allArtifacts){
+            if(!ArtifactManager.hasArtifact(player, id)){
+                if(!upgradeNames.has(dbArtifact.usage)) continue
+                newArtifactUpgrades.push(new UpgradeItem({
+                    upgradeNode: undefined,
+                    name: dbArtifact.name,
+                    description: dbArtifact.description,
+                    tree: undefined,
+                    imageKey: dbArtifact.imageKey,
+                    type: "new artifact",
+                    artifactId: id,
+                    usage: dbArtifact.usage
+                }))
+            }
+        }
+        upgrades = availableArtifactUpgrades.concat(newArtifactUpgrades)
+        return MerchantManager.chooseRandomFromList(3, upgrades)
     }
 
     public generateUpgrades(player: Player, amountOfUpgrades: number = 3){
@@ -738,7 +792,8 @@ export default class PlayerManager {
                     tree: undefined,
                     imageKey: dbArtifact.imageKey,
                     type: "new artifact",
-                    artifactId: id
+                    artifactId: id,
+                    usage: dbArtifact.usage
                 }))
             }
         }
@@ -870,7 +925,9 @@ export default class PlayerManager {
      * @param upgrades List of UpgradeItems
      */
     public givePlayerUpgradeSelection(player: Player, upgrades: UpgradeItem[]) {
+        if(upgrades.length === 0) return
         player.upgradeInfo.giveNextUpgrade(this.copyUpgrades(upgrades));
+        this.gameManager.pauseGame(player.getId() as string)
     }
 
     public copyUpgrades(upgrades: UpgradeItem[]){
@@ -883,7 +940,8 @@ export default class PlayerManager {
             tree: upgrade.getTree(),
             imageKey: upgrade.imageKey,
             type: upgrade.type,
-            artifactId: upgrade.getArtifactId()
+            artifactId: upgrade.getArtifactId(),
+            usage: upgrade.usage
         })))
 
         return newUpgrades

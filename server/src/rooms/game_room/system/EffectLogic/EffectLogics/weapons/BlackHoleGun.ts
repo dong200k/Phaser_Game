@@ -18,6 +18,8 @@ export default class BlackHoleGun extends WeaponEffect{
     protected spawnOffset: number = 50
     protected width: number = 100
     protected height: number = 100
+    protected attackSound: string = "pistol"
+
 
     protected applyStatChange(playerState: Player, gameManager: GameManager): void {
         let statEffect = EffectFactory.createStatEffect({armor: -0.25 * playerState.stat.armor})

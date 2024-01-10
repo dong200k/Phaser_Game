@@ -2,11 +2,13 @@ import Artifact from "../../schemas/Trees/Artifact";
 import Player from "../../schemas/gameobjs/Player";
 import Chest from "../../schemas/gameobjs/chest/Chest";
 import ChestPool from "../../schemas/gameobjs/chest/ChestPool";
+import MerchantItem from "../../schemas/merchant_items/MerchantItem";
 import GameManager from "../GameManager";
 import ArtifactFactory from "../UpgradeTrees/factories/ArtifactFactory";
 import WeaponUpgradeFactory from "../UpgradeTrees/factories/WeaponUpgradeFactory";
 import { IChestConfig } from "../interfaces";
 import ArtifactManager from "./ArtifactManager";
+import MerchantManager from "./MerchantManager";
 
 
 
@@ -75,7 +77,7 @@ export default class ChestManager {
             let body = chest.getBody() as Matter.Body;
             this.gameManager.addGameObject(chest.id, chest, body);
         }
-
+        console.log("Spawning chest")
         return {chest: chest, body: chest.getBody() as Matter.Body};
     }
 
@@ -87,58 +89,64 @@ export default class ChestManager {
      */
     public handleOpenChest(player: Player, chest: Chest) {
         if(chest.openChest()) {
-            let itemCount = ITEM_COUNT_MAP[chest.rarity];
-            let artifactList = [...REGISTERED_ARTIFACTS];
+            // let itemCount = ITEM_COUNT_MAP[chest.rarity];
+            // let artifactList = [...REGISTERED_ARTIFACTS];
             
-            while(itemCount > 0 && artifactList.length > 0) {
-                // console.log(`itemCount: ${itemCount} artifactListSize: ${artifactList.length}`);
+            // while(itemCount > 0 && artifactList.length > 0) {
+            //     // console.log(`itemCount: ${itemCount} artifactListSize: ${artifactList.length}`);
 
-                // Choose an random artifact from artifactList. 
-                let randomIdx = Math.floor(Math.random() * artifactList.length);
+            //     // Choose an random artifact from artifactList. 
+            //     let randomIdx = Math.floor(Math.random() * artifactList.length);
                 
-                // Check if the player already has that artifact.
-                let artifactInPlayer: Artifact[] = player.artifacts.filter((artifact) => {
-                    return artifact.getId() === artifactList[randomIdx];
-                });
-                // If the player have the artifact equiped
-                if(artifactInPlayer.length > 0) {
-                    // Check if the player's artifact is maxed or not.
-                    if(!ArtifactManager.hasNextUpgrade(artifactInPlayer[0])) {
-                        // console.log(`hasNextUpgrade is false.`);
-                        // If the artifact is maxed, remove bad artifact from artifactList, retry.
-                        artifactList.splice(randomIdx, 1);
-                        continue;
-                    } else {
-                        // Otherwise upgrade the artifact.
-                        ArtifactManager.upgradeArtifact(artifactInPlayer[0]);
-                        itemCount--;
-                        console.log("Player has upgraded artifact: ", artifactInPlayer[0].name);
-                    }
-                } else {
-                    // If the player doesn't have the artifact equiped, Equip it.
-                    let newArtifact = this.gameManager.getArtifactManager().createArtifact(artifactList[randomIdx]);
-                    let artifact = this.gameManager.getArtifactManager().equipArtifact(player, newArtifact);
-                    if(!artifact) {
-                        // If unsuccessful, remove bad artifact from artifactList, retry.
-                        console.log("Failed to equip new artifact");
-                        artifactList.splice(randomIdx, 1);
-                        continue;
-                    }
-                    else {
-                        itemCount--;
-                        // console.log("Player has equiped new artifact: ", artifact.root?.data.name);
-                    }
-                }
-            }
+            //     // Check if the player already has that artifact.
+            //     let artifactInPlayer: Artifact[] = player.artifacts.filter((artifact) => {
+            //         return artifact.getId() === artifactList[randomIdx];
+            //     });
+            //     // If the player have the artifact equiped
+            //     if(artifactInPlayer.length > 0) {
+            //         // Check if the player's artifact is maxed or not.
+            //         if(!ArtifactManager.hasNextUpgrade(artifactInPlayer[0])) {
+            //             // console.log(`hasNextUpgrade is false.`);
+            //             // If the artifact is maxed, remove bad artifact from artifactList, retry.
+            //             artifactList.splice(randomIdx, 1);
+            //             continue;
+            //         } else {
+            //             // Otherwise upgrade the artifact.
+            //             ArtifactManager.upgradeArtifact(artifactInPlayer[0]);
+            //             itemCount--;
+            //             console.log("Player has upgraded artifact: ", artifactInPlayer[0].name);
+            //         }
+            //     } else {
+            //         // If the player doesn't have the artifact equiped, Equip it.
+            //         let newArtifact = this.gameManager.getArtifactManager().createArtifact(artifactList[randomIdx]);
+            //         let artifact = this.gameManager.getArtifactManager().equipArtifact(player, newArtifact);
+            //         if(!artifact) {
+            //             // If unsuccessful, remove bad artifact from artifactList, retry.
+            //             console.log("Failed to equip new artifact");
+            //             artifactList.splice(randomIdx, 1);
+            //             continue;
+            //         }
+            //         else {
+            //             itemCount--;
+            //             // console.log("Player has equiped new artifact: ", artifact.root?.data.name);
+            //         }
+            //     }
+            // }
 
             // TODO: Do something if itemCount > 0.
-            if(itemCount > 0) {
-                console.log("WARNING: No more items to give to the player.");
-            }
+            // if(itemCount > 0) {
+            //     console.log("WARNING: No more items to give to the player.");
+            // }
+
+            // Give player upgrade selecting depending on type of chest
+            let upgradeType: "god" | "fruit" | "devil"
+            if(chest.rarity === "wood") upgradeType = "fruit"
+            else if(chest.rarity === "iron") upgradeType = "god"
+            else upgradeType = "devil"
+            this.gameManager.getPlayerManager().givePlayerUpgrades(player, upgradeType)
         }
         setTimeout(() => {
             chest.setActive(false);
         }, CHEST_DESPAWN_TIME_MS);
     }
-
 }

@@ -6,7 +6,7 @@ import { Categories } from '../../../system/Collisions/Category';
 import MaskManager from '../../../system/Collisions/MaskManager';
 import Player from '../Player';
 import { IChestConfig } from '../../../system/interfaces';
-
+export type ChestRarity = "wood" | "iron" | "gold"
 export default class Chest extends GameObject {
 
     items: string[] = [];

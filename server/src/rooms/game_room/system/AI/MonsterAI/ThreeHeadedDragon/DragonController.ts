@@ -1,5 +1,6 @@
 import MathUtil from "../../../../../../util/MathUtil";
 import Cooldown from "../../../../schemas/gameobjs/Cooldown";
+import { ChestRarity } from "../../../../schemas/gameobjs/chest/Chest";
 import Monster from "../../../../schemas/gameobjs/monsters/Monster";
 import { getFinalAttackRange } from "../../../Formulas/formulas";
 import StateMachine from "../../../StateMachine/StateMachine";
@@ -22,6 +23,7 @@ export default class DragonController extends MonsterController {
 
     protected playerManager!: PlayerManager;
     protected monster!: Monster;
+    protected deathChestRarity?: ChestRarity | undefined = "gold"
 
     private statesToEnter = [
         {stateName: "Idle", cooldown: new Cooldown(5)}, 
@@ -104,5 +106,22 @@ export default class DragonController extends MonsterController {
 
     public getSummonedMonsterName() {
         return ""
+    }
+
+    public spawnChest(){
+        let stateMachine = this
+        let monster = stateMachine.getMonster();
+        let rarities: ChestRarity[] = ["wood", "iron", "gold"]
+        let offset = 100
+        let playerNearbyCount = monster.gameManager.getPlayerManager().getAllPlayersWithinRange(monster.x, monster.y, 1000000).length
+        for(let j=0;j<playerNearbyCount;j++){
+            rarities.forEach((rarity, i)=>{
+                monster.gameManager.getChestManager().spawnChest({
+                    rarity,
+                    x: monster.x + i*offset,
+                    y: monster.y + j*offset
+                });
+            })
+        }
     }
 }

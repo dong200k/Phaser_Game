@@ -16,6 +16,9 @@ export default class MerchantManager{
     public handleInteractMerchant(player: Player, merchant: Merchant){
         console.log("Player interacted with merchant")
         merchant.ping++        
+        let gameRoom = this.gameManager.getGameRoom()
+        let client = gameRoom.clients.find(client=>client.sessionId === player.getId())
+        if(client) client.send("openMerchant")
     }
 
     public spawnMerchant(pos = {x: 0, y: 0}){
@@ -77,8 +80,9 @@ export default class MerchantManager{
         let items: MerchantItem[] = []
 
         // Stat items
-        let healthItem = factory.createMaxHealthItem(25)
-        let lifeStealItem = factory.createLifeStealItem(0.1)
+        let healthItem = factory.createMaxHealthItem(25, 500)
+        let lifeStealItem = factory.createLifeStealItem(0.5, 10000)
+
         // items.push(lifeStealItem, healthItem)
 
         // Artifact items
@@ -94,23 +98,29 @@ export default class MerchantManager{
             // })
 
             // Testing artifacts, comment below out and remove comments above for gameplay
-            // if(usage === "merchant_weapon") {
+            if(usage === "merchant_weapon" || usage === "fruit" || usage === "special" || usage === "dash") {
+                artifactIds.forEach(id=>{
+                    let cost = 0
+                    if(usage === "merchant_weapon") cost = 5000
+                    if(usage === "fruit") cost = 500
+                    if(usage === "special") cost = 2000
+                    if(usage === "dash") cost = 1000
+
+                    let artifactItem = factory.createArtifactItem(id, 0)
+                    items.push(artifactItem)
+                })
+            }
+
+            // let godUpgradeNames = new Set(["vampire", "devil", "assassin", "lightning", "giant", "wisdom"])
+            // if(godUpgradeNames.has(usage)) {
             //     artifactIds.forEach(id=>{
             //         let artifactItem = factory.createArtifactItem(id)
             //         items.push(artifactItem)
             //     })
             // }
-
-            let godUpgradeNames = new Set(["vampire", "devil", "assassin", "lightning", "giant", "wisdom"])
-            if(godUpgradeNames.has(usage)) {
-                artifactIds.forEach(id=>{
-                    let artifactItem = factory.createArtifactItem(id)
-                    items.push(artifactItem)
-                })
-            }
         })
 
-        // return [healthItem, ...this.chooseRandomFromList(2, [...items, lifeStealItem])]
+        return [lifeStealItem, ...this.chooseRandomFromList(5, [...items, healthItem])]
         return items
     }
 
@@ -118,7 +128,7 @@ export default class MerchantManager{
      * 
      * @returns a map with a string artifact usage type as the key and a list of artifact ids as the val
      */
-    private getArtifactUsageMap(){
+    public getArtifactUsageMap(){
         let dbArtifacts = DatabaseManager.getManager().getAllDatabaseArtifacts()
         let myMap: Map<string, string[]> = new Map()
         dbArtifacts.forEach((dbArtifact, id)=>{

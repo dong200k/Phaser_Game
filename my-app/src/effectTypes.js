@@ -29,5 +29,6 @@ export const usageTypes = [
     "giant",
     'assassin',
     "lightning",
-    "vampire"
+    "vampire",
+    "fruit"
 ]

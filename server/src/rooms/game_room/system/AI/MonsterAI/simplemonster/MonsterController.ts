@@ -1,3 +1,4 @@
+import Chest, { ChestRarity } from "../../../../schemas/gameobjs/chest/Chest";
 import Monster from "../../../../schemas/gameobjs/monsters/Monster";
 import StateMachine from "../../../StateMachine/StateMachine";
 import PlayerManager from "../../../StateManagers/PlayerManager";
@@ -15,6 +16,7 @@ export default class MonsterController extends StateMachine<MonsterControllerDat
 
     protected playerManager!: PlayerManager;
     protected monster!: Monster;
+    protected deathChestRarity?: ChestRarity
 
     protected create(data: MonsterControllerData): void {
         this.playerManager = data.monster.gameManager.getPlayerManager();
@@ -58,5 +60,37 @@ export default class MonsterController extends StateMachine<MonsterControllerDat
 
     public getMonster() {
         return this.monster;
+    }
+
+    public getDeathChestRarity(): undefined | ChestRarity{
+        return this.deathChestRarity
+    }
+
+    public spawnChest(){
+        let stateMachine = this
+        let monster = stateMachine.getMonster();
+        // let rarity = stateMachine.getDeathChestRarity()
+        // if(rarity){
+        //     monster.gameManager.getChestManager().spawnChest({
+        //         rarity,
+        //         x: monster.x,
+        //         y: monster.y
+        //     });
+        // }
+        let rarity = this.getDeathChestRarity()
+        if(!rarity) return
+        let rarities: ChestRarity[] = [rarity]
+        let offsetX = 100
+        let offsetY = 50
+        let playerNearbyCount = monster.gameManager.getPlayerManager().getAllPlayersWithinRange(monster.x, monster.y, 1000000).length
+        for(let j=0;j<playerNearbyCount;j++){
+            rarities.forEach((rarity, i)=>{
+                monster.gameManager.getChestManager().spawnChest({
+                    rarity,
+                    x: monster.x + i*offsetX,
+                    y: monster.y + j*offsetY
+                });
+            })
+        }
     }
 }

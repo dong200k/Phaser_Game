@@ -13,12 +13,12 @@ export default class GiantHeartBeat extends CooldownGodUpgrade{
     effectLogicId: string = "GiantHeartBeat"
     protected cooldownTime = 5
     protected cooldown?: Cooldown | undefined = new Cooldown(this.cooldownTime)
-    protected attackSound = ""
+    protected attackSound = "giant_heart_beat"
     protected attackMultiplier: number = 0.01
-    protected range = 1000
+    protected range = 10000
 
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade2, this.upgrade3, this.upgrade4, this.upgrade5])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade2.bind(this), this.upgrade3.bind(this), this.upgrade4.bind(this), this.upgrade5.bind(this)]
     }
 
     protected useSpecial(playerState: Player, gameManager: GameManager): void {

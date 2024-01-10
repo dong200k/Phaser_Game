@@ -364,4 +364,8 @@ export default class GameManager {
     public getAssetSet() {
         return this.assetSet;
     }
+
+    public getGameRoom() {
+        return this.gameRoom
+    }
 }

@@ -20,6 +20,7 @@ export default class LightningSplitter extends WeaponEffect{
     protected spawnOffset: number = 25
     protected attackPoolType: string = "Lightning_Splitter_Projectile"
     protected timeBetweenProjectiles: number = 100
+    protected attackSound: string = "lightningrod"
 
     protected applyStatChange(playerState: Player, gameManager: GameManager): void {
         let statEffect = EffectFactory.createStatEffect({attack: 5, speed: -playerState.stat.speed * 0.25})

@@ -10,9 +10,9 @@ import EffectLogic from "../../../EffectLogic";
 export default class Assassinate extends EffectLogic{
     effectLogicId: string = "Assassinate"
     private playerState?: Player
-    private firstHitDamage = 20
-    private firstHitCritRateBonus = 5
-    private firstHitCritDamageBonus = 25
+    private firstHitDamage = 0.20
+    private firstHitCritRateBonus = 0.05
+    private firstHitCritDamageBonus = 0.25
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Body): void {
         let stateffect = EffectFactory.createStatEffect({
             firstHitDamage: this.firstHitDamage, 

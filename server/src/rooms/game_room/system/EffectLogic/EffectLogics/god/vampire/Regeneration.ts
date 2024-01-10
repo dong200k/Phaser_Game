@@ -10,7 +10,7 @@ import EffectLogic from "../../../EffectLogic";
 export default class Regeneration extends EffectLogic{
     effectLogicId: string = "Regeneration"
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Body): void {
-        let stateffect = EffectFactory.createStatEffect({healthRegen: 0.2})
+        let stateffect = EffectFactory.createStatEffect({healthRegen: 0.5})
         EffectManager.addEffectsTo(playerState, stateffect)
     }
 }

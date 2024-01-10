@@ -9,7 +9,6 @@ export default class MachineGun extends WeaponEffect{
     protected weaponSprite: string = "machine_gun"
     protected activeRange?: number = 700
     protected activeTime?: number | undefined = 1000
-    protected attackSound: string = ""
     protected angleBetweenAttacks = 10
     protected projectileSpeed = 30
     protected projectileSprite: string = "machine_gun_projectile"
@@ -19,6 +18,8 @@ export default class MachineGun extends WeaponEffect{
     protected amount: number = 3
     protected timeBetweenProjectiles: number = 100
     protected timeBetweenAttacks: number = 100
+    protected attackSound: string = "machinegun"
+
 
     protected applyStatChange(playerState: Player, gameManager: GameManager): void {
         let statEffect = EffectFactory.createStatEffect({speed: -0.05 * playerState.stat.speed})

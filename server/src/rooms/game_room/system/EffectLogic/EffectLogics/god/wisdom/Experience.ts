@@ -14,7 +14,7 @@ export default class Experience extends CooldownGodUpgrade{
     private expGain = 25
     protected cooldown?: Cooldown | undefined = new Cooldown(1)
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this)]
     }
     
     public upgrade1(): void {
@@ -28,6 +28,7 @@ export default class Experience extends CooldownGodUpgrade{
         if(this.cooldown.isFinished && this.playerState){
             this.cooldown.reset()
             this.playerState.xp += (this.playerState.stat.expRate + 1) * this.expGain
+            this.gameManager?.getPlayerManager().checkPlayerCanLevel(this.playerState)
         }
     }
 }

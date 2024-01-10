@@ -86,6 +86,9 @@ export default class GameManager {
     // ------ TileMap/chunkmap -------
     private tileMapManager?: TilemapManager
 
+    // ------ Mercahnt ---------
+    private merchant?: Merchant
+
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
         this.gameRoom = room;
@@ -363,6 +366,10 @@ export default class GameManager {
         this.gameRoom.onMessage("updateTimer", (time) => {
             this.updateTimer(time)
         })
+
+        this.gameRoom.onMessage("openMerchant", ()=>{
+            if(this.merchant) this.merchant.isOpen = true
+        })
     }
 
     private initializeClientSidePrediction() {
@@ -607,6 +614,7 @@ export default class GameManager {
 
     private addMerchant(merchantState: any, key: string): Merchant {
         let obj = new Merchant(this.scene, merchantState)
+        this.merchant = obj
         this.scene.add.existing(obj)
         this.addListenersToGameObject(obj, merchantState)
         return obj
@@ -1002,10 +1010,16 @@ export default class GameManager {
             })
         })
         
-        EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
-            title: `Merchant`,
-            items: itemList,
-        })
+        // TODO could prevent the popup from popping up again if there is no change in the itemlist and it is already popped up
+        if(this.merchant && this.merchant.isOpen){
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+                title: `Merchant`,
+                items: itemList,
+                onClose: () => {
+                    if(this.merchant) this.merchant.isOpen = false
+                }
+            })
+        }
     }
 
     /** TODO: Make this method connect with a Forge UI instead of the weapon artifact one. 

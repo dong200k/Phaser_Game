@@ -15,7 +15,7 @@ export default class Knowledge extends CooldownGodUpgrade{
     protected cooldown?: Cooldown | undefined = new Cooldown(2)
     protected initialLevel = 0
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this)]
     }
     
     public upgrade1(): void {

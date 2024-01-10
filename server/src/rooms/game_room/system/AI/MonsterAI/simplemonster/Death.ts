@@ -36,6 +36,7 @@ export default class Death extends StateNode {
             duration: this.defaultDeathTimer
         });
         // monster.sound.playSoundEffect("player_death");
+        stateMachine.spawnChest()
     }
 
     public onExit(): void {

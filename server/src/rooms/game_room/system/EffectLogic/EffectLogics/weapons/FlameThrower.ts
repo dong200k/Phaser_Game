@@ -23,6 +23,7 @@ export default class FlameThrower extends WeaponEffect{
     private firstUse = true
     private playerState!: Player
     private gameManager!: GameManager
+    protected attackSound: string = "flame_thrower"
 
     protected applyStatChange(playerState: Player, gameManager: GameManager): void {
         let statEffect = EffectFactory.createStatEffect({armor: -0.05 * playerState.stat.armor})

@@ -10,6 +10,7 @@ export default class HeartSacrifice extends EffectLogic{
         let newHp = entity.stat.hp > newMaxHp? newMaxHp : entity.stat.hp
         entity.stat.maxHp = newMaxHp
         entity.stat.hp = newHp
+        entity.stat.cooldownReduction += 0.5
         // let statEffect = EffectFactory.createStatEffect({hp: newHp, maxHp: newMaxHp, cooldownReduction: 0.5})
     }
 }

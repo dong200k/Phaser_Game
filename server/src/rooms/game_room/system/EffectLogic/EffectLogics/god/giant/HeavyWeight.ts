@@ -18,16 +18,22 @@ export default class HeavyWeight extends GodUpgrade{
     private speedChange = 0.5
     private attackSpeedChange = 0.01
     private damageChange = 0.02
+    private originalSpeed = 0
+    private originalAttackSpeed = 0
+    private minAttackSpeed = 0.1
+    private minSpeed = 0.1
     public useEffect(playerState: Player, gameManager: GameManager, tree: WeaponUpgradeTree, playerBody: Body): void {
         if(this.firstTime){
             this.firstTime = false
             this.gameManager = gameManager
             this.playerState = playerState
+            this.originalAttackSpeed = playerState.stat.attackSpeed
+            this.originalSpeed = playerState.stat.speed
         }
     }
 
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1, this.upgrade1])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this), this.upgrade1.bind(this)]
     }
 
     public update(deltaT: number): void {
@@ -37,10 +43,12 @@ export default class HeavyWeight extends GodUpgrade{
             let bonusCount = Math.floor((this.playerState.stat.maxHp + this.playerState.stat.armor)/10)
             let diff = bonusCount - this.bonusCount
             if(diff > 0) {
-                let maxDiffForSpeed = (this.playerState.stat.attackSpeed * 0.9)/this.speedChange
-                let maxDiffForattackSpeed = (this.playerState.stat.attackSpeed * 0.9)/this.attackSpeedChange
+                let maxDiffForSpeed = (this.playerState.stat.speed - this.minSpeed * this.originalSpeed)/this.speedChange
+                let maxDiffForattackSpeed = (this.playerState.stat.attackSpeed - this.minAttackSpeed * this.originalAttackSpeed)/this.attackSpeedChange
                 diff = Math.min(maxDiffForSpeed, maxDiffForattackSpeed, diff)
+                if(diff < 0) diff = 0
             }
+            console.log(diff)
             this.bonusCount += diff
             let speedChange = -diff * this.speedChange
             let damageChange = diff * this.damageChange

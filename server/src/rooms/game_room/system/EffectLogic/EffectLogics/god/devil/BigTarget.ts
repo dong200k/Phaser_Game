@@ -10,6 +10,7 @@ export default class BigTarget extends EffectLogic{
         let newMaxHp = entity.stat.maxHp * 2
         entity.stat.maxHp = newMaxHp
         entity.stat.hp += newMaxHp
+        entity.stat.extraDamageTakenPercent += 1
         // let statEffect = EffectFactory.createStatEffect({hp: newMaxHp, maxHp: newMaxHp, extraDamageTakenPercent: 1})
         // EffectManager.addEffectsTo(entity, statEffect)
     }

@@ -16,7 +16,7 @@ export default class BloodNova extends CooldownGodUpgrade{
     protected attackPoolType = "blood_nova"
     protected projectileSprite = "blood_nova"
     protected activeRange?: number = undefined
-    protected attackSound = ""
+    protected attackSound = "blood_nova"
     protected activeTime?: number = undefined
     protected timeBetweenProjectiles = 0
     protected angleBetweenAttacks = 15
@@ -25,9 +25,11 @@ export default class BloodNova extends CooldownGodUpgrade{
     protected piercing: number = -1
     protected duration: number = 2
     protected lifeSteal = 0.1
+    protected width: number = 220
+    protected height: number = 200
 
     public initUpgradeFunctions(): void {
-        this.upgradeFunctions.concat([this.upgrade1, this.upgrade2, this.upgrade3, this.upgrade4, this.upgrade5])
+        this.upgradeFunctions = [this.upgrade1.bind(this), this.upgrade2.bind(this), this.upgrade3.bind(this), this.upgrade4.bind(this), this.upgrade5.bind(this)]
     }
 
     protected useSpecial(playerState: Player, gameManager: GameManager): void {
