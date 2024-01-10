@@ -9,7 +9,7 @@ import Wave from "../../schemas/dungeon/wave/Wave"
 import DungeonEvent from "../../schemas/dungeon/DungeonEvent"
 import AIFactory from "../AI/AIFactory"
 import FileUtil from "../../../../util/FileUtil"
-import { IDungeon, IDungeonWave, TiledJSON } from "../interfaces"
+import { AABB, IDungeon, IDungeonWave, TiledJSON, Vector2 } from "../interfaces"
 import Tilemap from "../../schemas/dungeon/tilemap/Tilemap"
 import Layer from "../../schemas/dungeon/tilemap/Layer"
 import MathUtil from "../../../../util/MathUtil"
@@ -20,6 +20,8 @@ import DatabaseManager from "../Database/DatabaseManager"
 import Entity from "../../schemas/gameobjs/Entity"
 import SafeWave from "../../schemas/dungeon/wave/SafeWave"
 import TutorialDungeon from "../../schemas/dungeon/TutorialDungeon"
+import City from "../../schemas/dungeon/City"
+import TpEvent from "../../schemas/gameobjs/event/TpEvent"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -136,12 +138,21 @@ export default class DungeonManager {
         let dungeonFileLocation = dungeonData.serverJsonLocation;
         let dungeonName = dungeonData.name;
 
+        // if(dungeonName === "City") return;
+
         // Load the tiled json file ... 
         FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
             // ----- Fill in the dungeons information based on the json file ------
             let newDungeon: Dungeon;
             if(dungeonName === "Tutorial Dungeon") {
                 newDungeon = new TutorialDungeon(this.gameManager, dungeonName);
+            } else if(dungeonName === "City") {
+                let newCity = new City(this.gameManager);
+                newDungeon = newCity; //A city is coded as a subclass of Dungeon.
+
+                this.setCityTpZones(newCity, tiled);
+
+                this.addTpZonesToGame(newCity);
             } else {
                 newDungeon = new Dungeon(this.gameManager, dungeonName);
             }
@@ -157,13 +168,6 @@ export default class DungeonManager {
 
             // Make the obstables collidable by adding them to matter.
             this.addObstaclesToMatterAlgo(newTilemap);
-            // this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.matterBodies, newTilemap);
-            
-            // Waves
-            // let wave = this.createNewWave();
-            // wave.setAgressionLevel(1);
-            // wave.addMonster("Tiny Zombie", 1);
-            // newDungeon.addWave(wave);
 
             // Load wave from dungeon data.
             this.createWavesFromData(newDungeon, dungeonData);
@@ -575,6 +579,62 @@ export default class DungeonManager {
             if(obj instanceof Monster && obj.active) {
                 obj.setAggroTarget(aggroTarget);
             } 
+        })
+    }
+
+    private setCityTpZones(city: City, data: TiledJSON) {
+        let tpZones = city.getTpZones();
+        data.layers.forEach((value) => {
+            if(value.type === "objectgroup" && value.name === "Events") {
+                value.objects.forEach((tpObject) => {
+                    if(tpObject.type === "tp_start" || tpObject.type === "tp_end") {
+                        // Get the tp_id.
+                        let id: number = -1;
+                        tpObject.properties.forEach((property) => {
+                            if(property.name === "tp_id") {
+                                id = property.value;
+                            }
+                        })
+                        if(id !== -1) {
+                            let tpEnd: Vector2 = {x: 0, y: 0};
+                            let tpStart: AABB = {x: 0, y: 0, width: 1, height: 1};
+                            if(tpObject.type === "tp_start") {
+                                tpStart.x = tpObject.x + tpObject.width / 2;
+                                tpStart.y = tpObject.y + tpObject.height / 2;
+                                tpStart.width = tpObject.width;
+                                tpStart.height = tpObject.height;
+                            }
+                            else if(tpObject.type === "tp_end") {
+                                tpEnd.x = tpObject.x;
+                                tpEnd.y = tpObject.y;
+                            }
+
+                            if(tpZones[id] === undefined) {
+                                tpZones[id] = {
+                                    tp_end: tpEnd,
+                                    tp_start: tpStart,
+                                    tp_id: id,
+                                }
+                            } else {
+                                if(tpObject.type === "tp_end") {
+                                    tpZones[id].tp_end = tpEnd;
+                                } else if(tpObject.type === "tp_start") {
+                                    tpZones[id].tp_start = tpStart;
+                                }
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    }
+
+    private addTpZonesToGame(city: City) {
+        let tpZones = city.getTpZones();
+        tpZones.forEach((tpZone) => {
+            let tpEvent = new TpEvent(this.gameManager, tpZone);
+            this.gameManager.addGameObject(tpEvent.id, tpEvent, tpEvent.getBody());
+            console.log(tpEvent.getBody().bounds);
         })
     }
 }

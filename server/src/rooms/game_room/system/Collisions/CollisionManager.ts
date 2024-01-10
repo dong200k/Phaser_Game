@@ -16,6 +16,7 @@ import Chest from "../../schemas/gameobjs/chest/Chest";
 import Forge from "../../schemas/gameobjs/Forge";
 import Merchant from "../../schemas/gameobjs/Merchant";
 import Fountain from "../../schemas/gameobjs/Fountain";
+import GameEvent from "../../schemas/gameobjs/event/GameEvent";
 
 export default class CollisionManager{
     private gameManager: GameManager
@@ -64,6 +65,8 @@ export default class CollisionManager{
         // Fountain Collisions
         {typeA: "PLAYER", typeB: "FOUNTAIN", resolve: this.resolveFountainCollision},
 
+        // Event Collisions
+        {typeA: "PLAYER", typeB: "EVENT", resolve: this.resolveEventCollision},
 
         // **TODO** Add more 
     ]
@@ -276,5 +279,9 @@ export default class CollisionManager{
 
     public resolveFountainCollision(player: Player, fountain: Fountain, bodyA: Matter.Body, bodyB: Matter.Body) {
         player.gameManager.getFountainManager().getFountain()?.handleInteractFountain(player, fountain);
+    }
+
+    public resolveEventCollision(player: Player, event: GameEvent, bodyA: Matter.Body, bodyB: Matter.Body) {
+        event.handleEvent(player);
     }
 }

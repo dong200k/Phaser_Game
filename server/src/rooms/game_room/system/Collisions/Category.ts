@@ -34,7 +34,10 @@ export let Categories = Object.freeze({
     'MERCHANT': 0x4000,
 
     // Fountain
-    'FOUNTAIN': 0x8000
+    'FOUNTAIN': 0x8000,
+
+    // Event
+    'EVENT': 0x10000,
 })
 
 const categoryTypes: {[index: number]: CategoryType} = {}

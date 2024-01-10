@@ -3,6 +3,7 @@ import GameObject from './gameobjs/GameObject';
 import Tilemap from './dungeon/tilemap/Tilemap';
 import Dungeon from './dungeon/Dungeon';
 import ReconciliationInfo from './ReconciliationInfo';
+import City from './dungeon/City';
 
 export default class State extends Schema {
     @type({ map: GameObject })
@@ -14,6 +15,9 @@ export default class State extends Schema {
 
     @type(Dungeon)
     dungeon:Dungeon|null = null;
+
+    @type(City)
+    city:City|null = null;
 
     ownerSessionId = "";
 

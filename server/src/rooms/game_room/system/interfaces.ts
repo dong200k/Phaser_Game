@@ -20,6 +20,21 @@ export interface Vector2 {
     y: number;
 }
 
+export interface AABB {
+    /** Center x of the AABB. */
+    x: number;
+    /** Center y of the AABB. */
+    y: number;
+    width: number;
+    height: number;
+}
+
+interface TiledTpEventProperty {
+    name: string;
+    type: string;
+    value: number;
+}
+
 // ------------ interfaces for the Tiled json file -------------- //
 interface TiledObjectJSON {
     height: number;
@@ -32,6 +47,7 @@ interface TiledObjectJSON {
     width: number;
     x: number;
     y: number;
+    properties: (TiledTpEventProperty)[];
 }
 
 interface TiledLayerJSON {
@@ -278,3 +294,11 @@ export interface DialogData {
     defaultTextSpeed?: number;
     dialogItems?: DialogItem[];
 }
+
+/** TpZone is used to store data used for teleporting players in the map. */
+export interface TpZone {
+    tp_id: number;
+    tp_start: AABB;
+    tp_end: Vector2;
+}
+

@@ -25,6 +25,7 @@ import ForgeManager from './StateManagers/ForgeManager';
 import MerchantManager from './StateManagers/MerchantManager';
 import MerchantItemFactory from '../schemas/merchant_items/MerchantItemFactory';
 import FountainManager from './StateManagers/FountainManager';
+import CityManager from './StateManagers/CityManager';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -45,6 +46,7 @@ export default class GameManager {
     private merchantManager!: MerchantManager;
     private merchantItemFactory!: MerchantItemFactory
     private fountainManager!: FountainManager
+    private cityManager!: CityManager;
 
     // Data
     public matterBodies: Map<string, Matter.Body> = new Map();
@@ -96,6 +98,7 @@ export default class GameManager {
         this.merchantManager = new MerchantManager(this)
         this.merchantItemFactory = new MerchantItemFactory(this)
         this.fountainManager = new FountainManager(this)
+        // this.cityManager = new CityManager(this);
 
         this.initUpdateEvents();
         this.initCollisionEvent();
@@ -277,6 +280,10 @@ export default class GameManager {
 
     public getFountainManager() {
         return this.fountainManager
+    }
+
+    public getCityManager() {
+        return this.cityManager;
     }
 
     /** Gets the EventEmitter for this GameManager. Used to send events throughout this game. */

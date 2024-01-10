@@ -30,6 +30,7 @@ export default class MaskManager {
         this.setCollideable("PLAYER", "FORGE")
         this.setCollideable("PLAYER", "MERCHANT")
         this.setCollideable("PLAYER", "FOUNTAIN")
+        this.setCollideable("PLAYER", "EVENT")
     }
 
     private initMonsterMasks(){
