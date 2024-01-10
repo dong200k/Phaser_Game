@@ -22,7 +22,7 @@ export default class Combo2 extends Combo1 {
         let offsetY = -5
         if(this.mouseX - this.player.getBody().position.x < 0) offsetX *= -1
 
-        console.log(`berserker combo 2 player, ${this.player}`)
+        // console.log(`berserker combo 2 player, ${this.player}`)
         let projectileConfig: IProjectileConfig = {
             sprite: "invisible",
             stat: this.player.stat,

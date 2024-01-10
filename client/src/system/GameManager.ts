@@ -73,6 +73,7 @@ export default class GameManager {
     // ------- fixed tick --------
     private timePerTick = 16.33; // 30 ticks per second.
     private timeTillNextTick: number;
+    private ticksSoFar = 0
 
     private csp!: ClientSidePrediction;
 
@@ -88,6 +89,9 @@ export default class GameManager {
 
     // ------ Mercahnt ---------
     private merchant?: Merchant
+
+    /** Game object types that are interpolated by csp */
+    private gameObjectTypesInterpolated = new Set(["Player", "InvisObstacle"])
 
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
@@ -108,6 +112,14 @@ export default class GameManager {
         return new Date().getTime()
     }
 
+    private floatTextUpdateTime = 0
+    private fixedTickUpdateTime = 0
+    private totalTime = 0
+    private interpolateTime = 0
+    private otherTime = 0
+    private timeSoFar = 0
+    private totalTime2 = 0
+
     /**
      * Updates the gameManager.
      * @param time The current time in ms.
@@ -116,18 +128,62 @@ export default class GameManager {
     public update(time: number, deltaT: number) {
         if(this.paused) return
         this.timeTillNextTick -= deltaT;
+        let timeConsumed = 0
         while(this.timeTillNextTick <= 0) {
             this.timeTillNextTick += this.timePerTick;
+            let start = Date.now()
+
             this.fixedTick(time, this.timePerTick);
+            let fixedTickTime = Date.now() - start
+            this.fixedTickUpdateTime += fixedTickTime
+            timeConsumed += fixedTickTime
+
+            this.interpolateGameObjects();
+            let interpolateTime = Date.now() - fixedTickTime
+            this.interpolateTime += interpolateTime
+            timeConsumed += interpolateTime
+
+            // this.updateAuraPosition();
+            // this.renderFollowPlayerObjects();
+
+            this.updateFloatingTexts();
+            let updateFloatingTextTime = Date.now() - interpolateTime
+            this.floatTextUpdateTime += updateFloatingTextTime
+            timeConsumed += updateFloatingTextTime
+
+            this.syncGameObjectVisibility();
+            this.syncGameObjectActive();
+            this.syncGameObjectAlpha();
+            let otherTime = Date.now() - start
+            timeConsumed += otherTime
+            otherTime += otherTime
+
+            this.ticksSoFar++
+
         }
-        this.interpolateGameObjects();
-        this.syncGameObjectVisibility();
-        this.syncGameObjectActive();
-        this.syncGameObjectAlpha();
-        this.updateFloatingTexts();
-        this.renderFollowPlayerObjects();
-        this.updateAuraPosition();
-        this.statusIconManager.update(deltaT / 1000);
+
+        // let start = Date.now()
+        // if(this.ticksSoFar >= 5){
+        //     this.ticksSoFar = 0
+        //     this.syncGameObjectVisibility();
+        //     this.syncGameObjectActive();
+        //     this.syncGameObjectAlpha();
+        //     this.statusIconManager.update(deltaT / 1000);
+        //     let otherTime = Date.now() - start
+        //     timeConsumed += otherTime
+        // }
+
+        this.timeSoFar += deltaT
+        this.totalTime2 += deltaT
+        if(this.timeSoFar > 2000){
+            this.timeSoFar = 0
+            console.log(`interpolate ratio: ${this.interpolateTime/this.totalTime2}`)
+            console.log(`fixedtick ratio: ${this.fixedTickUpdateTime/this.totalTime2}`)
+            console.log(`floating text ratio: ${this.floatTextUpdateTime/this.totalTime2}`)
+            console.log(`other ratio: ${this.otherTime/this.totalTime2}`)
+        }
+        let timeLoss = (deltaT - timeConsumed)/1000
+        if(timeLoss > 0) console.log(`time loss: ${timeLoss} s`)
     }
 
     public updateAuraPosition() {
@@ -215,18 +271,24 @@ export default class GameManager {
 
     /**
      * Updates the gameObject's position to be closer to the server's gameObject position.
-     * If the gameObject is not visible then just teleport it.
+     * If the gameObject is not visible then just tele  port it.
      */
     private interpolateGameObjects() {
         this.gameObjects?.forEach((obj) => {
+            let serverX = obj.serverX + obj.positionOffsetX
+            let serverY = obj.serverY + obj.positionOffsetY
+            // If not inside camera dont interpolate
+            if(!this.scene.cameras.main.worldView.contains(serverX, serverY)) return
+
             // If distance is too far dont interpolate
-            let distance = MathUtil.distance(obj.x, obj.y, obj.positionOffsetX + obj.serverX, obj.positionOffsetY + obj.serverY)
-            if(obj.visible && distance < 400) {
-                obj.setX(Phaser.Math.Linear(obj.x, obj.serverX + obj.positionOffsetX, .2));
-                obj.setY(Phaser.Math.Linear(obj.y, obj.serverY + obj.positionOffsetY, .2));
+            let distance = MathUtil.distanceSquared(obj.x, obj.y, obj.positionOffsetX + obj.serverX, obj.positionOffsetY + obj.serverY)
+            if(obj.visible && distance < 1600) {
+            // if(obj.visible){
+                obj.setX(Phaser.Math.Linear(obj.x, serverX, .2));
+                obj.setY(Phaser.Math.Linear(obj.y, serverY, .2));
             } else {
-                obj.setX(obj.serverX + obj.positionOffsetX);
-                obj.setY(obj.serverY + obj.positionOffsetY);
+                obj.setX(serverX);
+                obj.setY(serverY);
             }
         })
     }
@@ -303,10 +365,10 @@ export default class GameManager {
         })
 
         /** wasd keys */
-        this.upKey?.on('down', this.onWASDPress("w"))
-        this.downKey?.on('down', this.onWASDPress("s"))
-        this.leftKey?.on('down', this.onWASDPress("a"))
-        this.rightKey?.on('down', this.onWASDPress("d"))
+        // this.upKey?.on('down', this.onWASDPress("w"))
+        // this.downKey?.on('down', this.onWASDPress("s"))
+        // this.leftKey?.on('down', this.onWASDPress("a"))
+        // this.rightKey?.on('down', this.onWASDPress("d"))
 
         /** shift key */
         let shiftKey = this.scene.input.keyboard?.addKey("SHIFT")
@@ -453,9 +515,8 @@ export default class GameManager {
                 break;
         }
         if(newGameObject) {
-            // newGameObject.setServerState(gameObj);
             this.gameObjects.push(newGameObject);
-            this.csp.addGameObject(newGameObject);
+            if(this.gameObjectTypesInterpolated.has(gameObj.type)) this.csp.addGameObject(newGameObject);
         }
     }
 

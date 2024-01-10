@@ -27,7 +27,7 @@ export default class MotherSlimeDeath extends Death {
     private spawnSlowProjectile(entity: Entity){
         let stateMachine = this.getStateMachine<MotherSlimeController>();
         let monster = stateMachine.getMonster();
-        console.log(`x: ${monster.x}, y: ${monster.y}`)
+        // console.log(`x: ${monster.x}, y: ${monster.y}`)
 
         let projectileConfig: IProjectileConfig;
         projectileConfig = {

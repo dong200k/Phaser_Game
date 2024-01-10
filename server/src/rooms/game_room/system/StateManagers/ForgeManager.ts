@@ -199,7 +199,7 @@ export default class ForgeManager{
                 // Remove item from list of upgrades
                 let upgradeList = forgeUpgrade.upgradeItems
                 if(upgradeList) forgeUpgrade.upgradeItems = upgradeList.filter(upgradeItem=> !upgradeItem.isEqual(item))
-                console.log('length after picking upgraded: ', forgeUpgrade.upgradeItems.length)
+                // console.log('length after picking upgraded: ', forgeUpgrade.upgradeItems.length)
                 // Reduce remaining chances
                 forgeUpgrade.chancesRemaining -= 1
 

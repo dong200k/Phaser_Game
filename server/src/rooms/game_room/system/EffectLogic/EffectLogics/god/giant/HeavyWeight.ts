@@ -48,7 +48,7 @@ export default class HeavyWeight extends GodUpgrade{
                 diff = Math.min(maxDiffForSpeed, maxDiffForattackSpeed, diff)
                 if(diff < 0) diff = 0
             }
-            console.log(diff)
+            // console.log(diff)
             this.bonusCount += diff
             let speedChange = -diff * this.speedChange
             let damageChange = diff * this.damageChange

@@ -37,7 +37,7 @@ export default class Attack extends StateNode {
         // Stop movement
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
         monster.animation.playAnimation("attack")
-        console.log("necromancer attack")
+        // console.log("necromancer attack")
         monster.sound.playSoundEffect("stunned")
     }
 

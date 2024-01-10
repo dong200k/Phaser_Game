@@ -56,6 +56,7 @@ export default class Dungeon extends Schema {
     /** False if a wave is running. True otherwise.*/
     waveEnded: boolean;
     private gameManager: GameManager;
+    private spawnLimit = 500
     
 
     constructor(gameManager: GameManager, dungeonName: string) {
@@ -84,7 +85,7 @@ export default class Dungeon extends Schema {
      */
     public update(deltaT: number) {
         if(!this.waveEnded && this.currentWave < this.waves.length) {
-            if(this.waves[this.currentWave] instanceof Wave && this.getActiveMonsterCount() >= 200   ) return
+            if(this.waves[this.currentWave] instanceof Wave && this.getActiveMonsterCount() >= this.spawnLimit) return
             if(this.waves[this.currentWave].update(deltaT)) {
                 this.waveEnded = true;
                 // Spawn a chest on the map in a random location.

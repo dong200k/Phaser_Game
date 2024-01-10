@@ -80,7 +80,7 @@ export default class BloodBullet extends CooldownGodUpgrade{
     }
 
     private upgrade1(){
-        console.log("blood bullet upgrade 1")
+        // console.log("blood bullet upgrade 1")
         this.piercing+=2
         this.amount++
     }

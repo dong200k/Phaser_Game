@@ -29,7 +29,7 @@ export default class Teleport extends StateNode {
         })
         let body = monster.getBody();
         if(body) Matter.Body.setVelocity(body, {x: 0, y: 0});
-        console.log("necromancer teleport")
+        // console.log("necromancer teleport")
     }
     public onExit(): void {
         this.attackTriggered = false
@@ -38,7 +38,7 @@ export default class Teleport extends StateNode {
         let stateMachine = (this.getStateMachine() as NecromancerController);
         let monster = stateMachine.getMonster();
         let aggroTarget = stateMachine.getPlayerManager().getNearestAlivePlayer(monster.x, monster.y);
-        console.log(`teleport aggro target is undefined: ${aggroTarget === undefined}`)
+        // console.log(`teleport aggro target is undefined: ${aggroTarget === undefined}`)
         return aggroTarget
     }
     protected teleport(){

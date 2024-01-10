@@ -34,11 +34,11 @@ export default class GodUpgrade extends SpecialEffectLogic{
     }
 
     public upgrade(){
-        console.log(`upgrading: ${this.effectLogicId}`)
+        // console.log(`upgrading: ${this.effectLogicId}`)
         let upgradeFunction = this.upgradeFunctions[this.currentUpgrade]
         if(upgradeFunction) {
             upgradeFunction()
-            console.log(`upgrading: ${this.effectLogicId} stage 2`)
+            // console.log(`upgrading: ${this.effectLogicId} stage 2`)
 
         }
         this.currentUpgrade++

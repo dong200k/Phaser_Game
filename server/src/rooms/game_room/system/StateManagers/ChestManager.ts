@@ -77,7 +77,7 @@ export default class ChestManager {
             let body = chest.getBody() as Matter.Body;
             this.gameManager.addGameObject(chest.id, chest, body);
         }
-        console.log("Spawning chest")
+        // ("Spawning chest")
         return {chest: chest, body: chest.getBody() as Matter.Body};
     }
 

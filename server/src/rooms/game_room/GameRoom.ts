@@ -124,7 +124,7 @@ export default class GameRoom extends Room<State> {
             if(this.timeSoFar >= 2000) {
                 let fps = 1000 * this.ticksSoFar/this.timeSoFar
                 if(fps < 45) console.log(`fps less than 45`)
-                // if(this.timeSoFar>0) console.log(`fps: ${fps}`)
+                if(this.timeSoFar>0) console.log(`fps: ${fps}`)
                 this.timeSoFar = 0
                 this.ticksSoFar = 0
             }

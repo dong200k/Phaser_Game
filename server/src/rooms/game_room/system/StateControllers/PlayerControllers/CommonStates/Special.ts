@@ -100,7 +100,7 @@ export default class Special extends StateNode {
         if(!this.triggered && this.timePassed >= this.triggerPercent * this.attackDuration) {
             this.triggered = true;
             // Trigger skills.
-            console.log("trigger skill")
+            // console.log("trigger skill")
             EffectManager.useTriggerEffectsOn(this.player, "player skill", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY})
         }
 

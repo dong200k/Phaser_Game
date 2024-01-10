@@ -20,7 +20,7 @@ export default class Idle extends StateNode {
         })
         let body = monster.getBody();
         if(body) Matter.Body.setVelocity(body, {x: 0, y: 0});
-        console.log("necromancer idle")
+        // console.log("necromancer idle")
 
     }
     public onExit(): void {
