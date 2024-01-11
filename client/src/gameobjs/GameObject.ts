@@ -17,6 +17,8 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
     
     sprite?: Phaser.GameObjects.Sprite
 
+    gameObjectType?: string
+
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, gameObjectState: GameObjectState) {
         super(scene, x, y, texture);
         this.serverX = x;
@@ -27,6 +29,8 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
         this.serverActive = gameObjectState.active;
         this.gameObjectState = gameObjectState;
         this.alphaValue = gameObjectState.alpha
+        // this.type = gameObjectState.type
+        this.gameObjectType = gameObjectState.type
 
         this.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
         // this.scale = gameObjectState.width/this.width

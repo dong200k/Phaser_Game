@@ -7,6 +7,7 @@ import SafeWave from "./wave/SafeWave";
 import Monster from "../gameobjs/monsters/Monster";
 import ChunkMap from "./Map/ChunkMap";
 import Player from "../gameobjs/Player";
+import TimedWave from "./wave/TimedWave";
 
 export class SpawnPoint extends Schema {
     @type("number") x: number;
@@ -56,7 +57,7 @@ export default class Dungeon extends Schema {
     /** False if a wave is running. True otherwise.*/
     waveEnded: boolean;
     private gameManager: GameManager;
-    private spawnLimit = 300
+    private spawnLimit = 100
     
 
     constructor(gameManager: GameManager, dungeonName: string) {
@@ -268,5 +269,15 @@ export default class Dungeon extends Schema {
         })
 
         return count
+    }
+
+    public endWave(){
+        let wave = this.waves[this.currentWave]
+        if(wave instanceof SafeWave || wave instanceof TimedWave){
+            wave.onWaveEnd()
+        }
+
+        this.currentWave++;
+        this.waveEnded = false;
     }
 }

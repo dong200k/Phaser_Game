@@ -946,4 +946,14 @@ export default class PlayerManager {
 
         return newUpgrades
     }
+
+    public getAllPlayers(){
+        let players: Player[] = []
+        this.gameManager.gameObjects.forEach(obj=>{
+            if(obj instanceof Player) {
+                players.push(obj)
+            }
+        })
+        return players
+    }
 }

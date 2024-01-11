@@ -21,7 +21,6 @@ export default class TimedWave extends Wave{
     }
 
     public update(deltaT: number): boolean {
-        super.update(deltaT)
         if(!this.waveStarted){
             this.onWaveStart()
             this.waveStarted = true
@@ -36,7 +35,7 @@ export default class TimedWave extends Wave{
         let dungeon = this.gameManager.getDungeonManager().getDungeon()
         if(dungeon) dungeon.safeWaveTime = this.waveDurationSeconds - this.timeSoFar
 
-        return false
+        return super.update(deltaT)
     }
 
     /**

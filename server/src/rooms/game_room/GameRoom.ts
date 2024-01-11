@@ -5,6 +5,7 @@ import ReconciliationInfo from "./schemas/ReconciliationInfo";
 import globalEventEmitter from "../../util/EventUtil";
 import { IncomingMessage } from "http";
 import PlayerService from "../../services/PlayerService";
+import Matter from "matter-js";
 
 export interface GameRoomOptions {
     /** The name of the selected dungeon. */
@@ -33,6 +34,8 @@ export default class GameRoom extends Room<State> {
 
     // ------- client load queue -------
     private waitingClients: WaitingClient[] = [];
+
+    private ownerId: string = ""
 
     onCreate(options: GameRoomOptions) {
         console.log(`Created: Game room ${this.roomId}`);
@@ -112,6 +115,66 @@ export default class GameRoom extends Room<State> {
             let {playerState} = this.gameManager.getPlayerManager().getPlayerStateAndBody(client.sessionId)
             playerState.playerController.toggleAutoAttack()
         })
+
+        this.onMessage("togglePause", (client, msg) => {
+            if(client.sessionId !== this.ownerId) return
+            if(this.gameManager.isPaused()){
+                this.gameManager.forceUnpause()
+            }else{
+                this.gameManager.pauseGame(client.sessionId)
+            }
+        })
+
+        this.onMessage("teleportPlayers", (client, msg) => {
+            if(client.sessionId !== this.ownerId) return
+            let player1 = this.gameManager.getPlayerManager().getPlayerWithId(client.sessionId)
+            if(player1) {
+                let players = this.gameManager.getPlayerManager().getAllPlayers()
+                let position = {x: player1.x, y: player1.y}
+                players.forEach(player=>{
+                    if(player.getId() !== client.sessionId){
+                        Matter.Body.setPosition(player.getBody(), position)
+                    }
+                })
+            }
+        })
+
+        this.onMessage("nextWave", (client, msg) => {
+            if(client.sessionId !== this.ownerId) return
+            console.log("next wave")
+            this.gameManager.getDungeonManager().getDungeon()?.endWave()
+        })
+
+        this.onMessage("reviveAllPlayers", (client, msg) => {
+            if(client.sessionId !== this.ownerId) return
+            let player1 = this.gameManager.getPlayerManager().getPlayerWithId(client.sessionId)
+            if(player1) {
+                let players = this.gameManager.getPlayerManager().getAllPlayers()
+                let position = {x: player1.x, y: player1.y}
+                players.forEach(player=>{
+                    if(player.stat.hp <= 0){
+                        player.stat.hp = player.stat.maxHp
+                        player.playerController.changeState("Idle")
+                        player.sound.playSoundEffect("fountain_heal")
+                        let client = this.clients.find(client=>client.sessionId === player.getId())
+                        if(client) client.send("revive")
+                    }
+                })
+            }
+        })
+
+        this.onMessage("healAllPlayers", (client, msg) => {
+            if(client.sessionId !== this.ownerId) return
+            let player1 = this.gameManager.getPlayerManager().getPlayerWithId(client.sessionId)
+            if(player1) {
+                let players = this.gameManager.getPlayerManager().getAllPlayers()
+                let position = {x: player1.x, y: player1.y}
+                players.forEach(player=>{
+                    player.stat.hp = player.stat.maxHp
+                    player.sound.playSoundEffect("fountain_heal")
+                })
+            }
+        })
     }
 
     private timeSoFar = 0
@@ -173,6 +236,9 @@ export default class GameRoom extends Room<State> {
                     // Client is loading. Very nice.
                 } else if(waitingClient.state === "ready") {
                     let options = waitingClient.options;
+                    if(this.gameManager?.playerCount() === 0) {
+                        this.ownerId = client.sessionId
+                    }
                     // Add a new player to the room state. The first player is the owner of the room.
                     this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.playerData, this.gameManager, options.roleId, options.onlineMode).then(() => {
                         this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));

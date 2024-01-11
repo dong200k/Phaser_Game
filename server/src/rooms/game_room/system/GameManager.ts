@@ -368,4 +368,8 @@ export default class GameManager {
     public getGameRoom() {
         return this.gameRoom
     }
+
+    public isPaused(){
+        return this.paused
+    }
 }

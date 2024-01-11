@@ -239,6 +239,12 @@ export default class GameManager {
         this.spectating = value;
     }
 
+    public stopSpectating() {
+        this.spectating = false
+        this.spectatingIdx = 0
+        if(this.player1) this.scene.cameras.main.startFollow(this.player1, false, 0.05);
+    }
+
     /** Changes the player that is being watched. */
     private rotateSpectateTarget() {
         console.log("Rotating spectating target.")
@@ -278,14 +284,14 @@ export default class GameManager {
             let serverX = obj.serverX + obj.positionOffsetX
             let serverY = obj.serverY + obj.positionOffsetY
             // If not inside camera dont interpolate
-            if(!this.scene.cameras.main.worldView.contains(serverX, serverY)) return
+            if(obj.gameObjectType !== "Player" && !this.scene.cameras.main.worldView.contains(serverX, serverY)) return
 
             // If distance is too far dont interpolate
             let distance = MathUtil.distanceSquared(obj.x, obj.y, obj.positionOffsetX + obj.serverX, obj.positionOffsetY + obj.serverY)
             if(obj.visible && distance < 1600) {
             // if(obj.visible){
-                obj.setX(Phaser.Math.Linear(obj.x, serverX, .5));
-                obj.setY(Phaser.Math.Linear(obj.y, serverY, .5));
+                obj.setX(Phaser.Math.Linear(obj.x, serverX, .2));
+                obj.setY(Phaser.Math.Linear(obj.y, serverY, .2));
             } else {
                 obj.setX(serverX);
                 obj.setY(serverY);
@@ -389,6 +395,31 @@ export default class GameManager {
         /** auto attack key */
         let qKey = this.scene.input.keyboard?.addKey("q")
         qKey?.on("down", ()=>this.sendToggleAutoAttack())
+
+        let g = this.scene.input.keyboard?.addKey("g")
+        g?.on("down", ()=>{
+            this.gameRoom.send("nextWave")
+        })
+
+        let t = this.scene.input.keyboard?.addKey("t")
+        t?.on("down", ()=>{
+            this.gameRoom.send("teleportPlayers")
+        })
+
+        let r = this.scene.input.keyboard?.addKey("r")
+        r?.on("down", ()=>{
+            this.gameRoom.send("reviveAllPlayers")
+        })
+
+        let h = this.scene.input.keyboard?.addKey("h")
+        h?.on("down", ()=>{
+            this.gameRoom.send("healAllPlayers")
+        })
+
+        let p = this.scene.input.keyboard?.addKey("p")
+        p?.on("down", ()=>{
+            this.gameRoom.send("togglePause")
+        })
     }
 
     /** Destroys the game manager and cleans up listeners.
@@ -443,6 +474,10 @@ export default class GameManager {
 
         this.gameRoom.onMessage("openMerchant", ()=>{
             if(this.merchant) this.merchant.isOpen = true
+        })
+
+        this.gameRoom.onMessage("revive", () => {
+            this.stopSpectating()
         })
     }
 

@@ -5,6 +5,7 @@ export const ARMOR_PEN_CAP = 1
 export const MAGIC_PEN_CAP = 1
 // export const ATTACK_SPEED_CAP = 5
 export const MINIMUM_MONSTER_ATTACK_COOLDOWN = 0.1
+export const MAX_COOLDOWN_REDUCTION = 0.5
 
 /**
  * 
@@ -177,7 +178,7 @@ export const getFinalArea = ({area}: Stat, baseArea: number)=>{
  */
 export const getTimeAfterCooldownReduction = ({cooldownReduction}: Stat, deltaT: number)=>{
     // allowed cooldownReduction range 0 - 0.9
-    let cappedReduction = Math.max(0, Math.min(0.9, cooldownReduction))
+    let cappedReduction = Math.max(0, Math.min(MAX_COOLDOWN_REDUCTION, cooldownReduction))
     return deltaT/(1 - cappedReduction)
 }
 
@@ -191,7 +192,7 @@ export const getTimeAfterCooldownReduction = ({cooldownReduction}: Stat, deltaT:
  */
 export const getRealTimeAfterCooldownReduction = ({cooldownReduction}: Stat, cooldown: number)=>{
     // allowed cooldownReduction range 0 - 0.9
-    let cappedReduction = Math.max(0, Math.min(0.9, cooldownReduction))
+    let cappedReduction = Math.max(0, Math.min(MAX_COOLDOWN_REDUCTION, cooldownReduction))
     return cooldown * (1 - cappedReduction)
 }
 
@@ -202,7 +203,7 @@ export const getRealTimeAfterCooldownReduction = ({cooldownReduction}: Stat, coo
  * @returns 
  */
 export const undoCooldownReduction = ({cooldownReduction}: Stat, deltaT: number)=>{
-    let cappedReduction = Math.max(0, Math.min(0.9, cooldownReduction))
+    let cappedReduction = Math.max(0, Math.min(MAX_COOLDOWN_REDUCTION, cooldownReduction))
     
     return deltaT*(1 - cappedReduction) 
 }

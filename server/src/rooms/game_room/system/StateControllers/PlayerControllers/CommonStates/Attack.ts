@@ -1,3 +1,5 @@
+import EffectFactory from "../../../../schemas/effects/EffectFactory";
+import SpeedMultiEffect from "../../../../schemas/effects/temp/SpeedMultiEffect";
 import Player from "../../../../schemas/gameobjs/Player";
 import Stat from "../../../../schemas/gameobjs/Stat";
 import Projectile from "../../../../schemas/projectiles/Projectile";
@@ -49,6 +51,8 @@ export default class Attack extends StateNode {
     protected mouseX: number = 0;
     protected mouseY: number = 0;
     protected animationKey = "1_atk"
+    protected slowFactor = 0.5
+    protected speedEffect?: SpeedMultiEffect
     /**
      * Initialize this attack with some values.
      * @param config The AttackConfig.
@@ -81,11 +85,14 @@ export default class Attack extends StateNode {
             flip: flip,
         });
 
+        this.speedEffect = EffectFactory.createSpeedMultiplierEffectTimed(this.slowFactor, this.attackDuration)
+        EffectManager.addEffectsTo(this.player, this.speedEffect)
         // console.log("Flip", flip);
     }
 
     public onExit(): void {
         this.player.canMove = true;
+        if(this.speedEffect) EffectManager.removeEffectFrom(this.player, this.speedEffect)
     }
 
     public update(deltaT: number): void {

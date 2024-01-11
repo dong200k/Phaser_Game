@@ -51,7 +51,7 @@ export default class WerewolfController extends MonsterController {
 
         if(this.monster.stat.hp < this.monster.stat.maxHp * 0.3 && !this.rageTriggered) {
             this.rageTriggered = true
-            let speedEffect = EffectFactory.createSpeedMultiplierEffectUntimed(2)
+            let speedEffect = EffectFactory.createSpeedMultiplierEffectUntimed(8)
             EffectManager.addEffectsTo(this.monster, speedEffect)
             let attackSpeedEffect = EffectFactory.createStatEffect({attackSpeed: 3})
             EffectManager.addEffectsTo(this.monster, attackSpeedEffect)
@@ -72,12 +72,15 @@ export default class WerewolfController extends MonsterController {
     }
 
     public isEnraged(){
+        if(this.monster.stat.hp > 0.3 * this.monster.stat.maxHp){
+            this.rageTriggered = false
+        }
         return this.rageTriggered
     }
 
-    public getDeathChestRarity(): ChestRarity | undefined {
-        let randomNum = Math.random()
-        if(randomNum>0.99) return "iron"
-        else if(randomNum > 0.95) return "wood"
-    }
+    // public getDeathChestRarity(): ChestRarity | undefined {
+    //     let randomNum = Math.random()
+    //     if(randomNum>0.99) return "iron"
+    //     else if(randomNum > 0.95) return "wood"
+    // }
 }
