@@ -29,11 +29,12 @@ export interface AABB {
     height: number;
 }
 
-interface TiledTpEventProperty {
+interface TiledProperty {
     name: string;
     type: string;
-    value: number;
+    value: any;
 }
+
 
 // ------------ interfaces for the Tiled json file -------------- //
 interface TiledObjectJSON {
@@ -47,7 +48,7 @@ interface TiledObjectJSON {
     width: number;
     x: number;
     y: number;
-    properties: (TiledTpEventProperty)[];
+    properties: (TiledProperty)[];
 }
 
 interface TiledLayerJSON {

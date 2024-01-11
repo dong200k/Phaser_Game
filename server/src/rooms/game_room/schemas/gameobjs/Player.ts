@@ -142,7 +142,9 @@ export default class Player extends Entity {
     // The PlayerController manages the player's dead/alive state.
     @type(PlayerController) playerController!: PlayerController;
 
-    @type("boolean") overwriteClientMoveFlip: boolean = false
+    @type("boolean") overwriteClientMoveFlip: boolean = false;
+
+    private dialogSeen: Set<string>;
 
     constructor(gameManager: GameManager, name: string, role?: string) {
         super(gameManager);
@@ -158,6 +160,7 @@ export default class Player extends Entity {
         this.skillTree = new StatTree<SkillData>(gameManager)
         // this.playerController = new PlayerController({player: this});
         this.setRole(role)
+        this.dialogSeen = new Set();
     }
 
     update(deltaT: number){
@@ -196,5 +199,15 @@ export default class Player extends Entity {
      */
     setOverwriteClientMoveFlip(value: boolean){
         this.overwriteClientMoveFlip = value
+    }
+
+    /**
+     * A set used to store all the dialogs that the player has seen. This
+     * is used to store tutorial text dialogs that the player has 
+     * already read.
+     * @returns A set.
+     */
+    public getDialogSeen() {
+        return this.dialogSeen;
     }
 }

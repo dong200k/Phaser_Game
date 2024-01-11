@@ -159,8 +159,8 @@
                  "type":"tp_start",
                  "visible":true,
                  "width":31.6364,
-                 "x":128.204222222222,
-                 "y":128.030666666667
+                 "x":128.204,
+                 "y":128.031
                 }, 
                 {
                  "height":0,
@@ -177,8 +177,8 @@
                  "type":"tp_end",
                  "visible":true,
                  "width":0,
-                 "x":1063.72909090909,
-                 "y":143.908909090909
+                 "x":1063.73,
+                 "y":143.909
                 }, 
                 {
                  "height":1,
@@ -229,8 +229,8 @@
                  "type":"tp_start",
                  "visible":true,
                  "width":32,
-                 "x":496.090909090909,
-                 "y":128.136363636364
+                 "x":496.091,
+                 "y":128.136
                 }, 
                 {
                  "height":0,
@@ -247,8 +247,8 @@
                  "type":"tp_end",
                  "visible":true,
                  "width":0,
-                 "x":1072.13636363636,
-                 "y":512.045454545455
+                 "x":1072.14,
+                 "y":512.045
                 }, 
                 {
                  "height":0.84375,
@@ -265,7 +265,7 @@
                  "visible":true,
                  "width":63.5,
                  "x":1040.5,
-                 "y":543.1875
+                 "y":543.188
                 }, 
                 {
                  "height":0,
@@ -282,8 +282,52 @@
                  "type":"tp_end",
                  "visible":true,
                  "width":0,
-                 "x":512.0625,
-                 "y":159.8125
+                 "x":512.063,
+                 "y":159.813
+                }, 
+                {
+                 "height":29.8182,
+                 "id":16,
+                 "name":"House Tutorial Dialog Event",
+                 "properties":[
+                        {
+                         "name":"speaker",
+                         "type":"string",
+                         "value":"Narrator"
+                        }, 
+                        {
+                         "name":"text",
+                         "type":"string",
+                         "value":"Welcome to your home. Here we put up statues of all the characters you have unlocked. You will also be able to see your pets!"
+                        }],
+                 "rotation":0,
+                 "type":"dialog",
+                 "visible":true,
+                 "width":61.6364,
+                 "x":1033.09,
+                 "y":128.182
+                }, 
+                {
+                 "height":44,
+                 "id":18,
+                 "name":"Guild Tutorial Dialog Event",
+                 "properties":[
+                        {
+                         "name":"speaker",
+                         "type":"string",
+                         "value":"Narrator"
+                        }, 
+                        {
+                         "name":"text",
+                         "type":"string",
+                         "value":"This is the guild. Here you can create parties to set out on expeditions. Check out the guild\u2019s mission board to continue on your adventure."
+                        }],
+                 "rotation":0,
+                 "type":"dialog",
+                 "visible":true,
+                 "width":72,
+                 "x":1036.67,
+                 "y":482
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -326,7 +370,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":16,
+ "nextobjectid":19,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.10.1",

@@ -22,6 +22,7 @@ import SafeWave from "../../schemas/dungeon/wave/SafeWave"
 import TutorialDungeon from "../../schemas/dungeon/TutorialDungeon"
 import City from "../../schemas/dungeon/City"
 import TpEvent from "../../schemas/gameobjs/event/TpEvent"
+import DialogEvent from "../../schemas/gameobjs/event/DialogEvent"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -153,6 +154,8 @@ export default class DungeonManager {
                 this.setCityTpZones(newCity, tiled);
 
                 this.addTpZonesToGame(newCity);
+
+                this.addDialogEvents(newCity, tiled);
             } else {
                 newDungeon = new Dungeon(this.gameManager, dungeonName);
             }
@@ -636,5 +639,38 @@ export default class DungeonManager {
             this.gameManager.addGameObject(tpEvent.id, tpEvent, tpEvent.getBody());
             console.log(tpEvent.getBody().bounds);
         })
+    }
+
+    private addDialogEvents(city: City, data: TiledJSON) {
+        data.layers.forEach((layer) => {
+            if(layer.type === "objectgroup" && layer.name === "Events") {
+                layer.objects.forEach((event) => { 
+                    if(event.type === "dialog") {
+                        console.log(event);
+                        let text = "";
+                        let bounds: AABB = {
+                            x: event.x + event.width / 2,
+                            y: event.y + event.height / 2,
+                            width: event.width,
+                            height: event.height,
+                        }
+                        event.properties.forEach((property) => {
+                            if(property.name === "text") {
+                                text = property.value;
+                            }
+                        });
+                        // Create DialogEvent.
+                        let dialogEvent = new DialogEvent(this.gameManager, event.name, {
+                            dialogItems: [
+                                {
+                                    text: text,
+                                }
+                            ]
+                        }, bounds);
+                        this.gameManager.addGameObject(dialogEvent.id, dialogEvent, dialogEvent.getBody());
+                    }
+                });
+            }
+        });
     }
 }
