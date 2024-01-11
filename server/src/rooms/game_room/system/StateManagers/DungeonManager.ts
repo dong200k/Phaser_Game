@@ -25,6 +25,8 @@ import TpEvent from "../../schemas/gameobjs/event/TpEvent"
 import DialogEvent from "../../schemas/gameobjs/event/DialogEvent"
 import Player from "../../schemas/gameobjs/Player"
 import Statue from "../../schemas/gameobjs/Statue"
+import MissionBoard from "../../schemas/gameobjs/MissionBoard"
+import GuildShop from "../../schemas/gameobjs/GuildShop"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -50,6 +52,7 @@ export default class DungeonManager {
 
     /** Stores the tiled data for this dungeon. */
     private tiledJSON?: TiledJSON;
+    private characterHallCreated = false;
 
     // Monster constructors
     static ctors = {
@@ -164,6 +167,8 @@ export default class DungeonManager {
                 this.setCityTpZones(newCity, tiled);
                 this.addTpZonesToGame(newCity);
                 this.addDialogEvents(newCity, tiled);
+                this.createMissionBoard(newCity, tiled);
+                this.createGuildShop(newCity, tiled);
             } else {
                 newDungeon = new Dungeon(this.gameManager, dungeonName);
             }
@@ -688,6 +693,10 @@ export default class DungeonManager {
      */
     private onPlayerCreated(player: Player) {
 
+        // Only create the character hall once.
+        if(this.characterHallCreated) return;
+        this.characterHallCreated = true;
+
         // Get all the unlocked characters.
         let unlockedRoles = player.getUnlockedRoles();
         let roleNames: string[] = [];
@@ -735,6 +744,65 @@ export default class DungeonManager {
                 statue.y = coord.y;
                 this.gameManager.addGameObject(statue.id, statue, statue.getBody());
             }
+        }
+    }
+
+    /**
+     * Helper method to create the mission board. The player can click on this
+     * to view the lobby and create a game.
+     * @param city The City.
+     * @param tiledJSON The tiledJSON object.
+     */
+    private createMissionBoard(city: City, tiledJSON: TiledJSON) {
+
+        // Get the spawnpoint of the missionboard. And create it.
+        let missionBoardCoord: Vector2 | undefined;
+        tiledJSON.layers.forEach((layer) => {
+            if(layer.type === "objectgroup" && layer.name === "SpawnPoints") { 
+                layer.objects.forEach((spawnPoint) => {
+                    if(spawnPoint.type === "mission_board") {
+                        missionBoardCoord = {x: spawnPoint.x, y: spawnPoint.y};
+                    }
+                })
+            }
+        })
+        
+        if(missionBoardCoord) {
+            let missionBoard = new MissionBoard(this.gameManager, missionBoardCoord.x, missionBoardCoord.y);
+            missionBoard.x = missionBoardCoord.x;
+            missionBoard.y = missionBoardCoord.y;
+            this.gameManager.addGameObject(missionBoard.id, missionBoard, missionBoard.getBody());
+        } else {
+            console.log("Error: Cannot create MissionBoard. Spawn coordinates not found!");
+        }
+    }
+
+    /**
+     * Helper method to create the guild shop. The player 
+     * can click on the guild shop to access skill upgrades.
+     * @param city The City.
+     * @param tiledJSON The tiledJSON object.
+     */
+    private createGuildShop(city: City, tiledJSON: TiledJSON) {
+        // Get the spawnpoint of the guild shop.
+        let guildShopCoord: Vector2 | undefined;
+        tiledJSON.layers.forEach((layer) => {
+            if(layer.type === "objectgroup" && layer.name === "SpawnPoints") { 
+                layer.objects.forEach((spawnPoint) => {
+                    if(spawnPoint.type === "guild_shop") {
+                        guildShopCoord = {x: spawnPoint.x, y: spawnPoint.y};
+                    }
+                })
+            }
+        })
+
+        if(guildShopCoord) {
+            let guildShop = new GuildShop(this.gameManager, guildShopCoord.x, guildShopCoord.y);
+            guildShop.x = guildShopCoord.x;
+            guildShop.y = guildShopCoord.y;
+            this.gameManager.addGameObject(guildShop.id, guildShop, guildShop.getBody());
+        } else {
+            console.log("Error: Cannot create GuildShop. Spawn coordinates not found!");
         }
     }
 }

@@ -185,7 +185,7 @@
   <object id="15" type="player" x="96" y="175.75">
    <point/>
   </object>
-  <object id="19" name="Mission Board" type="mission_board" x="1126" y="393.667">
+  <object id="19" name="Mission Board" type="mission_board" x="1132" y="390.667">
    <point/>
   </object>
   <object id="20" name="Guild Shop" type="guild_shop" x="986" y="435">

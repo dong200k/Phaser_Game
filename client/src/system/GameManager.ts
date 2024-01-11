@@ -34,6 +34,8 @@ import Merchant from "../gameobjs/Merchant";
 import MerchantState from "../../../server/src/rooms/game_room/schemas/gameobjs/Merchant";
 import Fountain from "../gameobjs/Fountain";
 import Statue from "../gameobjs/Statue";
+import MissionBoard from "../gameobjs/MissionBoard";
+import GuildShop from "../gameobjs/GuildShop";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -417,6 +419,12 @@ export default class GameManager {
             case 'Statue':
                 newGameObject = this.addStatue(gameObj, key);
                 break;
+            case 'MissionBoard':
+                newGameObject = this.addMissionBoard(gameObj, key);
+                break;
+            case 'GuildShop':
+                newGameObject = this.addGuildShop(gameObj, key);
+                break;
         }
         if(newGameObject) {
             // newGameObject.setServerState(gameObj);
@@ -600,6 +608,18 @@ export default class GameManager {
 
     private addStatue(statueState: any, key: string): GameObject {
         let obj = new Statue(this.scene, statueState);
+        this.scene.add.existing(obj);
+        return obj;
+    }
+
+    private addMissionBoard(missionBoardState: any, key: string): MissionBoard {
+        let obj = new MissionBoard(this.scene, missionBoardState);
+        this.scene.add.existing(obj);
+        return obj;
+    }
+
+    private addGuildShop(guildShopState: any, key: string): GuildShop {
+        let obj = new GuildShop(this.scene, guildShopState);
         this.scene.add.existing(obj);
         return obj;
     }
