@@ -522,9 +522,16 @@ export default class PlayerManager {
 
         // console.log(JSON.stringify(newPlayer.stat));
 
+        // Add unlocked roles to player.
+        let unlockedRoles = newPlayer.getUnlockedRoles();
+        playerData.unlockedRoles.forEach((roleId: string) => {
+            unlockedRoles.push(roleId);
+        })
+
         newPlayer.setId(sessionId);
         newPlayer.setBody(body)
         this.clients.push(client);
+        this.gameManager.getEventEmitter().emit("PlayerCreated", newPlayer);
         this.gameManager.addGameObject(sessionId, newPlayer, body);
     } 
 

@@ -33,6 +33,7 @@ import Forge from "../gameobjs/Forge";
 import Merchant from "../gameobjs/Merchant";
 import MerchantState from "../../../server/src/rooms/game_room/schemas/gameobjs/Merchant";
 import Fountain from "../gameobjs/Fountain";
+import Statue from "../gameobjs/Statue";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -413,6 +414,9 @@ export default class GameManager {
             case 'Fountain':
                 newGameObject = this.addFountain(gameObj, key);
                 break;
+            case 'Statue':
+                newGameObject = this.addStatue(gameObj, key);
+                break;
         }
         if(newGameObject) {
             // newGameObject.setServerState(gameObj);
@@ -592,6 +596,12 @@ export default class GameManager {
         this.scene.add.existing(obj)
         this.addListenersToGameObject(obj, fountainState)
         return obj
+    }
+
+    private addStatue(statueState: any, key: string): GameObject {
+        let obj = new Statue(this.scene, statueState);
+        this.scene.add.existing(obj);
+        return obj;
     }
 
     private dungeonSafeWaveTimerOnChange(dungeon: DungeonState){

@@ -23,6 +23,8 @@ import TutorialDungeon from "../../schemas/dungeon/TutorialDungeon"
 import City from "../../schemas/dungeon/City"
 import TpEvent from "../../schemas/gameobjs/event/TpEvent"
 import DialogEvent from "../../schemas/gameobjs/event/DialogEvent"
+import Player from "../../schemas/gameobjs/Player"
+import Statue from "../../schemas/gameobjs/Statue"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -46,6 +48,9 @@ export default class DungeonManager {
     // Stores reusable Monster objects.
     private monsterPool: MonsterPool;
 
+    /** Stores the tiled data for this dungeon. */
+    private tiledJSON?: TiledJSON;
+
     // Monster constructors
     static ctors = {
         "TinyZombie": TinyZombie,
@@ -54,6 +59,7 @@ export default class DungeonManager {
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager;
         this.monsterPool = new MonsterPool();
+        this.initializeListeners();
         this.createDungeon();
     }   
 
@@ -93,6 +99,10 @@ export default class DungeonManager {
         if(this.gameManager.state.serverTickCount % 30 === 0) {
             this.handleOutOfBoundsMonsters();
         }
+    }
+
+    private initializeListeners() {
+        this.gameManager.getEventEmitter().addListener("PlayerCreated", (player) => {this.onPlayerCreated(player)});
     }
 
     /**
@@ -143,6 +153,7 @@ export default class DungeonManager {
 
         // Load the tiled json file ... 
         FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
+            this.tiledJSON = tiled;
             // ----- Fill in the dungeons information based on the json file ------
             let newDungeon: Dungeon;
             if(dungeonName === "Tutorial Dungeon") {
@@ -150,11 +161,8 @@ export default class DungeonManager {
             } else if(dungeonName === "City") {
                 let newCity = new City(this.gameManager);
                 newDungeon = newCity; //A city is coded as a subclass of Dungeon.
-
                 this.setCityTpZones(newCity, tiled);
-
                 this.addTpZonesToGame(newCity);
-
                 this.addDialogEvents(newCity, tiled);
             } else {
                 newDungeon = new Dungeon(this.gameManager, dungeonName);
@@ -637,7 +645,6 @@ export default class DungeonManager {
         tpZones.forEach((tpZone) => {
             let tpEvent = new TpEvent(this.gameManager, tpZone);
             this.gameManager.addGameObject(tpEvent.id, tpEvent, tpEvent.getBody());
-            console.log(tpEvent.getBody().bounds);
         })
     }
 
@@ -646,7 +653,6 @@ export default class DungeonManager {
             if(layer.type === "objectgroup" && layer.name === "Events") {
                 layer.objects.forEach((event) => { 
                     if(event.type === "dialog") {
-                        console.log(event);
                         let text = "";
                         let bounds: AABB = {
                             x: event.x + event.width / 2,
@@ -672,5 +678,63 @@ export default class DungeonManager {
                 });
             }
         });
+    }
+
+    /**
+     * A handler for when a player has been created.
+     * If the map is a city map then the players unlocked roles 
+     * will be placed down as statues.
+     * @param player The player.
+     */
+    private onPlayerCreated(player: Player) {
+
+        // Get all the unlocked characters.
+        let unlockedRoles = player.getUnlockedRoles();
+        let roleNames: string[] = [];
+        // Get the image names of the unlocked characters.
+        unlockedRoles.forEach((roleId: string) => {
+            let role = DatabaseManager.getManager().getRole(roleId);
+            if(role) {
+                roleNames.push(role.name);
+            }
+        });
+
+        // Create statue objects of theses characters.
+        let statues: Statue[] = [];
+        roleNames.forEach((roleName) => {
+            let statue = new Statue(this.gameManager, 0, 0);
+            statue.width = 32;
+            statue.height = 32;
+            statue.name = roleName;
+            statues.push(statue);
+        })
+
+        // Get the coordinates locations to place the objects.
+        let coordinates: Vector2[] = [];
+        if(this.tiledJSON) {
+            this.tiledJSON.layers.forEach((layer) => {
+                if(layer.type === "objectgroup" && layer.name === "SpawnPoints") { 
+                    layer.objects.forEach((spawnPoint) => {
+                        if(spawnPoint.type === "character_slot") {
+                            coordinates.push({
+                                x: spawnPoint.x,
+                                y: spawnPoint.y
+                            })
+                        }
+                    })
+                }
+            })
+        }
+
+        // Add the statues to the gameManager.
+        for(let i = 0; i < statues.length; i++) {
+            let coord = coordinates[i];
+            let statue = statues[i];
+            if(coord) {
+                statue.x = coord.x;
+                statue.y = coord.y;
+                this.gameManager.addGameObject(statue.id, statue, statue.getBody());
+            }
+        }
     }
 }

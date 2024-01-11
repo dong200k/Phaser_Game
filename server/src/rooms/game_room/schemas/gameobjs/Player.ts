@@ -146,6 +146,8 @@ export default class Player extends Entity {
 
     private dialogSeen: Set<string>;
 
+    private unlockedRoles: string[];
+
     constructor(gameManager: GameManager, name: string, role?: string) {
         super(gameManager);
         this.name = name;
@@ -161,6 +163,7 @@ export default class Player extends Entity {
         // this.playerController = new PlayerController({player: this});
         this.setRole(role)
         this.dialogSeen = new Set();
+        this.unlockedRoles = [];
     }
 
     update(deltaT: number){
@@ -209,5 +212,14 @@ export default class Player extends Entity {
      */
     public getDialogSeen() {
         return this.dialogSeen;
+    }
+
+    /**
+     * Unlocked roles will contain a list of roles that the player unlocked.
+     * This will be populated when the player is created.
+     * @returns A list of unlocked roles.
+     */
+    public getUnlockedRoles() {
+        return this.unlockedRoles;
     }
 }
