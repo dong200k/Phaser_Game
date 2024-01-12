@@ -15,6 +15,7 @@ export interface WAPopupItem {
 export interface WAPopupData {
     title: string;
     items: WAPopupItem[];
+    onClose?: Function
 }
 
 /** Creates a Weapon and Artifact Popup Manager that can spawn popups with the displayPopup(...) method. 
@@ -23,6 +24,7 @@ export interface WAPopupData {
 export default class WAPopup extends RexUIBase {
 
     private popup?: Dialog;
+    private onClose?: Function
 
     /**
      * Displays a new popup with weapon or artifact upgrade choices.
@@ -37,16 +39,17 @@ export default class WAPopup extends RexUIBase {
                     name: "Spining Stars",
                     imageKey: "",
                     description: "Surround you with a circle of blades",
-                    onClick: () => {console.log("Spining Stars onclick")}
+                    onClick: () => {console.log("Spining Stars onclick")},
                 },
                 {
                     typeName: "New Artifact",
                     name: "Gloves",
                     imageKey: "",
                     description: "Increase Damage by 10",
-                    onClick: () => {console.log("Gloves onclick")}
+                    onClick: () => {console.log("Gloves onclick")},
                 }
-            ]
+            ],
+            onClose?: () => {console.log("closing popup")}
         })
      * ```
      */
@@ -83,10 +86,12 @@ export default class WAPopup extends RexUIBase {
     /** Move the popup so that only the top tab is visible. */
     public sideDownPopup() {
         if(this.popup) {
+            if(this.onClose) this.onClose()
             let gameWidth = this.scene.game.scale.width;
             let gameHeight = this.scene.game.scale.height;
             this.popup.moveTo(700, gameWidth/2, gameHeight + this.popup.height/2, "Back");
             this.scene.input.setTopOnly(true);
+
         }
     }
 
@@ -113,6 +118,7 @@ export default class WAPopup extends RexUIBase {
     }
 
     private createPopup(data: WAPopupData) {
+        this.onClose = data.onClose
         let dialog = this.rexUI.add.dialog({
             width: 1000,
             background: this.rexUI.add.roundRectangle(0, 0, 100, 100, 5, ColorStyle.primary.hex[900]),

@@ -8,8 +8,9 @@ import MathUtil from "../../../../../util/MathUtil"
  * @param x x part of the projectile's direction
  * @param y y part of the projectile's direction
  * @param projectileSpeed speed of the projectile
+ * @param timeBetweenProjectile time in miliseconds between projectiles, default is 0
  */
-export const spawnProjectilesRotated = (spawnProjectile: (velocity: {x: number, y: number})=>void, increment: number, count: number, x: number, y: number, projectileSpeed: number)=>{
+export const spawnProjectilesRotated = (spawnProjectile: (velocity: {x: number, y: number})=>void, increment: number, count: number, x: number, y: number, projectileSpeed: number, timeBetweenProjectile: number = 0)=>{
     let maximumProjectileCount = count
     let rotationIncrement = increment
     let evenStartDeg = rotationIncrement * 0.5 + rotationIncrement * (maximumProjectileCount/2 - 1)
@@ -17,10 +18,16 @@ export const spawnProjectilesRotated = (spawnProjectile: (velocity: {x: number, 
     let rotationDeg = maximumProjectileCount %2 === 0? evenStartDeg : oddStartDeg
     let velX = x
     let velY = y
-
+    const spawnFunction = (rotationDeg: number) => {
+        return ()=>{
+            // console.log(`spawn rotated projectile, count: ${count}, rotationDeg: ${rotationDeg}`)
+            spawnProjectile(MathUtil.getRotatedSpeed(velX, velY, projectileSpeed, rotationDeg))
+        }
+    }
     // Spawns 1 or multiple projectiles
     for(let i=0;i<maximumProjectileCount;i++){
-        spawnProjectile(MathUtil.getRotatedSpeed(velX, velY, projectileSpeed, rotationDeg))
+        
+        setTimeout(spawnFunction(rotationDeg), i * timeBetweenProjectile)
     
         rotationDeg -= rotationIncrement
     }

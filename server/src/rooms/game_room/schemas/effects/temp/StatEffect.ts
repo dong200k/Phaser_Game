@@ -35,6 +35,15 @@ export interface StatConfig {
     healthRegen?: number;
     shieldHp?: number;
     shieldMaxHp?: number;
+    amount?: number;
+    cooldownReduction?: number;
+    area?: number;
+    extraDamageTakenPercent?: number;
+    expRate?: number;
+    dodge?: number;
+    firstHitDamage?: number;
+    firstHitCritRateBonus?: number;
+    firstHitCritDamageBonus?: number;
 }
 
 export default class StatEffect extends TempEffect {

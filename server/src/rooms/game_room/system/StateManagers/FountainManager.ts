@@ -40,7 +40,7 @@ export default class FountainManager{
 
     hideFountain(){
         console.log("Hiding fountain")
-        this.fountain.hide()
+        this.fountain?.hide()
     }
 
     getFountain(){

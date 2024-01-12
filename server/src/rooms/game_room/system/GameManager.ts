@@ -25,6 +25,8 @@ import ForgeManager from './StateManagers/ForgeManager';
 import MerchantManager from './StateManagers/MerchantManager';
 import MerchantItemFactory from '../schemas/merchant_items/MerchantItemFactory';
 import FountainManager from './StateManagers/FountainManager';
+import MapManager from './StateManagers/MapManager';
+import ChunkMap from '../schemas/dungeon/Map/ChunkMap';
 
 export default class GameManager {
     private engine: Matter.Engine;
@@ -45,6 +47,7 @@ export default class GameManager {
     private merchantManager!: MerchantManager;
     private merchantItemFactory!: MerchantItemFactory
     private fountainManager!: FountainManager
+    private mapManager!: MapManager
 
     // Data
     public matterBodies: Map<string, Matter.Body> = new Map();
@@ -62,13 +65,25 @@ export default class GameManager {
 
     gameOver: boolean = false;
 
-    constructor(state: State, options?: GameRoomOptions) {
+    private pauseCount = 0
+    private paused = false
+    private pauseTimeSoFar = 0
+    private maxPauseTime = 60
+    private gameRoom: GameRoom
+    private pausedPlayers: Set<string> = new Set()
+
+    private timePassed = 0
+    private sendTimerTime = 1
+    private sendTimerTimePassed = 0
+
+    constructor(state: State, gameRoom: GameRoom, options?: GameRoomOptions) {
         this.state = state;
         this.engine = Matter.Engine.create();
         this.world = this.engine.world;
         this.engine.gravity.y = 0; //no gravity 
         if(options !== undefined) this.options = options;
         else this.options = {dungeonSelected: "Demo Dungeon"};
+        this.gameRoom = gameRoom
     }
 
     /**
@@ -96,6 +111,20 @@ export default class GameManager {
         this.merchantItemFactory = new MerchantItemFactory(this)
         this.fountainManager = new FountainManager(this)
 
+        await this.dungeonManager.createDungeon()
+        let dungeon = this.dungeonManager.getDungeon()
+        let chunkMap = dungeon?.getChunkMap()
+        if(chunkMap && dungeon){
+            // Initialize map manager and load chunks that are at the 1st player spawn point. This could be changed to load chunks at every player spawn point
+            this.mapManager = new MapManager(this, chunkMap, chunkMap.getTiledJSON())
+            let spawnPoint = dungeon.getPlayerSpawnPoints()[0] as {x: number, y: number}
+            if(!spawnPoint) spawnPoint = {x: 0, y: 0}
+            this.mapManager.initChunks(spawnPoint)
+            console.log("initializing chunks")
+        }else{
+            console.log("Dungeon or ChunkMap not found, MapManager was not initialized")
+        }
+
         this.initUpdateEvents();
         this.initCollisionEvent();
         this.syncServerStateBasedOnGameState();
@@ -115,6 +144,7 @@ export default class GameManager {
             })
         });
     }
+
         
     public setOwner(sessionId: string){
         this.state.ownerSessionId = sessionId
@@ -183,8 +213,52 @@ export default class GameManager {
         })
     }
 
+    public pauseGame(playerId: string){
+        console.log("Game is paused")
+        this.pauseTimeSoFar = 0
+        this.paused = true
+        this.pausedPlayers.add(playerId)
+        this.gameRoom.broadcast("pause")
+    }
+
+    /** Unpause the game if the every player that is paused is finished with their action */
+    public unPauseGame(playerId: string){
+        this.pausedPlayers.delete(playerId)
+        if(this.pausedPlayers.size === 0) {
+            this.paused = false
+            this.gameRoom.broadcast("unpause")
+            console.log("Game is unpaused")
+        }
+    }
+
+    public forceUnpause(){  
+        this.paused = false
+        this.pausedPlayers = new Set()
+        console.log("Game force unpaused")
+        this.gameRoom.broadcast("unpause")
+    }
+
     public update(deltaT:number) {
         let deltaTSeconds = deltaT / 1000;
+        this.timePassed += deltaTSeconds
+
+        if(this.paused){
+            this.pauseTimeSoFar += deltaTSeconds
+            if(this.pauseTimeSoFar >= this.maxPauseTime) {
+                this.forceUnpause()
+                this.pauseTimeSoFar = 0
+            }
+            return
+        }
+
+        // In game timer sent to client
+        this.sendTimerTimePassed += deltaTSeconds
+        if(this.sendTimerTimePassed >= this.sendTimerTime){
+            this.sendTimerTimePassed = 0
+            this.gameRoom.broadcast("updateTimer", this.timePassed)
+        }
+        
+
         Matter.Engine.update(this.engine, deltaT);
 
         this.playerManager.update(deltaTSeconds);
@@ -192,21 +266,23 @@ export default class GameManager {
         this.dungeonManager.update(deltaTSeconds);
         this.projectileManager.update(deltaT);
         this.auraManager.update(deltaTSeconds);
+        this.mapManager?.update(deltaTSeconds)
 
         // if(this.state.serverTickCount % 30 === 0)
         //     console.log(`Heap usage: ${process.memoryUsage().heapUsed / 1000000} Mb`);
+        // this.gameRoom.incrementTick()
     }
 
     public startGame() {
         // code to run when starting the game.
-        setTimeout(()=>{
-            this.gameObjects.forEach(obj=>{
-                if(obj instanceof Player){
-                    console.log(`Printing DPS for player: ${obj.name}`)
-                    this.playerManager.printDPS(obj)
-                }
-            })
-        }, 5000)
+        // setTimeout(()=>{
+        //     this.gameObjects.forEach(obj=>{
+        //         if(obj instanceof Player){
+        //             console.log(`Printing DPS for player: ${obj.name}`)
+        //             this.playerManager.printDPS(obj)
+        //         }
+        //     })
+        // }, 5000)
     }
 
     /** 
@@ -287,5 +363,13 @@ export default class GameManager {
     /** Gets the set of assets that the client should load. */
     public getAssetSet() {
         return this.assetSet;
+    }
+
+    public getGameRoom() {
+        return this.gameRoom
+    }
+
+    public isPaused(){
+        return this.paused
     }
 }

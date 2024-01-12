@@ -64,7 +64,30 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.audio("wave_end_violin", "audio/wave_end_violin.mp3")
         this.load.audio("fountain_heal", "audio/fountain_heal.mp3")
         this.load.audio("monster_death2", "audio/monster_death2.mp3")
-
+        this.load.audio("poison_dash", "audio/poison_dash.mp3")
+        this.load.audio("somersault_dash", "audio/somersault_dash.mp3")
+        this.load.audio("sword_dash", "audio/sword_dash.mp3")
+        this.load.audio("wave_dash", "audio/wave_dash.mp3")
+        this.load.audio("frost_dash", "audio/frost_dash.mp3")
+        this.load.audio("flame_dash", "audio/flame_dash.mp3")
+        this.load.audio("magic_spell", "audio/magic_spell.mp3")
+        this.load.audio("stunned", "audio/stunned.mp3")
+        this.load.audio("teleport", "audio/teleport.mp3")
+        this.load.audio("strong_hit", "audio/strong_hit.mp3")
+        this.load.audio("dragon_roar", "audio/dragon_roar.mp3")
+        this.load.audio("dragon_roar2", "audio/dragon_roar2.mp3")
+        this.load.audio("water_drop", "audio/water_drop.mp3")
+        this.load.audio("shuriken", "audio/shuriken_sfx.mp3")
+        this.load.audio("dragon_roar2", "audio/dragon_roar2.mp3")
+        this.load.audio("pistol", "audio/pistol_sfx.mp3")
+        this.load.audio("health_pickup", "audio/health_pickup.mp3")
+        this.load.audio("giant_heart_beat", "audio/giant_heart_beat.mp3")
+        this.load.audio("giant_fist", "audio/giant_fist.mp3")
+        this.load.audio("flame_thrower", "audio/flame_thrower.mp3")
+        this.load.audio("blood_nova", "audio/blood_nova.mp3")
+        this.load.audio("rock_smash", "audio/rock_smash.mp3")
+        this.load.audio("rock_smash", "audio/rock_smash.mp3")
+        this.load.audio("machinegun", "audio/machinegun_sfx.mp3")
 
         // ------- Loading Images ------- //
         this.load.image("demo_hero", "images/demo_hero.png");
@@ -96,9 +119,30 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.image("ancient_battery_icon", "images/icons/artifacts/ancient_battery_icon.png");
         this.load.image("fireball_icon", "images/icons/artifacts/fireball_icon.png");
         this.load.image("lightning_rod_icon", "images/icons/artifacts/lightning_rod_icon.png");
+        this.load.image("test_tiles", "tilemaps/demo_map/forest_tiles_extruded.png");
+        this.load.image("test_tiles2", "tilemaps/demo_map/test_tiles_extruded.png");
+        this.load.image("forest", "tilemaps/demo_map/forest_extruded.png");
+        this.load.image("assassin_with_hood_2", "images/icons/artifacts/assassin_with_hood_2.png");
+        this.load.image("assassin_with_hood", "images/icons/artifacts/assassin_with_hood.png");
+        this.load.image("assassinate", "images/icons/artifacts/assassinate.png");
+        this.load.image("deadly_strike", "images/icons/artifacts/deadly_strike.png");
+        this.load.image("kill_streak", "images/icons/artifacts/kill_streak.png");
+        this.load.image("ninja_dash2", "images/icons/artifacts/ninja_dash2.png");
+        this.load.image("ninja_dash", "images/icons/artifacts/ninja_dash.png");
+        this.load.image("ninja_dodge", "images/icons/artifacts/ninja_dodge.png");
+        this.load.image("ninja_dodge2", "images/icons/artifacts/ninja_dodge2.png");
+        this.load.image("speed_of_light", "images/icons/artifacts/speed_of_light.png");
+        this.load.image("exp", "images/icons/artifacts/exp.png");
+        this.load.image("giant", "images/icons/artifacts/giant.png");
+        this.load.image("golden_armor", "images/icons/artifacts/golden_armor.png");
+        this.load.image("devil", "images/icons/artifacts/devil.png");
+        this.load.image("sumo", "images/icons/artifacts/sumo.png");
+        this.load.image("heart", "images/icons/artifacts/heart.png");
+        this.load.image("vampire", "images/icons/artifacts/vampire.png");
 
+        
 
-        // ------- Loading Animations ------- //
+        // ------- Loading Animations ------- //    
         this.load.aseprite("TinyZombie", "images/mobs/zombie_1.png", "images/mobs/zombie_1.json");
         this.load.aseprite("Ranger", "images/roles/ranger.png", "images/roles/ranger.json");
         this.load.aseprite("RangerArrow", "images/projectiles/arrow_1.png", "images/projectiles/arrow_1.json");
@@ -120,6 +164,51 @@ export default class SystemPreloadScene extends Phaser.Scene {
         this.load.aseprite("iron_chest", "animations/iron_chest/iron_chest.png", "animations/iron_chest/iron_chest.json");
         this.load.aseprite("gold_chest", "animations/gold_chest/gold_chest.png", "animations/gold_chest/gold_chest.json");
         this.load.aseprite("summon_circle", "images/projectiles/summon_circle.png", "images/projectiles/summon_circle.json")
+        this.load.aseprite("wave_dash", "images/projectiles/wave.png", "images/projectiles/wave.json")
+        this.load.aseprite("sword_dash", "images/projectiles/sword_slash.png", "images/projectiles/sword_slash.json")
+        this.load.aseprite("somersault_dash", "images/projectiles/Sommersault.png", "images/projectiles/Sommersault.json")
+        this.load.aseprite("flame_dash", "images/projectiles/flame.png", "images/projectiles/flame.json")
+        this.load.aseprite("poison_dash", "images/projectiles/poison.png", "images/projectiles/poison.json")
+        this.load.aseprite("lightning_god", "images/projectiles/lighting_god.png", "images/projectiles/lighting_god.json")
+        this.load.aseprite("lightning_bird", "images/projectiles/lightning_bird.png", "images/projectiles/lightning_bird.json")
+        this.load.aseprite("lightning_orb", "images/projectiles/lightning_orb.png", "images/projectiles/lightning_orb.json")
+        this.load.aseprite("meteor", "images/projectiles/meteor.png", "images/projectiles/meteor.json")
+        this.load.aseprite("kamehameha", "images/projectiles/kamehameha.png", "images/projectiles/kamehameha.json")
+        this.load.aseprite("flame_thrower", "images/projectiles/flame_thrower.png", "images/projectiles/flame_thrower.json")
+        this.load.aseprite("blade_tornado", "images/projectiles/blade_tornado.png", "images/projectiles/blade_tornado.json")
+        this.load.aseprite("blade_master_slash", "images/projectiles/swordman_slash.png", "images/projectiles/swordman_slash.json")
+        this.load.aseprite("BladeMaster", "images/roles/swordsman.png", "images/roles/swordsman.json");
+        this.load.aseprite("Nixi", "images/roles/Sprite-0001.png", "images/roles/Sprite-0001.json");
+        this.load.aseprite("ClaymoreMaster", "images/roles/claymoremaster.png", "images/roles/claymoremaster.json");
+        this.load.aseprite("smallcircle", "images/projectiles/smallcircle.png", "images/projectiles/smallcircle.json");
+        this.load.aseprite("largecircle", "images/projectiles/largecircle.png", "images/projectiles/largecircle.json");
+        this.load.aseprite("halfcirclesmall", "images/projectiles/halfcirclesmall.png", "images/projectiles/halfcirclesmall.json");
+        this.load.aseprite("explosion", "images/projectiles/explosion.png", "images/projectiles/explosion.json");
+        this.load.aseprite("claymore", "images/projectiles/claymore.png", "images/projectiles/claymore.json");
+        this.load.aseprite("black_hole_gun", "images/projectiles/black_hole_gun.png", "images/projectiles/black_hole_gun.json");
+        this.load.aseprite("black_hole", "images/projectiles/black_hole.png", "images/projectiles/black_hole.json");
+        this.load.aseprite("blood_bullet", "images/projectiles/blood_bullet.png", "images/projectiles/blood_bullet.json");
+        this.load.aseprite("blood_nova", "images/projectiles/blood_nova.png", "images/projectiles/blood_nova.json");
+        this.load.aseprite("dagger_projectile", "images/projectiles/dagger_projectile.png", "images/projectiles/dagger_projectile.json");
+        this.load.aseprite("dagger", "images/projectiles/dagger.png", "images/projectiles/dagger.json");
+        this.load.aseprite("fire_wand", "images/projectiles/fire_wand.png", "images/projectiles/fire_wand.json");
+        this.load.aseprite("great_shuriken", "images/projectiles/great_shuriken.png", "images/projectiles/great_shuriken.json");
+        this.load.aseprite("life_drain", "images/projectiles/life_drain.png", "images/projectiles/life_drain.json");
+        this.load.aseprite("lightning_splitter", "images/projectiles/lightning_splitter.png", "images/projectiles/lightning_splitter.json");
+        this.load.aseprite("machine_gun_projectile", "images/projectiles/machine_gun_projectile.png", "images/projectiles/machine_gun_projectile.json");
+        this.load.aseprite("machine_gun", "images/projectiles/machine_gun.png", "images/projectiles/machine_gun.json");
+        this.load.aseprite("pistol", "images/projectiles/pistol.png", "images/projectiles/pistol.json");
+        this.load.aseprite("pistol_projectile", "images/projectiles/pistol_projectile.png", "images/projectiles/pistol_projectile.json");
+        this.load.aseprite("rainbow_shuriken", "images/projectiles/rainbow_shuriken.png", "images/projectiles/rainbow_shuriken.json");
+        this.load.aseprite("shuriken_arrow", "images/projectiles/shuriken_arrow.png", "images/projectiles/shuriken_arrow.json");
+        this.load.aseprite("shuriken", "images/projectiles/shuriken.png", "images/projectiles/shuriken.json");
+        this.load.aseprite("sniper", "images/projectiles/sniper.png", "images/projectiles/sniper.json");
+        this.load.aseprite("sniper_projectile", "images/projectiles/sniper_projectile.png", "images/projectiles/sniper_projectile.json");
+        this.load.aseprite("void_fist", "images/projectiles/void_fist.png", "images/projectiles/void_fist.json");
+        this.load.aseprite("rock_smash", "images/projectiles/rock_smash.png", "images/projectiles/rock_smash.json");
+        this.load.aseprite("mother_slime_slow", "images/projectiles/mother_slime_slow.png", "images/projectiles/mother_slime_slow.json");
+        this.load.aseprite("detailed_slime_slow", "images/projectiles/detailed_slime_slow.png", "images/projectiles/detailed_slime_slow.json");
+        this.load.aseprite("bringer_of_death_projectile", "images/projectiles/bringer_of_death_projectile.png", "images/projectiles/bringer_of_death_projectile.json");
 
     }
 
@@ -185,7 +274,28 @@ export default class SystemPreloadScene extends Phaser.Scene {
         soundManager.add("wave_end_violin", "sfx");
         soundManager.add("fountain_heal", "sfx");
         soundManager.add("monster_death2", "sfx");
-
+        soundManager.add("frost_dash", "sfx")
+        soundManager.add("somersault_dash", "sfx")
+        soundManager.add("poison_dash", "sfx")
+        soundManager.add("wave_dash", "sfx")
+        soundManager.add("flame_dash", "sfx")
+        soundManager.add("sword_dash", "sfx")
+        soundManager.add("magic_spell", "sfx")
+        soundManager.add("stunned", "sfx")
+        soundManager.add("teleport", "sfx")
+        soundManager.add("strong_hit", "sfx")
+        soundManager.add("dragon_roar", "sfx")
+        soundManager.add("dragon_roar2", "sfx")
+        soundManager.add("water_drop", "sfx")
+        soundManager.add("shuriken", "sfx")
+        soundManager.add("pistol", "sfx")
+        soundManager.add("health_pickup", "sfx")
+        soundManager.add("giant_heart_beat", "sfx")
+        soundManager.add("giant_fist", "sfx")
+        soundManager.add("flame_thrower", "sfx")
+        soundManager.add("blood_nova", "sfx")
+        soundManager.add("rock_smash", "sfx")
+        soundManager.add("machinegun", "sfx")
 
         soundManager.add("ultra_instinct", "bg")
         soundManager.add("ultra_instinct_boss", "bg")

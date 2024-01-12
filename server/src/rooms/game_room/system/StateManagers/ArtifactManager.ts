@@ -285,4 +285,20 @@ export default class ArtifactManager{
     (playerState: Player, artifact: T, upgrades: U[], choice: number){
         return TreeManager.selectUpgrade(playerState, artifact, upgrades, choice)
     }
+
+    /**
+     * 
+     * @param player 
+     * @param artifactId
+     * @returns the true if the player already has the artifact else false
+     */
+    static hasArtifact(player: Player, artifactId: string){
+        for(let artifact of player.artifacts){
+            if(artifact.getId() === artifactId){
+                return true
+            }
+        }
+
+        return false
+    }
 }

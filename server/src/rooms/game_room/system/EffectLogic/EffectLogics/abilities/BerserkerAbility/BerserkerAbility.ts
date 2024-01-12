@@ -213,7 +213,7 @@ export default class BerserkerAbilityLogic extends EffectLogic{
             height: 100,
             piercing: -1,
             data:{
-                owner: entity
+                owner: entity,
             }
         }
         

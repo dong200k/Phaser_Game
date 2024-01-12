@@ -7,11 +7,13 @@ import Move from "./CommonStates/Move";
 import Special from "./CommonStates/Special";
 import ChargeAttack from "./CommonStates/ChargeAttack";
 import TriggerUpgradeEffect from "../../../schemas/effects/trigger/TriggerUpgradeEffect";
-import { getEstimatedDps, getFinalAttackSpeed, getFinalChargeAttackSpeed } from "../../Formulas/formulas";
+import { getEstimatedDps, getFinalAttackCooldown, getFinalAttackSpeed, getFinalChargeAttackSpeed } from "../../Formulas/formulas";
 import ChargeAttackLogic from "../../EffectLogic/EffectLogics/common/ChargeAttackLogic";
 import ChargeState from "./CommonStates/ChargeState";
 import Roll from "./CommonStates/Roll";
 import Stat from "../../../schemas/gameobjs/Stat";
+import Cooldown from "../../../schemas/gameobjs/Cooldown";
+import MathUtil from "../../../../../util/MathUtil";
 
 
 export interface PlayerControllerData {
@@ -37,11 +39,20 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
     private currentlyCharging: boolean = false
     private timeSoFar: number = 0
     private healthRegenTime: number = 1
+    public allowChangeDirection = true
+    private rollCooldowns: Cooldown[] = []
+    private rollCharges = 1
+    private rollCooldown = 2
+
+    private attackCooldown!: Cooldown
+    private autoAttack: boolean = false
 
     protected create(data: PlayerControllerData): void {
         this.player = data.player;
         // let chargeAttackSpeed = getFinalChargeAttackSpeed(this.player.stat)
         // if(chargeAttackSpeed > 0) this.totalChargeTime *= 1 / chargeAttackSpeed
+
+        this.initRollCooldown()
 
         //Add States
         let idleState = new Idle("Idle", this);
@@ -67,7 +78,7 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
         this.specialState = specialState
         specialState.setConfig({
             canMove: false,
-            triggerPercent: 0.9,
+            triggerPercent: 0,
         })
         this.addState(specialState)
 
@@ -84,6 +95,13 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
         //Set initial state
         this.changeState("Idle");
+    }
+
+    protected initRollCooldown(){
+        for(let i=0;i<this.rollCharges;i++){
+            this.rollCooldowns.push(new Cooldown(this.rollCooldown))
+        }
+        this.attackCooldown = new Cooldown(getFinalAttackCooldown(this.player.stat))
     }
 
     public postUpdate(deltaT: number): void {
@@ -103,17 +121,61 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
                 this.player.stat.add(new Stat({hp: this.player.stat.healthRegen}))
             }
         }
+
+        // Rool cooldown
+        if(this.stateName !== "Roll"){
+            this.rollCooldowns.forEach(cooldown=>cooldown.tick(deltaT))
+        }
+
+        // Testing auto attack 
+        this.attackCooldown.tick(deltaT)
+        if(this.autoAttack){
+            if(this.attackCooldown.isFinished){
+                // this.attackCooldown.reset()
+                // this.attackCooldown.setTime(getFinalAttackCooldown(this.player.stat))
+                let mousePos = {x: 0, y: 0}
+                let closestMonster = this.player.gameManager.getDungeonManager().getClosestActiveMonster(this.player.getBody().position)
+                
+                if(closestMonster) {
+                    mousePos = closestMonster.getBody().position
+                    this.attackCooldown.setTime(getFinalAttackCooldown(this.player.stat))
+                    this.attackCooldown.reset()
+                    this.startAttack(mousePos.x, mousePos.y)
+                }
+            }
+        }
+    }
+
+    public addRollCharge(){
+        this.rollCharges += 1
+        this.rollCooldowns.push(new Cooldown(this.rollCooldown))
+    }
+
+    public updateRollCooldown(cooldown: number){
+        this.rollCooldown = cooldown
+        this.rollCooldowns.forEach(rollCooldown=>{
+            rollCooldown.setTime(this.rollCooldown)
+        })
     }
 
     public getPlayer() {
         return this.player;
     }
 
+    /**
+     * Takes in a value true or false which determines whether the player can move or not.
+     * @param val 
+     */
+    public setAllowChangeDirection(val: boolean){
+        // console.log(`allow change direction: ${val}`)
+        this.allowChangeDirection = val
+    }
+
     public processMouseInput(mouseClick: number, mouseDown: number, mouseX:number, mouseY:number){
         if(!this.player) return
 
         // If the state is not idle/move/charge then it must be a combo/attack state in which case return
-        if(this.stateName !== "Idle" && this.stateName !== "Move" && this.stateName !== "ChargeState") return
+        if(this.stateName !== "Idle" && this.stateName !== "Move" && this.stateName !== "ChargeState" && (this.stateName === "Roll" && this.rollState.canAnimationCancel())) return
 
         // Check if player has any charge attacks
         let hasChargeAttack = false
@@ -145,14 +207,19 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
             }
 
             // If an attack is off cooldown
-            this.player.effects.forEach((effect) => {
-                if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack") {
-                    if (effect.cooldown.isFinished) {
-                        this.startAttack(mouseX, mouseY);
-                        return
-                    }
-                }
-            })
+            if(this.attackCooldown.isFinished){
+                this.startAttack(mouseX, mouseY);
+                this.attackCooldown.setTime(getFinalAttackCooldown(this.player.stat))
+                this.attackCooldown.reset()
+            }
+            // this.player.effects.forEach((effect) => {
+            //     if(effect instanceof TriggerUpgradeEffect && effect.type === "player attack") {
+            //         if (effect.cooldown.isFinished) {
+            //             this.startAttack(mouseX, mouseY);
+            //             return
+            //         }
+            //     }
+            // })
 
             // For combo attacks that dont use EffectLogic with combos directly on the controller.
             if(this.callStartAttackAnyways) this.startAttack(mouseX, mouseY)
@@ -174,14 +241,33 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
      */
     public startSpceial(mouseX:number, mouseY:number) {
         if(this.stateName !== "Dead" && this.stateName !== "Special") {
+            // console.log("start special")
             this.specialState?.setConfig({mouseX, mouseY});
             this.changeState("Special");
         }
     }
 
+    public getRollOffCooldown(){
+        for(let cooldown of this.rollCooldowns){
+            if(cooldown.isFinished) return cooldown
+        }
+    }
+
     public startRoll(key: "w"|"a"|"s"|"d"){
-        if(this.stateName !== "Dead" && this.stateName !== "Special" && this.stateName !== "Roll"){
-            this.changeState("Roll")
+        // console.log("attempt roll")
+        let rollCooldown = this.getRollOffCooldown()
+        if(rollCooldown && this.stateName !== "Dead" && this.stateName !== "Special"){
+            // console.log(`attempt roll stage 2`)
+            if(this.stateName === "Roll" && !this.rollState.canDoubleRoll()) return
+            // console.log(`performing roll in 50 ms`)
+            // this.changeState("Idle")
+            if(this.player.velocity.x !== 0 || this.player.velocity.y !== 0){
+                rollCooldown.reset()
+                setTimeout(()=>{
+                    this.changeState("Roll")
+                }, 50)
+            }
+            
         }
     }
 
@@ -201,5 +287,16 @@ export default class PlayerController extends StateMachine<PlayerControllerData>
 
     public getRollState(){
         return this.rollState
+    }
+
+    public toggleAutoAttack(){
+        this.autoAttack = !this.autoAttack
+    }
+
+    public devilRollUpgrade(){
+        this.rollCooldowns = []
+        this.rollCharges+=5
+        this.rollCooldown*=5
+        this.initRollCooldown()
     }
 }

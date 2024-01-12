@@ -3,7 +3,7 @@ import FireProjectileLogic from "../../../common/FireProjectileLogic";
 
 export default class SexagintibowLogic extends FireProjectileLogic{
     effectLogicId = "Sexagintibow"
-    projectileCount = 60
+    projectileCount = 8
     projectileName= "RangerArrow"
     collisionCategory: CategoryType =  "PLAYER_PROJECTILE"
     poolType = "RangerArrow"

@@ -54,8 +54,7 @@ export default class CollectionController {
         let {colName} = req.params
         try {
             let documents = await CollectionCrud.getAllDocuments(colName)
-
-            res.status(200).send({message: `successfully retrieved weapons`, documents})
+            res.status(200).send({message: `successfully retrieved documents`, documents})
         } catch (error: any) {
             res.status(400).send({message: error.message})
         }

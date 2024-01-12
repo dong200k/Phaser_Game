@@ -68,6 +68,8 @@ export default class Projectile extends GameObject implements Cloneable {
     /** Enemies this projectile can hit before going inactive */
     @type("number") piercing: number;
 
+    @type("number") animationDurationSeconds: number = 1
+
     /** The entity that created this projectile. */
     originEntityId?: string;
 
@@ -90,7 +92,7 @@ export default class Projectile extends GameObject implements Cloneable {
 
     private setInactiveCallback?: Function
     private onCollideCallback?: Function
-
+    public extraDamage: number = 0
     
     /** Animation to play default is "play" */
     @type("string") animationKey: string = "play"
@@ -123,6 +125,9 @@ export default class Projectile extends GameObject implements Cloneable {
         this.magicMultiplier = projectileConfig.magicMultiplier
         this.projectileSpeed = projectileConfig.projectileSpeed? projectileConfig.projectileSpeed : 1
         this.spawnSound = projectileConfig.spawnSound ?? "";
+        this.dontRotate = projectileConfig.dontRotate ?? false
+        this.flipX = projectileConfig.flipX ?? false
+        this.flipY = projectileConfig.flipY ?? false
         
         this.width = projectileConfig.width ?? Math.abs(this.body.bounds.max.x - this.body.bounds.min.x);
         this.height = projectileConfig.height ?? Math.abs(this.body.bounds.max.y - this.body.bounds.min.y);
@@ -149,6 +154,9 @@ export default class Projectile extends GameObject implements Cloneable {
         this.repeatAnimation = projectileConfig.repeatAnimation ?? this.repeatAnimation
         this.animationKey = projectileConfig.animationKey ?? this.animationKey
         this.onCollideCallback = projectileConfig.onCollideCallback ?? this.onCollideCallback
+
+        this.animationDurationSeconds = projectileConfig.animationDurationSeconds ?? 1
+        this.extraDamage = projectileConfig.extraDamage ?? 0
     }
     
     /**
@@ -291,10 +299,11 @@ export default class Projectile extends GameObject implements Cloneable {
 
     /**
      * Called by the collision manager when projectile collides with something it can collide with.
+     * @param entity entity that collided with projectile
      */
-    public onCollide(){
+    public onCollide(entity: Entity){
         if(this.onCollideCallback){
-            this.onCollideCallback(this)
+            this.onCollideCallback(this, entity)
             // console.log("projectile on collide")
         } 
     }
@@ -324,6 +333,9 @@ export default class Projectile extends GameObject implements Cloneable {
         this.type = "Projectile"
         this.originEntityId = projectileConfig.originEntityId;
         this.knockback = projectileConfig.knockback ?? this.knockback;
+        this.dontRotate = projectileConfig.dontRotate ?? false
+        this.flipX = projectileConfig.flipX ?? false
+        this.flipY = projectileConfig.flipY ?? false
 
         // Make body collideable again
         let body = this.getBody()
@@ -348,5 +360,8 @@ export default class Projectile extends GameObject implements Cloneable {
         this.repeatAnimation = projectileConfig.repeatAnimation ?? this.repeatAnimation
         this.animationKey = projectileConfig.animationKey ?? this.animationKey
         this.onCollideCallback = projectileConfig.onCollideCallback ?? this.onCollideCallback
+
+        this.animationDurationSeconds = projectileConfig.animationDurationSeconds ?? 1
+        this.extraDamage = projectileConfig.extraDamage ?? 0
     }
 }

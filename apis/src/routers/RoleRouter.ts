@@ -1,4 +1,5 @@
 import { IRole } from "../../../server/src/rooms/game_room/system/interfaces"
+import CollectionCrud from "../crud/CollectionCrud"
 import { CreatePlayer, getPlayerData, unUpgradePlayerSkillTree, updatePlayerSkillTree } from "../crud/PlayerCrud"
 import { UnlockRole } from "../crud/RoleCrud"
 import JsonDatabaseManager from "../skilltree/JsonDatabaseManager"
@@ -25,9 +26,10 @@ RoleRouter.post('/roles', (req: any, res: any)=>{
 /**
  * Returns a list of all roles
  */
-RoleRouter.get('/roles', (req: any, res: any)=>{
+RoleRouter.get('/roles', async (req: any, res: any)=>{
     let roles: IRole[] = []
-    let roleMap = JsonDatabaseManager.getManager().getAllRoles()
+    let roleMap = await CollectionCrud.getAllDocuments("roles")
+    
     roleMap.forEach((role: IRole, id)=>{
         roles.push(role)
     })

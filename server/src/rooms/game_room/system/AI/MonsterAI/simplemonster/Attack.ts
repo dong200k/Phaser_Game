@@ -32,6 +32,9 @@ export default class Attack extends StateNode {
         this.attackTriggered = false;
         // Stop movement
         Matter.Body.setVelocity(monster.getBody(), {x: 0, y: 0});
+        monster.animation.playAnimation(this.getAnimation(), {
+            duration: this.attackCooldown
+        })
     }
 
     public onExit(): void {
@@ -105,4 +108,7 @@ export default class Attack extends StateNode {
         this.attackTriggered = false;
     }
 
+    protected getAnimation(){
+        return "attack"
+    }
 }

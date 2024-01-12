@@ -20,7 +20,7 @@ export default class Cooldown extends Schema{
     }
 
     public setTime(time: number, isFinished?: boolean){
-        this.time = time;
+        if(this.time > time) this.time = time;
         this.remainingTime = time
         if(isFinished !== undefined) this.isFinished = isFinished
     }

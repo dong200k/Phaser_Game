@@ -6,7 +6,9 @@ const effectTypes = [
     "player attack", // Triggered by player attack
     "player skill", // Triggered by player skill
     "one time", // Applied one time 
-    "player charge attack" // Trigger by player charge attacks
+    "player charge attack", // Trigger by player charge attacks
+    "player dash" // Trigger by player dash
+
 ]
 
 export default effectTypes
@@ -20,5 +22,13 @@ export const usageTypes = [
     "attack",
     "special",
     "roll",
-    "none"
+    "none",
+    "merchant_weapon",
+    "devil",
+    "wisdom",
+    "giant",
+    'assassin',
+    "lightning",
+    "vampire",
+    "fruit"
 ]

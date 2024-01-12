@@ -1,6 +1,7 @@
 import { getAuth } from "firebase-admin/auth"
 import { getFirestore } from "firebase-admin/firestore"
 import JsonDatabaseManager from "../skilltree/JsonDatabaseManager"
+import CollectionCrud from "./CollectionCrud"
 
 // /**
 //  * Changes the player's current role to selected role if role is unlocked.
@@ -50,7 +51,8 @@ export const UnlockRole = async (IdToken: string, role: string) =>{
     let coinCost = 0
 
     // Role is not valid
-    let dbRole = JsonDatabaseManager.getManager().getRole(role)
+    // let dbRole = JsonDatabaseManager.getManager().getRole(role)
+    let dbRole = await CollectionCrud.getDocument(role, "roles")
     if(!dbRole) {
         throw new Error(`Role: ${role} was not found!`)
     }

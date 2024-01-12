@@ -1,9 +1,11 @@
-import { ArraySchema, type, Schema, filter } from '@colyseus/schema';
+import { ArraySchema, type, Schema, filter, MapSchema } from '@colyseus/schema';
 import GameManager from '../../system/GameManager';
 import GameObject from './GameObject';
 import Matter from 'matter-js';
 import { Categories } from '../../system/Collisions/Category';
 import MaskManager from '../../system/Collisions/MaskManager';
+import { IForgeUpgrade } from '../../system/StateManagers/ForgeManager';
+import ForgeUpgrade from '../ForgeUpgradeItem';
 
 export interface IForgeConfig{
     x?: number,
@@ -11,6 +13,13 @@ export interface IForgeConfig{
 }
 
 export default class Forge extends GameObject {
+    
+    /** Chances each players get at each forge to pick upgrades */
+    @type('number') chancesEachForge = 1
+
+    /** Upgrades available for choosing, generated each time forge shows up. Reset when wave ends. */
+    @type({map: ForgeUpgrade}) forgeUpgrades = new MapSchema<ForgeUpgrade>()  
+    @type('number') ping = 0
 
     constructor(gameManager: GameManager, forgeConfig: IForgeConfig) {
         super(gameManager, forgeConfig.x ?? 0, forgeConfig.y ?? 0);

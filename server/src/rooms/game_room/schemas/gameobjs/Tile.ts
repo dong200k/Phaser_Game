@@ -7,7 +7,7 @@ export default class Tile extends GameObject {
     @type("number") tileId: number;
     @type("number") tileWidth: number;
     @type("number") tileHeight: number;
-
+    
     constructor(gameManager: GameManager, tildId:number, tileWidth:number, tileHeight:number, x:number, y:number) {
         super(gameManager, x, y);
         this.tileId = tildId;

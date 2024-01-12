@@ -11,7 +11,7 @@ import Tile from "../gameobjs/Tile";
 import EventManager from "./EventManager";
 import type PlayerState from "../../../server/src/rooms/game_room/schemas/gameobjs/Player";
 import type MonsterState from "../../../server/src/rooms/game_room/schemas/gameobjs/monsters/Monster";
-import type ProjectileState from "../../../server/src/rooms/game_room/schemas/projectiles/Projectile";
+import ProjectileState from "../../../server/src/rooms/game_room/schemas/projectiles/Projectile";
 import type GameObjectState from "../../../server/src/rooms/game_room/schemas/gameobjs/GameObject";
 import type EntityState from "../../../server/src/rooms/game_room/schemas/gameobjs/Entity";
 import type DungeonState from "../../../server/src/rooms/game_room/schemas/dungeon/Dungeon";
@@ -33,6 +33,10 @@ import Forge from "../gameobjs/Forge";
 import Merchant from "../gameobjs/Merchant";
 import MerchantState from "../../../server/src/rooms/game_room/schemas/gameobjs/Merchant";
 import Fountain from "../gameobjs/Fountain";
+import ForgeState from "../../../server/src/rooms/game_room/schemas/gameobjs/Forge";
+import ChunkMap from "../../../server/src/rooms/game_room/schemas/dungeon/Map/ChunkMap";
+import TilemapManager from "./TilemapManager";
+import { Chunk } from "../../../server/src/rooms/game_room/schemas/dungeon/Map/Chunk";
 
 export default class GameManager {
     private scene: Phaser.Scene;
@@ -69,6 +73,7 @@ export default class GameManager {
     // ------- fixed tick --------
     private timePerTick = 33.33; // 30 ticks per second.
     private timeTillNextTick: number;
+    private ticksSoFar = 0
 
     private csp!: ClientSidePrediction;
 
@@ -77,6 +82,16 @@ export default class GameManager {
 
     private floatingTexts: FloatingText[] = [];
     private statusIconManager: StatusIconManager;
+    private paused = false
+
+    // ------ TileMap/chunkmap -------
+    private tileMapManager?: TilemapManager
+
+    // ------ Mercahnt ---------
+    private merchant?: Merchant
+
+    /** Game object types that are interpolated by csp */
+    private gameObjectTypesInterpolated = new Set(["Player", "InvisObstacle"])
 
     constructor(scene:Phaser.Scene,room:Colyseus.Room) {
         this.scene = scene;
@@ -97,25 +112,78 @@ export default class GameManager {
         return new Date().getTime()
     }
 
+    private floatTextUpdateTime = 0
+    private fixedTickUpdateTime = 0
+    private totalTime = 0
+    private interpolateTime = 0
+    private otherTime = 0
+    private timeSoFar = 0
+    private totalTime2 = 0
+
     /**
      * Updates the gameManager.
      * @param time The current time in ms.
      * @param deltaT The time that passed in ms.
      */
     public update(time: number, deltaT: number) {
+        if(this.paused) return
         this.timeTillNextTick -= deltaT;
+        let timeConsumed = 0
         while(this.timeTillNextTick <= 0) {
             this.timeTillNextTick += this.timePerTick;
+            // let start = Date.now()
+
             this.fixedTick(time, this.timePerTick);
+            // let fixedTickTime = Date.now() - start
+            // this.fixedTickUpdateTime += fixedTickTime
+            // timeConsumed += fixedTickTime
+
+            // let interpolateTime = Date.now() - fixedTickTime
+            // this.interpolateTime += interpolateTime
+            // timeConsumed += interpolateTime
+
+            // this.updateAuraPosition();
+            // this.renderFollowPlayerObjects();
+
+            this.updateFloatingTexts();
+            // let updateFloatingTextTime = Date.now() - interpolateTime
+            // this.floatTextUpdateTime += updateFloatingTextTime
+            // timeConsumed += updateFloatingTextTime
+
+            this.syncGameObjectVisibility();
+            this.syncGameObjectActive();
+            this.syncGameObjectAlpha();
+            // let otherTime = Date.now() - start
+            // timeConsumed += otherTime
+            // otherTime += otherTime
+
+            // this.ticksSoFar++
         }
         this.interpolateGameObjects();
-        this.syncGameObjectVisibility();
-        this.syncGameObjectActive();
-        this.syncGameObjectAlpha();
-        this.updateFloatingTexts();
-        this.renderFollowPlayerObjects();
-        this.updateAuraPosition();
-        this.statusIconManager.update(deltaT / 1000);
+
+
+        // let start = Date.now()
+        // if(this.ticksSoFar >= 5){
+        //     this.ticksSoFar = 0
+        //     this.syncGameObjectVisibility();
+        //     this.syncGameObjectActive();
+        //     this.syncGameObjectAlpha();
+        //     this.statusIconManager.update(deltaT / 1000);
+        //     let otherTime = Date.now() - start
+        //     timeConsumed += otherTime
+        // }
+
+        // this.timeSoFar += deltaT
+        // this.totalTime2 += deltaT
+        // if(this.timeSoFar > 2000){
+        //     this.timeSoFar = 0
+        //     console.log(`interpolate ratio: ${this.interpolateTime/this.totalTime2}`)
+        //     console.log(`fixedtick ratio: ${this.fixedTickUpdateTime/this.totalTime2}`)
+        //     console.log(`floating text ratio: ${this.floatTextUpdateTime/this.totalTime2}`)
+        //     console.log(`other ratio: ${this.otherTime/this.totalTime2}`)
+        // }
+        // let timeLoss = (deltaT - timeConsumed)/1000
+        // if(timeLoss > 0) console.log(`time loss: ${timeLoss} s`)
     }
 
     public updateAuraPosition() {
@@ -150,6 +218,10 @@ export default class GameManager {
         this.gameRoom?.send("doubleTap", key)
     }
 
+    sendToggleAutoAttack(){
+        this.gameRoom?.send("toggleAutoAttack")
+    }
+
     public renderFollowPlayerObjects(){
         this.gameObjects.forEach(gameObject=>{
             if(gameObject.gameObjectState.type === "Projectile"){
@@ -167,6 +239,12 @@ export default class GameManager {
         this.spectating = value;
     }
 
+    public stopSpectating() {
+        this.spectating = false
+        this.spectatingIdx = 0
+        if(this.player1) this.scene.cameras.main.startFollow(this.player1, false, 0.05);
+    }
+
     /** Changes the player that is being watched. */
     private rotateSpectateTarget() {
         console.log("Rotating spectating target.")
@@ -178,7 +256,7 @@ export default class GameManager {
         if(this.spectatingIdx >= this.players.length) {
             this.spectatingIdx = 0;
         }
-        this.scene.cameras.main.startFollow(this.players[this.spectatingIdx]);
+        this.scene.cameras.main.startFollow(this.players[this.spectatingIdx], true, 0.1);
     }
 
     /**
@@ -199,17 +277,25 @@ export default class GameManager {
 
     /**
      * Updates the gameObject's position to be closer to the server's gameObject position.
-     * If the gameObject is not visible then just teleport it.
+     * If the gameObject is not visible then just tele  port it.
      */
     private interpolateGameObjects() {
         this.gameObjects?.forEach((obj) => {
-            if(obj.visible) {
-                obj.setX(Phaser.Math.Linear(obj.x, obj.serverX + obj.positionOffsetX, .2));
-                obj.setY(Phaser.Math.Linear(obj.y, obj.serverY + obj.positionOffsetY, .2));
+            let serverX = obj.serverX + obj.positionOffsetX
+            let serverY = obj.serverY + obj.positionOffsetY
+            // If not inside camera dont interpolate
+            if(obj.gameObjectType !== "Player" && !this.scene.cameras.main.worldView.contains(serverX, serverY)) return
+
+            // If distance is too far dont interpolate
+            let distance = MathUtil.distanceSquared(obj.x, obj.y, obj.positionOffsetX + obj.serverX, obj.positionOffsetY + obj.serverY)
+            if(obj.visible && distance < 1600) {
+            // if(obj.visible){
+                obj.setX(Phaser.Math.Linear(obj.x, serverX, .2));
+                obj.setY(Phaser.Math.Linear(obj.y, serverY, .2));
             } else {
-                obj.setX(obj.serverX + obj.positionOffsetX);
-                obj.setY(obj.serverY + obj.positionOffsetY);
-            } 
+                obj.setX(serverX);
+                obj.setY(serverY);
+            }
         })
     }
 
@@ -221,13 +307,25 @@ export default class GameManager {
 
     private syncGameObjectActive() {
         this.gameObjects?.forEach((obj) => {
-            if(obj.active === true && obj.serverActive === false) {
-                this.csp.removeGameObject(obj);
-            } else if(obj.active === false && obj.serverActive === true) {
-                this.csp.addGameObject(obj);
+            if(this.gameObjectTypesInterpolated.has(obj.type)){
+                if(obj.active === true && obj.serverActive === false) {
+                    this.csp.removeGameObject(obj);
+                } else if(obj.active === false && obj.serverActive === true) {
+                    this.csp.addGameObject(obj);
+                }
             }
-            obj.setActive(obj.serverActive);
-            obj.setVisible(obj.serverActive);
+            
+            let serverX = obj.serverX + obj.positionOffsetX
+            let serverY = obj.serverY + obj.positionOffsetY
+
+            // Optimize so objects outside of camera are not active
+            if(this.scene.cameras.main.worldView.contains(serverX, serverY)) {
+                obj.setActive(obj.serverActive);
+                obj.setVisible(obj.serverActive);
+            }else{
+                obj.setActive(false)
+                obj.setVisible(false)
+            }
         })
     }
 
@@ -285,14 +383,43 @@ export default class GameManager {
         })
 
         /** wasd keys */
-        this.upKey?.on('down', this.onWASDPress("w"))
-        this.downKey?.on('down', this.onWASDPress("s"))
-        this.leftKey?.on('down', this.onWASDPress("a"))
-        this.rightKey?.on('down', this.onWASDPress("d"))
+        // this.upKey?.on('down', this.onWASDPress("w"))
+        // this.downKey?.on('down', this.onWASDPress("s"))
+        // this.leftKey?.on('down', this.onWASDPress("a"))
+        // this.rightKey?.on('down', this.onWASDPress("d"))
 
         /** shift key */
         let shiftKey = this.scene.input.keyboard?.addKey("SHIFT")
         shiftKey?.on("down", ()=>this.sendDoubleTap("w"))
+
+        /** auto attack key */
+        let qKey = this.scene.input.keyboard?.addKey("q")
+        qKey?.on("down", ()=>this.sendToggleAutoAttack())
+
+        let g = this.scene.input.keyboard?.addKey("g")
+        g?.on("down", ()=>{
+            this.gameRoom.send("nextWave")
+        })
+
+        let t = this.scene.input.keyboard?.addKey("t")
+        t?.on("down", ()=>{
+            this.gameRoom.send("teleportPlayers")
+        })
+
+        let r = this.scene.input.keyboard?.addKey("r")
+        r?.on("down", ()=>{
+            this.gameRoom.send("reviveAllPlayers")
+        })
+
+        let h = this.scene.input.keyboard?.addKey("h")
+        h?.on("down", ()=>{
+            this.gameRoom.send("healAllPlayers")
+        })
+
+        let p = this.scene.input.keyboard?.addKey("p")
+        p?.on("down", ()=>{
+            this.gameRoom.send("togglePause")
+        })
     }
 
     /** Destroys the game manager and cleans up listeners.
@@ -332,6 +459,26 @@ export default class GameManager {
                 this.queuedOnAddGameObjects.push({obj: gameObj, key: key});
         };
         this.gameRoom.state.listen("dungeon", this.onChangeDungeon);
+
+        this.gameRoom.onMessage("pause", () => {
+            this.paused = true
+        })
+
+        this.gameRoom.onMessage("unpause", () => {
+            this.paused = false
+        })
+
+        this.gameRoom.onMessage("updateTimer", (time) => {
+            this.updateTimer(time)
+        })
+
+        this.gameRoom.onMessage("openMerchant", ()=>{
+            if(this.merchant) this.merchant.isOpen = true
+        })
+
+        this.gameRoom.onMessage("revive", () => {
+            this.stopSpectating()
+        })
     }
 
     private initializeClientSidePrediction() {
@@ -415,16 +562,21 @@ export default class GameManager {
                 break;
         }
         if(newGameObject) {
-            // newGameObject.setServerState(gameObj);
             this.gameObjects.push(newGameObject);
-            this.csp.addGameObject(newGameObject);
+            if(this.gameObjectTypesInterpolated.has(gameObj.type)) this.csp.addGameObject(newGameObject);
         }
+    }
+
+    private createTileMapManager(chunkMap: ChunkMap){
+        console.log("creating tilemap manager")
+        this.tileMapManager = new TilemapManager(this.scene, chunkMap.tileSetName, chunkMap.tileWidth, chunkMap.tileHeight, chunkMap.chunkWidth, chunkMap.chunkHeight)
     }
 
     /** Called when the dungeon is first created on the server */
     private onChangeDungeon = (currentValue: DungeonState) => {
         this.dungeonSafeWaveTimerOnChange(currentValue)
-        currentValue.listen("tilemap", this.onChangeTilemap);
+        console.log("on Change dungeon")
+        currentValue.listen("chunkMap", this.onChangeChunkMap);
         currentValue.listen("playerBounds", this.onChangePlayerBounds);
         // Workaround to send the wave count when the hud is first created.
         EventManager.eventEmitter.off("HUDCreate");
@@ -463,40 +615,28 @@ export default class GameManager {
     private onChangePlayerBounds = (currentValue: any) => {
         this.csp.updatePlayerBounds(currentValue.minX, currentValue.minY, currentValue.maxX, currentValue.maxY);
     }
+    
 
-    /** Called when the tilemap is first created on the server */
-    private onChangeTilemap = (currentValue:any) => {
-        let map = this.scene.add.tilemap("", currentValue.tileWidth, currentValue.tileHeight, currentValue.width, currentValue.height);
-        let tileset = map.addTilesetImage("tileset_image", currentValue.tileSetName, 16, 16, 1, 2);
-        //Triggers when the server adds a tilemap layer
-        currentValue.layers.onAdd = (layer:any, key:string) => {
-            if(tileset !== null) {
-                let newLayer = map.createBlankLayer(key, tileset);
-                if(newLayer !== null) {
-                    if(key === "Background")
-                        newLayer.setDepth(-10);
-                    if(key === "Ground")
-                        newLayer.setDepth(-5);
-                    if(key === "Obstacle")
-                        newLayer.setDepth(10);
-                    let width = layer.width;
-                    let height = layer.height;
-                    for(let y = 0; y < height; y++) {
-                        for(let x = 0; x < width; x++) {
-                            let tileId = layer.tiles[(y * width + x)].tileId;
-                            if(tileId !== 0) {
-                                //Add a tile to the tilemap
-                                newLayer.putTileAt(tileId - 1, x, y);
-                            }
-                        }
-                    }
-                } else {
-                    console.log(`ERROR: failed to create a blank layer of key: ${key}`);
-                }
-            } else {
-                console.log("ERROR: Failed to load tileset.");
-            }
+    /** Called when the chunkMap is first created on the server and when it updates */
+    private onChangeChunkMap = (currentValue: ChunkMap | null) => {
+        if(!currentValue) return
+        if(!this.tileMapManager) this.createTileMapManager(currentValue)
+        // console.log(`on change tilemap`)
+        // let start = Date.now()
+        
+        //Triggers when the server adds a new chunk to the active chunks
+        currentValue.activeChunks.onAdd = (chunk: Chunk, key: string) => {
+            // console.log(`chunk ${chunk.chunkId} was added in onChangeChunkMap`)
+            this.tileMapManager?.loadNewChunk(chunk.chunkId, chunk)
         }
+
+        //Triggers when the server removes a chunk from active chunks
+        currentValue.activeChunks.onRemove = (chunk: Chunk, key: string) => {
+            // console.log(`chunk ${chunk.chunkId} was removed in onChangeChunkMap`)
+            this.tileMapManager?.unloadChunk(chunk.chunkId)
+        }
+        // let seconds = (Date.now() - start)/1000
+        // console.log(`seconds elapsed: ${seconds}`)
     }
 
     /** Adds a new projectile to the scene. */
@@ -573,7 +713,7 @@ export default class GameManager {
         return newChest;
     }
 
-    private addForge(forgeState: any, key: string): Forge {
+    private addForge(forgeState: ForgeState, key: string): Forge {
         let newForge = new Forge(this.scene, forgeState)
         this.scene.add.existing(newForge)
         this.addListenersToGameObject(newForge, forgeState)
@@ -582,6 +722,7 @@ export default class GameManager {
 
     private addMerchant(merchantState: any, key: string): Merchant {
         let obj = new Merchant(this.scene, merchantState)
+        this.merchant = obj
         this.scene.add.existing(obj)
         this.addListenersToGameObject(obj, merchantState)
         return obj
@@ -615,6 +756,13 @@ export default class GameManager {
 
             }
         }
+    }
+
+    public updateTimer(time: number){
+        // console.log("update timer")
+        EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
+            time
+        })
     }
 
     private safeWaveOnStart(startTime: number){
@@ -680,6 +828,11 @@ export default class GameManager {
             let merchantState = gameObjectState as MerchantState
             merchantState.onChange = (changes: any) => this.merchantOnChange(gameObject, merchantState, changes)
         }
+
+        if(gameObject instanceof Forge) {
+            let forgeState = gameObjectState as ForgeState
+            forgeState.onChange = (changes: any) => this.forgeOnChange(gameObject, forgeState, changes)
+        }
     }
 
     /** Called when the gameObjectState field changes. This doesn't account for object fields only primitive fields. */
@@ -720,7 +873,13 @@ export default class GameManager {
         if(gameObject instanceof Projectile) {
             if(!gameObject.serverActive && gameObjectState.active) {
                 let projectileState = gameObjectState as ProjectileState;
-                gameObject.play(projectileState.animationKey);
+                // gameObject.play(projectileState.animationKey);
+
+                if(projectileState.repeatAnimation){
+                    gameObject.play({key: projectileState.animationKey, repeat: -1});
+                }else{
+                    gameObject.play({key: projectileState.animationKey});
+                }
                 SoundManager.getManager().play(projectileState.spawnSound, {detune: Math.floor(Math.random() * 300 ) - 150});
             }
         }
@@ -737,8 +896,13 @@ export default class GameManager {
             let projectileState = gameObjectState as ProjectileState;
             let velocityX = projectileState.velocity.x;
             let velocityY = projectileState.velocity.y;
-            if(!(velocityX === 0 && velocityY === 0))
+            if(!(velocityX === 0 && velocityY === 0) && !gameObjectState.dontRotate){
                 gameObject.setRotation(MathUtil.getRotationRadians(velocityX, velocityY))
+            }
+
+            if(gameObjectState.dontRotate){
+                gameObject.setFlip(gameObjectState.flipX, gameObjectState.flipY)
+            }
         }
         if(gameObject instanceof Monster) {
             // Updates the monster's movement animations based on its velocity.
@@ -931,7 +1095,7 @@ export default class GameManager {
         let currentState = monsterState.controller.stateName;
         if(currentState === "Death") {
             // monster.play({key: "death"});
-            this.soundManager.play("monster_death2", {detune: Math.floor(Math.random() * 300 - 150)});
+            this.soundManager.play("monster_death", {detune: Math.floor(Math.random() * 300 - 150)});
             monster.walking = false;
         }
     }
@@ -950,11 +1114,42 @@ export default class GameManager {
                     this.gameRoom.send("selectMerchantItem", idx);
                     SoundManager.getManager().play("button_click1", {detune: 700});
                 },
+                // coinCost, levelCost
+            })
+        })
+        
+        // TODO could prevent the popup from popping up again if there is no change in the itemlist and it is already popped up
+        if(this.merchant && this.merchant.isOpen){
+            EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
+                title: `Merchant`,
+                items: itemList,
+                onClose: () => {
+                    if(this.merchant) this.merchant.isOpen = false
+                }
+            })
+        }
+    }
+
+    /** TODO: Make this method connect with a Forge UI instead of the weapon artifact one. 
+     * Also show the coin cost and other attributes. */
+    private forgeOnChange(forge: Forge, forgeState: ForgeState, changes: any){
+        let itemList: any = []
+        let forgeUpgrade = forgeState.forgeUpgrades.get(this.gameRoom.sessionId)
+        forgeUpgrade?.upgradeItems.forEach((item, idx)=>{
+            itemList.push({
+                typeName: "artifact",
+                name: item.name,
+                description: item.description,
+                imageKey: item.imageKey,
+                onClick: () => {
+                    this.gameRoom.send("selectForgeUpgrade", idx);
+                    SoundManager.getManager().play("button_click1", {detune: 700});
+                },
             })
         })
         
         EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_WEAPON_ARTIFACT_POPUP, {
-            title: `Merchant`,
+            title: `Forge chances left: ${forgeUpgrade?.chancesRemaining}`,
             items: itemList,
         })
     }

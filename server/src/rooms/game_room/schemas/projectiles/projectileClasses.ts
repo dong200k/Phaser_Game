@@ -4,6 +4,7 @@ import CircularFollowProjectle from "./specialprojectiles/CircularFollowProjecti
 import FollowingMeleeProjectile from "./specialprojectiles/FollowingMeleeProjectile"
 import HomingProjectile from "./specialprojectiles/HomingProjectile"
 import MeleeProjectile from "./specialprojectiles/MeleeProjectile"
+import SlowProjectile from "./specialprojectiles/SlowProjectile"
 
 // Constructors to be used in spawning projectiles
 let ctors = {
@@ -12,7 +13,8 @@ let ctors = {
     "MeleeProjectile": MeleeProjectile,
     "HomingProjectile": HomingProjectile,
     "ArrowRainProjectile": ArrowRainProjectile,
-    "FollowingMeleeProjectile": FollowingMeleeProjectile
+    "FollowingMeleeProjectile": FollowingMeleeProjectile,
+    "SlowProjectile": SlowProjectile
 }
 
 export default ctors

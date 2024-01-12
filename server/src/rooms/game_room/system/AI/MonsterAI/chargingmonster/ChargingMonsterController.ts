@@ -1,4 +1,5 @@
 import Cooldown from "../../../../schemas/gameobjs/Cooldown";
+import { ChestRarity } from "../../../../schemas/gameobjs/chest/Chest";
 import Monster from "../../../../schemas/gameobjs/monsters/Monster";
 import MonsterController from "../simplemonster/MonsterController";
 import Attack from "./states/Attack";
@@ -59,6 +60,8 @@ export default class ChargingMonsterController extends MonsterController {
         offsetX: 0,
         offsetY: 0
     }
+
+    protected deathChestRarity?: ChestRarity | undefined = "iron"
 
     constructor(data: ChargingMonsterControllerData){
         super(data)

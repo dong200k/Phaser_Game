@@ -9,6 +9,7 @@ export default class Merchant extends GameObject
     private merchantState: MerchantState;
     /** Is the walking animation playing or not. */
     walking: boolean = false;
+    public isOpen = false
 
     // static count: number = 0;
 

@@ -23,7 +23,7 @@ export default class Dead extends StateNode{
             duration: 1,
         })
         this.controller.turnOffAbility()
-        // this.boss.setActive(false)
+        this.boss.setActive(false)
     }
 
     public onExit(): void {

@@ -37,9 +37,9 @@ export default class ArrowRain extends StateNode {
 
     private fallWidthOffset = 100
     private projectileSpeed = 5
-    private attackMultiplier = 3
+    private attackMultiplier = 1
     private spawnSound = "shoot_arrow"
-    private arrowCount = 50
+    private arrowCount = 25
     private arrowWaves = 5
     private currentWave = 0
     private timeBetweenWaves = 100
@@ -47,8 +47,8 @@ export default class ArrowRain extends StateNode {
     private fallHeightOffset = 200
     private explosionRadius = 20
     private impactRangeY = 200
-    private width = 100
-    private height = 100
+    private width = 50
+    private height = 50
     private arrowsShot = 0
 
     /**

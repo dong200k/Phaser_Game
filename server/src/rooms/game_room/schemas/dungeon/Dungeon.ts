@@ -5,6 +5,9 @@ import MathUtil from "../../../../util/MathUtil";
 import GameManager from "../../system/GameManager";
 import SafeWave from "./wave/SafeWave";
 import Monster from "../gameobjs/monsters/Monster";
+import ChunkMap from "./Map/ChunkMap";
+import Player from "../gameobjs/Player";
+import TimedWave from "./wave/TimedWave";
 
 export class SpawnPoint extends Schema {
     @type("number") x: number;
@@ -42,7 +45,8 @@ export default class Dungeon extends Schema {
     @type("number") currentWave: number;
     @type("number") maxWave: number;
     @type("boolean") conquered: boolean;
-    @type(Tilemap) tilemap: Tilemap | null = null;
+    // @type(Tilemap) tilemap: Tilemap | null = null;
+    @type(ChunkMap) chunkMap: ChunkMap | null = null
     @type([SpawnPoint]) private playerSpawnPoints = new ArraySchema<SpawnPoint>();
     @type([SpawnPoint]) private monsterSpawnPoints = new ArraySchema<SpawnPoint>(); 
     @type(PlayerBounds) playerBounds: PlayerBounds | null = null;
@@ -53,6 +57,7 @@ export default class Dungeon extends Schema {
     /** False if a wave is running. True otherwise.*/
     waveEnded: boolean;
     private gameManager: GameManager;
+    private spawnLimit = 100
     
 
     constructor(gameManager: GameManager, dungeonName: string) {
@@ -81,6 +86,7 @@ export default class Dungeon extends Schema {
      */
     public update(deltaT: number) {
         if(!this.waveEnded && this.currentWave < this.waves.length) {
+            if(this.waves[this.currentWave] instanceof Wave && this.getActiveMonsterCount() >= this.spawnLimit) return
             if(this.waves[this.currentWave].update(deltaT)) {
                 this.waveEnded = true;
                 // Spawn a chest on the map in a random location.
@@ -90,16 +96,16 @@ export default class Dungeon extends Schema {
                 let minY = 50;
                 let maxY = 200;
                 // Change the spawn area based on the size of the tilemap.
-                if(this.tilemap) {
-                    maxX = this.tilemap.width * this.tilemap.tileWidth - 20;
-                    maxY = this.tilemap.height * this.tilemap.tileHeight - 20;
-                }
+                // if(this.tilemap) {
+                //     maxX = this.tilemap.width * this.tilemap.tileWidth - 20;
+                //     maxY = this.tilemap.height * this.tilemap.tileHeight - 20;
+                // }
                 
-                this.gameManager.getChestManager().spawnChest({
-                    rarity: "wood",
-                    x: MathUtil.getRandomIntegerBetween(minX, maxX),
-                    y: MathUtil.getRandomIntegerBetween(minY, maxY)
-                });
+                // this.gameManager.getChestManager().spawnChest({
+                //     rarity: "wood",
+                //     x: MathUtil.getRandomIntegerBetween(minX, maxX),
+                //     y: MathUtil.getRandomIntegerBetween(minY, maxY)
+                // });
             }
         }
     }
@@ -124,12 +130,20 @@ export default class Dungeon extends Schema {
         this.waveEnded = false;
     }
 
-    public setTilemap(tilemap: Tilemap) {
-        this.tilemap = tilemap;
+    // public setTilemap(tilemap: Tilemap) {
+    //     this.tilemap = tilemap;
+    // }
+
+    // public getTilemap() {
+    //     return this.tilemap;
+    // }
+
+    public setChunkMap(chunkMap: ChunkMap) {
+        this.chunkMap = chunkMap
     }
 
-    public getTilemap() {
-        return this.tilemap;
+    public getChunkMap() {
+        return this.chunkMap
     }
 
     public getDungeonName() {
@@ -181,7 +195,24 @@ export default class Dungeon extends Schema {
      * @returns A random spawnpoint for monsters.
      */
     public getRandomMonsterSpawnPoint(): SpawnPoint | null {
-        if(this.monsterSpawnPoints.length === 0) return null;
+        if(this.monsterSpawnPoints.length === 0) {
+            // get a random position around player
+            let spawnPoint: SpawnPoint | null = null
+            for(let obj of this.gameManager.gameObjects){
+                if(obj instanceof Player) {
+                    // let x = (Math.random() * 200 + 500) * (Math.random()<0.5? 1 : -1) + obj.x
+                    // let y = (Math.random() * 200 + 500) * (Math.random()<0.5? 1 : -1) + obj.y
+                    // spawnPoint = new SpawnPoint(x, y)
+                    let radius = 800
+                    let playerVelocity = obj.getBody().velocity
+                    let rotationDegree = Math.random() * 360 - 180
+                    let rotatedOffset = MathUtil.getRotatedSpeed(playerVelocity.x, playerVelocity.y, radius, rotationDegree)
+                    let newPos = {x: obj.x + rotatedOffset.x, y: obj.y + rotatedOffset.y}
+                    return new SpawnPoint(newPos.x, newPos.y)
+                }
+            }
+            return spawnPoint
+        }
         return this.monsterSpawnPoints.at(Math.floor(this.monsterSpawnPoints.length * Math.random()));
     }
     
@@ -221,5 +252,32 @@ export default class Dungeon extends Schema {
         })
 
         return hasMonsterAlive
+    }
+
+    /**
+     * 
+     * @returns true number of active monsers
+     */
+    public getActiveMonsterCount(){
+        let count = 0
+        this.gameManager.gameObjects.forEach((obj) => {
+            if(obj instanceof Monster) {
+                if(obj.isActive()) {
+                    count++
+                }
+            }
+        })
+
+        return count
+    }
+
+    public endWave(){
+        let wave = this.waves[this.currentWave]
+        if(wave instanceof SafeWave || wave instanceof TimedWave){
+            wave.onWaveEnd()
+        }
+
+        this.currentWave++;
+        this.waveEnded = false;
     }
 }

@@ -8,8 +8,8 @@ import MonsterController from "./MonsterController";
 export default class Death extends StateNode {
 
     /** Time before the monster is returned to the pool. This is the time used to play the death animation */
-    private defaultDeathTimer: number = 1;
-    private deathTimer!: number;
+    protected defaultDeathTimer: number = 1;
+    protected deathTimer!: number;
 
     public onEnter(): void {
         this.deathTimer = this.defaultDeathTimer;
@@ -21,7 +21,7 @@ export default class Death extends StateNode {
         // --- Give xp to player ---
         let playerManager = stateMachine.getPlayerManager();
         let playerThatDamagedMe = playerManager.getPlayerWithId(monster.getLastToDamage() ?? "");
-        if(playerThatDamagedMe) playerManager.addXpToPlayer(20, playerThatDamagedMe);
+        if(playerThatDamagedMe) playerManager.splitXpToPlayers(20, playerManager.getAllPlayersWithinRange(playerThatDamagedMe.x, playerThatDamagedMe.y, 1000));
 
         // --- Give coins to player ---
         playerManager.giveAllPlayersCoin(10);
@@ -32,8 +32,11 @@ export default class Death extends StateNode {
 
 
         // console.log(playerThatDamagedMe?.xp);
-        monster.animation.playAnimation("death");
+        monster.animation.playAnimation("death", {
+            duration: this.defaultDeathTimer
+        });
         // monster.sound.playSoundEffect("player_death");
+        stateMachine.spawnChest()
     }
 
     public onExit(): void {

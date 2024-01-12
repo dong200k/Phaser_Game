@@ -75,7 +75,9 @@ export default class TopRightInfo extends RexUIBase {
         }
         else {
             textBoxTimer.show()
-            textBoxTimer.setText(`Time Remaining: ${this.infoData.time}`)
+            let minutes = Math.floor(this.infoData.time/60)
+            let seconds = Math.floor(this.infoData.time%60)
+            textBoxTimer.setText(`Timer: ${minutes} : ${seconds}`)
         }   
 
         this.infoSizer.layout();

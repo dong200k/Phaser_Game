@@ -75,7 +75,7 @@ export default class Combo1 extends StateNode {
         this.player = this.berserkerComboController.getPlayer();
         this.gameManager = this.berserkerComboController.getGameManager();
         this.timePassed = 0;
-        this.player.canMove = this.canMove;
+        // this.player.canMove = this.canMove;
         this.triggered = false;
         // So that the attack animation does not get flipped by client side prediction when arrow keys are pressed
         this.player.setOverwriteClientMoveFlip(true)

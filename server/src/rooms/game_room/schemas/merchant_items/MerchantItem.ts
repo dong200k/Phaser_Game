@@ -13,7 +13,7 @@ export interface IMerchantItemConfig {
 }
 
 export default abstract class MerchantItem extends GameObject{
-    @type('number') levelCost = 0
+    @type('number') levelCost = 1
     @type('number') coinCost = 0
     @type('string') description
     @type('string') imageKey
@@ -45,7 +45,7 @@ export default abstract class MerchantItem extends GameObject{
      */
     public attemptPurchase(player: Player): boolean | string {
         if(player.level >= this.levelCost && player.coinsEarned >= this.coinCost){
-            player.level -= this.levelCost
+            player.gameManager.getPlayerManager().levelUpWithNoUpgrades(player, this.levelCost)
             player.coinsEarned -= this.coinCost
             this.amount--
             return true

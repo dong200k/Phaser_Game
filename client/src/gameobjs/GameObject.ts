@@ -14,6 +14,10 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
 
     /** Transparency of the gameobject */
     alphaValue: number;
+    
+    sprite?: Phaser.GameObjects.Sprite
+
+    gameObjectType?: string
 
     constructor(scene: Phaser.Scene, x: number, y: number, texture: string, gameObjectState: GameObjectState) {
         super(scene, x, y, texture);
@@ -25,6 +29,8 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
         this.serverActive = gameObjectState.active;
         this.gameObjectState = gameObjectState;
         this.alphaValue = gameObjectState.alpha
+        // this.type = gameObjectState.type
+        this.gameObjectType = gameObjectState.type
 
         this.texture.setFilter(Phaser.Textures.FilterMode.NEAREST);
         // this.scale = gameObjectState.width/this.width
@@ -35,9 +41,16 @@ export default abstract class GameObject extends Phaser.GameObjects.Sprite
         // let obj = gameObjectState as any
         // console.log("client obj info: ", obj.type, obj.name, obj.monsterName, obj.sprite, this.width, this.height)
         // console.log("gameObjectState width height:", gameObjectState.width, gameObjectState.height)
-
-    
     }
+
+    // public returnSprite(){
+    //     this.sprite = undefined
+    //     return this.sprite
+    // }
+
+    // public setSprite(sprite: Phaser.GameObjects.Sprite){
+        
+    // }
 
     // public setServerState(serverState: GameObjectState) {
     //     this.gameObjectState = serverState;

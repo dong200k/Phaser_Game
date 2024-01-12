@@ -5,6 +5,7 @@ import ReconciliationInfo from "./schemas/ReconciliationInfo";
 import globalEventEmitter from "../../util/EventUtil";
 import { IncomingMessage } from "http";
 import PlayerService from "../../services/PlayerService";
+import Matter from "matter-js";
 
 export interface GameRoomOptions {
     /** The name of the selected dungeon. */
@@ -34,6 +35,8 @@ export default class GameRoom extends Room<State> {
     // ------- client load queue -------
     private waitingClients: WaitingClient[] = [];
 
+    private ownerId: string = ""
+
     onCreate(options: GameRoomOptions) {
         console.log(`Created: Game room ${this.roomId}`);
         this.timeTillNextTick = this.timePerTick;
@@ -49,11 +52,14 @@ export default class GameRoom extends Room<State> {
 
         //Setting up state and game manager.
         let state = new State();
-        this.gameManager = new GameManager(state, options);
+        this.gameManager = new GameManager(state, this, options);
         this.setState(state);
         
+        let start = Date.now()
         this.gameManager.preload()
             .then(()=>{
+                let seconds = (Date.now() - start)/1000
+                console.log(`total time for preload function: ${seconds} seconds`)
                 this.startGame();
                 this.initListeners();
             })
@@ -100,14 +106,94 @@ export default class GameRoom extends Room<State> {
         this.onMessage("selectMerchantItem", (client, msg) => {
             this.gameManager.getMerchantManager().purchaseItem(client.sessionId, msg);
         })
+
+        this.onMessage("selectForgeUpgrade", (client, msg) => {
+            this.gameManager.getForgeManager().processPlayerSelectUpgrade(client.sessionId, msg);
+        })
+
+        this.onMessage("toggleAutoAttack", (client, msg) => {
+            let {playerState} = this.gameManager.getPlayerManager().getPlayerStateAndBody(client.sessionId)
+            playerState.playerController.toggleAutoAttack()
+        })
+
+        this.onMessage("togglePause", (client, msg) => {
+            if(client.sessionId !== this.ownerId) return
+            if(this.gameManager.isPaused()){
+                this.gameManager.forceUnpause()
+            }else{
+                this.gameManager.pauseGame(client.sessionId)
+            }
+        })
+
+        this.onMessage("teleportPlayers", (client, msg) => {
+            if(client.sessionId !== this.ownerId) return
+            let player1 = this.gameManager.getPlayerManager().getPlayerWithId(client.sessionId)
+            if(player1) {
+                let players = this.gameManager.getPlayerManager().getAllPlayers()
+                let position = {x: player1.x, y: player1.y}
+                players.forEach(player=>{
+                    if(player.getId() !== client.sessionId){
+                        Matter.Body.setPosition(player.getBody(), position)
+                    }
+                })
+            }
+        })
+
+        this.onMessage("nextWave", (client, msg) => {
+            if(client.sessionId !== this.ownerId) return
+            console.log("next wave")
+            this.gameManager.getDungeonManager().getDungeon()?.endWave()
+        })
+
+        this.onMessage("reviveAllPlayers", (client, msg) => {
+            if(client.sessionId !== this.ownerId) return
+            let player1 = this.gameManager.getPlayerManager().getPlayerWithId(client.sessionId)
+            if(player1) {
+                let players = this.gameManager.getPlayerManager().getAllPlayers()
+                let position = {x: player1.x, y: player1.y}
+                players.forEach(player=>{
+                    if(player.stat.hp <= 0){
+                        player.stat.hp = player.stat.maxHp
+                        player.playerController.changeState("Idle")
+                        player.sound.playSoundEffect("fountain_heal")
+                        let client = this.clients.find(client=>client.sessionId === player.getId())
+                        if(client) client.send("revive")
+                    }
+                })
+            }
+        })
+
+        this.onMessage("healAllPlayers", (client, msg) => {
+            if(client.sessionId !== this.ownerId) return
+            let player1 = this.gameManager.getPlayerManager().getPlayerWithId(client.sessionId)
+            if(player1) {
+                let players = this.gameManager.getPlayerManager().getAllPlayers()
+                let position = {x: player1.x, y: player1.y}
+                players.forEach(player=>{
+                    player.stat.hp = player.stat.maxHp
+                    player.sound.playSoundEffect("fountain_heal")
+                })
+            }
+        })
     }
 
+    private timeSoFar = 0
+    public ticksSoFar = 0
     startGame() {
+        console.log(`start game`)
         this.gameManager.startGame();
-        // Game Loop
         this.setSimulationInterval((deltaT) => {
+            // Game Loop
+            if(this.timeSoFar >= 2000) {
+                let fps = 1000 * this.ticksSoFar/this.timeSoFar
+                if(fps < 45) console.log(`fps less than 45`)
+                if(this.timeSoFar>0) console.log(`fps: ${fps}`)
+                this.timeSoFar = 0
+                this.ticksSoFar = 0
+            }
             this.timeTillNextTick -= deltaT;
             // Runs the server ticks.
+            this.timeSoFar += deltaT
             while(this.timeTillNextTick <= 0) {
                 if(this.timeTillNextTick < -this.timePerTick * 5) {
                     console.warn(`Game Room: ${this.roomId} is more than 5 ticks behind, dropping ticks.`);
@@ -115,10 +201,15 @@ export default class GameRoom extends Room<State> {
                 }
                 this.timeTillNextTick += this.timePerTick;
                 this.fixedTick(this.timePerTick);
+                this.incrementTick()
             }
             // Game Over Check. Close the GameRoom.
             if(this.gameManager.gameOver) this.disconnect();
         }, this.simulationInterval);
+    }
+
+    public incrementTick(){
+        this.ticksSoFar++
     }
 
     fixedTick(deltaT: number) {
@@ -145,6 +236,9 @@ export default class GameRoom extends Room<State> {
                     // Client is loading. Very nice.
                 } else if(waitingClient.state === "ready") {
                     let options = waitingClient.options;
+                    if(this.gameManager?.playerCount() === 0) {
+                        this.ownerId = client.sessionId
+                    }
                     // Add a new player to the room state. The first player is the owner of the room.
                     this.gameManager?.getPlayerManager().createPlayer(client.sessionId, this.gameManager?.playerCount() === 0, options.playerData, this.gameManager, options.roleId, options.onlineMode).then(() => {
                         this.state.reconciliationInfos.push(new ReconciliationInfo(client.sessionId));

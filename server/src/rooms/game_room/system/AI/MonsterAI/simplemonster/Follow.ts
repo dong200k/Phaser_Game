@@ -12,7 +12,7 @@ export default class Follow extends StateNode {
     public onEnter(): void {
         let stateMachine = (this.getStateMachine() as MonsterController);
         let monster = stateMachine.getMonster();
-        monster.animation.playAnimation("walk", {loop: true});
+        monster.animation.playAnimation(this.getAnimation(), {loop: true});
     }
     public onExit(): void {
         let body = this.getStateMachine<MonsterController>().getMonster().getBody();
@@ -44,5 +44,7 @@ export default class Follow extends StateNode {
             }
         }
     }
-
+    protected getAnimation(){
+        return "walk"
+    }
 }

@@ -14,20 +14,25 @@ import Node from '../Trees/Node/Node';
 
 interface IUpgradeItemConfig {
     name: string;
-    type: "weapon" | "artifact";
+    type: "weapon" | "artifact" | "new artifact";
     description: string;
     imageKey: string;
-    tree: WeaponUpgradeTree;
-    upgradeNode: Node<WeaponData>
+    tree?: WeaponUpgradeTree;
+    upgradeNode?: Node<WeaponData>;
+    /** New artifact must have an upgrade id */
+    artifactId?: string;
+    usage: string
 }
 
 export class UpgradeItem extends Schema {
     @type('string') name: string = "";
-    @type('string') type: "weapon" | "artifact";
+    @type('string') type: "weapon" | "artifact" | "new artifact";
     @type('string') description: string;
     @type('string') imageKey: string;
-    private tree: WeaponUpgradeTree
-    private upgradeNode: Node<WeaponData>
+    @type('string') usage: string;
+    private tree?: WeaponUpgradeTree
+    private upgradeNode?: Node<WeaponData>
+    private artifactId?: string
 
     constructor(config: IUpgradeItemConfig) {
         super();
@@ -37,6 +42,8 @@ export class UpgradeItem extends Schema {
         this.imageKey = config.imageKey;
         this.tree = config.tree
         this.upgradeNode = config.upgradeNode
+        this.artifactId = config.artifactId
+        this.usage = config.usage
     }
 
     isEqual(upgradeItem: UpgradeItem){
@@ -46,6 +53,7 @@ export class UpgradeItem extends Schema {
             && upgradeItem.imageKey === this.imageKey
             && upgradeItem.tree === this.tree
             && upgradeItem.upgradeNode === this.upgradeNode
+            && this.artifactId === this.artifactId
     }
 
     getTree(){
@@ -54,6 +62,10 @@ export class UpgradeItem extends Schema {
 
     getUpgradeNode(){
         return this.upgradeNode
+    }
+
+    getArtifactId(){
+        return this.artifactId
     }
 }
 
@@ -144,13 +156,16 @@ export default class Player extends Entity {
 
     @type("boolean") overwriteClientMoveFlip: boolean = false
 
+    /** How many merchant weapon the player has */
+    public weaponCount = 0
+
     constructor(gameManager: GameManager, name: string, role?: string) {
         super(gameManager);
         this.name = name;
         this.level = 1;
         this.upgradeInfo = new UpgradeInfo(this.getId());
         this.xp = 0;
-        this.maxXp = 100;
+        this.maxXp = gameManager.getPlayerManager().getNewMaxXp(this.level);
         // this.attackCooldown = new Cooldown(1000)
         this.specialCooldown = new Cooldown(5000)
         this.type = "Player";

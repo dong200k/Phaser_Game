@@ -19,6 +19,9 @@ import InvisObstacle from "../../schemas/gameobjs/InvisObstacle"
 import DatabaseManager from "../Database/DatabaseManager"
 import Entity from "../../schemas/gameobjs/Entity"
 import SafeWave from "../../schemas/dungeon/wave/SafeWave"
+import ChunkMap from "../../schemas/dungeon/Map/ChunkMap"
+import Player from "../../schemas/gameobjs/Player"
+import TimedWave from "../../schemas/dungeon/wave/TimedWave"
 
 // const dungeonURLMap = {
 //     "Demo Map": "assets/tilemaps/demo_map/demo_map.json",
@@ -50,9 +53,47 @@ export default class DungeonManager {
     constructor(gameManager: GameManager) {
         this.gameManager = gameManager;
         this.monsterPool = new MonsterPool();
-        this.createDungeon();
     }   
 
+    /**
+     * This method is used to teleport monsters that are far from a player to a player
+     * @param monster 
+     */
+    private teleportMonsterNearPlayer(monster: Monster){
+        // console.log(`monster ${monster.getMonsterName()} out of range teleporting it to player`)
+        let players: Player[] = []
+        this.gameManager.gameObjects.forEach(obj=>{
+            if(obj instanceof Player){
+                players.push(obj)
+            }
+        })
+
+        let choice = Math.floor(Math.random() * players.length)
+        let player = players[choice]
+        if(player){
+            let radius = 500
+            let playerVelocity = player.getBody().velocity
+            let rotationDegree = Math.random() * 180 - 90
+            if(playerVelocity.x === 0 && playerVelocity.y === 0) rotationDegree = Math.random() * 360 - 180
+            let rotatedOffset = MathUtil.getRotatedSpeed(playerVelocity.x, playerVelocity.y, radius, rotationDegree)
+            let newPos = {x: player.x + rotatedOffset.x, y: player.y + rotatedOffset.y}
+            Matter.Body.setPosition(monster.getBody(), newPos)
+        }
+    }
+
+    /**
+     * Returns true if the monster is far from the closest live player
+     */
+    private monsterOutOfRange(monster: Monster){
+        let player = this.gameManager.getPlayerManager().getNearestAlivePlayer(monster.x, monster.y)
+        if(player){
+            let maximumDistance = 600 
+            let distance = MathUtil.distance(player.x, player.y, monster.x, monster.y)
+            if(distance > maximumDistance) return true
+        }
+        
+        return false
+    }
     /**
      * Updates this DungeonManager.
      * @param deltaT The time that passed in seconds.
@@ -65,6 +106,7 @@ export default class DungeonManager {
                 // if(gameObject.name === "Berserker Boss")console.log(gameObject.name, gameObject.active)
                 if(gameObject.active) {
                     gameObject.update(deltaT);
+                    if(this.monsterOutOfRange(gameObject)) this.teleportMonsterNearPlayer(gameObject)
                 } else if(!gameObject.isInPoolMap()) {
                     gameObject.disableCollisions();
                     this.monsterPool.returnInstance(gameObject.poolType, gameObject);
@@ -124,21 +166,28 @@ export default class DungeonManager {
     }
 
     /** Creates a new Dungeon. The Dungeon will have an update method that should be called every frame. */
-    private createDungeon() {
+    public async createDungeon() {
         // let dungeonName = "Demo Map";
         // let dungeonFileLocation = dungeonURLMap["Demo Map"];
         let dungeonData = DatabaseManager.getManager().getDungeonByName(this.gameManager.getOptions().dungeonSelected);
         let dungeonFileLocation = dungeonData.serverJsonLocation;
         let dungeonName = dungeonData.name;
+        
+        try {
+            // Load the tiled json file ... 
+            let tiled: TiledJSON = await FileUtil.readJSONAsync(dungeonFileLocation)
+            let start = Date.now();
 
-        // Load the tiled json file ... 
-        FileUtil.readJSONAsync(dungeonFileLocation).then((tiled: TiledJSON) => {
             // ----- Fill in the dungeons information based on the json file ------
             let newDungeon = new Dungeon(this.gameManager, dungeonName);
 
-            // Tilemap 
-            let newTilemap = this.createTilemap(tiled, dungeonData);
-            newDungeon.setTilemap(newTilemap);
+            // Tilemap createT
+            // let newTilemap = this.createTilemap(tiled, dungeonData);
+            // newDungeon.setTilemap(newTilemap);
+
+            // Create a ChunkMap
+            let newChunkMap = this.createChunkMap(tiled, dungeonData)
+            newDungeon.setChunkMap(newChunkMap)
 
             // Set spawnpoints 
             this.setDungeonSpawnPoints(newDungeon, tiled);
@@ -147,7 +196,7 @@ export default class DungeonManager {
             this.setDungeonWorldBounds(newDungeon, tiled);
 
             // Make the obstables collidable by adding them to matter.
-            this.addObstaclesToMatterAlgo(newTilemap);
+            // this.addObstaclesToMatterAlgo(newTilemap);
             // this.addObstaclesToMatter(this.gameManager.getEngine(), this.gameManager.matterBodies, newTilemap);
             
             // Waves
@@ -165,9 +214,12 @@ export default class DungeonManager {
             // ---- Setting new dungeon to state -----
             this.dungeon = newDungeon;
             this.gameManager.state.dungeon = this.dungeon;
-        }).catch((err) => {
-            console.log(err);
-        })
+
+            let timeTaken = Date.now() - start;
+            console.log(`time taken for creating dungeon: ${timeTaken/1000} seconds`)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     public createNewWave() {
@@ -200,6 +252,9 @@ export default class DungeonManager {
                 case "safe":
                     wave = this.createSafeWave(waveData)
                     break;
+                case "timed":
+                    wave = this.createTimedWave(waveData)
+                    break;
                 default:
                     wave = this.createPackWave(waveData)
                     break;
@@ -220,10 +275,23 @@ export default class DungeonManager {
         return wave
     }
 
+    public createTimedWave(waveData: IDungeonWave){
+        let wave = new TimedWave((name: string) => this.spawnMonster(name), this.gameManager, {waveDuration: waveData.duration})
+        wave.setAgressionLevel(waveData.difficulty);
+        waveData.monsters.forEach((monsterData) => {
+            wave.addMonster(monsterData.name, monsterData.count);
+        })
+        return wave
+    }
+
     public createSafeWave(waveData: IDungeonWave){
         let wave = new SafeWave(this.gameManager, {
             forgeSpawnPosition: {x: 113, y: 111},
-            waveDuration: waveData.duration
+            waveDuration: waveData.duration,
+            hasForge: waveData.forge,
+            hasFountain: waveData.fountain,
+            hasMerchant: waveData.merchant,
+            spawnNearPlayer: waveData.spawnNearPlayer
         })
         return wave
     }
@@ -342,6 +410,20 @@ export default class DungeonManager {
     }
 
     /**
+     * Create and return a ChunkMap based on a TiledJSON object.
+     * @param data A TiledJSON object.
+     * @param dungeon Dungeon data
+     * @returns A Tilemap.
+     */
+    private createChunkMap(data: TiledJSON, dungeon: IDungeon){
+        let tileWidth = data.tilewidth;
+        let tileHeight = data.tileheight;
+        let chunkMap = new ChunkMap(data, data.width, data.height, tileWidth, tileHeight,
+            dungeon.tilesetName, dungeon.clientTilesetLocation);
+        return chunkMap
+    }
+
+    /**
      * Create and return a Tilemap based on a TiledJSON object.
      * @param data A TiledJSON object.
      * @returns A Tilemap.
@@ -352,7 +434,10 @@ export default class DungeonManager {
         let layers = data.layers;
         // Create tilemap
         let tilemap = new Tilemap(data.width, data.height, tileWidth, tileHeight,
-             dungeon.tilesetName, dungeon.clientTilesetLocation);
+            dungeon.tilesetName, dungeon.clientTilesetLocation);
+
+        console.log(`populating tiles`)
+        let start = Date.now();
         layers.forEach((layer) => {
             let width = layer.width;
             let height = layer.height;
@@ -361,10 +446,14 @@ export default class DungeonManager {
             //Create tilemap layers
             if(layerType === "tilelayer") {
                 let newLayer = new Layer(layerName, width, height, tileWidth, tileHeight);
-                newLayer.populateTiles(this.gameManager, tileWidth, tileHeight, layer.data);
+                // newLayer.populateTiles(this.gameManager, tileWidth, tileHeight, layer.data);
+                let position = {x: 24294, y: 23629}
+                newLayer.populateTilesAroundPosition(this.gameManager, tileWidth, tileHeight, layer.data, position, 1600);
                 tilemap.addExistingLayer(newLayer);
             }
         })
+        let timeTaken = Date.now() - start;
+        console.log(`time taken: ${timeTaken/1000} seconds`)
 
         return tilemap;
     }
@@ -567,5 +656,25 @@ export default class DungeonManager {
                 obj.setAggroTarget(aggroTarget);
             } 
         })
+    }
+
+    /**
+     * Returns the closest active monster to the pos argument.
+     * @param pos 
+     * @returns 
+     */
+    public getClosestActiveMonster(pos: {x: number, y: number}){
+        let minDistance = Infinity
+        let closestMonster: Monster | undefined
+        this.gameManager.gameObjects.forEach((obj)=>{
+            if(obj instanceof Monster && obj.isActive()){
+                let distance = MathUtil.distance(obj.x, obj.y, pos.x, pos.y)
+                if(distance < minDistance){
+                    minDistance = distance
+                    closestMonster = obj
+                }
+            }
+        })
+        return closestMonster
     }
 }

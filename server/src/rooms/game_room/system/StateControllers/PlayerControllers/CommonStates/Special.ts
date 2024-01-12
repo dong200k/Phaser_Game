@@ -1,3 +1,5 @@
+import EffectFactory from "../../../../schemas/effects/EffectFactory";
+import SpeedMultiEffect from "../../../../schemas/effects/temp/SpeedMultiEffect";
 import Player from "../../../../schemas/gameobjs/Player";
 import StateMachine from "../../../StateMachine/StateMachine";
 import StateNode from "../../../StateMachine/StateNode";
@@ -31,7 +33,7 @@ export default class Special extends StateNode {
     /** A percentage of attackDuration that passes before the attack triggers. E.g. if attackDuration=1 and 
      * triggerPercent=0.7, the attack will trigger at 0.7 seconds.
      */
-    protected triggerPercent: number = 0.3;
+    protected triggerPercent: number = 0;
 
     /** Has the attack been triggered or not. */
     protected triggered: boolean = false;
@@ -43,6 +45,8 @@ export default class Special extends StateNode {
     
     protected mouseX: number = 0;
     protected mouseY: number = 0;
+    protected slowFactor = 0.5
+    protected speedEffect?: SpeedMultiEffect
     /**
      * Initialize this attack with some values.
      * @param config The AttackConfig.
@@ -74,6 +78,9 @@ export default class Special extends StateNode {
                 flip: flip,
             });
         }
+
+        this.speedEffect = EffectFactory.createSpeedMultiplierEffectTimed(this.slowFactor, this.attackDuration)
+        EffectManager.addEffectsTo(this.player, this.speedEffect)
        
         // if(this.player.role === "Warrior"){
         //     this.player.animation.playAnimation("2_atk", {
@@ -86,6 +93,7 @@ export default class Special extends StateNode {
 
     public onExit(): void {
         this.player.canMove = true;
+        if(this.speedEffect) EffectManager.removeEffectFrom(this.player, this.speedEffect)
     }
 
     /** Called to change states to the exit state */
@@ -100,6 +108,7 @@ export default class Special extends StateNode {
         if(!this.triggered && this.timePassed >= this.triggerPercent * this.attackDuration) {
             this.triggered = true;
             // Trigger skills.
+            // console.log("trigger skill")
             EffectManager.useTriggerEffectsOn(this.player, "player skill", this.player.getBody(), {mouseX: this.mouseX, mouseY: this.mouseY})
         }
 

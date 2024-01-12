@@ -55,6 +55,13 @@ export default class GameObject extends Schema implements Cloneable {
     // -- Extra identifier --
     @type("string") name: string
 
+    /** Used by client to deterine whether to rotate the projectile. Rotation is enabled by default (false) */
+    @type("boolean") dontRotate: boolean = false
+    /** Whether to flip game object on the client or not. Only used when dontRotate is set to true */
+    @type("boolean") flipX: boolean = false
+    /** Whether to flip game object on the client or not. Only used when dontRotate is set to true */
+    @type("boolean") flipY: boolean = false
+
     constructor(gameManager: GameManager, x: number, y: number, ownerId?: string) {
         super();
         this.id = MathUtil.uid();

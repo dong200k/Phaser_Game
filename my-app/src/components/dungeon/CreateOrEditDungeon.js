@@ -101,6 +101,15 @@ export default function CreateOrEditDungeon(props) {
         newWaves.push(getDefaultWave());
         setWaves(newWaves);
     }
+    /** Inserts a new wave below current one */
+    const onInsertNewWave = (index) => {
+        let newWaves = []
+        waves.forEach((wave, i)=>{
+            newWaves.push(wave)
+            if(index === i) newWaves.push(getDefaultWave())
+        })
+        setWaves(newWaves)
+    }
     const onClickDeleteWave = (idx) => { setWaves(waves.filter((wave, idx2) => idx2 !== idx)); }
     const onClickDeleteMonster = (widx, midx) => {
         let newWaves = getDeepCopy(waves);
@@ -147,6 +156,17 @@ export default function CreateOrEditDungeon(props) {
         
     }
 
+    const onClickCheckbox = (type, idx) => {
+        return () => {
+            setWaves(waves.map((wave, i)=>{
+                if(i===idx) {
+                    wave[type] = !wave[type]
+                }
+                return wave
+            }))
+        }
+    }
+
     return (
         <Container>
             <h2>{props.isEdit ? "Edit Dungeon": "Create Dungeon"}</h2>
@@ -179,6 +199,7 @@ export default function CreateOrEditDungeon(props) {
                                 <div key={`wave${wave.id}`} style={{backgroundColor: "lightgoldenrodyellow", borderBottom: "3px solid black", padding:"10px"}}>
                                     <h4 style={{display: 'inline-block', marginRight: "10px"}}>Wave {idx + 1}</h4>
                                     <button type="button" className="btn btn-danger" style={{marginBottom: "10px"}} onClick={() => onClickDeleteWave(idx)}>Delete Wave</button>
+                                    <button type="button" className="btn btn-info" style={{marginBottom: "10px"}} onClick={() => onInsertNewWave(idx)}>Insert Wave Below</button>
                                     <br/>
                                     <label htmlFor={`waveType${idx}`}>Type: </label>
                                     <input name={`waveType${idx}`} type="text" defaultValue={wave.type} onChange={(e) => onChangeWaveType(e, idx)}/>
@@ -186,6 +207,18 @@ export default function CreateOrEditDungeon(props) {
                                     <input name={`waveDifficulty${idx}`} type="number" defaultValue={wave.difficulty} onChange={(e) => onChangeWaveDifficulty(e, idx)}/>
                                     <label htmlFor={`duration${idx}`}>Duration(seconds)</label>
                                     <input name={`duration${idx}`} type="number" defaultValue={wave.duration} onChange={(e) => onChangeWaveDuration(e, idx)}/>
+                                    {wave.type === "safe" && 
+                                    <div>
+                                        <label htmlFor={`merchant${idx}`}>merchant</label>
+                                        <input name={`merchant${idx}`} type="checkbox" checked={wave.merchant} onClick={onClickCheckbox("merchant", idx)}/>
+                                        <label htmlFor={`forge${idx}`}>forge</label>
+                                        <input name={`forge${idx}`} type="checkbox" checked={wave.forge} onClick={onClickCheckbox("forge", idx)}/>
+                                        <label htmlFor={`fountain${idx}`}>fountain</label>
+                                        <input name={`fountain${idx}`} type="checkbox" checked={wave.fountain} onClick={onClickCheckbox("fountain", idx)}/>
+                                        <label htmlFor={`spawnNearPlayer${idx}`}>spawn near player</label>
+                                        <input name={`spawnNearPlayer${idx}`} type="checkbox" checked={wave.spawnNearPlayer} onClick={onClickCheckbox("spawnNearPlayer", idx)}/>
+                                    </div>
+                                    }      
                                     <br/>
                                     <div style={{backgroundColor: "lightblue", margin: "30px", padding: "18px", borderRadius: "5px"}}>
                                         <h5>Monsters: </h5>
