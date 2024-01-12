@@ -191,6 +191,12 @@ namespace EventManager {
             ```
          */
         export const SHOW_DIALOG = "HUDSceneShowDialog";
+
+        /**
+         * Emitting this event will display a popup window where the player can upgrade their skills.
+         * Emit this event by running ```EventManager.eventEmitter.emit(EventManager.HUDEvents.SHOW_SKILLTREE_MODAL)```
+         */
+        export const SHOW_SKILLTREE_MODAL = "HUDSceneShowSkilltreeModal";
     }
 
     export namespace GameEvents {

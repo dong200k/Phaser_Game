@@ -15,6 +15,7 @@ import CircleImage from "../UI/CircleImage";
 import WAPopupButton from "../UI/gameuis/WAPopupButton";
 import ToolTip from "../UI/ToolTip";
 import DialogBox from "../UI/gameuis/DialogBox";
+import SkillTreeModal from "../UI/gameuis/SkillTreeModal";
 
 export default class HUDScene extends Phaser.Scene {
 
@@ -31,6 +32,7 @@ export default class HUDScene extends Phaser.Scene {
     private ticks: number = 0;
     private toolTip!: ToolTip; 
     private dialogBox!: DialogBox;
+    private skillTreeModal!: SkillTreeModal;
 
     constructor() {
         super(SceneKey.HUDScene);
@@ -75,6 +77,7 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.on(EventManager.HUDEvents.SHOW_TOOLTIP, this.toolTip.showToolTip, this.toolTip);
         EventManager.eventEmitter.on(EventManager.HUDEvents.HIDE_TOOLTIP, this.toolTip.hideToolTip, this.toolTip);
         EventManager.eventEmitter.on(EventManager.HUDEvents.SHOW_DIALOG, this.dialogBox.showDialogBox, this.dialogBox);
+        EventManager.eventEmitter.on(EventManager.HUDEvents.SHOW_SKILLTREE_MODAL, this.skillTreeModal.showSkillTreeModal, this.skillTreeModal);        
 
         this.events.once("shutdown", () => this.removeListeners());
         this.events.on("sleep", () => this.peerInfoPopup.setVisible(false));
@@ -91,6 +94,7 @@ export default class HUDScene extends Phaser.Scene {
         EventManager.eventEmitter.off(EventManager.HUDEvents.SHOW_TOOLTIP, this.toolTip.showToolTip, this.toolTip);
         EventManager.eventEmitter.off(EventManager.HUDEvents.HIDE_TOOLTIP, this.toolTip.hideToolTip, this.toolTip);
         EventManager.eventEmitter.off(EventManager.HUDEvents.SHOW_DIALOG, this.dialogBox.showDialogBox, this.dialogBox);
+        EventManager.eventEmitter.off(EventManager.HUDEvents.SHOW_SKILLTREE_MODAL, this.skillTreeModal.showSkillTreeModal, this.skillTreeModal); 
     }
 
     private initializeUI() {
@@ -174,7 +178,7 @@ export default class HUDScene extends Phaser.Scene {
         //         ]
         //     })
         // }, 3000);
-
+        this.skillTreeModal = new SkillTreeModal(this);
         
     }
 

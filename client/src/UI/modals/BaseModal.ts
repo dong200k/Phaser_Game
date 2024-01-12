@@ -18,9 +18,11 @@ export default abstract class BaseModal {
     scene: SceneWithRexUI;
     protected dialog: Dialog;
     private defaultInputTopOnly: boolean;
+    protected rexUI: UIPlugins;
 
     constructor(scene: SceneWithRexUI, config: BaseModalConfig) {
         this.scene = scene;
+        this.rexUI = scene.rexUI;
         this.dialog = this.createDialog(config);
         this.dialog.setPosition(this.scene.game.scale.width / 2, this.scene.game.scale.height / 2);
         this.dialog.layout();

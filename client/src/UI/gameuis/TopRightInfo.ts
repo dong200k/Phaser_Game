@@ -45,6 +45,8 @@ export default class TopRightInfo extends RexUIBase {
         sizer.add(UIFactory.createTextBoxRex(this.scene, "Coins: 10").setName("InfoCoinCount"), {expand: false});
         sizer.add(UIFactory.createTextBoxRex(this.scene, "").setName("InfoTimer"), {expand: false});
 
+        sizer.layout();
+
         return sizer;
     }
 
