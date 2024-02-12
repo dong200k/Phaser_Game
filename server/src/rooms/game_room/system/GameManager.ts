@@ -117,6 +117,8 @@ export default class GameManager {
                     objState.velocity.y = obj.velocity.y;
                 }
             })
+
+            console.log("Engine after updated: ", this.state.serverTickCount);
         });
     }
         
@@ -189,14 +191,16 @@ export default class GameManager {
 
     public update(deltaT:number) {
         let deltaTSeconds = deltaT / 1000;
-        Matter.Engine.update(this.engine, deltaT);
-
         this.playerManager.update(deltaTSeconds);
         this.effectManager.update(deltaTSeconds);
         this.dungeonManager.update(deltaTSeconds);
         this.projectileManager.update(deltaT);
         this.auraManager.update(deltaTSeconds);
 
+        // Updates the engine after changes to velocity of Matter Bodies.
+        Matter.Engine.update(this.engine, deltaT);
+
+        console.log("Engine updated: ", this.state.serverTickCount);
         // if(this.state.serverTickCount % 30 === 0)
         //     console.log(`Heap usage: ${process.memoryUsage().heapUsed / 1000000} Mb`);
     }

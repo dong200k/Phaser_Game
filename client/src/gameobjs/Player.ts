@@ -6,6 +6,7 @@ export default class Player extends Entity
     private playerState: PlayerState;
     running: boolean;
     serverLevel: number;
+    snapCameraToPlayerIndicator: boolean;
 
     constructor(scene:Phaser.Scene,playerState:PlayerState) {
         super(scene, playerState.x, playerState.y, playerState.role, playerState);
@@ -14,6 +15,7 @@ export default class Player extends Entity
         this.serverLevel = 1;
         // Generate animations for this player.
         scene.anims.createFromAseprite(playerState.role, undefined, this);
+        this.snapCameraToPlayerIndicator = playerState.snapCameraToPlayerIndicator;
     }
 
     // /**Add listeners to connect to the server's player*/

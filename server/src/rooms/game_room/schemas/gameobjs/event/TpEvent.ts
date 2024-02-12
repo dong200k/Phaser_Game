@@ -5,6 +5,7 @@ import Entity from "../Entity";
 import GameEvent from "./GameEvent";
 import { Categories } from "../../../system/Collisions/Category";
 import MaskManager from "../../../system/Collisions/MaskManager";
+import Player from "../Player";
 
 export default class TpEvent extends GameEvent {
 
@@ -24,6 +25,9 @@ export default class TpEvent extends GameEvent {
     public handleEvent(entity: Entity): void {
         let position = {x: this.tpZone.tp_end.x, y: this.tpZone.tp_end.y};
         Matter.Body.setPosition(entity.getBody(), position);
+        if(entity instanceof Player) {
+            entity.snapCameraToPlayer();
+        }
     }
 
 }

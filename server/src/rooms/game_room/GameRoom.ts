@@ -124,6 +124,7 @@ export default class GameRoom extends Room<State> {
     fixedTick(deltaT: number) {
         this.processWaitingClients();
         this.gameManager.update(deltaT);
+        console.log("Engine before patch broadcast: ", this.state.serverTickCount);
         this.state.serverTickCount++;
         this.broadcastPatch(); //send patch updates to clients.
     }

@@ -144,6 +144,8 @@ export default class Player extends Entity {
 
     @type("boolean") overwriteClientMoveFlip: boolean = false;
 
+    @type("boolean") snapCameraToPlayerIndicator: boolean = false;
+
     private dialogSeen: Set<string>;
 
     private unlockedRoles: string[];
@@ -221,5 +223,15 @@ export default class Player extends Entity {
      */
     public getUnlockedRoles() {
         return this.unlockedRoles;
+    }
+
+
+    /**
+     * Force the client to update the camera position to the player.
+     * This is used when the player teleports and the camera lags behind because of 
+     * interpolation.
+     */
+    public snapCameraToPlayer() {
+        this.snapCameraToPlayerIndicator = !this.snapCameraToPlayerIndicator;
     }
 }

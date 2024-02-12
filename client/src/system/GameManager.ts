@@ -732,6 +732,11 @@ export default class GameManager {
                 EventManager.eventEmitter.emit(EventManager.HUDEvents.UPDATE_TOP_RIGHT_INFO, {
                     coins: playerState.coinsEarned,
                 })
+                // Snap camera to player if necessary.
+                if(this.spectating === false && this.player1.snapCameraToPlayerIndicator !== gameObject.snapCameraToPlayerIndicator) {
+                    this.player1.snapCameraToPlayerIndicator = gameObject.snapCameraToPlayerIndicator;
+                    this.scene.cameras.main.setPosition(gameObject.x, gameObject.y);
+                }
             }
             // Updates the Peer Info Display. This display popup when holding SHIFT.
             EventManager.eventEmitter.emit(EventManager.HUDEvents.CREATE_OR_UPDATE_PEER_INFO, playerState.id, {
